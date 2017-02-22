@@ -11,6 +11,7 @@ export default function MINIMAL_HTML(tabString: string): string {
     lines.push(_ + _ + "/* STYLE-MARKER */");
     lines.push(_ + _ + "</style>");
     lines.push(_ + _ + "<script src='https://jspm.io/system.js'></script>");
+    lines.push(_ + _ + "<!-- CSV-FILES-MARKER -->");
     lines.push(_ + _ + "<!-- SHADERS-MARKER -->");
     lines.push(_ + _ + "<!-- SCRIPTS-MARKER -->");
     lines.push(_ + "</head>");

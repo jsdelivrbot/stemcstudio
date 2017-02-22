@@ -1,5 +1,3 @@
-"use strict";
-
 import Completer from '../autocomplete/Completer';
 import Completion from '../Completion';
 import CompletionEntry from './CompletionEntry';
@@ -7,7 +5,6 @@ import Editor from '../Editor';
 import EditSession from "../EditSession";
 import Position from "../Position";
 import WorkspaceCompleterHost from './WorkspaceCompleterHost';
-import EditorPosition from './EditorPosition';
 
 /**
  *
@@ -21,21 +18,20 @@ export default class WorkspaceCompleter implements Completer {
         this.fileName = fileName;
         this.workspace = workspace;
     }
+
     /**
-     * @method getCompletionsAtPosition
-     * @param editor {Editor}
-     * @param position {Position}
-     * @param prefix {string}
-     * @return {Promise}
+     * @param editor
+     * @param position
+     * @param prefix
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
-        const offset: number = EditorPosition.getPositionChars(editor, position);
+        const document = editor.getSession().getDocument();
 
         return new Promise<Completion[]>((resolve: (completions: Completion[]) => any, reject: (err: any) => any) => {
-            this.workspace.getCompletionsAtPosition(this.fileName, offset, prefix)
-                .then(function(entries: CompletionEntry[]) {
-                    resolve(entries.map(function(entry) {
+            this.workspace.getCompletionsAtPosition(this.fileName, document.positionToIndex(position), prefix)
+                .then(function (entries: CompletionEntry[]) {
+                    resolve(entries.map(function (entry) {
                         return {
                             caption: entry.name,
                             value: entry.name,
@@ -44,17 +40,17 @@ export default class WorkspaceCompleter implements Completer {
                         };
                     }));
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     reject(err);
                 });
         });
     }
     getCompletions(editor: Editor, session: EditSession, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
         return this.getCompletionsAtPosition(editor, position, prefix)
-            .then(function(completions) {
+            .then(function (completions) {
                 callback(void 0, completions);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 callback(err);
             });
     }

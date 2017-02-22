@@ -1,3 +1,4 @@
+import { equalPositions } from './Position';
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import { stringRepeat } from "./lib/lang";
@@ -366,7 +367,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method $resetRowCache
      * @param docRow {number} The row to work with.
-     * @return {void}
+     * @returns {void}
      * @private
      */
     private $resetRowCache(docRow: number): void {
@@ -469,7 +470,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the current Document as a string.
      *
      * @method toString
-     * @return {string}
+     * @returns {string}
      * @alias EditSession.getValue
      */
     public toString(): string {
@@ -488,7 +489,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the current selection.
      *
      * @method getSelection
-     * @return {Selection}
+     * @returns {Selection}
      */
     public getSelection(): Selection {
         return this.selection;
@@ -499,7 +500,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method setSelection
      * @param selection {Selection}
-     * @return {void}
+     * @returns {void}
      */
     public setSelection(selection: Selection): void {
         this.selection = selection;
@@ -508,7 +509,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method getState
      * @param row {number} The row to start at.
-     * @return {string}
+     * @returns {string}
      */
     public getState(row: number): string {
         if (this.bgTokenizer) {
@@ -524,7 +525,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method getTokens
      * @param row {number} The row to start at.
-     * @return {Token[]} An array of <code>Token</code>s.
+     * @returns {Token[]} An array of <code>Token</code>s.
      */
     public getTokens(row: number): Token[] {
         if (this.bgTokenizer) {
@@ -541,7 +542,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method getTokenAt
      * @param {Number} row The row number to retrieve from
      * @param {Number} column The column number to retrieve from.
-     * @return {Token}
+     * @returns {Token}
      */
     public getTokenAt(row: number, column?: number): Token {
         if (this.bgTokenizer) {
@@ -577,7 +578,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method setUndoManager
      * @param undoManager {UndoManager} The new undo manager.
-     * @return {void}
+     * @returns {void}
      */
     public setUndoManager(undoManager: UndoManager): void {
         this.$undoManager = undoManager;
@@ -624,7 +625,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Starts a new group in undo history.
      *
      * @method markUndoGroup
-     * @return {void}
+     * @returns {void}
      */
     public markUndoGroup(): void {
         if (this.$syncInformUndoManager) {
@@ -636,7 +637,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the current undo manager.
      *
      * @method getUndoManager
-     * @return {UndoManager}
+     * @returns {UndoManager}
      */
     public getUndoManager(): UndoManager {
         // FIXME: Want simple API, don't want to cast.
@@ -648,7 +649,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * If the user is using soft tabs, this will be a series of spaces (defined by [[EditSession.getTabSize `getTabSize()`]]); otherwise it's simply `'\t'`.
      *
      * @method getTabString
-     * @return {string}
+     * @returns {string}
      */
     public getTabString(): string {
         if (this.getUseSoftTabs()) {
@@ -665,7 +666,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method setUseSoftTabs
      * @param useSoftTabs {boolean} Value indicating whether or not to use soft tabs.
-     * @return {EditSession}
+     * @returns {EditSession}
      * @chainable
      */
     public setUseSoftTabs(useSoftTabs: boolean): EditSession {
@@ -677,7 +678,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns `true` if soft tabs are being used, `false` otherwise.
      *
      * @method getUseSoftTabs
-     * @return {boolean}
+     * @returns {boolean}
      */
     public getUseSoftTabs(): boolean {
         // todo might need more general way for changing settings from mode, but this is ok for now
@@ -702,7 +703,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the current tab size.
      *
      * @method getTabSize
-     * @return {number}
+     * @returns {number}
      */
     public getTabSize(): number {
         return this.$tabSize;
@@ -713,7 +714,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method isTabStop
      * @param position {Position} The position to check.
-     * @return {boolean}
+     * @returns {boolean}
      */
     public isTabStop(position: Position): boolean {
         return this.$useSoftTabs && (position.column % this.$tabSize === 0);
@@ -726,7 +727,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method setOverwrite
      * @param overwrite {boolean} Defines whether or not to set overwrites.
-     * @return {void}
+     * @returns {void}
      */
     public setOverwrite(overwrite: boolean): void {
         this.$overwrite = overwrite;
@@ -737,7 +738,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns `true` if overwrites are enabled; `false` otherwise.
      *
      * @method getOverwrite
-     * @return {boolean}
+     * @returns {boolean}
      */
     public getOverwrite(): boolean {
         return this.$overwrite;
@@ -747,7 +748,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Sets the value of overwrite to the opposite of whatever it currently is.
      *
      * @method toggleOverwrite
-     * @return {void}
+     * @returns {void}
      */
     public toggleOverwrite(): void {
         this.setOverwrite(!this.$overwrite);
@@ -759,7 +760,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method addGutterDecoration
      * @param {Number} row The row number
      * @param {String} className The class to add
-     * @return {void}
+     * @returns {void}
      */
     public addGutterDecoration(row: number, className: string): void {
         if (!this.$decorations[row]) {
@@ -778,7 +779,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method removeGutterDecoration
      * @param {Number} row The row number
      * @param {String} className The class to add
-     * @return {void}
+     * @returns {void}
      */
     public removeGutterDecoration(row: number, className: string): void {
         this.$decorations[row] = (this.$decorations[row] || "").replace(" " + className, "");
@@ -831,7 +832,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method setBreakpoint
      * @param {Number} row A row index
      * @param {String} className Class of the breakpoint
-     * @return {void}
+     * @returns {void}
      */
     public setBreakpoint(row: number, className: string): void {
         if (className === undefined)
@@ -852,7 +853,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method clearBreakpoint
      * @param {Number} row A row index
-     * @return {void}
+     * @returns {void}
      */
     public clearBreakpoint(row: number): void {
         delete this.$breakpoints[row];
@@ -872,7 +873,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param [type='line'] {string} Identify the type of the marker.
      * @param [renderer] {MarkerRenderer}
      * @param {Boolean} inFront Set to `true` to establish a front marker
-     * @return {Number} The new marker id
+     * @returns {Number} The new marker id
      */
     public addMarker(range: Range, clazz: string, type = 'line', renderer?: MarkerRenderer, inFront?: boolean): number {
         const id = this.$markerId++;
@@ -924,7 +925,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @param marker object with update method.
      * @param inFront Set to `true` to establish a front marker.
-     * @return The added marker
+     * @returns The added marker
      */
     private addDynamicMarker<T extends Marker>(marker: T, inFront?: boolean): T {
         if (!marker.update) {
@@ -959,7 +960,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method removeMarker
      * @param {Number} markerId A number representing a marker
-     * @return {void}
+     * @returns {void}
      */
     public removeMarker(markerId: number): void {
         const marker: Marker = this.$frontMarkers[markerId] || this.$backMarkers[markerId];
@@ -978,7 +979,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method getMarkers
      * @param {boolean} inFront If `true`, indicates you only want front markers; `false` indicates only back markers.
-     * @return {{[id: number]: Marker}}
+     * @returns {{[id: number]: Marker}}
      */
     public getMarkers(inFront: boolean): { [id: number]: Marker } {
         return inFront ? this.$frontMarkers : this.$backMarkers;
@@ -987,7 +988,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method highlight
      * @param re {RegExp}
-     * @return {void}
+     * @returns {void}
      */
     public highlight(re: RegExp): void {
         if (!this.$searchHighlight) {
@@ -1003,7 +1004,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param endRow {number}
      * @param clazz {string}
      * @param inFront {boolean}
-     * @return {Range}
+     * @returns {Range}
      */
     public highlightLines(startRow: number, endRow: number, clazz = "ace_step", inFront?: boolean): Range {
         const range: Range = new Range(startRow, 0, endRow, Infinity);
@@ -1017,7 +1018,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method setAnnotations
      * @param {Annotation[]} annotations A list of annotations.
-     * @return {void}
+     * @returns {void}
      */
     public setAnnotations(annotations: Annotation[]): void {
 
@@ -1032,7 +1033,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the annotations for the `EditSession`.
      *
      * @method getAnnotations
-     * @return {Annotation[]}
+     * @returns {Annotation[]}
      */
     public getAnnotations(): Annotation[] {
         return this.$annotations || [];
@@ -1044,7 +1045,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * This is called by the language modes when the worker terminates.
      *
      * @method clearAnnotations
-     * @return {void}
+     * @returns {void}
      */
     public clearAnnotations(): void {
         this.setAnnotations([]);
@@ -1055,7 +1056,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * @method $detectNewLine
      * @param {String} text A block of text
-     * @return {void}
+     * @returns {void}
      */
     public $detectNewLine(text: string): void {
         const match = text.match(/^.*?(\r?\n)/m);
@@ -1073,7 +1074,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method getWordRange
      * @param row {number} The row to start at.
      * @param column {number} The column to start at.
-     * @return {Range}
+     * @returns {Range}
      */
     public getWordRange(row: number, column: number): Range {
         const line: string = this.getLine(row);
@@ -1117,7 +1118,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method getAWordRange
      * @param {Number} row The row number to start from
      * @param {Number} column The column number to start from
-     * @return {Range}
+     * @returns {Range}
      */
     public getAWordRange(row: number, column: number): Range {
         const wordRange = this.getWordRange(row, column);
@@ -1133,7 +1134,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method setNewLineMode
      * @param newLineMode {string}
-     * @return {void}
+     * @returns {void}
      */
     public setNewLineMode(newLineMode: string): void {
         this.doc.setNewLineMode(newLineMode);
@@ -1141,10 +1142,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the current new line mode.
-     *
-     * @method getNewLineMode
-     * @return {string}
-     * @related Document.getNewLineMode
      */
     public getNewLineMode(): string {
         return this.doc.getNewLineMode();
@@ -1153,9 +1150,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Identifies if you want to use a worker for the `EditSession`.
      *
-     * @method setUseWorker
-     * @param {boolean} useWorker Set to `true` to use a worker.
-     * @return {void}
+     * @param useWorker Set to `true` to use a worker.
      */
     public setUseWorker(useWorker: boolean): void {
         this.$useWorker = useWorker;
@@ -1170,9 +1165,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns `true` if workers are being used.
-     *
-     * @method getUseWorker
-     * @return {boolean}
      */
     public getUseWorker(): boolean { return this.$useWorker; }
 
@@ -1295,9 +1287,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the current language mode.
-     *
-     * @method getMode
-     * @return {LanguageMode} The current language mode.
+     * @returns The current language mode.
      */
     public getMode(): LanguageMode {
         return this.$mode;
@@ -1306,9 +1296,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * This function sets the scroll top value. It also emits the `'changeScrollTop'` event.
      *
-     * @method setScrollTop
-     * @param scrollTop {number} The new scroll top value
-     * @return {void}
+     * @param scrollTop The new scroll top value.
      */
     public setScrollTop(scrollTop: number): void {
         // TODO: should we force integer lineheight instead? scrollTop = Math.round(scrollTop); 
@@ -1324,9 +1312,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the value of the distance between the top of the editor and the topmost part of the visible content.
-     *
-     * @method getScrollTop
-     * @return {number}
      */
     public getScrollTop(): number {
         return this.$scrollTop;
@@ -1334,10 +1319,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Sets the value of the distance between the left of the editor and the leftmost part of the visible content.
-     *
-     * @method setScrollLeft
-     * @param scrollLeft {number}
-     * @return {void}
+     * @param scrollLeft
      */
     public setScrollLeft(scrollLeft: number): void {
         // scrollLeft = Math.round(scrollLeft);
@@ -1353,9 +1335,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the value of the distance between the left of the editor and the leftmost part of the visible content.
-     *
-     * @method getScrollLeft
-     * @return {number}
      */
     public getScrollLeft(): number {
         return this.$scrollLeft;
@@ -1363,9 +1342,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the width of the screen.
-     *
-     * @method getScreenWidth
-     * @return {number}
      */
     public getScreenWidth(): number {
         this.$computeWidth();
@@ -1375,9 +1351,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method getLineWidgetMaxWidth
-     * @return {number}
-     * @private
+     *
      */
     private getLineWidgetMaxWidth(): number {
         if (this.lineWidgetsWidth != null) return this.lineWidgetsWidth;
@@ -1428,22 +1402,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Returns a verbatim copy of the given line as it is in the document.
      *
-     * @method getLine
-     * @param row {number} The row to retrieve from.
-     * @return {string}
+     * @param row The row to retrieve from.
      */
     public getLine(row: number): string {
         return this.doc.getLine(row);
     }
 
     /**
-     * Returns an array of strings of the rows between `firstRow` and `lastRow`.
-     * This function is inclusive of `lastRow`.
+     * Returns a COPY of the lines between and including `firstRow` and `lastRow`.
+     * These lines fo not include the line terminator.
      *
-     * @method getLines
-     * @param {Number} firstRow The first row index to retrieve
-     * @param {Number} lastRow The final row index to retrieve
-     * @return {string[]}
+     * @param firstRow The first row index to retrieve
+     * @param lastRow The final row index to retrieve
      */
     public getLines(firstRow: number, lastRow: number): string[] {
         return this.doc.getLines(firstRow, lastRow);
@@ -1451,32 +1421,25 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the number of rows in the document.
-     *
-     * @method getLength
-     * @return {number}
      */
     public getLength(): number {
         return this.doc.getLength();
     }
 
     /**
-     * {:Document.getTextRange.desc}
-     *
-     * @method getTextRange
-     * @param range {Range} The range to work with.
-     * @return {string}
+     * Returns all the text corresponding to the range with line terminators.
+     * If the range is omitted, the range corresponding to the selection is used.
      */
-    public getTextRange(range?: Range): string {
+    public getTextRange(range?: RangeBasic): string {
         return this.doc.getTextRange(range || this.selection.getRange());
     }
 
     /**
      * Inserts a block of `text` at the indicated `position`.
      *
-     * @method insert
-     * @param position {Position} The position to start inserting at.
-     * @param text {string} A chunk of text to insert.
-     * @return {Position} The position of the last line of `text`.
+     * @param position The position to start inserting at.
+     * @param text A chunk of text to insert.
+     * @returns The position of the last line of `text`.
      * If the length of `text` is 0, this function simply returns `position`.
      */
     public insert(position: Position, text: string): Position {
@@ -1486,9 +1449,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Removes the `range` from the document.
      *
-     * @method remove
-     * @param range {Range} A specified Range to remove.
-     * @return {Position} The new `start` property of the range, which contains `startRow` and `startColumn`.
+     * @param range A specified Range to remove.
+     * @returns The new `start` property of the range, which contains `startRow` and `startColumn`.
      * If `range` is empty, this function returns the unmodified value of `range.start`.
      */
     public remove(range: Range): Position {
@@ -1498,10 +1460,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Removes a range of full lines. This method also triggers the `'change'` event.
      *
-     * @method removeFullLines
-     * @param {Number} firstRow The first row to be removed
-     * @param {Number} lastRow The last row to be removed
-     * @returns {[String]} Returns all the removed lines.
+     * @param firstRow The first row to be removed
+     * @param lastRow The last row to be removed
+     * @returns Returns all the removed lines.
      */
     removeFullLines(firstRow: number, lastRow: number): string[] {
         return this.doc.removeFullLines(firstRow, lastRow);
@@ -1569,9 +1530,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Enables or disables highlighting of the range where an undo occurred.
      *
-     * @method setUndoSelect
-     * @param enable {boolean} If `true`, selects the range of the reinserted change.
-     * @return {void}
+     * @param enable If `true`, selects the range of the reinserted change.
      */
     public setUndoSelect(enable: boolean): void {
         this.$undoSelect = enable;
@@ -1620,7 +1579,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         // Check if this range and the last undo range has something in common.
         // If true, merge the ranges.
         if (lastUndoRange != null) {
-            if (Range.comparePoints(lastUndoRange.start, range.start) === 0) {
+            if (equalPositions(lastUndoRange.start, range.start)) {
                 lastUndoRange.start.column += range.end.column - range.start.column;
                 lastUndoRange.end.column += range.end.column - range.start.column;
             }
@@ -1638,17 +1597,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * Replaces a range in the document with the new `text`.
-     *
-     * @method replace
-     * @param range {Range} A specified Range to replace.
-     * @param text {string} The new text to use as a replacement.
-     * @return {Position}
-     * If the text and range are empty, this function returns an object containing the current `range.start` value.
-     * If the text is the exact same as what currently exists, this function returns an object containing the current `range.end` value.
+     * Replaces a range in the document with the `newText`.
+     * Returns the end position of the change.
+     * This method triggers a change events in the document for removal and insertion.
      */
-    public replace(range: Range, text: string): Position {
-        return this.doc.replace(range, text);
+    public replace(range: RangeBasic, newText: string): Position {
+        return this.doc.replace(range, newText);
     }
 
     /**
@@ -1658,7 +1612,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param fromRange {Range} The range of text you want moved within the document
      * @param toPosition {Position} The location (row and column) where you want to move the text to.
      * @param copy {boolean}
-     * @return {Range} The new range where the text was moved to.
+     * @returns {Range} The new range where the text was moved to.
      */
     public moveText(fromRange: Range, toPosition: Position, copy: boolean): Range {
         const text = this.getTextRange(fromRange);
@@ -1713,11 +1667,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      *  If `indentString` contains the `'\t'` character, it's replaced by whatever is defined by [[EditSession.getTabString `getTabString()`]].
      *
-     * @method indentRows
-     * @param {Number} startRow Starting row
-     * @param {Number} endRow Ending row
-     * @param {String} indentString The indent token
-     * @return {void}
+     * @param startRow Starting row
+     * @param endRow Ending row
+     * @param indentString The indent token
      */
     public indentRows(startRow: number, endRow: number, indentString: string): void {
         indentString = indentString.replace(/\t/g, this.getTabString());
@@ -1728,9 +1680,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Outdents all the rows defined by the `start` and `end` properties of `range`.
      *
-     * @method outdentRows
-     * @param range {Range} A range of rows.
-     * @return {void}
+     * @param range A range of rows.
      */
     public outdentRows(range: Range): void {
         const rowRange = range.collapseRows();
@@ -1785,9 +1735,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             return x;
         });
 
-        const lines = (dir === 0)
-            ? this.doc.getLines(firstRow, lastRow)
-            : this.doc.removeFullLines(firstRow, lastRow);
+        const lines = (dir === 0) ? this.doc.getLines(firstRow, lastRow) : this.doc.removeFullLines(firstRow, lastRow);
         this.doc.insertFullLines(firstRow + diff, lines);
         if (folds.length) {
             this.addFolds(folds);
@@ -1801,7 +1749,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method moveLinesUp
      * @param firstRow {number} The starting row to move up.
      * @param lastRow {number} The final row to move up.
-     * @return {number} If `firstRow` is less-than or equal to 0, this function returns 0. Otherwise, on success, it returns -1.
+     * @returns {number} If `firstRow` is less-than or equal to 0, this function returns 0. Otherwise, on success, it returns -1.
      */
     public moveLinesUp(firstRow: number, lastRow: number): number {
         return this.$moveLines(firstRow, lastRow, -1);
@@ -1813,7 +1761,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method moveLinesDown
      * @param firstRow {number} The starting row to move down.
      * @param lastRow {number} The final row to move down.
-     * @return {number} If `firstRow` is less-than or equal to 0, this function returns 0.
+     * @returns {number} If `firstRow` is less-than or equal to 0, this function returns 0.
      * Otherwise, on success, it returns -1.
      */
     public moveLinesDown(firstRow: number, lastRow: number): number {
@@ -1823,10 +1771,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Duplicates all the text between `firstRow` and `lastRow`.
      *
-     * @method duplicateLines
-     * @param {Number} firstRow The starting row to duplicate
-     * @param {Number} lastRow The final row to duplicate
-     * @return {Number} Returns the number of new rows added; in other words, `lastRow - firstRow + 1`.
+     * @param firstRow The starting row to duplicate
+     * @param lastRow The final row to duplicate
+     * @returns Returns the number of new rows added; in other words, `lastRow - firstRow + 1`.
      */
     public duplicateLines(firstRow: number, lastRow: number): number {
         return this.$moveLines(firstRow, lastRow, 0);
@@ -1843,10 +1790,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method clipPositionToDocument
-     * @param row {number}
-     * @param column {number}
-     * @return {Position}
+     *
      */
     public $clipPositionToDocument(row: number, column: number): Position {
 
@@ -1871,9 +1815,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method $clipRangeToDocument
-     * @param range {Range}
-     * @return {Range}
+     *
      */
     public $clipRangeToDocument(range: Range): Range {
         if (range.start.row < 0) {
@@ -1905,9 +1847,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Sets whether or not line wrapping is enabled.
      * If `useWrapMode` is different than the current value, the `'changeWrapMode'` event is emitted.
      *
-     * @method setUseWrapMode
-     * @param {Boolean} useWrapMode Enable (or disable) wrap mode
-     * @return {void}
+     * @param useWrapMode Enable (or disable) wrap mode
      */
     public setUseWrapMode(useWrapMode: boolean): void {
         if (useWrapMode !== this.$useWrapMode) {
@@ -1945,10 +1885,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Either value can be `null` to have an unconstrained wrap, or, they can be the same number to pin the limit.
      * If the wrap limits for `min` or `max` are different, this method also emits the `'changeWrapMode'` event.
      *
-     * @method setWrapLimitRange
-     * @param {Number} min The minimum wrap value (the left side wrap)
-     * @param {Number} max The maximum wrap value (the right side wrap)
-     * @return {void}
+     * @param min The minimum wrap value (the left side wrap)
+     * @param max The maximum wrap value (the right side wrap)
      */
     setWrapLimitRange(min: number, max: number): void {
         if (this.$wrapLimitRange.min !== min || this.$wrapLimitRange.max !== max) {
@@ -1967,10 +1905,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * This should generally only be called by the renderer when a resize is detected.
-     * 
-     * @method adjustWrapLimit
-     * @param {Number} desiredLimit The new wrap limit
-     * @return {boolean}
+     *
+     * @param desiredLimit The new wrap limit
      */
     public adjustWrapLimit(desiredLimit: number, $printMargin: number): boolean {
         let limits = this.$wrapLimitRange;
@@ -2005,8 +1941,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the value of wrap limit.
-     *
-     * @return {number} The wrap limit.
      */
     public getWrapLimit(): number {
         return this.$wrapLimit;
@@ -2029,9 +1963,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * at a minimum of the given length minus 20 chars and at a maximum
      * of the given number of chars.
      *
-     * @method setWrapLimit
-     * @param limit {number} The maximum line length in chars, for soft wrapping lines.
-     * @return {void}
+     * @param limit The maximum line length in chars, for soft wrapping lines.
      */
     public setWrapLimit(limit: number): void {
         this.setWrapLimitRange(limit, limit);
@@ -2039,9 +1971,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns an object that defines the minimum and maximum of the wrap limit.
-     *
-     * @method getWrapLimitRange
-     * @return {Object}
      */
     public getWrapLimitRange(): { min: number; max: number } {
         // Avoid unexpected mutation by returning a copy
@@ -2052,10 +1981,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method $updateInternalDataOnChange
-     * @param delta {Delta}
-     * @return {Fold[]}
-     * @private
+     *
      */
     private $updateInternalDataOnChange(delta: Delta): Fold[] {
         const useWrapMode = this.$useWrapMode;
@@ -2344,11 +2270,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Given a string, returns an array of the display characters, including tabs and spaces.
      *
-     * @method $getDisplayTokens
-     * @param {String} str The string to check
-     * @param {Number} offset The value to start at
-     * @return {number[]}
-     * @private
+     * @param str The string to check
+     * @param offset The value to start at
      */
     private $getDisplayTokens(str: string, offset?: number): number[] {
         const arr: number[] = [];
@@ -2386,11 +2309,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Calculates the width of the string `str` on the screen while assuming that the string starts at the first column on the screen.
      *
-     * @method $getStringScreenWidth
-     * @param {String} str The string to calculate the screen width of
-     * @param {Number} maxScreenColumn
-     * @param {Number} screenColumn
-     * @return {[Number]} Returns an `int[]` array with two elements:<br/>
+     * @param str The string to calculate the screen width of
+     * @param maxScreenColumn
+     * @param screenColumn
+     * @returns Returns an `int[]` array with two elements:<br/>
      * The first position indicates the number of columns for `str` on screen.<br/>
      * The second value contains the position of the document column that this function read until.
      */
@@ -2424,11 +2346,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * Returns number of screenrows in a wrapped line.
-     *
-     * @method getRowLength
-     * @param row {number} The row number to check
-     * @return {Number}
+     * Returns number of screen rows in a wrapped line.
      */
     public getRowLength(row: number): number {
         const h = this.lineWidgets ? (this.lineWidgets[row] && this.lineWidgets[row].rowCount || 0) : 0;
@@ -2441,9 +2359,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method getRowLineCount
-     * @param row {number}
-     * @return {number}
+     *
      */
     public getRowLineCount(row: number): number {
         if (!this.$useWrapMode || !this.$wrapData[row]) {
@@ -2455,9 +2371,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method getRowWrapIndent
-     * @param screenRow {number}
-     * @return {number}
+     *
      */
     public getRowWrapIndent(screenRow: number): number {
         if (this.$useWrapMode) {
@@ -2473,12 +2387,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the position (on screen) for the last character in the provided screen row.
-     *
-     * @method getScreenLastRowColumn
-     * @param screenRow {number} The screen row to check
-     * @return {number}
-     *
-     * @related EditSession.documentToScreenColumn
      */
     public getScreenLastRowColumn(screenRow: number): number {
         const pos = this.screenToDocumentPosition(screenRow, Number.MAX_VALUE);
@@ -2487,11 +2395,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * For the given document row and column, this returns the column position of the last screen row.
-     *
-     * @method getDocumentLastRowColumn
-     * @param docRow {number}
-     * @param docColumn {number}
-     * @return {number}
      */
     public getDocumentLastRowColumn(docRow: number, docColumn: number): number {
         const screenRow = this.documentToScreenRow(docRow, docColumn);
@@ -2500,11 +2403,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * For the given document row and column, this returns the document position of the last row.
-     *
-     * @method getDocumentLastRowColumnPosition
-     * @param {Number} docRow
-     * @param {Number} docColumn
-     * @return {Position}
      */
     public getDocumentLastRowColumnPosition(docRow: number, docColumn: number): Position {
         const screenRow = this.documentToScreenRow(docRow, docColumn);
@@ -2514,9 +2412,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * For the given row, this returns the split data.
      *
-     * @method getRowSplitData
-     * @param row {number}
-     * @return {String}
+     * @param row
      */
     public getRowSplitData(row: number): number[] {
         if (!this.$useWrapMode) {
@@ -2529,10 +2425,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * The distance to the next tab stop at the specified screen column.
-     *
-     * @method getScreenTabSize
-     * @param screenColumn {number} The screen column to check.
-     * @return {number}
      */
     public getScreenTabSize(screenColumn: number): number {
         return this.$tabSize - screenColumn % this.$tabSize;
@@ -2554,7 +2446,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method screenToDocumentPosition
      * @param screenRow {number} The screen row to check
      * @param screenColumn {number} The screen column to check
-     * @return {Position} The object returned has two properties: `row` and `column`.
+     * @returns {Position} The object returned has two properties: `row` and `column`.
      */
     public screenToDocumentPosition(screenRow: number, screenColumn: number): Position {
         if (screenRow < 0) {
@@ -2653,7 +2545,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method documentToScreenPosition
      * @param docRow {number} The document row to check
      * @param docColumn {number} The document column to check
-     * @return {Position} The object returned by this method has two properties: `row` and `column`.
+     * @returns {Position} The object returned by this method has two properties: `row` and `column`.
      */
     public documentToScreenPosition(docRow: number, docColumn: number): Position {
 
@@ -2763,7 +2655,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method documentToScreenColumn
      * @param {Number} docRow
      * @param {Number} docColumn
-     * @return {Number}
+     * @returns {Number}
      */
     public documentToScreenColumn(docRow: number, docColumn: number): number {
         return this.documentToScreenPosition(docRow, docColumn).column;
@@ -2775,7 +2667,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method documentToScreenRow
      * @param {Number} docRow
      * @param {Number} docColumn
-     * @return {number}
+     * @returns {number}
      */
     public documentToScreenRow(docRow: number, docColumn: number): number {
         return this.documentToScreenPosition(docRow, docColumn).row;
@@ -2784,7 +2676,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method documentToScreenRange
      * @param range {Range}
-     * @return {Range}
+     * @returns {Range}
      */
     public documentToScreenRange(range: Range): Range {
         const screenPosStart = this.documentToScreenPosition(range.start.row, range.start.column);
@@ -2796,7 +2688,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns the length of the screen.
      *
      * @method getScreenLength
-     * @return {number}
+     * @returns {number}
      */
     public getScreenLength(): number {
         let screenRows = 0;
@@ -2841,7 +2733,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @method findMatchingBracket
      * @param position {Position}
      * @param [chr] {string}
-     * @return {Position}
+     * @returns {Position}
      */
     findMatchingBracket(position: Position, chr?: string): Position {
         return this.$bracketMatcher.findMatchingBracket(position, chr);
@@ -2850,7 +2742,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * @method getBracketRange
      * @param position {Position}
-     * @return {Range}
+     * @returns {Range}
      */
     getBracketRange(position: Position): Range {
         return this.$bracketMatcher.getBracketRange(position);
@@ -2861,7 +2753,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param bracket {string}
      * @param position {Position}
      * @param [typeRe] {RegExp}
-     * @return {Position}
+     * @returns {Position}
      */
     findOpeningBracket(bracket: string, position: Position, typeRe?: RegExp): Position {
         return this.$bracketMatcher.findOpeningBracket(bracket, position, typeRe);
@@ -2872,7 +2764,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param bracket {string}
      * @param position {Position}
      * @param [typeRe] {RegExp}
-     * @return {Position}
+     * @returns {Position}
      */
     findClosingBracket(bracket: string, position: Position, typeRe?: RegExp): Position {
         return this.$bracketMatcher.findClosingBracket(bracket, position, typeRe);
@@ -2919,12 +2811,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return void 0;
     }
 
-    /*
-     * Returns all folds in the given range. Note, that this will return folds
+    /**
+     * Returns all folds in the given range.
      *
-     * @method getFoldsInRange
-     * @param range {RangeBasic}
-     * @return {Fold[]}
+     * @param range
      */
     getFoldsInRange(range: RangeBasic): Fold[] {
         const start = range.start;
@@ -2954,9 +2844,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 cmp = fold.range.compareRange(range);
                 if (cmp === -2) {
                     break;
-                } else if (cmp === 2) {
+                }
+                else if (cmp === 2) {
                     continue;
-                } else
+                }
+                else
                     // WTF-state: Can happen due to -1/+1 to start/end column.
                     if (cmp === 42) {
                         break;
@@ -2971,9 +2863,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method getFoldsInRangeList
-     * @param ranges {RangeBasic[]}
-     * @return {Fold[]}
+     * @param ranges
      */
     getFoldsInRangeList(ranges: RangeBasic[]): Fold[] {
         let folds: Fold[] = [];
@@ -2990,9 +2880,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns all folds in the document
-     *
-     * @method getAllFolds
-     * @return {Fold[]}
      */
     getAllFolds(): Fold[] {
         const folds: Fold[] = [];
@@ -3222,7 +3109,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.setModified(true);
         /**
          * @event changeFold
-         * @param foldEvent {FoldEvent}
+         * @param foldEvent
          */
         const foldEvent: FoldEvent = { data: fold, action: "add" };
         this.eventBus._emit("changeFold", foldEvent);
@@ -3231,8 +3118,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method setModified
-     * @param modified {boolean}
+     * @param modified
      */
     setModified(modified: boolean) {
         // Do nothing;
@@ -3298,7 +3184,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.setModified(true);
         /**
          * @event changeFold
-         * @param foldEvent {FoldEvent}
+         * @param foldEvent
          */
         const foldEvent: FoldEvent = { data: fold, action: "remove" };
         this.eventBus._emit("changeFold", foldEvent);
@@ -3347,10 +3233,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method unfold
-     * @param [location] {number | Position | Range}
-     * @param [expandInner] {boolean}
-     * @return {Fold[]}
+     * @param location
+     * @param expandInner
      */
     unfold(location?: number | Position | Range, expandInner?: boolean): Fold[] {
         let range: Range;
@@ -3559,11 +3443,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method foldAll
-     * @param [startRow] {number}
-     * @param [endRow] {number}
-     * @param [depth] {number}
-     * @return {void}
+     * @param startRow
+     * @param endRow
+     * @param depth
      */
     foldAll(startRow?: number, endRow?: number, depth?: number): void {
         if (depth === void 0) {
@@ -3745,9 +3627,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method toggleFoldWidget
-     * @param [toggleParent] {boolean} WARNING: unused
-     * @return {void}
+     * @param toggleParent WARNING: unused
      */
     toggleFoldWidget(toggleParent?: boolean): void {
         let row: number = this.selection.getCursor().row;
@@ -3790,6 +3670,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             this.foldWidgets.splice.apply(this.foldWidgets, args);
         }
     }
+
     setWrap(value: string) {
         let val: boolean | number | string;
         if (!value || value === "off")

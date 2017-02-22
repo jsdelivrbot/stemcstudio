@@ -1,6 +1,8 @@
 import CompletionEntry from './CompletionEntry';
 import Delta from '../Delta';
 import Diagnostic from './Diagnostic';
+import FormatCodeSettings from './FormatCodeSettings';
+import TextChange from './TextChange';
 import OutputFile from './OutputFile';
 import QuickInfo from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
@@ -10,15 +12,16 @@ import setScriptTargetCallback from './SetScriptTargetCallback';
 const EVENT_APPLY_DELTA = 'applyDelta';
 const EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';
 const EVENT_ENSURE_SCRIPT = 'ensureScript';
-const EVENT_REMOVE_SCRIPT = 'removeScript';
-const EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
+const EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
+const EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT = 'getFormattingEditsForDocument';
+const EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
 const EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors';
+const EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
+const EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
+const EVENT_REMOVE_SCRIPT = 'removeScript';
 const EVENT_SET_MODULE_KIND = 'setModuleKind';
 const EVENT_SET_SCRIPT_TARGET = 'setScriptTarget';
 const EVENT_SET_TRACE = 'setTrace';
-const EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
-const EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
-const EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
 
 interface WorkerClientData<T> {
     err?: any;
@@ -56,76 +59,80 @@ export default class LanguageServiceProxy {
 
         this.worker = new WorkerClient(workerUrl);
 
-        // TODO. LanguageServiceProxy shoule be Shareable so that we can clean up
-        // the listeners in the destructor.
         this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_DEFAULT_LIB_CONTENT, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_REMOVE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_GET_SYNTAX_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
-            const {err, value, callbackId} = response.data;
+            const { err, value, callbackId } = response.data;
             const callback: (err: any, results?: Diagnostic[]) => void = this.releaseCallback(callbackId);
             callback(err, value);
         });
 
         this.worker.on(EVENT_GET_SEMANTIC_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
-            const {err, value, callbackId} = response.data;
+            const { err, value, callbackId } = response.data;
             const callback: (err: any, results?: Diagnostic[]) => void = this.releaseCallback(callbackId);
             callback(err, value);
         });
 
         this.worker.on(EVENT_GET_COMPLETIONS_AT_POSITION, (response: { data: WorkerClientData<CompletionEntry[]> }) => {
-            const {err, value, callbackId} = response.data;
+            const { err, value, callbackId } = response.data;
             const callback: (err: any, results?: CompletionEntry[]) => void = this.releaseCallback(callbackId);
             callback(err, value);
         });
 
+        this.worker.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, (response: { data: WorkerClientData<TextChange[]> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback: (err: any, textChanges?: TextChange[]) => void = this.releaseCallback(callbackId);
+            callback(err, value);
+        });
+
         this.worker.on(EVENT_GET_QUICK_INFO_AT_POSITION, (response: { data: WorkerClientData<QuickInfo> }) => {
-            const {err, value, callbackId} = response.data;
+            const { err, value, callbackId } = response.data;
             const callback: (err: any, quickInfo?: QuickInfo) => void = this.releaseCallback(callbackId);
             callback(err, value);
         });
 
         this.worker.on(EVENT_GET_OUTPUT_FILES, (response: { data: WorkerClientData<OutputFile[]> }) => {
-            const {err, value, callbackId} = response.data;
+            const { err, value, callbackId } = response.data;
             const callback: (err: any, outputFiles?: OutputFile[]) => void = this.releaseCallback(callbackId);
             callback(err, value);
         });
 
         this.worker.on(EVENT_SET_MODULE_KIND, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: setModuleKindCallback = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_SET_SCRIPT_TARGET, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: setScriptTargetCallback = this.releaseCallback(callbackId);
             callback(err);
         });
 
         this.worker.on(EVENT_SET_TRACE, (response: { data: WorkerClientData<any> }) => {
-            const {err, callbackId} = response.data;
+            const { err, callbackId } = response.data;
             const callback: (err: any) => any = this.releaseCallback(callbackId);
             callback(err);
         });
@@ -243,6 +250,12 @@ export default class LanguageServiceProxy {
                 }
             });
         });
+    }
+
+    public getFormattingEditsForDocument(fileName: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
+        const callbackId = this.captureCallback(callback);
+        const message = { data: { fileName, settings, callbackId } };
+        this.worker.emit(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, message);
     }
 
     public getQuickInfoAtPosition(fileName: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {

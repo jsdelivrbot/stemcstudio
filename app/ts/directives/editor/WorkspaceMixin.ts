@@ -1,4 +1,6 @@
 import Editor from '../../editor/Editor';
+import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import TextChange from '../../editor/workspace/TextChange';
 
 interface WorkspaceMixin {
     /**
@@ -12,6 +14,11 @@ interface WorkspaceMixin {
      * @returns A function that may be used to detach the Editor.
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void;
+
+    /**
+     *
+     */
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void;
 }
 
 export default WorkspaceMixin;

@@ -1,9 +1,11 @@
 import applyDelta from './applyDelta';
+import { equalPositions } from './Position';
 import Delta from './Delta';
 import EventEmitterClass from './lib/EventEmitterClass';
 import Position from './Position';
 import Range from './Range';
 import RangeBasic from './RangeBasic';
+import { isEmptyRange } from './RangeBasic';
 import Shareable from './base/Shareable';
 
 const $split: (text: string) => string[] = (function () {
@@ -50,11 +52,10 @@ const CHANGE_NEW_LINE_MODE = 'changeNewLineMode';
 export default class Document implements Shareable {
 
     /**
-     * @property _lines
-     * @type string[]
-     * @private
+     * The lines of text.
+     * These lines do not include a line terminating character.
      */
-    private _lines: string[] = [];
+    private readonly _lines: string[] = [];
 
     /**
      *
@@ -67,9 +68,7 @@ export default class Document implements Shareable {
     private _newLineMode = "auto";
 
     /**
-     * @property _eventBus
-     * @type EventEmitterClass
-     * @private
+     *
      */
     private _eventBus: EventEmitterClass<any, Document>;
 
@@ -102,7 +101,7 @@ export default class Document implements Shareable {
     }
 
     protected destructor(): void {
-        this._lines = void 0;
+        this._lines.length = 0;
         this._eventBus = void 0;
     }
 
@@ -135,7 +134,7 @@ export default class Document implements Shareable {
      * Returns all the lines in the document as a single string, joined by the new line character.
      */
     getValue(): string {
-        return this.getAllLines().join(this.getNewLineCharacter());
+        return this._lines.join(this.getNewLineCharacter());
     }
 
     /** 
@@ -210,21 +209,24 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Returns an array of strings of the rows between `firstRow` and `lastRow`.
-     * This function is inclusive of `lastRow`.
+     * Returns a COPY of the lines between and including `firstRow` and `lastRow`.
+     * These lines do not include the line terminator.
      *
      * @param firstRow The first row index to retrieve.
      * @param lastRow The final row index to retrieve.
      */
-    getLines(firstRow?: number, lastRow?: number): string[] {
-        return this._lines.slice(firstRow, lastRow + 1);
+    getLines(firstRow: number, lastRow: number): string[] {
+        // The semantics of slice are that it does not include the end index.
+        const end = lastRow + 1;
+        return this._lines.slice(firstRow, end);
     }
 
     /**
-     * Returns all lines in the document as string array.
+     * Returns a COPY of the lines in the document.
+     * These lines do not include the line terminator.
      */
     getAllLines(): string[] {
-        return this.getLines(0, this.getLength());
+        return this._lines.slice(0, this._lines.length);
     }
 
     /**
@@ -235,20 +237,16 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Given a range within the document, returns all the text within that range as a single string.
-     *
-     * @param range The range to work with.
+     * Returns all the text corresponding to the range with line terminators.
      */
-    getTextRange(range: Range): string {
+    getTextRange(range: RangeBasic): string {
         return this.getLinesForRange(range).join(this.getNewLineCharacter());
     }
 
     /**
      * Returns all the text within `range` as an array of lines.
-     *
-     * @param range The range to work with.
      */
-    getLinesForRange(range: { start: Position; end: Position }): string[] {
+    getLinesForRange(range: RangeBasic): string[] {
         let lines: string[];
         if (range.start.row === range.end.row) {
             // Handle a single-line range.
@@ -268,20 +266,16 @@ export default class Document implements Shareable {
 
     /**
      * Inserts a block of `text` at the indicated `position`.
-     *
-     * @param position The position to start inserting at; it's an object that looks like `{ row: row, column: column}`
-     * @param text A chunk of text to insert
-     * @return The position ({row, column}) of the last line of `text`.
-     * If the length of `text` is 0, this function simply returns `position`. 
+     * Returns the end position of the inserted text.
+     * This method also triggers the 'change' event.
      */
     insert(position: Position, text: string): Position {
         // Only detect new lines if the document has no line break yet.
         if (this.getLength() <= 1) {
             this.$detectNewLine(text);
         }
-
         return this.insertMergedLines(position, $split(text));
-    };
+    }
 
     /**
      * Inserts `text` into the `position` at the current row. This method also triggers the `"change"` event.
@@ -311,6 +305,9 @@ export default class Document implements Shareable {
         return this.clonePos(end);
     }
 
+    /**
+     * Clips the position so that it refers to the nearest valid position.
+     */
     clippedPos(row: number, column: number): Position {
         const length = this.getLength();
         if (row === void 0) {
@@ -324,8 +321,9 @@ export default class Document implements Shareable {
             column = void 0;
         }
         const line = this.getLine(row);
-        if (column === void 0)
+        if (column === void 0) {
             column = line.length;
+        }
         column = Math.min(Math.max(column, 0), line.length);
         return { row: row, column: column };
     }
@@ -431,20 +429,9 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Inserts the elements in `lines` into the document, starting at the position given.
-     * This method also triggers the `"change"` event.
-     *
-     * @method insertMergedLines
-     * @param position {Position} The position to insert at.
-     * @param lines {string[]} An array of strings.
-     * @returns {Position} Contains the final row and column, like this:  
-     *   ```
-     *   {row: endRow, column: 0}
-     *   ```  
-     *   If `lines` is empty, this function returns an object containing the current row, and column, like this:  
-     *   ``` 
-     *   {row: row, column: 0}
-     *   ```
+     * Inserts the text in `lines` into the document, starting at the `position` given.
+     * Returns the end position of the inserted text.
+     * This method also triggers the 'change' event.
      */
     insertMergedLines(position: Position, lines: string[]): Position {
         const start: Position = this.clippedPos(position.row, position.column);
@@ -465,10 +452,10 @@ export default class Document implements Shareable {
 
     /**
      * Removes the `range` from the document.
+     * This method triggers a 'change' event.
      *
-     * @method remove
-     * @param range {RangeBasic} A specified Range to remove
-     * @return {Position} Returns the new `start` property of the range.
+     * @param range A specified Range to remove
+     * @return Returns the new `start` property of the range.
      * If `range` is empty, this function returns the unmodified value of `range.start`.
      */
     remove(range: RangeBasic): Position {
@@ -509,12 +496,11 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Removes a range of full lines.
+     * Removes a range of full lines and returns a COPY of the removed lines.
      * This method also triggers the `"change"` event.
      *
      * @param firstRow The first row to be removed
      * @param lastRow The last row to be removed
-     * @returns all the removed lines.
      */
     removeFullLines(firstRow: number, lastRow: number): string[] {
         // Clip to document.
@@ -532,8 +518,10 @@ export default class Document implements Shareable {
         const endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
         const range = new Range(startRow, startCol, endRow, endCol);
 
-        // Store delelted lines with bounding newlines ommitted (maintains previous behavior).
-        const deletedLines = this._lines.slice(firstRow, lastRow + 1);
+        /**
+         * A copy of delelted lines with line terminators omitted (maintains previous behavior).
+         */
+        const deletedLines = this.getLines(firstRow, lastRow);
 
         this.applyDelta({
             start: range.start,
@@ -542,9 +530,8 @@ export default class Document implements Shareable {
             lines: this.getLinesForRange(range)
         });
 
-        // Return the deleted lines.
         return deletedLines;
-    };
+    }
 
     /**
      * Removes the new line between `row` and the row immediately following it.
@@ -566,41 +553,32 @@ export default class Document implements Shareable {
 
     /**
      * Replaces a range in the document with the new `text`.
-     *
-     * @method replace
-     * @param range {Range} A specified Range to replace.
-     * @param text {string} The new text to use as a replacement.
-     * @return {Postion} Returns an object containing the final row and column, like this:
-     *     {row: endRow, column: 0}
-     * If the text and range are empty, this function returns an object containing the current `range.start` value.
-     * If the text is the exact same as what currently exists, this function returns an object containing the current `range.end` value.
+     * Returns the end position of the change.
+     * This method triggers a 'change' event for the removal. 
+     * This method triggers a 'change' event for the insertion.
      */
-    replace(range: Range, text: string): Position {
+    replace(range: RangeBasic, newText: string): Position {
 
-        if (text.length === 0 && range.isEmpty()) {
-            return range.start;
+        if (newText.length === 0 && isEmptyRange(range)) {
+            // If the range is empty then the range.start and range.end will be the same.
+            return range.end;
         }
+
+        const oldText = this.getTextRange(range);
 
         // Shortcut: If the text we want to insert is the same as it is already
         // in the document, we don't have to replace anything.
-        if (text === this.getTextRange(range)) {
+        if (newText === oldText) {
             return range.end;
         }
 
         this.remove(range);
 
-        if (text) {
-            return this.insert(range.start, text);
-        }
-        else {
-            return range.start;
-        }
+        return this.insert(range.start, newText);
     }
 
     /**
      * Applies all the changes previously accumulated.
-     *
-     * @param deltas
      */
     applyDeltas(deltas: Delta[]): void {
         for (let i = 0; i < deltas.length; i++) {
@@ -610,8 +588,6 @@ export default class Document implements Shareable {
 
     /**
      * Reverts any changes previously applied.
-     *
-     * @param deltas
      */
     revertDeltas(deltas: Delta[]): void {
         for (let i = deltas.length - 1; i >= 0; i--) {
@@ -620,18 +596,13 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Applies `delta` to the document.
-     *
-     * @method applyDelta
-     * @param delta {Delta} A delta object (can include "insert" and "remove" actions).
-     * @return {void}
+     * Applies `delta` (insert and remove actions) to the document and triggers the 'change' event.
      */
     applyDelta(delta: Delta, doNotValidate?: boolean): void {
 
         const isInsert = delta.action === "insert";
         // An empty range is a NOOP.
-        if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
-            : !Range.comparePoints(delta.start, delta.end)) {
+        if (isInsert ? delta.lines.length <= 1 && !delta.lines[0] : equalPositions(delta.start, delta.end)) {
             return;
         }
 
@@ -707,8 +678,11 @@ export default class Document implements Shareable {
      * @param startRow The row from which to start the conversion
      * @returns An object of the `index` position.
      */
-    indexToPosition(index: number, startRow: number): Position {
-        const lines = this._lines || this.getAllLines();
+    indexToPosition(index: number, startRow = 0): Position {
+        /**
+         * A local reference to improve performance in the loop.
+         */
+        const lines = this._lines;
         const newlineLength = this.getNewLineCharacter().length;
         const l = lines.length;
         for (let i = startRow || 0; i < l; i++) {
@@ -720,7 +694,7 @@ export default class Document implements Shareable {
     }
 
     /**
-     * Converts the `{row, column}` position in a document to the character's index.
+     * Converts the `position` in a document to the character's zero-based index.
      *
      * Index refers to the "absolute position" of a character in the document. For example:
      *
@@ -731,18 +705,21 @@ export default class Document implements Shareable {
      * 
      * Here, `y` is an index 15: 11 characters for the first row, and 5 characters until `y` in the second.
      *
-     * @param pos The `{row, column}` to convert.
-     * @param startRow The row from which to start the conversion
-     * @returns The index position in the document.
+     * @param position The `{row, column}` to convert.
+     * @param startRow The row from which to start the conversion. Defaults to zero.
      */
-    positionToIndex(pos: Position, startRow: number): number {
-        const lines = this._lines || this.getAllLines();
+    positionToIndex(position: Position, startRow = 0): number {
+        /**
+         * A local reference to improve performance in the loop.
+         */
+        const lines = this._lines;
         const newlineLength = this.getNewLineCharacter().length;
         let index = 0;
-        const row = Math.min(pos.row, lines.length);
-        for (let i = startRow || 0; i < row; ++i)
+        const row = Math.min(position.row, lines.length);
+        for (let i = startRow || 0; i < row; ++i) {
             index += lines[i].length + newlineLength;
+        }
 
-        return index + pos.column;
+        return index + position.column;
     }
 }

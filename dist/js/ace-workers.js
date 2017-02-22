@@ -416,8 +416,6 @@ System.register("src/mode/glsl/tokenize.js", ["./literals", "./operators", "./bu
         var last;
         var content = [];
         var tokens = [];
-        var token_idx = 0;
-        var token_offs = 0;
         var line = 1;
         var column = 0;
         var start = 0;
@@ -1515,7 +1513,6 @@ System.register("src/mode/glsl/parser.js", ["./expr", "./Scope"], function (expo
             decllist = n(DECLLIST),
             precision = n(PRECISION),
             ident = n(IDENT),
-            keyword_or_ident = n(KEYWORD_OR_IDENT),
             fn = n(FUNCTION),
             fnargs = n(FUNCTIONARGS),
             forstmt = n(FORLOOP),
@@ -1537,7 +1534,6 @@ System.register("src/mode/glsl/parser.js", ["./expr", "./Scope"], function (expo
         var check = arguments.length ? [].slice.call(arguments) : [];
         var complete = false;
         var ended = false;
-        var depth = 0;
         var state = [];
         var nodes = [];
         var tokens = [];
@@ -1592,7 +1588,7 @@ System.register("src/mode/glsl/parser.js", ["./expr", "./Scope"], function (expo
     function is_precision(token) {
         return token.data === 'highp' || token.data === 'mediump' || token.data === 'lowp';
     }
-    var expr_1, Scope_1, Advance, DEBUG, IDENT, STMT, STMTLIST, STRUCT, FUNCTION, FUNCTIONARGS, DECL, DECLLIST, FORLOOP, WHILELOOP, IF, EXPR, PRECISION, COMMENT, PREPROCESSOR, KEYWORD, KEYWORD_OR_IDENT, RETURN, BREAK, CONTINUE, DISCARD, DOWHILELOOP, PLACEHOLDER, QUANTIFIER, DECL_ALLOW_ASSIGN, DECL_ALLOW_COMMA, DECL_REQUIRE_NAME, DECL_ALLOW_INVARIANT, DECL_ALLOW_STORAGE, DECL_NO_INOUT, DECL_ALLOW_STRUCT, DECL_STATEMENT, DECL_FUNCTION, DECL_STRUCT, QUALIFIERS, NO_ASSIGN_ALLOWED, NO_COMMA_ALLOWED, token_map, stmt_type;
+    var expr_1, Scope_1, Advance, DEBUG, IDENT, STMT, STMTLIST, STRUCT, FUNCTION, FUNCTIONARGS, DECL, DECLLIST, FORLOOP, WHILELOOP, IF, EXPR, PRECISION, COMMENT, PREPROCESSOR, KEYWORD, KEYWORD_OR_IDENT, RETURN, BREAK, CONTINUE, DISCARD, DOWHILELOOP, PLACEHOLDER, QUANTIFIER, DECL_ALLOW_ASSIGN, DECL_ALLOW_COMMA, DECL_REQUIRE_NAME, DECL_ALLOW_INVARIANT, DECL_ALLOW_STORAGE, DECL_NO_INOUT, DECL_ALLOW_STRUCT, DECL_STATEMENT, DECL_FUNCTION, DECL_STRUCT, NO_ASSIGN_ALLOWED, NO_COMMA_ALLOWED, token_map, stmt_type;
     return {
         setters: [function (expr_1_1) {
             expr_1 = expr_1_1;
@@ -1636,7 +1632,6 @@ System.register("src/mode/glsl/parser.js", ["./expr", "./Scope"], function (expo
             DECL_STATEMENT = 0xFF;
             DECL_FUNCTION = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_COMMA | DECL_NO_INOUT | DECL_ALLOW_INVARIANT | DECL_REQUIRE_NAME);
             DECL_STRUCT = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_INVARIANT | DECL_ALLOW_STORAGE | DECL_ALLOW_STRUCT);
-            QUALIFIERS = ['const', 'attribute', 'uniform', 'varying'];
             NO_ASSIGN_ALLOWED = false;
             NO_COMMA_ALLOWED = false;
             token_map = {
@@ -10581,9 +10576,10 @@ System.register("src/mode/javascript/lex.js", ["./EventEmitter", "./reg", "./sta
                     this.input = this.input.slice(i);
                 };
                 Lexer.prototype.on = function (names, listener) {
+                    var _this = this;
                     names.split(" ").forEach(function (name) {
-                        this.emitter.on(name, listener);
-                    }.bind(this));
+                        _this.emitter.on(name, listener);
+                    });
                 };
                 Lexer.prototype.trigger = function (unused0, unused1) {
                     this.emitter.emit.apply(this.emitter, Array.prototype.slice.call(arguments));
@@ -11906,6 +11902,7 @@ System.register("src/mode/javascript/state.js", ["./name-stack"], function (expo
                 lines: [],
                 syntax: {},
                 jsonMode: false,
+                jsonWarnings: void 0,
                 nameStack: new name_stack_1.default(),
                 tokens: { prev: null, next: null, curr: null },
                 inClassBody: false,
@@ -18834,7 +18831,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
             }
         }
     }
-    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, useCaseSensitiveFileNames, EVENT_APPLY_DELTA, EVENT_SET_TRACE, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_SCRIPT, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_SCRIPT_TARGET, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_GET_OUTPUT_FILES, EVENT_EXPERIMENTAL, LanguageServiceWorker;
+    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, useCaseSensitiveFileNames, EVENT_APPLY_DELTA, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_SCRIPT, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, EVENT_GET_OUTPUT_FILES, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_SCRIPT_TARGET, EVENT_SET_TRACE, LanguageServiceWorker;
     return {
         setters: [function (DefaultLanguageServiceHost_1_1) {
             DefaultLanguageServiceHost_1 = DefaultLanguageServiceHost_1_1;
@@ -18844,35 +18841,34 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
         execute: function () {
             useCaseSensitiveFileNames = true;
             EVENT_APPLY_DELTA = 'applyDelta';
-            EVENT_SET_TRACE = 'setTrace';
             EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';
             EVENT_ENSURE_SCRIPT = 'ensureScript';
+            EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
+            EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT = 'getFormattingEditsForDocument';
+            EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
+            EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors';
+            EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
+            EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
             EVENT_REMOVE_SCRIPT = 'removeScript';
             EVENT_SET_MODULE_KIND = 'setModuleKind';
             EVENT_SET_SCRIPT_TARGET = 'setScriptTarget';
-            EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
-            EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors';
-            EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
-            EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
-            EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
-            EVENT_EXPERIMENTAL = 'experimental';
+            EVENT_SET_TRACE = 'setTrace';
             LanguageServiceWorker = function () {
                 function LanguageServiceWorker(sender) {
                     var _this = this;
                     this.sender = sender;
                     this.trace = true;
-                    this.host = new DefaultLanguageServiceHost_1.default();
-                    this.documentRegistry = new DocumentRegistryInspector_1.default(ts.createDocumentRegistry(useCaseSensitiveFileNames));
+                    this.host_ = new DefaultLanguageServiceHost_1.default();
+                    this.documentRegistry_ = new DocumentRegistryInspector_1.default(ts.createDocumentRegistry(useCaseSensitiveFileNames));
                     sender.on(EVENT_SET_TRACE, function (message) {
                         var _a = message.data,
                             trace = _a.trace,
                             callbackId = _a.callbackId;
                         try {
                             _this.trace = trace;
-                            _this.documentRegistry.trace = trace;
+                            _this.documentRegistry_.trace = trace;
                             if (_this.trace) {
                                 console.log(EVENT_SET_TRACE + "(" + trace + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             _this.resolve(EVENT_SET_TRACE, void 0, callbackId);
                         } catch (err) {
@@ -18885,10 +18881,9 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(EVENT_DEFAULT_LIB_CONTENT + "(" + _this.host.getDefaultLibFileName({}) + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
+                                console.log(EVENT_DEFAULT_LIB_CONTENT + "(" + _this.host_.getDefaultLibFileName({}) + ")");
                             }
-                            _this.host.ensureScript(_this.host.getDefaultLibFileName({}), content);
+                            _this.host_.ensureScript(_this.host_.getDefaultLibFileName({}), content);
                             _this.resolve(EVENT_DEFAULT_LIB_CONTENT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_DEFAULT_LIB_CONTENT, reason, callbackId);
@@ -18902,9 +18897,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_ENSURE_SCRIPT + "(" + fileName + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
-                            _this.host.ensureScript(fileName, content);
+                            _this.host_.ensureScript(fileName, content);
                             _this.resolve(EVENT_ENSURE_SCRIPT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_ENSURE_SCRIPT, reason, callbackId);
@@ -18918,9 +18912,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_APPLY_DELTA + "(" + fileName + ", " + JSON.stringify(delta, null, 2) + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
-                            _this.host.applyDelta(fileName, delta);
+                            _this.host_.applyDelta(fileName, delta);
                             _this.resolve(EVENT_APPLY_DELTA, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_APPLY_DELTA, reason, callbackId);
@@ -18933,9 +18926,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_REMOVE_SCRIPT + "(" + fileName + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
-                            _this.host.removeScript(fileName);
+                            _this.host_.removeScript(fileName);
                             _this.resolve(EVENT_REMOVE_SCRIPT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_REMOVE_SCRIPT, reason, callbackId);
@@ -18948,9 +18940,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_SET_MODULE_KIND + "(" + moduleKind + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
-                            _this.host.moduleKind = moduleKind;
+                            _this.host_.moduleKind = moduleKind;
                             _this.resolve(EVENT_SET_MODULE_KIND, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_SET_MODULE_KIND, reason, callbackId);
@@ -18963,9 +18954,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_SET_SCRIPT_TARGET + "(" + scriptTarget + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
-                            _this.host.scriptTarget = scriptTarget;
+                            _this.host_.scriptTarget = scriptTarget;
                             _this.resolve(EVENT_SET_SCRIPT_TARGET, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(EVENT_SET_SCRIPT_TARGET, reason, callbackId);
@@ -18978,7 +18968,6 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_GET_SYNTAX_ERRORS + "(" + fileName + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             var diagnostics = _this.ensureLS().getSyntacticDiagnostics(fileName);
                             var errors = diagnostics.map(function (diagnostic) {
@@ -18996,7 +18985,6 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_GET_SEMANTIC_ERRORS + "(" + fileName + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             var diagnostics = _this.ensureLS().getSemanticDiagnostics(fileName);
                             var errors = diagnostics.map(function (diagnostic) {
@@ -19016,7 +19004,6 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_GET_COMPLETIONS_AT_POSITION + "(" + fileName + ", " + position + ", " + prefix + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             if (typeof position !== 'number' || isNaN(position)) {
                                 throw new Error("position must be a number and not NaN");
@@ -19040,7 +19027,6 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_GET_QUICK_INFO_AT_POSITION + "(" + fileName + ", " + position + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             if (typeof position !== 'number' || isNaN(position)) {
                                 throw new Error("position must be a number and not NaN");
@@ -19058,12 +19044,11 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         try {
                             if (_this.trace) {
                                 console.log(EVENT_GET_OUTPUT_FILES + "(" + fileName + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
                             }
                             var sourceFile = _this.ensureLS().getProgram().getSourceFile(fileName);
                             var input = sourceFile.text;
                             var transpileOptions = {};
-                            transpileOptions.compilerOptions = _this.host.getCompilationSettings();
+                            transpileOptions.compilerOptions = _this.host_.getCompilationSettings();
                             transpileOptions.fileName = fileName;
                             transpileOptions.moduleName = systemModuleName('./', fileName, 'js');
                             transpileOptions.reportDiagnostics = false;
@@ -19075,44 +19060,43 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             _this.reject(EVENT_GET_OUTPUT_FILES, reason, callbackId);
                         }
                     });
-                    sender.on(EVENT_EXPERIMENTAL, function (message) {
+                    sender.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
-                            position = _a.position,
+                            settings = _a.settings,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(EVENT_EXPERIMENTAL + "(" + fileName + ", " + position + ")");
-                                console.log(JSON.stringify(_this.host.getScriptFileNames(), null, 2));
+                                console.log(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT + "(" + fileName + ", " + settings + ")");
                             }
-                            if (typeof position !== 'number' || isNaN(position)) {
-                                throw new Error("position must be a number and not NaN");
+                            if (typeof settings !== 'object') {
+                                throw new Error("settings must be an object and not NaN");
                             }
-                            var quickInfo = _this.ensureLS().getQuickInfoAtPosition(fileName, position);
-                            _this.resolve(EVENT_EXPERIMENTAL, quickInfo, callbackId);
+                            var textChanges = _this.ensureLS().getFormattingEditsForDocument(fileName, settings);
+                            _this.resolve(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, textChanges, callbackId);
                         } catch (reason) {
-                            _this.reject(EVENT_EXPERIMENTAL, reason, callbackId);
+                            _this.reject(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, reason, callbackId);
                         }
                     });
                 }
                 LanguageServiceWorker.prototype.ensureLS = function () {
-                    if (!this.$service) {
+                    if (!this.languageService_) {
                         if (this.trace) {
                             console.log("LanguageServiceWorker.ensureLS()");
                             console.log("Calling createLanguageService()");
                         }
-                        this.$service = ts.createLanguageService(this.host, this.documentRegistry);
+                        this.languageService_ = ts.createLanguageService(this.host_, this.documentRegistry_);
                     }
-                    return this.$service;
+                    return this.languageService_;
                 };
                 LanguageServiceWorker.prototype.disposeLS = function () {
-                    if (this.$service) {
+                    if (this.languageService_) {
                         if (this.trace) {
                             console.log("LanguageServiceWorker.disposeLS()");
                             console.log("Calling LanguageService.dispose");
                         }
-                        this.$service.dispose();
-                        this.$service = void 0;
+                        this.languageService_.dispose();
+                        this.languageService_ = void 0;
                     }
                 };
                 LanguageServiceWorker.prototype.resolve = function (eventName, value, callbackId) {

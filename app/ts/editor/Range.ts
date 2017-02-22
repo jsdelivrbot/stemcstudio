@@ -2,20 +2,15 @@ import Position from "./Position";
 import RangeBasic from './RangeBasic';
 import Tabstop from './Tabstop';
 
-/**
- * This object is used in various places to indicate a region within the editor.
- * To better visualize how this works, imagine a rectangle.
- * Each quadrant of the rectangle is analogus to a range, as ranges contain a starting row and starting column, and an ending row, and ending column.
- */
-export default class Range {
+export default class Range implements RangeBasic {
 
     /**
-     *
+     * The starting position of the range.
      */
     public start: Position;
 
     /**
-     *
+     * The ending position of the range.
      */
     public end: Position;
 
@@ -91,15 +86,8 @@ export default class Range {
      * @param endColumn The ending column
      */
     constructor(startRow: number, startColumn: number, endRow: number, endColumn: number) {
-        this.start = {
-            row: startRow,
-            column: startColumn
-        };
-
-        this.end = {
-            row: endRow,
-            column: endColumn
-        };
+        this.start = { row: startRow, column: startColumn };
+        this.end = { row: endRow, column: endColumn };
     }
 
     /**
@@ -116,9 +104,6 @@ export default class Range {
 
     /**
      * Returns a string containing the range's row and column information.
-     *
-     * @method toString
-     * @return {string}
      */
     toString(): string {
         return ("Range: [" + this.start.row + "/" + this.start.column +
@@ -128,10 +113,8 @@ export default class Range {
     /**
      * Returns `true` if the `row` and `column` provided are within the given range.
      *
-     * @method contains
-     * @param row {number} A row to check for
-     * @param column {number} A column to check for
-     * @return {boolean}
+     * @param row A row to check for.
+     * @param column A column to check for.
      */
     contains(row: number, column: number): boolean {
         return this.compare(row, column) === 0;
@@ -140,9 +123,8 @@ export default class Range {
     /**
      * Compares `this` range (A) with another range (B).
      *
-     * @method compareRange
-     * @param {Range} range A range to compare with
-     * @return {number} This method returns one of the following numbers:<br/>
+     * @param range A range to compare with
+     * @returns This method returns one of the following numbers:<br/>
      * <br/>
      * `-2`: (B) is in front of (A), and doesn't intersect with (A)<br/>
      * `-1`: (B) begins before (A) but ends inside of (A)<br/>
@@ -151,12 +133,11 @@ export default class Range {
      * `+2`: (B) is after (A) and doesn't intersect with (A)<br/>
      * `42`: FTW state: (B) ends in (A) but starts outside of (A)
      */
-    compareRange(range: RangeBasic): number {
-        let cmp: number;
+    compareRange(range: RangeBasic): -2 | -1 | 0 | 1 | 2 | 42 {
         const end = range.end;
         const start = range.start;
 
-        cmp = this.compare(end.row, end.column);
+        let cmp = this.compare(end.row, end.column);
         if (cmp === 1) {
             cmp = this.compare(start.row, start.column);
             if (cmp === 1) {
@@ -203,7 +184,7 @@ export default class Range {
      * `p.column` is less than or equal to the calling range's ending column, this returns `0`<br/>
      * Otherwise, it returns 1<br/>
      */
-    comparePoint(point: Position): number {
+    comparePoint(point: Position): 0 | 1 | -1 {
         return this.compare(point.row, point.column);
     }
 
@@ -213,7 +194,7 @@ export default class Range {
      * @param range A range to compare with
      * @returns `true` if the `range` is contained within the caller's range.
      */
-    containsRange(range: { start: Position; end: Position }) {
+    containsRange(range: { start: Position; end: Position }): boolean {
         return this.comparePoint(range.start) === 0 && this.comparePoint(range.end) === 0;
     }
 
@@ -341,7 +322,7 @@ export default class Range {
      * `p.column` is less than or equal to the calling range's ending column, this returns `0` <br/>
      * Otherwise, it returns 1
      */
-    compare(row: number, column: number): number {
+    compare(row: number, column: number): -1 | 1 | 0 {
         if (!this.isMultiLine()) {
             if (row === this.start.row) {
                 return column < this.start.column ? -1 : (column > this.end.column ? 1 : 0);
@@ -383,7 +364,7 @@ export default class Range {
      * `p.column` is less than or equal to the calling range's ending column, this returns `0`<br/>
      * Otherwise, it returns 1.
      */
-    compareStart(row: number, column: number): number {
+    compareStart(row: number, column: number): 0 | 1 | -1 {
         if (this.start.row === row && this.start.column === column) {
             return -1;
         }
@@ -412,7 +393,7 @@ export default class Range {
      * `p.column` is less than or equal to the calling range's ending column, this returns `0`<br/>
      * Otherwise, it returns 1
      */
-    compareEnd(row: number, column: number): number {
+    compareEnd(row: number, column: number): 0 | 1 | -1 {
         if (this.end.row === row && this.end.column === column) {
             return 1;
         }
@@ -424,7 +405,6 @@ export default class Range {
     /**
      * Checks the row and column points with the row and column points of the calling range.
      *
-     * @method compareInside
      * @param row A row point to compare with
      * @param column A column point to compare with
      *
@@ -433,9 +413,9 @@ export default class Range {
      * * `1` if the ending row of the calling range is equal to `row`, and the ending column of the calling range is equal to `column`<br/>
      * * `-1` if the starting row of the calling range is equal to `row`, and the starting column of the calling range is equal to `column`<br/>
      * <br/>
-     * Otherwise, it returns the value after calling [[EditorRange.compare `compare()`]].
+     * Otherwise, it returns the value after calling compare.
      */
-    compareInside(row: number, column: number): number {
+    compareInside(row: number, column: number): 0 | 1 | -1 {
         if (this.end.row === row && this.end.column === column) {
             return 1;
         }
@@ -484,23 +464,23 @@ export default class Range {
      */
     extend(row: number, column: number): Range {
         const cmp = this.compare(row, column);
-        let start: Position;
-        let end: Position;
 
         if (cmp === 0) {
             return this;
         }
         else if (cmp === -1) {
-            start = { row, column };
+            return Range.fromPoints({ row, column }, this.end);
+        }
+        else if (cmp === 1) {
+            return Range.fromPoints(this.start, { row, column });
         }
         else {
-            end = { row, column };
+            throw new Error("");
         }
-        return Range.fromPoints(start || this.start, end || this.end);
     }
 
     /**
-     *
+     * The range is empty if the start and end position coincide.
      */
     isEmpty(): boolean {
         return (this.start.row === this.end.row && this.start.column === this.end.column);
@@ -516,7 +496,7 @@ export default class Range {
     /**
      * Returns a duplicate of the calling range.
      */
-    clone() {
+    clone(): Range {
         return Range.fromPoints(this.start, this.end);
     }
 
@@ -532,8 +512,11 @@ export default class Range {
         }
     }
 
-    /* experimental */
-    moveBy(row: number, column: number): void {
+    /**
+     * experimental
+     */
+    public moveBy(row: number, column: number): void {
+        // This is dangerous because it breaks the assumed immutability semantics.
         this.start.row += row;
         this.start.column += column;
         this.end.row += row;
@@ -547,13 +530,5 @@ export default class Range {
      */
     public static fromPoints(start: Position, end: Position): Range {
         return new Range(start.row, start.column, end.row, end.column);
-    }
-
-    /**
-     * @param p1
-     * @param p2
-     */
-    public static comparePoints(p1: Position, p2: Position): number {
-        return p1.row - p2.row || p1.column - p2.column;
     }
 }

@@ -12,6 +12,7 @@ import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import EventBus from './EventBus';
+import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
@@ -35,6 +36,7 @@ import Range from '../../editor/Range';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import Shareable from '../../base/Shareable';
 import StringShareableMap from '../../collections/StringShareableMap';
+import TextChange from '../../editor/workspace/TextChange';
 import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
 import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
@@ -580,7 +582,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         // This makes more sense; it is editor specific.
         if (isTypeScript(path) || isJavaScript(path)) {
-            // Enable auto completion using the Workspace.
+            // Enable auto completion using the workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             // FIXME: How do we remove these later?
@@ -1968,6 +1970,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         checkPath(path);
         // FIXME: Promises make it messy to hook for inFlight.
         return this.languageServiceProxy.getCompletionsAtPosition(path, position, prefix);
+    }
+
+    /**
+     *
+     */
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
+        checkPath(path);
+        this.inFlight++;
+        return this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange[]) => {
+            this.inFlight--;
+            callback(err, textChanges);
+        });
     }
 
     /**

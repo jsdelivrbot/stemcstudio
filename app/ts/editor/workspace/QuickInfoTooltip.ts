@@ -1,7 +1,5 @@
 import displayPartsToHtml from './displayPartsToHtml';
 import Editor from '../Editor';
-import EditorPosition from './EditorPosition';
-// import escapeHTML from "../lib/escapeHTML";
 import Tooltip from '../Tooltip';
 import Position from '../Position';
 import QuickInfo from './QuickInfo';
@@ -64,8 +62,8 @@ export default class QuickInfoTooltip extends Tooltip {
                 this.mouseMoveTimer = window.setTimeout(() => {
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);
                     if (documentPosition) {
-                        const position: number = EditorPosition.getPositionChars(this.editor, documentPosition);
-                        this.host.getQuickInfoAtPosition(this.path, position, (err: any, quickInfo: QuickInfo) => {
+                        const document = this.editor.getSession().getDocument();
+                        this.host.getQuickInfoAtPosition(this.path, document.positionToIndex(documentPosition), (err: any, quickInfo: QuickInfo) => {
                             if (!err) {
                                 if (quickInfo) {
                                     // The displayParts and documentation are tokenized according to TypeScript conventions.

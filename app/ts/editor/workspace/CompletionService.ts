@@ -1,62 +1,40 @@
-"use strict";
-
 import CompletionEntry from './CompletionEntry';
 import Editor from '../Editor';
-import EditorPosition from './EditorPosition';
 import Position from '../Position';
-import Workspace from './Workspace';
 import retrievePrecedingIdentifier from '../autocomplete/retrievePrecedingIdentifier';
 
 /**
- * @class CompletionService
+ * This is DEAD code.
  */
 export default class CompletionService {
 
-    /**
-     * @property editor
-     * @type Editor
-     * @private
-     */
     private editor: Editor;
 
-    /**
-     * @property workspace
-     * @type Workspace
-     * @private
-     */
-    private workspace: Workspace;
+    // private workspace: Workspace;
 
     /**
      * Records the text where the completion was initiated.
      * May be used to filter completions.
      * TODO: The common terminology for this property is 'prefix'.
-     *
-     * @property matchText
-     * @type string
      */
     public matchText: string;
 
     /**
      * Records whether the completion was initiated for a member as opposed to in the global scope.
      * May be used to filter completions.
-     *
-     * @property memberMode
-     * @type boolean
      */
     public memberMode: boolean;
 
-    /**
-     * @class CompletionService
-     * @constructor
-     * @param editor {Editor}
-     * @param workspace {Workspace}
-     */
-    constructor(editor: Editor, workspace: Workspace) {
+    constructor(editor: Editor/*, workspace: Workspace*/) {
         this.editor = editor;
-        this.workspace = workspace;
+        // this.workspace = workspace;
     }
 
     private _getCompletionsAtPosition(fileName: string, position: number, prefix: string): Promise<CompletionEntry[]> {
+        return new Promise<CompletionEntry[]>(function (resolve, reject) {
+            reject(new Error("Completions are not available at this time."));
+        });
+        /*
         if (typeof this.workspace !== 'undefined') {
             return this.workspace.getCompletionsAtPosition(fileName, position, prefix);
         }
@@ -65,28 +43,27 @@ export default class CompletionService {
                 reject(new Error("Completions are not available at this time."));
             });
         }
+        */
     }
 
     /**
      * Returns the completion entries at the cursor position asynchronously using a Promise.
      * There is a side-effect of setting the matchText and memeberMode properties which
      * can be used for subsequent filtering.
-     *
-     * @method getCompletionsAtCursor
-     * @param fileName {string}
-     * @param position {Position}
-     * @return {Promise} CompletionEntry[]
      */
     getCompletionsAtCursor(fileName: string, position: Position): Promise<CompletionEntry[]> {
 
         const editor = this.editor;
 
+        const session = editor.getSession();
+
+        const document = session.getDocument();
+
         /**
          * The zero-based position characters is a variable because we may adjust it.
          */
-        let positionChars = EditorPosition.getPositionChars(editor, position);
+        let positionChars = document.positionToIndex(position);
 
-        const session = editor.getSession();
 
         const line = session.getLine(position.row);
 

@@ -34,6 +34,8 @@ import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
+import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import TextChange from '../../editor/workspace/TextChange';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
@@ -658,6 +660,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         return () => {
             this.detachEditor(path, mode, editor);
         };
+    }
+
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, tectChanges: TextChange[]) => any): void {
+        this.wsModel.getFormattingEditsForDocument(path, settings, callback);
     }
 
     /**

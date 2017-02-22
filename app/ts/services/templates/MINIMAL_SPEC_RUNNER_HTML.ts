@@ -1,8 +1,8 @@
 const NEWLINE = '\n';
 
-export default function (tabString: string): string {
-    const lines: string[] = [];
+export default function MINIMAL_SPEC_RUNNER_HTML(tabString: string): string {
     const _ = tabString;
+    const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<html>");
     lines.push(_ + "<head>");
@@ -11,6 +11,7 @@ export default function (tabString: string): string {
     lines.push(_ + _ + "/* STYLE-MARKER */");
     lines.push(_ + _ + "</style>");
     lines.push(_ + _ + "<script src='https://jspm.io/system.js'></script>");
+    lines.push(_ + _ + "<!-- CSV-FILES-MARKER -->");
     lines.push(_ + _ + "<!-- SHADERS-MARKER -->");
     lines.push(_ + _ + "<!-- SCRIPTS-MARKER -->");
     lines.push(_ + "</head>");

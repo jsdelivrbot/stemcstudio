@@ -1,6 +1,6 @@
 import Range from "./Range";
 import EditSession from "./EditSession";
-import comparePoints from "./comparePoints";
+import { comparePositions } from "./Position";
 import Position from "./Position";
 
 /**
@@ -40,11 +40,11 @@ export default class RangeList {
         let i: number;
         for (i = startIndex || 0; i < list.length; i++) {
             const range = list[i];
-            const cmpEnd = comparePoints(pos, range.end);
+            const cmpEnd = comparePositions(pos, range.end);
             if (cmpEnd > 0) {
                 continue;
             }
-            const cmpStart = comparePoints(pos, range.start);
+            const cmpStart = comparePositions(pos, range.start);
             if (cmpEnd === 0) {
                 return excludeEdges && cmpStart !== 0 ? -i - 2 : i;
             }
@@ -94,24 +94,23 @@ export default class RangeList {
      */
     merge(): Range[] {
         const removed: Range[] = [];
-        let list = this.ranges;
 
-        list = list.sort(function (a, b) {
-            return comparePoints(a.start, b.start);
+        const list = this.ranges.sort(function (a, b) {
+            return comparePositions(a.start, b.start);
         });
 
-        let next = list[0], range;
+        let next = list[0];
         for (let i = 1; i < list.length; i++) {
-            range = next;
+            const range = next;
             next = list[i];
-            const cmp = comparePoints(range.end, next.start);
+            const cmp = comparePositions(range.end, next.start);
             if (cmp < 0)
                 continue;
 
             if (cmp === 0 && !range.isEmpty() && !next.isEmpty())
                 continue;
 
-            if (comparePoints(range.end, next.end) < 0) {
+            if (comparePositions(range.end, next.end) < 0) {
                 range.end.row = next.end.row;
                 range.end.column = next.end.column;
             }

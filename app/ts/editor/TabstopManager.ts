@@ -1,4 +1,4 @@
-import comparePoints from "./comparePoints";
+import { comparePositions } from "./Position";
 import createDelayedCall from "./lib/lang/createDelayedCall";
 import Delta from "./Delta";
 
@@ -133,7 +133,7 @@ export default class TabstopManager {
         if (!this.$inChange && isRemove) {
             const ts = this.selectedTabstop;
             const changedOutside = ts && !ts.some(function (range: Range) {
-                return comparePoints(range.start, start) <= 0 && comparePoints(range.end, end) >= 0;
+                return comparePositions(range.start, start) <= 0 && comparePositions(range.end, end) >= 0;
             });
             if (changedOutside)
                 return this.detach();
@@ -144,7 +144,7 @@ export default class TabstopManager {
             if (r.end.row < start.row)
                 continue;
 
-            if (isRemove && comparePoints(start, r.start) < 0 && comparePoints(end, r.end) > 0) {
+            if (isRemove && comparePositions(start, r.start) < 0 && comparePositions(end, r.end) > 0) {
                 this.removeRange(r);
                 i--;
                 continue;
@@ -159,8 +159,9 @@ export default class TabstopManager {
             if (r.end.row >= startRow)
                 r.end.row += lineDif;
 
-            if (comparePoints(r.start, r.end) > 0)
+            if (comparePositions(r.start, r.end) > 0) {
                 this.removeRange(r);
+            }
         }
         if (!ranges.length)
             this.detach();

@@ -229,6 +229,10 @@ function copies(target) {
             dest: prepend(target, 'js/ace-workers.js')
         },
         {
+            src: "../ace-workers/dist/ace-workers.js",
+            dest: prepend(target, 'js/ace-workers.js')
+        },
+        {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
             dest: prepend(target, 'js/aws-sdk-2.3.12.min.js')
         },

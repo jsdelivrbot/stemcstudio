@@ -1,4 +1,5 @@
 import * as ng from 'angular';
+import applyTextChanges from './applyTextChanges';
 import ClojureMode from '../../editor/mode/ClojureMode';
 import CssMode from '../../editor/mode/CssMode';
 import GlslMode from '../../editor/mode/GlslMode';
@@ -16,10 +17,13 @@ import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
+import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import IndentStyle from '../../editor/workspace/IndentStyle';
 import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showFindReplace from '../../editor/ext/showFindReplace';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
+import TextChange from '../../editor/workspace/TextChange';
 import ITextService from '../../services/text/ITextService';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
@@ -41,6 +45,23 @@ import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
+
+function isTypeScript(path: string): boolean {
+    const period = path.lastIndexOf('.');
+    if (period >= 0) {
+        const extension = path.substring(period + 1);
+        switch (extension) {
+            case 'ts': {
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+    console.warn(`isTypeScript('${path}') can't figure that one out.`);
+    return false;
+}
 
 /**
  * Factory for the editor (attribute) directive.
@@ -72,7 +93,7 @@ function factory(
         /**
          * The controller that is a proxy for the workspace.
          */
-        const control: WorkspaceMixin = controllers[1];
+        const wsController: WorkspaceMixin = controllers[1];
 
         const container: HTMLElement = element[0];
         const renderer: Renderer = new Renderer(container);
@@ -197,6 +218,45 @@ function factory(
                                 showKeyboardShortcuts(editor);
                             }
                         }]);
+                        editor.commands.addCommand({
+                            name: 'formatDocument',
+                            bindKey: { win: 'Ctrl-Shift-I', mac: 'Command-Alt-I' },
+                            exec: function (editor: Editor) {
+                                if (isTypeScript($scope.path)) {
+                                    const settings: FormatCodeSettings = {};
+                                    settings.baseIndentSize = 0;
+                                    settings.convertTabsToSpaces = editorPreferencesService.getUseSoftTabs();
+                                    settings.indentSize = editorPreferencesService.getTabSize();
+                                    settings.indentStyle = IndentStyle.Smart;
+                                    settings.insertSpaceAfterCommaDelimiter = true;
+                                    settings.insertSpaceAfterConstructor = false;
+                                    settings.insertSpaceAfterFunctionKeywordForAnonymousFunctions = false;
+                                    settings.insertSpaceAfterKeywordsInControlFlowStatements = true;
+
+                                    settings.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = false;
+                                    settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces = false;
+                                    settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets = false;
+                                    settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis = false;
+                                    settings.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces = false;
+
+                                    settings.insertSpaceAfterSemicolonInForStatements = true;
+                                    settings.insertSpaceAfterTypeAssertion = true;
+                                    settings.insertSpaceBeforeAndAfterBinaryOperators = true;
+                                    settings.insertSpaceBeforeFunctionParenthesis = false;
+                                    settings.newLineCharacter = '\n';
+                                    wsController.getFormattingEditsForDocument($scope.path, settings, function (err: any, textChanges: TextChange[]) {
+                                        if (!err) {
+                                            applyTextChanges(textChanges, session);
+                                        }
+                                        else {
+                                            console.warn(`${err}`);
+                                        }
+                                    });
+                                }
+                            },
+                            scrollIntoView: 'animate',
+                            readOnly: true
+                        });
                         // We must wait for the $render function to be called so that we have a session.
                         switch (file.mode) {
                             case LANGUAGE_HASKELL: {
@@ -205,7 +265,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -215,7 +275,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -226,7 +286,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -235,7 +295,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -244,7 +304,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -253,7 +313,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -262,7 +322,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -272,7 +332,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -284,7 +344,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -295,7 +355,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -305,7 +365,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -314,7 +374,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
