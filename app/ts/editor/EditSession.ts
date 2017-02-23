@@ -507,9 +507,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method getState
-     * @param row {number} The row to start at.
-     * @returns {string}
+     * Returns the state of background tokenization and the end of a row.
      */
     public getState(row: number): string {
         if (this.bgTokenizer) {
