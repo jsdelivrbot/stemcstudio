@@ -600,7 +600,8 @@ const commands: Command[] = [
         scrollIntoView: "cursor"
     }, {
         name: "transposeletters",
-        bindKey: bindKey("Ctrl-T", "Ctrl-T"),
+        // Ctrl-T does not work on Chrome.
+        bindKey: bindKey("Alt-X", "Ctrl-T"),
         exec: function (editor: Editor) { editor.transposeLetters(); },
         multiSelectAction: function (editor: Editor) { editor.transposeLetters(); },
         scrollIntoView: "cursor"

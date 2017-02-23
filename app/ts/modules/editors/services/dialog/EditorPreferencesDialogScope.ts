@@ -43,6 +43,16 @@ interface EditorPreferencesDialogScope {
     /**
      * 
      */
+    showGutter: boolean;
+
+    /**
+     * 
+     */
+    showGutterChange(): void;
+
+    /**
+     * 
+     */
     showInvisibles: boolean;
 
     /**

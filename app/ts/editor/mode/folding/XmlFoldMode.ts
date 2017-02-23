@@ -25,28 +25,36 @@ export default class XmlFoldMode extends FoldMode {
     }
 
     /**
-     * @param session
-     * @param foldStyle
-     * @param row
+     *
      */
     getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
         const tag = this._getFirstTagInLine(session, row);
 
-        if (!tag)
-            return "";
+        if (!tag) {
+            return this.getCommentFoldWidget(session, row);
+        }
 
-        if (tag.closing || (!tag.tagName && tag.selfClosing))
+        if (tag.closing || (!tag.tagName && tag.selfClosing)) {
             return foldStyle === "markbeginend" ? "end" : "";
+        }
 
-        if (!tag.tagName || tag.selfClosing || this.voidElements.hasOwnProperty(tag.tagName.toLowerCase()))
+        if (!tag.tagName || tag.selfClosing || this.voidElements.hasOwnProperty(tag.tagName.toLowerCase())) {
             return "";
+        }
 
-        if (this._findEndTagInLine(session, row, tag.tagName, tag.end.column))
+        if (this._findEndTagInLine(session, row, tag.tagName, tag.end.column)) {
             return "";
+        }
 
         return "start";
     }
 
+    private getCommentFoldWidget(session: EditSession, row: number): string {
+        if (/comment/.test(session.getState(row)) && /<!-/.test(session.getLine(row))) {
+            return "start";
+        }
+        return "";
+    }
     /*
      * returns a first tag (or a fragment) in a line
      */
@@ -164,9 +172,11 @@ export default class XmlFoldMode extends FoldMode {
             if (!tag || top.tagName === tag.tagName) {
                 return stack.pop();
             }
+            /*
             else if (this.optionalEndTags.hasOwnProperty(tag.tagName)) {
                 return null;
             }
+            */
             else if (this.optionalEndTags.hasOwnProperty(top.tagName)) {
                 stack.pop();
                 continue;
@@ -182,7 +192,8 @@ export default class XmlFoldMode extends FoldMode {
         const firstTag = this._getFirstTagInLine(session, row);
 
         if (!firstTag) {
-            return null;
+            return this.getCommentFoldWidget(session, row)
+                && session.getCommentFoldRange(row, session.getLine(row).length);
         }
 
         const isBackward = firstTag.closing || firstTag.selfClosing;
@@ -201,14 +212,17 @@ export default class XmlFoldMode extends FoldMode {
                         tag.start.column += tag.tagName.length + 2;
                         tag.end.column -= 2;
                         return Range.fromPoints(tag.start, tag.end);
-                    } else
+                    }
+                    else {
                         continue;
+                    }
                 }
 
                 if (tag.closing) {
                     this._pop(stack, tag);
-                    if (stack.length === 0)
+                    if (stack.length === 0) {
                         return Range.fromPoints(start, tag.start);
+                    }
                 }
                 else {
                     stack.push(tag);
@@ -238,6 +252,9 @@ export default class XmlFoldMode extends FoldMode {
                     this._pop(stack, tag);
                     if (stack.length === 0) {
                         tag.start.column += tag.tagName.length + 2;
+                        if (tag.start.row === tag.end.row && tag.start.column < tag.end.column) {
+                            tag.start.column = tag.end.column;
+                        }
                         return Range.fromPoints(tag.start, end);
                     }
                 }
@@ -251,18 +268,11 @@ export default class XmlFoldMode extends FoldMode {
 }
 
 export class Tag {
-    tagName: string;
-    closing: boolean;
-    selfClosing: boolean;
-    start: Position;
-    end: Position;
-    constructor() {
-        this.tagName = "";
-        this.closing = false;
-        this.selfClosing = false;
-        this.start = { row: 0, column: 0 };
-        this.end = { row: 0, column: 0 };
-    }
+    tagName = "";
+    closing = false;
+    selfClosing = false;
+    readonly start: Position = { row: 0, column: 0 };
+    readonly end: Position = { row: 0, column: 0 };
 }
 
 function is(token: Token, type: string): boolean {

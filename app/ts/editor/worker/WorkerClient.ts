@@ -57,7 +57,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     private eventBus: EventEmitterClass<MessageEvent, WorkerClient>;
 
     /**
-     * @param workerUrl
+     *
      */
     constructor(private workerUrl: string) {
         this.eventBus = new EventEmitterClass<MessageEvent, WorkerClient>(this);
@@ -77,6 +77,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             return;
         }
 
+        // importScrupts only takes fully qualified URLs.
         const workerUrl = qualifyURL(this.workerUrl);
         try {
             // The worker thread will not be started until we post a message to it (below).
@@ -114,7 +115,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * This method is is used as the callback function for the Worker thread
      * and so it receives all messages posted back from that thread.
      */
-    private onMessage(/* this: Worker, */ event: MessageEvent): void {
+    private onMessage(/* this: WorkerClient, */ event: MessageEvent): void {
         // const origin: string = event.origin;
         // const source: Window = event.source;
         const msg = event.data;
@@ -170,9 +171,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         // Once a Web Worker has been terminated, there is no way to restart it.
         // We also don't get any notification that it has shut down.
         if (this.worker) {
-            /**
-             * @event terminate
-             */
             this.eventBus._signal("terminate", <MessageEvent>{});
             this.deltaQueue = void 0;
 
@@ -194,12 +192,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * This is a wrapper around the the asynchronous post to the worker thread
      * that allows us to provide a callback function for an anticipated post
      * response.
-     *
-     * @method call
-     * @param cmd {string}
-     * @param args {any}
-     * @param callback {(data: any) => any}
-     * @return {void}
      */
     call(cmd: string, args: any, callback: (data: any) => any): void {
         if (callback) {
@@ -211,17 +203,13 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * Posts a message to the worker thread with a specific event data structure.
-     *
-     * @method emit
-     * @param event The name of the event.
-     * @param data
      */
     emit(event: string, data: { data: any }): void {
         try {
             // firefox refuses to clone objects which have function properties
             if (this.worker) {
                 // FIXME: Simplify.
-                this.worker.postMessage({ event: event, data: { data: data.data } });
+                this.worker.postMessage({ event, data: { data: data.data } });
             }
         }
         catch (e) {
@@ -230,7 +218,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     * @param doc
+     *
      */
     public attachToDocument(doc: Document): void {
 
@@ -273,9 +261,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * change is not acted upon immediately.
      *
      * This method is replaced in the constructor by a function that is bound to `this`.
-     *
-     * @param delta
-     * @param doc
      */
     private changeListener(delta: Delta/*, doc: Document*/): void {
         if (!this.deltaQueue) {
@@ -289,11 +274,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * This method provides the implementation of the EventBus interface.
-     *
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event: MessageEvent, source: WorkerClient) => any}
-     * @return {void}
      */
     on(eventName: string, callback: (event: MessageEvent, source: WorkerClient) => any) {
         this.eventBus.on(eventName, callback, false);
@@ -304,11 +284,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * This method provides the implementation of the EventBus interface.
-     *
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event: MessageEvent, source: WorkerClient) => any}
-     * @return {void}
      */
     off(eventName: string, callback: (event: MessageEvent, source: WorkerClient) => any): void {
         this.eventBus.off(eventName, callback);
@@ -317,10 +292,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      * This method is intended to be used as a callback for setTimeout.
      * It is replaced by a version that is bound to `this`.
-     * 
-     * @method sendDeltaQueue
-     * @return {void}
-     * @private
      */
     private sendDeltaQueue(): void {
         const doc = this.$doc;
@@ -346,10 +317,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     * @method createBlob
-     * @param workerUrl {string}
-     * @return {Blob}
-     * @private
+     *
      */
     private createBlob(workerUrl: string): Blob {
         // workerUrl can be protocol relative

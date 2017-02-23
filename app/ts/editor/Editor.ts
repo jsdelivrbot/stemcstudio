@@ -153,7 +153,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
-    private curOp: { command: /*Command*/any; args: any; scrollTop: number; docChanged?: boolean; selectionChanged?: boolean };
+    private curOp: { command?: /*Command*/any; args?: any; scrollTop?: number; docChanged?: boolean; selectionChanged?: boolean };
     private prevOp: { command?: Command; args?: any };
     private lastFileJumpPos: Range;
     /**
@@ -414,8 +414,16 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         }
     }
 
+    /**
+     * When setting the selection, the session must be defined. 
+     */
     set selection(selection: Selection) {
-        this.session.setSelection(selection);
+        if (this.session) {
+            this.session.setSelection(selection);
+        }
+        else {
+            throw new Error("");
+        }
     }
 
     /** 
@@ -945,6 +953,12 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             return;
         }
 
+        // Make sure operationEnd events are not emitted to wrong session.
+        if (this.curOp) {
+            this.endOperation();
+            this.curOp = {};
+        }
+
         const oldSession = this.session;
         if (oldSession) {
             this.session.off("change", this.$onDocumentChange);
@@ -971,8 +985,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             }
         }
 
-        this.session = session;
         if (session) {
+            this.session = session;
+
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             session.on("change", this.$onDocumentChange);
             this.renderer.setSession(session);
@@ -1049,9 +1064,19 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             }
             this.renderer.updateFull();
         }
+        else {
+            // Make sure that the selection is cleared BEFORE clearing the session.
+            this.selection = null;
+            // Now we can do it.
+            this.session = void 0;
+            // Cleanup the renderer too.
+            this.renderer.setSession(void 0);
+        }
 
         const changeSessionEvent: EditorChangeSessionEvent = { session: session, oldSession: oldSession };
         this.eventBus._signal("changeSession", changeSessionEvent);
+
+        this.curOp = null;
 
         if (oldSession) {
             let changeEditorEvent: SessionChangeEditorEvent = { oldEditor: this };
@@ -1063,6 +1088,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             let changeEditorEvent: SessionChangeEditorEvent = { editor: this };
             session._signal("changeEditor", changeEditorEvent);
             session.addRef();
+        }
+
+        if (session && session.bgTokenizer) {
+            session.bgTokenizer.scheduleStart();
         }
     }
 
@@ -1421,7 +1450,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     private onTokenizerUpdate(event: { data: FirstAndLast }, session: EditSession) {
-        const {first, last} = event.data;
+        const { first, last } = event.data;
         this.renderer.updateLines(first, last);
     }
 
@@ -1987,11 +2016,17 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         return this.renderer.getAnimatedScroll();
     }
 
+    getShowGutter(): boolean {
+        return this.renderer.getShowGutter();
+    }
+
+    setShowGutter(showGutter: boolean): void {
+        this.renderer.setShowGutter(showGutter);
+    }
+
     /**
      * If `showInvisibles` is set to `true`, invisible characters&mdash;like spaces or new lines&mdash;are show in the editor.
      * This method requires the session to be in effect.
-     *
-     * @param showInvisibles Specifies whether or not to show invisible characters.
      */
     setShowInvisibles(showInvisibles: boolean): void {
         this.renderer.setShowInvisibles(showInvisibles);
@@ -2017,8 +2052,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * This method requires the session to be in effect.
-     *
-     * @param displayIndentGuides
      */
     setDisplayIndentGuides(displayIndentGuides: boolean): void {
         this.renderer.setDisplayIndentGuides(displayIndentGuides);
@@ -2134,8 +2167,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Indicates whether the fold widgets should be shown or not.
-     *
-     * @param showFoldWidgets Specifies whether the fold widgets are shown.
      */
     setShowFoldWidgets(showFoldWidgets: boolean): void {
         this.renderer.setShowFoldWidgets(showFoldWidgets);
@@ -2284,6 +2315,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             range = new Range(cursor.row, column - 2, cursor.row, column);
         }
         this.session.replace(range, swap);
+        this.session.selection.moveToPosition(range.end);
     }
 
     /**
@@ -2324,14 +2356,14 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         const range = this.getSelectionRange();
 
         if (range.start.row < range.end.row) {
-            const {first, last} = this.$getSelectedRows();
+            const { first, last } = this.$getSelectedRows();
             session.indentRows(first, last, "\t");
             return;
         }
         else if (range.start.column < range.end.column) {
             const text = session.getTextRange(range);
             if (!/^\s+$/.test(text)) {
-                const {first, last} = this.$getSelectedRows();
+                const { first, last } = this.$getSelectedRows();
                 session.indentRows(first, last, "\t");
                 return;
             }

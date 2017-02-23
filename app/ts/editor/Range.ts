@@ -79,21 +79,14 @@ export default class Range implements RangeBasic {
 
     /**
      * Creates a new `EditorRange` object with the given starting and ending row and column points.
-     *
-     * @param startRow The starting row
-     * @param startColumn The starting column
-     * @param endRow The ending row
-     * @param endColumn The ending column
      */
-    constructor(startRow: number, startColumn: number, endRow: number, endColumn: number) {
+    constructor(startRow = 0, startColumn = 0, endRow = 0, endColumn = 0) {
         this.start = { row: startRow, column: startColumn };
         this.end = { row: endRow, column: endColumn };
     }
 
     /**
      * Returns `true` if and only if the starting row and column, and ending row and column, are equivalent to those given by `range`.
-     *
-     * @param range A range to check against.
      */
     isEqual(range: { start: Position; end: Position }): boolean {
         return this.start.row === range.start.row &&

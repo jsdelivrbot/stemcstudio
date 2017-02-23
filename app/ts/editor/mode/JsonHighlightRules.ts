@@ -35,12 +35,17 @@ export default class JsonHighlightRules extends TextHighlightRules {
                     regex: "(?:true|false)\\b"
                 },
                 {
-                    token: "invalid.illegal", // single quoted strings are not allowed
+                    token: "text", // single quoted strings are not allowed
                     regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
                 },
                 {
-                    token: "invalid.illegal", // comments are not allowed
+                    token: "comment", // comments are not allowed, but who cares?
                     regex: "\\/\\/.*$"
+                },
+                {
+                    token: "comment.start", // comments are not allowed, but who cares?
+                    regex: "\\/\\*",
+                    next: "comment"
                 },
                 {
                     token: "paren.lparen",
@@ -62,17 +67,21 @@ export default class JsonHighlightRules extends TextHighlightRules {
                 },
                 {
                     token: "string",
-                    regex: '[^"\\\\]+'
-                },
-                {
-                    token: "string",
-                    regex: '"',
+                    regex: '"|$',
                     next: "start"
                 },
                 {
-                    token: "string",
-                    regex: "",
+                    defaultToken: "string"
+                }
+            ],
+            "comment": [
+                {
+                    token: "comment.end", // comments are not allowed, but who cares?
+                    regex: "\\*\\/",
                     next: "start"
+                },
+                {
+                    defaultToken: "comment"
                 }
             ]
         };

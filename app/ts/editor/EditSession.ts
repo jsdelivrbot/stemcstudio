@@ -3410,9 +3410,15 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     getCommentFoldRange(row: number, column: number, dir?: number): Range {
         let iterator = new TokenIterator(this, row, column);
         let token = iterator.getCurrentToken();
-        if (token && /^comment|string/.test(token.type)) {
-            const range = new Range(0, 0, 0, 0);
-            const re = new RegExp(token.type.replace(/\..*/, "\\."));
+        let type = token.type;
+        if (token && /^comment|string/.test(type)) {
+            type = type.match(/comment|string/)[0];
+            if (type === "comment") {
+                type += "|doc-start";
+            }
+            const re = new RegExp(type);
+            const range = new Range();
+            // const re = new RegExp(token.type.replace(/\..*/, "\\."));
             if (dir !== 1) {
                 do {
                     token = iterator.stepBackward();
@@ -3426,12 +3432,25 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             iterator = new TokenIterator(this, row, column);
 
             if (dir !== -1) {
+                let lastRow = -1;
                 do {
                     token = iterator.stepForward();
-                } while (token && re.test(token.type));
+                    if (lastRow === -1) {
+                        const state = this.getState(iterator.getCurrentTokenRow());
+                        if (!re.test(state)) {
+                            lastRow = iterator.getCurrentTokenRow();
+                        }
+                    }
+                    else if (iterator.getCurrentTokenRow() > lastRow) {
+                        break;
+                    }
+                }
+                while (token && re.test(token.type));
                 token = iterator.stepBackward();
-            } else
+            }
+            else {
                 token = iterator.getCurrentToken();
+            }
 
             range.end.row = iterator.getCurrentTokenRow();
             range.end.column = iterator.getCurrentTokenColumn() + token.value.length - 2;

@@ -3,8 +3,8 @@ import themes from './manifest';
 import Theme from '../../Theme';
 import EditorPreferencesService from '../../EditorPreferencesService';
 import EditorPreferencesEvent from '../../EditorPreferencesEvent';
-import {currentTheme} from '../../EditorPreferencesEvent';
-import {EDITOR_PREFERENCES_STORAGE} from '../../../preferences/constants';
+import { currentTheme } from '../../EditorPreferencesEvent';
+import { EDITOR_PREFERENCES_STORAGE } from '../../../preferences/constants';
 import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
 
 const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
@@ -33,6 +33,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
             href: `/themes/${theme.fileName}`,
             isDark: theme.isDark,
             showFoldWidgets: this.storage.showFoldWidgets,
+            showGutter: this.storage.showGutter,
             showInvisibles: this.storage.showInvisibles,
             showLineNumbers: this.storage.showLineNumbers,
             showPrintMargin: this.storage.showPrintMargin,
@@ -167,6 +168,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
+    getShowGutter(): boolean {
+        return this.storage.showGutter;
+    }
+
+    /**
+     * 
+     */
+    setShowGutter(showGutter: boolean): void {
+        this.storage.showGutter = showGutter;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
     getShowInvisibles(): boolean {
         return this.storage.showInvisibles;
     }
@@ -239,6 +255,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
                 href: `/themes/${theme.fileName}`,
                 isDark: theme.isDark,
                 showFoldWidgets: this.storage.showFoldWidgets,
+                showGutter: this.storage.showGutter,
                 showInvisibles: this.storage.showInvisibles,
                 showLineNumbers: this.storage.showLineNumbers,
                 showPrintMargin: this.storage.showPrintMargin,

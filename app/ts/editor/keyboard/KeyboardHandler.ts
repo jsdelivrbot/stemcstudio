@@ -59,8 +59,7 @@ export default class KeyboardHandler {
     public platform: string;
 
     /**
-     * @params commands
-     * @params platform
+     *
      */
     constructor(commands?: Command[], platform?: string) {
 
@@ -74,7 +73,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param command
+     *
      */
     addCommand(command: Command): void {
         if (this.commands[command.name]) {
@@ -89,21 +88,31 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param command
+     *
      */
-    removeCommand(command: string | Command): void {
+    removeCommand(command: string | Command /* | { [name: string]: Command }*/, keepCommand = false): void {
         const name = (typeof command === 'string' ? command : command.name);
         command = this.commands[name];
-        delete this.commands[name];
+        if (!keepCommand) {
+            delete this.commands[name];
+        }
 
         // exhaustive search is brute force but since removeCommand is
         // not a performance critical operation this should be OK
         const ckb = this.commandKeyBinding;
-        for (const hashId in ckb) {
-            if (ckb.hasOwnProperty(hashId)) {
-                for (const key in ckb[hashId]) {
-                    if (ckb[hashId][key] === command) {
-                        delete ckb[hashId][key];
+        for (const keyId in ckb) {
+            if (ckb.hasOwnProperty(keyId)) {
+                // TODO: Is it possible for command to be something other than string or Command?
+                // In particular, an array of Commands.
+                /*
+                const cmdGroup = ckb[keyId];
+                if (cmdGroup === command) {
+                    delete ckb[keyId];
+                }
+                */
+                for (const key in ckb[keyId]) {
+                    if (ckb[keyId][key] === command) {
+                        delete ckb[keyId][key];
                     }
                 }
             }
@@ -114,11 +123,8 @@ export default class KeyboardHandler {
      * Binds key alternatives to an action.
      * This is a convenience function for adding a command.
      * The name of the command is derived from the key alternatives string.
-     *
-     * @param key
-     * @param action
      */
-    bindKey(key: string, action: EditorAction): void {
+    bindKey(key: string, action: EditorAction/*, position*/): void {
         if (!key) {
             throw new TypeError("key must be a string.");
         }
@@ -126,10 +132,18 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param key
-     * @param command
+     *
      */
-    bindCommand(key: string, command: Command): void {
+    bindCommand(key: string, command: Command/*, position*/): void {
+        // TODO: Do we need to generalize key?
+        /*
+        if (typeof key === "object" && key) {
+            if (position === undefined) {
+                position = key.position;
+            }
+            key = key[this.platform];
+        }
+        */
 
         if (!key) {
             return;
@@ -138,17 +152,18 @@ export default class KeyboardHandler {
         const ckb = this.commandKeyBinding;
 
         key.split("|").forEach((keyPart) => {
-            const binding: KeyHash = this.parseKeys(keyPart/*, command*/);
+            const binding: KeyHash = this.parseKeys(keyPart);
             const hashId = binding.hashId;
             (ckb[hashId] || (ckb[hashId] = {}))[binding.key] = command;
         });
     }
 
     /**
-     * @param commands
+     *
      */
     addCommands(commands: Command[]): void {
-        for (let i = 0, iLength = commands.length; i < iLength; i++) {
+        const iLength = commands.length;
+        for (let i = 0; i < iLength; i++) {
             this.addCommand(commands[i]);
         }
     }
@@ -168,7 +183,7 @@ export default class KeyboardHandler {
     */
 
     /**
-     * @param commands
+     *
      */
     removeCommands(commands: { [name: string]: string | Command }): void {
         Object.keys(commands).forEach((name) => {
@@ -177,7 +192,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param keyList
+     *
      */
     bindKeys(keyList: { [name: string]: EditorAction }): void {
         Object.keys(keyList).forEach((key) => {
@@ -186,7 +201,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param command
+     *
      */
     public _buildKeyHash(command: Command): void {
         const binding = command.bindKey;
@@ -200,8 +215,6 @@ export default class KeyboardHandler {
     /**
      * accepts keys in the form ctrl+Enter or ctrl-Enter
      * keys without modifiers or shift only.
-     *
-     * @param keys
      */
     parseKeys(keys: string): KeyHash {
         // todo support keychains 
@@ -231,8 +244,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param hashId
-     * @param keyString
+     *
      */
     findKeyCommand(hashId: number, keyString: string): Command {
         const ckbr = this.commandKeyBinding;
@@ -240,12 +252,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method handleKeyboard
-     * @param data
-     * @param hashId
-     * @param keyString
-     * @param keyCode
-     * @param e
+     *
      */
     handleKeyboard(data: any, hashId: number, keyString: string, keyCode?: number, e?: KeyboardEvent): KeyboardResponse {
         const response = {
@@ -255,14 +262,14 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @param editor
+     *
      */
     public attach(editor: Editor): void {
         // This implementation does nothing.
     }
 
     /**
-     * @param editor
+     *
      */
     public detach(editor: Editor): void {
         // This implementation does nothing.

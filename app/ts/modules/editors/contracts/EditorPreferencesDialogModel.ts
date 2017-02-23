@@ -23,6 +23,10 @@ interface EditorPreferencesDialogModel {
     /**
      * 
      */
+    showGutter: boolean;
+    /**
+     * 
+     */
     showInvisibles: boolean;
     /**
      * 

@@ -17,6 +17,10 @@ interface EditorPreferencesStorage {
     /**
      * 
      */
+    showGutter: boolean;
+    /**
+     * 
+     */
     showInvisibles: boolean;
     /**
      * 

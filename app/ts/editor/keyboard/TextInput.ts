@@ -10,7 +10,8 @@ import Range from '../Range';
 
 const BROKEN_SETDATA = isChrome < 18;
 const USE_IE_MIME_TYPE = isIE;
-const PLACEHOLDER = "\x01\x01";
+const PLACEHOLDER = "\u2028\u2028";
+const PLACEHOLDER_CHAR_FIRST = PLACEHOLDER.charAt(0);
 
 /**
  *
@@ -47,10 +48,6 @@ export default class TextInput {
 
     private syncValue: DelayedCall;
 
-    /**
-     * @param container
-     * @param editor
-     */
     constructor(container: Element, editor: Editor) {
 
         this.editor = editor;
@@ -262,7 +259,7 @@ export default class TextInput {
                 if (this.inComposition || !data || data === PLACEHOLDER)
                     return;
                 // can happen either after delete or during insert operation
-                if (e && data === PLACEHOLDER[0])
+                if (e && data === PLACEHOLDER_CHAR_FIRST)
                     return syncProperty.schedule();
 
                 this.sendText(data);
@@ -533,7 +530,7 @@ export default class TextInput {
             }
             this.pasted = false;
         }
-        else if (data === PLACEHOLDER.charAt(0)) {
+        else if (data === PLACEHOLDER_CHAR_FIRST) {
             if (this.afterContextMenu) {
                 const delCommand = this.editor.commands.getCommandByName(COMMAND_NAME_DEL);
                 this.editor.execCommand(delCommand, { source: "ace" });
@@ -545,14 +542,17 @@ export default class TextInput {
             }
         }
         else {
-            if (data.substring(0, 2) === PLACEHOLDER)
+            if (data.substring(0, 2) === PLACEHOLDER) {
                 data = data.substr(2);
-            else if (data.charAt(0) === PLACEHOLDER.charAt(0))
+            }
+            else if (data.charAt(0) === PLACEHOLDER_CHAR_FIRST) {
                 data = data.substr(1);
-            else if (data.charAt(data.length - 1) === PLACEHOLDER.charAt(0))
+            }
+            else if (data.charAt(data.length - 1) === PLACEHOLDER_CHAR_FIRST) {
                 data = data.slice(0, -1);
+            }
             // can happen if undo in textarea isn't stopped
-            if (data.charAt(data.length - 1) === PLACEHOLDER.charAt(0))
+            if (data.charAt(data.length - 1) === PLACEHOLDER_CHAR_FIRST)
                 data = data.slice(0, -1);
 
             if (data) {

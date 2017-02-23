@@ -19,6 +19,10 @@ interface Preferences {
     /**
      * 
      */
+    showGutter?: boolean;
+    /**
+     * 
+     */
     showInvisibles?: boolean;
     /**
      * 
@@ -57,6 +61,7 @@ const DEFAULTS: Preferences = {
     displayIndentGuides: false,
     fontSize: '14px',
     showFoldWidgets: true,
+    showGutter: true,
     showInvisibles: false,
     showLineNumbers: true,
     showPrintMargin: false,
@@ -97,6 +102,14 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
     set showFoldWidgets(value: boolean) {
         this.cache.showFoldWidgets = value;
+        this.updateStorage();
+    }
+
+    get showGutter(): boolean {
+        return this.cache.showGutter;
+    }
+    set showGutter(value: boolean) {
+        this.cache.showGutter = value;
         this.updateStorage();
     }
 

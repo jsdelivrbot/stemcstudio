@@ -1,8 +1,8 @@
 import EditorPreferencesDialog from '../contracts/EditorPreferencesDialog';
 import EditorPreferencesDialogModel from '../contracts/EditorPreferencesDialogModel';
 import EditorPreferencesService from '../EditorPreferencesService';
-import {EDITOR_PREFERENCES_DIALOG} from '../constants';
-import {EDITOR_PREFERENCES_SERVICE} from '../constants';
+import { EDITOR_PREFERENCES_DIALOG } from '../constants';
+import { EDITOR_PREFERENCES_SERVICE } from '../constants';
 
 /**
  * This controller is responsible for handling the request from the UI
@@ -26,6 +26,7 @@ export default class EditorPreferencesController {
         const fontSize = this.editorPreferencesService.getFontSize();
         const theme = this.editorPreferencesService.getCurrentTheme();
         const showFoldWidgets = this.editorPreferencesService.getShowFoldWidgets();
+        const showGutter = this.editorPreferencesService.getShowGutter();
         const showInvisibles = this.editorPreferencesService.getShowInvisibles();
         const showLineNumbers = this.editorPreferencesService.getShowLineNumbers();
         const showPrintMargin = this.editorPreferencesService.getShowPrintMargin();
@@ -36,6 +37,7 @@ export default class EditorPreferencesController {
             displayIndentGuides,
             fontSize,
             showFoldWidgets,
+            showGutter,
             showInvisibles,
             showLineNumbers,
             showPrintMargin,
@@ -50,6 +52,7 @@ export default class EditorPreferencesController {
             this.editorPreferencesService.setFontSize(model.fontSize);
             this.editorPreferencesService.setCurrentThemeByName(model.theme.name);
             this.editorPreferencesService.setShowFoldWidgets(model.showFoldWidgets);
+            this.editorPreferencesService.setShowGutter(model.showGutter);
             this.editorPreferencesService.setShowInvisibles(model.showInvisibles);
             this.editorPreferencesService.setShowLineNumbers(model.showLineNumbers);
             this.editorPreferencesService.setShowPrintMargin(model.showPrintMargin);
@@ -65,6 +68,7 @@ export default class EditorPreferencesController {
                     this.editorPreferencesService.setFontSize(fontSize);
                     this.editorPreferencesService.setCurrentThemeByName(theme.name);
                     this.editorPreferencesService.setShowFoldWidgets(showFoldWidgets);
+                    this.editorPreferencesService.setShowGutter(showGutter);
                     this.editorPreferencesService.setShowInvisibles(showInvisibles);
                     this.editorPreferencesService.setShowLineNumbers(showLineNumbers);
                     this.editorPreferencesService.setShowPrintMargin(showPrintMargin);

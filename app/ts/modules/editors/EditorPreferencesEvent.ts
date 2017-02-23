@@ -29,6 +29,10 @@ interface EditorPreferencesEvent {
     /**
      * 
      */
+    showGutter: boolean;
+    /**
+     * 
+     */
     showInvisibles: boolean;
     /**
      * 

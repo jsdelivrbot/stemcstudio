@@ -2,7 +2,7 @@ import * as uib from 'angular-bootstrap';
 import EditorPreferencesDialogScope from './EditorPreferencesDialogScope';
 import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
 import EditorPreferencesService from '../../EditorPreferencesService';
-import {EDITOR_PREFERENCES_SERVICE} from '../../constants';
+import { EDITOR_PREFERENCES_SERVICE } from '../../constants';
 
 /**
  * 
@@ -28,6 +28,7 @@ export default class EditorPreferencesDialogController {
         this.$scope.displayIndentGuides = this.dialogModel.displayIndentGuides;
         this.$scope.fontSize = this.dialogModel.fontSize;
         this.$scope.showFoldWidgets = this.dialogModel.showFoldWidgets;
+        this.$scope.showGutter = this.dialogModel.showGutter;
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
         this.$scope.showLineNumbers = this.dialogModel.showLineNumbers;
         this.$scope.showPrintMargin = this.dialogModel.showPrintMargin;
@@ -47,6 +48,10 @@ export default class EditorPreferencesDialogController {
 
         this.$scope.showFoldWidgetsChange = () => {
             this.editorPreferencesService.setShowFoldWidgets(this.$scope.showFoldWidgets);
+        };
+
+        this.$scope.showGutterChange = () => {
+            this.editorPreferencesService.setShowGutter(this.$scope.showGutter);
         };
 
         this.$scope.showInvisiblesChange = () => {
@@ -78,6 +83,7 @@ export default class EditorPreferencesDialogController {
             this.dialogModel.displayIndentGuides = this.$scope.displayIndentGuides;
             this.dialogModel.fontSize = this.$scope.fontSize;
             this.dialogModel.showFoldWidgets = this.$scope.showFoldWidgets;
+            this.dialogModel.showGutter = this.$scope.showGutter;
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;
             this.dialogModel.showLineNumbers = this.$scope.showLineNumbers;
             this.dialogModel.showPrintMargin = this.$scope.showPrintMargin;

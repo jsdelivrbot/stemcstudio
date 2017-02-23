@@ -50,11 +50,8 @@ export default class Tooltip {
     }
 
     /**
-     * Sets the `left` and `top` CSS style properties.
+     * Sets the `left` and `top` CSS style properties (units are pixels).
      * This action can also happen during the `show` method.
-     *
-     * @param left {number} The style 'left' value in pixels.
-     * @param top {number} The style 'top' value in pixels.
      */
     setPosition(left: number, top: number): void {
         const style = this.getElement().style;
@@ -72,7 +69,13 @@ export default class Tooltip {
     /**
      * Shows the tool by setting the CSS display property to 'block'.
      */
-    show(): void {
+    show(text?: string, left?: number, top?: number): void {
+        if (typeof text === 'string') {
+            this.setText(text);
+        }
+        if (typeof left === 'number' && typeof top === 'number') {
+            this.setPosition(left, top);
+        }
         if (!this.isOpen) {
             this.getElement().style.display = 'block';
             this.isOpen = true;
@@ -101,5 +104,15 @@ export default class Tooltip {
      */
     getWidth(): number {
         return this.getElement().offsetWidth;
+    }
+
+    /**
+     * 
+     */
+    destroy() {
+        this.isOpen = false;
+        if (this.$element && this.$element.parentNode) {
+            this.$element.parentNode.removeChild(this.$element);
+        }
     }
 }

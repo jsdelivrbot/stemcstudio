@@ -63,6 +63,14 @@ interface EditorPreferencesService {
     /**
      * 
      */
+    getShowGutter(): boolean;
+    /**
+     * 
+     */
+    setShowGutter(showGutter: boolean): void;
+    /**
+     * 
+     */
     getShowInvisibles(): boolean;
     /**
      * 

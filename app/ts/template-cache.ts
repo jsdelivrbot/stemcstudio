@@ -615,6 +615,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='showGutter' data-ng-change='showGutterChange()'>Gutter</input>\n" +
+    "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
     "                <input type='checkbox' ng-model='displayIndentGuides' data-ng-change='displayIndentGuidesChange()'>Indent Guides</input>\n" +
     "            </label>\n" +
     "            <br/>\n" +
@@ -626,7 +630,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <input type='checkbox' ng-model='useSoftTabs' data-ng-change='useSoftTabsChange()'>Soft Tabs</input>\n" +
     "            </label>\n" +
     "            <br/>\n" +
-    "            <label class='text-muted'>Tab Size:</label>\n" +
+    "            <label class='text-muted'>Indent Size:</label>\n" +
     "            <select ng-model='tabSize' ng-options='tabSize for tabSize in tabSizes track by tabSize' data-ng-change='tabSizeChange()'></select>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +

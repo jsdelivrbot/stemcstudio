@@ -423,8 +423,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Associates the renderer with a different EditSession.
-     *
-     * @param session
      */
     setSession(session: EditSession): void {
         if (this.session) {

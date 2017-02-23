@@ -109,6 +109,7 @@ function factory(
                 editor.setThemeCss(event.cssClass, event.href);
                 editor.setThemeDark(event.isDark);
                 editor.setShowFoldWidgets(event.showFoldWidgets);
+                editor.setShowGutter(event.showGutter);
                 editor.setDisplayIndentGuides(event.displayIndentGuides);
                 editor.setShowInvisibles(event.showInvisibles);
                 editor.setShowLineNumbers(event.showLineNumbers);
