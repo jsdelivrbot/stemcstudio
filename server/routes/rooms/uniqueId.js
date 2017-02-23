@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function uniqueId() {
     var soup = 'abcdefghijklmnopqrstuvwxyz';
     var id = soup.charAt(Math.random() * soup.length);
@@ -11,5 +12,4 @@ function uniqueId() {
     }
     return id;
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = uniqueId;

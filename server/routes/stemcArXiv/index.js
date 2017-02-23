@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var AWS = require("aws-sdk");
 var putDoodleRef_1 = require("./aws/dynamodb/putDoodleRef");
 AWS.config.region = 'us-east-1';

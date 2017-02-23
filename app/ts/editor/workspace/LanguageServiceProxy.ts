@@ -4,6 +4,7 @@ import Diagnostic from './Diagnostic';
 import FormatCodeSettings from './FormatCodeSettings';
 import TextChange from './TextChange';
 import OutputFile from './OutputFile';
+import RuleFailure from './RuleFailure';
 import QuickInfo from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
 import setModuleKindCallback from './SetModuleKindCallback';
@@ -14,6 +15,7 @@ const EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';
 const EVENT_ENSURE_SCRIPT = 'ensureScript';
 const EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
 const EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT = 'getFormattingEditsForDocument';
+const EVENT_GET_LINT_ERRORS = 'getLintErrors';
 const EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
 const EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors';
 const EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
@@ -81,6 +83,12 @@ export default class LanguageServiceProxy {
             const { err, callbackId } = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
             callback(err);
+        });
+
+        this.worker.on(EVENT_GET_LINT_ERRORS, (response: { data: WorkerClientData<RuleFailure[]> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback: (err: any, results?: RuleFailure[]) => void = this.releaseCallback(callbackId);
+            callback(err, value);
         });
 
         this.worker.on(EVENT_GET_SYNTAX_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
@@ -219,6 +227,12 @@ export default class LanguageServiceProxy {
         const callbackId = this.captureCallback(callback);
         const message = { data: { trace, callbackId } };
         this.worker.emit(EVENT_SET_TRACE, message);
+    }
+
+    public getLintErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+        const callbackId = this.captureCallback(callback);
+        const message = { data: { fileName, callbackId } };
+        this.worker.emit(EVENT_GET_LINT_ERRORS, message);
     }
 
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {

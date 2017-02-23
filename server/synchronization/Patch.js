@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var DIFF_DELETE_1 = require("./DIFF_DELETE");
 var DIFF_INSERT_1 = require("./DIFF_INSERT");
 var DIFF_EQUAL_1 = require("./DIFF_EQUAL");
@@ -53,5 +54,4 @@ var Patch = (function () {
     };
     return Patch;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Patch;

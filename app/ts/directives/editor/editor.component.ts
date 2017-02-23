@@ -225,7 +225,7 @@ function factory(
                                 if (isTypeScript($scope.path)) {
                                     const settings: FormatCodeSettings = {};
                                     settings.baseIndentSize = 0;
-                                    settings.convertTabsToSpaces = editorPreferencesService.getUseSoftTabs();
+                                    settings.convertTabsToSpaces = true;
                                     settings.indentSize = editorPreferencesService.getTabSize();
                                     settings.indentStyle = IndentStyle.Smart;
                                     settings.insertSpaceAfterCommaDelimiter = true;

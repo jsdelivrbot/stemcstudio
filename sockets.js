@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var sio = require("socket.io");
 var rooms = require("./server/routes/rooms/index");
 var socketByNodeId = {};
@@ -72,5 +73,4 @@ function sockets(app, server) {
         });
     });
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = sockets;

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var DIFF_EQUAL_1 = require("../DIFF_EQUAL");
 function addLeadingPadding(patches, paddingLength, nullPadding) {
     var patch = patches[0];
@@ -19,5 +20,4 @@ function addLeadingPadding(patches, paddingLength, nullPadding) {
         patch.length2 += extraLength;
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = addLeadingPadding;

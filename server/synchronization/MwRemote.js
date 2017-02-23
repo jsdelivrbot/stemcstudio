@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var DMP_1 = require("./DMP");
 var isChanged_1 = require("./isChanged");
 var MwShadow_1 = require("./MwShadow");
@@ -161,5 +162,4 @@ var MwRemote = (function () {
     };
     return MwRemote;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MwRemote;

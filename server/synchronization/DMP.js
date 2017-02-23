@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var addLeadingPadding_1 = require("./dmp/addLeadingPadding");
 var addTrailingPadding_1 = require("./dmp/addTrailingPadding");
 var Patch_1 = require("./Patch");
@@ -1659,5 +1660,4 @@ var DMP = (function () {
     };
     return DMP;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = DMP;

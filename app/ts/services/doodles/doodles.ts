@@ -101,9 +101,9 @@ app.factory('doodles', [
             function compareNumbers(a: number, b: number) {
                 return b - a;
             }
-            const nums: number[] = _doodles.filter(function (doodle: Doodle) {
+            const nums: number[] = _doodles.filter(function (doodle: Doodle): boolean {
                 if (typeof doodle.description === 'string') {
-                    return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
+                    return !!doodle.description.match(new RegExp(UNTITLED));
                 }
                 else {
                     // If it does not have a description, ignore it.

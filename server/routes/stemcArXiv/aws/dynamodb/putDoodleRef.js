@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var AWS = require("aws-sdk");
 var DoodleRefTable_1 = require("./DoodleRefTable");
 var DoodleRefTable_2 = require("./DoodleRefTable");
@@ -39,5 +40,4 @@ function putDoodleRef(doodle, next) {
         }
     });
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = putDoodleRef;

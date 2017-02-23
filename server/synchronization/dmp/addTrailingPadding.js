@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var DIFF_EQUAL_1 = require("../DIFF_EQUAL");
 function addTrailingPadding(patches, paddingLength, nullPadding) {
     var patch = patches[patches.length - 1];
@@ -15,5 +16,4 @@ function addTrailingPadding(patches, paddingLength, nullPadding) {
         patch.length2 += extraLength;
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = addTrailingPadding;

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var cookieParser = require("cookie-parser");
 var express = require("express");
 var path = require("path");
@@ -105,5 +106,4 @@ app.get("/*", function (req, res, next) {
     });
 });
 app.use(errorHandler());
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = app;

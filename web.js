@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var nconf = require("nconf");
 var http = require("http");
 var app_1 = require("./app");

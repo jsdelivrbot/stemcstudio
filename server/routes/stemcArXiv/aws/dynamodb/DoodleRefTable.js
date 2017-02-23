@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.TableName = 'DoodleRef';
 exports.OWNER_KEY = 'OwnerKey';
 exports.RESOURCE_KEY = 'ResourceKey';

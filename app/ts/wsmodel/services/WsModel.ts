@@ -946,7 +946,23 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                         }
                         else {
                             this.updateSession(path, semanticErrors, session);
-                            callback(void 0);
+                            if (semanticErrors.length === 0) {
+                                this.inFlight++;
+                                this.languageServiceProxy.getLintErrors(path, (err: any, lintErrors: Diagnostic[]) => {
+                                    this.inFlight--;
+                                    if (err) {
+                                        console.warn(`getLintErrors(${path}) => ${err}`);
+                                        callback(err);
+                                    }
+                                    else {
+                                        this.updateSession(path, lintErrors, session);
+                                        callback(void 0);
+                                    }
+                                });
+                            }
+                            else {
+                                callback(void 0);
+                            }
                         }
                     });
                 }

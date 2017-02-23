@@ -1,4 +1,4 @@
 "use strict";
-var DIFF_DELETE = -1;
 Object.defineProperty(exports, "__esModule", { value: true });
+var DIFF_DELETE = -1;
 exports.default = DIFF_DELETE;

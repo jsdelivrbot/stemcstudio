@@ -799,16 +799,8 @@
   "github:angular/bower-angular-sanitize@1.6.2": {
     "angular": "jspm:angular@^1.3.0"
   },
-  "npm:brorand@1.0.7": {},
   "github:angular/bower-angular-animate@1.6.2": {
     "angular": "jspm:angular@^1.3.0"
-  },
-  "npm:elliptic@6.3.3": {
-    "bn.js": "npm:bn.js@^4.4.0",
-    "brorand": "npm:brorand@^1.0.1",
-    "hash.js": "npm:hash.js@^1.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
   "npm:angular@1.6.2": {},
   "npm:select@1.1.2": {},
@@ -817,7 +809,7 @@
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
-  "github:ace2ts/ace-workers@2.0.7": {},
+  "github:ace2ts/ace-workers@2.0.8": {},
   "npm:engine.io-client@1.8.3": {
     "component-emitter": "npm:component-emitter@1.2.1",
     "component-inherit": "npm:component-inherit@0.0.3",
@@ -851,5 +843,23 @@
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:brorand@1.1.0": {},
+  "npm:minimalistic-crypto-utils@1.0.1": {},
+  "npm:hmac-drbg@1.0.0": {
+    "hash.js": "npm:hash.js@^1.0.3",
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
+    "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.1",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:elliptic@6.4.0": {
+    "bn.js": "npm:bn.js@^4.4.0",
+    "brorand": "npm:brorand@^1.0.1",
+    "hash.js": "npm:hash.js@^1.0.0",
+    "hmac-drbg": "npm:hmac-drbg@^1.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
+    "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   }
 }

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var redis = require("redis");
 var url = require("url");
 var asserts_1 = require("../../synchronization/asserts");

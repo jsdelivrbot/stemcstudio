@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var DMP_1 = require("./DMP");
 var INITIAL_VERSION = 1;
 var dmp = new DMP_1.default();
@@ -93,5 +94,4 @@ var MwShadow = (function () {
     };
     return MwShadow;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MwShadow;
