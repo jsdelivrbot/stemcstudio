@@ -53,6 +53,9 @@ export const isOldIE = isIE && isIE < 9;
 
 // Is this Firefox or related?
 export const isGecko = (('Controllers' in window) || ('controllers' in window)) && window.navigator.product === "Gecko";
+/**
+ * Mozilla
+ */
 export const isMozilla = isGecko;
 
 // oldGecko == rev < 2.0 

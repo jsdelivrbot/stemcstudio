@@ -9,7 +9,6 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@2.0.8",
     "angular": "github:angular/bower-angular@1.5.9",
     "angular-animate": "github:angular/bower-angular-animate@1.6.2",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -21,6 +20,7 @@ System.config({
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.0",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.0.9",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.6.4",

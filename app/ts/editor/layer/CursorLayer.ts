@@ -8,6 +8,8 @@ import Position from '../Position';
 
 let isIE8: boolean;
 
+const PIXEL_POSITION_ZERO = { left: 0, top: 0 };
+
 /**
  * This class is the HTML representation of the CursorLayer.
  */
@@ -28,7 +30,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     public $pixelPos: PixelPosition;
 
     /**
-     * @param parent
+     *
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_cursor-layer");
@@ -65,7 +67,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @param padding
+     *
      */
     public setPadding(padding: number): void {
         if (typeof padding === 'number') {
@@ -77,7 +79,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @param session
+     *
      */
     public setSession(session: EditSession): void {
         this.session = session;
@@ -98,7 +100,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @param smoothBlinking
+     *
      */
     public setSmoothBlinking(smoothBlinking: boolean): void {
         if (smoothBlinking !== this.smoothBlinking && !isIE8) {
@@ -189,30 +191,53 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      * The number of rows is multiplied by the line height.
      * The number of columns is multiplied by the character width.
      * The padding is added to the left property only.
-     *
-     * @param position
-     * @param onScreen
      */
     public getPixelPosition(position?: Position, onScreen?: boolean): PixelPosition {
 
-        if (!this.config || !this.session) {
-            return { left: 0, top: 0 };
+        if (!this.config) {
+            // This happens because of the gotoLine(0, 0) call that is made
+            // in the editor component. Maybe that call is a bit too eager.
+            // console.warn("getPixelPosition called without a config");
+            return PIXEL_POSITION_ZERO;
         }
+
+        if (!this.session) {
+            console.warn("getPixelPosition called without a session");
+            return PIXEL_POSITION_ZERO;
+        }
+
+        const firstRow = onScreen ? this.config.firstRowScreen : 0;
 
         if (!position) {
-            position = this.session.getSelection().getCursor();
+            const selection = this.session.getSelection();
+            if (selection) {
+                position = selection.getCursor();
+                return this.getPixelPositionForRow(position, firstRow);
+            }
+            else {
+                console.warn("getPixelPosition called without a selection");
+                return PIXEL_POSITION_ZERO;
+            }
         }
+        else {
+            return this.getPixelPositionForRow(position, firstRow);
+        }
+    }
 
+    /**
+     * 
+     */
+    private getPixelPositionForRow(position: Position, firstRow: number) {
         const pos: Position = this.session.documentToScreenPosition(position.row, position.column);
 
         const cursorLeft = this.$padding + pos.column * this.config.characterWidth;
-        const cursorTop = (pos.row - (onScreen ? this.config.firstRowScreen : 0)) * this.config.lineHeight;
+        const cursorTop = (pos.row - firstRow) * this.config.lineHeight;
 
         return { left: cursorLeft, top: cursorTop };
     }
 
     /**
-     * @param config
+     *
      */
     public update(config: CursorConfig): void {
 
@@ -261,10 +286,12 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     private $setOverwrite(overwrite: boolean) {
         if (overwrite !== this.overwrite) {
             this.overwrite = overwrite;
-            if (overwrite)
+            if (overwrite) {
                 addCssClass(this.element, "ace_overwrite-cursors");
-            else
+            }
+            else {
                 removeCssClass(this.element, "ace_overwrite-cursors");
+            }
         }
     }
 }

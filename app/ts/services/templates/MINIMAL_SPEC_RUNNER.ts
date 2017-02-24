@@ -72,7 +72,7 @@ export default function (tabString: string): string {
     lines.push(" * Helper function for extending the properties on objects.");
     lines.push(" */");
     lines.push("export default function extend<T>(destination: T, source: any): T {");
-    lines.push(_ + "for (let property in source) {");
+    lines.push(_ + "for (const property in source) {");
     lines.push(_ + _ + "if (source.hasOwnProperty(property)) {");
     lines.push(_ + _ + _ + "(<any>destination)[property] = source[property];");
     lines.push(_ + _ + "}");

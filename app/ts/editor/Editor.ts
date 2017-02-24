@@ -5,7 +5,7 @@ import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import Disposable from './base/Disposable';
 import { stringRepeat } from "./lib/lang";
-import { isIE, isMac, isOldIE, isWebKit } from "./lib/useragent";
+import { isIE, isMac, isOldIE, isWebKit, isMozilla } from "./lib/useragent";
 import GutterLayer from "./layer/GutterLayer";
 import GutterTooltip from './GutterTooltip';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
@@ -1065,12 +1065,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.renderer.updateFull();
         }
         else {
+            // Clear the renderer first in case the layers try to access the selection.
+            this.renderer.setSession(void 0);
+
             // Make sure that the selection is cleared BEFORE clearing the session.
             this.selection = null;
             // Now we can do it.
             this.session = void 0;
-            // Cleanup the renderer too.
-            this.renderer.setSession(void 0);
         }
 
         const changeSessionEvent: EditorChangeSessionEvent = { session: session, oldSession: oldSession };
@@ -4128,7 +4129,7 @@ class EditorMouseEvent {
 }
 
 function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function (ev: EditorMouseEvent) {
+    return function mousedown(ev: EditorMouseEvent): void {
         const inSelection = ev.inSelection();
         const pos = ev.getDocumentPosition();
         mouseHandler.mousedownEvent = ev;
@@ -4138,17 +4139,25 @@ function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
             const selectionRange = editor.getSelectionRange();
             const selectionEmpty = selectionRange.isEmpty();
 
-            if (selectionEmpty)
+            if (selectionEmpty || button === 1) {
                 editor.selection.moveToPosition(pos);
+            }
 
             // 2: contextmenu, 1: linux paste
-            editor.textInput.onContextMenu(ev.domEvent);
-            return; // stopping event here breaks contextmenu on ff mac
+            if (button === 2) {
+                editor.textInput.onContextMenu(ev.domEvent);
+                if (!isMozilla) {
+                    ev.preventDefault();
+                }
+            }
+            // Stopping event here breaks contextmenu on ff mac.
+            // Not stopping breaks it on chrome mac.
+            return;
         }
 
         mouseHandler.mousedownEvent.time = Date.now();
-        // if this click caused the editor to be focused should not clear the
-        // selection
+        // if this click caused the editor to be focused,
+        // should not clear the selection
         if (inSelection && !editor.isFocused()) {
             editor.focus();
             if (mouseHandler.$focusTimout && !mouseHandler.$clickSelection && !editor.inMultiSelectMode) {

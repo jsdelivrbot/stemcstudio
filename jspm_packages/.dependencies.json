@@ -809,7 +809,6 @@
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
-  "github:ace2ts/ace-workers@2.0.8": {},
   "npm:engine.io-client@1.8.3": {
     "component-emitter": "npm:component-emitter@1.2.1",
     "component-inherit": "npm:component-inherit@0.0.3",
@@ -861,5 +860,6 @@
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
     "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  }
+  },
+  "github:geometryzen/ace-workers@2.0.9": {}
 }
