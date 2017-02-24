@@ -322,7 +322,7 @@ export default class LanguageServiceWorker {
                 rules['eofline'] = true;
                 rules['forin'] = true;
                 rules['jsdoc-format'] = true;
-                rules['no-trailing-whitespace'] = [true];
+                rules['no-trailing-whitespace'] = [true, 'ignore-jsdoc'];
                 rules['no-var-keyword'] = true;
                 rules['one-variable-per-declaration'] = [true, 'ignore-for-loop'];
                 rules['prefer-const'] = true;

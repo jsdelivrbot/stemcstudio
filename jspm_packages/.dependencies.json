@@ -861,5 +861,5 @@
     "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.0.9": {}
+  "github:geometryzen/ace-workers@2.0.10": {}
 }
