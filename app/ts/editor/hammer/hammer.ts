@@ -788,7 +788,9 @@ function computeCenter(touches: Touch[]): ClientLocation {
         return undefined;
     }
     else {
-        let x = 0, y = 0, i = 0;
+        let x = 0;
+        let y = 0;
+        let i = 0;
         while (i < touchesLength) {
             x += touches[i].clientX;
             y += touches[i].clientY;
@@ -847,12 +849,12 @@ function getDirection(movement: VectorE2): number {
  * @param {Array} [props] containing x and y keys
  * @return {Number} distance
  */
-export function getDistance(p1, p2, props?) {
+export function getDistance(p1, p2, props?): number {
     if (!props) {
         props = PROPS_XY;
     }
-    const x = p2[props[0]] - p1[props[0]],
-        y = p2[props[1]] - p1[props[1]];
+    const x = p2[props[0]] - p1[props[0]];
+    const y = p2[props[1]] - p1[props[1]];
 
     return Math.sqrt((x * x) + (y * y));
 }

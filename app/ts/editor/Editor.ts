@@ -639,7 +639,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         if (!ranges.length || sameRowRanges.length === ranges.length - 1) {
             const range = this.selection.getRange();
-            let fr = range.start.row, lr = range.end.row;
+            let fr = range.start.row;
+            let lr = range.end.row;
             const guessRange = (fr === lr);
             if (guessRange) {
                 const max = this.session.getLength();
@@ -1069,7 +1070,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.renderer.setSession(void 0);
 
             // Make sure that the selection is cleared BEFORE clearing the session.
-            this.selection = null;
+            // Defere the following line until strict null checking is done.
+            // this.selection = null;
+
             // Now we can do it.
             this.session = void 0;
         }

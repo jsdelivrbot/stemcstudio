@@ -1,5 +1,5 @@
 import { getMatchOffsets } from "./lib/lang";
-import Marker from "./Marker";
+import { Marker, MarkerType } from "./Marker";
 import Range from "./Range";
 import EditSession from "./EditSession";
 import MarkerLayer from "./layer/MarkerLayer";
@@ -14,23 +14,21 @@ const MAX_RANGES = 500;
 export default class SearchHighlight implements Marker {
     private regExp: RegExp;
     public clazz: string;
-    public type: string;
+    public type: MarkerType;
     private cache: Range[][];
     private _range: Range;
 
     /**
-     * @param regExpr
-     * @param clazz
-     * @param type
+     *
      */
-    constructor(regExp: RegExp, clazz: string, type: string) {
+    constructor(regExp: RegExp, clazz: string, type: MarkerType) {
         this.setRegexp(regExp);
         this.clazz = clazz;
         this.type = type || "text";
     }
 
     /**
-     * @param regExp
+     *
      */
     setRegexp(regExp: RegExp): void {
         if (this.regExp + "" === regExp + "") {
@@ -49,17 +47,15 @@ export default class SearchHighlight implements Marker {
     }
 
     /**
-     * @param html
-     * @param markerLayer
-     * @param session
-     * @param config
+     *
      */
     update(html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig): void {
         if (!this.regExp) {
             return;
         }
 
-        const start = config.firstRow, end = config.lastRow;
+        const start = config.firstRow;
+        const end = config.lastRow;
 
         for (let i = start; i <= end; i++) {
             let ranges = this.cache[i];

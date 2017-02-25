@@ -5,7 +5,7 @@ import { stringRepeat } from "./lib/lang";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
-import Marker from "./Marker";
+import { Marker, MarkerType } from "./Marker";
 import MarkerRenderer from "./layer/MarkerRenderer";
 import EventBus from "./EventBus";
 import EventEmitterClass from "./lib/EventEmitterClass";
@@ -34,14 +34,14 @@ import FoldMode from "./mode/folding/FoldMode";
 import TextMode from "./mode/TextMode";
 
 // "Tokens"
-const CHAR = 1,
-    CHAR_EXT = 2,
-    PLACEHOLDER_START = 3,
-    PLACEHOLDER_BODY = 4,
-    PUNCTUATION = 9,
-    SPACE = 10,
-    TAB = 11,
-    TAB_SPACE = 12;
+const CHAR = 1;
+const CHAR_EXT = 2;
+const PLACEHOLDER_START = 3;
+const PLACEHOLDER_BODY = 4;
+const PUNCTUATION = 9;
+const SPACE = 10;
+const TAB = 11;
+const TAB_SPACE = 12;
 
 // For every keystroke this gets called once per char in the whole doc!!
 // Wouldn't hurt to make it a bit faster for c >= 0x1100
@@ -870,10 +870,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param clazz {string} Set the CSS class for the marker
      * @param [type='line'] {string} Identify the type of the marker.
      * @param [renderer] {MarkerRenderer}
-     * @param {Boolean} inFront Set to `true` to establish a front marker
-     * @returns {Number} The new marker id
+     * @param inFront Set to `true` to establish a front marker
+     * @returns The new marker id
      */
-    public addMarker(range: Range, clazz: string, type = 'line', renderer?: MarkerRenderer, inFront?: boolean): number {
+    public addMarker(range: Range, clazz: string, type: MarkerType = 'line', renderer?: MarkerRenderer, inFront?: boolean): number {
         const id = this.$markerId++;
 
         if (range) {
@@ -974,19 +974,14 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns an array containing the IDs of all the markers, either front or back.
-     *
-     * @method getMarkers
-     * @param {boolean} inFront If `true`, indicates you only want front markers; `false` indicates only back markers.
-     * @returns {{[id: number]: Marker}}
+     * inFront If `true`, indicates you only want front markers; `false` indicates only back markers.
      */
     public getMarkers(inFront: boolean): { [id: number]: Marker } {
         return inFront ? this.$frontMarkers : this.$backMarkers;
     }
 
     /**
-     * @method highlight
-     * @param re {RegExp}
-     * @returns {void}
+     *
      */
     public highlight(re: RegExp): void {
         if (!this.$searchHighlight) {
@@ -2145,7 +2140,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         const splits: number[] = [];
         const displayLength = tokens.length;
-        let lastSplit = 0, lastDocSplit = 0;
+        let lastSplit = 0;
+        let lastDocSplit = 0;
 
         const isCode: boolean = this.$wrapAsCode;
 
@@ -2703,7 +2699,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
         else {
             const lastRow = this.$wrapData.length;
-            let row = 0, i = 0;
+            let row = 0;
+            let i = 0;
             let fold = this.$foldData[i++];
             let foldStart = fold ? fold.start.row : Infinity;
 
@@ -2980,9 +2977,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         const foldData = this.$foldData;
         let rowCount = last - first + 1;
         for (let i = 0; i < foldData.length; i++) {
-            const foldLine = foldData[i],
-                end = foldLine.end.row,
-                start = foldLine.start.row;
+            const foldLine = foldData[i];
+            const end = foldLine.end.row;
+            const start = foldLine.start.row;
             if (end >= last) {
                 if (start < last) {
                     if (start >= first)

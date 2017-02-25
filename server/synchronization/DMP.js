@@ -643,7 +643,10 @@ var DMP = (function () {
         else {
             hm = hm1[4].length > hm2[4].length ? hm1 : hm2;
         }
-        var text1_a, text1_b, text2_a, text2_b;
+        var text1_a;
+        var text1_b;
+        var text2_a;
+        var text2_b;
         if (text1.length > text2.length) {
             text1_a = hm[0];
             text1_b = hm[1];

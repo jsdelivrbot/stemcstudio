@@ -646,7 +646,8 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         const renderTokens: Token[] = [];
 
         function addTokens(tokens: Token[], from: number, to: number): void {
-            let idx = 0, col = 0;
+            let idx = 0;
+            let col = 0;
             while ((col + tokens[idx].value.length) < from) {
                 col += tokens[idx].value.length;
                 idx++;

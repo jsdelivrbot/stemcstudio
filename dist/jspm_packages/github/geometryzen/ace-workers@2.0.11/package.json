@@ -1,0 +1,69 @@
+{
+  "name": "ace-workers",
+  "version": "2.0.11",
+  "description": "Workers for STEMCstudio Editor",
+  "directories": {
+    "lib": "lib"
+  },
+  "main": "dist/ace-workers.min.js",
+  "homepage": "https://github.com/ace2ts/ace-workers",
+  "author": "david.geo.holmes@gmail.com",
+  "keywords": [
+    "editor",
+    "browser",
+    "Ace",
+    "Ace2ts",
+    "systemjs",
+    "es6",
+    "typescript",
+    "ts"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ace2ts/ace-workers.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "es6-module-loader": "^0.17.11",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-complexity": "^0.3.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^1.0.2",
+    "grunt-exec": "~0.4.7",
+    "grunt-jasmine-task": "^0.2.3",
+    "grunt-tslint": "^4.0.1",
+    "jasmine-core": "^2.5.2",
+    "jspm": "^0.16.52",
+    "karma": "^1.5.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-systemjs": "^0.8.0",
+    "phantomjs": "^2.1.7",
+    "phantomjs-polyfill": "0.0.2",
+    "q": "~1.4.1",
+    "servedir": "^1.0.0",
+    "systemjs": "^0.19.46",
+    "systemjs-builder": "^0.15.35",
+    "tslint": "^4.4.2",
+    "typescript": "^2.2.0"
+  },
+  "jspm": {
+    "directories": {
+      "lib": "lib"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.38",
+      "babel-runtime": "npm:babel-runtime@^5.8.38",
+      "core-js": "npm:core-js@^1.2.7",
+      "ts": "github:frankwallis/plugin-typescript@^4.0.16",
+      "typescript": "npm:typescript@^2.2.0"
+    }
+  }
+}

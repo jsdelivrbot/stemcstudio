@@ -161,7 +161,8 @@ export default class Search {
         if (range) {
             const startColumn = range.start.column;
             const endColumn = range.start.column;
-            let i = 0, j = ranges.length - 1;
+            let i = 0;
+            let j = ranges.length - 1;
             while (i < j && ranges[i].start.column < startColumn && ranges[i].start.row === range.start.row)
                 i++;
 

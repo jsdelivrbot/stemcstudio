@@ -12,7 +12,12 @@ function twitterFactory(
         const js = <HTMLScriptElement>$window.document.createElement(tagName);
         js.id = id;
         js.src = "https://platform.twitter.com/widgets.js";
-        fjs.parentNode.insertBefore(js, fjs);
+        if (fjs.parentNode) {
+            fjs.parentNode.insertBefore(js, fjs);
+        }
+        else {
+            throw new Error(`${tagName}[0] has no parentNode`);
+        }
 
         t['_e'] = [];
         t.ready = function (callback: (twttr: Twitter) => void) {

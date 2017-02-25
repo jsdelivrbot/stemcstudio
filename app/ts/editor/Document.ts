@@ -627,7 +627,8 @@ export default class Document implements Shareable {
         const l = lines.length;
         const row = delta.start.row;
         let column = delta.start.column;
-        let from = 0, to = 0;
+        let from = 0;
+        let to = 0;
         do {
             from = to;
             to += MAX - 1;

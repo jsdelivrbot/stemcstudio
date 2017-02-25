@@ -4,10 +4,12 @@ import MarkerRenderer from './layer/MarkerRenderer';
 import EditSession from './EditSession';
 import Range from './Range';
 
+export type MarkerType = 'fullLine' | 'line' | 'text' | 'screenLine';
+
 /**
  *
  */
-interface Marker {
+export interface Marker {
 
     /**
      *
@@ -37,7 +39,7 @@ interface Marker {
     /**
      * One of "fullLine", "line", "text", or "screenLine".
      */
-    type: string;
+    type: MarkerType;
 
     /**
      *

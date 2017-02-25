@@ -962,7 +962,7 @@ export default class DMP {
         const hm1 = diff_halfMatchI_(longtext_, shorttext_, Math.ceil(longtext_.length / 4));
         // Check again based on the third quarter.
         const hm2 = diff_halfMatchI_(longtext_, shorttext_, Math.ceil(longtext_.length / 2));
-        let hm;
+        let hm: string[];
         if (!hm1 && !hm2) {
             return null;
         } else if (!hm2) {
@@ -975,7 +975,10 @@ export default class DMP {
         }
 
         // A half-match was found, sort out the return data.
-        let text1_a, text1_b, text2_a, text2_b;
+        let text1_a: string;
+        let text1_b: string;
+        let text2_a: string;
+        let text2_b: string;
         if (text1.length > text2.length) {
             text1_a = hm[0];
             text1_b = hm[1];
@@ -990,7 +993,6 @@ export default class DMP {
         const mid_common = hm[4];
         return [text1_a, text1_b, text2_a, text2_b, mid_common];
     }
-
 
     /**
      * Reduce the number of edits by eliminating semantically trivial equalities.

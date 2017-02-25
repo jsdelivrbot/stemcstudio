@@ -483,7 +483,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         }
 
         // convert to plain text
-        let row = 0, column = 0;
+        let row = 0;
+        let column = 0;
         let text = "";
         // FIXME: t should be string or Token, but below we use start and end.
         // That looks more like a Range!

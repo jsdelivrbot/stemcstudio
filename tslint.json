@@ -12,7 +12,9 @@
             true,
             "spaces"
         ],
-        "interface-name": false,
+        "interface-name": [
+            false
+        ],
         "jsdoc-format": true,
         "label-position": true,
         "max-line-length": [
@@ -41,7 +43,9 @@
         "no-duplicate-variable": true,
         "no-empty": true,
         "no-eval": true,
-        "no-inferrable-types": true,
+        "no-inferrable-types": [
+            true
+        ],
         "no-shadowed-variable": false,
         "no-string-literal": false,
         "no-switch-case-fall-through": false,
@@ -55,13 +59,19 @@
             "check-open-brace",
             "check-whitespace"
         ],
+        "one-variable-per-declaration": [
+            true,
+            "ignore-for-loop"
+        ],
         "quotemark": [
             false,
             "double",
             "avoid-escape"
         ],
         "radix": true,
-        "semicolon": true,
+        "semicolon": [
+            true
+        ],
         "switch-default": false,
         "triple-equals": [
             true,
