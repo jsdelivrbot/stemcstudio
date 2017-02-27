@@ -3,6 +3,21 @@ import EditSession from './EditSession';
 import KeyboardHandler from './keyboard/KeyboardHandler';
 import Renderer from './Renderer';
 import UndoManager from './UndoManager';
+/**
+ * FIXME: Cloning appears to be used by the Split feature.
+ * This implementation looks wierd.
+ */
+function $cloneFoldData(): FoldLine[] {
+    let fd: FoldLine[] = [];
+    fd = this.foldLines_.map(function (foldLine) {
+        const folds = foldLine.folds.map(function (fold) {
+            return fold.clone();
+        });
+        return new FoldLine(fd, folds);
+    });
+
+    return fd;
+}
 
 export default class Split {
     private BELOW: number;
@@ -158,6 +173,9 @@ export default class Split {
         });
     }
 
+    /**
+     * FIXME: Clone should be a standalone function, not a method. 
+     */
     $cloneSession(session: EditSession) {
         const s = new EditSession(session.getDocument()/*, session.getMode()*/);
 

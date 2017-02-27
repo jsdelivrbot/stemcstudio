@@ -18,7 +18,10 @@ import MwRemote from '../../synchronization/MwRemote';
 import MwChange from '../../synchronization/MwChange';
 import MwShadow from '../../synchronization/MwShadow';
 
-const EXPIRE_DURATION_IN_SECONDS = 1800;
+/**
+ * The expiration duration for a collaboration is set to 1 hour.
+ */
+const EXPIRE_DURATION_IN_SECONDS = 3600;
 
 const ROOM_PATHS_PROPERTY_NAME = 'paths';
 const ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
@@ -37,15 +40,30 @@ else {
 }
 
 client.on('ready', function ready(err: any) {
-    console.log("Redis client is 'ready'.");
+    if (err) {
+        console.warn(`Redis 'ready' failed. ${err}`);
+    }
+    else {
+        console.warn("Redis is 'ready'.");
+    }
 });
 
 client.on('connect', function connect(err: any) {
-    console.log("Redis client has connected to the server.");
+    if (err) {
+        console.warn(`Redis could not connect to the server. ${err}`);
+    }
+    else {
+        console.warn("Redis is connected to the server.");
+    }
 });
 
 client.on('reconnecting', function reconnecting(err: any) {
-    console.log("Trying to reconnect to the Redis server after losing the connection.");
+    if (err) {
+        console.log("Trying to reconnect to the Redis server after losing the connection...");
+    }
+    else {
+        console.log("Trying to reconnect to the Redis server after losing the connection...");
+    }
 });
 
 client.on('error', function error(err: any) {

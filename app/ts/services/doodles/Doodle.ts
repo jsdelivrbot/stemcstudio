@@ -15,7 +15,7 @@ export default class Doodle {
     /**
      * The GitHub Gist identifier.
      */
-    public gistId: string;
+    public gistId: string | undefined;
 
     /**
      * The owner's login name.
@@ -46,7 +46,7 @@ export default class Doodle {
         this.lastKnownJs = {};
     }
 
-    get packageInfo(): IDoodleConfig {
+    get packageInfo(): Partial<IDoodleConfig> {
         try {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
@@ -57,11 +57,11 @@ export default class Doodle {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
             const file = this.ensurePackageJson();
             console.warn(file.content);
-            return void 0;
+            throw new Error();
         }
     }
 
-    get name(): string {
+    get name(): string | undefined {
         if (this.existsPackageJson()) {
             const pkgInfo = this.packageInfo;
             if (pkgInfo) {
@@ -76,10 +76,10 @@ export default class Doodle {
         }
     }
 
-    set name(name: string) {
+    set name(name: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            const metaInfo: Partial<IDoodleConfig> = JSON.parse(file.content);
             metaInfo.name = name;
             file.content = JSON.stringify(metaInfo, null, 2);
         }
@@ -88,7 +88,7 @@ export default class Doodle {
         }
     }
 
-    get version(): string {
+    get version(): string | undefined {
         if (this.existsPackageJson()) {
             return this.packageInfo.version;
         }
@@ -97,14 +97,14 @@ export default class Doodle {
         }
     }
 
-    set version(version: string) {
+    set version(version: string | undefined) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        const metaInfo: Partial<IDoodleConfig> = JSON.parse(file.content);
         metaInfo.version = version;
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
-    get author(): string {
+    get author(): string | undefined {
         try {
             if (this.existsPackageJson()) {
                 const pkgInfo = this.packageInfo;
@@ -125,14 +125,14 @@ export default class Doodle {
         }
     }
 
-    set author(author: string) {
+    set author(author: string | undefined) {
         const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
         setOptionalStringProperty('author', author, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
-    get description(): string {
+    get description(): string | undefined {
         try {
             if (this.existsPackageJson()) {
                 const pkgInfo = this.packageInfo;
@@ -153,7 +153,7 @@ export default class Doodle {
         }
     }
 
-    set description(description: string) {
+    set description(description: string | undefined) {
         const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
         setOptionalStringProperty('description', description, metaInfo);
@@ -165,7 +165,12 @@ export default class Doodle {
             if (this.existsPackageJson()) {
                 const pkgInfo = this.packageInfo;
                 if (pkgInfo) {
-                    return this.packageInfo.keywords;
+                    if (this.packageInfo.keywords) {
+                        return this.packageInfo.keywords;
+                    }
+                    else {
+                        return [];
+                    }
                 }
                 else {
                     return [];
@@ -221,7 +226,12 @@ export default class Doodle {
                 const pkgInfo = this.packageInfo;
                 if (pkgInfo) {
                     const dependencyMap = this.packageInfo.dependencies;
-                    return dependencyNames(dependencyMap);
+                    if (dependencyMap) {
+                        return dependencyNames(dependencyMap);
+                    }
+                    else {
+                        return [];
+                    }
                 }
                 else {
                     return [];
@@ -257,25 +267,24 @@ export default class Doodle {
         return this.ensureFile(FILENAME_META, '{}');
     }
 
-    private ensureFile(name: string, content: string): DoodleFile {
-        if (!this.existsFile(name)) {
-            const file = this.newFile(name);
-            file.content = content;
-            file.language = modeFromName(name);
-            return file;
+    private ensureFile(path: string, content: string): DoodleFile {
+        const existingFile = this.findFileByName(path);
+        if (existingFile) {
+            return existingFile;
         }
         else {
-            return this.findFileByName(name);
+            const file = this.newFile(path);
+            file.content = content;
+            file.language = modeFromName(path);
+            return file;
         }
     }
 
     /**
-     * @method closeFile
-     * @param name {string}
-     * @return {void}
+     *
      */
-    closeFile(name: string): void {
-        const file = this.findFileByName(name);
+    closeFile(path: string): void {
+        const file = this.findFileByName(path);
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
@@ -288,11 +297,9 @@ export default class Doodle {
         // Select the first open file that we find.
         this.deselectAll();
 
-        const names = Object.keys(this.files);
-        const iLen = names.length;
-        for (let i = 0; i < iLen; i++) {
-            const name = names[i];
-            const file = this.files[name];
+        const paths = Object.keys(this.files);
+        for (const path of paths) {
+            const file = this.files[path];
             if (file.isOpen) {
                 file.selected = true;
                 return;
@@ -331,9 +338,6 @@ export default class Doodle {
 
     /**
      * Empties the map containing Gist files that are marked for deletion.
-     * 
-     * @method emtyTrash
-     * @return {void}
      */
     emptyTrash(): void {
         this.trash = {};
@@ -360,7 +364,7 @@ export default class Doodle {
     /**
      *
      */
-    getHtmlFileChoice(): string {
+    getHtmlFileChoice(): string | undefined {
         const names = Object.keys(this.files);
         const iLen = names.length;
         for (let i = 0; i < iLen; i++) {
@@ -377,13 +381,13 @@ export default class Doodle {
      * Otherwise, make a best guess from the available files.
      * This will improve the user experience.
      */
-    getHtmlFileChoiceOrBestAvailable(): string {
+    getHtmlFileChoiceOrBestAvailable(): string | undefined {
         const previewFile = this.getHtmlFileChoice();
         if (previewFile) {
             return previewFile;
         }
         else {
-            let bestFile: string;
+            let bestFile: string | undefined;
             const names = Object.keys(this.files);
             const iLen = names.length;
             for (let i = 0; i < iLen; i++) {
@@ -461,13 +465,11 @@ export default class Doodle {
     }
 
     /**
-     * @method findFileByName
-     * @param name {string}
-     * @return {DoodleFile}
+     *
      */
-    findFileByName(name: string): DoodleFile {
+    findFileByName(path: string): DoodleFile | undefined {
         if (this.files) {
-            return this.files[name];
+            return this.files[path];
         }
         else {
             return void 0;
@@ -475,9 +477,7 @@ export default class Doodle {
     }
 
     /**
-     * @method newFile
-     * @param path {string}
-     * @return {DoodleFile}
+     *
      */
     newFile(path: string): DoodleFile {
         const mode = modeFromName(path);
@@ -547,8 +547,10 @@ export default class Doodle {
                     // We can recycle a file from trash.
                     this.restoreFileFromTrash(newName);
                     const theFile = this.findFileByName(newName);
-                    // Initialize properties that depend upon the new name.
-                    theFile.language = mode;
+                    if (theFile) {
+                        // Initialize properties that depend upon the new name.
+                        theFile.language = mode;
+                    }
                 }
                 // Delete the file by the old name.
                 this.deleteFile(oldName);

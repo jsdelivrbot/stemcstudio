@@ -1,7 +1,7 @@
 import isUndefined from '../utils/isUndefined';
 
 export default class Fuzzy<T> {
-    private _value: T;
+    private _value: T | undefined;
     private _reason: any;
     reset(): void {
         this._value = void 0;
@@ -21,7 +21,7 @@ export default class Fuzzy<T> {
     isUndefined(): boolean {
         return isUndefined(this._value) && isUndefined(this._reason);
     }
-    get value(): T {
+    get value(): T | undefined {
         return this._value;
     }
     get reason(): any {

@@ -7,8 +7,8 @@ import WsFile from '../../wsmodel/services/WsFile';
  * The trash files represent files that are known to exist in GitHub and must be physically deleted.
  * This is done by including a mapping from path to null.
  */
-export default function doodleFilesToGistFiles(files: { [path: string]: WsFile }, trash: { [path: string]: WsFile }): { [gName: string]: { content: string } } {
-    const gFiles: { [path: string]: { content: string } } = {};
+export default function doodleFilesToGistFiles(files: { [path: string]: WsFile }, trash: { [path: string]: WsFile }): { [gName: string]: { content: string } | null } {
+    const gFiles: { [path: string]: { content: string } | null } = {};
 
     const filesPaths: string[] = Object.keys(files);
     // console.lg(`filesPaths => ${filesPaths}`);

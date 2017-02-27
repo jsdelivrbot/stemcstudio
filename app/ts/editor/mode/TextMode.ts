@@ -12,6 +12,7 @@ import { escapeRegExp } from "../lib/lang";
 import Highlighter from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
+import Token from '../Token';
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
@@ -111,7 +112,7 @@ export default class TextMode implements LanguageMode {
      *
      */
     public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): boolean {
-        const doc = session.doc;
+        const doc = session.docOrThrow();
 
         let ignoreBlankLines = true;
         let shouldRemove = true;
@@ -142,22 +143,24 @@ export default class TextMode implements LanguageMode {
             };
 
             uncomment = function (line: string, i: number): void {
-                let m: RegExpMatchArray;
-                if (m = line.match(regexpEnd))
+                let m: RegExpMatchArray | null;
+                if (m = line.match(regexpEnd)) {
                     doc.removeInLine(i, line.length - m[0].length, line.length);
+                }
                 if (m = line.match(regexpStart))
                     doc.removeInLine(i, m[1].length, m[0].length);
             };
 
             testRemove = function (line: string, row: number): boolean {
-                if (regexpStart.test(line))
+                if (regexpStart.test(line)) {
                     return true;
+                }
                 const tokens = session.getTokens(row);
                 for (let i = 0; i < tokens.length; i++) {
                     if (tokens[i].type === 'comment')
                         return true;
                 }
-                return void 0;
+                return false;
             };
         }
         else {
@@ -266,16 +269,16 @@ export default class TextMode implements LanguageMode {
             comment = comment[0];
 
         const outerIterator = new TokenIterator(session, cursor.row, cursor.column);
-        let outerToken = outerIterator.getCurrentToken();
+        let outerToken: Token | undefined | null = outerIterator.getCurrentToken();
 
         const selection = session.getSelection();
         const initialRange = selection.toOrientedRange();
-        let startRow: number;
-        let colDiff: number;
+        let startRow: number | undefined;
+        let colDiff: number | undefined;
 
         if (outerToken && /comment/.test(outerToken.type)) {
-            let startRange: Range;
-            let endRange: Range;
+            let startRange: Range | undefined;
+            let endRange: Range | undefined;
             while (outerToken && /comment/.test(outerToken.type)) {
                 const i = outerToken.value.indexOf(comment.start);
                 if (i !== -1) {
@@ -314,11 +317,25 @@ export default class TextMode implements LanguageMode {
             session.insert(range.end, comment.end);
             session.insert(range.start, comment.start);
         }
+
         // todo: selection should have ended up in the right place automatically!
-        if (initialRange.start.row === startRow)
-            initialRange.start.column += colDiff;
-        if (initialRange.end.row === startRow)
-            initialRange.end.column += colDiff;
+        if (initialRange.start.row === startRow) {
+            if (colDiff) {
+                initialRange.start.column += colDiff;
+            }
+            else {
+                console.warn(`colDiff is ${typeof colDiff}`);
+            }
+        }
+        if (initialRange.end.row === startRow) {
+            if (colDiff) {
+                initialRange.end.column += colDiff;
+            }
+            else {
+                console.warn(`colDiff is ${typeof colDiff}`);
+            }
+        }
+
         session.getSelection().fromOrientedRange(initialRange);
     }
 
@@ -415,7 +432,7 @@ export default class TextMode implements LanguageMode {
     // TODO: May be able to make this type-safe by separating cases where param is string from Range.
     // string => {text: string; selection: number[]} (This corresponds to the insert operation)
     // Range  => Range                               (This corresponds to the remove operation)
-    transformAction(state: string, action: string, editor: Editor, session: EditSession, param: string | Range): TextAndSelection | Range {
+    transformAction(state: string, action: string, editor: Editor, session: EditSession, param: string | Range): TextAndSelection | Range | undefined {
         if (this.$behaviour) {
             const behaviours = this.$behaviour.getBehaviours();
             for (let key in behaviours) {
@@ -461,8 +478,13 @@ export default class TextMode implements LanguageMode {
                         for (let a = 0, aLength = tokens.length; a < aLength; a++) {
                             if (/keyword|support|storage/.test(tokens[a])) {
                                 // drop surrounding parens
-                                const matched: string = (<string>rule.regex).match(/\(.+?\)/g)[a];
-                                completionKeywords.push(matched.substr(1, matched.length - 2));
+                                if (typeof rule.regex === 'string') {
+                                    const matches = (rule.regex).match(/\(.+?\)/g);
+                                    if (matches) {
+                                        const matched = matches[a];
+                                        completionKeywords.push(matched.substr(1, matched.length - 2));
+                                    }
+                                }
                             }
                         }
                     }

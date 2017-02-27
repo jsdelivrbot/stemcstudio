@@ -1,10 +1,15 @@
 function getExtension(path: string): string {
     const basename = path.split(/[\\/]/).pop();
-    const pos = basename.lastIndexOf(".");
-    if (basename === "" || pos < 1) {
-        return "";
+    if (basename) {
+        const pos = basename.lastIndexOf(".");
+        if (basename === "" || pos < 1) {
+            return "";
+        }
+        return basename.slice(pos + 1);
     }
-    return basename.slice(pos + 1);
+    else {
+        throw new Error(`path ${path} has no basename`);
+    }
 }
 
 export default function prefixFromPath(path: string): string {

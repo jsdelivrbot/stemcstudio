@@ -13,16 +13,19 @@ import SelectionAddRangeEvent from "./events/SelectionAddRangeEvent";
 import SelectionRemoveRangeEvent from "./events/SelectionRemoveRangeEvent";
 
 /**
+ * Nothing (void 0).
+ */
+const NOTHING: undefined = void 0;
+
+/**
  * Contains the cursor position and the text selection of an edit session.
  *
  * The row/columns used in the selection are in document coordinates representing
  * the coordinates as they appear in the document before applying soft wrap and folding.
  */
 export default class Selection implements EventBus<any, Selection> {
-    private session: EditSession;
-    // FIXME: Maybe Selection should only couple to the EditSession?
-    // FIXME: This appears to be cached for convenience. Replace with a private getter?
-    private doc: Document;
+    private session: EditSession | null;
+    private doc: Document | null | undefined;
 
     /**
      *
@@ -42,7 +45,7 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      *
      */
-    public $desiredColumn: number;
+    public $desiredColumn: number | null;
 
     /**
      *
@@ -75,28 +78,22 @@ export default class Selection implements EventBus<any, Selection> {
     public rangeList: RangeList = new RangeList();
 
     /**
-     * @property inVirtualMode
-     * @type boolean
+     *
      */
     public inVirtualMode: boolean;
 
     private eventBus: EventEmitterClass<any, Selection>;
 
-    /**
-     * Creates a new `Selection` object.
-     *
-     * @class Selection
-     * @constructor
-     * @param session {EditSession} The session to use.
-     */
     constructor(session: EditSession) {
         this.eventBus = new EventEmitterClass<any, Selection>(this);
         this.session = session;
         this.doc = session.getDocument();
 
         this.clearSelection();
-        this.lead = this.selectionLead = new Anchor(this.doc, 0, 0);
-        this.anchor = this.selectionAnchor = new Anchor(this.doc, 0, 0);
+        if (this.doc) {
+            this.lead = this.selectionLead = new Anchor(this.doc, 0, 0);
+            this.anchor = this.selectionAnchor = new Anchor(this.doc, 0, 0);
+        }
 
         // FIXME: This isn't removed.
         this.lead.on("change", (event: AnchorChangeEvent, source: Anchor) => {
@@ -126,28 +123,32 @@ export default class Selection implements EventBus<any, Selection> {
         });
     }
 
-    // adds multicursor support to selection
-    public $initRangeList() {
-        if (this.rangeList)
-            return;
+    /**
+     * adds multicursor support to selection
+     */
+    public ensureRangeList(): RangeList {
+        if (this.rangeList) {
+            return this.rangeList;
+        }
 
         this.rangeList = new RangeList();
         this.ranges = [];
         this.rangeCount = 0;
-    };
+        return this.rangeList;
+    }
 
     /**
      * Removes a Range containing pos (if it exists).
-     *
-     * @param pos The position to remove.
+     * If the selection contains a Range that contains the point, the Range is returned.
+     * Otherwise, nothing is returned.
      */
-    substractPoint(pos: Position): Range {
+    substractPoint(pos: Position): Range | undefined {
         const removed: Range[] = this.rangeList.substractPoint(pos);
         if (removed) {
             this.$onRemoveRange(removed);
             return removed[0];
         }
-        return void 0;
+        return NOTHING;
     };
 
     /**
@@ -159,9 +160,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Splits all the ranges into lines.
-     *
-     * @method splitIntoLines
-     * @return {void}
      */
     splitIntoLines(): void {
         if (this.rangeCount > 1) {
@@ -213,9 +211,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns `true` if the selection is empty.
-     *
-     * @method isEmpty
-     * @return {boolean}
      */
     isEmpty(): boolean {
         // What is the difference between $isEmpty and what this function returns?
@@ -227,9 +222,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns `true` if the selection is a multi-line.
-     *
-     * @method isMultiLine
-     * @return {boolean}
      */
     isMultiLine(): boolean {
         if (this.isEmpty()) {
@@ -241,9 +233,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns the current position of the cursor.
-     *
-     * @method getCursor
-     * @return {Position}
      */
     getCursor(): Position {
         return this.lead.getPosition();
@@ -252,11 +241,6 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Sets the row and column position of the anchor.
      * This function also emits the `'changeSelection'` event.
-     *
-     * @method setSelectionAnchor
-     * @param row {number} The new row
-     * @param column {number} The new column
-     * @return {void}
      */
     setSelectionAnchor(row: number, column: number): void {
 
@@ -281,10 +265,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns the position of the calling selection anchor.
-     *
-     * @method getSelectionAnchor
-     * @return {Position}
-     * @related Anchor.getPosition
      */
     getSelectionAnchor(): Position {
         if (this.$isEmpty) {
@@ -297,9 +277,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns an object containing the `row` and `column` of the calling selection lead.
-     *
-     * @method getSelectionLead
-     * @return {Position}
      */
     getSelectionLead(): Position {
         return this.lead.getPosition();
@@ -307,10 +284,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Shifts the selection up (or down, if [[Selection.isBackwards `isBackwards()`]] is true) the given number of columns.
-     *
-     * @method shiftSelection
-     * @param columns {number} The number of columns to shift by.
-     * @return {void}
      */
     shiftSelection(columns: number): void {
         if (this.$isEmpty) {
@@ -335,9 +308,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns `true` if the selection is going backwards in the document.
-     *
-     * @method isBackwards
-     * @return {boolean}
      */
     isBackwards(): boolean {
         const anchor: Anchor = this.anchor;
@@ -347,9 +317,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Returns the range for the selected text.
-     *
-     * @method getRange
-     * @return {Range}
      */
     getRange() {
 
@@ -384,9 +351,6 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Empties the selection (by de-selecting it).
      * This function also emits the `'changeSelection'` event.
-     *
-     * @method clearSelection
-     * @return {void}
      */
     clearSelection(): void {
         if (!this.$isEmpty) {
@@ -402,17 +366,18 @@ export default class Selection implements EventBus<any, Selection> {
      * Selects all the text in the document.
      */
     selectAll(): void {
-        const lastRow = this.doc.getLength() - 1;
-        this.setSelectionAnchor(0, 0);
-        this.moveCursorTo(lastRow, this.doc.getLine(lastRow).length);
+        if (this.doc) {
+            const lastRow = this.doc.getLength() - 1;
+            this.setSelectionAnchor(0, 0);
+            this.moveCursorTo(lastRow, this.doc.getLine(lastRow).length);
+        }
     }
 
     /**
      * Sets the selection to the provided range.
      *
-     * @method setRange
-     * @param {Range} range The range of text to select
-     * @param {Boolean} reverse Indicates if the range should go backwards (`true`) or not
+     * @param The range of text to select
+     * @param reverse Indicates if the range should go backwards (`true`) or not
      */
     public setRange(range: Range, reverse?: boolean): void {
         this.setSelectionRange(range, reverse);
@@ -443,9 +408,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection cursor to the indicated row and column.
-     *
-     * @param row The row to select to
-     * @param column The column to select to
      */
     selectTo(row: number, column: number): void {
         this.$moveSelection(function () {
@@ -455,8 +417,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection cursor to the row and column indicated by `pos`.
-     *
-     * @param position An object containing the row and column
      */
     selectToPosition(position: Position): void {
         this.$moveSelection(() => {
@@ -466,11 +426,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection cursor to the indicated row and column.
-     *
-     * @method moveTo
-     * @param {Number} row The row to select to
-     * @param {Number} column The column to select to
-     * @return {void}
      */
     moveTo(row: number, column: number): void {
         this.clearSelection();
@@ -479,10 +434,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection cursor to the row and column indicated by `pos`.
-     *
-     * @method moveToPosition
-     * @param {Object} pos An object containing the row and column.
-     * @return {void}
      */
     moveToPosition(pos: Position): void {
         this.clearSelection();
@@ -492,9 +443,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection up one row.
-     *
-     * @method selectUp
-     * @return {void}
      */
     selectUp(): void {
         this.$moveSelection(this.moveCursorUp);
@@ -537,9 +485,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection to the end of the file.
-     *
-     * @method selectFileEnd
-     * @return {void}
      */
     selectFileEnd(): void {
         this.$moveSelection(this.moveCursorFileEnd);
@@ -547,9 +492,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection to the start of the file.
-     *
-     * @method selectFileStart
-     * @return {void}
      */
     selectFileStart(): void {
         this.$moveSelection(this.moveCursorFileStart);
@@ -557,9 +499,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection to the first word on the right.
-     *
-     * @method selectWordRight
-     * @return {void}
      */
     selectWordRight(): void {
         this.$moveSelection(this.moveCursorWordRight);
@@ -567,36 +506,35 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection to the first word on the left.
-     *
-     * @method selectWordLeft
-     * @return {void}
      */
     selectWordLeft(): void {
         this.$moveSelection(this.moveCursorWordLeft);
     }
 
+    sessionOrThrow(): EditSession {
+        if (this.session) {
+            return this.session;
+        }
+        else {
+            throw new Error("session must exist");
+        }
+    }
+
     /**
      * Moves the selection to highlight the entire word.
-     *
-     * @method getWordRange
-     * @param [row] {number}
-     * @param [column] {number}
-     * @return {Range}
      */
     getWordRange(row?: number, column?: number): Range {
-        if (typeof column === "undefined") {
+        const session = this.sessionOrThrow();
+        if (typeof row === 'undefined' || typeof column === 'undefined') {
             const cursor: Anchor = this.lead;
             row = cursor.row;
             column = cursor.column;
         }
-        return this.session.getWordRange(row, column);
+        return session.getWordRange(row, column);
     }
 
     /**
      * Selects an entire word boundary.
-     *
-     * @method selectWord
-     * @return {void}
      */
     selectWord(): void {
         this.setSelectionRange(this.getWordRange(this.lead.row, this.lead.column));
@@ -604,27 +542,23 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Selects a word, including its right whitespace.
-     *
-     * @method selectAWord
-     * @return {void}
      */
     selectAWord(): void {
+        const session = this.sessionOrThrow();
         const cursor = this.getCursor();
-        const range = this.session.getAWordRange(cursor.row, cursor.column);
+        const range = session.getAWordRange(cursor.row, cursor.column);
         this.setSelectionRange(range);
     }
 
     /**
-     * @method getLineRange
-     * @param [row] {number}
-     * @param [excludeLastChar] {boolean}
-     * @return {Range}
+     *
      */
     getLineRange(row?: number, excludeLastChar?: boolean): Range {
+        const session = this.sessionOrThrow();
         let rowStart = typeof row === "number" ? row : this.lead.row;
         let rowEnd: number;
 
-        const foldLine = this.session.getFoldLine(rowStart);
+        const foldLine = session.getFoldLine(rowStart);
         if (foldLine) {
             rowStart = foldLine.start.row;
             rowEnd = foldLine.end.row;
@@ -634,7 +568,7 @@ export default class Selection implements EventBus<any, Selection> {
         }
 
         if (excludeLastChar) {
-            return new Range(rowStart, 0, rowEnd, this.session.getLine(rowEnd).length);
+            return new Range(rowStart, 0, rowEnd, session.getLine(rowEnd).length);
         }
         else {
             return new Range(rowStart, 0, rowEnd + 1, 0);
@@ -643,9 +577,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Selects the entire line.
-     *
-     * @method selectLine
-     * @return {void}
      */
     selectLine(): void {
         this.setSelectionRange(this.getLineRange());
@@ -653,9 +584,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Merges overlapping ranges ensuring consistency after changes.
-     *
-     * @method mergeOverlappingRanges
-     * @return {void}
      */
     mergeOverlappingRanges(): void {
         const removed = this.rangeList.merge();
@@ -669,9 +597,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor up one row.
-     *
-     * @method moveCursorUp
-     * @return {void}
      */
     moveCursorUp(): void {
         this.moveCursorBy(-1, 0);
@@ -679,9 +604,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor down one row.
-     *
-     * @method moveCursorDown
-     * @return {void}
      */
     moveCursorDown(): void {
         this.moveCursorBy(1, 0);
@@ -689,26 +611,24 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor left one column.
-     *
-     * @method moveCursorLeft
-     * @return {void}
      */
     moveCursorLeft(): void {
+        const session = this.sessionOrThrow();
         const cursor = this.lead.getPosition();
         let fold: Fold;
 
-        if (fold = this.session.getFoldAt(cursor.row, cursor.column, -1)) {
+        if (fold = session.getFoldAt(cursor.row, cursor.column, -1)) {
             this.moveCursorTo(fold.start.row, fold.start.column);
         }
         else if (cursor.column === 0) {
             // cursor is a line (start
-            if (cursor.row > 0) {
+            if (this.doc && cursor.row > 0) {
                 this.moveCursorTo(cursor.row - 1, this.doc.getLine(cursor.row - 1).length);
             }
         }
-        else {
-            const tabSize = this.session.getTabSize();
-            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 === tabSize)
+        else if (this.doc) {
+            const tabSize = session.getTabSize();
+            if (session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 === tabSize)
                 this.moveCursorBy(0, -tabSize);
             else
                 this.moveCursorBy(0, -1);
@@ -717,72 +637,72 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor right one column.
-     *
-     * @method moveCursorRight
-     * @return {void}
      */
     moveCursorRight(): void {
+        const session = this.sessionOrThrow();
         const pos = this.lead.getPosition();
-        const fold = this.session.getFoldAt(pos.row, pos.column, 1);
+        const fold = session.getFoldAt(pos.row, pos.column, 1);
         if (fold) {
             this.moveCursorTo(fold.end.row, fold.end.column);
         }
-        else if (this.lead.column === this.doc.getLine(this.lead.row).length) {
-            if (this.lead.row < this.doc.getLength() - 1) {
-                this.moveCursorTo(this.lead.row + 1, 0);
-            }
-        }
-        else {
-            const tabSize = this.session.getTabSize();
-            const cursor = this.lead;
-            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 === tabSize) {
-                this.moveCursorBy(0, tabSize);
+        else if (this.doc) {
+            if (this.lead.column === this.doc.getLine(this.lead.row).length) {
+                if (this.lead.row < this.doc.getLength() - 1) {
+                    this.moveCursorTo(this.lead.row + 1, 0);
+                }
             }
             else {
-                this.moveCursorBy(0, 1);
+                const tabSize = session.getTabSize();
+                const cursor = this.lead;
+                if (session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 === tabSize) {
+                    this.moveCursorBy(0, tabSize);
+                }
+                else {
+                    this.moveCursorBy(0, 1);
+                }
             }
+
         }
     }
 
     /**
      * Moves the cursor to the start of the line.
-     *
-     * @method moveCursorLineStart
-     * @return {void}
      */
     moveCursorLineStart(): void {
+        const session = this.sessionOrThrow();
         const row = this.lead.row;
         const column = this.lead.column;
-        const screenRow = this.session.documentToScreenRow(row, column);
+        const screenRow = session.documentToScreenRow(row, column);
 
-        // Determ the doc-position of the first character at the screen line.
-        const firstColumnPosition = this.session.screenToDocumentPosition(screenRow, 0);
+        // Determine the document position of the first character at the screen line.
+        const firstColumnPosition = session.screenToDocumentPosition(screenRow, 0);
 
-        // Determ the line
+        // Determine the line
         // How does getDisplayLine get from folding onto session?
-        const beforeCursor = this.session.getDisplayLine(
+        const beforeCursor = session.getDisplayLine(
             row, null, firstColumnPosition.row,
             firstColumnPosition.column
         );
 
         const leadingSpace = beforeCursor.match(/^\s*/);
-        // TODO find better way for emacs mode to override selection behaviors
-        if (leadingSpace[0].length !== column && !this.session.$useEmacsStyleLineStart)
-            firstColumnPosition.column += leadingSpace[0].length;
+        if (leadingSpace) {
+            // TODO find better way for emacs mode to override selection behaviors
+            if (leadingSpace[0].length !== column && !session.$useEmacsStyleLineStart) {
+                firstColumnPosition.column += leadingSpace[0].length;
+            }
+        }
         this.moveCursorToPosition(firstColumnPosition);
     }
 
     /**
      * Moves the cursor to the end of the line.
-     *
-     * @method moveCursorLineEnd
-     * @return {void}
      */
     moveCursorLineEnd(): void {
+        const session = this.sessionOrThrow();
         const lead = this.lead;
-        const lineEnd = this.session.getDocumentLastRowColumnPosition(lead.row, lead.column);
+        const lineEnd = session.getDocumentLastRowColumnPosition(lead.row, lead.column);
         if (this.lead.column === lineEnd.column) {
-            const line = this.session.getLine(lineEnd.row);
+            const line = session.getLine(lineEnd.row);
             if (lineEnd.column === line.length) {
                 const textEnd = line.search(/\s+$/);
                 if (textEnd > 0)
@@ -794,21 +714,17 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor to the end of the file.
-     *
-     * @method moveCursorFileEnd
-     * @return {void}
      */
     moveCursorFileEnd(): void {
-        const row = this.doc.getLength() - 1;
-        const column = this.doc.getLine(row).length;
-        this.moveCursorTo(row, column);
+        if (this.doc) {
+            const row = this.doc.getLength() - 1;
+            const column = this.doc.getLine(row).length;
+            this.moveCursorTo(row, column);
+        }
     }
 
     /**
      * Moves the cursor to the start of the file.
-     *
-     * @method moveCursorFileStart
-     * @return {void}
      */
     moveCursorFileStart(): void {
         this.moveCursorTo(0, 0);
@@ -816,119 +732,122 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor to the word on the right.
-     *
-     * @method moveCursorLongWordRight
-     * @return {void}
      */
     moveCursorLongWordRight(): void {
-        const row = this.lead.row;
-        let column = this.lead.column;
-        const line = this.doc.getLine(row);
-        let rightOfCursor = line.substring(column);
+        const session = this.sessionOrThrow();
+        if (this.doc) {
+            const row = this.lead.row;
+            let column = this.lead.column;
+            const line = this.doc.getLine(row);
+            let rightOfCursor = line.substring(column);
 
-        let match: RegExpExecArray;
-        this.session.nonTokenRe.lastIndex = 0;
-        this.session.tokenRe.lastIndex = 0;
+            let match: RegExpExecArray | null;
+            session.nonTokenRe.lastIndex = 0;
+            session.tokenRe.lastIndex = 0;
 
-        // skip folds
-        const fold = this.session.getFoldAt(row, column, 1);
-        if (fold) {
-            this.moveCursorTo(fold.end.row, fold.end.column);
-            return;
+            // skip folds
+            const fold = session.getFoldAt(row, column, 1);
+            if (fold) {
+                this.moveCursorTo(fold.end.row, fold.end.column);
+                return;
+            }
+
+            // first skip space
+            if (match = session.nonTokenRe.exec(rightOfCursor)) {
+                column += session.nonTokenRe.lastIndex;
+                session.nonTokenRe.lastIndex = 0;
+                rightOfCursor = line.substring(column);
+            }
+
+            // if at line end proceed with next line
+            if (column >= line.length) {
+                this.moveCursorTo(row, line.length);
+                this.moveCursorRight();
+                if (row < this.doc.getLength() - 1) {
+                    this.moveCursorWordRight();
+                }
+                return;
+            }
+
+            // advance to the end of the next token
+            if (match = session.tokenRe.exec(rightOfCursor)) {
+                column += session.tokenRe.lastIndex;
+                session.tokenRe.lastIndex = 0;
+            }
+
+            this.moveCursorTo(row, column);
         }
-
-        // first skip space
-        if (match = this.session.nonTokenRe.exec(rightOfCursor)) {
-            column += this.session.nonTokenRe.lastIndex;
-            this.session.nonTokenRe.lastIndex = 0;
-            rightOfCursor = line.substring(column);
-        }
-
-        // if at line end proceed with next line
-        if (column >= line.length) {
-            this.moveCursorTo(row, line.length);
-            this.moveCursorRight();
-            if (row < this.doc.getLength() - 1)
-                this.moveCursorWordRight();
-            return;
-        }
-
-        // advance to the end of the next token
-        if (match = this.session.tokenRe.exec(rightOfCursor)) {
-            column += this.session.tokenRe.lastIndex;
-            this.session.tokenRe.lastIndex = 0;
-        }
-
-        this.moveCursorTo(row, column);
     }
 
     /**
      * Moves the cursor to the word on the left.
-     *
-     * @method moveCursorLongWordLeft
-     * @return {void}
      */
     moveCursorLongWordLeft(): void {
-        const row = this.lead.row;
-        let column = this.lead.column;
+        const session = this.sessionOrThrow();
+        if (this.doc) {
+            const row = this.lead.row;
+            let column = this.lead.column;
 
-        // skip folds
-        let fold: Fold;
-        if (fold = this.session.getFoldAt(row, column, -1)) {
-            this.moveCursorTo(fold.start.row, fold.start.column);
-            return;
+            // skip folds
+            let fold: Fold;
+            if (fold = session.getFoldAt(row, column, -1)) {
+                this.moveCursorTo(fold.start.row, fold.start.column);
+                return;
+            }
+
+            // How does this get from the folding adapter onto the session?
+            let str = session.getFoldStringAt(row, column, -1);
+            if (str == null) {
+                str = this.doc.getLine(row).substring(0, column);
+            }
+
+            let leftOfCursor = stringReverse(str);
+            let match: RegExpMatchArray | null;
+            session.nonTokenRe.lastIndex = 0;
+            session.tokenRe.lastIndex = 0;
+
+            // skip whitespace
+            if (match = session.nonTokenRe.exec(leftOfCursor)) {
+                column -= session.nonTokenRe.lastIndex;
+                leftOfCursor = leftOfCursor.slice(session.nonTokenRe.lastIndex);
+                session.nonTokenRe.lastIndex = 0;
+            }
+
+            // if at begin of the line proceed in line above
+            if (column <= 0) {
+                this.moveCursorTo(row, 0);
+                this.moveCursorLeft();
+                if (row > 0)
+                    this.moveCursorWordLeft();
+                return;
+            }
+
+            // move to the begin of the word
+            if (match = session.tokenRe.exec(leftOfCursor)) {
+                column -= session.tokenRe.lastIndex;
+                session.tokenRe.lastIndex = 0;
+            }
+
+            this.moveCursorTo(row, column);
         }
-
-        // How does this get from the folding adapter onto the session?
-        let str = this.session.getFoldStringAt(row, column, -1);
-        if (str == null) {
-            str = this.doc.getLine(row).substring(0, column);
-        }
-
-        let leftOfCursor = stringReverse(str);
-        let match: RegExpMatchArray;
-        this.session.nonTokenRe.lastIndex = 0;
-        this.session.tokenRe.lastIndex = 0;
-
-        // skip whitespace
-        if (match = this.session.nonTokenRe.exec(leftOfCursor)) {
-            column -= this.session.nonTokenRe.lastIndex;
-            leftOfCursor = leftOfCursor.slice(this.session.nonTokenRe.lastIndex);
-            this.session.nonTokenRe.lastIndex = 0;
-        }
-
-        // if at begin of the line proceed in line above
-        if (column <= 0) {
-            this.moveCursorTo(row, 0);
-            this.moveCursorLeft();
-            if (row > 0)
-                this.moveCursorWordLeft();
-            return;
-        }
-
-        // move to the begin of the word
-        if (match = this.session.tokenRe.exec(leftOfCursor)) {
-            column -= this.session.tokenRe.lastIndex;
-            this.session.tokenRe.lastIndex = 0;
-        }
-
-        this.moveCursorTo(row, column);
     }
 
     /**
-     * @param rightOfCursor
+     *
      */
     private $shortWordEndIndex(rightOfCursor: string): number {
-        let match: RegExpMatchArray;
+        const session = this.sessionOrThrow();
+        let match: RegExpMatchArray | null;
         let index = 0;
         let ch: string;
         const whitespaceRe = /\s/;
-        const tokenRe = this.session.tokenRe;
+        const tokenRe = session.tokenRe;
 
         tokenRe.lastIndex = 0;
-        if (match = this.session.tokenRe.exec(rightOfCursor)) {
-            index = this.session.tokenRe.lastIndex;
-        } else {
+        if (match = session.tokenRe.exec(rightOfCursor)) {
+            index = session.tokenRe.lastIndex;
+        }
+        else {
             while ((ch = rightOfCursor[index]) && whitespaceRe.test(ch))
                 index++;
 
@@ -957,61 +876,67 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     moveCursorShortWordRight() {
-        let row = this.lead.row;
-        let column = this.lead.column;
-        const line = this.doc.getLine(row);
-        let rightOfCursor = line.substring(column);
+        const session = this.sessionOrThrow();
+        if (this.doc) {
+            let row = this.lead.row;
+            let column = this.lead.column;
+            const line = this.doc.getLine(row);
+            let rightOfCursor = line.substring(column);
 
-        const fold = this.session.getFoldAt(row, column, 1);
-        if (fold)
-            return this.moveCursorTo(fold.end.row, fold.end.column);
+            const fold = session.getFoldAt(row, column, 1);
+            if (fold)
+                return this.moveCursorTo(fold.end.row, fold.end.column);
 
-        if (column === line.length) {
-            const l = this.doc.getLength();
-            do {
-                row++;
-                rightOfCursor = this.doc.getLine(row);
-            } while (row < l && /^\s*$/.test(rightOfCursor));
+            if (column === line.length) {
+                const l = this.doc.getLength();
+                do {
+                    row++;
+                    rightOfCursor = this.doc.getLine(row);
+                } while (row < l && /^\s*$/.test(rightOfCursor));
 
-            if (!/^\s+/.test(rightOfCursor))
-                rightOfCursor = "";
-            column = 0;
+                if (!/^\s+/.test(rightOfCursor))
+                    rightOfCursor = "";
+                column = 0;
+            }
+
+            const index = this.$shortWordEndIndex(rightOfCursor);
+
+            this.moveCursorTo(row, column + index);
         }
-
-        const index = this.$shortWordEndIndex(rightOfCursor);
-
-        this.moveCursorTo(row, column + index);
     }
 
     moveCursorShortWordLeft() {
-        let row = this.lead.row;
-        let column = this.lead.column;
+        const session = this.sessionOrThrow();
+        if (this.doc) {
+            let row = this.lead.row;
+            let column = this.lead.column;
 
-        let fold: Fold;
-        if (fold = this.session.getFoldAt(row, column, -1))
-            return this.moveCursorTo(fold.start.row, fold.start.column);
+            let fold: Fold;
+            if (fold = session.getFoldAt(row, column, -1))
+                return this.moveCursorTo(fold.start.row, fold.start.column);
 
-        let line = this.session.getLine(row).substring(0, column);
-        if (column === 0) {
-            do {
-                row--;
-                line = this.doc.getLine(row);
-            } while (row > 0 && /^\s*$/.test(line));
+            let line = session.getLine(row).substring(0, column);
+            if (column === 0) {
+                do {
+                    row--;
+                    line = this.doc.getLine(row);
+                } while (row > 0 && /^\s*$/.test(line));
 
-            column = line.length;
-            if (!/\s+$/.test(line))
-                line = "";
+                column = line.length;
+                if (!/\s+$/.test(line))
+                    line = "";
+            }
+
+            const leftOfCursor = stringReverse(line);
+            const index = this.$shortWordEndIndex(leftOfCursor);
+
+            return this.moveCursorTo(row, column - index);
         }
-
-        const leftOfCursor = stringReverse(line);
-        const index = this.$shortWordEndIndex(leftOfCursor);
-
-        return this.moveCursorTo(row, column - index);
     }
 
     moveCursorWordRight(): void {
-        // See keyboard/emacs.js
-        if (this.session.$selectLongWords) {
+        const session = this.sessionOrThrow();
+        if (session.$selectLongWords) {
             this.moveCursorLongWordRight();
         }
         else {
@@ -1020,8 +945,8 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     moveCursorWordLeft(): void {
-        // See keyboard/emacs.js
-        if (this.session.$selectLongWords) {
+        const session = this.sessionOrThrow();
+        if (session.$selectLongWords) {
             this.moveCursorLongWordLeft();
         }
         else {
@@ -1032,14 +957,10 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Moves the cursor to position indicated by the parameters.
      * Negative numbers move the cursor backwards in the document.
-     *
-     * @method moveCursorBy
-     * @param rows {number} The number of rows to move by
-     * @param chars {number} The number of characters to move by
-     * @return {void}
      */
     moveCursorBy(rows: number, chars: number): void {
-        const screenPos = this.session.documentToScreenPosition(this.lead.row, this.lead.column);
+        const session = this.sessionOrThrow();
+        const screenPos = session.documentToScreenPosition(this.lead.row, this.lead.column);
 
         if (chars === 0) {
             if (this.$desiredColumn)
@@ -1048,10 +969,10 @@ export default class Selection implements EventBus<any, Selection> {
                 this.$desiredColumn = screenPos.column;
         }
 
-        const docPos = this.session.screenToDocumentPosition(screenPos.row + rows, screenPos.column);
+        const docPos = session.screenToDocumentPosition(screenPos.row + rows, screenPos.column);
 
         if (rows !== 0 && chars === 0 && docPos.row === this.lead.row && docPos.column === this.lead.column) {
-            if (this.session.lineWidgets && this.session.lineWidgets[docPos.row])
+            if (session.lineWidgets && session.lineWidgets[docPos.row])
                 docPos.row++;
         }
 
@@ -1061,10 +982,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the selection to the position indicated by its `row` and `column`.
-     *
-     * @method moveCursorToPosition
-     * @param position {Position} The position to move to.
-     * @return {void}
      */
     moveCursorToPosition(position: Position): void {
         this.moveCursorTo(position.row, position.column);
@@ -1072,14 +989,11 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Moves the cursor to the row and column provided.
-     * [If `preventUpdateDesiredColumn` is `true`, then the cursor stays in the same column position as its original point.]{: #preventUpdateBoolDesc}
-     * @param {number} row The row to move to
-     * @param {number} column The column to move to
-     * @param {boolean} keepDesiredColumn [If `true`, the cursor move does not respect the previous column]{: #preventUpdateBool}
      */
     moveCursorTo(row: number, column: number, keepDesiredColumn?: boolean): void {
+        const session = this.sessionOrThrow();
         // Ensure the row/column is not inside of a fold.
-        const fold = this.session.getFoldAt(row, column, 1);
+        const fold = session.getFoldAt(row, column, 1);
         if (fold) {
             row = fold.start.row;
             column = fold.start.column;
@@ -1089,28 +1003,22 @@ export default class Selection implements EventBus<any, Selection> {
         this.lead.setPosition(row, column);
         this.$keepDesiredColumnOnChange = false;
 
-        if (!keepDesiredColumn)
+        if (!keepDesiredColumn) {
             this.$desiredColumn = null;
+        }
     }
 
     /**
      * Moves the cursor to the screen position indicated by row and column.
-     *
-     * @method moveCursorToScreen
-     * @param row {number} The row to move to
-     * @param column {number} The column to move to
-     * @param keepDesiredColumn {boolean}
-     * @return {void}
      */
     moveCursorToScreen(row: number, column: number, keepDesiredColumn: boolean): void {
-        const pos = this.session.screenToDocumentPosition(row, column);
+        const session = this.sessionOrThrow();
+        const pos = session.screenToDocumentPosition(row, column);
         this.moveCursorTo(pos.row, pos.column, keepDesiredColumn);
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @returns a function that may be used to remove the callback.
+     *
      */
     on(eventName: string, callback: (event: any, source: Selection) => any): () => void {
         this.eventBus.on(eventName, callback, false);
@@ -1120,10 +1028,7 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: Selection) => any}
-     * @return {void}
+     *
      */
     off(eventName: string, callback: (event: any, source: Selection) => any): void {
         this.eventBus.off(eventName, callback);
@@ -1131,9 +1036,6 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Remove listeners from document.
-     *
-     * @method detach
-     * @return {void}
      */
     detach(): void {
         this.lead.detach();
@@ -1141,16 +1043,15 @@ export default class Selection implements EventBus<any, Selection> {
         this.session = this.doc = null;
     }
 
-    fromOrientedRange(range: Range) {
-        // FIXME: How can this work? start: Position
+    fromOrientedRange(range: Range): void {
         this.setSelectionRange(range, range.cursor === range.start);
         this.$desiredColumn = range.desiredColumn || this.$desiredColumn;
     }
 
     /**
-     * @method toOrientedRange
+     *
      */
-    toOrientedRange(range?: Range) {
+    toOrientedRange(range?: Range): Range {
         const r = this.getRange();
         if (range) {
             range.start.column = r.start.column;
@@ -1171,8 +1072,6 @@ export default class Selection implements EventBus<any, Selection> {
      * Saves the current cursor position and calls `func` that can change the cursor
      * postion. The result is the range of the starting and eventual cursor position.
      * Will reset the cursor position.
-     *
-     * @param The callback that should change the cursor position.
      */
     getRangeOfMovements(func: Function): Range {
         const start = this.getCursor();
@@ -1189,26 +1088,8 @@ export default class Selection implements EventBus<any, Selection> {
         }
     }
 
-    toJSON(): Range[] {
-        if (this.rangeCount) {
-            const ranges: Range[] = this.ranges.map(function (r) {
-                const r1 = r.clone();
-                r1.isBackwards = r.cursor === r.start;
-                return r1;
-            });
-            return ranges;
-        }
-        else {
-            const range: Range = this.getRange();
-            range.isBackwards = this.isBackwards();
-            return [range];
-        }
-    }
-
     /**
-     * @method toSingleRange
-     * @param [range] {Range}
-     * @return {void}
+     *
      */
     public toSingleRange(range?: Range): void {
         range = range || this.ranges[0];
@@ -1223,17 +1104,14 @@ export default class Selection implements EventBus<any, Selection> {
 
     /** 
      * Adds a range to a selection by entering multiselect mode, if necessary.
-     *
-     * @method addRange
-     * @param range {Range} The new range to add.
-     * @param $blockChangeEvents {boolean} Whether or not to block changing events.
-     * @return {boolean}
      */
     public addRange(range: Range, $blockChangeEvents?: boolean): boolean | void {
 
         if (!range) {
             return;
         }
+
+        const session = this.sessionOrThrow();
 
         if (!this.inMultiSelectMode && this.rangeCount === 0) {
             const oldRange = this.toOrientedRange();
@@ -1263,18 +1141,15 @@ export default class Selection implements EventBus<any, Selection> {
         if (this.rangeCount > 1 && !this.inMultiSelectMode) {
             this.eventBus._signal("multiSelect");
             this.inMultiSelectMode = true;
-            this.session.$undoSelect = false;
-            this.rangeList.attach(this.session);
+            session.$undoSelect = false;
+            this.rangeList.attach(session);
         }
 
         return $blockChangeEvents || this.fromOrientedRange(range);
     }
 
     /**
-     * @method $onAddRange
-     * @param range {Range}
-     * @return {void}
-     * @private
+     *
      */
     private $onAddRange(range: Range): void {
         this.rangeCount = this.rangeList.ranges.length;
@@ -1284,18 +1159,18 @@ export default class Selection implements EventBus<any, Selection> {
     };
 
     /**
-     * @method $onRemoveRange
-     * @param removed {Range[]}
-     * @return {void}
-     * @private
+     *
      */
     private $onRemoveRange(removed: Range[]): void {
+        const session = this.sessionOrThrow();
         this.rangeCount = this.rangeList.ranges.length;
-        let lastRange: Range;
+        let lastRange: Range | undefined;
         if (this.rangeCount === 1 && this.inMultiSelectMode) {
             lastRange = this.rangeList.ranges.pop();
-            removed.push(lastRange);
-            this.rangeCount = 0;
+            if (lastRange) {
+                removed.push(lastRange);
+                this.rangeCount = 0;
+            }
         }
 
         for (let i = removed.length; i--;) {
@@ -1309,7 +1184,7 @@ export default class Selection implements EventBus<any, Selection> {
         if (this.rangeCount === 0 && this.inMultiSelectMode) {
             this.inMultiSelectMode = false;
             this.eventBus._signal("singleSelect");
-            this.session.$undoSelect = true;
+            session.$undoSelect = true;
             this.rangeList.detach();
         }
 
@@ -1319,32 +1194,45 @@ export default class Selection implements EventBus<any, Selection> {
         }
     };
 
-    // FIXME
-    fromJSON(data: any/*: {start;length;isBackards}*/) {
-        if (data.start === void 0) {
-            if (this.rangeList) {
-                this.toSingleRange(data[0]);
-                for (let i = data.length; i--;) {
-                    const r: any = Range.fromPoints(data[i].start, data[i].end);
-                    if (data.isBackwards)
-                        r.cursor = r.start;
-                    this.addRange(r, true);
-                }
-                return;
-            } else
-                data = data[0];
+    /**
+     * Used by the Editor
+     */
+    toJSON(): Range[] {
+        if (this.rangeCount) {
+            const ranges: Range[] = this.ranges.map(function (r) {
+                const r1 = r.clone();
+                r1.isBackwards = r.cursor === r.start;
+                return r1;
+            });
+            return ranges;
         }
-        if (this.rangeList)
-            this.toSingleRange(data);
-        this.setSelectionRange(data, data.isBackwards);
+        else {
+            const range: Range = this.getRange();
+            range.isBackwards = this.isBackwards();
+            return [range];
+        }
     }
 
-    // FIXME
-    isEqual(data: any) {
-        if ((data.length || this.rangeCount) && data.length !== this.rangeCount)
-            return false;
-        if (!data.length || !this.ranges)
+    /**
+     * Used by the Editor. Only ever called with a single range.
+     */
+    fromJSON(range: Range) {
+        if (this.rangeList) {
+            this.toSingleRange(range);
+        }
+        this.setSelectionRange(range, range.isBackwards);
+    }
+
+    /*
+    private isEqual(data: Range | Range[]) {
+        if (Array.isArray(data)) {
+            if (this.rangeCount && data.length !== this.rangeCount) {
+                return false;
+            }
+        }
+        else if (!this.ranges) {
             return this.getRange().isEqual(data);
+        }
 
         for (let i = this.ranges.length; i--;) {
             if (!this.ranges[i].isEqual(data[i]))
@@ -1352,4 +1240,5 @@ export default class Selection implements EventBus<any, Selection> {
         }
         return true;
     }
+    */
 }

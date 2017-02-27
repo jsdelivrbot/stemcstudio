@@ -9,7 +9,7 @@ var isString_1 = require("../../utils/isString");
 var uniqueId_1 = require("./uniqueId");
 var DMP_1 = require("../../synchronization/DMP");
 var MwRemote_1 = require("../../synchronization/MwRemote");
-var EXPIRE_DURATION_IN_SECONDS = 1800;
+var EXPIRE_DURATION_IN_SECONDS = 3600;
 var ROOM_PATHS_PROPERTY_NAME = 'paths';
 var ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
 var ROOM_PATH_REMOTES_PROPERTY_NAME = 'remotes';
@@ -24,13 +24,28 @@ else {
     client = redis.createClient();
 }
 client.on('ready', function ready(err) {
-    console.log("Redis client is 'ready'.");
+    if (err) {
+        console.warn("Redis 'ready' failed. " + err);
+    }
+    else {
+        console.warn("Redis is 'ready'.");
+    }
 });
 client.on('connect', function connect(err) {
-    console.log("Redis client has connected to the server.");
+    if (err) {
+        console.warn("Redis could not connect to the server. " + err);
+    }
+    else {
+        console.warn("Redis is connected to the server.");
+    }
 });
 client.on('reconnecting', function reconnecting(err) {
-    console.log("Trying to reconnect to the Redis server after losing the connection.");
+    if (err) {
+        console.log("Trying to reconnect to the Redis server after losing the connection...");
+    }
+    else {
+        console.log("Trying to reconnect to the Redis server after losing the connection...");
+    }
 });
 client.on('error', function error(err) {
     console.log("Error " + err);

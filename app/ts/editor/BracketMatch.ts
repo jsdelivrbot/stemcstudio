@@ -1,3 +1,4 @@
+import Token from './Token';
 import TokenIterator from "./TokenIterator";
 import EditSession from "./EditSession";
 import Position from "./Position";
@@ -33,10 +34,9 @@ export default class BracketMatch {
     }
 
     /**
-     * @param position
-     * @param chr
+     *
      */
-    findMatchingBracket(position: Position, chr: string): Position | null {
+    findMatchingBracket(position: Position, chr?: string): Position | null {
         if (position.column === 0) return null;
 
         const charBeforeCursor: string = chr || this.editSession.getLine(position.row).charAt(position.column - 1);
@@ -107,7 +107,7 @@ export default class BracketMatch {
         let depth = 1;
 
         const iterator = new TokenIterator(this.editSession, position.row, position.column);
-        let token = iterator.getCurrentToken();
+        let token: Token | null | undefined = iterator.getCurrentToken();
         if (!token) {
             token = iterator.stepForward();
         }
@@ -115,7 +115,7 @@ export default class BracketMatch {
             return null;
         }
 
-        if (!typeRe) {
+        if (!typeRe && token.type) {
             let pattern = token.type.replace(".", "\\.");
             pattern = pattern.replace("rparen", ".paren");
             pattern = pattern.replace(/\b(?:end)\b/, "(?:start|begin|end)");
@@ -149,7 +149,7 @@ export default class BracketMatch {
             // whose type matches typeRe
             do {
                 token = iterator.stepBackward();
-            } while (token && !typeRe.test(token.type));
+            } while (token && token.type && typeRe && !typeRe.test(token.type));
 
             if (token === null)
                 break;
@@ -163,68 +163,65 @@ export default class BracketMatch {
 
     /**
      * Finds the position of the closing bracket corresponding to the provided opening bracket and position.
-     *
-     * @param bracket The opening bracket.
-     * @param position The position of the opening bracket.
-     * @param typeRe
      */
     findClosingBracket(openingBracket: string, position: Position, typeRe?: RegExp): Position | null {
         const closingBracket = $brackets[openingBracket];
         let depth = 1;
 
         const iterator = new TokenIterator(this.editSession, position.row, position.column);
-        let token = iterator.getCurrentToken();
+        let token: Token | null | undefined = iterator.getCurrentToken();
         if (!token) {
             token = iterator.stepForward();
         }
-        if (!token) {
-            return null;
-        }
-
-        if (!typeRe) {
-            let pattern: string = token.type.replace(".", "\\.");
-            pattern = pattern.replace("lparen", ".paren");
-            pattern = pattern.replace(/\b(?:start|begin)\b/, "(?:start|begin|end)");
-            pattern = `(\\.?${pattern})+`;
-            typeRe = new RegExp(pattern);
-        }
-
-        // Start searching in token, after the character at position.column
-        let valueIndex = position.column - iterator.getCurrentTokenColumn();
-
-        while (true) {
-
-            const value = token.value;
-            const valueLength = value.length;
-            while (valueIndex < valueLength) {
-                const chr = value.charAt(valueIndex);
-                if (chr === closingBracket) {
-                    depth -= 1;
-                    if (depth === 0) {
-                        return {
-                            row: iterator.getCurrentTokenRow(),
-                            column: valueIndex + iterator.getCurrentTokenColumn()
-                        };
-                    }
-                }
-                else if (chr === openingBracket) {
-                    depth += 1;
-                }
-                valueIndex += 1;
+        if (token) {
+            if (!typeRe && token.type) {
+                let pattern: string = token.type.replace(".", "\\.");
+                pattern = pattern.replace("lparen", ".paren");
+                pattern = pattern.replace(/\b(?:start|begin)\b/, "(?:start|begin|end)");
+                pattern = `(\\.?${pattern})+`;
+                typeRe = new RegExp(pattern);
             }
 
-            // Scan forward through the document, looking for the next token
-            // whose type matches typeRe
-            do {
-                token = iterator.stepForward();
-            } while (token && !typeRe.test(token.type));
+            // Start searching in token, after the character at position.column
+            let valueIndex = position.column - iterator.getCurrentTokenColumn();
 
-            if (token === null)
-                break;
+            while (true) {
 
-            valueIndex = 0;
+                if (token) {
+                    const value = token.value;
+                    const valueLength = value.length;
+                    while (valueIndex < valueLength) {
+                        const chr = value.charAt(valueIndex);
+                        if (chr === closingBracket) {
+                            depth -= 1;
+                            if (depth === 0) {
+                                return {
+                                    row: iterator.getCurrentTokenRow(),
+                                    column: valueIndex + iterator.getCurrentTokenColumn()
+                                };
+                            }
+                        }
+                        else if (chr === openingBracket) {
+                            depth += 1;
+                        }
+                        valueIndex += 1;
+                    }
+                }
+
+                // Scan forward through the document, looking for the next token
+                // whose type matches typeRe
+                do {
+                    token = iterator.stepForward();
+                }
+                while (token && token.type && typeRe && !typeRe.test(token.type));
+
+                if (token === null) {
+                    break;
+                }
+
+                valueIndex = 0;
+            }
         }
-
         return null;
     }
 }

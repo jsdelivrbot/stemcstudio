@@ -44,8 +44,6 @@ var MwRemote = (function () {
         return value;
     };
     MwRemote.prototype.rehydrate = function (value) {
-        console.log("MwRemote.rehydrate(value: " + typeof value + ")");
-        console.log(JSON.stringify(value, null, 2));
         this.shadow = value.s ? new MwShadow_1.default().rehydrate(value.s) : void 0;
         this.backup = value.b ? new MwShadow_1.default().rehydrate(value.b) : void 0;
         this.edits = value.e;

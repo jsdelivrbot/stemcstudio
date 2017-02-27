@@ -13,7 +13,7 @@ export default class VScrollBar extends ScrollBar {
     /**
      * This may get set to null.
      */
-    private _scrollTop = 0;
+    private _scrollTop: number | null = 0;
 
     /**
      * 
@@ -85,17 +85,22 @@ export default class VScrollBar extends ScrollBar {
     // on chrome 17+ for small zoom levels after calling this function
     // this.element.scrollTop != scrollTop which makes page to scroll up.
     // FIXME: We don't need a method and a property! The code does use both!!
-    setScrollTop(scrollTop: number) {
+    setScrollTop(scrollTop: number | null) {
         if (this._scrollTop !== scrollTop) {
             this.skipEvent = true;
-            this._scrollTop = this.element.scrollTop = scrollTop;
+            if (scrollTop) {
+                this._scrollTop = this.element.scrollTop = scrollTop;
+            }
+            else {
+                this._scrollTop = scrollTop;
+            }
         }
     }
 
-    get scrollTop(): number {
+    get scrollTop(): number | null {
         return this._scrollTop;
     }
-    set scrollTop(scrollTop: number) {
+    set scrollTop(scrollTop: number | null) {
         this.setScrollTop(scrollTop);
     }
 }

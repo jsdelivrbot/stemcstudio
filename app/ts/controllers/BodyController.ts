@@ -23,9 +23,13 @@ export default class BodyController {
         $scope.clickDownload = function (label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
             github.getGists().then(function (promiseValue) {
-                $scope.gists = promiseValue.data;
-                $scope.links = linkToMap(promiseValue.headers('link'));
-                navigation.gotoDownload(label, value);
+                if (promiseValue.data) {
+                    $scope.gists = promiseValue.data;
+                    if (promiseValue.headers) {
+                        $scope.links = linkToMap(promiseValue.headers('link'));
+                    }
+                    navigation.gotoDownload(label, value);
+                }
             }).catch(function (reason) {
                 BootstrapDialog.show({
                     type: BootstrapDialog.TYPE_DANGER,

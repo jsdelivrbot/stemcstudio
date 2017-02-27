@@ -5,8 +5,13 @@ import EditSession from "../../EditSession";
 import Range from "../../Range";
 import Token from "../../Token";
 
-function is(token: Token, type: string): boolean {
-    return token.type.lastIndexOf(type + ".xml") > -1;
+function is(token: Token | undefined | null, type: string): boolean {
+    if (token) {
+        return token.type.lastIndexOf(type + ".xml") > -1;
+    }
+    else {
+        return false;
+    }
 }
 
 /**
@@ -21,7 +26,7 @@ export default class XmlBehaviour extends Behaviour {
         super();
 
         this.add("string_dquotes", "insertion",
-            function callback(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            function callback(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | undefined {
                 if (text === '"' || text === "'") {
                     const quote = text;
                     const selected = session.doc.getTextRange(editor.getSelectionRange());
@@ -36,7 +41,7 @@ export default class XmlBehaviour extends Behaviour {
                     const line = session.doc.getLine(cursor.row);
                     const rightChar = line.substring(cursor.column, cursor.column + 1);
                     const iterator = new TokenIterator(session, cursor.row, cursor.column);
-                    let token = iterator.getCurrentToken();
+                    let token: Token | undefined | null = iterator.getCurrentToken();
 
                     if (rightChar === quote && (is(token, "attribute-value") || is(token, "string"))) {
                         // Ignore input and move right one if we're typing over the closing quote.
@@ -68,7 +73,7 @@ export default class XmlBehaviour extends Behaviour {
         );
 
         this.add("string_dquotes", "deletion",
-            function callback(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            function callback(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const selected: string = session.doc.getTextRange(range);
                 if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
                     const line = session.doc.getLine(range.start.row);
@@ -83,7 +88,7 @@ export default class XmlBehaviour extends Behaviour {
         );
 
         this.add("autoclosing", "insertion",
-            function callback(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            function callback(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } | undefined {
                 if (text === '>') {
                     const position = editor.getCursorPosition();
                     const iterator = new TokenIterator(session, position.row, position.column);
@@ -115,28 +120,31 @@ export default class XmlBehaviour extends Behaviour {
                     const tokenColumn = iterator.getCurrentTokenColumn();
 
                     // exit if the tag is ending
-                    if (is(iterator.stepBackward(), "end-tag-open"))
+                    if (is(iterator.stepBackward(), "end-tag-open")) {
                         return void 0;
+                    }
 
-                    let element = token.value;
-                    if (tokenRow === position.row)
-                        element = element.substring(0, position.column - tokenColumn);
+                    if (token) {
+                        let element = token.value;
+                        if (tokenRow === position.row)
+                            element = element.substring(0, position.column - tokenColumn);
 
-                    // this refers to the LanguageMode, so we have a bit of a technical problem here.
-                    if (this.voidElements.hasOwnProperty(element.toLowerCase()))
-                        return void 0;
+                        // this refers to the LanguageMode, so we have a bit of a technical problem here.
+                        if (this.voidElements.hasOwnProperty(element.toLowerCase()))
+                            return void 0;
 
-                    return {
-                        text: '>' + '</' + element + '>',
-                        selection: [1, 1]
-                    };
+                        return {
+                            text: '>' + '</' + element + '>',
+                            selection: [1, 1]
+                        };
+                    }
                 }
                 return void 0;
             }
         );
 
         this.add('autoindent', 'insertion',
-            function callback(state: string, action, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            function callback(state: string, action, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } | undefined {
                 if (text === "\n") {
                     const cursor = editor.getCursorPosition();
                     const line = session.getLine(cursor.row);

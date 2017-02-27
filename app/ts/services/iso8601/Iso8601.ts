@@ -6,10 +6,7 @@ function toInt(val: string): number {
  * Original concept by Ruben Vermeersch.
  */
 export default class Iso8601 {
-    parse(str: string): Date {
-        let year: number;
-        let month: number;
-        let day: number;
+    parse(str: string): Date | null {
         // Default time to midnight.
         let hours = 0;
         let minutes = 0;
@@ -23,45 +20,50 @@ export default class Iso8601 {
 
         if (str.length >= 10) {
             const datePieces = str.substring(0, 10).split("-");
-            year = toInt(datePieces[0]);
-            month = toInt(datePieces[1]) - 1;
-            day = toInt(datePieces[2]);
-        }
+            const year = toInt(datePieces[0]);
+            const month = toInt(datePieces[1]) - 1;
+            const day = toInt(datePieces[2]);
 
-        if (str.length >= 11) {
-            const timePieces = str.substring(11).split(":");
-            while (timePieces.length < 3) {
-                timePieces.push("");
-            }
+            if (str.length >= 11) {
+                const timePieces = str.substring(11).split(":");
+                while (timePieces.length < 3) {
+                    timePieces.push("");
+                }
 
-            hours = toInt(timePieces[0]);
-            minutes = toInt(timePieces[1]);
-            seconds = toInt(timePieces[2].substring(0, 2)) || 0;
+                hours = toInt(timePieces[0]);
+                minutes = toInt(timePieces[1]);
+                seconds = toInt(timePieces[2].substring(0, 2)) || 0;
 
-            let tz = timePieces[2].substring(2) || "";
-            if (tz[0] === ".") {
-                const start = Math.max(tz.indexOf("Z"), tz.indexOf("+"), tz.indexOf("-"));
-                tz = start > -1 ? tz.substring(start) : "";
-            }
+                let tz = timePieces[2].substring(2) || "";
+                if (tz[0] === ".") {
+                    const start = Math.max(tz.indexOf("Z"), tz.indexOf("+"), tz.indexOf("-"));
+                    tz = start > -1 ? tz.substring(start) : "";
+                }
 
-            if (tz === "") {
-                // Supplied time is in local time
-                return new Date(year, month, day, hours, minutes, seconds, 0);
-            } else if (tz === "Z") {
-                // Do nothing
-            } else {
-                if (tz.length === 3) {
-                    const tzOffset = toInt(tz.substring(1)) * 60;
-                    offset = -tzOffset * 60 * 1000;
-                } else {
-                    throw new Error("Unsupported timezone offset: " + tz);
+                if (tz === "") {
+                    // Supplied time is in local time
+                    return new Date(year, month, day, hours, minutes, seconds, 0);
+                }
+                else if (tz === "Z") {
+                    // Do nothing
+                }
+                else {
+                    if (tz.length === 3) {
+                        const tzOffset = toInt(tz.substring(1)) * 60;
+                        offset = -tzOffset * 60 * 1000;
+                    } else {
+                        throw new Error("Unsupported timezone offset: " + tz);
+                    }
                 }
             }
-        }
 
-        const utc = Date.UTC(year, month, day, hours, minutes, seconds, 0);
-        const date = new Date(utc + offset);
-        return date;
+            const utc = Date.UTC(year, month, day, hours, minutes, seconds, 0);
+            const date = new Date(utc + offset);
+            return date;
+        }
+        else {
+            return null;
+        }
     }
 }
 

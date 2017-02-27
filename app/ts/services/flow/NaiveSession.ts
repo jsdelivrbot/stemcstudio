@@ -23,7 +23,7 @@ export default class NaiveSession<T> implements Session<T> {
                     matching.push(match);
                 }
             }
-            let winner: Match<T> = null;
+            let winner: Match<T> | null = null;
             if (matching.length === 1) {
                 winner = matching[0];
             }

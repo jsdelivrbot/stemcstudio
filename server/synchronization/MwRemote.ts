@@ -78,8 +78,6 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     }
 
     rehydrate(value: FzRemote): void {
-        console.log(`MwRemote.rehydrate(value: ${typeof value})`);
-        console.log(JSON.stringify(value, null, 2));
         this.shadow = value.s ? new MwShadow().rehydrate(value.s) : void 0;
         this.backup = value.b ? new MwShadow().rehydrate(value.b) : void 0;
         this.edits = value.e;
@@ -99,13 +97,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * We're looking to purge actions for a specified file based upon the action (local) version.
      * TODO: Rename to reflect the local nature of the version parameter.
-     * 
-     * @param The target node identifier.
-     * @param fileId
-     * @param version
      */
     discardActionsLe(nodeId: string, version: number) {
-        // console.log(`discardActionsLe(${filename}, ${version})`);
         const edits = this.edits[nodeId];
         if (edits) {
             const changes = edits.x;
@@ -200,7 +193,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                     if (code === 'D') {
                         // Overwrite text.
                         shadow.text = dmp.resultText(diffs);
-                        editor.setText(shadow.text, function(err: Error) {
+                        editor.setText(shadow.text, function (err: Error) {
                             if (!err) {
                                 shadow.happy = true;
                                 callback(void 0);
@@ -218,7 +211,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         shadow.text = <string>serverResult[0];
                         shadow.happy = true;
                         // Second the user's text.
-                        editor.patch(patches, function(err: Error, flags: boolean[]) {
+                        editor.patch(patches, function (err: Error, flags: boolean[]) {
                             callback(err);
                         });
                     }

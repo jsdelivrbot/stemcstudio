@@ -34,17 +34,17 @@ interface Command {
     /**
      *
      */
-    name: string;
+    name?: string;
 
     /**
      *
      */
-    exec: EditorAction;
+    exec?: EditorAction;
 
     /**
      *
      */
-    bindKey?: string | { win: string; mac: string };
+    bindKey?: string | { win: string | null; mac: string | null };
 
     /**
      * "fileJump", what else?

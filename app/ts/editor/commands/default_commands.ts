@@ -6,7 +6,7 @@ import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 
-function bindKey(win: string, mac: string): { win: string; mac: string } {
+function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
     return { win, mac };
 }
 
@@ -27,9 +27,12 @@ const commands: Command[] = [
         name: "gotoline",
         bindKey: bindKey("Ctrl-L", "Command-L"),
         exec: function (editor: Editor) {
-            const line = parseInt(prompt("Enter line number:"), 10);
-            if (!isNaN(line)) {
-                editor.gotoLine(line);
+            const response = prompt("Enter line number:");
+            if (typeof response === 'string') {
+                const line = parseInt(response, 10);
+                if (!isNaN(line)) {
+                    editor.gotoLine(line);
+                }
             }
         },
         readOnly: true
@@ -112,7 +115,7 @@ const commands: Command[] = [
         name: "selectOrFindNext",
         bindKey: bindKey("Alt-K", "Ctrl-G"),
         exec: function (editor: Editor) {
-            if (editor.selection.isEmpty()) {
+            if (editor.selection && editor.selection.isEmpty()) {
                 editor.selection.selectWord();
             }
             else {
@@ -125,7 +128,7 @@ const commands: Command[] = [
         name: "selectOrFindPrevious",
         bindKey: bindKey("Alt-Shift-K", "Ctrl-Shift-G"),
         exec: function (editor: Editor) {
-            if (editor.selection.isEmpty()) {
+            if (editor.selection && editor.selection.isEmpty()) {
                 editor.selection.selectWord();
             }
             else {
@@ -404,7 +407,7 @@ const commands: Command[] = [
             const range = editor.getSelectionRange();
             editor._emit("cut", range);
 
-            if (!editor.selection.isEmpty()) {
+            if (editor.selection && !editor.selection.isEmpty()) {
                 editor.getSession().remove(range);
                 editor.clearSelection();
             }
@@ -521,7 +524,7 @@ const commands: Command[] = [
         name: "cut_or_delete",
         bindKey: bindKey("Shift-Delete", null),
         exec: function (editor: Editor) {
-            if (editor.selection.isEmpty()) {
+            if (editor.selection && editor.selection.isEmpty()) {
                 editor.remove("left");
                 return void 0;
             }
@@ -621,11 +624,13 @@ const commands: Command[] = [
         name: "expandtoline",
         bindKey: bindKey("Ctrl-Shift-L", "Command-Shift-L"),
         exec: function (editor: Editor) {
-            const range = editor.selection.getRange();
+            if (editor.selection) {
+                const range = editor.selection.getRange();
 
-            range.start.column = range.end.column = 0;
-            range.end.row++;
-            editor.selection.setRange(range, false);
+                range.start.column = range.end.column = 0;
+                range.end.row++;
+                editor.selection.setRange(range, false);
+            }
         },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor",
@@ -634,38 +639,43 @@ const commands: Command[] = [
         name: "joinlines",
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) {
-            const isBackwards = editor.selection.isBackwards();
-            const selectionStart = isBackwards ? editor.selection.getSelectionLead() : editor.selection.getSelectionAnchor();
-            const selectionEnd = isBackwards ? editor.selection.getSelectionAnchor() : editor.selection.getSelectionLead();
-            const firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length;
-            const selectedText = editor.session.doc.getTextRange(editor.selection.getRange());
-            const selectedCount = selectedText.replace(/\n\s*/, " ").length;
-            let insertLine = editor.session.doc.getLine(selectionStart.row);
+            if (editor.selection) {
+                const isBackwards = editor.selection.isBackwards();
+                const selectionStart = isBackwards ? editor.selection.getSelectionLead() : editor.selection.getSelectionAnchor();
+                const selectionEnd = isBackwards ? editor.selection.getSelectionAnchor() : editor.selection.getSelectionLead();
+                if (editor.session && editor.session.doc) {
+                    const firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length;
+                    const selectedText = editor.session.doc.getTextRange(editor.selection.getRange());
+                    const selectedCount = selectedText.replace(/\n\s*/, " ").length;
+                    let insertLine = editor.session.doc.getLine(selectionStart.row);
 
-            for (let i = selectionStart.row + 1; i <= selectionEnd.row + 1; i++) {
-                let curLine = stringTrimLeft(stringTrimRight(editor.session.doc.getLine(i)));
-                if (curLine.length !== 0) {
-                    curLine = " " + curLine;
+                    for (let i = selectionStart.row + 1; i <= selectionEnd.row + 1; i++) {
+                        let curLine = stringTrimLeft(stringTrimRight(editor.session.doc.getLine(i)));
+                        if (curLine.length !== 0) {
+                            curLine = " " + curLine;
+                        }
+                        insertLine += curLine;
+                    };
+
+                    if (selectionEnd.row + 1 < (editor.session.doc.getLength() - 1)) {
+                        // Don't insert a newline at the end of the document
+                        insertLine += editor.session.doc.getNewLineCharacter();
+                    }
+
+                    editor.clearSelection();
+                    editor.session.doc.replace(new Range(selectionStart.row, 0, selectionEnd.row + 2, 0), insertLine);
+
+                    if (selectedCount > 0) {
+                        // Select the text that was previously selected
+                        editor.selection.moveCursorTo(selectionStart.row, selectionStart.column);
+                        editor.selection.selectTo(selectionStart.row, selectionStart.column + selectedCount);
+                    }
+                    else {
+                        // If the joined line had something in it, start the cursor at that something
+                        const column = editor.session.doc.getLine(selectionStart.row).length > firstLineEndCol ? (firstLineEndCol + 1) : firstLineEndCol;
+                        editor.selection.moveCursorTo(selectionStart.row, column);
+                    }
                 }
-                insertLine += curLine;
-            };
-
-            if (selectionEnd.row + 1 < (editor.session.doc.getLength() - 1)) {
-                // Don't insert a newline at the end of the document
-                insertLine += editor.session.doc.getNewLineCharacter();
-            }
-
-            editor.clearSelection();
-            editor.session.doc.replace(new Range(selectionStart.row, 0, selectionEnd.row + 2, 0), insertLine);
-
-            if (selectedCount > 0) {
-                // Select the text that was previously selected
-                editor.selection.moveCursorTo(selectionStart.row, selectionStart.column);
-                editor.selection.selectTo(selectionStart.row, selectionStart.column + selectedCount);
-            } else {
-                // If the joined line had something in it, start the cursor at that something
-                const column = editor.session.doc.getLine(selectionStart.row).length > firstLineEndCol ? (firstLineEndCol + 1) : firstLineEndCol;
-                editor.selection.moveCursorTo(selectionStart.row, column);
             }
         },
         multiSelectAction: "forEach",
@@ -674,39 +684,41 @@ const commands: Command[] = [
         name: "invertSelection",
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) {
-            const endRow = editor.session.doc.getLength() - 1;
-            const endCol = editor.session.doc.getLine(endRow).length;
-            let ranges = editor.selection.rangeList.ranges;
-            const newRanges: Range[] = [];
+            if (editor.session && editor.session.doc && editor.selection) {
+                const endRow = editor.session.doc.getLength() - 1;
+                const endCol = editor.session.doc.getLine(endRow).length;
+                let ranges = editor.selection.rangeList.ranges;
+                const newRanges: Range[] = [];
 
-            // If multiple selections don't exist, rangeList will return 0 so replace with single range
-            if (ranges.length < 1) {
-                ranges = [editor.selection.getRange()];
-            }
+                // If multiple selections don't exist, rangeList will return 0 so replace with single range
+                if (ranges.length < 1) {
+                    ranges = [editor.selection.getRange()];
+                }
 
-            for (let i = 0; i < ranges.length; i++) {
-                if (i === (ranges.length - 1)) {
-                    // The last selection must connect to the end of the document, unless it already does
-                    if (!(ranges[i].end.row === endRow && ranges[i].end.column === endCol)) {
-                        newRanges.push(new Range(ranges[i].end.row, ranges[i].end.column, endRow, endCol));
+                for (let i = 0; i < ranges.length; i++) {
+                    if (i === (ranges.length - 1)) {
+                        // The last selection must connect to the end of the document, unless it already does
+                        if (!(ranges[i].end.row === endRow && ranges[i].end.column === endCol)) {
+                            newRanges.push(new Range(ranges[i].end.row, ranges[i].end.column, endRow, endCol));
+                        }
+                    }
+
+                    if (i === 0) {
+                        // The first selection must connect to the start of the document, unless it already does
+                        if (!(ranges[i].start.row === 0 && ranges[i].start.column === 0)) {
+                            newRanges.push(new Range(0, 0, ranges[i].start.row, ranges[i].start.column));
+                        }
+                    } else {
+                        newRanges.push(new Range(ranges[i - 1].end.row, ranges[i - 1].end.column, ranges[i].start.row, ranges[i].start.column));
                     }
                 }
 
-                if (i === 0) {
-                    // The first selection must connect to the start of the document, unless it already does
-                    if (!(ranges[i].start.row === 0 && ranges[i].start.column === 0)) {
-                        newRanges.push(new Range(0, 0, ranges[i].start.row, ranges[i].start.column));
-                    }
-                } else {
-                    newRanges.push(new Range(ranges[i - 1].end.row, ranges[i - 1].end.column, ranges[i].start.row, ranges[i].start.column));
+                editor.exitMultiSelectMode();
+                editor.clearSelection();
+
+                for (let i = 0; i < newRanges.length; i++) {
+                    editor.selection.addRange(newRanges[i], false);
                 }
-            }
-
-            editor.exitMultiSelectMode();
-            editor.clearSelection();
-
-            for (let i = 0; i < newRanges.length; i++) {
-                editor.selection.addRange(newRanges[i], false);
             }
         },
         readOnly: true,

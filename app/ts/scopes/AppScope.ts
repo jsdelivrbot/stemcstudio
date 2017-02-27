@@ -11,7 +11,7 @@ interface AppScope extends angular.IRootScopeService {
      * This is the GitHub client id for OAuth2.
      * It's value depends on whether we are in production or localhost:8080, so we get it from the server as a cookie.
      */
-    clientId: () => string;
+    clientId: () => string | undefined;
 
     /**
      * (GitHub)
@@ -21,7 +21,7 @@ interface AppScope extends angular.IRootScopeService {
     /**
      * (GitHub)
      */
-    userLogin(): string;
+    userLogin(): string | undefined;
 
     /**
      * (Google)

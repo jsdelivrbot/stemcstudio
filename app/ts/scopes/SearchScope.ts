@@ -6,8 +6,8 @@ export interface SearchScope extends BodyScope {
         query: string;
     };
     search(): void;
-    found: number;
-    start: number;
+    found: number | undefined;
+    start: number | undefined;
     /**
      * The previous query string.
      */

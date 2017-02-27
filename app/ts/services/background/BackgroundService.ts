@@ -38,7 +38,7 @@ export default class BackgroundService implements Background {
      * @param roomId The identifier of the room (collaboration).
      * @param callback Use to report when monitoring of the files has begun.
      */
-    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any) {
+    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error | undefined) => any) {
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
         const matches = this.doodles.filter(function (doodle: Doodle) {
@@ -117,7 +117,9 @@ export default class BackgroundService implements Background {
                                 for (let i = 0; i < paths.length; i++) {
                                     const path = paths[i];
                                     const file = this.wsModel.findFileByPath(path);
-                                    file.unit.setEdits(roomId, edits[path]);
+                                    if (file) {
+                                        file.unit.setEdits(roomId, edits[path]);
+                                    }
                                 }
                                 // Because we are already connected, setting the edits should trigger the acknowledgement.
                                 // this.wsModel.uploadToRoom(room);
@@ -145,7 +147,9 @@ export default class BackgroundService implements Background {
             else {
                 if (this.doodles.length > 0) {
                     const doodle = this.doodles.current();
-                    copyDoodleToWorkspace(doodle, this.wsModel, callback);
+                    if (doodle) {
+                        copyDoodleToWorkspace(doodle, this.wsModel, callback);
+                    }
                 }
                 else {
                     const doodle = this.doodles.createDoodle();

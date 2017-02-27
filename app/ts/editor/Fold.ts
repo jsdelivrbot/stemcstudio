@@ -7,7 +7,7 @@ import Position from "./Position";
  * Simple fold-data struct.
  */
 export default class Fold extends RangeList {
-    foldLine: FoldLine;
+    foldLine: FoldLine | null;
     placeholder: string;
     range: Range;
     start: Position;
@@ -43,7 +43,7 @@ export default class Fold extends RangeList {
     /**
      * @param foldLine
      */
-    setFoldLine(foldLine: FoldLine): void {
+    setFoldLine(foldLine: FoldLine | null): void {
         this.foldLine = foldLine;
         this.subFolds.forEach(function (fold: Fold) {
             fold.setFoldLine(foldLine);
@@ -66,9 +66,10 @@ export default class Fold extends RangeList {
     /**
      * @param fold
      */
-    addSubFold(fold: Fold): Fold {
-        if (this.range.isEqual(fold))
+    addSubFold(fold: Fold): Fold | undefined {
+        if (this.range.isEqual(fold)) {
             return void 0;
+        }
 
         if (!this.range.containsRange(fold))
             throw new Error("A fold can't intersect already existing fold" + fold.range + this.range);

@@ -8,12 +8,12 @@ interface SessionChangeEvent {
     /**
      *
      */
-    session: EditSession;
+    session: EditSession | undefined;
 
     /**
      *
      */
-    oldSession: EditSession;
+    oldSession: EditSession | undefined;
 }
 
 export default SessionChangeEvent;

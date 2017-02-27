@@ -39,7 +39,7 @@ export default class RoomsController {
     isLeaveRoomEnabled(): boolean {
         if (this.wsModel.isConnectedToRoom()) {
             if (this.authManager.isSignedIn()) {
-                return !this.wsModel.isRoomOwner(this.authManager.userLogin());
+                return !this.wsModel.isRoomOwner(<string>this.authManager.userLogin());
             }
             else {
                 return true;
@@ -51,7 +51,7 @@ export default class RoomsController {
     }
 
     isDestroyRoomEnabled(): boolean {
-        return this.wsModel.isConnectedToRoom() && this.authManager.isSignedIn() && this.wsModel.isRoomOwner(this.authManager.userLogin());
+        return this.wsModel.isConnectedToRoom() && this.authManager.isSignedIn() && this.wsModel.isRoomOwner(<string>this.authManager.userLogin());
     }
 
     /**
@@ -60,7 +60,7 @@ export default class RoomsController {
     createRoom(): void {
         if (this.isCreateRoomEnabled()) {
             const roomParams: RoomParams = {
-                owner: this.authManager.userLogin(),
+                owner: <string>this.authManager.userLogin(),
                 description: "",
                 public: true
             };
@@ -145,13 +145,15 @@ export default class RoomsController {
         if (this.isDestroyRoomEnabled()) {
             if (this.wsModel.isConnectedToRoom()) {
                 const room = this.wsModel.disconnectFromRoom();
-                this.roomsService.destroyRoom(room.id).then(() => {
-                    this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} is no longer available.` });
-                    room.release();
-                }).catch((reason) => {
-                    this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} could not be destroyed: ${reason}` });
-                    room.release();
-                });
+                if (room) {
+                    this.roomsService.destroyRoom(room.id).then(() => {
+                        this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} is no longer available.` });
+                        room.release();
+                    }).catch((reason) => {
+                        this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} could not be destroyed: ${reason}` });
+                        room.release();
+                    });
+                }
             }
         }
         else {

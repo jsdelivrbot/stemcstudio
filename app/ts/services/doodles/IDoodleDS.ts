@@ -15,7 +15,7 @@ interface IDoodleDS {
     /**
      * The gist identifier.
      */
-    gistId: string;
+    gistId: string | undefined;
 
     /**
      * The last known generated JavaScript file. This is cached to improve startup.
@@ -26,12 +26,12 @@ interface IDoodleDS {
     /**
      * 
      */
-    files: { [name: string]: IDoodleFile };
+    files: { [name: string]: IDoodleFile } | undefined;
 
     /**
      *
      */
-    trash: { [name: string]: IDoodleFile };
+    trash: { [name: string]: IDoodleFile } | undefined;
 
     /**
      *

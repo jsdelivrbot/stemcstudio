@@ -1,5 +1,5 @@
 import { addCommandKeyListener, addListener, capture, preventDefault } from "../lib/event";
-import { isChrome, isGecko, isIE, isMac, isOldIE, isTouchPad, isWebKit, isWin } from "../lib/useragent";
+import { isChrome, isGecko, isIE, isMac, isTouchPad, isWebKit, isWin } from "../lib/useragent";
 import { createElement } from "../lib/dom";
 import createDelayedCall from "../lib/lang/createDelayedCall";
 import DelayedCall from "../lib/lang/DelayedCall";
@@ -8,7 +8,7 @@ import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import Range from '../Range';
 
-const BROKEN_SETDATA = isChrome < 18;
+const BROKEN_SETDATA = <number>isChrome < 18;
 const USE_IE_MIME_TYPE = isIE;
 const PLACEHOLDER = "\u2028\u2028";
 const PLACEHOLDER_CHAR_FIRST = PLACEHOLDER.charAt(0);
@@ -39,7 +39,7 @@ export default class TextInput {
 
     private inComposition: { range?: Range; lastValue?: string; canUndo?: boolean };
 
-    private inputHandler: (data: string) => string;
+    private inputHandler: ((data: string) => string) | null;
 
     private selectionStart: number;
     private selectionEnd: number;
@@ -115,9 +115,11 @@ export default class TextInput {
 
         if (!isWebKit) {
             editor.on('changeSelection', function (event, editor: Editor) {
-                if (editor.selection.isEmpty() !== isSelectionEmpty) {
-                    isSelectionEmpty = !isSelectionEmpty;
-                    syncSelection.schedule();
+                if (editor.selection) {
+                    if (editor.selection.isEmpty() !== isSelectionEmpty) {
+                        isSelectionEmpty = !isSelectionEmpty;
+                        syncSelection.schedule();
+                    }
                 }
             });
         }
@@ -129,7 +131,7 @@ export default class TextInput {
         }
 
 
-        let isAllSelected = function (text: HTMLTextAreaElement) {
+        let isAllSelected = function (text: HTMLTextAreaElement): boolean | undefined {
             return text.selectionStart === 0 && text.selectionEnd === text.value.length;
         };
         // IE8 does not support setSelectionRange
@@ -169,12 +171,14 @@ export default class TextInput {
                 this.inComposition.lastValue = val;
             }
             if (this.inComposition.lastValue) {
-                const r = editor.selection.getRange();
-                editor.insert(this.inComposition.lastValue, false);
-                editor.getSession().markUndoGroup();
-                this.inComposition.range = editor.selection.getRange();
-                editor.selection.setRange(r);
-                editor.selection.clearSelection();
+                if (editor.selection) {
+                    const r = editor.selection.getRange();
+                    editor.insert(this.inComposition.lastValue, false);
+                    editor.getSession().markUndoGroup();
+                    this.inComposition.range = editor.selection.getRange();
+                    editor.selection.setRange(r);
+                    editor.selection.clearSelection();
+                }
             }
         };
 
@@ -196,7 +200,7 @@ export default class TextInput {
 
             const c = this.inComposition;
             this.inComposition = false;
-            let timer = window.setTimeout(() => {
+            let timer: number | null = window.setTimeout(() => {
                 timer = null;
                 const str = this.text.value.replace(/\x01/g, "");
 
@@ -224,10 +228,12 @@ export default class TextInput {
             editor.onCompositionEnd();
             editor.off("mousedown", onCompositionEnd);
             if (e.type === "compositionend" && c.range) {
-                editor.selection.setRange(c.range);
+                if (editor.selection) {
+                    editor.selection.setRange(c.range);
+                }
             }
             // Workaround for accent key composition in Chrome 53+.
-            if (isChrome && isChrome >= 53) {
+            if (isChrome && <number>isChrome >= 53) {
                 onInput();
             }
         };
@@ -241,51 +247,15 @@ export default class TextInput {
             editor.onCompositionStart();
             setTimeout(onCompositionUpdate, 0);
             editor.on("mousedown", onCompositionEnd);
-            if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
-                editor.insert("", false);
-                editor.getSession().markUndoGroup();
-                editor.selection.clearSelection();
+            if (editor.selection) {
+                if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
+                    editor.insert("", false);
+                    editor.getSession().markUndoGroup();
+                    editor.selection.clearSelection();
+                }
             }
             editor.getSession().markUndoGroup();
         };
-
-        if (isOldIE) {
-            let inPropertyChange = false;
-            let syncProperty: DelayedCall;
-            const onPropertyChange = (e?: KeyboardEvent) => {
-                if (inPropertyChange)
-                    return;
-                const data = this.text.value;
-                if (this.inComposition || !data || data === PLACEHOLDER)
-                    return;
-                // can happen either after delete or during insert operation
-                if (e && data === PLACEHOLDER_CHAR_FIRST)
-                    return syncProperty.schedule();
-
-                this.sendText(data);
-                // ie8 calls propertychange handlers synchronously!
-                inPropertyChange = true;
-                this.resetValue();
-                inPropertyChange = false;
-            };
-            syncProperty = createDelayedCall(onPropertyChange);
-            addListener(this.text, "propertychange", onPropertyChange);
-
-            const keytable = { 13: 1, 27: 1 };
-            addListener(this.text, "keyup", (e: KeyboardEvent) => {
-                if (this.inComposition && (!this.text.value || keytable[e.keyCode]))
-                    setTimeout(onCompositionEnd, 0);
-                if ((this.text.value.charCodeAt(0) || 0) < 129) {
-                    return syncProperty.schedule();
-                }
-                this.inComposition ? onCompositionUpdate() : onCompositionStart();
-            });
-            // when user presses backspace after focusing the editor 
-            // propertychange isn't called for the next character
-            addListener(this.text, "keydown", function (e) {
-                syncProperty.schedule(50);
-            });
-        }
 
         const onSelect = (e: any) => {
             if (copied) {
@@ -296,11 +266,13 @@ export default class TextInput {
                 this.resetSelection();
             }
             else if (this.inputHandler) {
-                this.resetSelection(editor.selection.isEmpty());
+                if (editor.selection) {
+                    this.resetSelection(editor.selection.isEmpty());
+                }
             }
         };
 
-        const handleClipboardData = function handleClipboardData(e: ClipboardEvent, data?: string): boolean | string {
+        const handleClipboardData = function handleClipboardData(e: ClipboardEvent, data?: string): boolean | string | undefined {
             const clipboardData: DataTransfer = e.clipboardData || window['clipboardData'];
             if (!clipboardData || BROKEN_SETDATA)
                 return void 0;
@@ -441,10 +413,19 @@ export default class TextInput {
             + "height:" + this.text.style.height + ";"
             + (isIE ? "opacity:0.1;" : "");
 
+        const intFromStringOrNull = function (str: string | null): number {
+            if (typeof str === 'string') {
+                return parseInt(str, 10) || 0;
+            }
+            else {
+                return 0;
+            }
+        };
+
         const rect = this.editor.container.getBoundingClientRect();
         const style = window.getComputedStyle(this.editor.container);
-        const top = rect.top + (parseInt(style.borderTopWidth, 10) || 0);
-        const left = rect.left + (parseInt(style.borderLeftWidth, 10) || 0);
+        const top = rect.top + intFromStringOrNull(style.borderTopWidth);
+        const left = rect.left + intFromStringOrNull(style.borderLeftWidth);
         const maxTop = rect.bottom - top - this.text.clientHeight - 2;
 
         const move = (e: MouseEvent) => {
@@ -510,7 +491,9 @@ export default class TextInput {
      */
     onContextMenu(e: MouseEvent): void {
         this.afterContextMenu = true;
-        this.resetSelection(this.editor.selection.isEmpty());
+        if (this.editor.selection) {
+            this.resetSelection(this.editor.selection.isEmpty());
+        }
         this.editor._emit("nativecontextmenu", { target: this.editor, domEvent: e });
         this.moveToMouse(e, true);
     }
@@ -595,7 +578,7 @@ export default class TextInput {
     /**
      *
      */
-    getInputHandler(): (data: string) => string {
+    getInputHandler(): ((data: string) => string) | null {
         return this.inputHandler;
     }
 

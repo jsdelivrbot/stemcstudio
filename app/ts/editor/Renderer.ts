@@ -4,7 +4,6 @@ import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import Disposable from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
-import { isOldIE } from "./lib/useragent";
 import Annotation from './Annotation';
 
 import CursorLayer from "./layer/CursorLayer";
@@ -26,6 +25,7 @@ import OptionsProvider from "./OptionsProvider";
 import PixelPosition from './PixelPosition';
 import Position from './Position';
 import ScreenCoordinates from './ScreenCoordinates';
+import ScrollBarEvent from './events/ScrollBarEvent';
 import EditorRenderer from './EditorRenderer';
 
 // FIXME: The editor.css is crucial to the operation of the renderer.
@@ -62,6 +62,29 @@ function changesToString(changes: number): string {
     return a.trim();
 }
 */
+
+/**
+ * Computes steps for animation purposes.
+ * The number of steps is hard-coded to 8.
+ */
+function calcSteps(fromValue: number, toValue: number): number[] {
+    const Δ = toValue - fromValue;
+    const N = 8;
+    const steps: number[] = [];
+
+    /**
+     * The interpolation function.
+     */
+    const func = function (t: number, x_min: number, dx: number): number {
+        return dx * (Math.pow(t - 1, 3) + 1) + x_min;
+    };
+
+    for (let i = 0; i < N; ++i) {
+        steps.push(func(i / N, fromValue, Δ));
+    }
+
+    return steps;
+}
 
 /**
  * The class that is responsible for drawing everything you see on the screen!
@@ -137,10 +160,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * $timer is used for animated scrolling.
      */
-    private $timer: number;
+    private $timer: number | undefined;
 
-    private STEPS = 8;
-    public $keepTextAreaAtCursor: boolean;
+    public $keepTextAreaAtCursor: boolean | null = true;
     public $gutter: HTMLDivElement;
     public scroller: HTMLDivElement;
     public content: HTMLDivElement;
@@ -153,10 +175,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      *
      */
-    public $scrollAnimation: { from: number; to: number; steps: number[] };
+    public $scrollAnimation: { from: number; to: number; steps: number[] } | null;
 
     public $scrollbarWidth: number;
-    private session: EditSession;
+    private session: EditSession | undefined;
     private eventBus: EventEmitterClass<any, Renderer>;
 
     private scrollMargin = {
@@ -171,12 +193,12 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * 
      */
-    private fontMetrics: FontMetrics;
+    private fontMetrics: FontMetrics | undefined;
 
     /**
      * A function that removes the changeCharacterSize handler.
      */
-    private removeChangeCharacterSizeHandler: () => void;
+    private removeChangeCharacterSizeHandler: (() => void) | undefined;
 
     private $allowBoldFonts: boolean;
     private cursorPos: Position;
@@ -187,7 +209,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     public $size: { height: number; width: number; scrollerHeight: number; scrollerWidth: number; $dirty: boolean };
 
     private $loop: RenderLoop;
-    private $changedLines: { firstRow: number; lastRow: number; };
+    private $changedLines: { firstRow: number; lastRow: number; } | null;
     private $changes = 0;
     private resizing: number;
     private $gutterLineHighlight: HTMLDivElement;
@@ -203,7 +225,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     private $showPrintMargin: boolean;
 
     /**
-     *
+     * The character width, in pixels.
      */
     public characterWidth: number;
 
@@ -213,7 +235,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     public lineHeight: number;
 
     private $extraHeight: number;
-    private $composition: { keepTextAreaAtCursor: boolean; cssText: string };
+    private $composition: { keepTextAreaAtCursor: boolean | null; cssText: string } | null;
     private $hScrollBarAlwaysVisible = false;
     private $vScrollBarAlwaysVisible = false;
     private $showGutter = true;
@@ -237,9 +259,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         // TODO: this breaks rendering in Cloud9 with multiple ace instances
         // // Imports CSS once per DOM document ('ace_editor' serves as an identifier).
         // ensureHTMLStyleElement(editorCss, "ace_editor", container.ownerDocument);
-
-        // in IE <= 9 the native cursor always shines through
-        this.$keepTextAreaAtCursor = !isOldIE;
 
         addCssClass(this.container, "ace_editor");
 
@@ -273,13 +292,13 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
         this.scrollBarV = new VScrollBar(this.container, this);
         this.scrollBarH = new HScrollBar(this.container, this);
-        this.scrollBarV.on("scroll", (event, scrollBar: VScrollBar) => {
-            if (!this.$scrollAnimation) {
+        this.scrollBarV.on("scroll", (event: ScrollBarEvent, scrollBar: VScrollBar) => {
+            if (!this.$scrollAnimation && this.session) {
                 this.session.setScrollTop(event.data - this.scrollMargin.top);
             }
         });
-        this.scrollBarH.on("scroll", (event, scrollBar: HScrollBar) => {
-            if (!this.$scrollAnimation) {
+        this.scrollBarH.on("scroll", (event: ScrollBarEvent, scrollBar: HScrollBar) => {
+            if (!this.$scrollAnimation && this.session) {
                 this.session.setScrollLeft(event.data - this.scrollMargin.left);
             }
         });
@@ -328,8 +347,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             this.removeChangeCharacterSizeHandler = void 0;
         }
 
-        this.fontMetrics.release();
-        this.fontMetrics = void 0;
+        if (this.fontMetrics) {
+            this.fontMetrics.release();
+            this.fontMetrics = void 0;
+        }
 
         this.textLayer.dispose();
         this.cursorLayer.dispose();
@@ -424,30 +445,35 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Associates the renderer with a different EditSession.
      */
-    setSession(session: EditSession): void {
+    setSession(session: EditSession | undefined): void {
         if (this.session) {
-            this.session.doc.removeChangeNewLineModeListener(this.onChangeNewLineMode);
+            if (this.session.doc) {
+                this.session.doc.removeChangeNewLineModeListener(this.onChangeNewLineMode);
+            }
+            // TODO: Why aren't we cleaning up the layers too?
         }
 
         this.session = session;
-        if (!session) {
-            return;
+        if (session) {
+            const scrollTop = session.getScrollTop();
+            if (typeof scrollTop === 'number') {
+                if (this.scrollMargin.top && scrollTop <= 0) {
+                    session.setScrollTop(-this.scrollMargin.top);
+                }
+            }
+
+            this.cursorLayer.setSession(session);
+            this.$markerBack.setSession(session);
+            this.$markerFront.setSession(session);
+            this.$gutterLayer.setSession(session);
+            this.textLayer.setSession(session);
+            this.$loop.schedule(CHANGE_FULL);
+
+            this.onChangeNewLineMode();
+            if (session.doc) {
+                session.doc.addChangeNewLineModeListener(this.onChangeNewLineMode);
+            }
         }
-
-        if (this.scrollMargin.top && session.getScrollTop() <= 0) {
-            session.setScrollTop(-this.scrollMargin.top);
-        }
-
-        this.cursorLayer.setSession(session);
-        this.$markerBack.setSession(session);
-        this.$markerFront.setSession(session);
-        this.$gutterLayer.setSession(session);
-        this.textLayer.setSession(session);
-        this.$loop.schedule(CHANGE_FULL);
-
-        this.onChangeNewLineMode = this.onChangeNewLineMode.bind(this);
-        this.onChangeNewLineMode();
-        this.session.doc.addChangeNewLineModeListener(this.onChangeNewLineMode);
     }
 
     /**
@@ -495,9 +521,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     *
+     * We use this as a callback, so we use a fat-arrow to bind this.
+     * In other words, you don't have to worry about binding it anymore.
      */
-    private onChangeNewLineMode(): void {
+    private onChangeNewLineMode = (): void => {
         this.$loop.schedule(CHANGE_TEXT);
         this.textLayer.updateEolChar();
     }
@@ -564,7 +591,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param width The width of the editor in pixels
      * @param height The hiehgt of the editor, in pixels
      */
-    public onResize(force?: boolean, gutterWidth?: number, width?: number, height?: number): number {
+    public onResize(force?: boolean, gutterWidth?: number, width?: number, height?: number): number | undefined {
         if (this.resizing > 2)
             return void 0;
         else if (this.resizing > 0)
@@ -598,7 +625,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return void 0;
     }
 
-    private $updateCachedSize(force: boolean, gutterWidth: number, width: number, height: number): number {
+    private $updateCachedSize(force: boolean | undefined, gutterWidth: number | undefined, width: number, height: number): number {
         height -= (this.$extraHeight || 0);
         let changes = 0;
         const size = this.$size;
@@ -626,8 +653,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             changes |= CHANGE_SIZE;
             size.width = width;
 
-            if (gutterWidth == null)
+            if (typeof gutterWidth !== 'number') {
                 gutterWidth = this.$showGutter ? this.$gutter.offsetWidth : 0;
+            }
 
             this.gutterWidth = gutterWidth;
 
@@ -660,7 +688,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         if (gutterWidth !== this.gutterWidth)
             this.$changes |= this.$updateCachedSize(true, gutterWidth, this.$size.width, this.$size.height);
 
-        if (this.session.getUseWrapMode() && this.adjustWrapLimit()) {
+        if (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit()) {
             this.$loop.schedule(CHANGE_FULL);
         }
         else if (this.$size.$dirty) {
@@ -672,13 +700,27 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         }
     }
 
+    private sessionOrThrow(): EditSession {
+        if (this.session) {
+            return this.session;
+        }
+        else {
+            throw new Error("session must be available");
+        }
+    }
+
     /**
      * Adjusts the wrap limit, which is the number of characters that can fit within the width of the edit area on screen.
      */
     public adjustWrapLimit(): boolean {
         const availableWidth = this.$size.scrollerWidth - this.$padding * 2;
         const limit = Math.floor(availableWidth / this.characterWidth);
-        return this.session.adjustWrapLimit(limit, this.$showPrintMargin && this.$printMarginColumn);
+        if (this.$showPrintMargin) {
+            return this.sessionOrThrow().adjustWrapLimit(limit, this.$printMarginColumn);
+        }
+        else {
+            return this.sessionOrThrow().adjustWrapLimit(limit, 0);
+        }
     }
 
     /**
@@ -796,7 +838,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         setCssClass(this.$gutter, "ace_fade-fold-widgets", fadeFoldWidgets);
     }
 
-    getFontSize(): string {
+    getFontSize(): string | null {
         return this.container.style.fontSize;
     }
 
@@ -828,18 +870,25 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return this.$highlightGutterLine;
     }
 
-    getPixelPosition(position: Position, onScreen: boolean): PixelPosition {
+    /**
+     *
+     */
+    getPixelPosition(position?: Position, onScreen?: boolean): PixelPosition {
         return this.cursorLayer.getPixelPosition(position, onScreen);
     }
 
     $updateGutterLineHighlight() {
+        const session = this.sessionOrThrow();
         let pos = this.cursorLayer.$pixelPos;
         let height = this.layerConfig.lineHeight;
-        if (this.session.getUseWrapMode()) {
-            const cursor = this.session.getSelection().getCursor();
-            cursor.column = 0;
-            pos = this.getPixelPosition(cursor, true);
-            height *= this.session.getRowLength(cursor.row);
+        if (session.getUseWrapMode()) {
+            const selection = session.selection;
+            if (selection) {
+                const cursor = selection.getCursor();
+                cursor.column = 0;
+                pos = this.getPixelPosition(cursor, true);
+                height *= session.getRowLength(cursor.row);
+            }
         }
         this.$gutterLineHighlight.style.top = pos.top - this.layerConfig.offset + "px";
         this.$gutterLineHighlight.style.height = height + "px";
@@ -906,6 +955,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             return;
         }
 
+        const session = this.sessionOrThrow();
+
         let posTop = this.cursorLayer.$pixelPos.top;
         let posLeft = this.cursorLayer.$pixelPos.left;
         posTop -= config.offset;
@@ -917,7 +968,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         let w = this.characterWidth;
         if (this.$composition) {
             const val = this.textarea.value.replace(/^\x01+/, "");
-            w *= (this.session.$getStringScreenWidth(val)[0] + 2);
+            w *= (session.$getStringScreenWidth(val)[0] + 2);
             h += 2;
             posTop -= 1;
         }
@@ -1077,10 +1128,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * @param changes
-     * @param force
+     *
      */
-    private $renderChanges(changes: number, force: boolean): number {
+    private $renderChanges(changes: number, force: boolean): number | undefined {
 
         if (this.$changes) {
             changes |= this.$changes;
@@ -1222,8 +1272,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return void 0;
     }
 
-    private $autosize() {
-        const height = this.session.getScreenLength() * this.lineHeight;
+    private $autosize(): void {
+        const session = this.sessionOrThrow();
+        const height = session.getScreenLength() * this.lineHeight;
         const maxHeight = this.$maxLines * this.lineHeight;
         const desiredHeight = Math.max(
             (this.$minLines || 1) * this.lineHeight,
@@ -1246,17 +1297,17 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         }
     }
 
-    private $computeLayerConfig() {
+    private $computeLayerConfig(): number {
 
         if (this.$maxLines && this.lineHeight > 1) {
             this.$autosize();
         }
 
-        const session = this.session;
+        const session = this.sessionOrThrow();
         const size = this.$size;
 
         const hideScrollbars = size.height <= 2 * this.lineHeight;
-        const screenLines = this.session.getScreenLength();
+        const screenLines = session.getScreenLength();
         let maxHeight = screenLines * this.lineHeight;
 
         let offset = this.scrollTop % this.lineHeight;
@@ -1283,11 +1334,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             this.scrollBarV.setVisible(vScroll);
         }
 
-        this.session.setScrollTop(Math.max(-this.scrollMargin.top,
-            Math.min(this.scrollTop, maxHeight - size.scrollerHeight + this.scrollMargin.bottom)));
+        session.setScrollTop(Math.max(-this.scrollMargin.top, Math.min(this.scrollTop, maxHeight - size.scrollerHeight + this.scrollMargin.bottom)));
 
-        this.session.setScrollLeft(Math.max(-this.scrollMargin.left, Math.min(this.scrollLeft,
-            longestLine + 2 * this.$padding - size.scrollerWidth + this.scrollMargin.right)));
+        session.setScrollLeft(Math.max(-this.scrollMargin.left, Math.min(this.scrollLeft, longestLine + 2 * this.$padding - size.scrollerWidth + this.scrollMargin.right)));
 
         const lineCount = Math.ceil(minHeight / this.lineHeight) - 1;
         let firstRow = Math.max(0, Math.round((this.scrollTop - offset) / this.lineHeight));
@@ -1345,34 +1394,34 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return changes;
     }
 
-    private $updateLines(): boolean {
-        const firstRow = this.$changedLines.firstRow;
-        const lastRow = this.$changedLines.lastRow;
-        this.$changedLines = null;
+    private $updateLines(): boolean | undefined {
+        if (this.$changedLines) {
+            const firstRow = this.$changedLines.firstRow;
+            const lastRow = this.$changedLines.lastRow;
+            this.$changedLines = null;
+            const layerConfig = this.layerConfig;
 
-        const layerConfig = this.layerConfig;
+            if (firstRow > layerConfig.lastRow + 1) { return void 0; }
+            if (lastRow < layerConfig.firstRow) { return void 0; }
 
-        if (firstRow > layerConfig.lastRow + 1) { return void 0; }
-        if (lastRow < layerConfig.firstRow) { return void 0; }
+            // if the last row is unknown -> redraw everything
+            if (lastRow === Infinity) {
+                if (this.$showGutter)
+                    this.$gutterLayer.update(layerConfig);
+                this.textLayer.update(layerConfig);
+                return void 0;
+            }
 
-        // if the last row is unknown -> redraw everything
-        if (lastRow === Infinity) {
-            if (this.$showGutter)
-                this.$gutterLayer.update(layerConfig);
-            this.textLayer.update(layerConfig);
-            return void 0;
+            // else update only the changed rows
+            this.textLayer.updateLines(layerConfig, firstRow, lastRow);
+            return true;
         }
-
-        // else update only the changed rows
-        this.textLayer.updateLines(layerConfig, firstRow, lastRow);
-        return true;
+        return false;
     }
 
     private $getLongestLine(): number {
-        let charCount = this.session.getScreenWidth();
-        if (this.showInvisibles && !this.session.$useWrapMode)
-            charCount += 1;
-
+        const session = this.sessionOrThrow();
+        const charCount = session.getScreenWidth() + ((this.showInvisibles && !session.$useWrapMode) ? 1 : 0);
         return Math.max(this.$size.scrollerWidth - 2 * this.$padding, Math.round(charCount * this.characterWidth));
     }
 
@@ -1380,7 +1429,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * Schedules an update to all the front markers in the document.
      */
     updateFrontMarkers(): void {
-        this.$markerFront.setMarkers(this.session.getMarkers(/*inFront=*/true));
+        const session = this.sessionOrThrow();
+        this.$markerFront.setMarkers(session.getMarkers(true));
         this.$loop.schedule(CHANGE_MARKER_FRONT);
     }
 
@@ -1388,7 +1438,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * Schedules an update to all the back markers in the document.
      */
     updateBackMarkers(): void {
-        this.$markerBack.setMarkers(this.session.getMarkers(false));
+        const session = this.sessionOrThrow();
+        this.$markerBack.setMarkers(session.getMarkers(false));
         this.$loop.schedule(CHANGE_MARKER_BACK);
     }
 
@@ -1431,9 +1482,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * @param anchor
-     * @param lead
-     * @param offset
+     *
      */
     scrollSelectionIntoView(anchor: Position, lead: Position, offset?: number): void {
         // first scroll anchor into view then scroll lead into view
@@ -1443,15 +1492,14 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Scrolls the cursor into the first visibile area of the editor.
-     *
-     * @param cursor
-     * @param offset
-     * @param $viewMargin
      */
     scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void {
         // the editor is not visible
-        if (this.$size.scrollerHeight === 0)
+        if (this.$size.scrollerHeight === 0) {
             return;
+        }
+
+        const session = this.sessionOrThrow();
 
         const pos = this.getPixelPosition(cursor, false);
 
@@ -1461,33 +1509,34 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         const topMargin = $viewMargin && $viewMargin.top || 0;
         const bottomMargin = $viewMargin && $viewMargin.bottom || 0;
 
-        const scrollTop = this.$scrollAnimation ? this.session.getScrollTop() : this.scrollTop;
+        const scrollTop = this.$scrollAnimation ? session.getScrollTop() : this.scrollTop;
 
         if (scrollTop + topMargin > top) {
             if (offset)
                 top -= offset * this.$size.scrollerHeight;
             if (top === 0)
                 top = -this.scrollMargin.top;
-            this.session.setScrollTop(top);
+            session.setScrollTop(top);
         }
         else if (scrollTop + this.$size.scrollerHeight - bottomMargin < top + this.lineHeight) {
             if (offset)
                 top += offset * this.$size.scrollerHeight;
-            this.session.setScrollTop(top + this.lineHeight - this.$size.scrollerHeight);
+            session.setScrollTop(top + this.lineHeight - this.$size.scrollerHeight);
         }
 
         const scrollLeft = this.scrollLeft;
 
         if (scrollLeft > left) {
-            if (left < this.$padding + 2 * this.layerConfig.characterWidth)
+            if (left < this.$padding + 2 * this.layerConfig.characterWidth) {
                 left = -this.scrollMargin.left;
-            this.session.setScrollLeft(left);
+            }
+            session.setScrollLeft(left);
         }
         else if (scrollLeft + this.$size.scrollerWidth < left + this.characterWidth) {
-            this.session.setScrollLeft(Math.round(left + this.characterWidth - this.$size.scrollerWidth));
+            session.setScrollLeft(Math.round(left + this.characterWidth - this.$size.scrollerWidth));
         }
         else if (scrollLeft <= this.$padding && left - scrollLeft < this.characterWidth) {
-            this.session.setScrollLeft(0);
+            session.setScrollLeft(0);
         }
     }
 
@@ -1495,14 +1544,14 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      *
      */
     getScrollTop(): number {
-        return this.session.getScrollTop();
+        return this.sessionOrThrow().getScrollTop();
     }
 
     /**
      *
      */
     getScrollLeft(): number {
-        return this.session.getScrollLeft();
+        return this.sessionOrThrow().getScrollLeft();
     }
 
     /**
@@ -1526,7 +1575,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param row A row id.
      */
     scrollToRow(row: number): void {
-        this.session.setScrollTop(row * this.lineHeight);
+        this.sessionOrThrow().setScrollTop(row * this.lineHeight);
     }
 
     alignCursor(cursor: number | Position, alignment: number): number {
@@ -1538,23 +1587,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         const h = this.$size.scrollerHeight - this.lineHeight;
         const offset = pos.top - h * (alignment || 0);
 
-        this.session.setScrollTop(offset);
+        this.sessionOrThrow().setScrollTop(offset);
         return offset;
-    }
-
-    $calcSteps(fromValue: number, toValue: number): number[] {
-        const l: number = this.STEPS;
-        const steps: number[] = [];
-
-        const func = function (t: number, x_min: number, dx: number): number {
-            return dx * (Math.pow(t - 1, 3) + 1) + x_min;
-        };
-
-        for (let i = 0; i < l; ++i) {
-            steps.push(func(i / this.STEPS, fromValue, toValue - fromValue));
-        }
-
-        return steps;
     }
 
     /**
@@ -1565,7 +1599,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param animate If `true` animates scrolling
      * @param callback Function to be called after the animation has finished
      */
-    scrollToLine(line: number, center: boolean, animate: boolean, callback: () => void) {
+    scrollToLine(line: number, center: boolean, animate: boolean, callback?: () => any) {
+        const session = this.sessionOrThrow();
         const pos = this.getPixelPosition({ row: line, column: 0 }, false);
         let offset = pos.top;
         if (center) {
@@ -1573,18 +1608,18 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         }
 
         const initialScroll = this.scrollTop;
-        this.session.setScrollTop(offset);
+        session.setScrollTop(offset);
         if (animate !== false) {
             this.animateScrolling(initialScroll, callback);
         }
     }
 
     /**
-     * @param fromValue
-     * @param callback
+     * fromValue is a scroll value.
      */
     animateScrolling(fromValue: number, callback?: () => any): void {
-        let toValue = this.scrollTop;
+        const session = this.sessionOrThrow();
+        const toValue = this.scrollTop;
         if (!this.animatedScroll) {
             return;
         }
@@ -1602,28 +1637,35 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             }
         }
 
-        const steps = this.$calcSteps(fromValue, toValue);
-        this.$scrollAnimation = { from: fromValue, to: toValue, steps: steps };
+        const steps = calcSteps(fromValue, toValue);
+        this.$scrollAnimation = { from: fromValue, to: toValue, steps };
 
-        clearInterval(this.$timer);
+        if (typeof this.$timer === 'number') {
+            window.clearInterval(this.$timer);
+            this.$timer = void 0;
+        }
 
-        this.session.setScrollTop(steps.shift());
+        session.setScrollTop(<number>steps.shift());
         // trick session to think it's already scrolled to not loose toValue
-        this.session.$scrollTop = toValue;
+        session.$scrollTop = toValue;
+        // Every 10 milliseconds, animate the scrolling.
+        let doneFinalTweak = false;
         this.$timer = window.setInterval(() => {
-            if (steps.length) {
-                this.session.setScrollTop(steps.shift());
-                this.session.$scrollTop = toValue;
+            if (steps.length > 0) {
+                session.setScrollTop(<number>steps.shift());
+                session.$scrollTop = toValue;
             }
-            else if (toValue != null) {
-                this.session.$scrollTop = -1;
-                this.session.setScrollTop(toValue);
-                toValue = null;
+            else if (!doneFinalTweak) {
+                session.$scrollTop = -1;
+                session.setScrollTop(toValue);
+                doneFinalTweak = true;
             }
             else {
                 // do this on separate step to not get spurious scroll event from scrollbar
-                clearInterval(this.$timer);
-                this.$timer = void 0;
+                if (typeof this.$timer === 'number') {
+                    window.clearInterval(this.$timer);
+                    this.$timer = void 0;
+                }
                 this.$scrollAnimation = null;
                 if (callback) {
                     callback();
@@ -1659,48 +1701,45 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * Scrolls the editor across both x- and y-axes.
-     *
-     * @param x The x value to scroll to.
-     * @param y The y value to scroll to.
+     * Scrolls the editor across axes to an absolute point (scrollLeft, scrollTop).
      */
-    scrollTo(x: number, y: number): void {
-        this.session.setScrollTop(y);
-        this.session.setScrollLeft(y);
+    scrollTo(scrollLeft: number, scrollTop: number): void {
+        const session = this.sessionOrThrow();
+        session.setScrollLeft(scrollLeft);
+        session.setScrollTop(scrollTop);
     }
 
     /**
-     * Scrolls the editor across both x- and y-axes.
-     *
-     * @param deltaX The x value to scroll by.
-     * @param deltaY The y value to scroll by.
+     * Scrolls the editor across both axes by a displacement.
      */
     scrollBy(deltaX: number, deltaY: number): void {
+        const session = this.sessionOrThrow();
         if (deltaY) {
-            this.session.setScrollTop(this.session.getScrollTop() + deltaY);
+            session.setScrollTop(session.getScrollTop() + deltaY);
         }
         if (deltaX) {
-            this.session.setScrollLeft(this.session.getScrollLeft() + deltaX);
+            session.setScrollLeft(session.getScrollLeft() + deltaX);
         }
     }
 
     /**
      * Returns `true` if you can still scroll by either parameter; in other words, you haven't reached the end of the file or line.
-     *
-     * @param deltaX The x value to scroll by
-     * @param deltaY The y value to scroll by
      */
     isScrollableBy(deltaX: number, deltaY: number): boolean {
-        if (deltaY < 0 && this.session.getScrollTop() >= 1 - this.scrollMargin.top)
+        const session = this.sessionOrThrow();
+        if (deltaY < 0 && session.getScrollTop() >= 1 - this.scrollMargin.top) {
             return true;
-        if (deltaY > 0 && this.session.getScrollTop() + this.$size.scrollerHeight
-            - this.layerConfig.maxHeight < -1 + this.scrollMargin.bottom)
+        }
+        if (deltaY > 0 && session.getScrollTop() + this.$size.scrollerHeight - this.layerConfig.maxHeight < -1 + this.scrollMargin.bottom) {
             return true;
-        if (deltaX < 0 && this.session.getScrollLeft() >= 1 - this.scrollMargin.left)
+        }
+        if (deltaX < 0 && session.getScrollLeft() >= 1 - this.scrollMargin.left) {
             return true;
-        if (deltaX > 0 && this.session.getScrollLeft() + this.$size.scrollerWidth - this.layerConfig.width < -1 + this.scrollMargin.right)
+        }
+        if (deltaX > 0 && session.getScrollLeft() + this.$size.scrollerWidth - this.layerConfig.width < -1 + this.scrollMargin.right) {
             return true;
-        return void 0;
+        }
+        return false;
     }
 
     pixelToScreenCoordinates(x: number, y: number) {
@@ -1714,24 +1753,23 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     screenToTextCoordinates(clientX: number, clientY: number): Position {
+        const session = this.sessionOrThrow();
         const canvasPos = this.scroller.getBoundingClientRect();
 
         const column = Math.round((clientX + this.scrollLeft - canvasPos.left - this.$padding) / this.characterWidth);
 
         const row = (clientY + this.scrollTop - canvasPos.top) / this.lineHeight;
 
-        return this.session.screenToDocumentPosition(row, Math.max(column, 0));
+        return session.screenToDocumentPosition(row, Math.max(column, 0));
     }
 
     /**
-     * Returns an object containing the `pageX` and `pageY` coordinates of the document position.
-     *
-     * @param row The document row position
-     * @param column The document column position
+     * Returns an object containing the screen coordinates of the document position.
      */
     textToScreenCoordinates(row: number, column: number): ScreenCoordinates {
+        const session = this.sessionOrThrow();
         const canvasPos: ClientRect = this.scroller.getBoundingClientRect();
-        const pos: Position = this.session.documentToScreenPosition(row, column);
+        const pos: Position = session.documentToScreenPosition(row, column);
 
         const x = this.$padding + Math.round(pos.column * this.characterWidth);
         const y = pos.row * this.lineHeight;
@@ -1745,21 +1783,21 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Focuses the current container.
      */
-    visualizeFocus() {
+    visualizeFocus(): void {
         addCssClass(this.container, "ace_focus");
     }
 
     /**
      * Blurs the current container.
      */
-    visualizeBlur() {
+    visualizeBlur(): void {
         removeCssClass(this.container, "ace_focus");
     }
 
     /**
-     * @param position
+     *
      */
-    showComposition(position: { row: number; column: number }) {
+    showComposition(position: Position) {
         if (!this.$composition)
             this.$composition = {
                 keepTextAreaAtCursor: this.$keepTextAreaAtCursor,
@@ -1773,8 +1811,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * @param text A string of text to use
-     *
      * Sets the inner text of the current composition to `text`.
      */
     setCompositionText(text?: string): void {
@@ -1785,7 +1821,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Hides the current composition.
      */
-    hideComposition() {
+    hideComposition(): void {
         if (!this.$composition) {
             return;
         }

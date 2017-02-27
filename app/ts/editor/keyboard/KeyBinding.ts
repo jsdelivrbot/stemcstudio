@@ -75,15 +75,18 @@ export default class KeyBinding {
     /**
      * @param kb
      */
-    setKeyboardHandler(kb: KeyboardHandler): void {
+    setKeyboardHandler(kb: KeyboardHandler | null): void {
         const h = this.$handlers;
         if (h[h.length - 1] === kb)
             return;
 
-        while (h[h.length - 1] && h[h.length - 1] !== this.$defaultHandler)
+        while (h[h.length - 1] && h[h.length - 1] !== this.$defaultHandler) {
             this.removeKeyboardHandler(h[h.length - 1]);
+        }
 
-        this.addKeyboardHandler(kb, 1);
+        if (kb) {
+            this.addKeyboardHandler(kb, 1);
+        }
     }
 
     /**

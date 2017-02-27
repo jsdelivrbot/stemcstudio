@@ -7,46 +7,46 @@ interface Preferences {
     /**
      * 
      */
-    displayIndentGuides?: boolean;
+    displayIndentGuides: boolean;
     /**
      * 
      */
-    fontSize?: string;
+    fontSize: string;
     /**
      * 
      */
-    showFoldWidgets?: boolean;
+    showFoldWidgets: boolean;
     /**
      * 
      */
-    showGutter?: boolean;
+    showGutter: boolean;
     /**
      * 
      */
-    showInvisibles?: boolean;
+    showInvisibles: boolean;
     /**
      * 
      */
-    showLineNumbers?: boolean;
+    showLineNumbers: boolean;
     /**
      * 
      */
-    showPrintMargin?: boolean;
+    showPrintMargin: boolean;
     /**
      * 
      */
-    tabSize?: number;
+    tabSize: number;
     /**
      * 
      */
-    theme?: string;
+    theme: string;
     /**
      * 
      */
-    useSoftTabs?: boolean;
+    useSoftTabs: boolean;
 }
 
-function mixin(obj: Preferences, base: Preferences) {
+function mixin(obj: Partial<Preferences>, base: Preferences) {
     for (const key in base) {
         if (typeof obj[key] === 'undefined') {
             obj[key] = base[key];
@@ -72,7 +72,7 @@ const DEFAULTS: Preferences = {
 
 export default class PreferencesManagerService implements EditorPreferencesStorage {
     public static $inject: string[] = ['$window'];
-    private cache: Preferences = {};
+    private cache: Partial<Preferences> = {};
     constructor(private $window: angular.IWindowService) {
         const value = this.$window.localStorage[PREFERENCES_KEY];
         if (value) {
@@ -82,7 +82,12 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get displayIndentGuides(): boolean {
-        return this.cache.displayIndentGuides;
+        if (typeof this.cache.displayIndentGuides === 'boolean') {
+            return this.cache.displayIndentGuides;
+        }
+        else {
+            return DEFAULTS.displayIndentGuides;
+        }
     }
     set displayIndentGuides(value: boolean) {
         this.cache.displayIndentGuides = value;
@@ -90,7 +95,12 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get fontSize(): string {
-        return this.cache.fontSize;
+        if (typeof this.cache.fontSize === 'string') {
+            return this.cache.fontSize;
+        }
+        else {
+            return DEFAULTS.fontSize;
+        }
     }
     set fontSize(value: string) {
         this.cache.fontSize = value;
@@ -98,7 +108,12 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get showFoldWidgets(): boolean {
-        return this.cache.showFoldWidgets;
+        if (typeof this.cache.showFoldWidgets === 'boolean') {
+            return this.cache.showFoldWidgets;
+        }
+        else {
+            return DEFAULTS.showFoldWidgets;
+        }
     }
     set showFoldWidgets(value: boolean) {
         this.cache.showFoldWidgets = value;
@@ -106,7 +121,12 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get showGutter(): boolean {
-        return this.cache.showGutter;
+        if (typeof this.cache.showGutter === 'boolean') {
+            return this.cache.showGutter;
+        }
+        else {
+            return DEFAULTS.showGutter;
+        }
     }
     set showGutter(value: boolean) {
         this.cache.showGutter = value;
@@ -114,7 +134,12 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get showInvisibles(): boolean {
-        return this.cache.showInvisibles;
+        if (typeof this.cache.showInvisibles === 'boolean') {
+            return this.cache.showInvisibles;
+        }
+        else {
+            return DEFAULTS.showInvisibles;
+        }
     }
     set showInvisibles(value: boolean) {
         this.cache.showInvisibles = value;

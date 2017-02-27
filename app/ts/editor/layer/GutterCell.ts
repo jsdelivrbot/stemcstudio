@@ -4,7 +4,7 @@
 interface GutterCell {
     element: HTMLDivElement;
     textNode: Text;
-    foldWidget: HTMLSpanElement;
+    foldWidget: HTMLSpanElement | null;
 }
 
 export default GutterCell;

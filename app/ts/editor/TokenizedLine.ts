@@ -1,4 +1,4 @@
-import Token from './Token';
+import { BasicToken } from './Token';
 
 /**
  *
@@ -13,7 +13,7 @@ interface TokenizedLine {
     /**
      *
      */
-    tokens: Token[];
+    tokens: BasicToken[];
 }
 
 export default TokenizedLine;

@@ -5,7 +5,7 @@ import Document from './Document';
 import EventEmitterClass from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
 import Tokenizer from './Tokenizer';
-import Token from './Token';
+import { BasicToken } from './Token';
 import TokenizedLine from './TokenizedLine';
 
 /**
@@ -29,12 +29,12 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * This could be called tokensByLine.
      * The first index access is by line number and returns an array of tokens.
      */
-    private lines: Token[][] = [];
+    private lines: (BasicToken[] | null)[] = [];
 
-    private states: (string | string[])[] = [];
+    private states: (string | string[] | null)[] = [];
     private currentLine = 0;
     private tokenizer: Tokenizer;
-    private doc: Document;
+    private doc: Document | undefined;
 
     /**
      * The function that is called periodically using a timer.
@@ -61,28 +61,31 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             const workerStart = new Date();
             let currentLine = this.currentLine;
             let endLine = -1;
-            const doc = this.doc;
 
             const startLine = currentLine;
             while (this.lines[currentLine]) {
                 currentLine++;
             }
 
-            const len = doc.getLength();
-            let processedLines = 0;
-            this.running_ = NOT_RUNNING;
-            while (currentLine < len) {
-                this.tokenizeRow(currentLine);
-                endLine = currentLine;
-                do {
-                    currentLine++;
-                } while (this.lines[currentLine]);
+            if (this.doc) {
+                const doc = this.doc;
+                const len = doc.getLength();
 
-                // Only check every 5 lines.
-                processedLines++;
-                if ((processedLines % 5 === 0) && (new Date().getTime() - workerStart.getTime()) > 20) {
-                    this.running_ = window.setTimeout(this.$worker, 20);
-                    break;
+                let processedLines = 0;
+                this.running_ = NOT_RUNNING;
+                while (currentLine < len) {
+                    this.tokenizeRow(currentLine);
+                    endLine = currentLine;
+                    do {
+                        currentLine++;
+                    } while (this.lines[currentLine]);
+
+                    // Only check every 5 lines.
+                    processedLines++;
+                    if ((processedLines % 5 === 0) && (new Date().getTime() - workerStart.getTime()) > 20) {
+                        this.running_ = window.setTimeout(this.$worker, 20);
+                        break;
+                    }
                 }
             }
             this.currentLine = currentLine;
@@ -151,7 +154,9 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             else {
                 // [] || 'start' => [], so an empty array is consistent with the
                 // original code, but that breaks the API contract. 
-                return void 0;
+                // return void 0;
+                // We do this instead to simplify the return value to string only.
+                throw new Error(`No viable states at row ${row}`);
             }
         }
         else {
@@ -164,14 +169,14 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * Gives list of tokens of the row. (tokens are cached).
      */
-    getTokens(row: number): Token[] {
+    getTokens(row: number): BasicToken[] {
         return this.lines[row] || this.tokenizeRow(row);
     }
 
     /**
      * Sets a new document to associate with this object.
      */
-    setDocument(doc: Document): void {
+    setDocument(doc: Document | undefined): void {
         this.doc = doc;
         this.lines = [];
         this.states = [];
@@ -197,15 +202,20 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * Starts tokenizing at the row indicated.
      */
     start(startRow: number): void {
-        this.currentLine = Math.min(startRow || 0, this.currentLine, this.doc.getLength());
+        if (this.doc) {
+            this.currentLine = Math.min(startRow || 0, this.currentLine, this.doc.getLength());
 
-        // Remove all cached items below this line.
-        this.lines.splice(this.currentLine, this.lines.length);
-        this.states.splice(this.currentLine, this.states.length);
+            // Remove all cached items below this line.
+            this.lines.splice(this.currentLine, this.lines.length);
+            this.states.splice(this.currentLine, this.states.length);
 
-        this.stop();
-        // Pretty long delay to prevent the tokenizer from interfering with the user.
-        this.running_ = window.setTimeout(this.$worker, 700);
+            this.stop();
+            // Pretty long delay to prevent the tokenizer from interfering with the user.
+            this.running_ = window.setTimeout(this.$worker, 700);
+        }
+        else {
+            console.warn("Unable to start background tokenizer without a document");
+        }
     }
 
     /**
@@ -251,33 +261,40 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             console.warn(`Unexpected action '${delta.action}' in updateOnChange`);
         }
 
-        this.currentLine = Math.min(startRow, this.currentLine, this.doc.getLength());
+        if (this.doc) {
+            this.currentLine = Math.min(startRow, this.currentLine, this.doc.getLength());
+        }
 
         this.stop();
     }
 
     /**
      * For the given row, updates the lines[row] and sets the currentLine to row + 1.
+     * Returns null if there is no document.
      */
-    public tokenizeRow(row: number): Token[] {
+    public tokenizeRow(row: number): BasicToken[] {
+        if (this.doc) {
+            const line: string = this.doc.getLine(row);
+            const state = this.states[row - 1];
 
-        const line: string = this.doc.getLine(row);
-        const state = this.states[row - 1];
+            const data: TokenizedLine = this.tokenizer.getLineTokens(line, state);
 
-        const data: TokenizedLine = this.tokenizer.getLineTokens(line, state);
-
-        // Because state[row]: string | string[], ...
-        if (this.states[row] + "" !== data.state + "") {
-            this.states[row] = data.state;
-            this.lines[row + 1] = null;
-            if (this.currentLine > row + 1) {
+            // Because state[row]: string | string[], ...
+            if (this.states[row] + "" !== data.state + "") {
+                this.states[row] = data.state;
+                this.lines[row + 1] = null;
+                if (this.currentLine > row + 1) {
+                    this.currentLine = row + 1;
+                }
+            }
+            else if (this.currentLine === row) {
                 this.currentLine = row + 1;
             }
-        }
-        else if (this.currentLine === row) {
-            this.currentLine = row + 1;
-        }
 
-        return this.lines[row] = data.tokens;
+            return this.lines[row] = data.tokens;
+        }
+        else {
+            throw new Error("must be a document to tokenize a row");
+        }
     }
 }

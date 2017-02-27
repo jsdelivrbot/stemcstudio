@@ -23,7 +23,7 @@ interface IDoodleFile {
      * Python
      * TypeScript
      */
-    language: string;
+    language: string | undefined;
 
     /**
      * (Volatile)
@@ -38,7 +38,7 @@ interface IDoodleFile {
     /**
      * (Gist)
      */
-    raw_url: string;
+    raw_url: string | undefined;
 
     /**
      * (Volatile)

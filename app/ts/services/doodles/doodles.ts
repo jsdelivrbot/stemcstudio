@@ -36,19 +36,19 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
 
             d.files[FILENAME_HTML] = new DoodleFile();
             d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
-            d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML);
+            d.files[FILENAME_HTML].language = <string>modeFromName(FILENAME_HTML);
 
             d.files[FILENAME_CODE] = new DoodleFile();
             d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
-            d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE);
+            d.files[FILENAME_CODE].language = <string>modeFromName(FILENAME_CODE);
 
             d.files[FILENAME_LIBS] = new DoodleFile();
             d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
-            d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS);
+            d.files[FILENAME_LIBS].language = <string>modeFromName(FILENAME_LIBS);
 
             d.files[FILENAME_LESS] = new DoodleFile();
             d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
-            d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS);
+            d.files[FILENAME_LESS].language = <string>modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
         d.gistId = inDoodle.gistId;
@@ -69,12 +69,12 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
         const inFile = inFiles[name];
         const outFile: DoodleFile = new DoodleFile();
         outFile.content = inFile.content;
-        outFile.isOpen = inFile.isOpen;
+        outFile.isOpen = !!inFile.isOpen;
         outFile.language = inFile.language;
         outFile.htmlChoice = inFile.htmlChoice;
         outFile.markdownChoice = inFile.markdownChoice;
         outFile.raw_url = inFile.raw_url;
-        outFile.selected = inFile.selected;
+        outFile.selected = !!inFile.selected;
         outFiles[name] = outFile;
     }
     return outFiles;
@@ -113,7 +113,7 @@ app.factory('doodles', [
                 map(function (doodle: Doodle) {
                     // We know that the doodle has a description, try removing the word in the prefix
                     // and then parse what's left as an integer. We may get NaN, but that's OK.
-                    return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
+                    return parseInt((<string>doodle.description).replace(UNTITLED + ' ', '').trim(), 10);
                 }).
                 filter(function (num) {
                     // Throw away the description that did not parse to numbers.
@@ -148,7 +148,7 @@ app.factory('doodles', [
                 return new Doodle(options);
             },
 
-            current: function (): Doodle {
+            current: function (): Doodle | undefined {
                 if (_doodles.length > 0) {
                     return _doodles[0];
                 }
@@ -161,7 +161,7 @@ app.factory('doodles', [
                 const doodles: Doodle[] = [];
 
                 let i = 0;
-                let found: Doodle;
+                let found: Doodle | undefined;
                 while (i < _doodles.length) {
                     if (_doodles[i] === dude) {
                         found = _doodles[i];
@@ -180,7 +180,7 @@ app.factory('doodles', [
                 const doodles: Doodle[] = [];
 
                 let i = 0;
-                let found: Doodle;
+                let found: Doodle | undefined;
                 while (i < _doodles.length) {
                     if (_doodles[i] === dude) {
                         found = _doodles[i];

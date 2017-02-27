@@ -2,7 +2,9 @@ import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
 import Base64Service from '../base64/Base64Service';
 import BlobKey from '../github/BlobKey';
+import Commit from '../github/Commit';
 import CommitData from '../github/CommitData';
+import CommitKey from '../github/CommitKey';
 import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
 import CommitMessageOptions from './CommitMessageOptions';
 import CloudService from './CloudService';
@@ -18,6 +20,7 @@ import IOptionManager from '../options/IOptionManager';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
 import PathContents from '../github/PathContents';
+import Reference from '../github/Reference';
 import ReferenceUpdateData from '../github/ReferenceUpdateData';
 import RepoData from '../github/RepoData';
 import RepoKey from '../github/RepoKey';
@@ -51,46 +54,51 @@ export default class GitHubCloudService implements CloudService {
         // Do nothing.
     }
 
-    downloadGist(gistId: string, callback: (reason: any, doodle: Doodle) => void) {
+    downloadGist(gistId: string, callback: (reason: any, doodle?: Doodle) => void) {
         this.github.getGist(gistId)
             .then((http) => {
                 const gist = http.data;
-                // console.lg(`gist => ${JSON.stringify(gist, null, 2)}`);
-                const doodle = new Doodle(this.options);
-                doodle.gistId = gistId;
-                doodle.description = gist.description;
-                doodle.owner = gist.owner.login;
-                doodle.files = gistFilesToDoodleFiles(gist.files, []);
+                if (gist) {
+                    // console.lg(`gist => ${JSON.stringify(gist, null, 2)}`);
+                    const doodle = new Doodle(this.options);
+                    doodle.gistId = gistId;
+                    doodle.description = gist.description;
+                    doodle.owner = gist.owner.login;
+                    doodle.files = gistFilesToDoodleFiles(gist.files, []);
 
-                // Convert the legacy doodle.json file to package.json.
-                if (doodle.existsFile(LEGACY_META)) {
-                    if (!doodle.existsFile(this.FILENAME_META)) {
-                        doodle.renameFile(LEGACY_META, this.FILENAME_META);
-                        // Ensure that the package.json file gets the name and version properties.
-                        if (typeof doodle.name !== 'string') {
-                            doodle.name = hyphenate(gist.description).toLowerCase();
+                    // Convert the legacy doodle.json file to package.json.
+                    if (doodle.existsFile(LEGACY_META)) {
+                        if (!doodle.existsFile(this.FILENAME_META)) {
+                            doodle.renameFile(LEGACY_META, this.FILENAME_META);
+                            // Ensure that the package.json file gets the name and version properties.
+                            if (typeof doodle.name !== 'string') {
+                                doodle.name = hyphenate(gist.description).toLowerCase();
+                            }
+                            if (typeof doodle.version !== 'string') {
+                                doodle.version = "0.1.0";
+                            }
                         }
-                        if (typeof doodle.version !== 'string') {
-                            doodle.version = "0.1.0";
+                        else {
+                            // If both doodle.json and package.json exists then we have a problem.
+                            // We try to recover by simply deleting the doodle.json.
+                            doodle.deleteFile(LEGACY_META);
                         }
                     }
-                    else {
-                        // If both doodle.json and package.json exists then we have a problem.
-                        // We try to recover by simply deleting the doodle.json.
-                        doodle.deleteFile(LEGACY_META);
-                    }
+                    callback(undefined, doodle);
                 }
-                callback(undefined, doodle);
+                else {
+                    callback(new Error(`gist is ${typeof gist}`));
+                }
             })
             .catch((reason) => {
-                callback(reason, void 0);
+                callback(reason);
             });
     }
 
     /**
      * TODO: This method does not let me specify a commit/branch/tag name but the underlying API does.
      */
-    downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void) {
+    downloadRepo(owner: string, repo: string, callback: (reason: any, doodle?: Doodle) => void) {
         this.github.getRepoContents(owner, repo, (err: any, contents: RepoElement[]) => {
             if (!err) {
                 const doodle = new Doodle(this.options);
@@ -122,11 +130,11 @@ export default class GitHubCloudService implements CloudService {
                     // doodles.updateStorage();
                     // this.onInitDoodle(doodles.current())
                 }).catch((reason) => {
-                    callback(new Error(`Error attempting to download File: ${reason}`), void 0);
+                    callback(new Error(`Error attempting to download File: ${reason}`));
                 });
             }
             else {
-                callback(new Error(`Error attempting to download Repo`), void 0);
+                callback(new Error(`Error attempting to download Repo`));
             }
         });
     }
@@ -162,75 +170,82 @@ export default class GitHubCloudService implements CloudService {
                 doodle.repo = repo;
                 doodle.gistId = void 0;
                 const reference = response.data;
-                if (reference.object.type === 'commit') {
-                    const commitSHA = reference.object.sha;
-                    todoCount++;
-                    deferred.notify(state());
-                    github.getCommit(owner, repo, commitSHA).then((response) => {
-                        doneCount++;
-
-                        const commit = response.data;
-                        const treeSHA = commit.tree.sha;
-
+                if (reference) {
+                    if (reference.object.type === 'commit') {
+                        const commitSHA = reference.object.sha;
                         todoCount++;
                         deferred.notify(state());
-                        github.getTree(owner, repo, treeSHA).then((response) => {
+                        github.getCommit(owner, repo, commitSHA).then((response) => {
                             doneCount++;
-                            const tree = response.data;
-                            for (let i = 0; i < tree.tree.length; i++) {
-                                const child = tree.tree[i];
-                                const path = child.path;
-                                switch (child.type) {
-                                    case 'blob': {
-                                        todoCount++;
-                                        deferred.notify(state());
-                                        github.getBlob(owner, repo, child.sha).then(function (response) {
-                                            doneCount++;
-                                            const blob = response.data;
-                                            switch (blob.encoding) {
-                                                case 'base64': {
-                                                    const content = base64.decode(blob.content);
-                                                    const file = doodle.newFile(child.path);
-                                                    file.content = content;
+
+                            const commit = response.data;
+                            if (commit) {
+                                const treeSHA = commit.tree.sha;
+
+                                todoCount++;
+                                deferred.notify(state());
+                                github.getTree(owner, repo, treeSHA).then((response) => {
+                                    doneCount++;
+                                    const tree = response.data;
+                                    if (tree) {
+                                        for (let i = 0; i < tree.tree.length; i++) {
+                                            const child = tree.tree[i];
+                                            const path = child.path;
+                                            switch (child.type) {
+                                                case 'blob': {
+                                                    todoCount++;
+                                                    deferred.notify(state());
+                                                    github.getBlob(owner, repo, child.sha).then(function (response) {
+                                                        doneCount++;
+                                                        const blob = response.data;
+                                                        if (blob) {
+                                                            switch (blob.encoding) {
+                                                                case 'base64': {
+                                                                    const content = base64.decode(blob.content);
+                                                                    const file = doodle.newFile(child.path);
+                                                                    file.content = content;
+                                                                    break;
+                                                                }
+                                                                default: {
+                                                                    deferred.notify(state());
+                                                                    deferred.reject(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`);
+                                                                }
+                                                            }
+                                                        }
+                                                        if (doneCount === todoCount) {
+                                                            deferred.notify(state());
+                                                            deferred.resolve(doodle);
+                                                        }
+                                                    }).catch(function (reason) {
+                                                        doneCount++;
+                                                        deferred.notify(state());
+                                                        deferred.reject(`Unable to get blob because ${JSON.stringify(reason)}.`);
+                                                    });
                                                     break;
                                                 }
                                                 default: {
                                                     deferred.notify(state());
-                                                    deferred.reject(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`);
+                                                    deferred.reject(`Expecting child '${path}' to be a blob, but was ${child.type}.`);
                                                 }
                                             }
-                                            if (doneCount === todoCount) {
-                                                deferred.notify(state());
-                                                deferred.resolve(doodle);
-                                            }
-                                        }).catch(function (reason) {
-                                            doneCount++;
-                                            deferred.notify(state());
-                                            deferred.reject(`Unable to get blob because ${JSON.stringify(reason)}.`);
-                                        });
-                                        break;
+                                        }
                                     }
-                                    default: {
-                                        deferred.notify(state());
-                                        deferred.reject(`Expecting child '${path}' to be a blob, but was ${child.type}.`);
-                                    }
-                                }
+                                }).catch(function (reason) {
+                                    doneCount++;
+                                    deferred.notify(state());
+                                    deferred.reject(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`);
+                                });
                             }
-
                         }).catch(function (reason) {
                             doneCount++;
                             deferred.notify(state());
-                            deferred.reject(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`);
+                            deferred.reject(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
                         });
-                    }).catch(function (reason) {
-                        doneCount++;
+                    }
+                    else {
                         deferred.notify(state());
-                        deferred.reject(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
-                    });
-                }
-                else {
-                    deferred.notify(state());
-                    deferred.reject(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`);
+                        deferred.reject(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`);
+                    }
                 }
             })
             .catch(function (reason) {
@@ -260,9 +275,11 @@ export default class GitHubCloudService implements CloudService {
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
             const file = workspace.getFileWeakRef(path);
-            const content = this.base64.encode(file.getText());
-            const encoding = 'base64';
-            blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
+            if (file) {
+                const content = this.base64.encode(file.getText());
+                const encoding = 'base64';
+                blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
+            }
         }
         return blobs;
     }
@@ -274,13 +291,15 @@ export default class GitHubCloudService implements CloudService {
             .then((promiseValue) => {
                 for (let p = 0; p < paths.length; p++) {
                     const prom = promiseValue[p];
-                    const blobSHA = prom.data.sha;
-                    treeData.tree.push({
-                        path: paths[p],
-                        mode: '100644',
-                        type: 'blob',
-                        sha: blobSHA
-                    });
+                    if (prom.data) {
+                        const blobSHA = prom.data.sha;
+                        treeData.tree.push({
+                            path: paths[p],
+                            mode: '100644',
+                            type: 'blob',
+                            sha: blobSHA
+                        });
+                    }
                 }
                 this.github.createTree(owner, repo, treeData)
                     .then(function (response) {
@@ -297,7 +316,7 @@ export default class GitHubCloudService implements CloudService {
         return deferred.promise;
     }
 
-    uploadToRepo(workspace: WsModel, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void {
+    uploadToRepo(workspace: WsModel, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts?: UploadToRepoFacts) => any): void {
         if (!isString(owner)) {
             throw new TypeError("owner must be a string");
         }
@@ -318,19 +337,21 @@ export default class GitHubCloudService implements CloudService {
                 this.github.getReference(owner, repo, ref)
                     .then((response) => {
 
-                        facts.status.resolve(response.status);
-                        facts.statusText.resolve(response.statusText);
+                        facts.status.resolve(<number>response.status);
+                        facts.statusText.resolve(<string>response.statusText);
                         facts.refMissing.resolve(false);
 
                         const reference = response.data;
-                        if (reference.object.type === 'commit') {
-                            facts.refInitial.resolve(reference);
-                            next();
-                        }
-                        else {
-                            const reason = `Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`;
-                            facts.refInitial.reject(reason);
-                            next(reason);
+                        if (reference) {
+                            if (reference.object.type === 'commit') {
+                                facts.refInitial.resolve(reference);
+                                next();
+                            }
+                            else {
+                                const reason = `Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`;
+                                facts.refInitial.reject(reason);
+                                next(reason);
+                            }
                         }
                     })
                     .catch(function (reason: GitHubReason) {
@@ -366,17 +387,21 @@ export default class GitHubCloudService implements CloudService {
                 return facts.refInitial.isResolved() && facts.baseCommit.isUndefined();
             },
             (facts, session, next) => {
-                const commitSHA = facts.refInitial.value.object.sha;
-                this.github.getCommit(owner, repo, commitSHA)
-                    .then((response) => {
-                        const commit = response.data;
-                        facts.baseCommit.resolve(commit);
-                        next();
-                    })
-                    .catch(function (reason) {
-                        facts.baseCommit.reject(reason);
-                        next(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
-                    });
+                if (facts.refInitial.value) {
+                    const commitSHA = facts.refInitial.value.object.sha;
+                    this.github.getCommit(owner, repo, commitSHA)
+                        .then((response) => {
+                            const commit = response.data;
+                            if (commit) {
+                                facts.baseCommit.resolve(commit);
+                            }
+                            next();
+                        })
+                        .catch(function (reason) {
+                            facts.baseCommit.reject(reason);
+                            next(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
+                        });
+                }
             }
         );
 
@@ -399,21 +424,24 @@ export default class GitHubCloudService implements CloudService {
             (facts, session, next) => {
                 const paths = workspace.getFileDocumentPaths();
                 const blobs = this.createBlobsInRepo(workspace, owner, repo, paths);
-                const baseTreeSHA = facts.baseCommit.isResolved() ? facts.baseCommit.value.tree.sha : void 0;
-                this.createTreeInRepo(blobs, paths, baseTreeSHA, owner, repo)
-                    .then((treeKey) => {
-                        facts.tree.resolve(treeKey);
-                        next();
-                    })
-                    .catch((reason: GitHubReason) => {
-                        switch (reason.status) {
-                            case 409: {
-                                break;
+                const value = facts.baseCommit.value;
+                const baseTreeSHA = facts.baseCommit.isResolved() ? (value ? value.tree.sha : void 0) : void 0;
+                if (baseTreeSHA) {
+                    this.createTreeInRepo(blobs, paths, baseTreeSHA, owner, repo)
+                        .then((treeKey) => {
+                            facts.tree.resolve(treeKey);
+                            next();
+                        })
+                        .catch((reason: GitHubReason) => {
+                            switch (reason.status) {
+                                case 409: {
+                                    break;
+                                }
                             }
-                        }
-                        facts.tree.reject(reason);
-                        next(`Unable to create tree because ${JSON.stringify(reason)}.`);
-                    });
+                            facts.tree.reject(reason);
+                            next(`Unable to create tree because ${JSON.stringify(reason)}.`);
+                        });
+                }
             }
         );
 
@@ -424,13 +452,15 @@ export default class GitHubCloudService implements CloudService {
             (facts, session, next) => {
                 const commit: CommitData = {
                     message: commitMessage,
-                    parents: [facts.baseCommit.value.sha],
-                    tree: facts.tree.value.sha
+                    parents: [(<Commit>facts.baseCommit.value).sha],
+                    tree: (<TreeKey>facts.tree.value).sha
                 };
 
                 this.github.createCommit(owner, repo, commit)
                     .then(function (response) {
-                        facts.commit.resolve(response.data);
+                        if (response.data) {
+                            facts.commit.resolve(response.data);
+                        }
                         next();
                     })
                     .catch(function (reason) {
@@ -446,14 +476,14 @@ export default class GitHubCloudService implements CloudService {
             },
             (facts, session, next) => {
                 const data: ReferenceUpdateData = {
-                    sha: facts.commit.value.sha,
+                    sha: (<CommitKey>facts.commit.value).sha,
                     force: false
                 };
                 this.github.updateReference(owner, repo, ref, data)
                     .then(function (response) {
-                        facts.status.resolve(response.status);
-                        facts.statusText.resolve(response.statusText);
-                        facts.refUpdate.resolve(response.data);
+                        facts.status.resolve(<number>response.status);
+                        facts.statusText.resolve(<string>response.statusText);
+                        facts.refUpdate.resolve(<Reference>response.data);
                         next();
                     })
                     .catch(function (reason: GitHubReason) {

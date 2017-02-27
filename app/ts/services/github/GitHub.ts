@@ -85,9 +85,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_GET,
                     url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/user/repos",
                     headers: requestHeaders()
-                }).success(function (repos: Repo[]) {
+                }).then(function (repos: Repo[]) {
                     return done(null, repos);
-                }).error(function (response) {
+                }).catch(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -107,36 +107,28 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             /**
              * We're using this method in the GitHubCloudService to download a repo.
              */
-            getRepoContents: function (owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any) {
+            getRepoContents: function (owner: string, repo: string, done: (err: any | undefined, contents?: RepoElement[]) => any) {
                 const method = HTTP_METHOD_GET;
                 const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents`;
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
                 return $http({ method, url, headers: requestHeaders() })
-                    .success(function (contents: RepoElement[]) {
+                    .then(function (contents: RepoElement[]) {
                         return done(void 0, contents);
                     })
-                    .error(function (response) {
+                    .catch(function (response) {
                         return done(new Error(response.message), void 0);
                     });
             },
             /**
              * We're using this method in the GitHubCloudService to download a Repo
              */
-            getPathContents: function (owner: string, repo: string, path: string): ng.IPromise<PathContents> {
+            getPathContents: function (owner: string, repo: string, path: string): ng.IHttpPromise<PathContents> {
                 const method = HTTP_METHOD_GET;
                 const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents/${path}`;
-                const deferred = $q.defer<PathContents>();
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
-                $http({ method, url, headers: requestHeaders() })
-                    .success(function (response: PathContents) {
-                        deferred.resolve(response);
-                    })
-                    .error(function (response) {
-                        deferred.reject(new Error(response.message));
-                    });
-                return deferred.promise;
+                return $http<PathContents>({ method, url, headers: requestHeaders() });
             },
 
             /*
@@ -163,9 +155,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     url: url,
                     data: data,
                     headers: requestHeaders()
-                }).success(function (file) {
+                }).then(function (file) {
                     return done(null, file);
-                }).error(function (response) {
+                }).catch(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -181,9 +173,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_DELETE,
                     url: url,
                     headers: requestHeaders()
-                }).success(function (repo) {
+                }).then(function (repo) {
                     return done(null, repo);
-                }).error(function (response) {
+                }).catch(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -210,10 +202,10 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const method = HTTP_METHOD_DELETE;
                 const headers = requestHeaders();
                 return $http({ method, url, headers })
-                    .success(function (response) {
+                    .then(function (response) {
                         return done(null, response);
                     })
-                    .error(function (response) {
+                    .catch(function (response) {
                         return done(new Error(response.message), response);
                     });
             },
@@ -228,12 +220,12 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_GET,
                     url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/users/" + user + "/gists",
                     headers: requestHeaders()
-                }).success(function (gists: any) {
+                }).then(function (gists: any) {
                     gists = _.map(gists, function (gist: any) {
                         return gist;
                     });
                     return done(null, gists);
-                }).error(function (response) {
+                }).catch(function (response) {
                     return done(new Error(response.message), response);
                 });
             },

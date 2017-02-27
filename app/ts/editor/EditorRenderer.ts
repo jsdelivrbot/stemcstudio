@@ -9,7 +9,7 @@ interface EditorRenderer {
     /**
      * 
      */
-    $keepTextAreaAtCursor: boolean;
+    $keepTextAreaAtCursor: boolean | null;
     /**
      * 
      */

@@ -2,12 +2,10 @@ import app from '../../app';
 import ITemplate from './ITemplate';
 
 import EIGHT_BOOTSTRAP from './EIGHT_BOOTSTRAP';
-import EIGHT_HTML from './EIGHT_HTML';
-import MINIMAL_HTML from './MINIMAL_HTML';
+import HTML from './COMMON_HTML';
 import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
 import MINIMAL_CSS from './MINIMAL_CSS';
 import MINIMAL_README from './MINIMAL_README';
-import MINIMAL_SPEC_RUNNER_HTML from './MINIMAL_SPEC_RUNNER_HTML';
 import MINIMAL_SPEC_RUNNER from './MINIMAL_SPEC_RUNNER';
 import MINIMAL_EXAMPLE_SPEC from './MINIMAL_EXAMPLE_SPEC';
 import { LANGUAGE_HTML } from '../../languages/modes';
@@ -50,37 +48,47 @@ app.factory('templates', [
          */
         const tab = tabString(editorPreferences);
 
-        const MINIM: ITemplate = {
+        const BASIC: ITemplate = {
             name: "BASIC",
-            description: "Basic",
+            description: "Minimal Program",
             files: {},
-            dependencies: ['DomReady', 'jasmine'],
-            operatorOverloading: false
+            dependencies: ['DomReady'],
+            operatorOverloading: true
         };
-        MINIM.files[FILENAME_HTML] = { content: MINIMAL_HTML(tab), language: LANGUAGE_HTML };
-        MINIM.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
-        MINIM.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
-        MINIM.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
-        MINIM.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML(tab), language: LANGUAGE_HTML };
-        MINIM.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        MINIM.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        BASIC.files[FILENAME_HTML] = { content: HTML(tab, './index.js'), language: LANGUAGE_HTML };
+        BASIC.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
+        BASIC.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        BASIC.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
 
         const EIGHT: ITemplate = {
             name: "EIGHT",
-            description: "EIGHT",
+            description: "EIGHT WebGL 3D Graphics",
             files: {},
             dependencies: ['DomReady', 'jasmine', 'davinci-eight'],
             operatorOverloading: true
         };
-        EIGHT.files[FILENAME_HTML] = { content: EIGHT_HTML(tab), language: LANGUAGE_HTML };
+        EIGHT.files[FILENAME_HTML] = { content: HTML(tab, './index.js', { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
         EIGHT.files['index.ts'] = { content: EIGHT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         EIGHT.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
-        EIGHT.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML(tab), language: LANGUAGE_HTML };
+        EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js'), language: LANGUAGE_HTML };
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
 
-        // The MINIM (minimal) template is only present as a foundation for other templates.
-        // Avoid providing templates that don't do much when the program is launched!
-        return [EIGHT];
+        const JASMINE: ITemplate = {
+            name: "JASMINE",
+            description: "Jasmine Testing Framework",
+            files: {},
+            dependencies: ['DomReady', 'jasmine'],
+            operatorOverloading: true
+        };
+        JASMINE.files[FILENAME_HTML] = { content: HTML(tab, './index.js'), language: LANGUAGE_HTML };
+        JASMINE.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        JASMINE.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
+        JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js'), language: LANGUAGE_HTML };
+        JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+
+        return [BASIC, EIGHT, JASMINE];
     }]);

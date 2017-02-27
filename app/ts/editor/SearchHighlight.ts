@@ -12,7 +12,7 @@ const MAX_RANGES = 500;
  *
  */
 export default class SearchHighlight implements Marker {
-    private regExp: RegExp;
+    private regExp: RegExp | null | undefined;
     public clazz: string;
     public type: MarkerType;
     private cache: Range[][];
@@ -21,7 +21,7 @@ export default class SearchHighlight implements Marker {
     /**
      *
      */
-    constructor(regExp: RegExp, clazz: string, type: MarkerType) {
+    constructor(regExp: RegExp | null, clazz: string, type: MarkerType) {
         this.setRegexp(regExp);
         this.clazz = clazz;
         this.type = type || "text";
@@ -30,7 +30,7 @@ export default class SearchHighlight implements Marker {
     /**
      *
      */
-    setRegexp(regExp: RegExp): void {
+    setRegexp(regExp: RegExp | null | undefined): void {
         if (this.regExp + "" === regExp + "") {
             return;
         }

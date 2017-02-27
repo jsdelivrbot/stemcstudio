@@ -24,7 +24,7 @@ export default class RoomAgent implements Shareable {
      */
     public owner: string;
 
-    private _socket: SocketIOClient.Socket;
+    private _socket: SocketIOClient.Socket | undefined;
 
     /**
      * The reference count is 1 immediately following construction.
@@ -83,7 +83,7 @@ export default class RoomAgent implements Shareable {
         this._socket.on('edits', (data: { fromId: string, roomId: string; path: string; edits: MwEdits }) => {
             // Having the roomId sent back seems a bit redundant since this room agent already knows it.
             // We can use it as either a safety check or to future proof for multiple client rooms per socket.
-            const {fromId, roomId, path, edits} = data;
+            const { fromId, roomId, path, edits } = data;
             if (fromId === this.roomId && roomId === this.nodeId) {
                 for (let i = 0; i < this.roomListeners.length; i++) {
                     const roomListener = this.roomListeners[i];
@@ -143,9 +143,11 @@ export default class RoomAgent implements Shareable {
      */
     download(callback: (err: any, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
-        this._socket.emit('download', params, (err: any, files: { [path: string]: MwEdits }) => {
-            callback(err, files);
-        });
+        if (this._socket) {
+            this._socket.emit('download', params, (err: any, files: { [path: string]: MwEdits }) => {
+                callback(err, files);
+            });
+        }
     }
 
     /**
@@ -154,8 +156,10 @@ export default class RoomAgent implements Shareable {
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
-            // console.lg(`Room ${this.roomId} has acknowledged edits for path ${path}.`);
-        });
+        if (this._socket) {
+            this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
+                // console.lg(`Room ${this.roomId} has acknowledged edits for path ${path}.`);
+            });
+        }
     }
 }

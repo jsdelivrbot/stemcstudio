@@ -5,7 +5,7 @@ interface SessionChangeCursorEvent {
     /**
      * 'changeCursor'
      */
-    type: string;
+    type: 'changeCursor';
 }
 
 export default SessionChangeCursorEvent;

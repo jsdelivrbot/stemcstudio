@@ -4,7 +4,7 @@ import CookieService from './CookieService';
 app.factory('cookie', [
     function (): CookieService {
         const that: CookieService = {
-            getItem(name: string): string {
+            getItem(name: string): string | null {
                 const escapedName = encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&");
                 return decodeURI(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escapedName + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
             },

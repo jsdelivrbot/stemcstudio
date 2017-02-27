@@ -46,7 +46,7 @@ fileNameToMode['.gitignore'] = LANGUAGE_TEXT;
  * The mode returned is a string containing the canonical mode name.
  * If the mode cannot be determined, then undefined is returned.
  */
-export default function modeFromName(fileName: string): string {
+export default function modeFromName(fileName: string): string | undefined {
     const period = fileName.lastIndexOf('.');
     if (period >= 0) {
         const extension = fileName.substring(period + 1);

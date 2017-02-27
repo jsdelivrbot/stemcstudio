@@ -116,7 +116,7 @@ interface LanguageMode {
      * @param session
      * @param data
      */
-    transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | Range): TextAndSelection | Range;
+    transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | Range): TextAndSelection | Range | undefined;
 }
 
 export default LanguageMode;

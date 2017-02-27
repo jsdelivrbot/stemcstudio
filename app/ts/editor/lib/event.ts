@@ -28,7 +28,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 import { FUNCTION_KEYS, KEY_MODS, MODIFIER_KEYS, PRINTABLE_KEYS } from './keys';
-import { isChromeOS, isIE, isMac, isOldGecko, isOldIE, isOpera } from './useragent';
+import { isChromeOS, isIE, isMac, isOldGecko, isOpera } from './useragent';
 
 export interface ListenerTarget extends EventTarget {
 }
@@ -229,17 +229,6 @@ export function addMultiMouseDownListener(el: ListenerTarget, timeouts: number[]
         else if (clicks > 1)
             return eventHandler[callbackName](eventNames[clicks], e);
     });
-
-    if (isOldIE) {
-        addListener(el, "dblclick", function (e: MouseEvent) {
-            clicks = 2;
-            if (timer)
-                clearTimeout(timer);
-            timer = window.setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
-            eventHandler[callbackName]("mousedown", e);
-            eventHandler[callbackName](eventNames[clicks], e);
-        });
-    }
 }
 
 const getModifierHash = isMac && isOpera && !("KeyboardEvent" in window)

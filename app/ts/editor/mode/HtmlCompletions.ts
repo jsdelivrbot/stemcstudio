@@ -211,7 +211,7 @@ function is(token: Token, type: string): boolean {
 
 function findTagName(session: EditSession, pos: Position): string | undefined {
     const iterator = new TokenIterator(session, pos.row, pos.column);
-    let token: Token = iterator.getCurrentToken();
+    let token = iterator.getCurrentToken();
     while (token && !is(token, "tag-name")) {
         token = iterator.stepBackward();
     }

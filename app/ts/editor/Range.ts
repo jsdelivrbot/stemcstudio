@@ -19,7 +19,7 @@ export default class Range implements RangeBasic {
      *
      * @deprecated
      */
-    public markerId: number;
+    public markerId: number | null;
 
     /**
      *
@@ -40,7 +40,7 @@ export default class Range implements RangeBasic {
     /**
      * The desired column is an optional property making an oriented range.
      */
-    public desiredColumn: number;
+    public desiredColumn: number | null;
 
     /**
      * Used by the TabstopManager.
@@ -433,17 +433,21 @@ export default class Range implements RangeBasic {
         if (typeof lastRow !== 'number') {
             throw new TypeError(`clipRows() lastRow must be a number.`);
         }
-        let start: Position;
-        let end: Position;
-        if (this.end.row > lastRow)
+        let start: Position | undefined;
+        let end: Position | undefined;
+        if (this.end.row > lastRow) {
             end = { row: lastRow + 1, column: 0 };
-        else if (this.end.row < firstRow)
+        }
+        else if (this.end.row < firstRow) {
             end = { row: firstRow, column: 0 };
+        }
 
-        if (this.start.row > lastRow)
+        if (this.start.row > lastRow) {
             start = { row: lastRow + 1, column: 0 };
-        else if (this.start.row < firstRow)
+        }
+        else if (this.start.row < firstRow) {
             start = { row: firstRow, column: 0 };
+        }
 
         return Range.fromPoints(start || this.start, end || this.end);
     }

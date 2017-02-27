@@ -5,7 +5,7 @@ import DelayedCall from './DelayedCall';
  */
 export default function createDelayedCall(fcn: () => any, defaultTimeout?: number): DelayedCall {
 
-    let timer: number = null;
+    let timer: number | null = null;
 
     /**
      * Wrapper function for the external callback allows reuse.
@@ -16,36 +16,36 @@ export default function createDelayedCall(fcn: () => any, defaultTimeout?: numbe
         fcn();
     };
 
-    const _self: DelayedCall = <DelayedCall>function (timeout: number) {
+    const that: DelayedCall = <DelayedCall>function (timeout: number) {
         if (timer == null) {
             timer = window.setTimeout(callback, timeout || defaultTimeout);
         }
     };
 
-    _self.delay = function (timeout: number) {
+    that.delay = function (timeout: number) {
         if (timer) {
             window.clearTimeout(timer);
         }
         timer = window.setTimeout(callback, timeout || defaultTimeout);
     };
 
-    _self.schedule = _self;
+    that.schedule = that;
 
-    _self.call = () => {
-        _self.cancel();
+    that.call = () => {
+        that.cancel();
         fcn();
     };
 
-    _self.cancel = function () {
+    that.cancel = function () {
         if (timer) {
             window.clearTimeout(timer);
         }
         timer = null;
     };
 
-    _self.isPending = function (): boolean {
+    that.isPending = function (): boolean {
         return !!timer;
     };
 
-    return _self;
+    return Object.freeze(that);
 }

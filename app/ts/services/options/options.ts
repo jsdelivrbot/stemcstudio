@@ -35,7 +35,7 @@ app.factory('options', [
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
-        function vendorFolder(packageFolder: string, version: string, subFolder: string, fileName: string): string {
+        function vendorFolder(packageFolder: string, version: string, subFolder: string | undefined, fileName: string): string {
             const steps: string[] = [];
             steps.push(VENDOR_FOLDER_MARKER);
             steps.push('/');
@@ -470,7 +470,7 @@ app.factory('options', [
                 const options: IOption[] = [];
 
                 let i = 0;
-                let found: IOption;
+                let found: IOption | undefined;
                 while (i < _options.length) {
                     if (_options[i].name === name) {
                         found = _options[i];

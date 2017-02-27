@@ -10,7 +10,7 @@ export default class TokenIterator {
     private session: EditSession;
     private $row: number;
     private $rowTokens: Token[];
-    private $tokenIndex: number | undefined;
+    private $tokenIndex: number;
 
     /**
      * Creates a new token iterator object. The inital token index is set to the provided row and column coordinates.
@@ -25,7 +25,7 @@ export default class TokenIterator {
         this.$row = initialRow;
         this.$rowTokens = session.getTokens(initialRow);
 
-        const token: Token = session.getTokenAt(initialRow, initialColumn);
+        const token = session.getTokenAt(initialRow, initialColumn);
         this.$tokenIndex = token ? token.index : -1;
     }
 
@@ -36,20 +36,25 @@ export default class TokenIterator {
      *                 Otherwise, it returns an array of the tokenized strings.
      */
     stepBackward(): Token | null {
-        this.$tokenIndex -= 1;
+        if (typeof this.$tokenIndex === 'number') {
+            this.$tokenIndex -= 1;
 
-        while (this.$tokenIndex < 0) {
-            this.$row -= 1;
-            if (this.$row < 0) {
-                this.$row = 0;
-                return null;
+            while (this.$tokenIndex < 0) {
+                this.$row -= 1;
+                if (this.$row < 0) {
+                    this.$row = 0;
+                    return null;
+                }
+
+                this.$rowTokens = this.session.getTokens(this.$row);
+                this.$tokenIndex = this.$rowTokens.length - 1;
             }
 
-            this.$rowTokens = this.session.getTokens(this.$row);
-            this.$tokenIndex = this.$rowTokens.length - 1;
+            return this.$rowTokens[this.$tokenIndex];
         }
-
-        return this.$rowTokens[this.$tokenIndex];
+        else {
+            return null;
+        }
     }
 
     /**
@@ -58,25 +63,30 @@ export default class TokenIterator {
      * @returns If the current point is at the end of the file, this function returns `null`.
      *                 Otherwise, it returns the tokenized string.
      */
-    stepForward(): Token {
+    stepForward(): Token | undefined | null {
         if (this.$rowTokens) {
-            this.$tokenIndex += 1;
-            let rowCount: number;
-            while (this.$tokenIndex >= this.$rowTokens.length) {
-                this.$row += 1;
-                if (!rowCount) {
-                    rowCount = this.session.getLength();
-                }
-                if (this.$row >= rowCount) {
-                    this.$row = rowCount - 1;
-                    return null;
+            if (typeof this.$tokenIndex === 'number') {
+                this.$tokenIndex += 1;
+                let rowCount: number | undefined;
+                while (this.$tokenIndex >= this.$rowTokens.length) {
+                    this.$row += 1;
+                    if (!rowCount) {
+                        rowCount = this.session.getLength();
+                    }
+                    if (this.$row >= rowCount) {
+                        this.$row = rowCount - 1;
+                        return null;
+                    }
+
+                    this.$rowTokens = this.session.getTokens(this.$row);
+                    this.$tokenIndex = 0;
                 }
 
-                this.$rowTokens = this.session.getTokens(this.$row);
-                this.$tokenIndex = 0;
+                return this.$rowTokens[this.$tokenIndex];
             }
-
-            return this.$rowTokens[this.$tokenIndex];
+            else {
+                return null;
+            }
         }
         else {
             return void 0;
@@ -85,13 +95,14 @@ export default class TokenIterator {
 
     /** 
      * Returns the current token.
+     * If there is no token index, throws an exception.
      */
-    getCurrentToken(): Token | undefined {
-        if (this.$rowTokens) {
+    getCurrentToken(): Token {
+        if (typeof this.$tokenIndex === 'number') {
             return this.$rowTokens[this.$tokenIndex];
         }
         else {
-            return void 0;
+            throw new Error(`tokenIndex has type ${typeof this.$tokenIndex}`);
         }
     }
 
@@ -110,14 +121,17 @@ export default class TokenIterator {
         let tokenIndex = this.$tokenIndex;
 
         // If a column was cached by EditSession.getTokenAt, then use it.
-        let column = rowTokens[tokenIndex].start;
-        if (column !== undefined)
+        let column = (typeof tokenIndex === 'number') ? rowTokens[tokenIndex].start : undefined;
+        if (column !== undefined) {
             return column;
+        }
 
         column = 0;
-        while (tokenIndex > 0) {
-            tokenIndex -= 1;
-            column += rowTokens[tokenIndex].value.length;
+        if (typeof tokenIndex === 'number') {
+            while (tokenIndex > 0) {
+                tokenIndex -= 1;
+                column += rowTokens[tokenIndex].value.length;
+            }
         }
 
         return column;

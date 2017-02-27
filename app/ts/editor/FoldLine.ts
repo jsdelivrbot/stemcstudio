@@ -18,8 +18,8 @@ export default class FoldLine {
      * @param foldData
      * @param folds
      */
-    constructor(foldData: FoldLine[], folds: Fold[]) {
-        this.foldData = foldData;
+    constructor(foldLines: FoldLine[], folds: Fold[]) {
+        this.foldData = foldLines;
         if (Array.isArray(folds)) {
             this.folds = folds;
         }
@@ -88,18 +88,16 @@ export default class FoldLine {
     }
 
     /**
-     * @param row
+     *
      */
     containsRow(row: number): boolean {
         return row >= this.start.row && row <= this.end.row;
     }
 
     /**
-     * @param callback
-     * @param endRow
-     * @param endColumn
+     *
      */
-    walk(callback: (placeholder: string, row: number, column: number, end: number, isNewRow?: boolean) => any, endRow: number, endColumn: number): void {
+    walk(callback: (placeholder: string | null, row: number, column: number, end: number, isNewRow?: boolean) => any, endRow: number, endColumn: number): void {
         let lastEnd = 0;
         let folds = this.folds;
         let isNewRow = true;
@@ -136,7 +134,7 @@ export default class FoldLine {
         callback(null, endRow, endColumn, lastEnd, isNewRow);
     }
 
-    getNextFoldTo(row: number, column: number): { fold: Fold; kind: 'after' | 'inside' } {
+    getNextFoldTo(row: number, column: number): { fold: Fold; kind: 'after' | 'inside' } | null {
         for (let i = 0; i < this.folds.length; i++) {
             const fold = this.folds[i];
             const cmp = fold.range.compareEnd(row, column);
@@ -186,11 +184,12 @@ export default class FoldLine {
         }
     }
 
-    split(row: number, column: number): FoldLine {
+    split(row: number, column: number): FoldLine | null {
         const pos = this.getNextFoldTo(row, column);
 
-        if (!pos || pos.kind === "inside")
+        if (!pos || pos.kind === "inside") {
             return null;
+        }
 
         const fold = pos.fold;
         let folds = this.folds;

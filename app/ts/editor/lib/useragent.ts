@@ -49,8 +49,6 @@ export const isIE =
     ? parseFloat((ua.match(/(?:MSIE |Trident\/[0-9]+[\.0-9]+;.*rv:)([0-9]+[\.0-9]+)/) || [])[1])
     : parseFloat((ua.match(/(?:Trident\/[0-9]+[\.0-9]+;.*rv:)([0-9]+[\.0-9]+)/) || [])[1]); // for ie
 
-export const isOldIE = isIE && isIE < 9;
-
 // Is this Firefox or related?
 export const isGecko = (('Controllers' in window) || ('controllers' in window)) && window.navigator.product === "Gecko";
 /**

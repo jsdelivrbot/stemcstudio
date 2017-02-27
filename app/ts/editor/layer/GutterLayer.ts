@@ -24,31 +24,28 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
 
     /**
      * GutterLayer annotations are different from the Annotation type.
+     * 
      */
-    public $annotations: { className: string; text: string[] }[] = [];
+    public $annotations: ({ className: string | undefined; text: string[] } | null)[] = [];
     public $cells: GutterCell[] = [];
     private $fixedWidth = false;
     private $showLineNumbers = true;
-    private $renderer: GutterRenderer;// = "";
+    private $renderer: GutterRenderer;
     private session: EditSession;
-    private $showFoldWidgets = true;
-    public $padding: Padding;
-    private eventBus: EventEmitterClass<any, GutterLayer>;
+    private $showFoldWidgets: boolean;
+    public $padding: Padding | null;
+    private readonly eventBus: EventEmitterClass<any, GutterLayer> = new EventEmitterClass<any, GutterLayer>(this);
 
     /**
      *
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_gutter-layer");
-        this.eventBus = new EventEmitterClass<any, GutterLayer>(this);
-        this.setShowFoldWidgets(this.$showFoldWidgets);
-        this.$updateAnnotations = this.$updateAnnotations.bind(this);
+        this.setShowFoldWidgets(true);
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @returns A function for removing the callback.
+     * Returns a function for removing the callback, or you can call the `off` method.
      */
     on(eventName: string, callback: (event: any, source: GutterLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
@@ -58,8 +55,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @param eventName
-     * @param callback
+     *
      */
     off(eventName: string, callback: (event: any, source: GutterLayer) => any): void {
         this.eventBus.off(eventName, callback);
@@ -70,11 +66,11 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      */
     setSession(session: EditSession): void {
         if (this.session) {
-            this.session.off("change", this.$updateAnnotations);
+            this.session.off("change", this.sessionChangeHandler);
         }
         this.session = session;
         if (session) {
-            session.on("change", this.$updateAnnotations);
+            session.on("change", this.sessionChangeHandler);
         }
     }
 
@@ -111,7 +107,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         }
     }
 
-    private $updateAnnotations(delta: Delta): void {
+    /**
+     * The fat-arrow definition allows us to use the in a 
+     */
+    private sessionChangeHandler = (delta: Delta): void => {
         if (!this.$annotations.length) {
             return;
         }
@@ -148,7 +147,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
 
         const gutterRenderer: GutterRenderer = session.gutterRenderer || this.$renderer;
 
-        let cell: GutterCell = null;
+        let cell: GutterCell | null | undefined = null;
         let index = -1;
         let row = firstRow;
         while (true) {
@@ -160,16 +159,16 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             if (row > lastRow) {
                 while (this.$cells.length > index + 1) {
                     cell = this.$cells.pop();
-                    this.element.removeChild(cell.element);
+                    if (cell) {
+                        this.element.removeChild(cell.element);
+                    }
                 }
                 break;
             }
 
             cell = this.$cells[++index];
             if (!cell) {
-                cell = { element: null, textNode: null, foldWidget: null };
-                cell.element = <HTMLDivElement>createElement("div");
-                cell.textNode = document.createTextNode('');
+                cell = { element: <HTMLDivElement>createElement("div"), textNode: document.createTextNode(''), foldWidget: null };
                 cell.element.appendChild(cell.textNode);
                 this.element.appendChild(cell.element);
                 this.$cells[index] = cell;
@@ -180,8 +179,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                 className += breakpoints[row];
             if (decorations[row])
                 className += decorations[row];
-            if (this.$annotations[row])
-                className += this.$annotations[row].className;
+            const annotation = this.$annotations[row];
+            if (annotation) {
+                className += annotation.className;
+            }
             if (cell.element.className !== className)
                 cell.element.className = className;
 
@@ -189,7 +190,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             if (height !== cell.element.style.height)
                 cell.element.style.height = height;
 
-            let c: string;
+            let c: string | undefined;
             if (foldWidgets) {
                 c = foldWidgets[row];
                 // check if cached value is invalidated and we need to recompute
@@ -239,7 +240,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             : lastLineNumber.toString().length * config.characterWidth;
 
         const padding: Padding = this.$padding || this.$computePadding();
-        gutterWidth += padding.left + padding.right;
+        gutterWidth += <number>padding.left + <number>padding.right;
         if (gutterWidth !== this.gutterWidth && !isNaN(gutterWidth)) {
             this.gutterWidth = gutterWidth;
             this.element.style.width = Math.ceil(this.gutterWidth) + "px";
@@ -251,10 +252,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @param show
+     *
      */
-    setShowLineNumbers(show: boolean): void {
-        this.$renderer = !show && {
+    setShowLineNumbers(showLineNumbers: boolean): void {
+        this.$renderer = !showLineNumbers && {
             getWidth: function () { return 0; },
             getText: function () { return ""; }
         };
@@ -268,17 +269,17 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @param show
+     * Setting this property changes the CSS class of the `element` property.
+     * It also clears the padding.
      */
-    setShowFoldWidgets(show: boolean): void {
-        if (show) {
+    setShowFoldWidgets(showFoldWidgets: boolean): void {
+        if (showFoldWidgets) {
             addCssClass(this.element, "ace_folding-enabled");
         }
         else {
             removeCssClass(this.element, "ace_folding-enabled");
         }
-
-        this.$showFoldWidgets = show;
+        this.$showFoldWidgets = showFoldWidgets;
         this.$padding = null;
     }
 
@@ -322,10 +323,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     getRegion(point: { clientX: number; clientY: number }): 'markers' | 'foldWidgets' | undefined {
         const padding: Padding = this.$padding || this.$computePadding();
         const rect = this.element.getBoundingClientRect();
-        if (point.clientX < padding.left + rect.left) {
+        if (point.clientX < (<number>padding.left) + rect.left) {
             return "markers";
         }
-        if (this.$showFoldWidgets && point.clientX > rect.right - padding.right) {
+        if (this.$showFoldWidgets && point.clientX > rect.right - <number>padding.right) {
             return "foldWidgets";
         }
         return void 0;

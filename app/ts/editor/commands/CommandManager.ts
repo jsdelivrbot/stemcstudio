@@ -8,6 +8,13 @@ import Editor from '../Editor';
 import EventBus from '../EventBus';
 import KeyboardResponse from '../keyboard/KeyboardResponse';
 
+interface CommandAndArgs {
+    command: Command;
+    args: any;
+}
+
+type Macro = CommandAndArgs[];
+
 /**
  *
  */
@@ -15,7 +22,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     /**
      *
      */
-    public hashHandler: KeyboardHandler;
+    public readonly hashHandler: KeyboardHandler;
     /**
      *
      */
@@ -24,10 +31,13 @@ export default class CommandManager implements EventBus<any, CommandManager> {
      * Used by StatusBar
      */
     public recording: boolean;
-    private macro: { command: Command; args: any }[][];
-    private oldMacro: { command: Command; args: any }[][];
+    /**
+     * A macro is a sequence of commands.
+     */
+    private macros: Macro[];
+    private oldMacros: Macro[];
     private $addCommandToMacro: (event: any, cm: CommandManager) => any;
-    private eventBus: EventEmitterClass<any, CommandManager>;
+    private readonly eventBus: EventEmitterClass<any, CommandManager>;
 
     _buildKeyHash: any;
 
@@ -151,29 +161,33 @@ export default class CommandManager implements EventBus<any, CommandManager> {
             editor._emit("changeStatus");
         }
         if (this.recording) {
-            this.macro.pop();
+            this.macros.pop();
             this.eventBus.off("exec", this.$addCommandToMacro);
 
-            if (!this.macro.length) {
-                this.macro = this.oldMacro;
+            if (!this.macros.length) {
+                this.macros = this.oldMacros;
             }
 
             return this.recording = false;
         }
         if (!this.$addCommandToMacro) {
-            this.$addCommandToMacro = (e: { command: Command; args: any }) => {
-                this.macro.push([e.command, e.args]);
+            this.$addCommandToMacro = (step: CommandAndArgs) => {
+                // FIXME: This does not look right
+                const macro: Macro = [step.command, step.args];
+                // This looks better...
+                // const macro: Macro = [step];
+                this.macros.push(macro);
             };
         }
 
-        this.oldMacro = this.macro;
-        this.macro = [];
+        this.oldMacros = this.macros;
+        this.macros = [];
         this.eventBus.on("exec", this.$addCommandToMacro);
         return this.recording = true;
     }
 
     replay(editor: Editor): boolean {
-        if (this.$inReplay || !this.macro)
+        if (this.$inReplay || !this.macros)
             return void 0;
 
         if (this.recording)
@@ -181,15 +195,10 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
         try {
             this.$inReplay = true;
-            this.macro.forEach((x) => {
-                if (typeof x === "string")
-                    // FIXME: This never happens?
-                    this.exec(x, editor);
-                else {
-                    for (let i = 0; i < x.length; i++) {
-                        const macro = x[i];
-                        this.exec(macro.command, editor, macro.args);
-                    }
+            this.macros.forEach((macro) => {
+                for (let i = 0; i < macro.length; i++) {
+                    const step = macro[i];
+                    this.exec(step.command, editor, step.args);
                 }
             });
         }

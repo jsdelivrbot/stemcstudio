@@ -32,11 +32,14 @@ export default class TabstopManager {
      * The current tabstop index.
      */
     private index: number;
-    private ranges: Range[];
-    private tabstops: Tabstop[];
-    private $openTabstops: Tabstop[];
-    private selectedTabstop: Tabstop;
-    private editor: Editor;
+    private ranges: Range[] | null;
+    private tabstops: Tabstop[] | null;
+    private $openTabstops: Tabstop[] | null;
+    private selectedTabstop: Tabstop | null;
+    /**
+     * The attach and detach lifecycle means that the editor comes and goes.
+     */
+    private editor: Editor | null;
     private keyboardHandler = new KeyboardHandler();
     private $onChange: (delta: Delta, editor: Editor) => void;
     private $onChangeSelection: (timeout: number) => void;
@@ -73,7 +76,9 @@ export default class TabstopManager {
                     this.detach();
                 },
                 "Return": function (editor: Editor) {
-                    editor.tabstopManager.tabNext(1);
+                    if (editor.tabstopManager) {
+                        editor.tabstopManager.tabNext(1);
+                    }
                     return false;
                 }
             });
@@ -102,17 +107,21 @@ export default class TabstopManager {
      *
      */
     private detach(): void {
-        this.tabstops.forEach(this.removeTabstopMarkers, this);
+        if (this.tabstops) {
+            this.tabstops.forEach(this.removeTabstopMarkers, this);
+        }
         this.ranges = null;
         this.tabstops = null;
         this.selectedTabstop = null;
-        this.editor.off("change", this.$onChange);
-        this.editor.off("changeSelection", this.$onChangeSelection);
-        this.editor.off("changeSession", this.$onChangeSession);
-        this.editor.commands.off("afterExec", this.$onAfterExec);
-        this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
-        this.editor.tabstopManager = null;
-        this.editor = null;
+        if (this.editor) {
+            this.editor.off("change", this.$onChange);
+            this.editor.off("changeSelection", this.$onChangeSelection);
+            this.editor.off("changeSession", this.$onChangeSession);
+            this.editor.commands.off("afterExec", this.$onAfterExec);
+            this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
+            this.editor.tabstopManager = null;
+            this.editor = null;
+        }
     }
 
     private onChange(delta: Delta, editor: Editor) {
@@ -138,33 +147,36 @@ export default class TabstopManager {
             if (changedOutside)
                 return this.detach();
         }
-        const ranges = this.ranges;
-        for (let i = 0; i < ranges.length; i++) {
-            let r = ranges[i];
-            if (r.end.row < start.row)
-                continue;
+        if (this.ranges) {
+            const ranges = this.ranges;
+            for (let i = 0; i < ranges.length; i++) {
+                let r = ranges[i];
+                if (r.end.row < start.row)
+                    continue;
 
-            if (isRemove && comparePositions(start, r.start) < 0 && comparePositions(end, r.end) > 0) {
-                this.removeRange(r);
-                i--;
-                continue;
+                if (isRemove && comparePositions(start, r.start) < 0 && comparePositions(end, r.end) > 0) {
+                    this.removeRange(r);
+                    i--;
+                    continue;
+                }
+
+                if (r.start.row === startRow && r.start.column > start.column)
+                    r.start.column += colDiff;
+                if (r.end.row === startRow && r.end.column >= start.column)
+                    r.end.column += colDiff;
+                if (r.start.row >= startRow)
+                    r.start.row += lineDif;
+                if (r.end.row >= startRow)
+                    r.end.row += lineDif;
+
+                if (comparePositions(r.start, r.end) > 0) {
+                    this.removeRange(r);
+                }
             }
-
-            if (r.start.row === startRow && r.start.column > start.column)
-                r.start.column += colDiff;
-            if (r.end.row === startRow && r.end.column >= start.column)
-                r.end.column += colDiff;
-            if (r.start.row >= startRow)
-                r.start.row += lineDif;
-            if (r.end.row >= startRow)
-                r.end.row += lineDif;
-
-            if (comparePositions(r.start, r.end) > 0) {
-                this.removeRange(r);
+            if (!ranges.length) {
+                this.detach();
             }
         }
-        if (!ranges.length)
-            this.detach();
     }
 
     private updateLinkedFields() {
@@ -176,15 +188,19 @@ export default class TabstopManager {
         }
 
         this.$inChange = true;
-        const session = this.editor.getSession();
-        const text = session.getTextRange(ts.firstNonLinked);
-        for (let i = ts.length; i--;) {
-            const range = ts[i];
-            if (!range.linked) {
-                continue;
+        if (this.editor) {
+            const session = this.editor.getSession();
+            const text = session.getTextRange(ts.firstNonLinked);
+            for (let i = ts.length; i--;) {
+                const range = ts[i];
+                if (!range.linked) {
+                    continue;
+                }
+                if (range.original) {
+                    const fmt = this.editor.snippetManager.tmStrFormat(text, range.original);
+                    session.replace(range, fmt);
+                }
             }
-            const fmt = this.editor.snippetManager.tmStrFormat(text, range.original);
-            session.replace(range, fmt);
         }
         this.$inChange = false;
     }
@@ -197,18 +213,26 @@ export default class TabstopManager {
 
     // TODO: EditorChangeSelectionEvent?
     private onChangeSelection(event: any, editor: Editor) {
-        if (!this.editor)
+        if (!this.editor) {
             return;
-        const lead = this.editor.selection.lead;
-        const anchor = this.editor.selection.anchor;
-        const isEmpty = this.editor.selection.isEmpty();
-        for (let i = this.ranges.length; i--;) {
-            if (this.ranges[i].linked)
-                continue;
-            const containsLead = this.ranges[i].contains(lead.row, lead.column);
-            const containsAnchor = isEmpty || this.ranges[i].contains(anchor.row, anchor.column);
-            if (containsLead && containsAnchor)
-                return;
+        }
+        const selection = editor.selection;
+        if (selection) {
+            const lead = selection.lead;
+            const anchor = selection.anchor;
+            const isEmpty = selection.isEmpty();
+            if (this.ranges) {
+                const ranges = this.ranges;
+                for (let i = ranges.length; i--;) {
+                    if (ranges[i].linked) {
+                        continue;
+                    }
+                    const containsLead = ranges[i].contains(lead.row, lead.column);
+                    const containsAnchor = isEmpty || ranges[i].contains(anchor.row, anchor.column);
+                    if (containsLead && containsAnchor)
+                        return;
+                }
+            }
         }
         this.detach();
     }
@@ -222,53 +246,61 @@ export default class TabstopManager {
      * @param dir
      */
     public tabNext(dir?: number): void {
-        const max = this.tabstops.length;
-        let index = this.index + (dir || 1);
-        index = Math.min(Math.max(index, 1), max);
-        if (index === max) {
-            index = 0;
-        }
-        this.selectTabstop(index);
-        if (index === 0) {
-            this.detach();
+        if (this.tabstops) {
+            const max = this.tabstops.length;
+            let index = this.index + (dir || 1);
+            index = Math.min(Math.max(index, 1), max);
+            if (index === max) {
+                index = 0;
+            }
+            this.selectTabstop(index);
+            if (index === 0) {
+                this.detach();
+            }
         }
     }
 
     /**
-     * @param index
+     *
      */
     private selectTabstop(index: number): void {
         this.$openTabstops = null;
-        let ts = this.tabstops[this.index];
+        let ts = this.tabstops ? this.tabstops[this.index] : undefined;
         if (ts) {
             this.addTabstopMarkers(ts);
         }
         this.index = index;
-        ts = this.tabstops[this.index];
+        ts = this.tabstops ? this.tabstops[this.index] : undefined;
         if (!ts || !ts.length) {
             return;
         }
 
         this.selectedTabstop = ts;
 
-        if (!this.editor.inVirtualSelectionMode) {
-            const sel: Selection = this.editor.multiSelect;
-            sel.toSingleRange(ts.firstNonLinked.clone());
-            for (let i = ts.length; i--;) {
-                if (ts.hasLinkedRanges && ts[i].linked) {
-                    continue;
+        if (this.editor) {
+            const editor = this.editor;
+            if (!editor.inVirtualSelectionMode) {
+                const sel: Selection = editor.multiSelect;
+                sel.toSingleRange(ts.firstNonLinked.clone());
+                for (let i = ts.length; i--;) {
+                    if (ts.hasLinkedRanges && ts[i].linked) {
+                        continue;
+                    }
+                    sel.addRange(ts[i].clone(), true);
                 }
-                sel.addRange(ts[i].clone(), true);
+                // todo investigate why is this needed
+                if (sel.ranges[0]) {
+                    sel.addRange(sel.ranges[0].clone());
+                }
             }
-            // todo investigate why is this needed
-            if (sel.ranges[0])
-                sel.addRange(sel.ranges[0].clone());
-        }
-        else {
-            this.editor.selection.setRange(ts.firstNonLinked);
-        }
+            else {
+                if (editor.selection) {
+                    editor.selection.setRange(ts.firstNonLinked);
+                }
+            }
 
-        this.editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
+            this.editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
+        }
     }
 
     /**
@@ -293,87 +325,109 @@ export default class TabstopManager {
 
         const i = this.index;
         const arg: any[] = [i + 1, 0];
-        const ranges = this.ranges;
-        tabstops.forEach((ts: Tabstop, index: number) => {
-            const dest = this.$openTabstops[index] || ts;
+        if (this.ranges) {
+            const ranges = this.ranges;
+            tabstops.forEach((ts: Tabstop, index: number) => {
+                if (Array.isArray(this.$openTabstops)) {
+                    const dest = this.$openTabstops[index] || ts;
 
-            for (let i = ts.length; i--;) {
-                let originalRange = ts[i];
-                const range: Range = Range.fromPoints(originalRange.start, originalRange.end || originalRange.start);
-                movePoint(range.start, start);
-                movePoint(range.end, start);
-                range.original = originalRange;
-                range.tabstop = dest;
-                ranges.push(range);
+                    for (let i = ts.length; i--;) {
+                        let originalRange = ts[i];
+                        const range: Range = Range.fromPoints(originalRange.start, originalRange.end || originalRange.start);
+                        movePoint(range.start, start);
+                        movePoint(range.end, start);
+                        range.original = originalRange;
+                        range.tabstop = dest;
+                        ranges.push(range);
 
-                if (dest !== ts)
-                    dest.unshift(range);
-                else
-                    dest[i] = range;
+                        if (dest !== ts)
+                            dest.unshift(range);
+                        else
+                            dest[i] = range;
 
-                if (originalRange.fmtString) {
-                    range.linked = true;
-                    dest.hasLinkedRanges = true;
+                        if (originalRange.fmtString) {
+                            range.linked = true;
+                            dest.hasLinkedRanges = true;
+                        }
+                        else if (!dest.firstNonLinked) {
+                            dest.firstNonLinked = range;
+                        }
+                    }
+                    if (!dest.firstNonLinked)
+                        dest.hasLinkedRanges = false;
+                    if (dest === ts) {
+                        arg.push(dest);
+                        this.$openTabstops[index] = dest;
+                    }
+                    this.addTabstopMarkers(dest);
                 }
-                else if (!dest.firstNonLinked) {
-                    dest.firstNonLinked = range;
-                }
-            }
-            if (!dest.firstNonLinked)
-                dest.hasLinkedRanges = false;
-            if (dest === ts) {
-                arg.push(dest);
-                this.$openTabstops[index] = dest;
-            }
-            this.addTabstopMarkers(dest);
-        });
+            });
+        }
 
         if (arg.length > 2) {
             // when adding new snippet inside existing one, make sure 0 tabstop is at the end
-            if (this.tabstops.length)
-                arg.push(arg.splice(2, 1)[0]);
-            this.tabstops.splice.apply(this.tabstops, arg);
+            if (this.tabstops) {
+                if (this.tabstops.length) {
+                    arg.push(arg.splice(2, 1)[0]);
+                }
+                this.tabstops.splice.apply(this.tabstops, arg);
+            }
         }
     }
 
     /**
-     * @param ts
+     *
      */
     private addTabstopMarkers(ts: Tabstop): void {
-        const session = this.editor.session;
-        ts.forEach(function (range: Range) {
-            if (!range.markerId) {
-                range.markerId = session.addMarker(range, "ace_snippet-marker", "text");
-            }
-        });
+        if (this.editor) {
+            const session = this.editor.session;
+            ts.forEach(function (range: Range) {
+                if (!range.markerId) {
+                    range.markerId = session.addMarker(range, "ace_snippet-marker", "text");
+                }
+            });
+        }
     }
 
     /**
-     * @param ts
+     *
      */
     private removeTabstopMarkers(ts: Tabstop): void {
-        const session = this.editor.session;
-        ts.forEach(function (range: Range) {
-            session.removeMarker(range.markerId);
-            range.markerId = null;
-        });
+        if (this.editor) {
+            const session = this.editor.session;
+            ts.forEach(function (range: Range) {
+                if (range.markerId) {
+                    session.removeMarker(range.markerId);
+                    range.markerId = null;
+                }
+            });
+        }
     }
 
     /**
      * @param range
      */
     private removeRange(range: Range): void {
-        let i = range.tabstop.indexOf(range);
-        range.tabstop.splice(i, 1);
-        i = this.ranges.indexOf(range);
-        this.ranges.splice(i, 1);
-        this.editor.session.removeMarker(range.markerId);
-        if (!range.tabstop.length) {
-            i = this.tabstops.indexOf(range.tabstop);
-            if (i !== -1)
-                this.tabstops.splice(i, 1);
-            if (!this.tabstops.length)
-                this.detach();
+        if (range.tabstop) {
+            let i = range.tabstop.indexOf(range);
+            range.tabstop.splice(i, 1);
+            if (this.ranges) {
+                i = this.ranges.indexOf(range);
+                this.ranges.splice(i, 1);
+                if (this.editor) {
+                    if (typeof range.markerId === 'number')
+                        this.editor.session.removeMarker(range.markerId);
+                    if (!range.tabstop.length) {
+                        if (this.tabstops) {
+                            i = this.tabstops.indexOf(range.tabstop);
+                            if (i !== -1)
+                                this.tabstops.splice(i, 1);
+                            if (!this.tabstops.length)
+                                this.detach();
+                        }
+                    }
+                }
+            }
         }
     }
 }

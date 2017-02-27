@@ -4,10 +4,12 @@
 // Therefore, the Tokenizer would appear to be the authority on the type definition for Rule.
 //
 
+export type RuleToken = string | string[] | ((value: any, state: string, stack: string[]) => any) | null | undefined;
+
 /**
  *
  */
-interface Rule {
+export interface Rule {
 
     /**
      *
@@ -44,7 +46,7 @@ interface Rule {
      * FIXME: Something strange going on with SnippetManager and the stack?
      *        TypeScript 2.0 really starts to complain!
      */
-    onMatch?: (value: string, state: string, stack: string[]) => any;
+    onMatch?: ((value: string, state: string, stack: string[]) => any) | null;
 
     /**
      *
@@ -74,7 +76,7 @@ interface Rule {
     /**
      * The token may be a string, or a string[], or a function (like an onMatch).
      */
-    token?: string | string[] | ((value: any, state: string, stack: string[]) => any);
+    token?: RuleToken;
 
     /**
      *

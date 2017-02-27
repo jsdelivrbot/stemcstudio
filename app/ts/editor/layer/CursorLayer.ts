@@ -188,6 +188,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
 
     /**
      * Computes the pixel position relative to the top-left corner of the cursor layer.
+     * If the position is not supplied, the cursor position of the selection is used.
      * The number of rows is multiplied by the line height.
      * The number of columns is multiplied by the character width.
      * The padding is added to the left property only.
