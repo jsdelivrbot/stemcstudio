@@ -51,11 +51,19 @@ export default class CompletionList {
         matches = this.filterCompletions(matches, this.filterText);
 
         matches = matches.sort(function (a: Completion, b: Completion) {
-            return b.exactMatch - a.exactMatch || b.score - a.score;
+            if (typeof a.exactMatch === 'number'
+                && typeof b.exactMatch === 'number'
+                && typeof a.score === 'number'
+                && typeof b.score === 'number') {
+                return b.exactMatch - a.exactMatch || b.score - a.score;
+            }
+            else {
+                return 0;
+            }
         });
 
         // make unique
-        let prev: string = null;
+        let prev: string | null | undefined = null;
         matches = matches.filter(function (item: Completion) {
             const caption = item.value || item.caption || item.snippet;
             if (caption === prev) return false;

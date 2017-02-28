@@ -67,8 +67,11 @@ export default class Search {
      *
      * @param session The session to search with.
      */
-    find(session: EditSession): Range {
+    find(session: EditSession): Range | null | undefined {
         const options = this.$options;
+        /**
+         * A boolean or an iterable object, with a forEach method.
+         */
         const matches = $matchIterator(session, options);
 
         if (typeof matches === 'boolean') {
@@ -76,7 +79,7 @@ export default class Search {
             return void 0;
         }
         else {
-            let firstRange: Range = null;
+            let firstRange: Range | null = null;
             // Note: row and startIndex in the callback go with the first callback argument being a MatchOffset.
             matches.forEach(function (range: MatchOffset | Range, row: number, startIndex: number): boolean {
                 if (range instanceof Range) {

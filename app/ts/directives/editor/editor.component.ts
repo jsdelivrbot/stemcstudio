@@ -101,7 +101,7 @@ function factory(
         /**
          * The function to call that will cause the editor to be removed from the workspace. 
          */
-        let removeEditor: () => void;
+        let removeEditor: (() => void) | undefined;
 
         const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
             setTimeout(function () {
@@ -170,7 +170,7 @@ function factory(
             const file: WsFile = ngModel.$viewValue;
             if (file instanceof WsFile) {
                 // If there is no a session, then the file should lazily create one.
-                const session: EditSession = file.getSession();
+                const session: EditSession | undefined = file.getSession();
                 if (session) {
                     try {
                         // TODO: Crush this code down into an extensible mode-handling and session initializer?

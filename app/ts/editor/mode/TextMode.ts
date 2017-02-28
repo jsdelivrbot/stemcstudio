@@ -111,7 +111,7 @@ export default class TextMode implements LanguageMode {
     /**
      *
      */
-    public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): boolean {
+    public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): void {
         const doc = session.docOrThrow();
 
         let ignoreBlankLines = true;
@@ -126,7 +126,7 @@ export default class TextMode implements LanguageMode {
 
         if (!this.lineCommentStart) {
             if (!this.blockComment) {
-                return false;
+                return;
             }
             lineCommentStart = this.blockComment.start;
             const lineCommentEnd = this.blockComment.end;
@@ -252,7 +252,6 @@ export default class TextMode implements LanguageMode {
             minIndent = Math.floor(minIndent / tabSize) * tabSize;
 
         iter(shouldRemove ? uncomment : comment);
-        return void 0;
     }
 
     /**
@@ -271,7 +270,7 @@ export default class TextMode implements LanguageMode {
         const outerIterator = new TokenIterator(session, cursor.row, cursor.column);
         let outerToken: Token | undefined | null = outerIterator.getCurrentToken();
 
-        const selection = session.getSelection();
+        const selection = session.selectionOrThrow();
         const initialRange = selection.toOrientedRange();
         let startRow: number | undefined;
         let colDiff: number | undefined;
@@ -291,7 +290,7 @@ export default class TextMode implements LanguageMode {
             }
 
             const innerIterator = new TokenIterator(session, cursor.row, cursor.column);
-            let innerToken = innerIterator.getCurrentToken();
+            let innerToken: Token | null | undefined = innerIterator.getCurrentToken();
             while (innerToken && /comment/.test(innerToken.type)) {
                 const i = innerToken.value.indexOf(comment.end);
                 if (i !== -1) {
@@ -336,7 +335,7 @@ export default class TextMode implements LanguageMode {
             }
         }
 
-        session.getSelection().fromOrientedRange(initialRange);
+        session.selectionOrThrow().fromOrientedRange(initialRange);
     }
 
     /**

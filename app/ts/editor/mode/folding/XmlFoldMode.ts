@@ -4,6 +4,8 @@ import FoldMode from "./FoldMode";
 import Token from '../../Token';
 import TokenIterator from "../../TokenIterator";
 import EditSession from "../../EditSession";
+import FoldStyle from "../../FoldStyle";
+import FoldWidget from "../../FoldWidget";
 import Position from "../../Position";
 
 /**
@@ -24,10 +26,7 @@ export default class XmlFoldMode extends FoldMode {
         }
     }
 
-    /**
-     *
-     */
-    getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
+    getFoldWidget(session: EditSession, foldStyle: FoldStyle, row: number): FoldWidget {
         const tag = this._getFirstTagInLine(session, row);
 
         if (!tag) {
@@ -49,7 +48,7 @@ export default class XmlFoldMode extends FoldMode {
         return "start";
     }
 
-    private getCommentFoldWidget(session: EditSession, row: number): string {
+    private getCommentFoldWidget(session: EditSession, row: number): FoldWidget {
         if (/comment/.test(session.getState(row)) && /<!-/.test(session.getLine(row))) {
             return "start";
         }
@@ -58,7 +57,7 @@ export default class XmlFoldMode extends FoldMode {
     /*
      * returns a first tag (or a fragment) in a line
      */
-    _getFirstTagInLine(session: EditSession, row: number): Tag {
+    _getFirstTagInLine(session: EditSession, row: number): Tag | null {
         const tokens = session.getTokens(row);
         const tag = new Tag();
 
@@ -111,8 +110,8 @@ export default class XmlFoldMode extends FoldMode {
     /*
      * reads a full tag and places the iterator after the tag
      */
-    _readTagForward(iterator: TokenIterator): Tag {
-        let token = iterator.getCurrentToken();
+    _readTagForward(iterator: TokenIterator): Tag | null {
+        let token: Token | null | undefined = iterator.getCurrentToken();
         if (!token)
             return null;
 
@@ -138,8 +137,8 @@ export default class XmlFoldMode extends FoldMode {
         return null;
     }
 
-    _readTagBackward(iterator: TokenIterator): Tag {
-        let token = iterator.getCurrentToken();
+    _readTagBackward(iterator: TokenIterator): Tag | null {
+        let token: Token | null | undefined = iterator.getCurrentToken();
         if (!token)
             return null;
 
@@ -165,7 +164,7 @@ export default class XmlFoldMode extends FoldMode {
         return null;
     }
 
-    private _pop(stack: Tag[], tag: Tag): Tag {
+    private _pop(stack: Tag[], tag: Tag): Tag | null | undefined {
         while (stack.length) {
 
             const top = stack[stack.length - 1];
@@ -188,17 +187,21 @@ export default class XmlFoldMode extends FoldMode {
         return null;
     }
 
-    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | undefined {
         const firstTag = this._getFirstTagInLine(session, row);
 
         if (!firstTag) {
-            return this.getCommentFoldWidget(session, row)
-                && session.getCommentFoldRange(row, session.getLine(row).length);
+            if (this.getCommentFoldWidget(session, row)) {
+                return session.getCommentFoldRange(row, session.getLine(row).length);
+            }
+            else {
+                return void 0;
+            }
         }
 
         const isBackward = firstTag.closing || firstTag.selfClosing;
         const stack: Tag[] = [];
-        let tag: Tag;
+        let tag: Tag | null;
 
         if (!isBackward) {
             const iterator = new TokenIterator(session, row, firstTag.start.column);

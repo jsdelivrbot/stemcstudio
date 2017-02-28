@@ -1,5 +1,7 @@
 import FoldMode from "./FoldMode";
 import EditSession from "../../EditSession";
+import FoldStyle from "../../FoldStyle";
+import FoldWidget from "../../FoldWidget";
 import Range from "../../Range";
 
 /**
@@ -30,12 +32,12 @@ export default class MixedFoldMode extends FoldMode {
         return null;
     }
 
-    private $tryMode(state: string, session: EditSession, foldStyle: string, row: number): string {
+    private $tryMode(state: string, session: EditSession, foldStyle: FoldStyle, row: number): FoldWidget {
         const mode = this.$getMode(state);
         return (mode ? mode.getFoldWidget(session, foldStyle, row) : "");
     }
 
-    getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
+    getFoldWidget(session: EditSession, foldStyle: FoldStyle, row: number): FoldWidget {
         if (row > 0) {
             return (
                 this.$tryMode(session.getState(row - 1), session, foldStyle, row) ||
@@ -51,7 +53,7 @@ export default class MixedFoldMode extends FoldMode {
         }
     }
 
-    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | null | undefined {
         let mode = this.$getMode(session.getState(row - 1));
 
         if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {

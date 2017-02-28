@@ -2,9 +2,9 @@ import Fold from './Fold';
 
 interface FoldEvent {
     /**
-     * 'add', 'remove'
+     *
      */
-    action: string;
+    action: 'add' | 'remove';
 
     /**
      *

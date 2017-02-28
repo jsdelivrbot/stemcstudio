@@ -6,8 +6,6 @@ import ScrollBarEvent from './events/ScrollBarEvent';
 
 /**
  * An abstract class representing a native scrollbar control.
- *
- * @class ScrollBar
  */
 export default class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar> {
     public element: HTMLDivElement;
@@ -15,21 +13,8 @@ export default class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar> {
     public isVisible: boolean;
     public skipEvent: boolean;
 
-    /**
-     * @property eventBus
-     * @type EventEmitterClass<ScrollBar>
-     * @protected
-     */
-    protected eventBus: EventEmitterClass<ScrollBarEvent, ScrollBar>;
+    protected readonly eventBus: EventEmitterClass<ScrollBarEvent, ScrollBar>;
 
-    /**
-     * Creates a new `ScrollBar`.
-     *
-     * @class ScrollBar
-     * @constructor
-     * @param parent {HTMLElement} A parent of the scrollbar.
-     * @param classSuffix {string}
-     */
     constructor(parent: HTMLElement, classSuffix: string) {
         this.eventBus = new EventEmitterClass<ScrollBarEvent, ScrollBar>(this);
         this.element = <HTMLDivElement>createElement("div");
@@ -48,31 +33,14 @@ export default class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar> {
         addListener(this.element, "mousedown", preventDefault);
     }
 
-    /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event: ScrollBarEvent, source: ScrollBar) => any}
-     * @return {void}
-     */
     on(eventName: string, callback: (event: ScrollBarEvent, source: ScrollBar) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
-    /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event: ScrollBarEvent, source: ScrollBar) => any}
-     * @return {void}
-     */
     off(eventName: string, callback: (event: ScrollBarEvent, source: ScrollBar) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
-    /**
-     * @method setVisible
-     * @param isVisible {boolean}
-     * @return {ScrollBar}
-     */
     setVisible(isVisible: boolean): ScrollBar {
         this.element.style.display = isVisible ? "" : "none";
         this.isVisible = isVisible;

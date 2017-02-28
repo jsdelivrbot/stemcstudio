@@ -1,6 +1,8 @@
 import Range from "../../Range";
 import FoldMode from "./FoldMode";
 import EditSession from "../../EditSession";
+import FoldStyle from "../../FoldStyle";
+import FoldWidget from "../../FoldWidget";
 import Token from "../../Token";
 
 /**
@@ -19,12 +21,7 @@ export default class MarkdownFoldMode extends FoldMode {
         super();
     }
 
-    /**
-     * @param session
-     * @param foldStyle
-     * @param row
-     */
-    getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
+    getFoldWidget(session: EditSession, foldStyle: FoldStyle, row: number): FoldWidget {
         const line = session.getLine(row);
         if (!this.foldingStartMarker.test(line))
             return "";
@@ -38,12 +35,7 @@ export default class MarkdownFoldMode extends FoldMode {
         return "start";
     }
 
-    /**
-     * @param session
-     * @param foldStyle
-     * @param row
-     */
-    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | undefined {
         let line = session.getLine(row);
         const startColumn = line.length;
         const maxRow = session.getLength();
@@ -71,7 +63,7 @@ export default class MarkdownFoldMode extends FoldMode {
             }
         }
 
-        let token: Token;
+        let token: Token | undefined;
         const heading = "markup.heading";
         function isHeading(row: number): boolean {
             token = session.getTokens(row)[0];
@@ -79,10 +71,15 @@ export default class MarkdownFoldMode extends FoldMode {
         }
 
         function getLevel(): number {
-            const ch = token.value[0];
-            if (ch === "=") return 6;
-            if (ch === "-") return 5;
-            return 7 - token.value.search(/[^#]/);
+            if (token) {
+                const ch = token.value[0];
+                if (ch === "=") return 6;
+                if (ch === "-") return 5;
+                return 7 - token.value.search(/[^#]/);
+            }
+            else {
+                throw new Error(`token is ${typeof token}`);
+            }
         }
 
         if (isHeading(row)) {

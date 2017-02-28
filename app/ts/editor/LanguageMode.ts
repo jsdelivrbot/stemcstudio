@@ -99,7 +99,7 @@ interface LanguageMode {
      * @param startRow
      * @param endRow
      */
-    toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): boolean;
+    toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): void;
 
     /**
      * @param state

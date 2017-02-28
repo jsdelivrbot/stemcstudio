@@ -88,7 +88,7 @@ export default class HtmlMode extends TextMode {
         try {
             worker.init(scriptImports, moduleName, 'HtmlWorker', (err: any) => {
                 if (!err) {
-                    worker.attachToDocument(session.getDocument());
+                    worker.attachToDocument(session.docOrThrow());
                     if (this.fragmentContext) {
                         worker.call("setOptions", [{ context: this.fragmentContext }], function (data: any) {
                             // Do nothing?

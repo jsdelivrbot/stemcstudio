@@ -6,6 +6,7 @@ import EventEmitterClass from "../lib/EventEmitterClass";
 import Delta from "../Delta";
 import EditSession from "../EditSession";
 import EventBus from "../EventBus";
+import FoldWidget from "../FoldWidget";
 import Annotation from "../Annotation";
 import GutterConfig from "./GutterConfig";
 import Padding from './Padding';
@@ -27,10 +28,16 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      * 
      */
     public $annotations: ({ className: string | undefined; text: string[] } | null)[] = [];
+    /**
+     * Gutter cells indexed by screen row.
+     */
     public $cells: GutterCell[] = [];
     private $fixedWidth = false;
     private $showLineNumbers = true;
-    private $renderer: GutterRenderer;
+    /**
+     * 
+     */
+    private $renderer: GutterRenderer | boolean;
     private session: EditSession;
     private $showFoldWidgets: boolean;
     public $padding: Padding | null;
@@ -145,16 +152,18 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         const firstLineNumber = session.$firstLineNumber;
         let lastLineNumber = 0;
 
-        const gutterRenderer: GutterRenderer = session.gutterRenderer || this.$renderer;
+        const gutterRenderer = session.gutterRenderer || this.$renderer;
 
         let cell: GutterCell | null | undefined = null;
         let index = -1;
         let row = firstRow;
         while (true) {
             if (row > foldStart) {
-                row = fold.end.row + 1;
-                fold = session.getNextFoldLine(row, fold);
-                foldStart = fold ? fold.start.row : Infinity;
+                if (fold) {
+                    row = fold.end.row + 1;
+                    fold = session.getNextFoldLine(row, fold);
+                    foldStart = fold ? fold.start.row : Infinity;
+                }
             }
             if (row > lastRow) {
                 while (this.$cells.length > index + 1) {
@@ -190,7 +199,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             if (height !== cell.element.style.height)
                 cell.element.style.height = height;
 
-            let c: string | undefined;
+            let c: FoldWidget | null | undefined;
             if (foldWidgets) {
                 c = foldWidgets[row];
                 // check if cached value is invalidated and we need to recompute
@@ -204,7 +213,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                     cell.element.appendChild(cell.foldWidget);
                 }
                 let className = "ace_fold-widget ace_" + c;
-                if (c === "start" && row === foldStart && row < fold.end.row)
+                if (c === "start" && row === foldStart && fold && row < fold.end.row)
                     className += " ace_closed";
                 else
                     className += " ace_open";
@@ -222,7 +231,9 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             }
 
             lastLineNumber = row + firstLineNumber;
-            const text: string = gutterRenderer ? gutterRenderer.getText(session, row) : lastLineNumber.toString();
+            const text: string = (gutterRenderer && typeof gutterRenderer !== 'boolean')
+                ? gutterRenderer.getText(session, row)
+                : lastLineNumber.toString();
             if (text !== cell.textNode.data) {
                 cell.textNode.data = text;
             }
@@ -235,12 +246,12 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         if (this.$fixedWidth || session.$useWrapMode)
             lastLineNumber = session.getLength() + firstLineNumber;
 
-        let gutterWidth = gutterRenderer
+        let gutterWidth = (gutterRenderer && typeof gutterRenderer !== 'boolean')
             ? gutterRenderer.getWidth(session, lastLineNumber, config)
             : lastLineNumber.toString().length * config.characterWidth;
 
-        const padding: Padding = this.$padding || this.$computePadding();
-        gutterWidth += <number>padding.left + <number>padding.right;
+        const padding = this.$padding || this.$computePadding();
+        gutterWidth += padding.left + padding.right;
         if (gutterWidth !== this.gutterWidth && !isNaN(gutterWidth)) {
             this.gutterWidth = gutterWidth;
             this.element.style.width = Math.ceil(this.gutterWidth) + "px";
@@ -300,7 +311,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         }
         // FIXME: The firstChild may not be an HTMLElement.
         const style = window.getComputedStyle(<Element>this.element.firstChild);
-        this.$padding = {};
+        this.$padding = { left: 0, right: 0 };
         if (style.paddingLeft) {
             this.$padding.left = parseInt(style.paddingLeft, 10) + 1 || 0;
         }
@@ -323,10 +334,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     getRegion(point: { clientX: number; clientY: number }): 'markers' | 'foldWidgets' | undefined {
         const padding: Padding = this.$padding || this.$computePadding();
         const rect = this.element.getBoundingClientRect();
-        if (point.clientX < (<number>padding.left) + rect.left) {
+        if (point.clientX < padding.left + rect.left) {
             return "markers";
         }
-        if (this.$showFoldWidgets && point.clientX > rect.right - <number>padding.right) {
+        if (this.$showFoldWidgets && point.clientX > rect.right - padding.right) {
             return "foldWidgets";
         }
         return void 0;

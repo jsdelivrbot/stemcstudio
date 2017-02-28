@@ -118,27 +118,27 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * FIXME: Leaky. ListViewPopup and showErrorMarker use this property.
      */
-    public cursorLayer: CursorLayer;
+    public readonly cursorLayer: CursorLayer;
 
     /**
      *
      */
-    public $gutterLayer: GutterLayer;
+    public readonly $gutterLayer: GutterLayer;
 
     /**
      *
      */
-    private $markerFront: MarkerLayer;
+    private readonly $markerFront: MarkerLayer;
 
     /**
      *
      */
-    private $markerBack: MarkerLayer;
+    private readonly $markerBack: MarkerLayer;
 
     /**
      * FIXME: Leaky. ListViewPopup uses this property.
      */
-    public textLayer: TextLayer;
+    public readonly textLayer: TextLayer;
 
     /**
      * Used by TokenTooltip...
@@ -1599,7 +1599,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param animate If `true` animates scrolling
      * @param callback Function to be called after the animation has finished
      */
-    scrollToLine(line: number, center: boolean, animate: boolean, callback?: () => any) {
+    scrollToLine(line: number, center: boolean, animate?: boolean, callback?: () => any) {
         const session = this.sessionOrThrow();
         const pos = this.getPixelPosition({ row: line, column: 0 }, false);
         let offset = pos.top;
@@ -1609,7 +1609,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
         const initialScroll = this.scrollTop;
         session.setScrollTop(offset);
-        if (animate !== false) {
+        if (animate) {
             this.animateScrolling(initialScroll, callback);
         }
     }

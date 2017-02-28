@@ -1,6 +1,7 @@
 import Range from "../../Range";
 import FoldMode from "./FoldMode";
 import EditSession from "../../EditSession";
+import FoldStyle from "../../FoldStyle";
 
 /**
  *
@@ -30,7 +31,7 @@ export default class CstyleFoldMode extends FoldMode {
      * @param row zero-based row number.
      * @param forceMultiline
      */
-    getFoldWidgetRange(session: EditSession, foldStyle: 'markbegin' | 'all', row: number, forceMultiline?: boolean): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number, forceMultiline?: boolean): Range | null | undefined {
         /**
          * The text on the line where the folding was requested.
          */
@@ -38,13 +39,11 @@ export default class CstyleFoldMode extends FoldMode {
         // Find where to start the fold marker.
         let match = line.match(this.foldingStartMarker);
         if (match) {
-            const i = match.index;
-
             if (match[1]) {
-                return this.openingBracketBlock(session, match[1], row, i);
+                return this.openingBracketBlock(session, match[1], row, <number>match.index);
             }
 
-            let range: Range = session.getCommentFoldRange(row, i + match[0].length, 1);
+            let range: Range | null | undefined = session.getCommentFoldRange(row, <number>match.index + match[0].length, 1);
 
             if (range && !range.isMultiLine()) {
                 if (forceMultiline) {
@@ -64,7 +63,7 @@ export default class CstyleFoldMode extends FoldMode {
 
         match = line.match(this.foldingStopMarker);
         if (match) {
-            const i = match.index + match[0].length;
+            const i = <number>match.index + match[0].length;
 
             if (match[1]) {
                 return this.closingBracketBlock(session, match[1], row, i);

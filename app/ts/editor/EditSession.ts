@@ -5,20 +5,25 @@ import { stringRepeat } from "./lib/lang";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
-import { Marker, MarkerType } from "./Marker";
-import MarkerRenderer from "./layer/MarkerRenderer";
+import EditorMouseEvent from './EditorMouseEvent';
 import EventBus from "./EventBus";
 import EventEmitterClass from "./lib/EventEmitterClass";
+import FirstAndLast from "./FirstAndLast";
 import FoldLine from "./FoldLine";
 import Fold from "./Fold";
 import FoldEvent from "./FoldEvent";
+import FoldWidget from "./FoldWidget";
+import FoldStyle from "./FoldStyle";
 import GutterRenderer from './layer/GutterRenderer';
 import Selection from "./Selection";
 import LanguageMode from "./LanguageMode";
+import { Marker, MarkerType } from "./Marker";
+import MarkerRenderer from "./layer/MarkerRenderer";
 import Range from "./Range";
 import RangeBasic from "./RangeBasic";
 import Shareable from './base/Shareable';
 import { BasicToken, mutateExtendToken, TokenWithIndex } from "./Token";
+import Token from "./Token";
 import Tokenizer from "./Tokenizer";
 import Document from "./Document";
 import BackgroundTokenizer from "./BackgroundTokenizer";
@@ -114,11 +119,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * 
      */
-    public foldWidgets: (string | null)[];
+    public foldWidgets: (FoldWidget | null)[] | null;
     /**
      * May return "start" or "end".
      */
-    public getFoldWidget: (row: number) => string;
+    public getFoldWidget: (row: number) => FoldWidget;
     public getFoldWidgetRange: (row: number, forceMultiline?: boolean) => Range;
     public _changedWidgets: LineWidget[];
 
@@ -241,7 +246,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * This is really a Range with an added marker id.
      */
-    public $highlightLineMarker: Range;
+    public $highlightLineMarker: Range | null;
     /**
      * A number is a marker identifier, null indicates that no such marker exists. 
      */
@@ -495,6 +500,15 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
         else {
             throw new Error("document must be defined");
+        }
+    }
+
+    public selectionOrThrow(): Selection {
+        if (this.selection) {
+            return this.selection;
+        }
+        else {
+            throw new Error("selection does not exist");
         }
     }
 
@@ -939,14 +953,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * If this marker was in front, the `'changeFrontMarker'` event is emitted.
      * If the marker was in the back, the `'changeBackMarker'` event is emitted.
      *
-     * @method removeMarker
-     * @param {Number} markerId A number representing a marker
-     * @returns {void}
+     * markerId is a number representing a marker.
      */
     public removeMarker(markerId: number): void {
         const marker: Marker = this.$frontMarkers[markerId] || this.$backMarkers[markerId];
-        if (!marker)
+        if (!marker) {
             return;
+        }
 
         const markers: { [id: number]: Marker } = marker.inFront ? this.$frontMarkers : this.$backMarkers;
         if (marker) {
@@ -2048,14 +2061,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                             foldLine.shiftRow(len);
                             foldLine.addRemoveChars(lastRow, 0, end.column - start.column);
                         }
-                    } else
+                    }
+                    else {
                         // Infront of the foldLine but same row. Need to shift column.
                         if (cmp === -1) {
                             foldLine.addRemoveChars(firstRow, 0, end.column - start.column);
                             foldLine.shiftRow(len);
                         }
+                    }
                     // Nothing to do if the insert is after the foldLine.
-                    idx = foldLines.indexOf(foldLine) + 1;
+                    if (foldLine) {
+                        idx = foldLines.indexOf(foldLine) + 1;
+                    }
                 }
 
                 for (idx; idx < foldLines.length; idx++) {
@@ -2162,17 +2179,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             // The document size is the current size - the extra width for tabs
             // and multipleWidth characters.
             let len = displayed.length;
+            // FIXME: Why does replace require the callback to return a string?
             displayed.join("").
                 // Get all the TAB_SPACEs.
-                replace(/12/g, function () {
-                    len -= 1;
-                    return void 0;
-                }).
+                replace(/12/g, function () { len -= 1; return ''; }).
                 // Get all the CHAR_EXT/multipleWidth characters.
-                replace(/2/g, function () {
-                    len -= 1;
-                    return void 0;
-                });
+                replace(/2/g, function () { len -= 1; return ''; });
 
             lastDocSplit += len;
             splits.push(lastDocSplit);
@@ -2773,7 +2785,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         "markbegin": 1,
         "markbeginend": 1
     };
-    $foldStyle = "markbegin";
+    $foldStyle: FoldStyle = "markbegin";
 
     /**
      * Looks up a fold at a given row/column. Possible values for side:
@@ -3022,31 +3034,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return foldLine;
     }
 
-    private makeFoldLine(fold: Fold, startRow: number, endRow: number): FoldLine {
-        const foldLines = this.foldLines_;
-        for (let i = 0; i < foldLines.length; i++) {
-            const foldLine = foldLines[i];
-            if (endRow === foldLine.start.row) {
-                foldLine.addFold(fold);
-                return foldLine;
-            }
-            else if (startRow === foldLine.end.row) {
-                foldLine.addFold(fold);
-                if (!fold.sameRow) {
-                    // Check if we might have to merge two FoldLines.
-                    const foldLineNext = foldLines[i + 1];
-                    if (foldLineNext && foldLineNext.start.row === endRow) {
-                        // We need to merge!
-                        foldLine.merge(foldLineNext);
-                    }
-                }
-                return foldLine;
-            }
-            else if (endRow <= foldLine.start.row) {
-                return foldLine;
-            }
-        }
-        return this.$addFoldLine(new FoldLine(foldLines, [fold]));
+    addPlaceholderFold(placeholder: string, range: Range): Fold | undefined {
+        const fold = new Fold(range, placeholder);
+        fold.collapseChildren = range.collapseChildren;
+        return this.addFold(fold);
     }
 
     /**
@@ -3056,85 +3047,89 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *      The new created Fold object or an existing fold object in case the
      *      passed in range fits an existing fold exactly.
      */
-    addFold(placeholder: string | Fold, range?: Range): Fold | undefined {
-        let fold: Fold | undefined;
+    private addFold(fold: Fold): Fold | undefined {
+        const foldData = this.foldLines_;
+        let added = false;
 
-        if (placeholder instanceof Fold) {
-            fold = placeholder;
+        this.$clipRangeToDocument(fold.range);
+
+        const startRow = fold.start.row;
+        const startColumn = fold.start.column;
+        const endRow = fold.end.row;
+        const endColumn = fold.end.column;
+
+        // --- Some checking ---
+        if (!(startRow < endRow ||
+            startRow === endRow && startColumn <= endColumn - 2))
+            throw new Error("The range has to be at least 2 characters width");
+
+        const startFold = this.getFoldAt(startRow, startColumn, 1);
+        const endFold = this.getFoldAt(endRow, endColumn, -1);
+        if (startFold && endFold === startFold)
+            return startFold.addSubFold(fold);
+
+        if (startFold && !startFold.range.isStart(startRow, startColumn))
+            this.removeFold(startFold);
+
+        if (endFold && !endFold.range.isEnd(endRow, endColumn))
+            this.removeFold(endFold);
+
+        // Check if there are folds in the range we create the new fold for.
+        const folds = this.getFoldsInRange(fold.range);
+        if (folds.length > 0) {
+            // Remove the folds from fold data.
+            this.removeFolds(folds);
+            // Add the removed folds as subfolds on the new fold.
+            folds.forEach(function (subFold) {
+                fold.addSubFold(subFold);
+            });
         }
-        else if (typeof placeholder === 'string') {
-            if (range) {
-                fold = new Fold(range, placeholder);
-                fold.collapseChildren = range.collapseChildren;
-            }
-        }
-        else {
-            throw new Error("placeholder must be a string or a Fold.");
-        }
-        // FIXME: $clipRangeToDocument?
-        // fold.range = this.clipRange(fold.range);
-        if (fold) {
-            fold.range = this.$clipRangeToDocument(fold.range);
 
-            const startRow = fold.start.row;
-            const startColumn = fold.start.column;
-            const endRow = fold.end.row;
-            const endColumn = fold.end.column;
-
-            // --- Some checking ---
-            if (!(startRow < endRow ||
-                startRow === endRow && startColumn <= endColumn - 2))
-                throw new Error("The range has to be at least 2 characters width");
-
-            const startFold = this.getFoldAt(startRow, startColumn, 1);
-            const endFold = this.getFoldAt(endRow, endColumn, -1);
-            if (startFold && endFold === startFold)
-                return startFold.addSubFold(fold);
-
-            if (
-                (startFold && !startFold.range.isStart(startRow, startColumn))
-                || (endFold && !endFold.range.isEnd(endRow, endColumn))
-            ) {
-                if (startFold) {
-                    throw new Error("A fold can't intersect already existing fold" + fold.range + startFold.range);
-                }
-            }
-
-            // Check if there are folds in the range we create the new fold for.
-            const folds = this.getFoldsInRange(fold.range);
-            if (folds.length > 0) {
-                // Remove the folds from fold data.
-                this.removeFolds(folds);
-                // Add the removed folds as subfolds on the new fold.
-                folds.forEach(function (subFold) {
-                    if (fold) {
-                        fold.addSubFold(subFold);
+        let foldLine: FoldLine | undefined;
+        for (let i = 0; i < foldData.length; i++) {
+            foldLine = foldData[i];
+            if (endRow === foldLine.start.row) {
+                foldLine.addFold(fold);
+                added = true;
+                break;
+            } else if (startRow === foldLine.end.row) {
+                foldLine.addFold(fold);
+                added = true;
+                if (!fold.sameRow) {
+                    // Check if we might have to merge two FoldLines.
+                    const foldLineNext = foldData[i + 1];
+                    if (foldLineNext && foldLineNext.start.row === endRow) {
+                        // We need to merge!
+                        foldLine.merge(foldLineNext);
+                        break;
                     }
-                });
+                }
+                break;
+            } else if (endRow <= foldLine.start.row) {
+                break;
             }
-
-            const foldLine = this.makeFoldLine(fold, startRow, endRow);
-
-            if (this.$useWrapMode) {
-                this.$updateWrapData(foldLine.start.row, foldLine.start.row);
-            }
-            else {
-                this.$updateRowLengthCache(foldLine.start.row, foldLine.start.row);
-            }
-
-            // Notify that fold data has changed.
-            this.setModified(true);
-            const foldEvent: FoldEvent = { data: fold, action: "add" };
-            this.eventBus._emit("changeFold", foldEvent);
         }
+
+        if (!added) {
+            foldLine = this.$addFoldLine(new FoldLine(this.foldLines_, [fold]));
+        }
+
+        if (foldLine) {
+            if (this.$useWrapMode)
+                this.$updateWrapData(foldLine.start.row, foldLine.start.row);
+            else
+                this.$updateRowLengthCache(foldLine.start.row, foldLine.start.row);
+        }
+
+        // Notify that fold data has changed.
+        this.$modified = true;
+        this._signal("changeFold", { data: fold, action: "add" });
+
         return fold;
     }
 
-    /**
-     * @param modified
-     */
     setModified(modified: boolean) {
-        // Do nothing;
+        this.$modified = modified;
     }
 
     addFolds(folds: Fold[]) {
@@ -3181,10 +3176,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                             // The fold goes over more then one row. This means remvoing this fold
                             // will cause the fold line to get splitted up. newFoldLine is the second part
                             const newFoldLine = foldLine.split(fold.start.row, fold.start.column);
-                            folds = newFoldLine.folds;
-                            folds.shift();
-                            newFoldLine.start.row = folds[0].start.row;
-                            newFoldLine.start.column = folds[0].start.column;
+                            if (newFoldLine) {
+                                folds = newFoldLine.folds;
+                                folds.shift();
+                                newFoldLine.start.row = folds[0].start.row;
+                                newFoldLine.start.column = folds[0].start.column;
+                            }
                         }
 
             if (!this.$updating) {
@@ -3250,7 +3247,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      *
      */
-    unfold(location?: number | Position | Range, expandInner?: boolean): Fold[] {
+    unfold(location?: number | Position | Range, expandInner?: boolean): Fold[] | undefined {
         let range: Range;
         let folds: Fold[];
         // FIXME: Not handling undefined.
@@ -3329,7 +3326,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return textLine;
     }
 
-    getDisplayLine(row: number, endColumn: number | null, startRow: number, startColumn: number): string {
+    getDisplayLine(row: number, endColumn: number | undefined, startRow: number, startColumn: number): string {
         const foldLine = this.getFoldLine(row);
         if (!foldLine) {
             const line = this.getLine(row);
@@ -3344,8 +3341,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         const selection = this.selection;
         if (selection) {
             let range: Range = selection.getRange();
-            let fold: Fold | undefined;
-            let bracketPos: Position;
+            let fold: Fold | null | undefined;
+            let bracketPos: Position | null;
 
             if (range.isEmpty()) {
                 const cursor = range.start;
@@ -3395,61 +3392,66 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             let placeholder = "...";
             if (!range.isMultiLine()) {
                 placeholder = this.getTextRange(range);
-                if (placeholder.length < 4)
+                if (placeholder.length < 4) {
                     return;
+                }
                 placeholder = placeholder.trim().substring(0, 2) + "..";
             }
 
-            this.addFold(placeholder, range);
+            this.addPlaceholderFold(placeholder, range);
         }
     }
 
-    getCommentFoldRange(row: number, column: number, dir?: number): Range {
+    getCommentFoldRange(row: number, column: number, dir?: number): Range | undefined {
         const startTokens = new TokenIterator(this, row, column);
-        let token = startTokens.getCurrentToken();
+        let token: Token | null | undefined = startTokens.getCurrentToken();
         let type = token.type;
         if (token && /^comment|string/.test(type)) {
-            type = type.match(/comment|string/)[0];
-            if (type === "comment") {
-                type += "|doc-start";
-            }
-            const re = new RegExp(type);
-            if (dir !== 1) {
-                do {
-                    token = startTokens.stepBackward();
+            const matches = type.match(/comment|string/);
+            if (matches) {
+                type = matches[0];
+                if (type === "comment") {
+                    type += "|doc-start";
                 }
-                while (token && re.test(token.type));
-                startTokens.stepForward();
-            }
-            const startRow = startTokens.getCurrentTokenRow();
-            const startColumn = startTokens.getCurrentTokenColumn() + 2;
+                const re = new RegExp(type);
+                if (dir !== 1) {
+                    do {
+                        token = startTokens.stepBackward();
+                    }
+                    while (token && re.test(token.type));
+                    startTokens.stepForward();
+                }
+                const startRow = startTokens.getCurrentTokenRow();
+                const startColumn = startTokens.getCurrentTokenColumn() + 2;
 
-            const endTokens = new TokenIterator(this, row, column);
+                const endTokens = new TokenIterator(this, row, column);
 
-            if (dir !== -1) {
-                let lastRow = -1;
-                do {
-                    token = endTokens.stepForward();
-                    if (lastRow === -1) {
-                        const state = this.getState(endTokens.getCurrentTokenRow());
-                        if (!re.test(state)) {
-                            lastRow = endTokens.getCurrentTokenRow();
+                if (dir !== -1) {
+                    let lastRow = -1;
+                    do {
+                        token = endTokens.stepForward();
+                        if (lastRow === -1) {
+                            const state = this.getState(endTokens.getCurrentTokenRow());
+                            if (!re.test(state)) {
+                                lastRow = endTokens.getCurrentTokenRow();
+                            }
+                        }
+                        else if (endTokens.getCurrentTokenRow() > lastRow) {
+                            break;
                         }
                     }
-                    else if (endTokens.getCurrentTokenRow() > lastRow) {
-                        break;
-                    }
+                    while (token && re.test(token.type));
+                    token = endTokens.stepBackward();
                 }
-                while (token && re.test(token.type));
-                token = endTokens.stepBackward();
+                else {
+                    token = endTokens.getCurrentToken();
+                }
+                if (token) {
+                    const endRow = endTokens.getCurrentTokenRow();
+                    const endColumn = endTokens.getCurrentTokenColumn() + token.value.length - 2;
+                    return new Range(startRow, startColumn, endRow, endColumn);
+                }
             }
-            else {
-                token = endTokens.getCurrentToken();
-            }
-            const endRow = endTokens.getCurrentTokenRow();
-            const endColumn = endTokens.getCurrentTokenColumn() + token.value.length - 2;
-
-            return new Range(startRow, startColumn, endRow, endColumn);
         }
         return void 0;
     }
@@ -3468,6 +3470,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         endRow = endRow || this.getLength();
         startRow = startRow || 0;
         for (let row = startRow; row < endRow; row++) {
+            // TODO: Check this out.
             if (foldWidgets[row] == null)
                 foldWidgets[row] = this.getFoldWidget(row);
             if (foldWidgets[row] !== "start")
@@ -3483,7 +3486,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 row = range.end.row;
                 try {
                     // addFold can change the range
-                    const fold = this.addFold("...", range);
+                    const fold = this.addPlaceholderFold("...", range);
                     if (fold)
                         fold.collapseChildren = depth;
                 } catch (e) {
@@ -3493,7 +3496,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
     }
 
-    setFoldStyle(style: string) {
+    setFoldStyle(style: FoldStyle) {
         if (!this.$foldStyles[style])
             throw new Error("invalid fold style: " + style + "[" + Object.keys(this.$foldStyles).join(", ") + "]");
 
@@ -3541,8 +3544,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         let i = row - 1;
-        let firstRange: Range;
-        let range: Range;
+        let firstRange: Range | undefined;
+        let range: Range | undefined;
         while (i >= 0) {
             let c = fw[i];
             if (c == null)
@@ -3558,13 +3561,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             i--;
         }
 
-        return {
-            range: i !== -1 && range,
-            firstRange: firstRange
-        };
+        if (i !== -1) {
+            return { range: range, firstRange: firstRange };
+        }
+        else {
+            return { range: void 0, firstRange: firstRange };
+        }
     }
 
-    onFoldWidgetClick(row: number, e: { domEvent: MouseEvent }) {
+    /**
+     * 
+     */
+    onFoldWidgetClick(row: number, e: EditorMouseEvent) {
         const domEvent = e.domEvent;
         const options = {
             children: domEvent.shiftKey,
@@ -3582,15 +3590,19 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
     }
 
-    private $toggleFoldWidget(row: number, options: { children?: boolean; all?: boolean; siblings?: boolean }): Range {
+    /**
+     * 
+     */
+    private $toggleFoldWidget(row: number, options: { children?: boolean; all?: boolean; siblings?: boolean }): Range | undefined {
+        // Dead code
         if (!this.getFoldWidget) {
             return void 0;
         }
 
-        const type: string = this.getFoldWidget(row);
+        const type = this.getFoldWidget(row);
+        const line = this.getLine(row);
         const dir = (type === "end") ? -1 : 1;
-        const line: string = this.getLine(row);
-        const fold: Fold = this.getFoldAt(row, dir === -1 ? 0 : line.length, dir);
+        const fold = this.getFoldAt(row, dir === -1 ? 0 : line.length, dir);
 
         if (fold) {
             if (options.children || options.all) {
@@ -3612,8 +3624,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             }
         }
 
-        let startRow: number;
-        let endRow: number;
+        let startRow: number | undefined;
+        let endRow: number | undefined;
+
         if (options.siblings) {
             const data = this.getParentFoldRangeData(row);
             if (data.range) {
@@ -3631,7 +3644,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 // This is a bit ugly, but it corresponds to some code elsewhere.
                 range.collapseChildren = 10000;
             }
-            this.addFold("...", range);
+            this.addPlaceholderFold("...", range);
         }
         return range;
     }
@@ -3640,7 +3653,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param toggleParent WARNING: unused
      */
     toggleFoldWidget(toggleParent?: boolean): void {
-        let row: number = this.selection.getCursor().row;
+        const selection = this.selectionOrThrow();
+        let row = selection.getCursor().row;
         row = this.getRowFoldStart(row);
         let range = this.$toggleFoldWidget(row, {});
 
@@ -3659,7 +3673,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 this.removeFold(fold);
             }
             else {
-                this.addFold("...", range);
+                this.addPlaceholderFold("...", range);
             }
         }
     }
@@ -3668,16 +3682,30 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         const firstRow = delta.start.row;
         const len = delta.end.row - firstRow;
 
-        if (len === 0) {
-            this.foldWidgets[firstRow] = null;
+        if (this.foldWidgets) {
+            if (len === 0) {
+                this.foldWidgets[firstRow] = null;
+            }
+            else if (delta.action === "remove") {
+                this.foldWidgets.splice(firstRow, len + 1, null);
+            }
+            else {
+                const args = Array<number>(len + 1);
+                args.unshift(firstRow, 1);
+                this.foldWidgets.splice.apply(this.foldWidgets, args);
+            }
         }
-        else if (delta.action === "remove") {
-            this.foldWidgets.splice(firstRow, len + 1, null);
-        }
-        else {
-            const args = Array<number>(len + 1);
-            args.unshift(firstRow, 1);
-            this.foldWidgets.splice.apply(this.foldWidgets, args);
+    }
+
+    /**
+     *
+     */
+    tokenizerUpdateFoldWidgets = (event: { data: FirstAndLast }, session: EditSession) => {
+        const rows = event.data;
+        if (rows.first !== rows.last) {
+            if (this.foldWidgets && this.foldWidgets.length > rows.first) {
+                this.foldWidgets.splice(rows.first, this.foldWidgets.length);
+            }
         }
     }
 

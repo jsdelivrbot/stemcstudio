@@ -8,6 +8,20 @@ import RangeBasic from './RangeBasic';
 import { isEmptyRange } from './RangeBasic';
 import Shareable from './base/Shareable';
 
+/**
+ * Copies a Position.
+ */
+function clonePos(pos: Position): Position {
+    return { row: pos.row, column: pos.column };
+}
+
+/**
+ * Constructs a Position from row and column.
+ */
+function pos(row: number, column: number): Position {
+    return { row: row, column: column };
+}
+
 const $split: (text: string) => string[] = (function () {
     function foo(text: string): string[] {
         return text.replace(/\r\n|\r/g, "\n").split("\n");
@@ -70,7 +84,7 @@ export default class Document implements Shareable {
     /**
      *
      */
-    private _eventBus: EventEmitterClass<any, Document>;
+    private _eventBus: EventEmitterClass<any, Document> | undefined;
 
     /**
      * Maintains a count of the number of references to this instance of Document.
@@ -137,17 +151,24 @@ export default class Document implements Shareable {
         return this._lines.join(this.getNewLineCharacter());
     }
 
+    private eventBusOrThrow() {
+        if (this._eventBus) {
+            return this._eventBus;
+        }
+        else {
+            throw new Error("Document is a zombie.");
+        }
+    }
+
     /** 
      * Determines the newline character that is present in the presented text
      * and caches the result in $autoNewLine.
+     * Emits 'changeNewLineMode'.
      */
     private $detectNewLine(text: string): void {
         const match = text.match(/^.*?(\r\n|\r|\n)/m);
         this._autoNewLine = match ? match[1] : "\n";
-        /**
-         * @event changeNewLineMode
-         */
-        this._eventBus._signal(CHANGE_NEW_LINE_MODE);
+        this.eventBusOrThrow()._signal(CHANGE_NEW_LINE_MODE);
     }
 
     /**
@@ -171,16 +192,14 @@ export default class Document implements Shareable {
      * Sets the new line mode.
      *
      * @param newLineMode The newline mode to use; can be either `windows`, `unix`, or `auto`.
+     * Emits 'changeNewLineMode'
      */
     setNewLineMode(newLineMode: string): void {
         if (this._newLineMode === newLineMode) {
             return;
         }
         this._newLineMode = newLineMode;
-        /**
-         * @event changeNewLineMode
-         */
-        this._eventBus._signal(CHANGE_NEW_LINE_MODE);
+        this.eventBusOrThrow()._signal(CHANGE_NEW_LINE_MODE);
     }
 
     /**
@@ -283,17 +302,10 @@ export default class Document implements Shareable {
      * This differs from the `insert` method in two ways:
      *   1. This does NOT handle newline characters (single-line text only).
      *   2. This is faster than the `insert` method for single-line text insertions.
-     * 
-     * @param {Object} position The position to insert at; it's an object that looks like `{ row: row, column: column}`
-     * @param {String} text A chunk of text
-     * @returns {Object} Returns an object containing the final row and column, like this:  
-     *     ```
-     *     {row: endRow, column: 0}
-     *     ```
      */
-    insertInLine(position: Position, text: string): Position {
+    insertInLine(position: Readonly<Position>, text: string): Position {
         const start: Position = this.clippedPos(position.row, position.column);
-        const end: Position = this.pos(position.row, position.column + text.length);
+        const end: Position = pos(position.row, position.column + text.length);
 
         this.applyDelta({
             start: start,
@@ -302,7 +314,7 @@ export default class Document implements Shareable {
             lines: [text]
         }, true);
 
-        return this.clonePos(end);
+        return clonePos(end);
     }
 
     /**
@@ -310,6 +322,7 @@ export default class Document implements Shareable {
      */
     clippedPos(row: number, column: number): Position {
         const length = this.getLength();
+        let rowTooBig = false;
         if (row === void 0) {
             row = length;
         }
@@ -318,92 +331,47 @@ export default class Document implements Shareable {
         }
         else if (row >= length) {
             row = length - 1;
-            column = void 0;
+            rowTooBig = true;
         }
         const line = this.getLine(row);
-        if (column === void 0) {
+        if (rowTooBig) {
             column = line.length;
         }
         column = Math.min(Math.max(column, 0), line.length);
         return { row: row, column: column };
     }
 
-    // FIXME: Why is this a method?
-    private clonePos(pos: Position): Position {
-        return { row: pos.row, column: pos.column };
-    }
-
-    private pos(row: number, column: number): Position {
-        return { row: row, column: column };
-    }
-
     /**
-     * @param callback
+     *
      */
     public addChangeListener(callback: (event: Delta, source: Document) => any): () => void {
-        return this._eventBus.on(CHANGE, callback, false);
+        return this.eventBusOrThrow().on(CHANGE, callback, false);
     }
 
     /**
-     * @method addChangeNewLineModeListener
-     * @param callback {(event: any, source: Document) => any}
-     * @return {void}
+     *
      */
     public addChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
-        this._eventBus.on(CHANGE_NEW_LINE_MODE, callback, false);
+        this.eventBusOrThrow().on(CHANGE_NEW_LINE_MODE, callback, false);
     }
 
     /**
-     * @method removeChangeListener
-     * @param callback {(event: Delta, source: Document) => any}
-     * @return {void}
+     *
      */
     public removeChangeListener(callback: (event: Delta, source: Document) => any): void {
-        this._eventBus.off(CHANGE, callback);
+        this.eventBusOrThrow().off(CHANGE, callback);
     }
 
     /**
-     * @method removeChangeNewLineModeListener
-     * @param callback {(event: any, source: Document) => any}
-     * @return {void}
+     *
      */
     public removeChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
-        this._eventBus.off(CHANGE_NEW_LINE_MODE, callback);
+        this.eventBusOrThrow().off(CHANGE_NEW_LINE_MODE, callback);
     }
-
-    /**
-     * Fires whenever the document changes.
-     *
-     * Several methods trigger different `"change"` events. Below is a list of each action type, followed by each property that's also available:
-     *
-     *  * `"insert"`
-     *    * `range`: the [[Range]] of the change within the document
-     *    * `lines`: the lines being added
-     *  * `"remove"`
-     *    * `range`: the [[Range]] of the change within the document
-     *    * `lines`: the lines being removed
-     *
-     * @event change
-     * @param {Object} e Contains at least one property called `"action"`. `"action"` indicates the action that triggered the change. Each action also has a set of additional properties.
-     *
-     */
 
     /**
      * Inserts the elements in `lines` into the document as full lines (does not merge with existing line), starting at the row index given by `row`.
      * This method also triggers the `"change"` event.
-     *
-     * @method insertFullLines
-     * @param row {number} The index of the row to insert at
-     * @param lines {string[]} An array of strings
-     * @returns {Position} Contains the final row and column, like this:  
-     *   ```
-     *   {row: endRow, column: 0}
-     *   ```  
-     *   If `lines` is empty, this function returns an object containing the current row, and column, like this:  
-     *   ``` 
-     *   {row: row, column: 0}
-     *   ```
-     *
      */
     insertFullLines(row: number, lines: string[]): Position {
         // Clip to document.
@@ -433,7 +401,7 @@ export default class Document implements Shareable {
      * Returns the end position of the inserted text.
      * This method also triggers the 'change' event.
      */
-    insertMergedLines(position: Position, lines: string[]): Position {
+    insertMergedLines(position: Readonly<Position>, lines: string[]): Position {
         const start: Position = this.clippedPos(position.row, position.column);
         const end: Position = {
             row: start.row + lines.length - 1,
@@ -447,7 +415,7 @@ export default class Document implements Shareable {
             lines: lines
         });
 
-        return this.clonePos(end);
+        return clonePos(end);
     }
 
     /**
@@ -458,7 +426,7 @@ export default class Document implements Shareable {
      * @return Returns the new `start` property of the range.
      * If `range` is empty, this function returns the unmodified value of `range.start`.
      */
-    remove(range: RangeBasic): Position {
+    remove(range: Readonly<RangeBasic>): Position {
         const start = this.clippedPos(range.start.row, range.start.column);
         const end = this.clippedPos(range.end.row, range.end.column);
         this.applyDelta({
@@ -467,7 +435,7 @@ export default class Document implements Shareable {
             action: "remove",
             lines: this.getLinesForRange({ start: start, end: end })
         });
-        return this.clonePos(start);
+        return clonePos(start);
     }
 
     /**
@@ -492,7 +460,7 @@ export default class Document implements Shareable {
             lines: this.getLinesForRange({ start: start, end: end })
         }, true);
 
-        return this.clonePos(start);
+        return clonePos(start);
     }
 
     /**
@@ -543,8 +511,8 @@ export default class Document implements Shareable {
     removeNewLine(row: number): void {
         if (row < this.getLength() - 1 && row >= 0) {
             this.applyDelta({
-                start: this.pos(row, this.getLine(row).length),
-                end: this.pos(row + 1, 0),
+                start: pos(row, this.getLine(row).length),
+                end: pos(row + 1, 0),
                 action: "remove",
                 lines: ["", ""]
             });
@@ -610,7 +578,7 @@ export default class Document implements Shareable {
             this.$splitAndapplyLargeDelta(delta, 20000);
 
         applyDelta(this._lines, delta, doNotValidate);
-        this._eventBus._signal(CHANGE, delta);
+        this.eventBusOrThrow()._signal(CHANGE, delta);
     }
 
     private $splitAndapplyLargeDelta(delta: Delta, MAX: number): void {
@@ -642,8 +610,8 @@ export default class Document implements Shareable {
             }
             chunk.push("");
             this.applyDelta({
-                start: this.pos(row + from, column),
-                end: this.pos(row + to, column = 0),
+                start: pos(row + from, column),
+                end: pos(row + to, column = 0),
                 action: delta.action,
                 lines: chunk
             }, true);
@@ -652,12 +620,12 @@ export default class Document implements Shareable {
 
     /**
      * Reverts `delta` from the document.
-     * @param {Object} delta A delta object (can include "insert" and "remove" actions)
+     * A delta object (can include "insert" and "remove" actions)
      */
-    revertDelta(delta: Delta) {
+    revertDelta(delta: Readonly<Delta>): void {
         this.applyDelta({
-            start: this.clonePos(delta.start),
-            end: this.clonePos(delta.end),
+            start: clonePos(delta.start),
+            end: clonePos(delta.end),
             action: (delta.action === "insert" ? "remove" : "insert"),
             lines: delta.lines.slice()
         });
@@ -709,7 +677,7 @@ export default class Document implements Shareable {
      * @param position The `{row, column}` to convert.
      * @param startRow The row from which to start the conversion. Defaults to zero.
      */
-    positionToIndex(position: Position, startRow = 0): number {
+    positionToIndex(position: Readonly<Position>, startRow = 0): number {
         /**
          * A local reference to improve performance in the loop.
          */

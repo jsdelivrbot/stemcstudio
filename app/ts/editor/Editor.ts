@@ -6,6 +6,7 @@ import DelayedCall from './lib/lang/DelayedCall';
 import Disposable from './base/Disposable';
 import { stringRepeat } from "./lib/lang";
 import { isIE, isMac, isWebKit, isMozilla } from "./lib/useragent";
+import EditorMouseEvent from './EditorMouseEvent';
 import GutterLayer from "./layer/GutterLayer";
 import GutterTooltip from './GutterTooltip';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
@@ -39,7 +40,7 @@ import CompletionManager from "./autocomplete/CompletionManager";
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
 import SnippetManager from './SnippetManager';
-import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, getButton, preventDefault, stopEvent, stopPropagation } from "./lib/event";
+import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, preventDefault, stopEvent } from "./lib/event";
 import TabstopManager from './TabstopManager';
 import EditorChangeSessionEvent from './events/EditorChangeSessionEvent';
 import SessionChangeEditorEvent from './events/SessionChangeEditorEvent';
@@ -53,7 +54,7 @@ import SelectionSingleSelectEvent from './events/SelectionSingleSelectEvent';
 const search = new Search();
 const DRAG_OFFSET = 0; // pixels
 
-function find(session: EditSession, needle: string | RegExp, dir: number): Range {
+function find(session: EditSession, needle: string | RegExp, dir: number): Range | null | undefined {
     search.$options.wrap = true;
     search.$options.needle = needle;
     search.$options.backwards = (dir === -1);
@@ -65,7 +66,7 @@ function find(session: EditSession, needle: string | RegExp, dir: number): Range
 /**
  * The `Editor` acts as a controller, mediating between the editSession and renderer.
  */
-export default class Editor implements Disposable, EventBus<any, Editor> {
+export class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      *
@@ -206,7 +207,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Creates a new `Editor` object.
      */
-    constructor(renderer: Renderer, session: EditSession) {
+    constructor(renderer: Renderer, session: EditSession | undefined) {
         this.eventBus = new EventEmitterClass<any, Editor>(this);
         this.curOp = null;
         this.prevOp = {};
@@ -424,6 +425,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     cancelMouseContextMenu(): void {
         this.$mouseHandler.cancelContextMenu();
+    }
+
+    selectionOrThrow(): Selection {
+        return this.sessionOrThrow().selectionOrThrow();
     }
 
     /**
@@ -1364,7 +1369,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
             const pos = this.getCursorPosition();
             const iterator = new TokenIterator(session, pos.row, pos.column);
-            let token = iterator.getCurrentToken();
+            let token: Token | null | undefined = iterator.getCurrentToken();
 
             if (!token || token.type.indexOf('tag-name') === -1) {
                 if (session.$tagHighlight) {
@@ -1378,41 +1383,44 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             let depth = 0;
             let prevToken = iterator.stepBackward();
 
-            if (prevToken.value === '<') {
-                // Find closing tag.
-                do {
-                    prevToken = token;
-                    token = iterator.stepForward();
+            if (prevToken) {
+                if (prevToken.value === '<') {
+                    // Find closing tag.
+                    do {
+                        prevToken = token;
+                        token = iterator.stepForward();
 
-                    if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
-                        if (prevToken.value === '<') {
-                            depth++;
+                        if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                            if (prevToken.value === '<') {
+                                depth++;
+                            }
+                            else if (prevToken.value === '</') {
+                                depth--;
+                            }
                         }
-                        else if (prevToken.value === '</') {
-                            depth--;
-                        }
-                    }
 
-                } while (token && depth >= 0);
-            }
-            else {
-                // Find opening tag.
-                do {
-                    token = prevToken;
-                    prevToken = iterator.stepBackward();
-
-                    if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
-                        if (prevToken.value === '<') {
-                            depth++;
+                    } while (token && depth >= 0);
+                }
+                else {
+                    // Find opening tag.
+                    do {
+                        token = prevToken;
+                        prevToken = iterator.stepBackward();
+                        if (prevToken) {
+                            if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                                if (prevToken.value === '<') {
+                                    depth++;
+                                }
+                                else if (prevToken.value === '</') {
+                                    depth--;
+                                }
+                            }
                         }
-                        else if (prevToken.value === '</') {
-                            depth--;
-                        }
-                    }
-                } while (prevToken && depth <= 0);
+                    } while (prevToken && depth <= 0);
 
-                // Select tag again.
-                iterator.stepForward();
+                    // Select tag again.
+                    iterator.stepForward();
+                }
             }
 
             if (!token) {
@@ -1527,6 +1535,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     private onTokenizerUpdate(event: { data: FirstAndLast }, session: EditSession) {
         const { first, last } = event.data;
+        this.sessionOrThrow().tokenizerUpdateFoldWidgets(event, session);
         this.renderer.updateLines(first, last);
     }
 
@@ -1581,19 +1590,24 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         const session = this.sessionOrThrow();
         const renderer = this.renderer;
 
-        let highlight: Position;
+        let highlight: Position | undefined;
         if (this.$highlightActiveLine) {
-            if ((this.$selectionStyle !== "line" || !this.selection.isMultiLine())) {
+            const selection = this.selectionOrThrow();
+            if ((this.$selectionStyle !== "line" || !selection.isMultiLine())) {
                 highlight = this.getCursorPosition();
             }
             if (renderer.maxLines && session.getLength() === 1 && !(renderer.minLines > 1)) {
                 // FIXME: This just makes life more difficult, with stupid casting.
-                highlight = <any>false;
+                // The tests that follow are all truthy or falsey, which gives the same
+                // result for null, undefined, and false.
+                // highlight = <any>false;
             }
         }
 
         if (session.$highlightLineMarker && !highlight) {
-            session.removeMarker(session.$highlightLineMarker.markerId);
+            if (typeof session.$highlightLineMarker.markerId === 'number') {
+                session.removeMarker(session.$highlightLineMarker.markerId);
+            }
             session.$highlightLineMarker = null;
         }
         else if (!session.$highlightLineMarker && highlight) {
@@ -1602,9 +1616,11 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             session.$highlightLineMarker = range;
         }
         else if (highlight) {
-            session.$highlightLineMarker.start.row = highlight.row;
-            session.$highlightLineMarker.end.row = highlight.row;
-            session.$highlightLineMarker.start.column = highlight.column;
+            if (session.$highlightLineMarker) {
+                session.$highlightLineMarker.start.row = highlight.row;
+                session.$highlightLineMarker.end.row = highlight.row;
+                session.$highlightLineMarker.start.column = highlight.column;
+            }
             session._signal("changeBackMarker");
         }
     }
@@ -1632,10 +1648,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         if (this.$highlightSelectedWord) {
             const re = this.$getSelectionHighLightRegexp();
-            this.session.highlight(re);
+            session.highlight(re);
         }
         else {
-            this.session.highlight(null);
+            session.highlight(null);
         }
 
         this.eventBus._signal("changeSelection");
@@ -1737,7 +1753,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Returns the string of text currently highlighted.
      */
     getSelectedText(): string {
-        return this.session.getTextRange(this.getSelectionRange());
+        const session = this.sessionOrThrow();
+        return session.getTextRange(this.getSelectionRange());
     }
 
     /**
@@ -1786,20 +1803,18 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Inserts `text` into wherever the cursor is pointing.
-     *
-     * @param text The new text to add.
-     * @param pasted
      */
     insert(text: string, pasted?: boolean): void {
 
         const session = this.sessionOrThrow();
-        const mode = session.getMode();
+        const doc = session.docOrThrow();
+        const mode = session.modeOrThrow();
         let cursor: Position = this.getCursorPosition();
-        let transform: TextAndSelection | null;
+        let transform: TextAndSelection | null | undefined;
 
         if (this.getBehavioursEnabled() && !pasted) {
             // Get a transform if the current mode wants one.
-            transform = mode && <TextAndSelection>mode.transformAction(session.getState(cursor.row), 'insertion', this, session, text);
+            transform = mode && <(TextAndSelection | undefined)>mode.transformAction(session.getState(cursor.row), 'insertion', this, session, text);
             if (transform) {
                 if (text !== transform.text) {
                     session.mergeUndoDeltas = false;
@@ -1829,7 +1844,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             const line = session.getLine(cursor.row);
             if (cursor.column > line.search(/\S|$/)) {
                 const d = line.substr(cursor.column).search(/\S|$/);
-                session.doc.removeInLine(cursor.row, cursor.column, cursor.column + d);
+                doc.removeInLine(cursor.row, cursor.column, cursor.column + d);
             }
         }
 
@@ -1843,20 +1858,24 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         if (transform && transform.selection) {
             if (transform.selection.length === 2) { // Transform relative to the current column
-                this.selection.setSelectionRange(
-                    new Range(cursor.row, start + transform.selection[0],
-                        cursor.row, start + transform.selection[1]));
+                if (this.selection) {
+                    this.selection.setSelectionRange(
+                        new Range(cursor.row, start + transform.selection[0],
+                            cursor.row, start + transform.selection[1]));
+                }
             }
             else { // Transform relative to the current row.
-                this.selection.setSelectionRange(
-                    new Range(cursor.row + transform.selection[0],
-                        transform.selection[1],
-                        cursor.row + transform.selection[2],
-                        transform.selection[3]));
+                if (this.selection) {
+                    this.selection.setSelectionRange(
+                        new Range(cursor.row + transform.selection[0],
+                            transform.selection[1],
+                            cursor.row + transform.selection[2],
+                            transform.selection[3]));
+                }
             }
         }
 
-        if (session.getDocument().isNewLine(text)) {
+        if (doc.isNewLine(text)) {
             const lineIndent = mode.getNextLineIndent(lineState, line.slice(0, cursor.column), session.getTabString());
             session.insert({ row: cursor.row + 1, column: 0 }, lineIndent);
         }
@@ -1948,21 +1967,24 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param overwrite Defines whether or not to set overwrites
      */
     setOverwrite(overwrite: boolean): void {
-        this.session.setOverwrite(overwrite);
+        const session = this.sessionOrThrow();
+        session.setOverwrite(overwrite);
     }
 
     /**
      * Returns `true` if overwrites are enabled; `false` otherwise.
      */
     getOverwrite(): boolean {
-        return this.session.getOverwrite();
+        const session = this.sessionOrThrow();
+        return session.getOverwrite();
     }
 
     /**
      * Sets the value of overwrite to the opposite of whatever it currently is.
      */
     toggleOverwrite(): void {
-        this.session.toggleOverwrite();
+        const session = this.sessionOrThrow();
+        session.toggleOverwrite();
     }
 
     /**
@@ -2160,19 +2182,23 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     setTabSize(tabSize: number): void {
-        this.session.setTabSize(tabSize);
+        const session = this.sessionOrThrow();
+        session.setTabSize(tabSize);
     }
 
     getTabSize(): number {
-        return this.session.getTabSize();
+        const session = this.sessionOrThrow();
+        return session.getTabSize();
     }
 
     setUseSoftTabs(useSoftTabs: boolean): void {
-        this.session.setUseSoftTabs(useSoftTabs);
+        const session = this.sessionOrThrow();
+        session.setUseSoftTabs(useSoftTabs);
     }
 
     getUseSoftTabs(): boolean {
-        return this.session.getUseSoftTabs();
+        const session = this.sessionOrThrow();
+        return session.getUseSoftTabs();
     }
 
     /**
@@ -2524,11 +2550,11 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Given the currently selected range, this function either comments all the lines, or uncomments all of them.
      */
-    toggleCommentLines(): boolean {
+    toggleCommentLines(): void {
         const session = this.sessionOrThrow();
         const state = session.getState(this.getCursorPosition().row);
         const rows = this.$getSelectedRows();
-        return session.modeOrThrow().toggleCommentLines(state, session, rows.first, rows.last);
+        session.modeOrThrow().toggleCommentLines(state, session, rows.first, rows.last);
     }
 
     /**
@@ -2916,7 +2942,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param animate If `true` animates scrolling
      * @param callback Function to be called when the animation has finished.
      */
-    scrollToLine(line: number, center: boolean, animate: boolean, callback?: () => any): void {
+    scrollToLine(line: number, center: boolean, animate?: boolean, callback?: () => any): void {
         this.renderer.scrollToLine(line, center, animate, callback);
     }
 
@@ -2934,6 +2960,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Gets the current position of the cursor.
+     * Throws an exception if the selection does not exist.
      */
     getCursorPosition(): Position {
         const selection = this.selectionOrThrow();
@@ -2946,15 +2973,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     getCursorPositionScreen(): Position {
         const cursor = this.getCursorPosition();
         return this.sessionOrThrow().documentToScreenPosition(cursor.row, cursor.column);
-    }
-
-    private selectionOrThrow(): Selection {
-        if (this.selection) {
-            return this.selection;
-        }
-        else {
-            throw new Error("selection must exist");
-        }
     }
 
     /**
@@ -2976,7 +2994,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     *
+     * Empties the selection without actually setting it to null or undefined.
      */
     clearSelection(): void {
         const selection = this.selectionOrThrow();
@@ -3008,12 +3026,14 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Moves the cursor's row and column to the next matching bracket or HTML tag.
+     * This is activated by Ctrl-P or Ctrl-Shift-P
+     * This may throw an exception if the tokens are not indexed.
      */
     jumpToMatching(select?: boolean): void {
         const session = this.sessionOrThrow();
         const cursor = this.getCursorPosition();
         const iterator = new TokenIterator(session, cursor.row, cursor.column);
-        let prevToken = iterator.getCurrentToken();
+        let prevToken: Token | null = iterator.getCurrentToken();
         let token: Token | null | undefined = prevToken;
 
         if (!token)
@@ -3026,6 +3046,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         let matchType: 'bracket' | 'tag' | undefined;
         let found = false;
         const depth = {};
+        // FIXME: The foloowing could evaluate to cursor.column or NaN if start is null or undefined.
+        if (typeof token.start !== 'number') {
+            throw new Error(`token.start is ${typeof token.start}`);
+        }
         let i = cursor.column - token.start;
         let bracketType: string;
         const brackets = {
@@ -3099,9 +3123,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             return;
         }
 
-        let range: Range | null;
+        let range: Range | null | undefined;
         let tag: string;
-        let pos: Position;
+        let pos: Position | undefined;
         if (matchType === 'bracket') {
             range = session.getBracketRange(cursor);
             if (!range) {
@@ -3171,13 +3195,19 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         pos = range && range.cursor || pos;
         if (pos) {
             if (select) {
-                if (range && range.isEqual(this.getSelectionRange()))
+                if (range && range.isEqual(this.getSelectionRange())) {
                     this.clearSelection();
-                else
-                    this.selection.selectTo(pos.row, pos.column);
+                }
+                else {
+                    if (this.selection) {
+                        this.selection.selectTo(pos.row, pos.column);
+                    }
+                }
             }
             else {
-                this.selection.moveTo(pos.row, pos.column);
+                if (this.selection) {
+                    this.selection.moveTo(pos.row, pos.column);
+                }
             }
         }
     }
@@ -3226,7 +3256,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param column The new column number
      */
     navigateTo(row: number, column: number): void {
-        this.selection.moveTo(row, column);
+        const selection = this.selectionOrThrow();
+        selection.moveTo(row, column);
     }
 
     /**
@@ -3236,12 +3267,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param times The number of times to change navigation.
      */
     navigateUp(times: number): void {
-        if (this.selection.isMultiLine() && !this.selection.isBackwards()) {
-            const selectionStart = this.selection.anchor.getPosition();
+        const selection = this.selectionOrThrow();
+        if (selection.isMultiLine() && !selection.isBackwards()) {
+            const selectionStart = selection.anchor.getPosition();
             return this.moveCursorToPosition(selectionStart);
         }
-        this.selection.clearSelection();
-        this.selection.moveCursorBy(-times || -1, 0);
+        selection.clearSelection();
+        selection.moveCursorBy(-times || -1, 0);
     }
 
     /**
@@ -3251,12 +3283,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param times The number of times to change navigation
      */
     navigateDown(times: number): void {
-        if (this.selection.isMultiLine() && this.selection.isBackwards()) {
-            const selectionEnd = this.selection.anchor.getPosition();
+        const selection = this.selectionOrThrow();
+        if (selection.isMultiLine() && selection.isBackwards()) {
+            const selectionEnd = selection.anchor.getPosition();
             return this.moveCursorToPosition(selectionEnd);
         }
-        this.selection.clearSelection();
-        this.selection.moveCursorBy(times || 1, 0);
+        selection.clearSelection();
+        selection.moveCursorBy(times || 1, 0);
     }
 
     /**
@@ -3266,14 +3299,15 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param times The number of times to change navigation
      */
     navigateLeft(times: number): void {
-        if (!this.selection.isEmpty()) {
+        const selection = this.selectionOrThrow();
+        if (!selection.isEmpty()) {
             const selectionStart = this.getSelectionRange().start;
             this.moveCursorToPosition(selectionStart);
         }
         else {
             times = times || 1;
             while (times--) {
-                this.selection.moveCursorLeft();
+                selection.moveCursorLeft();
             }
         }
         this.clearSelection();
@@ -3286,14 +3320,15 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param times The number of times to change navigation
      */
     navigateRight(times: number): void {
-        if (!this.selection.isEmpty()) {
+        const selection = this.selectionOrThrow();
+        if (!selection.isEmpty()) {
             const selectionEnd = this.getSelectionRange().end;
             this.moveCursorToPosition(selectionEnd);
         }
         else {
             times = times || 1;
             while (times--) {
-                this.selection.moveCursorRight();
+                selection.moveCursorRight();
             }
         }
         this.clearSelection();
@@ -3304,7 +3339,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this does de-select the current selection.
      */
     navigateLineStart(): void {
-        this.selection.moveCursorLineStart();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorLineStart();
         this.clearSelection();
     }
 
@@ -3313,7 +3349,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this does de-select the current selection.
      */
     navigateLineEnd(): void {
-        this.selection.moveCursorLineEnd();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorLineEnd();
         this.clearSelection();
     }
 
@@ -3322,7 +3359,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this does de-select the current selection.
      */
     navigateFileEnd(): void {
-        this.selection.moveCursorFileEnd();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorFileEnd();
         this.clearSelection();
     }
 
@@ -3331,7 +3369,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this also de-selects the current selection.
      */
     navigateFileStart(): void {
-        this.selection.moveCursorFileStart();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorFileStart();
         this.clearSelection();
     }
 
@@ -3340,7 +3379,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this does de-select the current selection.
      */
     navigateWordRight(): void {
-        this.selection.moveCursorWordRight();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorWordRight();
         this.clearSelection();
     }
 
@@ -3349,7 +3389,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Note that this does de-select the current selection.
      */
     navigateWordLeft(): void {
-        this.selection.moveCursorWordLeft();
+        const selection = this.selectionOrThrow();
+        selection.moveCursorWordLeft();
         this.clearSelection();
     }
 
@@ -3360,11 +3401,14 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param options The options to use.
      */
     replace(replacement: string, options?: SearchOptions): number {
+        const session = this.sessionOrThrow();
+        const selection = this.selectionOrThrow();
+
         if (options) {
             this.$search.set(options);
         }
 
-        const range = this.$search.find(this.session);
+        const range = this.$search.find(session);
         let replaced = 0;
         if (!range)
             return replaced;
@@ -3373,7 +3417,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             replaced = 1;
         }
         if (range !== null) {
-            this.selection.setSelectionRange(range);
+            selection.setSelectionRange(range);
             this.renderer.scrollSelectionIntoView(range.start, range.end);
         }
 
@@ -3387,38 +3431,48 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param options The options to use.
      */
     replaceAll(replacement: string, options?: SearchOptions): number {
+        const session = this.sessionOrThrow();
+        const selection = this.selectionOrThrow();
+
         if (options) {
             this.$search.set(options);
         }
 
-        const ranges = this.$search.findAll(this.session);
+        const ranges = this.$search.findAll(session);
         let replaced = 0;
         if (!ranges.length) {
             return replaced;
         }
 
         this.$blockScrolling += 1;
+        try {
+            const selectionRange = this.getSelectionRange();
+            selection.moveTo(0, 0);
 
-        const selection = this.getSelectionRange();
-        this.selection.moveTo(0, 0);
-
-        for (let i = ranges.length - 1; i >= 0; --i) {
-            if (this.$tryReplace(ranges[i], replacement)) {
-                replaced++;
+            for (let i = ranges.length - 1; i >= 0; --i) {
+                if (this.$tryReplace(ranges[i], replacement)) {
+                    replaced++;
+                }
             }
-        }
 
-        this.selection.setSelectionRange(selection);
-        this.$blockScrolling -= 1;
+            selection.setSelectionRange(selectionRange);
+        }
+        finally {
+            this.$blockScrolling -= 1;
+        }
 
         return replaced;
     }
 
-    private $tryReplace(range: Range, replacement: string): Range {
-        const input = this.session.getTextRange(range);
+    /**
+     * 
+     */
+    private $tryReplace(range: Range, replacement: string): Range | null {
+        const session = this.sessionOrThrow();
+        const input = session.getTextRange(range);
         replacement = this.$search.replace(input, replacement);
-        if (replacement !== null) {
-            range.end = this.session.replace(range, replacement);
+        if (typeof replacement === 'string') {
+            range.end = session.replace(range, replacement);
             return range;
         }
         else {
@@ -3442,36 +3496,44 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @returns The cumulative count of all found matches 
      */
     findAll(needle?: (string | RegExp), options: SearchOptions = {}, additive?: boolean): number {
-
+        const session = this.sessionOrThrow();
+        const selection = this.selectionOrThrow();
         options.needle = needle || options.needle;
-        let range: Range;
+        let range: Range | undefined;
         if (options.needle === void 0) {
-            range = this.selection.isEmpty()
-                ? this.selection.getWordRange()
-                : this.selection.getRange();
-            options.needle = this.session.getTextRange(range);
+            range = selection.isEmpty() ? selection.getWordRange() : selection.getRange();
+            options.needle = session.getTextRange(range);
         }
         this.$search.set(options);
 
-        const ranges = this.$search.findAll(this.session);
+        const ranges = this.$search.findAll(session);
         if (!ranges.length)
             return 0;
 
         this.$blockScrolling += 1;
-        const selection = this.multiSelect;
+        try {
+            const multiSelection = this.multiSelect;
 
-        if (!additive)
-            selection.toSingleRange(ranges[0]);
+            if (!additive) {
+                if (multiSelection) {
+                    multiSelection.toSingleRange(ranges[0]);
+                }
+            }
 
-        for (let i = ranges.length; i--;)
-            selection.addRange(ranges[i], true);
+            if (multiSelection) {
+                for (let i = ranges.length; i--;) {
+                    multiSelection.addRange(ranges[i], true);
+                }
+            }
 
-        // Keep existing selection as primary if possible.
-        if (range && selection.rangeList.rangeAtPoint(range.start)) {
-            selection.addRange(range, true);
+            // Keep existing selection as primary if possible.
+            if (range && multiSelection && multiSelection.rangeList.rangeAtPoint(range.start)) {
+                multiSelection.addRange(range, true);
+            }
         }
-
-        this.$blockScrolling -= 1;
+        finally {
+            this.$blockScrolling -= 1;
+        }
 
         return ranges.length;
     };
@@ -3484,7 +3546,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param options An object defining various search properties
      * @param animate If `true` animate scrolling
      */
-    find(needle?: (string | RegExp), options: SearchOptions = {}, animate?: boolean): Range | undefined {
+    find(needle?: (string | RegExp), options: SearchOptions = {}, animate?: boolean): Range | null | undefined {
+        const selection = this.selectionOrThrow();
         const session = this.sessionOrThrow();
         if (typeof needle === "string" || needle instanceof RegExp) {
             options.needle = needle;
@@ -3493,7 +3556,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             mixin(options, needle);
         }
 
-        let range = this.selection.getRange();
+        let range = selection.getRange();
         if (options.needle == null) {
             needle = session.getTextRange(range) || this.$search.$options.needle;
             if (!needle) {
@@ -3523,7 +3586,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         else {
             range.end = range.start;
         }
-        this.selection.setRange(range);
+        selection.setRange(range);
         return void 0;
     }
 
@@ -3685,64 +3748,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         cursorLayer.setCssClass("ace_slim-cursors", /slim/.test(style));
     }
 }
-/*
-defOptions(Editor.prototype, "editor", {
-    cursorStyle: {
-        set: function(val) {
-            const that: Editor = this;
-            that.$resetCursorStyle();
-        },
-        values: ["ace", "slim", "smooth", "wide"],
-        initialValue: "ace"
-    },
-    mergeUndoDeltas: {
-        values: [false, true, "always"],
-        initialValue: true
-    },
-    autoScrollEditorIntoView: {
-        set: function(enable: boolean) {
-            const that: Editor = this;
-            that.setAutoScrollEditorIntoView(enable);
-        }
-    },
 
-    hScrollBarAlwaysVisible: "renderer",
-    vScrollBarAlwaysVisible: "renderer",
-    animatedScroll: "renderer",
-    showInvisibles: "renderer",
-    showPrintMargin: "renderer",
-    printMarginColumn: "renderer",
-    printMargin: "renderer",
-    fadeFoldWidgets: "renderer",
-    showFoldWidgets: "renderer",
-    showLineNumbers: "renderer",
-    showGutter: "renderer",
-    displayIndentGuides: "renderer",
-    fontSize: "renderer",
-    fontFamily: "renderer",
-    maxLines: "renderer",
-    minLines: "renderer",
-    scrollPastEnd: "renderer",
-    fixedWidthGutter: "renderer",
-    theme: "renderer",
-
-    scrollSpeed: "$mouseHandler",
-    dragDelay: "$mouseHandler",
-    dragEnabled: "$mouseHandler",
-    focusTimout: "$mouseHandler",
-    tooltipFollowsMouse: "$mouseHandler",
-
-    firstLineNumber: "session",
-    overwrite: "session",
-    newLineMode: "session",
-    useWorker: "session",
-    useSoftTabs: "session",
-    tabSize: "session",
-    wrap: "session",
-    foldStyle: "session",
-    mode: "session"
-});
-*/
+export default Editor;
 
 class FoldHandler {
     constructor(editor: Editor) {
@@ -3802,7 +3809,7 @@ class FoldHandler {
                         session.removeFold(fold);
                     }
                     else {
-                        session.addFold("...", range);
+                        session.addPlaceholderFold("...", range);
                         editor.renderer.scrollCursorIntoView({ row: range.start.row, column: 0 });
                     }
                 }
@@ -4143,125 +4150,6 @@ defOptions(MouseHandler.prototype, "mouseHandler", {
 });
 */
 
-// FIXME: This should be exposed so that users can be strongly typed. 
-/**
- * Custom Ace mouse event
- */
-class EditorMouseEvent {
-    /**
-     * The original DOM mouse event.
-     */
-    public domEvent: MouseEvent;
-    private editor: Editor;
-
-    /**
-     *
-     */
-    public clientX: number;
-
-    /**
-     *
-     */
-    public clientY: number;
-
-    /**
-     * Cached text coordinates following getDocumentPosition()
-     */
-    private $pos: Position | null;
-    private $inSelection: boolean | null;
-    private propagationStopped = false;
-    private defaultPrevented = false;
-    public time: number;
-    // wheelY, wheelY and speed are for 'mousewheel' events.
-    public wheelX: number;
-    public wheelY: number;
-    public speed: number;
-
-    /**
-     * @param domEvent
-     * @param editor
-     */
-    constructor(domEvent: MouseEvent, editor: Editor) {
-        this.domEvent = domEvent;
-        this.editor = editor;
-
-        this.clientX = domEvent.clientX;
-        this.clientY = domEvent.clientY;
-
-        this.$pos = null;
-        this.$inSelection = null;
-    }
-
-    get toElement() {
-        return this.domEvent.toElement;
-    }
-
-    stopPropagation(): void {
-        stopPropagation(this.domEvent);
-        this.propagationStopped = true;
-    }
-
-    preventDefault() {
-        preventDefault(this.domEvent);
-        this.defaultPrevented = true;
-    }
-
-    stop() {
-        this.stopPropagation();
-        this.preventDefault();
-    }
-
-    /**
-     * Get the document position below the mouse cursor.
-     */
-    getDocumentPosition(): Position {
-        if (!this.$pos) {
-            this.$pos = this.editor.renderer.screenToTextCoordinates(this.clientX, this.clientY);
-        }
-        return this.$pos;
-    }
-
-    /**
-     * Determines whether the mouse cursor is inside of the text selection
-     */
-    inSelection(): boolean {
-        if (this.$inSelection !== null) {
-            return this.$inSelection;
-        }
-
-        const editor = this.editor;
-
-        const selectionRange = editor.getSelectionRange();
-        if (selectionRange.isEmpty()) {
-            this.$inSelection = false;
-        }
-        else {
-            const pos = this.getDocumentPosition();
-            this.$inSelection = selectionRange.contains(pos.row, pos.column);
-        }
-
-        return this.$inSelection;
-    }
-
-    /*
-     * Get the clicked mouse button
-     * 
-     * @returns 0 for left button, 1 for middle button, 2 for right button
-     */
-    getButton(): number {
-        return getButton(this.domEvent);
-    }
-
-    /*
-     * Determines whether the shift key was pressed when the event was emitted
-     */
-    getShiftKey(): boolean {
-        return this.domEvent.shiftKey;
-    }
-
-    getAccelKey = isMac ? () => { return this.domEvent.metaKey; } : () => { return this.domEvent.ctrlKey; };
-}
-
 function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
     return function mousedown(ev: EditorMouseEvent): void {
         const inSelection = ev.inSelection();
@@ -4361,15 +4249,16 @@ function makeDoubleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
 function makeTripleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
     return function (editorMouseEvent: EditorMouseEvent) {
         const pos = editorMouseEvent.getDocumentPosition();
+        const selection = editor.selectionOrThrow();
 
         mouseHandler.setState("selectByLines");
         const range = editor.getSelectionRange();
         if (range.isMultiLine() && range.contains(pos.row, pos.column)) {
-            mouseHandler.$clickSelection = editor.selection.getLineRange(range.start.row);
-            mouseHandler.$clickSelection.end = editor.selection.getLineRange(range.end.row).end;
+            mouseHandler.$clickSelection = selection.getLineRange(range.start.row);
+            mouseHandler.$clickSelection.end = selection.getLineRange(range.end.row).end;
         }
         else {
-            mouseHandler.$clickSelection = editor.selection.getLineRange(pos.row);
+            mouseHandler.$clickSelection = selection.getLineRange(pos.row);
         }
         mouseHandler.select();
     };
@@ -4383,11 +4272,14 @@ function makeQuadClickHandler(editor: Editor, mouseHandler: MouseHandler) {
     };
 }
 
-function makeExtendSelectionBy(editor: Editor, mouseHandler: MouseHandler, unitName: string) {
+function makeExtendSelectionBy(editor: Editor, mouseHandler: MouseHandler, unitName: 'getLineRange' | 'getWordRange') {
     return function () {
         let anchor: Position;
         let cursor = mouseHandler.textCoordinates();
-        const range: Range = editor.selection[unitName](cursor.row, cursor.column);
+        const selection = editor.selectionOrThrow();
+        const row = cursor.row;
+        const column = cursor.column;
+        const range: Range = unitName === 'getLineRange' ? selection.getLineRange(row, column !== 0) : selection.getWordRange(row, column);
 
         if (mouseHandler.$clickSelection) {
             const cmpStart = mouseHandler.$clickSelection.comparePoint(range.start);
@@ -4412,9 +4304,9 @@ function makeExtendSelectionBy(editor: Editor, mouseHandler: MouseHandler, unitN
                 cursor = orientedRange.cursor;
                 anchor = orientedRange.anchor;
             }
-            editor.selection.setSelectionAnchor(anchor.row, anchor.column);
+            selection.setSelectionAnchor(anchor.row, anchor.column);
         }
-        editor.selection.selectToPosition(cursor);
+        selection.selectToPosition(cursor);
 
         editor.renderer.scrollCursorIntoView();
     };
@@ -4462,7 +4354,7 @@ class GutterHandler {
             }
 
             const row = e.getDocumentPosition().row;
-            const selection = editor.getSession().getSelection();
+            const selection = editor.selectionOrThrow();
 
             if (e.getShiftKey()) {
                 selection.selectTo(row, 0);
@@ -4472,7 +4364,7 @@ class GutterHandler {
                     editor.selectAll();
                     return e.preventDefault();
                 }
-                mouseHandler.$clickSelection = editor.selection.getLineRange(row);
+                mouseHandler.$clickSelection = selection.getLineRange(row);
             }
             mouseHandler.setState("selectByLines");
             mouseHandler.captureMouse(e);
@@ -4483,52 +4375,54 @@ class GutterHandler {
         /**
          * The null value is used to indicate that there is no active timer scheduled.
          */
-        let tooltipTimeout: number | null;
-        let mouseEvent: EditorMouseEvent;
-        let tooltipAnnotation: string;
+        let tooltipTimeout: number | null | undefined;
+        let mouseEvent: EditorMouseEvent | null;
+        let tooltipAnnotation: string | null;
 
         function showTooltip() {
-            const row = mouseEvent.getDocumentPosition().row;
-            const annotation = gutter.$annotations[row];
-            if (!annotation) {
-                return hideTooltip(void 0, editor);
-            }
-
-            const session = editor.getSession();
-            const maxRow = session.getLength();
-            if (row === maxRow) {
-                const screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
-                const pos = mouseEvent.getDocumentPosition();
-                if (screenRow > session.documentToScreenRow(pos.row, pos.column)) {
+            if (mouseEvent) {
+                const session = editor.sessionOrThrow();
+                const row = mouseEvent.getDocumentPosition().row;
+                const annotation = gutter.$annotations[row];
+                if (!annotation) {
                     return hideTooltip(void 0, editor);
                 }
-            }
 
-            // TODO: Looks like the gutter annotation might also be a string?
-            // This cannot be the case.
-            // if (tooltipAnnotation === annotation) {
-            //     return;
-            // }
+                const maxRow = session.getLength();
+                if (row === maxRow) {
+                    const screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
+                    const pos = mouseEvent.getDocumentPosition();
+                    if (screenRow > session.documentToScreenRow(pos.row, pos.column)) {
+                        return hideTooltip(void 0, editor);
+                    }
+                }
 
-            // TODO: The GutterLayer annotations are subtly different from Annotation
-            // in that the text property is a string[] rather than string.
-            tooltipAnnotation = annotation.text.join("<br/>");
+                // TODO: Looks like the gutter annotation might also be a string?
+                // This cannot be the case.
+                // if (tooltipAnnotation === annotation) {
+                //     return;
+                // }
 
-            tooltip.setHtml(tooltipAnnotation);
+                // TODO: The GutterLayer annotations are subtly different from Annotation
+                // in that the text property is a string[] rather than string.
+                tooltipAnnotation = annotation.text.join("<br/>");
 
-            tooltip.show();
+                tooltip.setHtml(tooltipAnnotation);
 
-            editor.on("mousewheel", hideTooltip);
+                tooltip.show();
 
-            if (mouseHandler.$tooltipFollowsMouse) {
-                moveTooltip(mouseEvent);
-            }
-            else {
-                const gutterElement = gutter.$cells[editor.getSession().documentToScreenRow(row, 0)].element;
-                const rect = gutterElement.getBoundingClientRect();
-                const style = tooltip.getElement().style;
-                style.left = rect.right + "px";
-                style.top = rect.bottom + "px";
+                editor.on("mousewheel", hideTooltip);
+
+                if (mouseHandler.$tooltipFollowsMouse) {
+                    moveTooltip(mouseEvent);
+                }
+                else {
+                    const gutterElement = gutter.$cells[session.documentToScreenRow(row, 0)].element;
+                    const rect = gutterElement.getBoundingClientRect();
+                    const style = tooltip.getElement().style;
+                    style.left = rect.right + "px";
+                    style.top = rect.bottom + "px";
+                }
             }
         }
 

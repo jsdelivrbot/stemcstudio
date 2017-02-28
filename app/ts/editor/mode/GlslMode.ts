@@ -18,7 +18,7 @@ export default class GlslMode extends CppMode {
         this.foldingRules = new CstyleFoldMode();
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
 
         const worker = new WorkerClient(this.workerUrl);
 
@@ -43,7 +43,7 @@ export default class GlslMode extends CppMode {
         try {
             worker.init(this.scriptImports, moduleName, 'GlslWorker', function (err: any) {
                 if (!err) {
-                    worker.attachToDocument(session.getDocument());
+                    worker.attachToDocument(session.docOrThrow());
                     callback(void 0, worker);
                 }
                 else {

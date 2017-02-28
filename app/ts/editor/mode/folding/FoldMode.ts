@@ -1,5 +1,7 @@
 import Range from "../../Range";
 import EditSession from "../../EditSession";
+import FoldStyle from '../../FoldStyle';
+import FoldWidget from '../../FoldWidget';
 
 /**
  *
@@ -9,12 +11,12 @@ export default class FoldMode {
     /**
      *
      */
-    foldingStartMarker: RegExp = null;
+    foldingStartMarker: RegExp | null = null;
 
     /**
      *
      */
-    foldingStopMarker: RegExp = null;
+    foldingStopMarker: RegExp | null = null;
 
     /**
      *
@@ -30,9 +32,9 @@ export default class FoldMode {
      * @param foldStyle "markbeginend"
      * @param row
      */
-    getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
+    getFoldWidget(session: EditSession, foldStyle: FoldStyle, row: number): FoldWidget {
         const line = session.getLine(row);
-        if (this.foldingStartMarker.test(line)) {
+        if (this.foldingStartMarker && this.foldingStartMarker.test(line)) {
             return "start";
         }
         if (foldStyle === "markbeginend" && this.foldingStopMarker && this.foldingStopMarker.test(line)) {
@@ -42,21 +44,16 @@ export default class FoldMode {
     }
 
     /**
-     * @param session
-     * @param foldStyle
-     * @param row
+     *
      */
-    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | null | undefined {
         return null;
     }
 
     /**
-     * @method indentationBlock
-     * @param session
-     * @param row
-     * @param column
+     *
      */
-    indentationBlock(session: EditSession, row: number, column?: number): Range {
+    indentationBlock(session: EditSession, row: number, column?: number): Range | undefined {
         const re = /\S/;
         const line = session.getLine(row);
         const startLevel = line.search(re);
@@ -91,13 +88,9 @@ export default class FoldMode {
     }
 
     /**
-     * @param session
-     * @param bracket
-     * @param row
-     * @param column
-     * @param typeRe
+     *
      */
-    openingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range {
+    openingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range | undefined {
         const start = { row: row, column: column + 1 };
         const end = session.findClosingBracket(bracket, start, typeRe);
         if (!end) {
@@ -105,26 +98,25 @@ export default class FoldMode {
             return void 0;
         }
 
-        let fw: string = session.foldWidgets[end.row];
-        if (fw === null) {
-            fw = session.getFoldWidget(end.row);
-        }
+        if (session.foldWidgets) {
+            let fw = session.foldWidgets[end.row];
+            if (fw === null) {
+                fw = session.getFoldWidget(end.row);
+            }
 
-        if (fw === "start" && end.row > start.row) {
-            end.row--;
-            end.column = session.getLine(end.row).length;
+            if (fw === "start" && end.row > start.row) {
+                end.row--;
+                end.column = session.getLine(end.row).length;
+            }
+            return Range.fromPoints(start, end);
         }
-        return Range.fromPoints(start, end);
+        return void 0;
     }
 
     /**
-     * @param session
-     * @param bracket
-     * @param row
-     * @param column
-     * @param typeRe
+     *
      */
-    closingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range {
+    closingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range | undefined {
         const end = { row: row, column: column };
         const start = session.findOpeningBracket(bracket, end);
 
