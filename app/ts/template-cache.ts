@@ -422,7 +422,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "						</a>\n" +
     "					</li>\n" +
     "					<li uib-dropdown ng-if='htmlFileCount() > 1'>\n" +
-    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='bottom'>\n" +
+    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program Menu\" tooltip-placement='bottom'>\n" +
     "							<ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
@@ -483,19 +483,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "						</ul>\n" +
     "					</li>\n" +
     "					<li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()'>\n" +
-    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='bottom'>\n" +
+    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Cloud Menu\" tooltip-placement='bottom'>\n" +
     "							<ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "						<ul uib-dropdown-menu role=\"menu\">\n" +
     "							<li>\n" +
-    "								<a ng-click='clickDownload()' role='button'>Download</a>\n" +
+    "								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a ng-click='doUpload()' role='button'>Upload</a>\n" +
+    "								<a ng-click='doUpload()' role='button'>Upload to GitHub</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a ng-click='doPublish()' role='button'>Publish</a>\n" +
+    "								<a ng-click='doPublish()' role='button'>Publish to STEMC arXiv</a>\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</li>\n" +
@@ -526,7 +526,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "						</ul>\n" +
     "					</li>\n" +
     "					<li uib-dropdown>\n" +
-    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"More\" tooltip-placement='bottom'>\n" +
+    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"More Menu\" tooltip-placement='bottom'>\n" +
     "							<ng-md-icon icon='menu' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +

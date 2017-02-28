@@ -104,7 +104,7 @@ export default class GitHubLoginController {
             const githubURL = `${GITHUB_GET_LOGIN_OAUTH_AUTHORIZE}?client_id=${this.$scope.clientId()}&amp;scope=${scopes.join(',')}&amp;state=${pending}`;
 
             // We effectively reset the GitHub property.
-            const github: IGitHubItem = { oauth: { pending: pending } };
+            const github: Readonly<IGitHubItem> = { oauth: { pending: pending } };
             this.$window.localStorage.setItem(this.githubKey, JSON.stringify(github));
             // Begin the GET request to GitHub.
             // Changing the browser URL appears to take you away from the app,

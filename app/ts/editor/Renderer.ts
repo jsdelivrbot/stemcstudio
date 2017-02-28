@@ -1936,11 +1936,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     // a certain mode that editor is in.
 
     /**
-     * Adds a new class, `style`, to the editor.
-     * @param style A class name
+     * Adds a new class, `className`, to the editor container.
      */
-    setStyle(style: string, include?: boolean): void {
-        setCssClass(this.container, style, include !== false);
+    setStyle(className: string, include?: boolean): void {
+        setCssClass(this.container, className, include !== false);
     }
 
     /**

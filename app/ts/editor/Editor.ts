@@ -54,6 +54,8 @@ import SelectionSingleSelectEvent from './events/SelectionSingleSelectEvent';
 const search = new Search();
 const DRAG_OFFSET = 0; // pixels
 
+type CursorStyle = 'ace' | 'slim' | 'smooth' | 'wide';
+
 function find(session: EditSession, needle: string | RegExp, dir: number): Range | null | undefined {
     search.$options.wrap = true;
     search.$options.needle = needle;
@@ -122,8 +124,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     public inVirtualSelectionMode: boolean;
     public $blockSelectEnabled: boolean;
 
-    private $cursorStyle: string;
-    // FIXME:
+    /**
+     * 'ace', 'slim', 'smooth', or 'wide'
+     */
+    private $cursorStyle: CursorStyle;
+
     public $isFocused: boolean;
     /**
      * FIXME: Dead code?

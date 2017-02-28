@@ -22,27 +22,27 @@ export function createElement(tagName: string, namespaceURI?: string): Element {
         document.createElement(tagName);
 }
 
-export function hasCssClass(element: HTMLElement, name: string): boolean {
+export function hasCssClass(element: HTMLElement, className: string): boolean {
     const classes: string[] = element.className.split(/\s+/g);
-    return classes.indexOf(name) !== -1;
+    return classes.indexOf(className) !== -1;
 }
 
 /**
  * Add a CSS class to the list of classes on the given node
  */
-export function addCssClass(element: HTMLElement, name: string): void {
-    if (!hasCssClass(element, name)) {
-        element.className += " " + name;
+export function addCssClass(element: HTMLElement, className: string): void {
+    if (!hasCssClass(element, className)) {
+        element.className += " " + className;
     }
 }
 
 /**
  * Remove a CSS class from the list of classes on the given node
  */
-export function removeCssClass(element: HTMLElement, name: string): void {
+export function removeCssClass(element: HTMLElement, className: string): void {
     const classes: string[] = element.className.split(/\s+/g);
     while (true) {
-        const index = classes.indexOf(name);
+        const index = classes.indexOf(className);
         if (index === -1) {
             break;
         }
@@ -200,14 +200,16 @@ export function scrollbarWidth(document: Document): number {
 export function setInnerHtml(element: HTMLElement, innerHTML: string) {
     const clonedElement = <HTMLElement>element.cloneNode(false);
     clonedElement.innerHTML = innerHTML;
-    element.parentNode.replaceChild(clonedElement, element);
+    if (element.parentNode) {
+        element.parentNode.replaceChild(clonedElement, element);
+    }
     return clonedElement;
 }
 
 function makeGetInnerText(): (el: HTMLElement) => string {
     if ("textContent" in document.documentElement) {
         return function (el: HTMLElement) {
-            return el.textContent;
+            return <string>el.textContent;
         };
     }
     else {

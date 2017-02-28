@@ -39,79 +39,91 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
     /**
      * 
      */
-    handleGitHubLoginCallback(done: (err: Error | undefined, token?: string) => any) {
+    onLoginCallback(done: (err: Error | null, token?: string) => any) {
         const GATEKEEPER_DOMAIN = `${this.$location.protocol()}://${this.$location.host()}:${this.$location.port()}`;
         const ghItemStr = this.$window.localStorage.getItem(this.githubKey);
         if (typeof ghItemStr === 'string') {
-            const ghItem = <IGitHubItem>JSON.parse(ghItemStr);
+            const ghItem = <Readonly<IGitHubItem>>JSON.parse(ghItemStr,
+                /**
+                 * We don't actually need this right now.
+                 * Just illustrating the technique.
+                 */
+                function reviver(key, value) {
+                    // pending is a generated-per-request UUID that is used by GitHub OAuth to improve security. 
+                    return value;
+                }
+            );
             if (ghItem) {
+                // const responsePending = ghItem.oauth.pending;
+                // Remove the cached item used for detecting spoofing.
                 this.$window.localStorage.removeItem(this.githubKey);
                 const code = ghItem.oauth.code;
-                this.$http.get<{ token: string }>(`${GATEKEEPER_DOMAIN}/authenticate/${code}`)
+                this.$http.get<{ token?: string; error?: string }>(`${GATEKEEPER_DOMAIN}/authenticate/${code}`)
                     .then((promiseValue) => {
                         const data = promiseValue.data;
                         if (data) {
                             const token = data.token;
-                            this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
-                            this.github.getUser().then((response) => {
-                                const user = response.data;
-                                if (user) {
-                                    this.cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
+                            if (token) {
+                                this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
+                                this.github.getUser()
+                                    .then((response) => {
+                                        const user = response.data;
+                                        if (user) {
+                                            this.cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
+                                        }
+                                        done(null, token);
+                                    })
+                                    .catch((reason) => {
+                                        console.warn(`(then), data => ${JSON.stringify(data)}`);
+                                        // This happens when the user hits the browser back button.
+                                        // In this case, data => {"error":"bad_code"}.
+                                        done(new Error(`Unable to retrieve your user information.`));
+                                    });
+                            }
+                            else {
+                                // error has the value "bad_code" when the user clicks the back button.
+                                const error = data.error;
+                                if (error) {
+                                    switch (error) {
+                                        case 'bad_code': {
+                                            done(new Error("I guess we won't be logging into GitHub today!"));
+                                            break;
+                                        }
+                                        default: {
+                                            console.warn(`(then), promiseValue => ${JSON.stringify(promiseValue)}`);
+                                            done(new Error(`Something is rotten in Denmark - ${error}`));
+                                        }
+                                    }
                                 }
-                                done(void 0, token);
-                            }).catch((reason) => {
-                                done(new Error(`Unable to retrieve your user information: ${JSON.stringify(reason)}`));
-                            });
+                                else {
+                                    const msg = `(then), data => ${JSON.stringify(data)}`;
+                                    console.warn(msg);
+                                    done(new Error(msg));
+                                }
+                            }
                         }
                         else {
                             done(new Error("Unable to retrieve your authentication token."));
                         }
                     })
-                    .catch(() => {
+                    .catch((reason) => {
+                        console.warn(`(catch), reason => ${JSON.stringify(reason)}`);
                         done(new Error("Unable to retrieve your authentication token."));
                     });
             }
             else {
                 // Do nothing.
+                console.warn(`ghItem is ${typeof ghItem}`);
             }
         }
-    }
-
-    /**
-     * 
-     */
-    handleLoginCallback(done: (err: Error | undefined, token?: string) => any) {
-        const GATEKEEPER_DOMAIN = `${this.$location.protocol()}://${this.$location.host()}:${this.$location.port()}`;
-        const match = this.$window.location.href.match(/\?code=([a-z0-9]*)/);
-        if (match) {
-            this.$location.search({});
-            const code = match[1];
-            this.$http.get<{ token: string }>(`${GATEKEEPER_DOMAIN}/authenticate/${code}`)
-                .then((promiseValue) => {
-                    const data = promiseValue.data;
-                    if (data) {
-                        const token = data.token;
-                        this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
-                        this.github.getUser().then((response) => {
-                            const user = response.data;
-                            if (user) {
-                                this.cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
-                            }
-                            done(void 0, token);
-                        }).catch((reason) => {
-                            done(new Error(`Unable to retrieve your user information because ${JSON.stringify(reason)} .`), void 0);
-                        });
-                    }
-                    else {
-                        done(new Error("Unable to retrieve your authentication token."));
-                    }
-                })
-                .catch(() => {
-                    done(new Error("Unable to retrieve your authentication token."), void 0);
-                });
-        }
-        else if (this.$window.location.href.match(/\?error=access_denied/)) {
-            this.$location.search({});
+        else {
+            if (ghItemStr === null) {
+                // This is expected when we first load the application.
+            }
+            else {
+                const msg = `ghItemStr is ${typeof ghItemStr}, ${JSON.stringify(ghItemStr)}`;
+                console.warn(msg);
+            }
         }
     }
 
