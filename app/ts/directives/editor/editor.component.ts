@@ -21,6 +21,7 @@ import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import IndentStyle from '../../editor/workspace/IndentStyle';
 import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showFindReplace from '../../editor/ext/showFindReplace';
+import showGreekKeyboard from '../../editor/ext/showGreekKeyboard';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import TextChange from '../../editor/workspace/TextChange';
@@ -213,6 +214,13 @@ function factory(
                             scrollIntoView: 'animate',
                             readOnly: true
                         });
+                        editor.commands.addCommands([{
+                            name: "showGreekKeyboard",
+                            bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
+                            exec: function (editor: Editor, line: any) {
+                                showGreekKeyboard(editor);
+                            }
+                        }]);
                         editor.commands.addCommands([{
                             name: "showKeyboardShortcuts",
                             bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },

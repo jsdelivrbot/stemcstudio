@@ -7804,7 +7804,8 @@ article.ace_dts code {
   padding: 0;
 }
 #ace_settingsmenu,
-#kbshortcutmenu {
+#kbshortcutmenu,
+#greek-keyboard {
   background-color: #F7F7F7;
   color: black;
   box-shadow: -5px 4px 5px rgba(126, 126, 126, 0.55);
@@ -7819,7 +7820,8 @@ article.ace_dts code {
   cursor: default;
 }
 .ace_dark #ace_settingsmenu,
-.ace_dark #kbshortcutmenu {
+.ace_dark #kbshortcutmenu,
+.ace_dark #greek-keyboard {
   box-shadow: -20px 10px 25px rgba(126, 126, 126, 0.25);
   background-color: rgba(255, 255, 255, 0.6);
   color: black;
