@@ -33,8 +33,7 @@ export default class DoodleFile {
     }
 
     /**
-     * @method clone
-     * @return {DoodleFile}
+     *
      */
     clone(): DoodleFile {
         const copy = new DoodleFile();

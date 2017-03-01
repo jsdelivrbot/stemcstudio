@@ -4,6 +4,7 @@ import EditSession from '../EditSession';
 import LayerConfig from "./LayerConfig";
 import MarkerConfig from "./MarkerConfig";
 import Range from "../Range";
+import refChange from '../../utils/refChange';
 
 /**
  * The MarkerLayer is used for highlighting parts of the code.
@@ -20,6 +21,12 @@ export default class MarkerLayer extends AbstractLayer {
      */
     constructor(parent: HTMLDivElement) {
         super(parent, "ace_layer ace_marker-layer");
+        refChange(this.uuid, 'MarkerLayer', +1);
+    }
+
+    dispose(): void {
+        refChange(this.uuid, 'MarkerLayer', -1);
+        super.dispose();
     }
 
     public setPadding(padding: number) {
@@ -59,7 +66,9 @@ export default class MarkerLayer extends AbstractLayer {
                 const marker: Marker = this.markers[id];
 
                 if (!marker.range) {
-                    marker.update(html, this, this.session, config);
+                    if (marker.update) {
+                        marker.update(html, this, this.session, config);
+                    }
                     continue;
                 }
 

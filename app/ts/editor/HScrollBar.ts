@@ -1,47 +1,41 @@
-import { addListener } from "./lib/event";
+import { addListener, removeListener } from "./lib/event";
 import ScrollBar from './ScrollBar';
+import refChange from '../utils/refChange';
 import Renderer from "./Renderer";
-import ScrollBarEvent from './events/ScrollBarEvent';
+import toPixelString from './dom/toPixelString';
 
 /**
  * A horizontal scroll bar.
  */
 export default class HScrollBar extends ScrollBar {
 
-    private _scrollLeft = 0;
-    private _height: number;
-    /**
-     * Creates a new `HScrollBar`. `parent` is the owner of the scroll bar.
-     *
-     * @param parent A DOM element.
-     * @param renderer An editor renderer.
-     */
+    private scrollLeft_ = 0;
+    private height_: number;
+
     constructor(parent: HTMLElement, renderer: Renderer) {
         super(parent, '-h');
+        refChange(this.uuid, 'HScrollBar', +1);
 
         // in OSX lion the scrollbars appear to have no width. In this case resize the
         // element to show the scrollbar but still pretend that the scrollbar has a width
         // of 0px
         // in Firefox 6+ scrollbar is hidden if element has the same width as scrollbar
         // make element a little bit wider to retain scrollbar when page is zoomed 
-        this._height = renderer.$scrollbarWidth;
-        this.inner.style.height = this.element.style.height = (this._height || 15) + 5 + "px";
-        // FIXME: We need a lifecycle so that this can be removed.
-        addListener(this.element, "scroll", this.onScroll.bind(this));
+        this.height_ = renderer.$scrollbarWidth;
+        this.inner.style.height = this.element.style.height = toPixelString((this.height_ || 15) + 5);
+        addListener(this.element, "scroll", this.onScroll);
     }
 
-    /**
-     * Emitted when the scroll bar, well, scrolls.
-     */
-    onScroll(): void {
+    dispose(): void {
+        removeListener(this.element, "scroll", this.onScroll);
+        refChange(this.uuid, 'HScrollBar', -1);
+        super.dispose();
+    }
+
+    private onScroll = (): void => {
         if (!this.skipEvent) {
-            this._scrollLeft = this.element.scrollLeft;
-            /**
-             * @event scroll
-             * @param {ScrollBarEvent} Contains the scrollLeft value.
-             */
-            const event: ScrollBarEvent = { data: this._scrollLeft };
-            this.eventBus._emit("scroll", event);
+            this.scrollLeft_ = this.element.scrollLeft;
+            this.eventBus._emit("scroll", { data: this.scrollLeft_ });
         }
         this.skipEvent = false;
     }
@@ -50,38 +44,27 @@ export default class HScrollBar extends ScrollBar {
      * Returns the height of the scroll bar.
      */
     get height(): number {
-        return this.isVisible ? this._height : 0;
-    }
-
-    /**
-     * Sets the width of the scroll bar, in pixels.
-     * 
-     * @param width The new width
-     */
-    setWidth(width: number): void {
-        this.element.style.width = width + "px";
+        return this.isVisible ? this.height_ : 0;
     }
 
     /**
      * Sets the scroll width of the scroll bar, in pixels.
-     * 
-     * @param width The new scroll width
      */
-    setScrollWidth(width: number) {
-        this.inner.style.width = width + "px";
+    setScrollWidth(width: number): this {
+        this.inner.style.width = toPixelString(width);
+        return this;
     }
 
     /**
      * Sets the scroll left of the scroll bar.
-     *
-     * @param scrollLeft The new scroll left
      */
-    // on chrome 17+ for small zoom levels after calling this function
-    // this.element.scrollTop != scrollTop which makes page to scroll up.
-    setScrollLeft(scrollLeft: number) {
-        if (this._scrollLeft !== scrollLeft) {
+    setScrollLeft(scrollLeft: number): this {
+        // on chrome 17+ for small zoom levels after calling this function
+        // this.element.scrollTop != scrollTop which makes page to scroll up.
+        if (this.scrollLeft_ !== scrollLeft) {
             this.skipEvent = true;
-            this._scrollLeft = this.element.scrollLeft = scrollLeft;
+            this.scrollLeft_ = this.element.scrollLeft = scrollLeft;
         }
+        return this;
     }
 }

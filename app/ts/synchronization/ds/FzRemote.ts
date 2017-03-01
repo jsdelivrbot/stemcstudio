@@ -5,11 +5,11 @@ interface FzRemote {
     /**
      * The dehydrated shadow.
      */
-    s: FzShadow;
+    s: FzShadow | undefined;
     /**
      * The dehydrated backup.
      */
-    b: FzShadow;
+    b: FzShadow | undefined;
     /**
      * The edits by destination node identifier.
      */

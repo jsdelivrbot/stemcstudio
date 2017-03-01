@@ -5,6 +5,8 @@ import Disposable from '../base/Disposable';
 import EditSession from '../EditSession';
 import PixelPosition from '../PixelPosition';
 import Position from '../Position';
+import Interval from '../../utils/Interval';
+import refChange from '../../utils/refChange';
 
 let isIE8: boolean;
 
@@ -19,13 +21,13 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     public isBlinking = true;
     private blinkInterval = 1000;
     private smoothBlinking = false;
-    private intervalId: number;
+    private readonly blinker = new Interval();
     private timeoutId: number;
     private cursors: HTMLDivElement[] = [];
     private cursor: HTMLDivElement;
     private $padding = 0;
     private overwrite: boolean;
-    private $updateCursors: (doIt: boolean) => void;
+    private $updateCursors: (opacity: boolean) => void;
     public config: CursorConfig;
     public $pixelPos: PixelPosition;
 
@@ -34,6 +36,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_cursor-layer");
+        refChange(this.uuid, 'CursorLayer', +1);
 
         if (isIE8 === void 0) {
             isIE8 = !("opacity" in this.element.style);
@@ -41,28 +44,36 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
 
         this.cursor = this.addCursor();
         addCssClass(this.element, "ace_hidden-cursors");
-        this.$updateCursors = (isIE8 ? this.$updateVisibility : this.$updateOpacity).bind(this);
+        this.$updateCursors = isIE8 ? this.$updateVisibility : this.$updateOpacity;
     }
 
     /**
      *
      */
     public dispose(): void {
-        clearInterval(this.intervalId);
+        this.blinker.release();
         clearTimeout(this.timeoutId);
+        refChange(this.uuid, 'CursorLayer', -1);
+        super.dispose();
     }
 
-    private $updateVisibility(visible: boolean): void {
+    /**
+     * A handler, which explains the need for the fat arrow.
+     */
+    private $updateVisibility = (visible: boolean): void => {
         const cursors = this.cursors;
         for (let i = cursors.length; i--;) {
             cursors[i].style.visibility = visible ? "" : "hidden";
         }
     }
 
-    private $updateOpacity(opaque: boolean): void {
+    /**
+     * A handler, which explains the need for the fat arrow.
+     */
+    private $updateOpacity = (opacity: boolean): void => {
         const cursors = this.cursors;
         for (let i = cursors.length; i--;) {
-            cursors[i].style.opacity = opaque ? "" : "0";
+            cursors[i].style.opacity = opacity ? "" : "0";
         }
     }
 
@@ -108,9 +119,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
             setCssClass(this.element, "ace_smooth-blinking", smoothBlinking);
             this.$updateCursors(true);
             // TODO: Differs from ACE...
-            this.$updateCursors = (smoothBlinking
-                ? this.$updateOpacity
-                : this.$updateVisibility).bind(this);
+            this.$updateCursors = (smoothBlinking ? this.$updateOpacity : this.$updateVisibility).bind(this);
             this.restartTimer();
         }
     }
@@ -123,10 +132,10 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
         return cursor;
     }
 
-    private removeCursor(): HTMLDivElement {
+    private removeCursor(): HTMLDivElement | undefined {
         if (this.cursors.length > 1) {
-            const cursor = this.cursors.pop();
-            cursor.parentNode.removeChild(cursor);
+            const cursor = <HTMLDivElement>this.cursors.pop();
+            (<Node>cursor.parentNode).removeChild(cursor);
             return cursor;
         }
         return void 0;
@@ -155,7 +164,9 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      */
     public restartTimer(): void {
         const update = this.$updateCursors;
-        clearInterval(this.intervalId);
+
+        this.blinker.off();
+
         clearTimeout(this.timeoutId);
         if (this.smoothBlinking) {
             removeCssClass(this.element, "ace_smooth-blinking");
@@ -178,10 +189,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
             }, 0.6 * this.blinkInterval);
         };
 
-        this.intervalId = window.setInterval(function () {
-            update(true);
-            blink();
-        }, this.blinkInterval);
+        this.blinker.on(function () { update(true); blink(); }, this.blinkInterval);
 
         blink();
     }
@@ -193,7 +201,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      * The number of columns is multiplied by the character width.
      * The padding is added to the left property only.
      */
-    public getPixelPosition(position?: Position, onScreen?: boolean): PixelPosition {
+    public getPixelPosition(position?: Position | null, onScreen?: boolean): PixelPosition {
 
         if (!this.config) {
             // This happens because of the gotoLine(0, 0) call that is made
@@ -245,7 +253,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
         this.config = config;
 
         // Selection markers is a concept from multi selection.
-        let selections: { cursor: Position }[] = this.session.$selectionMarkers;
+        let selections: { cursor: Position | null }[] = this.session.$selectionMarkers;
 
         let cursorIndex = 0;
 
@@ -253,7 +261,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
             selections = [{ cursor: null }];
         }
 
-        let pixelPos: PixelPosition;
+        let pixelPos: PixelPosition = { left: 0, top: 0 };
 
         const n = selections.length;
         for (let i = 0; i < n; i++) {

@@ -27,6 +27,7 @@ import Position from './Position';
 import ScreenCoordinates from './ScreenCoordinates';
 import ScrollBarEvent from './events/ScrollBarEvent';
 import EditorRenderer from './EditorRenderer';
+import refChange from '../utils/refChange';
 
 // FIXME: The editor.css is crucial to the operation of the renderer.
 // import editorCss = require("./requirejs/text!./css/editor.css");
@@ -90,6 +91,11 @@ function calcSteps(fromValue: number, toValue: number): number[] {
  * The class that is responsible for drawing everything you see on the screen!
  */
 export default class Renderer implements Disposable, EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
+    /**
+     * 
+     */
+    private readonly uuid = `${Math.random()}`;
+
     public textarea: HTMLTextAreaElement;
     public container: HTMLElement;
     public scrollLeft = 0;
@@ -166,11 +172,19 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     public $gutter: HTMLDivElement;
     public scroller: HTMLDivElement;
     public content: HTMLDivElement;
+
+    /**
+     * This is the element that is created by the text layer.
+     * I don't think it is being used, and it's private.
+     */
     private canvas: HTMLDivElement;
+
     private $horizScroll: boolean;
     private $vScroll: boolean;
     public scrollBarH: HScrollBar;
     public scrollBarV: VScrollBar;
+    private scrollBarHscrollUnhook: () => void;
+    private scrollBarVscrollUnhook: () => void;
 
     /**
      *
@@ -248,10 +262,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Constructs a new `Renderer` within the `container` specified.
-     *
-     * @param container The root element of the editor.
      */
     constructor(container: HTMLElement) {
+        refChange('start');
+        refChange(this.uuid, 'Renderer', +1);
         this.eventBus = new EventEmitterClass<any, Renderer>(this);
 
         this.container = container || <HTMLDivElement>createElement("div");
@@ -291,13 +305,14 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.$vScroll = false;
 
         this.scrollBarV = new VScrollBar(this.container, this);
-        this.scrollBarH = new HScrollBar(this.container, this);
-        this.scrollBarV.on("scroll", (event: ScrollBarEvent, scrollBar: VScrollBar) => {
+        this.scrollBarVscrollUnhook = this.scrollBarV.on("scroll", (event: ScrollBarEvent, scrollBar: VScrollBar) => {
             if (!this.$scrollAnimation && this.session) {
                 this.session.setScrollTop(event.data - this.scrollMargin.top);
             }
         });
-        this.scrollBarH.on("scroll", (event: ScrollBarEvent, scrollBar: HScrollBar) => {
+
+        this.scrollBarH = new HScrollBar(this.container, this);
+        this.scrollBarHscrollUnhook = this.scrollBarH.on("scroll", (event: ScrollBarEvent, scrollBar: HScrollBar) => {
             if (!this.$scrollAnimation && this.session) {
                 this.session.setScrollLeft(event.data - this.scrollMargin.left);
             }
@@ -315,9 +330,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.removeChangeCharacterSizeHandler = this.textLayer.on(changeCharacterSize, (event, text: TextLayer) => {
             this.updateCharacterSize();
             this.onResize(true, this.gutterWidth, this.$size.width, this.$size.height);
-            /**
-             * @event changeCharacterSize
-             */
             this.eventBus._signal(changeCharacterSize, event);
         });
 
@@ -347,19 +359,39 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             this.removeChangeCharacterSizeHandler = void 0;
         }
 
+        // TODO: Do we need to have the textLayer release the fontMetrics?
+
         if (this.fontMetrics) {
             this.fontMetrics.release();
             this.fontMetrics = void 0;
         }
 
-        this.textLayer.dispose();
+        this.scrollBarHscrollUnhook();
+        this.scrollBarH.dispose();
+
+        this.scrollBarVscrollUnhook();
+        this.scrollBarV.dispose();
+
         this.cursorLayer.dispose();
+
+        this.$markerFront.dispose();
+
+        this.textLayer.dispose();
+
+        this.$markerBack.dispose();
+
+        this.$gutterLayer.dispose();
+
+        this.scroller.removeChild(this.content);
+        this.container.removeChild(this.scroller);
+        this.container.removeChild(this.$gutter);
+
+        refChange(this.uuid, 'Renderer', -1);
+        refChange('stop');
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @returns A function that may be used to remove the callback.
+     * Returns a function that may be used to remove the callback.
      */
     on(eventName: string, callback: (event: any, source: Renderer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
@@ -368,10 +400,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         };
     }
 
-    /**
-     * @param eventName
-     * @param callback
-     */
     off(eventName: string, callback: (event: any, source: Renderer) => any): void {
         this.eventBus.off(eventName, callback);
     }
@@ -1107,23 +1135,27 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             scrollHeight -= (scrollerHeight - this.lineHeight) * this.$scrollPastEnd;
             if (this.scrollTop > scrollHeight - scrollerHeight) {
                 scrollHeight = this.scrollTop + scrollerHeight;
+                // FIXME: This is hacky.
+                // The idea seems to be to force the scrollbar to change.
                 this.scrollBarV.scrollTop = null;
             }
         }
-        this.scrollBarV.setScrollHeight(scrollHeight + this.scrollMargin.v);
-        this.scrollBarV.setScrollTop(this.scrollTop + this.scrollMargin.top);
+        this.scrollBarV
+            .setScrollHeight(scrollHeight + this.scrollMargin.v)
+            .setScrollTop(this.scrollTop + this.scrollMargin.top);
     }
 
-    private $updateScrollBarH() {
-        this.scrollBarH.setScrollWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h);
-        this.scrollBarH.setScrollLeft(this.scrollLeft + this.scrollMargin.left);
+    private $updateScrollBarH(): void {
+        this.scrollBarH
+            .setScrollWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h)
+            .setScrollLeft(this.scrollLeft + this.scrollMargin.left);
     }
 
-    freeze() {
+    freeze(): void {
         this.$frozen = true;
     }
 
-    unfreeze() {
+    unfreeze(): void {
         this.$frozen = false;
     }
 
@@ -1175,8 +1207,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             config = this.layerConfig;
             // update scrollbar first to not lose scroll position when gutter calls resize
             this.$updateScrollBarV();
-            if (changes & CHANGE_H_SCROLL)
+            if (changes & CHANGE_H_SCROLL) {
                 this.$updateScrollBarH();
+            }
             this.$gutterLayer.element.style.marginTop = (-config.offset) + "px";
             this.content.style.marginTop = (-config.offset) + "px";
             this.content.style.width = config.width + 2 * this.$padding + "px";

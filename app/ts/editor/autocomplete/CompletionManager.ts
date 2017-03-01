@@ -6,7 +6,6 @@ import CompletionList from '../CompletionList';
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';
 import Editor from '../Editor';
-import EditSession from '../EditSession';
 import getCompletionPrefix from './getCompletionPrefix';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
 import ListViewPopup from './ListViewPopup';
@@ -55,8 +54,8 @@ export default class CompletionManager {
     public activated: boolean;
     private changeTimer: DelayedCall;
     private gatherCompletionsId = 0;
-    private base: Anchor;
-    private completions: CompletionList;
+    private base: Anchor | null;
+    private completions: CompletionList | null;
     private commands: { [name: string]: EditorAction };
 
     /**
@@ -220,12 +219,12 @@ export default class CompletionManager {
         }
         else {
             // If we have filterText, remove that from the editor before performing the full insert.
-            if (this.completions.filterText) {
-                const ranges: Range[] = this.editor.selection.getAllRanges();
+            if (this.completions && this.completions.filterText) {
+                const ranges: Range[] = this.editor.selectionOrThrow().getAllRanges();
                 for (let i = 0, iLength = ranges.length; i < iLength; i++) {
                     const range = ranges[i];
                     range.start.column -= this.completions.filterText.length;
-                    this.editor.getSession().remove(range);
+                    this.editor.sessionOrThrow().remove(range);
                 }
             }
 
@@ -276,9 +275,9 @@ export default class CompletionManager {
      * 
      */
     private gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
-        const session: EditSession = editor.getSession();
+        const session = editor.sessionOrThrow();
 
-        this.base = new Anchor(session.doc, pos.row, pos.column - prefix.length);
+        this.base = new Anchor(session.docOrThrow(), pos.row, pos.column - prefix.length);
         this.base.insertRight = true;
 
         let matches: Completion[] = [];
@@ -317,7 +316,7 @@ export default class CompletionManager {
         // const line = session.getLine(pos.row);
         if (keepPopupPosition && this.base && this.completions) {
             const range = new Range(this.base.row, this.base.column, pos.row, pos.column);
-            const prefix = editor.getSession().getTextRange(range);
+            const prefix = editor.sessionOrThrow().getTextRange(range);
             if (prefix === this.completions.filterText) {
                 return;
             }
@@ -406,7 +405,12 @@ export default class CompletionManager {
             this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
         }
 
-        this.popup.setData(this.completions.filtered.sort(completionCompareFn));
+        if (this.completions) {
+            this.popup.setData(this.completions.filtered.sort(completionCompareFn));
+        }
+        else {
+            this.popup.setData([]);
+        }
 
         // We've already done this when we attached to the editor.
         // editor.keyBinding.addKeyboardHandler(this.keyboardHandler);

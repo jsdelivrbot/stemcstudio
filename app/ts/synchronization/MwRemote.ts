@@ -15,12 +15,12 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * 
      */
-    shadow: MwShadow;
+    shadow: MwShadow | undefined;
 
     /**
      * Backup Shadow may be maintained by a Server for guaranteed delivery.
      */
-    backup: MwShadow;
+    backup: MwShadow | undefined;
 
     /**
      * The edits by destination node identifier.
@@ -119,7 +119,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             for (let j = 0; j < changes.length; j++) {
                 const change = changes[j];
                 const action = change.a;
-                if (action && action.n <= version) {
+                if (action && <number>action.n <= version) {
                     changes.splice(j, 1);
                     j--;
                 }
@@ -149,7 +149,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * @param remoteVersion This comes from the Delta change.
      */
     patchDelta(nodeId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number) {
-        const shadow = this.shadow;
+        const shadow = <MwShadow>this.shadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
         // Handle the case where one party initiates with a Raw message and other party acknowledges with a Delta.
@@ -182,7 +182,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         }
         else {
             // Expand the delta into a diff using the shadow text.
-            let diffs: Diff[];
+            let diffs: Diff[] | null;
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
                 shadow.m++;
@@ -235,17 +235,22 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * Removes the shadow and backup for the specified file.
      * @returns The nullify change for incorporation into the edits.
      */
-    removeFile(): MwChange {
-        const change: MwChange = {
-            m: this.shadow.m,
-            a: {
-                c: 'N',
-                n: void 0,
-                x: void 0
-            }
-        };
-        this.shadow = void 0;
-        this.backup = void 0;
-        return change;
+    removeFile(): MwChange | undefined {
+        if (this.shadow) {
+            const change: MwChange = {
+                m: this.shadow.m,
+                a: {
+                    c: 'N',
+                    n: void 0,
+                    x: void 0
+                }
+            };
+            this.shadow = void 0;
+            this.backup = void 0;
+            return change;
+        }
+        else {
+            return void 0;
+        }
     }
 }

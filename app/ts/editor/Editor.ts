@@ -37,6 +37,7 @@ import { COMMAND_NAME_INSERT_STRING } from './editor_protocol';
 import Renderer from './Renderer';
 import Completer from "./autocomplete/Completer";
 import CompletionManager from "./autocomplete/CompletionManager";
+import refChange from '../utils/refChange';
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
 import SnippetManager from './SnippetManager';
@@ -208,11 +209,17 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      */
     public readonly snippetManager = new SnippetManager();
     public tabstopManager: TabstopManager | null;
+    /**
+     * 
+     */
+    private readonly uuid = `${Math.random()}`;
 
     /**
      * Creates a new `Editor` object.
      */
     constructor(renderer: Renderer, session: EditSession | undefined) {
+        refChange('start');
+        refChange(this.uuid, 'Editor', +1);
         this.eventBus = new EventEmitterClass<any, Editor>(this);
         this.curOp = null;
         this.prevOp = {};
@@ -418,10 +425,8 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         if (this.session) {
             this.setSession(void 0);
         }
-        /**
-         * @event destroy
-         * @param this {Editor}
-         */
+        refChange(this.uuid, 'Editor', -1);
+        refChange('stop');
         this._signal("destroy", this);
     }
 

@@ -3,6 +3,7 @@ import { stringRepeat } from "../lib/lang";
 import { isIE } from "../lib/useragent";
 import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
+import refChange from '../../utils/refChange';
 import Shareable from '../base/Shareable';
 
 let CHAR_COUNT = 0;
@@ -24,6 +25,10 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     private $pollSizeChangesTimer: number;
     private eventBus: EventEmitterClass<any, FontMetrics>;
     private refCount = 1;
+    /**
+     * 
+     */
+    protected readonly uuid = `${Math.random()}`;
 
     /**
      * @param parent
@@ -31,6 +36,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
      */
     // FIXME: The interval should be being used to configure the polling interval (normally 500ms)
     constructor(parent: HTMLElement, pollingInterval: number) {
+        refChange(this.uuid, 'FontMetrics', +1);
         this.eventBus = new EventEmitterClass<any, FontMetrics>(this);
 
         this.el = <HTMLDivElement>createElement("div");
@@ -63,11 +69,13 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     }
 
     addRef(): number {
+        refChange(this.uuid, 'FontMetrics', +1);
         this.refCount++;
         return this.refCount;
     }
 
     release(): number {
+        refChange(this.uuid, 'FontMetrics', -1);
         this.refCount--;
         if (this.refCount === 0) {
             this.destructor();
@@ -76,17 +84,14 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @returns A function that will remove the event handler.
+     * Returns a function that will remove the event handler.
      */
     on(eventName: string, callback: (event: any, source: FontMetrics) => any): () => void {
         return this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @param eventName
-     * @param callback
+     * 
      */
     off(eventName: string, callback: (event: any, source: FontMetrics) => any): void {
         this.eventBus.off(eventName, callback);
@@ -99,7 +104,9 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
         document.documentElement.appendChild(el);
         const w = el.getBoundingClientRect().width;
         CHAR_COUNT = (w > 0 && w < 1) ? 50 : 100;
-        el.parentNode.removeChild(el);
+        if (el.parentNode) {
+            el.parentNode.removeChild(el);
+        }
     }
 
     private $setMeasureNodeStyles(style: CSSStyleDeclaration, isRoot?: boolean): void {
@@ -124,7 +131,12 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
             this.$measureNode.style.fontWeight = "bold";
             try {
                 const boldSize = this.$measureSizes();
-                this.allowBoldFonts = boldSize && boldSize.width === size.width && boldSize.height === size.height;
+                if (boldSize) {
+                    this.allowBoldFonts = boldSize.width === size.width && boldSize.height === size.height;
+                }
+                else {
+                    this.allowBoldFonts = false;
+                }
             }
             finally {
                 this.$measureNode.style.fontWeight = "";
@@ -160,10 +172,10 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
         }
     }
 
-    private $measureSizes(): { width: number; height: number } {
+    private $measureSizes(): { width: number; height: number } | null {
         let size: { height: number; width: number };
         if (CHAR_COUNT === 50) {
-            let rect: ClientRect = null;
+            let rect: ClientRect;
             try {
                 rect = this.$measureNode.getBoundingClientRect();
             }
@@ -181,7 +193,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
                 width: this.$measureNode.clientWidth / CHAR_COUNT
             };
         }
-        // Size and width can be null if the editor is not visible or detached from the document.
+        // width and height can be null if the editor is not visible or detached from the document.
         if (size.width === 0 || size.height === 0) {
             return null;
         }

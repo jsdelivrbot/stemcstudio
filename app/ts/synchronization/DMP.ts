@@ -45,6 +45,24 @@ const linebreakRegex_ = /[\r\n]/;
 const blanklineEndRegex_ = /\n\r?\n$/;
 const blanklineStartRegex_ = /^\r?\n\r?\n/;
 
+function mustBeDefined<T>(varName: string, x: T | undefined): T {
+    if (typeof x === 'undefined') {
+        throw new Error(`${varName} must be defined`);
+    }
+    else {
+        return x;
+    }
+}
+
+function mustBeNotNull<T>(varName: string, x: T | null): T {
+    if (x === null) {
+        throw new Error(`${varName} must not be null`);
+    }
+    else {
+        return x;
+    }
+}
+
 /**
  * Class containing the diff, match and patch methods.
  */
@@ -541,7 +559,7 @@ export default class DMP {
      * @param text2 New string to be diffed.
      * @returns Array of diff tuples or null if no diff available.
      */
-    /* private */ diff_map(text1: string, text2: string): Diff[] {
+    /* private */ diff_map(text1: string, text2: string): Diff[] | null {
         // Don't run for too long.
         const ms_end = (new Date()).getTime() + this.Diff_Timeout * 1000;
         // Cache the text lengths to prevent multiple calls.
@@ -557,7 +575,7 @@ export default class DMP {
         v2[1] = 0;
         let x: number;
         let y: number;
-        let footstep: string;  // Used to track overlapping paths.
+        let footstep: string | undefined;  // Used to track overlapping paths.
         const footsteps: { [footstep: string]: number } = {};
         let done = false;
         // Safari 1.x doesn't have hasOwnProperty
@@ -610,9 +628,10 @@ export default class DMP {
                 if (x === text1_length && y === text2_length) {
                     // Reached the end in single-path mode.
                     return this.diff_path1(v_map1, text1, text2);
-                } else if (done) {
+                }
+                else if (done) {
                     // Front path ran over reverse path.
-                    v_map2 = v_map2.slice(0, footsteps[footstep] + 1);
+                    v_map2 = v_map2.slice(0, footsteps[mustBeDefined('footstep', footstep)] + 1);
                     const a = this.diff_path1(v_map1, text1.substring(0, x), text2.substring(0, y));
                     return a.concat(this.diff_path2(v_map2, text1.substring(x), text2.substring(y)));
                 }
@@ -678,8 +697,7 @@ export default class DMP {
         const path: Diff[] = [];
         let x = text1.length;
         let y = text2.length;
-        /** @type {number?} */
-        let last_op: number = null;
+        let last_op: number | null = null;
         for (let d = v_map.length - 2; d >= 0; d--) {
             while (1) {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
@@ -735,7 +753,7 @@ export default class DMP {
         let pathLength = 0;
         let x = text1.length;
         let y = text2.length;
-        let last_op: number = null;
+        let last_op: number | null = null;
         for (let d = v_map.length - 2; d >= 0; d--) {
             while (1) {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
@@ -905,7 +923,7 @@ export default class DMP {
      *     text1, the suffix of text1, the prefix of text2, the suffix of
      *     text2 and the common middle.  Or null if there was no match.
      */
-    diff_halfMatch_(text1: string, text2: string): string[] {
+    diff_halfMatch_(text1: string, text2: string): string[] | null {
         if (this.Diff_Timeout <= 0) {
             // Don't risk returning a non-optimal diff if we have unlimited time.
             return null;
@@ -929,21 +947,20 @@ export default class DMP {
          *     of shorttext and the common middle.  Or null if there was no match.
          * @private
          */
-        function diff_halfMatchI_(longtext: string, shorttext: string, i: number): string[] {
+        function diff_halfMatchI_(longtext: string, shorttext: string, i: number): string[] | null {
             // Start with a 1/4 length substring at position i as a seed.
             const seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
             let j = -1;
             let best_common = "";
-            let best_longtext_a: string;
-            let best_longtext_b: string;
-            let best_shorttext_a: string;
-            let best_shorttext_b: string;
+            let best_longtext_a = "";
+            let best_longtext_b = "";
+            let best_shorttext_a = "";
+            let best_shorttext_b = "";
             while ((j = shorttext.indexOf(seed, j + 1)) !== -1) {
                 const prefixLength = self.diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
                 const suffixLength = self.diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
                 if (best_common.length < suffixLength + prefixLength) {
-                    best_common = shorttext.substring(j - suffixLength, j) +
-                        shorttext.substring(j, j + prefixLength);
+                    best_common = shorttext.substring(j - suffixLength, j) + shorttext.substring(j, j + prefixLength);
                     best_longtext_a = longtext.substring(0, i - suffixLength);
                     best_longtext_b = longtext.substring(i + prefixLength);
                     best_shorttext_a = shorttext.substring(0, j - suffixLength);
@@ -951,9 +968,9 @@ export default class DMP {
                 }
             }
             if (best_common.length * 2 >= longtext.length) {
-                return [best_longtext_a, best_longtext_b,
-                    best_shorttext_a, best_shorttext_b, best_common];
-            } else {
+                return [best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b, best_common];
+            }
+            else {
                 return null;
             }
         }
@@ -965,11 +982,14 @@ export default class DMP {
         let hm: string[];
         if (!hm1 && !hm2) {
             return null;
-        } else if (!hm2) {
-            hm = hm1;
-        } else if (!hm1) {
+        }
+        else if (!hm2) {
+            hm = mustBeNotNull('hm1', hm1);
+        }
+        else if (!hm1) {
             hm = hm2;
-        } else {
+        }
+        else {
             // Both matched.  Select the longest.
             hm = hm1[4].length > hm2[4].length ? hm1 : hm2;
         }
@@ -1003,7 +1023,7 @@ export default class DMP {
         let changes = false;
         let equalities: number[] = [];  // Stack of indices where equalities are found.
         let equalitiesLength = 0;  // Keeping our own length variable is faster in JS.
-        let lastequality: string = null;
+        let lastequality: string | null = null;
         // Always equal to diffs[equalities[equalitiesLength - 1]][1]
         let pointer = 0;  // Index of current position.
         // Number of characters that changed prior to the equality.
@@ -1758,7 +1778,7 @@ export default class DMP {
         let bin_min: number;
         let bin_mid: number;
         let bin_max = pattern.length + text.length;
-        let last_rd: number[];
+        let last_rd: number[] = [];
         for (let d = 0; d < pattern.length; d++) {
             // Scan for the best match; each iteration allows for one more error.
             // Run a binary search to determine how far from 'loc' we can stray at this
@@ -1787,9 +1807,7 @@ export default class DMP {
                 if (d === 0) {  // First pass: exact match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & charMatch;
                 } else {  // Subsequent passes: fuzzy match.
-                    rd[j] = ((rd[j + 1] << 1) | 1) & charMatch |
-                        (((last_rd[j + 1] | last_rd[j]) << 1) | 1) |
-                        last_rd[j + 1];
+                    rd[j] = ((rd[j + 1] << 1) | 1) & charMatch | (((last_rd[j + 1] | last_rd[j]) << 1) | 1) | last_rd[j + 1];
                 }
                 if (rd[j] & matchmask) {
                     const score = match_bitapScore(d, j - 1);
@@ -2122,19 +2140,17 @@ export default class DMP {
                     } else {
                         this.diff_cleanupSemanticLossless(diffs);
                         let index1 = 0;
-                        let index2: number;
+                        let index2 = 0;
                         for (let y = 0; y < patches[x].diffs.length; y++) {
                             const mod = patches[x].diffs[y];
                             if (mod[0] !== DIFF_EQUAL) {
                                 index2 = this.diff_xIndex(diffs, index1);
                             }
                             if (mod[0] === DIFF_INSERT) {  // Insertion
-                                text = text.substring(0, start_loc + index2) + mod[1] +
-                                    text.substring(start_loc + index2);
-                            } else if (mod[0] === DIFF_DELETE) {  // Deletion
-                                text = text.substring(0, start_loc + index2) +
-                                    text.substring(start_loc + this.diff_xIndex(diffs,
-                                        index1 + (<string>mod[1]).length));
+                                text = text.substring(0, start_loc + index2) + mod[1] + text.substring(start_loc + index2);
+                            }
+                            else if (mod[0] === DIFF_DELETE) {  // Deletion
+                                text = text.substring(0, start_loc + index2) + text.substring(start_loc + this.diff_xIndex(diffs, index1 + (<string>mod[1]).length));
                             }
                             if (mod[0] !== DIFF_DELETE) {
                                 index1 += (<string>mod[1]).length;
@@ -2223,9 +2239,10 @@ export default class DMP {
                             // Insertions are harmless.
                             patch.length2 += diff_text.length;
                             start2 += diff_text.length;
-                            patch.diffs.push(bigpatch.diffs.shift());
+                            patch.diffs.push(mustBeDefined('bigpatch.diffs[0]', bigpatch.diffs.shift()));
                             empty = false;
-                        } else if (diff_type === DIFF_DELETE && patch.diffs.length === 1 &&
+                        }
+                        else if (diff_type === DIFF_DELETE && patch.diffs.length === 1 &&
                             patch.diffs[0][0] === DIFF_EQUAL &&
                             diff_text.length > 2 * patch_size) {
                             // This is a large deletion.  Let it pass in one chunk.
@@ -2234,7 +2251,8 @@ export default class DMP {
                             empty = false;
                             patch.diffs.push([diff_type, diff_text]);
                             bigpatch.diffs.shift();
-                        } else {
+                        }
+                        else {
                             // Deletion or equality.  Only take as much as we can stomach.
                             diff_text = diff_text.substring(0, patch_size - patch.length1 - this.Patch_Margin);
                             patch.length1 += diff_text.length;

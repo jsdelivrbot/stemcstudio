@@ -45,6 +45,7 @@ import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
+import refChange from '../../utils/refChange';
 
 function isTypeScript(path: string): boolean {
     const period = path.lastIndexOf('.');
@@ -96,8 +97,8 @@ function factory(
         const wsController: WorkspaceMixin = controllers[1];
 
         const container: HTMLElement = element[0];
-        const renderer: Renderer = new Renderer(container);
-        const editor: Editor = new Editor(renderer, void 0);
+        refChange('start');
+        const editor: Editor = new Editor(new Renderer(container), void 0);
         /**
          * The function to call that will cause the editor to be removed from the workspace. 
          */
@@ -453,6 +454,8 @@ function factory(
             // What about stopping the worker?
             if (editor) {
                 editor.dispose();
+                refChange('stop');
+                refChange('dump');
             }
         }
 

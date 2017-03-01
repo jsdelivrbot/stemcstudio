@@ -48,7 +48,7 @@ export default class ListViewPopup implements ListView {
     private imageSize = 0;
 
     private hoverMarker = new Range(-1, 0, -1, Infinity);
-    private hoverMarkerId: number;
+    private hoverMarkerId: number | null;
     private selectionMarker = new Range(-1, 0, -1, Infinity);
     private selectionMarkerId: number;
     public isOpen = false;
@@ -80,8 +80,8 @@ export default class ListViewPopup implements ListView {
             renderer.$keepTextAreaAtCursor = false;
 
             const doc = new Document("");
-            const editSession = new EditSession(doc);
-            const editor = new Editor(renderer, editSession);
+            const session = new EditSession(doc);
+            const editor = new Editor(renderer, session);
 
             editor.setHighlightActiveLine(false);
             editor.setShowPrintMargin(false);
@@ -97,7 +97,7 @@ export default class ListViewPopup implements ListView {
             editor.setHighlightActiveLine(false);
             // FIXME: This must be a RegExp.
             // editor.session.highlight("");
-            editor.getSession().$searchHighlight.clazz = "ace_highlight-marker";
+            session.$searchHighlight.clazz = "ace_highlight-marker";
 
             return editor;
         }
@@ -113,12 +113,12 @@ export default class ListViewPopup implements ListView {
         // FIXME: The event must be exposed.
         this.editor.on("mousedown", (e) => {
             const pos = e.getDocumentPosition();
-            this.editor.selection.moveToPosition(pos);
+            this.editor.selectionOrThrow().moveToPosition(pos);
             this.selectionMarker.start.row = this.selectionMarker.end.row = pos.row;
             e.stop();
         });
 
-        this.selectionMarkerId = this.editor.getSession().addMarker(this.selectionMarker, "ace_active-line", "fullLine");
+        this.selectionMarkerId = this.editor.sessionOrThrow().addMarker(this.selectionMarker, "ace_active-line", "fullLine");
 
         this.setSelectOnHover(false);
 
@@ -170,17 +170,19 @@ export default class ListViewPopup implements ListView {
         this.editor.on("changeSelection", hideHoverMarker);
 
         // Override methods on the Document to simulate a virtual list.
-        this.editor.getSession().doc.getLength = () => {
+        const session = this.editor.sessionOrThrow();
+        const doc = session.docOrThrow();
+        doc.getLength = () => {
             return this.data.length;
         };
-        this.editor.getSession().doc.getLine = (i: number) => {
+        doc.getLine = (i: number) => {
             const data = this.data[i];
             return (data && data.value) || "";
         };
 
-        const bgTokenizer: BackgroundTokenizer = this.editor.getSession().bgTokenizer;
+        const bgTokenizer: BackgroundTokenizer = session.bgTokenizer;
         bgTokenizer.tokenizeRow = (row: number) => {
-            const data: Completion = this.data[row];
+            const data = this.data[row];
             const tokens: Token[] = [];
             if (!data)
                 return tokens;
@@ -214,7 +216,7 @@ export default class ListViewPopup implements ListView {
         bgTokenizer.updateOnChange = noop;
         bgTokenizer.start = noop;
 
-        this.editor.getSession().$computeWidth = () => {
+        session.$computeWidth = () => {
             return this.screenWidth = 0;
         };
 
@@ -311,11 +313,12 @@ export default class ListViewPopup implements ListView {
      * @param selectOnHover
      */
     setSelectOnHover(selectOnHover: boolean): void {
+        const session = this.editor.sessionOrThrow();
         if (!selectOnHover) {
-            this.hoverMarkerId = this.editor.getSession().addMarker(this.hoverMarker, "ace_line-hover", "fullLine");
+            this.hoverMarkerId = session.addMarker(this.hoverMarker, "ace_line-hover", "fullLine");
         }
         else if (this.hoverMarkerId) {
-            this.editor.getSession().removeMarker(this.hoverMarkerId);
+            session.removeMarker(this.hoverMarkerId);
             this.hoverMarkerId = null;
         }
     }
@@ -324,7 +327,7 @@ export default class ListViewPopup implements ListView {
         if (row !== this.hoverMarker.start.row) {
             this.hoverMarker.start.row = this.hoverMarker.end.row = row;
             if (!suppressRedraw) {
-                this.editor.getSession()._emit("changeBackMarker");
+                this.editor.sessionOrThrow()._emit("changeBackMarker");
             }
             this.editor._emit("changeHoverMarker");
         }
@@ -341,9 +344,9 @@ export default class ListViewPopup implements ListView {
     setRow(row: number): void {
         row = Math.max(-1, Math.min(this.data.length, row));
         if (this.selectionMarker.start.row !== row) {
-            this.editor.selection.clearSelection();
+            this.editor.selectionOrThrow().clearSelection();
             this.selectionMarker.start.row = this.selectionMarker.end.row = row || 0;
-            this.editor.getSession()._emit("changeBackMarker");
+            this.editor.sessionOrThrow()._emit("changeBackMarker");
             this.editor.moveCursorTo(row || 0, 0);
             if (this.isOpen) {
                 this.editor._signal("select");
@@ -368,7 +371,7 @@ export default class ListViewPopup implements ListView {
     }
 
     getLength(): number {
-        return this.editor.getSession().getLength();
+        return this.editor.sessionOrThrow().getLength();
     }
 
     get container(): HTMLElement {

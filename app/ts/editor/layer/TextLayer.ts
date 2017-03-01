@@ -8,6 +8,7 @@ import EventEmitterClass from "../lib/EventEmitterClass";
 import FoldLine from "../FoldLine";
 import FontMetrics from "../layer/FontMetrics";
 import { changeCharacterSize } from '../layer/FontMetrics';
+import refChange from '../../utils/refChange';
 import TextConfig from './TextConfig';
 import Token from "../Token";
 
@@ -32,7 +33,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     private removeChangeCharacterSizeHandler: (() => void) | undefined;
 
     private session: EditSession;
-    private $pollSizeChangesTimer: number;
+    private $pollSizeChangesTimer = 0;
     private showInvisibles = false;
     private displayIndentGuides = true;
     /**
@@ -53,11 +54,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     private readonly eventBus: EventEmitterClass<any, TextLayer>;
     public selectedNode: HTMLElement;
 
-    /**
-     * @param parent
-     */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_text-layer");
+        refChange(this.uuid, 'TextLayer', +1);
         this.eventBus = new EventEmitterClass<any, TextLayer>(this);
         this.EOL_CHAR = EOL_CHAR_LF;
     }
@@ -71,7 +70,6 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             this.removeChangeCharacterSizeHandler = void 0;
         }
         if (this.fontMetrics) {
-            // TODO: Remove the handler.
             this.fontMetrics.release();
             this.fontMetrics = void 0;
         }
@@ -80,13 +78,15 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             this.$measureNode.parentNode.removeChild(this.$measureNode);
         }
         delete this.$measureNode;
+        refChange(this.uuid, 'TextLayer', -1);
+        super.dispose();
     }
 
     /**
      *
      */
     updateEolChar(): boolean {
-        const EOL_CHAR = this.session.doc.getNewLineCharacter() === "\n" ? EOL_CHAR_LF : EOL_CHAR_CRLF;
+        const EOL_CHAR = this.session.docOrThrow().getNewLineCharacter() === "\n" ? EOL_CHAR_LF : EOL_CHAR_CRLF;
         if (this.EOL_CHAR !== EOL_CHAR) {
             this.EOL_CHAR = EOL_CHAR;
             return true;
@@ -136,9 +136,6 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         this.fontMetrics.addRef();
         // TODO: Make sure off is called when fontMetrics are released
         this.removeChangeCharacterSizeHandler = this.fontMetrics.on(changeCharacterSize, (e) => {
-            /**
-             * @event changeCharacterSize
-             */
             this.eventBus._signal(changeCharacterSize, e);
         });
         this.$pollSizeChanges();
@@ -165,9 +162,6 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         }
     }
 
-    /**
-     * @param session
-     */
     public setSession(session: EditSession): void {
         this.session = session;
         this.$computeTabString();
@@ -210,9 +204,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @returns A function that when called will remove the callback for the specified event.
+     * Returns a function that when called will remove the callback for the specified event.
      */
     on(eventName: string, callback: (event: any, source: TextLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
@@ -221,10 +213,6 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         };
     }
 
-    /**
-     * @param eventName
-     * @param callback
-     */
     off(eventName: string, callback: (event: any, source: TextLayer) => any): void {
         this.eventBus.off(eventName, callback);
     }
@@ -319,6 +307,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         let foldLine = this.session.getNextFoldLine(row);
         let foldStart = foldLine ? foldLine.start.row : Infinity;
 
+        // TODO: strictNullChecks says foldLine may be null
         while (true) {
             if (row > foldStart) {
                 row = foldLine.end.row + 1;
@@ -620,7 +609,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
         // We may not get tokens if there is no language mode.
         if (tokens && tokens.length) {
-            const splits: number[] = this.session.getRowSplitData(row);
+            const splits = this.session.getRowSplitData(row);
             if (splits && splits.length)
                 this.$renderWrappedLine(stringBuilder, tokens, splits, onlyContents);
             else

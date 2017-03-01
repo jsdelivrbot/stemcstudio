@@ -1,17 +1,21 @@
 import AbstractLayer from './AbstractLayer';
+import refChange from '../../utils/refChange';
 
-/**
- * Work In Progress
- *
- * @class PrintMarginLayer
- * @extends AbstractLayer
- */
 export default class PrintMarginLayer extends AbstractLayer {
 
     /**
-     * @class PrintMarginLayer
+     * 
      */
     constructor(parent: HTMLDivElement) {
         super(parent, '"ace_layer ace_text-layer"');
+        refChange(this.uuid, 'PrintMarginLayer', +1);
+    }
+
+    /**
+     * 
+     */
+    dispose(): void {
+        refChange(this.uuid, 'PrintMarginLayer', -1);
+        super.dispose();
     }
 }

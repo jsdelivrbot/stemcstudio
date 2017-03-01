@@ -12,6 +12,7 @@ import GutterConfig from "./GutterConfig";
 import Padding from './Padding';
 import GutterRenderer from './GutterRenderer';
 import GutterCell from './GutterCell';
+import refChange from '../../utils/refChange';
 
 /**
  *
@@ -48,7 +49,13 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_gutter-layer");
+        refChange(this.uuid, 'GutterLayer', +1);
         this.setShowFoldWidgets(true);
+    }
+
+    dispose(): void {
+        refChange(this.uuid, 'GutterLayer', -1);
+        super.dispose();
     }
 
     /**

@@ -7,12 +7,12 @@ interface MwAction {
     /**
      * The local version number that the diff was made from.
      */
-    n: number;
+    n: number | undefined;
 
     /**
      * string is for Raw, string[] is for Delta
      */
-    x: string | string[];
+    x: string | string[] | undefined;
 }
 
 export default MwAction;

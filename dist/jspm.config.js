@@ -18,7 +18,7 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.6.0",
+    "clipboard": "npm:clipboard@1.6.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.0.11",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
@@ -230,8 +230,8 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.6.0": {
-      "good-listener": "npm:good-listener@1.2.1",
+    "npm:clipboard@1.6.1": {
+      "good-listener": "npm:good-listener@1.2.2",
       "select": "npm:select@1.1.2",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
@@ -388,8 +388,8 @@ System.config({
       "path-exists": "npm:path-exists@2.1.0",
       "pinkie-promise": "npm:pinkie-promise@2.0.1"
     },
-    "npm:good-listener@1.2.1": {
-      "delegate": "npm:delegate@3.1.1"
+    "npm:good-listener@1.2.2": {
+      "delegate": "npm:delegate@3.1.2"
     },
     "npm:graceful-fs@4.1.11": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",

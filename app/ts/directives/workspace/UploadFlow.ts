@@ -17,7 +17,7 @@ const FEATURE_REPO_ENABLED = false;
 
 export default class UploadFlow {
     constructor(
-        private owner: string,
+        private owner: string | null | undefined,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
         private navigation: NavigationService,

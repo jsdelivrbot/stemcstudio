@@ -17,12 +17,12 @@ export default class Patch {
     /**
      * Start position in the original file.
      */
-    start1: number;
+    start1: number | null;
 
     /**
      * Start position in the new file.
      */
-    start2: number;
+    start2: number | null;
 
     /**
      * Length in the original file.
@@ -54,20 +54,22 @@ export default class Patch {
         let coords2: string;
         if (this.length1 === 0) {
             coords1 = this.start1 + ',0';
-        } else if (this.length1 === 1) {
-            coords1 = (this.start1 + 1).toString();
-        } else {
-            coords1 = (this.start1 + 1) + ',' + this.length1;
+        }
+        else if (this.length1 === 1) {
+            coords1 = (<number>this.start1 + 1).toString();
+        }
+        else {
+            coords1 = (<number>this.start1 + 1) + ',' + this.length1;
         }
         if (this.length2 === 0) {
             coords2 = this.start2 + ',0';
         } else if (this.length2 === 1) {
-            coords2 = (this.start2 + 1).toString();
+            coords2 = (<number>this.start2 + 1).toString();
         } else {
-            coords2 = (this.start2 + 1) + ',' + this.length2;
+            coords2 = (<number>this.start2 + 1) + ',' + this.length2;
         }
         const text = ['@@ -' + coords1 + ' +' + coords2 + ' @@\n'];
-        let op: string;
+        let op = 'undefined';
         // Escape the body of the patch with %xx notation.
         for (let x = 0; x < this.diffs.length; x++) {
             switch (this.diffs[x][0]) {

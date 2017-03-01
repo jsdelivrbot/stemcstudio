@@ -67,7 +67,7 @@ interface WordScores {
 }
 
 /**
- * Does a distance analysis of the word at position `pos` in `doc`.
+ * Does a distance analysis of the word at the specified position.
  */
 function wordDistance(position: Position, session: EditSession): WordScores {
     const splitRegex: RegExp = /[^a-zA-Z_0-9\$\-\u00C0-\u1FFF\u2C00-\uD7FF\w]+/;

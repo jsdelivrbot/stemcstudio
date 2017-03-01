@@ -91,24 +91,24 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private readonly olds: string[] = [];
 
-    private outputFilesWatchRemover: () => void;
+    private outputFilesWatchRemover: (() => void) | undefined;
     private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
      */
-    private readmePromise: angular.IPromise<void>;
+    private readmePromise: angular.IPromise<void> | undefined;
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
     private readonly markdownChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
 
-    private resizeListener: (unused: UIEvent) => any;
+    private resizeListener: ((unused: UIEvent) => any) | undefined;
 
     /**
      * Keep track of watches so that we can clean them up.
      */
-    private readonly watches: (() => any)[] = [];
+    private readonly watches: ((() => any) | undefined)[] = [];
 
     /**
      * Convenient flag used for debugging.
@@ -195,7 +195,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
         $scope.FEATURE_ROOM_ENABLED = FEATURE_ROOM_ENABLED;
 
-        let rebuildPromise: angular.IPromise<void>;
+        let rebuildPromise: angular.IPromise<void> | undefined;
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
             rebuildPromise = $timeout(() => {
@@ -211,7 +211,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                     this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
                     this.LIBS_MARKER,
                     this.STYLES_MARKER,
-                    this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined;
+                    this.VENDOR_FOLDER_MARKER);
+                rebuildPromise = undefined;
             }, delay);
         };
 
@@ -311,9 +312,11 @@ export default class WorkspaceController implements WorkspaceMixin {
                 if (wsModel.isZombie()) {
                     github.getGistComments(wsModel.gistId).then((httpResponse) => {
                         const comments = httpResponse.data;
-                        $scope.comments = comments.map(function (comment) {
-                            return { type: 'info', msg: comment.body };
-                        });
+                        if (Array.isArray(comments)) {
+                            $scope.comments = comments.map(function (comment) {
+                                return { type: 'info', msg: comment.body };
+                            });
+                        }
                     }).catch((reason) => {
                         console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
                     });
@@ -366,8 +369,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                 return;
             }
             ga('send', 'event', 'doodle', 'upload', label, value);
+            const owner = $scope.userLogin();
             const uploadFlow = new UploadFlow(
-                $scope.userLogin(),
+                owner,
                 this.flowService,
                 this.modalDialog,
                 this.navigation,
@@ -382,8 +386,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                 return;
             }
             ga('send', 'event', 'doodle', 'publish', label, value);
+            const owner = $scope.userLogin();
             const publishFlow = new PublishFlow(
-                $scope.userLogin(),
+                owner,
                 this.flowService,
                 this.modalDialog,
                 this.credentials,
@@ -399,6 +404,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      * initialization work of a controller.
      */
     $onInit(): void {
+
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
@@ -463,8 +469,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Cancel all of the watches.
         for (let w = 0; w < this.watches.length; w++) {
             const watch = this.watches[w];
-            watch();
-            this.watches[w] = void 0;
+            if (watch) {
+                watch();
+                this.watches[w] = void 0;
+            }
         }
 
         if (this.outputFilesWatchRemover) {
@@ -643,7 +651,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
-                editor.getSession().on('change', this.createPreviewChangeHandler(path));
+                editor.sessionOrThrow().on('change', this.createPreviewChangeHandler(path));
                 break;
             }
             case LANGUAGE_MARKDOWN: {
@@ -720,7 +728,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.wsModel,
                 this.$scope,
                 this.$window
-            ); this.readmePromise = undefined;
+            );
+            this.readmePromise = undefined;
         }, delay);
     }
 
@@ -737,18 +746,20 @@ export default class WorkspaceController implements WorkspaceMixin {
             const file = this.wsModel.findFileByPath(filePath);
             try {
                 const doc = file.getDocument();
-                try {
-                    if (this.markdownChangeHandlers[filePath]) {
-                        console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
-                        return;
+                if (doc) {
+                    try {
+                        if (this.markdownChangeHandlers[filePath]) {
+                            console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
+                            return;
+                        }
+                        const handler = this.createMarkdownChangeHandler(filePath);
+                        doc.addChangeListener(handler);
+                        this.markdownChangeHandlers[filePath] = handler;
+                        this.updateMarkdownView(WAIT_NO_MORE);
                     }
-                    const handler = this.createMarkdownChangeHandler(filePath);
-                    doc.addChangeListener(handler);
-                    this.markdownChangeHandlers[filePath] = handler;
-                    this.updateMarkdownView(WAIT_NO_MORE);
-                }
-                finally {
-                    doc.release();
+                    finally {
+                        doc.release();
+                    }
                 }
             }
             finally {
@@ -769,18 +780,20 @@ export default class WorkspaceController implements WorkspaceMixin {
             const file = this.wsModel.findFileByPath(filePath);
             try {
                 const doc = file.getDocument();
-                try {
-                    const handler = this.markdownChangeHandlers[filePath];
-                    if (handler) {
-                        doc.removeChangeListener(handler);
-                        delete this.markdownChangeHandlers[filePath];
+                if (doc) {
+                    try {
+                        const handler = this.markdownChangeHandlers[filePath];
+                        if (handler) {
+                            doc.removeChangeListener(handler);
+                            delete this.markdownChangeHandlers[filePath];
+                        }
+                        else {
+                            console.warn(`Expecting to find a Markdown change handler for file ${filePath}.`);
+                        }
                     }
-                    else {
-                        console.warn(`Expecting to find a Markdown change handler for file ${filePath}.`);
+                    finally {
+                        doc.release();
                     }
-                }
-                finally {
-                    doc.release();
                 }
             }
             finally {
@@ -818,7 +831,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
                 const handler = this.previewChangeHandlers[path];
-                editor.getSession().off('change', handler);
+                editor.sessionOrThrow().off('change', handler);
                 this.deletePreviewChangeHandler(path);
                 break;
             }

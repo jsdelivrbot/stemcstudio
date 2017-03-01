@@ -1,8 +1,8 @@
-import { addListener } from "./lib/event";
-import ScrollBar from './ScrollBar';
+import { addListener, removeListener } from "./lib/event";
+import { COEFF_DEFAULT, MAX_SCROLL_H, ScrollBar } from './ScrollBar';
 import { scrollbarWidth } from "./lib/dom";
+import refChange from '../utils/refChange';
 import Renderer from "./Renderer";
-import ScrollBarEvent from './events/ScrollBarEvent';
 import toPixelString from './dom/toPixelString';
 
 /**
@@ -13,44 +13,44 @@ export default class VScrollBar extends ScrollBar {
     /**
      * This may get set to null.
      */
-    private _scrollTop: number | null = 0;
+    private scrollTop_: number | null = 0;
+    private scrollHeight_ = 0;
 
     /**
      * 
      */
-    private _width: number;
+    private width_: number;
 
     /**
      * Creates a new `VScrollBar`. `parent` is the owner of the scroll bar.
-     * @param parent A DOM element
-     * @param renderer An editor renderer
      */
     constructor(parent: HTMLElement, renderer: Renderer) {
         super(parent, '-v');
+        refChange(this.uuid, 'VScrollBar', +1);
         // in OSX lion the scrollbars appear to have no width. In this case resize the
         // element to show the scrollbar but still pretend that the scrollbar has a width
         // of 0px
         // in Firefox 6+ scrollbar is hidden if element has the same width as scrollbar
         // make element a little bit wider to retain scrollbar when page is zoomed 
-        renderer.$scrollbarWidth = this._width = scrollbarWidth(parent.ownerDocument);
-        this.inner.style.width = this.element.style.width = toPixelString((this._width || 15) + 5);
-        addListener(this.element, "scroll", this.onScroll.bind(this));
+        renderer.$scrollbarWidth = this.width_ = scrollbarWidth(parent.ownerDocument);
+        this.inner.style.width = this.element.style.width = toPixelString((this.width_ || 15) + 5);
+        addListener(this.element, "scroll", this.onScroll);
     }
 
-    /**
-     * Emitted when the scroll bar, well, scrolls.
-     * @event scroll
-     * @param {Object} e Contains one property, `"data"`, which indicates the current scroll top position
-     */
-    onScroll() {
+    dispose(): void {
+        removeListener(this.element, "scroll", this.onScroll);
+        refChange(this.uuid, 'VScrollBar', -1);
+        super.dispose();
+    }
+
+    private onScroll = () => {
         if (!this.skipEvent) {
-            this._scrollTop = this.element.scrollTop;
-            /**
-             * @event scroll
-             * @param {ScrollBarEvent}
-             */
-            const event: ScrollBarEvent = { data: this._scrollTop };
-            this.eventBus._emit("scroll", event);
+            this.scrollTop_ = this.element.scrollTop;
+            if (this.coeff !== COEFF_DEFAULT) {
+                const h = this.element.clientHeight / this.scrollHeight_;
+                this.scrollTop = this.scrollTop_ * (1 - h) / (this.coeff - h);
+            }
+            this.eventBus._emit("scroll", { data: this.scrollTop_ });
         }
         this.skipEvent = false;
     }
@@ -59,48 +59,41 @@ export default class VScrollBar extends ScrollBar {
      * Returns the width of the scroll bar.
      */
     get width(): number {
-        return this.isVisible ? this._width : 0;
-    }
-
-    /**
-     * Sets the height of the scroll bar, in pixels.
-     * @param height The new height
-     */
-    setHeight(height: number) {
-        this.element.style.height = toPixelString(height);
+        return this.isVisible ? this.width_ : 0;
     }
 
     /**
      * Sets the scroll height of the scroll bar, in pixels.
-     * @param height The new scroll height
      */
-    setScrollHeight(height: number) {
+    setScrollHeight(height: number): this {
+        this.scrollHeight_ = height;
+        if (height > MAX_SCROLL_H) {
+            this.coeff = MAX_SCROLL_H / height;
+            height = MAX_SCROLL_H;
+        }
+        else if (this.coeff !== COEFF_DEFAULT) {
+            this.coeff = COEFF_DEFAULT;
+        }
         this.inner.style.height = toPixelString(height);
+        return this;
     }
 
     /**
      * Sets the scroll top of the scroll bar.
-     * @param scrollTop The new scroll top
      */
-    // on chrome 17+ for small zoom levels after calling this function
-    // this.element.scrollTop != scrollTop which makes page to scroll up.
-    // FIXME: We don't need a method and a property! The code does use both!!
-    setScrollTop(scrollTop: number | null) {
-        if (this._scrollTop !== scrollTop) {
+    setScrollTop(scrollTop: number): this {
+        if (this.scrollTop_ !== scrollTop) {
             this.skipEvent = true;
-            if (scrollTop) {
-                this._scrollTop = this.element.scrollTop = scrollTop;
-            }
-            else {
-                this._scrollTop = scrollTop;
-            }
+            this.scrollTop = scrollTop;
+            this.element.scrollTop = scrollTop * this.coeff;
         }
+        return this;
     }
 
-    get scrollTop(): number | null {
-        return this._scrollTop;
-    }
+    /**
+     * FIXME : This is evil.
+     */
     set scrollTop(scrollTop: number | null) {
-        this.setScrollTop(scrollTop);
+        this.scrollTop_ = scrollTop;
     }
 }

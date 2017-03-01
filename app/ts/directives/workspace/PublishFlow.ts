@@ -12,7 +12,7 @@ import WsModel from '../../wsmodel/services/WsModel';
 export default class PublishFlow {
     constructor(
         // FIXME: Make this a service.
-        private owner: string,
+        private owner: string | null | undefined,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
         private credentialsService: CredentialsService,
