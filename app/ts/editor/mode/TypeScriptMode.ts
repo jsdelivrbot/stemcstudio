@@ -27,7 +27,7 @@ export default class TypeScriptMode extends JavaScriptMode {
         this.foldingRules = new CStyleFoldMode();
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any | null, worker?: WorkerClient) => any): void {
 
         const workerUrl = this.workerUrl;
         const scriptImports = this.scriptImports;
@@ -59,17 +59,17 @@ export default class TypeScriptMode extends JavaScriptMode {
         try {
             worker.init(scriptImports, moduleName, 'TypeScriptWorker', function (err: any) {
                 if (!err) {
-                    worker.attachToDocument(session.getDocument());
+                    worker.attachToDocument(session.docOrThrow());
                     callback(void 0, worker);
                 }
                 else {
                     console.warn(`TypeScriptWorker init failed. Cause: ${err}.`);
-                    callback(err, void 0);
+                    callback(err);
                 }
             });
         }
         catch (e) {
-            callback(e, void 0);
+            callback(e);
         }
     };
 }

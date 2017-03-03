@@ -50,18 +50,21 @@ import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHos
  */
 const FILENAME_META = 'package.json';
 
+// The order of importing is important.
+// Loading of scripts is synchronous.
+// 
+// The ace-workers script must be loaded after the typescriptServices.
 const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
 const typescriptServices = ['/js/typescriptServices.js'];
+/**
+ * The script imports for initializing the LanguageServiceProxy.
+ */
+const scriptImports: string[] = systemImports.concat(typescriptServices).concat(['/js/ace-workers.js']);
 
 /**
  * The worker implementation for the LanguageServiceProxy.
  */
 const workerUrl = '/js/worker.js';
-/**
- * The script imports for initializing the LanguageServiceProxy.
- */
-const scriptImports = workerImports.concat(typescriptServices);
 
 /**
  * Converts a Diagnostic to an Annotation.
@@ -901,7 +904,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         const file = this.getFileWeakRef(path);
         file.tainted = false;
 
-        const doc = session.getDocument();
+        const doc = session.docOrThrow();
 
         const annotations = errors.map(function (error) {
             file.tainted = true;

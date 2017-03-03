@@ -107,7 +107,10 @@ export default class UndoManager {
         this.editSession = <EditSession>options.args[1];
         if (options.merge && this.hasUndo()) {
             this.dirtyCounter--;
-            deltaSets = this.undoStack.pop().concat(deltaSets);
+            const popped = this.undoStack.pop();
+            if (popped) {
+                deltaSets = popped.concat(deltaSets);
+            }
         }
         this.undoStack.push(deltaSets);
 
@@ -128,9 +131,9 @@ export default class UndoManager {
      * @param dontSelect
      * @returns The range of the undo.
      */
-    undo(dontSelect?: boolean): Range {
+    undo(dontSelect?: boolean): Range | null | undefined {
         const deltaSets = this.undoStack.pop();
-        let undoSelectionRange: Range = null;
+        let undoSelectionRange: Range | null | undefined = null;
         if (deltaSets) {
             undoSelectionRange = this.editSession.undoChanges(deserializeDeltaSets(deltaSets), dontSelect);
             this.redoStack.push(deltaSets);
@@ -145,9 +148,9 @@ export default class UndoManager {
      * @param dontSelect
      * @returns The range of the redo.
      */
-    redo(dontSelect?: boolean): Range {
+    redo(dontSelect?: boolean): Range | null | undefined {
         const deltaSets = this.redoStack.pop();
-        let redoSelectionRange: Range = null;
+        let redoSelectionRange: Range | null | undefined = null;
         if (deltaSets) {
             redoSelectionRange = this.editSession.redoChanges(deserializeDeltaSets(deltaSets), dontSelect);
             this.undoStack.push(deltaSets);

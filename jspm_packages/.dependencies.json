@@ -852,7 +852,7 @@
     "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.0.11": {},
+  "github:geometryzen/ace-workers@2.1.0": {},
   "npm:clipboard@1.6.1": {
     "good-listener": "npm:good-listener@^1.2.0",
     "select": "npm:select@^1.1.2",

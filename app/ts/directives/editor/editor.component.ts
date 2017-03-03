@@ -79,17 +79,18 @@ function factory(
     editorPreferencesService: EditorPreferencesService): ng.IDirective {
 
     /**
-     * @param $scope Used to monitor $onDestroy and support transclude.
-     * @param element
-     * @param attrs
-     * @param controllers
-     * @param transclude This parameter will only be set if we set the transclude option to true.
+     * $scope Used to monitor $onDestroy and support transclude.
+     * element
+     * attrs
+     * controllers
+     * transclude This parameter will only be set if we set the transclude option to true.
      */
     function link($scope: EditorScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: {}, transclude: ng.ITranscludeFunction) {
 
         // Maybe these should be constants?
         const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-        const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
+        const typescriptServices = ['/js/typescriptServices.js'];
+        const workerImports: string[] = systemImports.concat(typescriptServices).concat(['/js/ace-workers.js']);
 
         const ngModel: ng.INgModelController = controllers[0];
         /**
