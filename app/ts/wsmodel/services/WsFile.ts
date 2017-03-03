@@ -230,14 +230,13 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      * @returns The underlying document. This must be released when no longer required.
      */
-    getDocument(): Document | undefined {
+    getDocument(): Document {
         if (this.doc) {
             this.doc.addRef();
             return this.doc;
         }
         else {
-            // May be better to throw an exception here.
-            return void 0;
+            throw new Error("missing document");
         }
     }
 
@@ -245,13 +244,13 @@ export default class WsFile implements MwEditor, Shareable {
         return this.doc ? true : false;
     }
 
-    getText(): string | undefined {
+    getText(): string {
         if (this.doc) {
             return this.doc.getValue();
         }
         else {
             console.warn("WsFile.getValue() called when text is not defined.");
-            return void 0;
+            throw new Error("missing document");
         }
     }
 

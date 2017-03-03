@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.107",
+  "version": "2.21.108",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -35,7 +35,7 @@
     "lite-server": "^2.2.2",
     "plotly.js": "^1.24.0",
     "protractor": "^3.3.0",
-    "systemjs-builder": "0.16.3",
+    "systemjs-builder": "0.15.35",
     "tslint": "^4.5.1",
     "typedoc": "^0.5.7",
     "typescript": "^2.2.1",
