@@ -19,9 +19,9 @@ System.config({
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
-    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
+    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.2",
     "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.1.0",
-    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
+    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.2",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.6.4",
     "socket.io": "npm:socket.io@1.4.6",
@@ -36,6 +36,12 @@ System.config({
     },
     "github:angular/bower-angular-sanitize@1.6.2": {
       "angular": "github:angular/bower-angular@1.5.9"
+    },
+    "github:frankwallis/plugin-typescript@2.6.0": {
+      "typescript": "npm:typescript@1.7.5"
+    },
+    "github:geometryzen/davinci-mathscript@1.1.2": {
+      "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"

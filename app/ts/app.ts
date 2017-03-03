@@ -139,7 +139,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.21.108');
+app.constant('version', '2.21.109');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -212,7 +212,7 @@ app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@2.2.0
 
 // The MathScript js library provides operator overloading at runtime.
 // The version should match the value in the Gruntfile.js
-app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.1.1', 'dist/davinci-mathscript.min.js'));
+app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.1.2', 'dist/davinci-mathscript.min.js'));
 
 /**
  * The BodyController exists for the lifetime of the application.

@@ -489,13 +489,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "						</a>\n" +
     "						<ul uib-dropdown-menu role=\"menu\">\n" +
     "							<li>\n" +
-    "								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
-    "							</li>\n" +
-    "							<li>\n" +
     "								<a ng-click='doUpload()' role='button'>Upload to GitHub</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
     "								<a ng-click='doPublish()' role='button'>Publish to STEMC arXiv</a>\n" +
+    "							</li>\n" +
+    "							<li>\n" +
+    "								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</li>\n" +

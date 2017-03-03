@@ -90,7 +90,7 @@ interface WorkspaceScope extends DoodleScope {
 
     // We can probably kill these in refactoring cleanup.
     updatePreview(delay: number): void;
-    previewIFrame: HTMLIFrameElement;
+    previewIFrame: HTMLIFrameElement | undefined;
 }
 
 export default WorkspaceScope;

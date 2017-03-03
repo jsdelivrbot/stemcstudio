@@ -51,7 +51,9 @@ export default function rebuildPreview(
         const preview = $window.document.getElementById(elementId);
         if (preview) {
             while (preview.children.length > 0) {
-                preview.removeChild(preview.firstChild);
+                if (preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
             }
             if (workspace && !workspace.isZombie()) {
                 /**

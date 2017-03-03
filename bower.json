@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.108",
+  "version": "2.21.109",
   "description": "Expressing Ideas through Computational Modeling",
   "homepage": "https://github.com/geometryzen/STEMCstudio",
   "authors": [
@@ -36,7 +36,7 @@
     "bootstrap3-dialog": "^1.35.3",
     "dat-gui": "^0.6.2",
     "davinci-eight": "^6.0.6",
-    "davinci-mathscript": "^1.1.1",
+    "davinci-mathscript": "^1.1.2",
     "davinci-units": "^1.5.4",
     "deck.js": "^1.1.0",
     "dialog-polyfill": "^0.4.5",

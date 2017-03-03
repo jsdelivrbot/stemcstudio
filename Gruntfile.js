@@ -556,17 +556,17 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.d.ts')
+            dest: prepend(target, 'vendor/davinci-mathscript@1.1.2/dist/davinci-mathscript.d.ts')
         },
         {
             // This version is bundled for transpile.
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.js')
+            dest: prepend(target, 'vendor/davinci-mathscript@1.1.2/dist/davinci-mathscript.js')
         },
         {
             // This version is loaded into iframe for the runtime.
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.min.js')
+            dest: prepend(target, 'vendor/davinci-mathscript@1.1.2/dist/davinci-mathscript.min.js')
         },
         {
             expand: true,
