@@ -10,6 +10,7 @@ import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
+import { LANGUAGE_REACT } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
@@ -35,6 +36,7 @@ extensionToMode['py'] = LANGUAGE_PYTHON;
 extensionToMode['scm'] = LANGUAGE_SCHEME;
 // extensionToMode['sass'] = 'SASS'
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT;
+extensionToMode['tsx'] = LANGUAGE_REACT;
 extensionToMode['txt'] = LANGUAGE_TEXT;
 extensionToMode['xml'] = LANGUAGE_XML;
 

@@ -6,6 +6,11 @@ import namesToOptions from './namesToOptions';
 import scriptURL from './scriptURL';
 import WsModel from '../../wsmodel/services/WsModel';
 
+interface Unit {
+    name: string;
+    fileNames: string[];
+}
+
 function optionsToNames(options: IOption[]): string[] {
     return options.map(function (option: IOption) { return option.name; });
 }
@@ -55,16 +60,16 @@ export default function updateWorkspaceTypings(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, options);
 
-    const rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function (option) { return { name: option.name, fileName: option.dts }; });
+    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { name: option.name, fileNames: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, options);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: { name: string; fileName: string }[] = addOpts.map(function (option) { return { name: option.name, fileName: option.dts }; });
+    let addUnits: Unit[] = addOpts.map(function (option) { return { name: option.name, fileNames: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {
-        addUnits = addUnits.concat({ name: 'lib', fileName: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
+        addUnits = addUnits.concat({ name: 'lib', fileNames: [FILENAME_TYPESCRIPT_CURRENT_LIB_DTS] });
     }
 
     /**
@@ -89,14 +94,19 @@ export default function updateWorkspaceTypings(
     };
 
     rmvUnits.forEach((rmvUnit) => {
-        wsModel.removeScript(rmvUnit.fileName, (err) => {
-            if (!err) {
-                olds.splice(olds.indexOf(rmvUnit.name), 1);
-            }
-            else {
-                console.warn(`removeScript(${rmvUnit.fileName}) failed. ${err}`);
-            }
-        });
+        for (const fileName of rmvUnit.fileNames) {
+            wsModel.removeScript(fileName, (err) => {
+                if (!err) {
+                    const index = olds.indexOf(rmvUnit.name);
+                    if (index >= 0) {
+                        olds.splice(index, 1);
+                    }
+                }
+                else {
+                    console.warn(`removeScript(${fileName}) failed. ${err}`);
+                }
+            });
+        }
     });
 
     // Make sure that the callback gets called, even when adding no files.
@@ -107,24 +117,26 @@ export default function updateWorkspaceTypings(
         let inFlightCount = 0;
         for (let i = 0; i < iLen; i++) {
             const name = names[i];
-            const addUnit = addUnits[name];
-            inFlightCount++;
-            readFile(addUnit.fileName, (err, content) => {
-                if (!err) {
-                    wsModel.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'), (err) => {
-                        if (!err) {
-                            olds.unshift(addUnit.name);
-                        }
-                        else {
-                            console.warn(`ensureScript(${addUnit.fileName}) failed. ${err}`);
-                        }
-                    });
-                }
-                inFlightCount--;
-                if (0 === inFlightCount) {
-                    callback();
-                }
-            });
+            const addUnit: Unit = addUnits[name];
+            for (const fileName of addUnit.fileNames) {
+                inFlightCount++;
+                readFile(fileName, (err, content) => {
+                    if (!err) {
+                        wsModel.ensureScript(fileName, content.replace(/\r\n?/g, '\n'), (err) => {
+                            if (!err) {
+                                olds.unshift(addUnit.name);
+                            }
+                            else {
+                                console.warn(`ensureScript(${fileName}) failed. ${err}`);
+                            }
+                        });
+                    }
+                    inFlightCount--;
+                    if (0 === inFlightCount) {
+                        callback();
+                    }
+                });
+            }
         }
     }
     else {

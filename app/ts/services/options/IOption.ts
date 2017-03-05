@@ -41,7 +41,7 @@ interface IOption {
     /**
      * TypeScript definitions.
      */
-    dts: string;
+    dts: string[];
 
     /**
      * JavaScript.

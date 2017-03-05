@@ -221,11 +221,11 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.2.0/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.1.0/src/worker.js',
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.3.0/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.1.0/dist/ace-workers.js',
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.3.0/dist/ace-workers.js',
             dest: prepend(target, 'js/ace-workers.js')
         },
         {
@@ -439,6 +439,18 @@ function copies(target) {
         {
             src: "museum/plotly@1.23.1/plotly.min.js",
             dest: prepend(target, 'vendor/plotly@1.23.1/plotly.min.js')
+        },
+        {
+            expand: true,
+            cwd: "museum/react@15.4.2",
+            src: ["**"],
+            dest: prepend(target, 'vendor/react@15.4.2')
+        },
+        {
+            expand: true,
+            cwd: "museum/react-dom@15.4.2",
+            src: ["**"],
+            dest: prepend(target, 'vendor/react-dom@15.4.2')
         },
         {
             src: "museum/requirejs@2.1.9/require.d.ts",

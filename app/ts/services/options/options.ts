@@ -25,6 +25,8 @@ app.factory('options', [
         const VERSION_JSXGRAPH = '0.99.5';
         const VERSION_NEWTON = '0.0.37';
         const VERSION_PLOTLY = '1.23.1';
+        const VERSION_REACT = '15.4.2';
+        const VERSION_REACT_DOM = '15.4.2';
         const VERSION_SOCKETIO_CLIENT = '1.5.1';
         const VERSION_STATSJS = '0.16.0';
         const VERSION_SYSTEMJS = '0.19.37';
@@ -105,6 +107,12 @@ app.factory('options', [
         function plotly(fileName: string): string {
             return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
         }
+        function react(fileName: string): string {
+            return vendorFolder('react', VERSION_REACT, void 0, fileName);
+        }
+        function reactDOM(fileName: string): string {
+            return vendorFolder('react-dom', VERSION_REACT_DOM, void 0, fileName);
+        }
         function socketIoClient(fileName: string): string {
             return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
         }
@@ -138,7 +146,7 @@ app.factory('options', [
                 version: VERSION_ANGULARJS,
                 visible: true,
                 css: [],
-                dts: angular('angular.d.ts'),
+                dts: [angular('angular.d.ts')],
                 js: [angular('angular.js')],
                 minJs: [angular('angular.min.js')],
                 dependencies: {}
@@ -165,7 +173,7 @@ app.factory('options', [
                 version: VERSION_BIWASCHEME,
                 visible: true,
                 css: [],
-                dts: biwascheme('biwascheme.d.ts'),
+                dts: [biwascheme('biwascheme.d.ts')],
                 js: [biwascheme('biwascheme.js')],
                 minJs: [biwascheme('biwascheme.min.js')],
                 dependencies: {}
@@ -178,7 +186,7 @@ app.factory('options', [
                 version: VERSION_CSV,
                 visible: true,
                 css: [],
-                dts: csv('dist', 'davinci-csv.d.ts'),
+                dts: [csv('dist', 'davinci-csv.d.ts')],
                 js: [csv('dist', 'davinci-csv.js')],
                 minJs: [csv('dist', 'davinci-csv.js')],
                 dependencies: {}
@@ -191,7 +199,7 @@ app.factory('options', [
                 version: VERSION_GEOCAS,
                 visible: true,
                 css: [],
-                dts: geocas('dist', 'geocas.d.ts'),
+                dts: [geocas('dist', 'geocas.d.ts')],
                 js: [geocas('dist', 'geocas.js')],
                 minJs: [geocas('dist', 'geocas.js')],
                 dependencies: {}
@@ -204,7 +212,7 @@ app.factory('options', [
                 version: VERSION_GLMATRIX,
                 visible: true,
                 css: [],
-                dts: glMatrix('gl-matrix.d.ts'),
+                dts: [glMatrix('gl-matrix.d.ts')],
                 js: [glMatrix('gl-matrix-min.js')],
                 minJs: [glMatrix('gl-matrix-min.js')],
                 dependencies: {}
@@ -217,7 +225,7 @@ app.factory('options', [
                 version: VERSION_DAT_GUI,
                 visible: true,
                 css: [],
-                dts: datGUI('dat-gui.d.ts'),
+                dts: [datGUI('dat-gui.d.ts')],
                 js: [datGUI('dat-gui.js')],
                 minJs: [datGUI('dat-gui.min.js')],
                 dependencies: {}
@@ -230,7 +238,7 @@ app.factory('options', [
                 version: VERSION_EIGHT,
                 visible: true,
                 css: [eight('dist', 'davinci-eight.css')],
-                dts: eight('dist', 'davinci-eight.d.ts'),
+                dts: [eight('dist', 'davinci-eight.d.ts')],
                 js: [eight('dist', 'davinci-eight.js')],
                 minJs: [eight('dist', 'davinci-eight.js')],
                 dependencies: {}
@@ -243,7 +251,7 @@ app.factory('options', [
                 version: VERSION_NEWTON,
                 visible: true,
                 css: [],
-                dts: newton('dist', 'davinci-newton.d.ts'),
+                dts: [newton('dist', 'davinci-newton.d.ts')],
                 js: [newton('dist', 'davinci-newton.js')],
                 minJs: [newton('dist', 'davinci-newton.js')],
                 dependencies: {}
@@ -256,7 +264,7 @@ app.factory('options', [
                 version: VERSION_UNITS,
                 visible: true,
                 css: [],
-                dts: units('dist', 'davinci-units.d.ts'),
+                dts: [units('dist', 'davinci-units.d.ts')],
                 js: [units('dist', 'davinci-units.js')],
                 minJs: [units('dist', 'davinci-units.js')],
                 dependencies: {}
@@ -269,7 +277,7 @@ app.factory('options', [
                 version: VERSION_D3_V3,
                 visible: true,
                 css: [],
-                dts: d3('d3.d.ts'),
+                dts: [d3('d3.d.ts')],
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.min.js`],
                 dependencies: {}
@@ -282,7 +290,7 @@ app.factory('options', [
                 version: VERSION_DOMREADY,
                 visible: true,
                 css: [],
-                dts: domready('domready.d.ts'),
+                dts: [domready('domready.d.ts')],
                 js: [domready('domready.js')],
                 minJs: [domready('domready.js')],
                 dependencies: {}
@@ -295,7 +303,7 @@ app.factory('options', [
                 version: VERSION_JASMINE,
                 visible: true,
                 css: [jasmine('jasmine.css')],
-                dts: jasmine('jasmine.d.ts'),
+                dts: [jasmine('jasmine.d.ts')],
                 js: [jasmine('jasmine.js'), jasmine('jasmine-html.js')],
                 minJs: [jasmine('jasmine.js'), jasmine('jasmine-html.js')],
                 dependencies: {}
@@ -308,7 +316,7 @@ app.factory('options', [
                 version: VERSION_JQUERY,
                 visible: true,
                 css: [],
-                dts: jquery('jquery.d.ts'),
+                dts: [jquery('jquery.d.ts')],
                 js: [jquery('jquery.js')],
                 minJs: [jquery('jquery.min.js')],
                 dependencies: {}
@@ -322,7 +330,7 @@ app.factory('options', [
                 version: VERSION_BACONJS,
                 visible: true,
                 css: [],
-                dts: baconjs('baconjs.d.ts'),
+                dts: [baconjs('baconjs.d.ts')],
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.min.js`],
                 dependencies: { 'jquery': VERSION_JQUERY }
@@ -336,7 +344,7 @@ app.factory('options', [
                 version: VERSION_DECKJS,
                 visible: true,
                 css: [],
-                dts: deck('deck.core.d.ts'),
+                dts: [deck('deck.core.d.ts')],
                 js: [deck('deck.core.js')],
                 minJs: [deck('deck.core.js')],
                 dependencies: { 'jquery': VERSION_JQUERY }
@@ -349,7 +357,7 @@ app.factory('options', [
                 version: VERSION_JSXGRAPH,
                 visible: true,
                 css: [],
-                dts: jsxgraph('jsxgraph.d.ts'),
+                dts: [jsxgraph('jsxgraph.d.ts')],
                 // js: [jsxgraph('jsxgraphcore.js')],
                 // minJs: [jsxgraph('jsxgraphcore.js')],
                 // CDNJS does not deploy the correct version?
@@ -365,10 +373,36 @@ app.factory('options', [
                 version: VERSION_PLOTLY,
                 visible: true,
                 css: [],
-                dts: plotly('plotly.d.ts'),
+                dts: [plotly('plotly.d.ts')],
                 js: [plotly('plotly.js')],
                 minJs: [plotly('plotly.min.js')],
                 dependencies: {}
+            },
+            {
+                name: 'react',
+                moniker: 'React',
+                description: "A JavaScript library for building user interfaces",
+                homepage: 'https://facebook.github.io/react/',
+                version: VERSION_REACT,
+                visible: true,
+                css: [],
+                dts: [react('react.d.ts')],
+                js: [react('react.js')],
+                minJs: [react('react.min.js')],
+                dependencies: {}
+            },
+            {
+                name: 'react-dom',
+                moniker: 'ReactDOM',
+                description: "React package for working with the DOM",
+                homepage: 'https://facebook.github.io/react/',
+                version: VERSION_REACT_DOM,
+                visible: true,
+                css: [],
+                dts: [reactDOM('react-dom.d.ts')],
+                js: [reactDOM('react-dom.js')],
+                minJs: [reactDOM('react-dom.min.js')],
+                dependencies: { 'react': VERSION_REACT }
             },
             {
                 name: 'socket.io-client',
@@ -378,7 +412,7 @@ app.factory('options', [
                 version: VERSION_SOCKETIO_CLIENT,
                 visible: true,
                 css: [],
-                dts: socketIoClient('socket.io-client.d.ts'),
+                dts: [socketIoClient('socket.io-client.d.ts')],
                 js: [socketIoClient('socket.io.js')],
                 minJs: [socketIoClient('socket.io.js')],
                 dependencies: {}
@@ -391,7 +425,7 @@ app.factory('options', [
                 version: VERSION_STATSJS,
                 visible: true,
                 css: [],
-                dts: statsjs('stats.d.ts'),
+                dts: [statsjs('stats.d.ts')],
                 js: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.js'],
                 minJs: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js'],
                 dependencies: {}
@@ -404,7 +438,7 @@ app.factory('options', [
                 version: VERSION_SYSTEMJS,
                 visible: true,
                 css: [],
-                dts: systemjs('system.d.ts'),
+                dts: [systemjs('system.d.ts')],
                 js: [systemjs('system.js')],
                 minJs: [systemjs('system.js')],
                 dependencies: {}
@@ -417,7 +451,7 @@ app.factory('options', [
                 version: VERSION_THREEJS,
                 visible: true,
                 css: [],
-                dts: threejs('three.d.ts'),
+                dts: [threejs('three.d.ts')],
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.min.js`],
                 dependencies: {}
@@ -430,7 +464,7 @@ app.factory('options', [
                 version: VERSION_TWO,
                 visible: true,
                 css: [],
-                dts: two('two.d.ts'),
+                dts: [two('two.d.ts')],
                 js: [two('two.js')],
                 minJs: [two('two.min.js')],
                 dependencies: {}

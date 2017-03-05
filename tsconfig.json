@@ -16,7 +16,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "outDir": "generated/js",
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "suppressImplicitAnyIndexErrors": true,
         "traceResolution": false
     },
@@ -50,6 +50,8 @@
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
-        "./node_modules/typescript/lib/lib.d.ts"
+        "./node_modules/typescript/lib/lib.d.ts",
+        "!node_modules/@types/react/index.d.ts",
+        "!node_modules/@types/react-dom/index.d.ts"
     ]
 }

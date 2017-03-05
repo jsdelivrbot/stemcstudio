@@ -48,9 +48,10 @@ import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
+import { LANGUAGE_REACT } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
-import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
@@ -638,6 +639,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
+            case LANGUAGE_REACT:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_XML: {
                 // Ignore.
@@ -817,6 +819,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
+            case LANGUAGE_REACT:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_XML: {
                 // Ignore

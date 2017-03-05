@@ -40,10 +40,11 @@ import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_JSON } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
-import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
-import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_REACT } from '../../languages/modes';
+import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
 import refChange from '../../utils/refChange';
@@ -53,7 +54,8 @@ function isTypeScript(path: string): boolean {
     if (period >= 0) {
         const extension = path.substring(period + 1);
         switch (extension) {
-            case 'ts': {
+            case 'ts':
+            case 'tsx': {
                 return true;
             }
             default: {
@@ -310,7 +312,8 @@ function factory(
                                 });
                                 break;
                             }
-                            case LANGUAGE_TYPE_SCRIPT: {
+                            case LANGUAGE_TYPE_SCRIPT:
+                            case LANGUAGE_REACT: {
                                 session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);

@@ -20,7 +20,7 @@ System.config({
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.2",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.1.0",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.3.0",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.2",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.6.4",
@@ -380,7 +380,7 @@ System.config({
       "ws": "npm:ws@1.0.1",
       "zlib": "github:jspm/nodelibs-zlib@0.1.0"
     },
-    "npm:error-ex@1.3.0": {
+    "npm:error-ex@1.3.1": {
       "is-arrayish": "npm:is-arrayish@0.2.1",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
@@ -500,7 +500,7 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:parse-json@2.2.0": {
-      "error-ex": "npm:error-ex@1.3.0"
+      "error-ex": "npm:error-ex@1.3.1"
     },
     "npm:parsejson@0.0.1": {
       "better-assert": "npm:better-assert@1.0.2"

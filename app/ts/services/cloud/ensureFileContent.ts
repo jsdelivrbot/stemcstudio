@@ -1,11 +1,12 @@
 import stripWS from '../../utils/stripWS';
 import modeFromName from '../../utils/modeFromName';
-import {LANGUAGE_CSS} from '../../languages/modes';
-import {LANGUAGE_HTML} from '../../languages/modes';
-import {LANGUAGE_LESS} from '../../languages/modes';
-import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
-import {LANGUAGE_MARKDOWN} from '../../languages/modes';
-import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
+import { LANGUAGE_CSS } from '../../languages/modes';
+import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_LESS } from '../../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../../languages/modes';
+import { LANGUAGE_REACT } from '../../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 
 export default function ensureFileContent(name: string, content: string): string {
     const mode = modeFromName(name);
@@ -19,6 +20,7 @@ export default function ensureFileContent(name: string, content: string): string
             }
         }
         case LANGUAGE_JAVA_SCRIPT:
+        case LANGUAGE_REACT:
         case LANGUAGE_TYPE_SCRIPT: {
             if (stripWS(content).length > 0) {
                 return content;

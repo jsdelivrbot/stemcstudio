@@ -143,7 +143,8 @@ function isTypeScript(path: string): boolean {
     if (period >= 0) {
         const extension = path.substring(period + 1);
         switch (extension) {
-            case 'ts': {
+            case 'ts':
+            case 'tsx': {
                 return true;
             }
             default: {
