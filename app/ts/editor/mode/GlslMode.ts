@@ -8,11 +8,12 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 
 export default class GlslMode extends CppMode {
-    $id = "ace/mode/glsl";
+
+
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.highlighter = GlslHighlightRules;
-
+        this.$id = "ace/mode/glsl";
+        this.HighlightRules = GlslHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CstyleFoldMode();
@@ -55,5 +56,4 @@ export default class GlslMode extends CppMode {
             callback(e, void 0);
         }
     }
-
 }

@@ -27,8 +27,9 @@ export default class MarkdownFoldMode extends FoldMode {
             return "";
 
         if (line[0] === "`") {
-            if (session.bgTokenizer.getState(row) === "start")
+            if (session.getState(row) === "start") {
                 return "end";
+            }
             return "start";
         }
 
@@ -46,14 +47,15 @@ export default class MarkdownFoldMode extends FoldMode {
         }
 
         if (line[0] === "`") {
-            if (session.bgTokenizer.getState(row) !== "start") {
+            if (session.getState(row) !== "start") {
                 while (++row < maxRow) {
                     line = session.getLine(row);
                     if (line[0] === "`" && line.substring(0, 3) === "```")
                         break;
                 }
                 return new Range(startRow, startColumn, row, 0);
-            } else {
+            }
+            else {
                 while (row-- > 0) {
                     line = session.getLine(row);
                     if (line[0] === "`" && line.substring(0, 3) === "```")

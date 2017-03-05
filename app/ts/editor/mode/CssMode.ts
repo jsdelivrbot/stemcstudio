@@ -9,38 +9,21 @@ import Annotation from "../Annotation";
 import EditSession from "../EditSession";
 import Position from '../Position';
 
-/**
- * @class CssMode
- * @extends TextMode
- */
 export default class CssMode extends TextMode {
     $id = "ace/mode/css";
     $outdent: MatchingBraceOutdent;
     blockComment = { start: "/*", end: "*/" };
     $completer: CssCompletions;
 
-    /**
-     * @class CssMode
-     * @constructor
-     * @param workerUrl {string}
-     * @param scriptImports {string[]}
-     */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.highlighter = CssHighlightRules;
+        this.HighlightRules = CssHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CssBehaviour();
         this.$completer = new CssCompletions();
         this.foldingRules = new CStyleFoldMode();
     }
 
-    /**
-     * @method getNextLineIndent
-     * @param state {string}
-     * @param line {string}
-     * @param tab {string}
-     * @return {string}
-     */
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
 

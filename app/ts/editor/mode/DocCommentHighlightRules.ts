@@ -2,14 +2,11 @@ import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
 
 /**
- * @class DocCommentHighlightRules
- * @extends TextHighlightRules
+ * 
  */
 export default class DocCommentHighlightRules extends TextHighlightRules {
-
     /**
-     * @class DocCommentHighlightRules
-     * @constructor
+     * 
      */
     constructor() {
         super();
@@ -19,24 +16,16 @@ export default class DocCommentHighlightRules extends TextHighlightRules {
                     token: "comment.doc.tag",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
+                DocCommentHighlightRules.getTagRule(),
                 {
-                    token: "comment.doc.tag",
-                    regex: "\\bTODO\\b"
-                },
-                {
-                    defaultToken: "comment.doc"
+                    defaultToken: "comment.doc",
+                    caseInsensitive: true
                 }
             ]
         };
     }
 
-    /**
-     * @method getStartRule
-     * @param start {string}
-     * @return {Rule}
-     * @static
-     */
-    public static getStartRule(start: string): Rule {
+    public static getStartRule(start: string): Rule<string> {
         return {
             token: "comment.doc", // doc comment
             regex: "\\/\\*(?=\\*)",
@@ -44,17 +33,18 @@ export default class DocCommentHighlightRules extends TextHighlightRules {
         };
     }
 
-    /**
-     * @method getEndRule
-     * @param start {string}
-     * @return {Rule}
-     * @static
-     */
-    public static getEndRule(start: string): Rule {
+    public static getEndRule(start: string): Rule<string> {
         return {
             token: "comment.doc", // closing comment
             regex: "\\*\\/",
             next: start
+        };
+    }
+
+    public static getTagRule(start?: string): Rule<string> {
+        return {
+            token: "comment.doc.tag.storage.type",
+            regex: "\\b(?:TODO|FIXME|XXX|HACK)\\b"
         };
     }
 }

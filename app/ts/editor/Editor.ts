@@ -208,6 +208,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      *
      */
     public readonly snippetManager = new SnippetManager();
+
+    /**
+     * 
+     */
     public tabstopManager: TabstopManager | null;
     /**
      * 
@@ -1307,17 +1311,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.renderer.setFontSize(fontSize);
     }
 
-    /**
-     * @param content
-     * @param options
-     */
     insertSnippet(content: string, options?: any): void {
         return this.snippetManager.insertSnippet(this, content, options);
     }
 
-    /**
-     * @param options
-     */
     expandSnippet(options?: any): boolean {
         return this.snippetManager.expandWithTab(this, options);
     }

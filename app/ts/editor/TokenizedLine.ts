@@ -1,9 +1,7 @@
-import { BasicToken } from './Token';
-
 /**
  *
  */
-interface TokenizedLine {
+interface TokenizedLine<T> {
 
     /**
      *
@@ -13,7 +11,7 @@ interface TokenizedLine {
     /**
      *
      */
-    tokens: BasicToken[];
+    tokens: T[];
 }
 
 export default TokenizedLine;

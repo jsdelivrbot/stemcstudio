@@ -38,7 +38,7 @@ export default class GlslHighlightRules extends CppHighlightRules {
         }, "identifier");
 
         this.$rules = new CppHighlightRules().$rules;
-        this.$rules['start'].forEach(function (rule: Rule) {
+        this.$rules['start'].forEach(function (rule: Rule<string>) {
             if (typeof rule.token === "function")
                 rule.token = keywordMapper;
         });

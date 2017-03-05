@@ -36,7 +36,11 @@ export default class TextMode implements LanguageMode {
      */
     public wrap: 'auto' | 'code' | 'text' = 'text';
 
-    protected highlighter: HighlighterFactory = TextHighlightRules;
+    /**
+     * The factory for creating a Highlighter.
+     * The naming convention is to indicate that the 'new' operator should be used.
+     */
+    protected HighlightRules: HighlighterFactory = TextHighlightRules;
 
     protected $behaviour = new Behaviour();
     protected $defaultBehaviour = new CstyleBehaviour();
@@ -70,6 +74,7 @@ export default class TextMode implements LanguageMode {
     private $embeds: string[];
     private $modes: { [path: string]: LanguageMode };
     private completionKeywords: string[];
+    public $highlightRuleConfig = {};
     public $indentWithTabs: boolean;
     public foldingRules: FoldMode;
     public getMatching: (session: EditSession) => Range;
@@ -102,7 +107,7 @@ export default class TextMode implements LanguageMode {
      */
     getTokenizer(): Tokenizer {
         if (!this.$tokenizer) {
-            this.$highlightRules = this.$highlightRules || new this.highlighter();
+            this.$highlightRules = this.$highlightRules || new this.HighlightRules(this.$highlightRuleConfig);
             this.$tokenizer = new Tokenizer(this.$highlightRules.getRules());
         }
         return this.$tokenizer;
@@ -255,10 +260,7 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @param state
-     * @param session
-     * @param range
-     * @param cursor
+     *
      */
     toggleBlockComment(state: string, session: EditSession, range: Range, cursor: Position): void {
         let comment = this.blockComment;
@@ -419,14 +421,6 @@ export default class TextMode implements LanguageMode {
 
     /**
      * This method is called by the Editor.
-     *
-     * @method transformAction
-     * @param state {string}
-     * @param action {string}
-     * @param editor {Editor}
-     * @param session {EditSession}
-     * @param param {any} This will usually be a Range or a text string.
-     * @return {any} This will usually be a Range or an object: {text: string; selection: number[]}
      */
     // TODO: May be able to make this type-safe by separating cases where param is string from Range.
     // string => {text: string; selection: number[]} (This corresponds to the insert operation)
@@ -454,7 +448,7 @@ export default class TextMode implements LanguageMode {
         const completionKeywords: string[] = [];
         if (!this.completionKeywords) {
 
-            const rulesByState: { [stateName: string]: Rule[] } = this.$tokenizer.states;
+            const rulesByState: { [stateName: string]: Rule<string>[] } = this.$tokenizer.states;
             const stateNames = Object.keys(rulesByState);
             const sLen = stateNames.length;
             for (let s = 0; s < sLen; s++) {
@@ -462,7 +456,7 @@ export default class TextMode implements LanguageMode {
                 /**
                  * The rules for this particular state.
                  */
-                const rules: Rule[] = rulesByState[stateName];
+                const rules: Rule<string>[] = rulesByState[stateName];
                 for (let r = 0, l = rules.length; r < l; r++) {
                     const rule = rules[r];
                     if (typeof rule.token === "string") {

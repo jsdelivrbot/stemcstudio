@@ -20,9 +20,7 @@
         "suppressImplicitAnyIndexErrors": true,
         "traceResolution": false
     },
-    "exclude": [
-        "./node_modules/@types/node/index.d.ts"
-    ],
+    "exclude": [],
     "files": [
         "app/ts/app.ts",
         "app/ts/bootstrap.ts",

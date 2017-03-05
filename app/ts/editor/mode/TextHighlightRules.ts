@@ -1,16 +1,16 @@
 import { deepCopy } from "../lib/lang";
-import Rule from '../Rule';
+import { Rule } from '../Rule';
 import Highlighter from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
 
-const pushState = function (this: Rule, currentState: string, stack: string[]): string {
+const pushState = function (this: Rule<string>, currentState: string, stack: string[]): string {
     if (currentState !== "start" || stack.length) {
         stack.unshift(this.nextState, currentState);
     }
     return this.nextState;
 };
 
-const popState = function (this: Rule, currentState: string, stack: string[]): string {
+const popState = function (this: Rule<string>, currentState: string, stack: string[]): string {
     stack.shift();
     return stack.shift() || "start";
 };
@@ -20,11 +20,11 @@ const popState = function (this: Rule, currentState: string, stack: string[]): s
  */
 export default class TextHighlightRules implements Highlighter {
     /**
-     * FIXME: This should be called rulesByStateName.
+     * This could be called rulesByStateName.
      */
-    $rules: { [stateName: string]: Rule[] };
+    $rules: { [stateName: string]: Rule<string>[] };
 
-    $embeds: string[];
+    private readonly $embeds: string[] = [];
 
     $keywordList: string[];
 
@@ -50,10 +50,9 @@ export default class TextHighlightRules implements Highlighter {
     }
 
     /**
-     * @param rules
-     * @param prefix
+     *
      */
-    addRules(rules: { [name: string]: Rule[] }, prefix?: string): void {
+    addRules(rules: { [name: string]: Rule<string>[] }, prefix?: string): void {
         if (!prefix) {
             for (const key in rules) {
                 if (rules.hasOwnProperty(key)) {
@@ -84,14 +83,14 @@ export default class TextHighlightRules implements Highlighter {
     /**
      *
      */
-    getRules(): { [name: string]: Rule[] } {
+    getRules(): { [name: string]: Rule<string>[] } {
         return this.$rules;
     }
 
     /**
      * FIXME: typing of 1st parameter.
      */
-    embedRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule[] }, prefix: string, escapeRules: Rule[], states?: string[], append?: boolean): void {
+    embedRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule<string>[] }, prefix: string, escapeRules: Rule<string>[], states?: string[], append?: boolean): void {
         const embedRules = typeof highlightRules === "function"
             ? new highlightRules().getRules()
             : highlightRules;
@@ -118,9 +117,6 @@ export default class TextHighlightRules implements Highlighter {
             }
         }
 
-        if (!this.$embeds) {
-            this.$embeds = [];
-        }
         this.$embeds.push(prefix);
     }
 
@@ -144,7 +140,7 @@ export default class TextHighlightRules implements Highlighter {
             state['processed'] = true;
             for (let i = 0; i < state.length; i++) {
                 let rule = state[i];
-                let toInsert: Rule[] = null;
+                let toInsert: Rule<string>[] = null;
                 if (Array.isArray(rule)) {
                     toInsert = rule;
                     rule = {};
@@ -166,9 +162,10 @@ export default class TextHighlightRules implements Highlighter {
                 }
                 const next = rule.next || rule.push;
                 if (next && Array.isArray(next)) {
-                    let stateName = rule['stateName'];
+                    let stateName = rule.stateName;
                     if (!stateName) {
-                        stateName = rule.token;
+                        // FIXME
+                        stateName = <string>rule.token;
                         if (typeof stateName !== "string")
                             stateName = stateName[0] || "";
                         if (rules[stateName])
@@ -177,7 +174,8 @@ export default class TextHighlightRules implements Highlighter {
                     rules[stateName] = next;
                     rule.next = stateName;
                     processState(stateName);
-                } else if (next === "pop") {
+                }
+                else if (next === "pop") {
                     rule.next = popState;
                 }
 
@@ -215,7 +213,7 @@ export default class TextHighlightRules implements Highlighter {
                 }
 
                 if (toInsert) {
-                    let args: (number | Rule)[] = [i, 1];
+                    let args: (number | Rule<string>)[] = [i, 1];
                     args = args.concat(toInsert);
                     if (rule.noEscape)
                         args = args.filter(function (x) {

@@ -6,7 +6,6 @@ import EventEmitterClass from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
 import Tokenizer from './Tokenizer';
 import { BasicToken } from './Token';
-import TokenizedLine from './TokenizedLine';
 
 /**
  * Symbolic constant for the timer handle.
@@ -146,12 +145,12 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             // We are in uncharted territory...
             // We don't seem to end up here in normal scenarios.
             // There is good reason to believe that this method MUST return a string.
-            console.warn(`states[row]: string[] => ${JSON.stringify(state)}`);
             if (state.length > 0) {
-                // FIXME: May need to be more sophisticated here.
                 return state[0];
             }
             else {
+                // We are in uncharted territory...
+                console.warn(`states[row]: string[] => ${JSON.stringify(state)}`);
                 // [] || 'start' => [], so an empty array is consistent with the
                 // original code, but that breaks the API contract. 
                 // return void 0;
@@ -277,7 +276,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             const line: string = this.doc.getLine(row);
             const state = this.states[row - 1];
 
-            const data: TokenizedLine = this.tokenizer.getLineTokens(line, state);
+            const data = this.tokenizer.getLineTokens(line, state);
 
             // Because state[row]: string | string[], ...
             if (this.states[row] + "" !== data.state + "") {

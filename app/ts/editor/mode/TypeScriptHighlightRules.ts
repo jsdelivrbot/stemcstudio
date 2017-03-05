@@ -1,11 +1,11 @@
 import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
 import Rule from '../Rule';
 
-export default class TypeScriptHighlightRiles extends JavaScriptHighlightRules {
+export default class TypeScriptHighlightRules extends JavaScriptHighlightRules {
 
-    constructor(options?: {}) {
+    constructor(options?: { jsx?: boolean }) {
         super(options);
-        const tsRules: Rule[] = [
+        const tsRules: Rule<string>[] = [
             // Match stuff like: module name {...}
             {
                 token: ["keyword.operator.ts", "text", "variable.parameter.function.ts", "text"],
@@ -44,8 +44,8 @@ export default class TypeScriptHighlightRiles extends JavaScriptHighlightRules {
             }
         ];
 
-        const JSRules = new JavaScriptHighlightRules().getRules();
-        const startRules: Rule[] = JSRules['start'];
+        const JSRules = new JavaScriptHighlightRules({ jsx: (options && options.jsx) === true }).getRules();
+        const startRules: Rule<string>[] = JSRules['start'];
 
         JSRules['start'] = tsRules.concat(startRules);
         this.$rules = JSRules;

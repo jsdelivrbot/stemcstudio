@@ -8,13 +8,13 @@ import CStyleFoldMode from "./folding/CstyleFoldMode";
 import EditSession from "../EditSession";
 
 export default class JsonMode extends TextMode {
-    public $id = "ace/mode/json";
-    private $outdent: MatchingBraceOutdent;
+
+    private readonly $outdent = new MatchingBraceOutdent();
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.highlighter = JsonHighlightRules;
-        this.$outdent = new MatchingBraceOutdent();
+        this.$id = "ace/mode/json";
+        this.HighlightRules = JsonHighlightRules;
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();
     }

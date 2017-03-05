@@ -6,11 +6,13 @@ import GlslMode from '../../editor/mode/GlslMode';
 import HaskellMode from '../../editor/mode/HaskellMode';
 import HtmlMode from '../../editor/mode/HtmlMode';
 import JavaScriptMode from '../../editor/mode/JavaScriptMode';
+import JsxMode from '../../editor/mode/JsxMode';
 import JsonMode from '../../editor/mode/JsonMode';
 import MarkdownMode from '../../editor/mode/MarkdownMode';
 import PythonMode from '../../editor/mode/PythonMode';
 import TextMode from '../../editor/mode/TextMode';
 import TypeScriptMode from '../../editor/mode/TypeScriptMode';
+import TsxMode from '../../editor/mode/TsxMode';
 import XmlMode from '../../editor/mode/XmlMode';
 import EditSession from '../../editor/EditSession';
 import Renderer from '../../editor/Renderer';
@@ -37,13 +39,14 @@ import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_HASKELL } from '../../languages/modes';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_JSX } from '../../languages/modes';
 import { LANGUAGE_JSON } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
-import { LANGUAGE_REACT } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
+import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
@@ -312,9 +315,26 @@ function factory(
                                 });
                                 break;
                             }
-                            case LANGUAGE_TYPE_SCRIPT:
-                            case LANGUAGE_REACT: {
+                            case LANGUAGE_JSX: {
+                                session.setLanguageMode(new JsxMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
+                            case LANGUAGE_TYPE_SCRIPT: {
                                 session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
+                            case LANGUAGE_TSX: {
+                                session.setLanguageMode(new TsxMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }

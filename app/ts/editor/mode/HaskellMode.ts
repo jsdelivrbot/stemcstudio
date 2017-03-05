@@ -6,14 +6,16 @@ import WorkerClient from "../worker/WorkerClient";
 import EditSession from "../EditSession";
 
 export default class HaskellMode extends TextMode {
-    lineCommentStart = "--";
-    blockComment = { start: "/*", end: "*/" };
-    $id = "ace/mode/haskell";
+
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.highlighter = HaskellHighlightRules;
+        this.$id = "ace/mode/haskell";
+        this.blockComment = { start: "/*", end: "*/" };
+        this.lineCommentStart = "--";
+        this.HighlightRules = HaskellHighlightRules;
         this.foldingRules = new CstyleFoldMode();
     }
+
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
         const worker = new WorkerClient(this.workerUrl);
 
@@ -51,5 +53,4 @@ export default class HaskellMode extends TextMode {
             callback(e, void 0);
         }
     }
-
 }

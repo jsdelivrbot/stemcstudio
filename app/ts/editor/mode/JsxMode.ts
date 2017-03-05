@@ -1,22 +1,20 @@
-import TextMode from "./TextMode";
-import CppHighlightRules from "./CppHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
+import JsxHighlightRules from './JsxHighlightRules';
+import TextMode from './TextMode';
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
+import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import EditSession from "../EditSession";
 
-export default class CppMode extends TextMode {
-    $id = "ace/mode/c_cpp";
-    $outdent: MatchingBraceOutdent;
+export default class JsxMode extends TextMode {
+    private readonly $outdent = new MatchingBraceOutdent();
     lineCommentStart = "//";
     blockComment = { start: "/*", end: "*/" };
+    $id = "ace/mode/jsx";
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = CppHighlightRules;
-        this.$outdent = new MatchingBraceOutdent();
+        this.HighlightRules = JsxHighlightRules;
         this.$behaviour = new CstyleBehaviour();
-        // No completer available yet.
         this.foldingRules = new CStyleFoldMode();
     }
 
@@ -25,7 +23,6 @@ export default class CppMode extends TextMode {
 
         const tokenizedLine = this.getTokenizer().getLineTokens(line, state);
         const tokens = tokenizedLine.tokens;
-        const endState = tokenizedLine.state;
 
         if (tokens.length && tokens[tokens.length - 1].type === "comment") {
             return indent;
@@ -37,24 +34,12 @@ export default class CppMode extends TextMode {
                 indent += tab;
             }
         }
-        else if (state === "doc-start") {
-            if (endState === "start") {
-                return "";
-            }
-            const match = line.match(/^\s*(\/?)\*/);
-            if (match) {
-                if (match[1]) {
-                    indent += " ";
-                }
-                indent += "* ";
-            }
-        }
 
         return indent;
     }
 
-    checkOutdent(state: string, line: string, text: string): boolean {
-        return this.$outdent.checkOutdent(line, text);
+    checkOutdent(state: string, line: string, input: string): boolean {
+        return this.$outdent.checkOutdent(line, input);
     }
 
     autoOutdent(state: string, session: EditSession, row: number): void {

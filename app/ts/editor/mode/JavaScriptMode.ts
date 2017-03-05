@@ -11,31 +11,23 @@ import EditSession from "../EditSession";
  *
  */
 export default class JavaScriptMode extends TextMode {
-    $outdent: MatchingBraceOutdent;
-    blockComment: { start: string; end: string };
+
+    private readonly $outdent = new MatchingBraceOutdent();
 
     /**
      *
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "ace/mode/javascript";
         // The Tokenizer will be built using these rules.
-        this.highlighter = JavaScriptHighlightRules;
-
-        this.$outdent = new MatchingBraceOutdent();
+        this.HighlightRules = JavaScriptHighlightRules;
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();
         this.lineCommentStart = "//";
         this.blockComment = { start: "/*", end: "*/" };
-
-        this.$id = "ace/mode/javascript";
     }
 
-    /**
-     * @param state
-     * @param line
-     * @param tab
-     */
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
 
@@ -75,18 +67,12 @@ export default class JavaScriptMode extends TextMode {
 
     checkOutdent(state: string, line: string, text: string): boolean {
         return this.$outdent.checkOutdent(line, text);
-    };
+    }
 
     autoOutdent(state: string, session: EditSession, row: number): void {
         this.$outdent.autoOutdent(session, row);
-    };
+    }
 
-    /**
-     * @method createWorker
-     * @param session {EditSession}
-     * @param callback {(err: any, worker?: WorkerClient) => any}
-     * @return {WorkerClient}
-     */
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
 
         const worker = new WorkerClient(this.workerUrl);

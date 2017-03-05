@@ -92,8 +92,8 @@ export default class HtmlHighlightRules extends XmlHighlightRules {
         });
 
         this.embedTagRules(CssHighlightRules, "css-", "style");
-        this.embedTagRules(new JavaScriptHighlightRules({ noJSX: true }).getRules(), "js-", "script");
-        this.embedTagRules(new TypeScriptHighlightRules({ noJSX: true }).getRules(), "ts-", "script");
+        this.embedTagRules(new JavaScriptHighlightRules({ jsx: false }).getRules(), "js-", "script");
+        this.embedTagRules(new TypeScriptHighlightRules({ jsx: false }).getRules(), "ts-", "script");
 
         if (this.constructor === HtmlHighlightRules) {
             this.normalizeRules();

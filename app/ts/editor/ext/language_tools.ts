@@ -1,5 +1,4 @@
 // import Command from '../commands/Command';
-// import SnippetManager from "SnippetManager";
 // import AutoCompleteCommand from '../autocomplete/AutoCompleteCommand';
 import Completer from '../autocomplete/Completer';
 // import CompletionManager from '../autocomplete/CompletionManager';

@@ -4,12 +4,18 @@
 // Therefore, the Tokenizer would appear to be the authority on the type definition for Rule.
 //
 
-export type RuleToken = string | string[] | ((value: any, state: string, stack: string[]) => any) | null | undefined;
+export type RuleToken<T> = string | string[] | ((value: any, state: string, stack: T[]) => any) | null | undefined;
 
 /**
- *
+ * The type parameter T is the type for the stack entry.
+ * In normal tokenizing the stack entry is a string.
  */
-export interface Rule {
+export interface Rule<T> {
+
+    /**
+     * Legacy?
+     */
+    stateName?: string;
 
     /**
      *
@@ -43,8 +49,7 @@ export interface Rule {
     noEscape?: boolean;
 
     /**
-     * FIXME: Something strange going on with SnippetManager and the stack?
-     *        TypeScript 2.0 really starts to complain!
+     *
      */
     onMatch?: ((value: string, state: string, stack: string[]) => any) | null;
 
@@ -56,7 +61,7 @@ export interface Rule {
     /**
      *
      */
-    push?: string | Rule[];
+    push?: string | Rule<T>[];
 
     /**
      *
@@ -66,7 +71,7 @@ export interface Rule {
     /**
      * 
      */
-    rules?: { [stateName: string]: Rule[] };
+    rules?: { [stateName: string]: Rule<T>[] };
 
     /**
      *
@@ -76,7 +81,7 @@ export interface Rule {
     /**
      * The token may be a string, or a string[], or a function (like an onMatch).
      */
-    token?: RuleToken;
+    token?: RuleToken<T>;
 
     /**
      *
@@ -87,7 +92,7 @@ export interface Rule {
      * The Tokenizer believes that this is either a string or a function.
      * I think the stack should be a string[]
      */
-    next?: string | Rule[] | ((currentState: string, stack: string[]) => string);
+    next?: string | Rule<T>[] | ((currentState: string, stack: T[]) => string);
 
     /**
      *

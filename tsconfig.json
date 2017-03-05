@@ -20,9 +20,7 @@
         "suppressImplicitAnyIndexErrors": true,
         "traceResolution": false
     },
-    "exclude": [
-        "./node_modules/@types/node/index.d.ts"
-    ],
+    "exclude": [],
     "files": [
         "app/ts/app.ts",
         "app/ts/bootstrap.ts",
@@ -50,8 +48,6 @@
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
-        "./node_modules/typescript/lib/lib.d.ts",
-        "!node_modules/@types/react/index.d.ts",
-        "!node_modules/@types/react-dom/index.d.ts"
+        "./node_modules/typescript/lib/lib.d.ts"
     ]
 }

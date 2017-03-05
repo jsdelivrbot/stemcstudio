@@ -16,20 +16,19 @@ const outdents = {
     "continue": 1
 };
 
-/**
- *
- */
 export default class PythonMode extends TextMode {
     $outdent: MatchingBraceOutdent;
     blockComment: { start: string; end: string };
     lineCommentStart = "#";
     $id = "ace/mode/python";
+
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.highlighter = PythonHighlightRules;
+        this.HighlightRules = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");
         this.$behaviour = this.$defaultBehaviour;
     }
+
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
 

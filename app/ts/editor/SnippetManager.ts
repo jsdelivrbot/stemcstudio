@@ -5,13 +5,32 @@ import Editor from './Editor';
 import EditSession from './EditSession';
 import EventBus from './EventBus';
 import Position from "./Position";
-import Range from "./Range";
 import Rule from './Rule';
 import Snippet from "./Snippet";
 import SnippetOptions from './SnippetOptions';
 import Tabstop from "./Tabstop";
 import TabstopManager from "./TabstopManager";
-import Token from "./Token";
+import { BasicToken } from "./Token";
+
+type ChangeCase = 'u' | 'l' | 'U' | 'L' | 'E';
+
+/**
+ * I don't know what this is yet.
+ */
+interface Blobby {
+    changeCase?: ChangeCase;
+    local?: boolean;
+    skip?: boolean | Blobby;
+    processed?: number;
+    text?: string;
+    fmtString?: string;
+    elseBranch?: Blobby;
+    expectIf?: boolean;
+    tabstopId?: number;
+    flag?: string;
+    guard?: string;
+    fmt?: string;
+}
 
 /**
  * This hack is used by the velocity language only.
@@ -22,10 +41,30 @@ function escape(ch: string): string {
     return "(?:[^\\\\" + ch + "]|\\\\.)";
 }
 
+type StackEntry = Blobby | TabstopToken;
+
+function isBlobby(entry: StackEntry): entry is Blobby {
+    if (entry['expectIf']) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+interface SnippetStack extends Array<StackEntry> {
+    inFormatString: boolean;
+}
+
+interface TabstopToken {
+    tabstopId?: number;
+    text?: string;
+}
+
 /**
  * 
  */
-function tabstopTokenArray(value: string, state: string, stack: any): { tabstopId: number }[] | { text: string }[] {
+function tabstopTokenArray(value: string, state: string, stack: SnippetStack): TabstopToken[] {
     value = value.substr(1);
     if (/^\d+$/.test(value) && !stack.inFormatString) {
         return [{ tabstopId: parseInt(value, 10) }];
@@ -33,22 +72,6 @@ function tabstopTokenArray(value: string, state: string, stack: any): { tabstopI
     return [{ text: value }];
 }
 
-/**
- * I don't know what this is yet.
- */
-/*
-interface Blobby {
-    changeCase?: 'u' | 'l' | 'U' | 'L' | 'E';
-    local?: boolean;
-    skip?: boolean;
-    processed?: number;
-    text?: string;
-    fmtString?;
-    elseBranch?: Blobby;
-    expectIf?;
-    tabstopId?: number;
-}
-*/
 
 /**
  *
@@ -89,13 +112,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         start: [
             {
                 regex: /:/,
-                onMatch: function (value: string, state: string, stack: any[]): string | any[] {
-                    if (stack.length && stack[0]['expectIf']) {
-                        const blobby = stack[0];
+                onMatch: function (value: string, state: string, stackIn: any): string | Blobby[] {
+                    const stack = <SnippetStack>stackIn;
+                    if (stack.length && isBlobby(stack[0])) {
+                        const blobby = <Blobby>stack[0];
                         blobby.expectIf = false;
                         blobby.elseBranch = blobby;
-                        // stack[0]['expectIf'] = false;
-                        // stack[0]['elseBranch'] = stack[0];
                         return [blobby];
                     }
                     return ":";
@@ -103,7 +125,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: /\\./,
-                onMatch: function (value: string, state: string, stack: any[]): string[] | any[] {
+                onMatch: function (value: string, state: string, stackIn: any): string[] | Blobby[] {
+                    const stack = <SnippetStack>stackIn;
                     const ch = value[1];
                     if (ch === "}" && stack.length) {
                         return [ch];
@@ -111,13 +134,13 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                     else if ("`$\\".indexOf(ch) !== -1) {
                         return [ch];
                     }
-                    else if (stack['inFormatString']) {
+                    else if (stack.inFormatString) {
                         if (ch === "n")
                             return ["\n"];
                         else if (ch === "t")
                             return ["\n"];
                         else if ("ulULE".indexOf(ch) !== -1) {
-                            return [{ changeCase: ch, local: ch > "a" }];
+                            return [{ changeCase: <ChangeCase>ch, local: ch > "a" }];
                         }
                     }
                     else {
@@ -128,7 +151,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: /}/,
-                onMatch: function (value: string, state: string, stack: any[]) {
+                onMatch: function (value: string, state: string, stackIn: any): any {
+                    const stack = <SnippetStack>stackIn;
                     return [stack.length ? stack.shift() : value];
                 }
             },
@@ -138,7 +162,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: /\$\{[\dA-Z_a-z]+/,
-                onMatch: function (value: string, state, stack: any[]) {
+                onMatch: function (value: string, state: string, stackIn: any) {
+                    const stack = <SnippetStack>stackIn;
                     const tokens = tabstopTokenArray(value.substr(1), state, stack);
                     stack.unshift(tokens[0]);
                     return tokens;
@@ -154,17 +179,17 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         snippetVar: [
             {
                 regex: "\\|" + escape("\\|") + "*\\|",
-                onMatch: function (value: string, state: string, stack: any[]) {
-                    // FIXME: Wierd typing.
-                    stack[0].choices = value.slice(1, -1).split(",");
+                onMatch: function (value: string, state: string, stackIn: any) {
+                    const stack = <SnippetStack>stackIn;
+                    // TODO
+                    (<any>stack[0]).choices = value.slice(1, -1).split(",");
                 },
                 next: "start"
             },
             {
                 regex: "/(" + escape("/") + "+)/(?:(" + escape("/") + "*)/)(\\w*):?",
-                onMatch: function (this: Rule, fmtString: string, state: string, stack: any[]) {
-                    // It would seem that we have a very decorated Range!
-                    const ts = <Range>(<any>stack[0]);
+                onMatch: function (this: Rule<Blobby>, fmtString: string, state: string, stack: Blobby[]) {
+                    const ts = stack[0];
                     ts.fmtString = fmtString;
 
                     const value = this.splitRegex.exec(fmtString);
@@ -175,28 +200,36 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 }, next: "start"
             },
             {
-                regex: "`" + escape("`") + "*`", onMatch: function (value: any, state, stack) {
+                regex: "`" + escape("`") + "*`",
+                onMatch: function (value: any, state, stack) {
                     stack[0]['code'] = value.splice(1, -1);
                     return "";
-                }, next: "start"
+                },
+                next: "start"
             },
             {
                 regex: "\\?",
-                // FIXME: Wierd typing.
-                onMatch: function (value: string, state: string, stack: any[]) {
+                onMatch: function (this: Rule<Blobby>, value: string, state: string, stack: Blobby[]) {
                     if (stack[0]) {
                         stack[0].expectIf = true;
                     }
                 },
                 next: "start"
             },
-            { regex: "([^:}\\\\]|\\\\.)*:?", token: "", next: "start" }
+            {
+                regex: "([^:}\\\\]|\\\\.)*:?",
+                token: "",
+                next: "start"
+            }
         ],
         formatString: [
-            { regex: "/(" + escape("/") + "+)/", token: "regex" },
+            {
+                regex: "/(" + escape("/") + "+)/",
+                token: "regex"
+            },
             {
                 regex: "",
-                onMatch: function (val, state, stack: any) {
+                onMatch: function (this: Rule<Blobby>, value: string, state: string, stack: any) {
                     stack.inFormatString = true;
                 },
                 next: "start"
@@ -211,9 +244,18 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         return SnippetManager.$tokenizer;
     }
 
-    private tokenizeTmSnippet(str: string, startState?: string): (string | Token)[] {
-        return this.getTokenizer().getLineTokens(str, startState).tokens.map(function (x: Token) {
-            return x.value || x;
+    private tokenizeTmSnippet(str: string, startState?: string): (string | Blobby)[] {
+        return this.getTokenizer().getLineTokens(str, startState).tokens.map(function (x: BasicToken) {
+            if (x.value) {
+                return x.value;
+            }
+            else {
+                // Returning x would imply that the token can be strings.
+                // I think we have the wild west; tokens can be anything.
+                console.warn(`${x} is a ${typeof x}`);
+                return '';
+            }
+            // return x.value || x;
         });
     }
 
@@ -274,16 +316,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     /**
      * Formats according to
      * http://manual.macromates.com/en/regular_expressions#replacement_string_syntax_format_strings
-     *
-     * @param str
-     * @param ch
-     * @param editor
      */
-    public tmStrFormat(str: string, ch: { flag?: string; guard: string, fmt: string }, editor?: Editor): string {
+    public tmStrFormat(str: string, chIn: Blobby, editor?: Editor): string {
 
-        const flag = ch.flag || "";
-        const re = new RegExp(ch.guard, flag.replace(/[^gi]/, ""));
-        const fmtTokens = this.tokenizeTmSnippet(ch.fmt, "formatString");
+        const flag = chIn.flag || "";
+        const re = new RegExp(chIn.guard, flag.replace(/[^gi]/, ""));
+        const fmtTokens = this.tokenizeTmSnippet(chIn.fmt, "formatString");
 
         const self = this;
         const formatted = str.replace(re, function () {
@@ -327,11 +365,10 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @param snippet
-     * @param editor
+     *
      */
-    private resolveVariables(snippet: any[], editor: Editor): any[] {
-        const result: string[] = [];
+    private resolveVariables(snippet: (string | Blobby)[], editor: Editor): (string | Blobby)[] {
+        const result: (string | Blobby)[] = [];
         let i: number;
         for (i = 0; i < snippet.length; i++) {
             const ch = snippet[i];
@@ -339,6 +376,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 result.push(ch);
             }
             else if (typeof ch !== "object") {
+                // Maybe undefined or something else?
                 continue;
             }
             else if (ch.skip) {
@@ -349,9 +387,11 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             }
             else if (ch.text) {
                 let value = this.getVariableValue(editor, ch.text);
-                if (value && ch.fmtString)
+                if (value && ch.fmtString) {
                     value = this.tmStrFormat(value, ch);
+                }
                 ch.processed = i;
+                // The following line also handles undefined because undefined == null => true
                 if (ch.expectIf == null) {
                     if (value) {
                         result.push(value);
@@ -372,7 +412,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 result.push(ch);
             }
         }
-        function gotoNext(ch: string): void {
+        function gotoNext(ch: Blobby): void {
             const i1 = snippet.indexOf(ch, i + 1);
             if (i1 !== -1)
                 i = i1;
@@ -382,9 +422,6 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
 
     /**
      * FIXME: The choice of string | Token makes it very difficult to impose type safety.
-     *
-     * @param editor
-     * @param snippetText
      */
     private insertSnippetForSelection(editor: Editor, snippetText: string): void {
         const cursor = editor.getCursorPosition();
@@ -514,9 +551,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @param editor
-     * @param snippetText
-     * @param options
+     *
      */
     public insertSnippet(editor: Editor, snippetText: string, options?: SnippetOptions): void {
 
@@ -535,8 +570,6 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * 
      * There is some additional logic for HTML and PHP that should be generalized
      * through the LanguageMode for languages with embedded languages.
-     *
-     * @param editor
      */
     private $getScope(editor: Editor): string {
         const session = editor.getSession();
@@ -545,20 +578,21 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         if (scope === "html" || scope === "php") {
             // FIXME: Coupling to PHP?
             // PHP is actually HTML
-            if (scope === "php" && !session.$mode['inlinePhp'])
+            if (scope === "php" && !session.$mode['inlinePhp']) {
                 scope = "html";
-            const c = editor.getCursorPosition();
-            let state = session.getState(c.row);
-            if (typeof state === "object") {
-                state = state[0];
             }
+            const c = editor.getCursorPosition();
+            const state = session.getState(c.row);
             if (state.substring) {
-                if (state.substring(0, 3) === "js-")
+                if (state.substring(0, 3) === "js-") {
                     scope = "javascript";
-                else if (state.substring(0, 4) === "css-")
+                }
+                else if (state.substring(0, 4) === "css-") {
                     scope = "css";
-                else if (state.substring(0, 4) === "php-")
+                }
+                else if (state.substring(0, 4) === "php-") {
                     scope = "php";
+                }
             }
         }
 

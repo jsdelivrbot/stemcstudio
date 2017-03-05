@@ -315,7 +315,7 @@ export default class TabstopManager {
         }
         // add final tabstop if missing
         if (!tabstops[0]) {
-            let p: Range = Range.fromPoints(end, end);
+            const p = Range.fromPoints(end, end);
             moveRelative(p.start, start);
             moveRelative(p.end, start);
             // This assignment takes care of the Array<Range> part of the Tabstop.

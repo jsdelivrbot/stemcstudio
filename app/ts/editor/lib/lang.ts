@@ -78,7 +78,7 @@ export function deepCopy<T>(obj: T): T {
     return copy;
 }
 
-export function arrayToMap<T>(xs: string[], value: T): { [name: string]: T } {
+export function arrayToMap<T>(xs: string[], value?: T): { [name: string]: T } {
     const map: { [name: string]: T } = {};
     for (let i = 0, iLength = xs.length; i < iLength; i++) {
         map[xs[i]] = value;

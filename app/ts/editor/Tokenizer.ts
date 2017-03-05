@@ -8,7 +8,7 @@ let MAX_TOKEN_COUNT = 2000;
 /**
  * 
  */
-function $applyToken(this: Rule, str: string): BasicToken[] | undefined {
+function $applyToken(this: Rule<string>, str: string): BasicToken[] | undefined {
     if (typeof this.token === 'function') {
         const tokens: BasicToken[] = [];
         if (this.splitRegex) {
@@ -38,7 +38,7 @@ function $applyToken(this: Rule, str: string): BasicToken[] | undefined {
     }
 }
 
-function $arrayTokens(this: Rule, str: string): 'text' | BasicToken[] {
+function $arrayTokens(this: Rule<string>, str: string): 'text' | BasicToken[] {
     if (!str) {
         return [];
     }
@@ -119,7 +119,7 @@ export default class Tokenizer {
     /**
      * 
      */
-    public readonly states: { [stateName: string]: Rule[] };
+    public readonly states: { [stateName: string]: Rule<string>[] };
 
     /**
      * 
@@ -129,14 +129,14 @@ export default class Tokenizer {
     /**
      * 
      */
-    private readonly matchMappings: { [stateName: string]: Rule } = {};
+    private readonly matchMappings: { [stateName: string]: Rule<string> } = {};
 
     /**
      * Constructs a new tokenizer based on the given rules and flags.
      *
      * @param states The highlighting rules for each state (rulesByState).
      */
-    constructor(rulesByState: { [stateName: string]: Rule[] }) {
+    constructor(rulesByState: { [stateName: string]: Rule<string>[] }) {
         this.states = rulesByState;
 
         for (const key in this.states) {
@@ -145,10 +145,10 @@ export default class Tokenizer {
                 const rules = this.states[key];
                 const ruleRegExps: string[] = [];
                 let matchTotal = 0;
-                const mapping: Rule = this.matchMappings[key] = { defaultToken: "text" };
+                const mapping: Rule<string> = this.matchMappings[key] = { defaultToken: "text" };
                 let flag = "g";
 
-                const splitterRules: Rule[] = [];
+                const splitterRules: Rule<string>[] = [];
                 for (let i = 0; i < rules.length; i++) {
                     const rule = rules[i];
                     if (rule.defaultToken)
@@ -249,7 +249,7 @@ export default class Tokenizer {
     /**
      * startState is usually undefined.
      */
-    public getLineTokens(line: string, startState: string | string[] | null | undefined): TokenizedLine {
+    public getLineTokens(line: string, startState: string | string[] | null | undefined): TokenizedLine<BasicToken> {
 
         let stack: string[];
         if (startState && typeof startState !== "string") {
@@ -282,7 +282,7 @@ export default class Tokenizer {
         let token: BasicToken = { type: null, value: "" };
 
         while (match = re.exec(line)) {
-            let type: RuleToken = mapping.defaultToken;
+            let type: RuleToken<string> = mapping.defaultToken;
             let rule = null;
             const value = match[0];
             const index = re.lastIndex;

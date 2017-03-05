@@ -1,3 +1,4 @@
+// TODO: Move this to the editor/mode folder and consolidate the identifiers? 
 export const LANGUAGE_C = 'C';
 export const LANGUAGE_CPP = 'C++';
 export const LANGUAGE_CSS = 'CSS';
@@ -6,12 +7,13 @@ export const LANGUAGE_GLSL = 'GLSL';
 export const LANGUAGE_HASKELL = 'Haskell';
 export const LANGUAGE_HTML = 'HTML';
 export const LANGUAGE_JAVA_SCRIPT = 'JavaScript';
+export const LANGUAGE_JSX = 'JavaScriptExtension';
 export const LANGUAGE_JSON = 'JSON';
 export const LANGUAGE_LESS = 'LESS';
 export const LANGUAGE_MARKDOWN = 'Markdown';
 export const LANGUAGE_PYTHON = 'Python';
-export const LANGUAGE_REACT = 'React';
 export const LANGUAGE_SCHEME = 'Scheme';
 export const LANGUAGE_TEXT = 'Text';
+export const LANGUAGE_TSX = 'TypeScriptExtension';
 export const LANGUAGE_TYPE_SCRIPT = 'TypeScript';
 export const LANGUAGE_XML = 'XML';

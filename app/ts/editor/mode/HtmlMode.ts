@@ -20,9 +20,7 @@ const optionalEndTags = ["li", "dt", "dd", "p", "rt", "rp", "optgroup", "option"
  *
  */
 export default class HtmlMode extends TextMode {
-    protected blockComment = { start: "<!--", end: "-->" };
     private voidElements: { [name: string]: number } = arrayToMap(voidElements, 1);
-    public $id = "ace/mode/html";
 
     /**
      * The name of the element for fragment parsing.
@@ -31,15 +29,12 @@ export default class HtmlMode extends TextMode {
 
     $completer: HtmlCompletions;
 
-    /**
-     * @param workerUrl
-     * @param scriptImports
-     * @param options
-     */
     constructor(workerUrl: string, scriptImports: string[], options?: { fragmentContext: string }) {
         super(workerUrl, scriptImports);
+        this.$id = "ace/mode/html";
+        this.blockComment = { start: "<!--", end: "-->" };
         this.fragmentContext = options && options.fragmentContext;
-        this.highlighter = HtmlHighlightRules;
+        this.HighlightRules = HtmlHighlightRules;
         this.$behaviour = new HtmlBehaviour();
         this.$completer = new HtmlCompletions();
 
