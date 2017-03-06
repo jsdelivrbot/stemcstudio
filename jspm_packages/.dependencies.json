@@ -867,5 +867,5 @@
     "is-arrayish": "npm:is-arrayish@^0.2.1",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.3.0": {}
+  "github:geometryzen/ace-workers@2.4.0": {}
 }
