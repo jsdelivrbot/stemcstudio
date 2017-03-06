@@ -1,4 +1,5 @@
 import Annotation from "../Annotation";
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import TextMode from "./TextMode";
 import HaskellHighlightRules from "./HaskellHighlightRules";
 import CstyleFoldMode from "./folding/CstyleFoldMode";
@@ -35,10 +36,8 @@ export default class HaskellMode extends TextMode {
             session.clearAnnotations();
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'HaskellWorker', function (err: any) {
+            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'HaskellWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

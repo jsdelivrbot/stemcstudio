@@ -206,11 +206,11 @@ function copies(target) {
         },
         {
             src: 'manual/typescript@2.2.0/typescriptServices.js',
-            dest: prepend(target, 'js/typescriptServices.js')
+            dest: prepend(target, 'js/typescript@2.2.0/typescriptServices.js')
         },
         {
             src: 'manual/typescript@2.2.0/typescriptServices.js.map',
-            dest: prepend(target, 'js/typescriptServices.js.map')
+            dest: prepend(target, 'js/typescript@2.2.0/typescriptServices.js.map')
         },
         {
             src: 'manual/typescript@2.2.0/lib.es6.d.ts',
@@ -226,11 +226,11 @@ function copies(target) {
         },
         {
             src: 'jspm_packages/github/geometryzen/ace-workers@2.3.0/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers.js')
+            dest: prepend(target, 'js/ace-workers@2.3.0/ace-workers.js')
         },
         {
             src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, 'js/ace-workers.js')
+            dest: prepend(target, 'js/ace-workers@2.3.0/ace-workers.js')
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',

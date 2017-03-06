@@ -1,3 +1,4 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import TextMode from "./TextMode";
 import CssCompletions from './CssCompletions';
 import CssHighlightRules from "./CssHighlightRules";
@@ -76,9 +77,8 @@ export default class CssMode extends TextMode {
             session.clearAnnotations();
         });
 
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(scriptImports, moduleName, 'CssWorker', function (err: any) {
+            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'CssWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

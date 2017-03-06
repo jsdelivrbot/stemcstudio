@@ -1,4 +1,5 @@
 import Annotation from "../Annotation";
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import EditSession from "../EditSession";
 import TextMode from "./TextMode";
 import ClojureHighlightRules from "./ClojureHighlightRules";
@@ -118,10 +119,8 @@ export default class ClojureMode extends TextMode {
             session.clearAnnotations();
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'ClojureWorker', function (err: any) {
+            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'ClojureWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

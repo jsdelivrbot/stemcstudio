@@ -1,3 +1,4 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import Annotation from "../Annotation";
 import TextMode from "./TextMode";
 import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
@@ -93,10 +94,8 @@ export default class JavaScriptMode extends TextMode {
             session.clearAnnotations();
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'JavaScriptWorker', function (err: any) {
+            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'JavaScriptWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

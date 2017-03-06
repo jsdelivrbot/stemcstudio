@@ -1,3 +1,4 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import CompletionEntry from './CompletionEntry';
 import Delta from '../Delta';
 import Diagnostic from './Diagnostic';
@@ -55,7 +56,7 @@ export default class LanguageServiceProxy {
      * Creates the underlying WorkerClient and establishes listeners.
      * This method DOES NOT start the thread.
      *
-     * @param workerUrl The URL of the JavaScript file for the worker.
+     * workerUrl is the URL of the JavaScript file for the worker.
      */
     constructor(workerUrl: string) {
 
@@ -147,7 +148,7 @@ export default class LanguageServiceProxy {
     }
 
     initialize(scriptImports: string[], callback: (err: any) => any): void {
-        this.worker.init(scriptImports, 'ace-workers.js', 'LanguageServiceWorker', function (err: any) {
+        this.worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'LanguageServiceWorker', function (err: any) {
             if (err) {
                 console.warn(`worker.init() failed ${err}`);
             }

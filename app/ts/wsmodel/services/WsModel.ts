@@ -1,4 +1,6 @@
 import * as ng from 'angular';
+import { ACE_WORKER_PATH } from '../../constants';
+import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import Annotation from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
@@ -52,14 +54,12 @@ const FILENAME_META = 'package.json';
 
 // The order of importing is important.
 // Loading of scripts is synchronous.
-// 
-// The ace-workers script must be loaded after the typescriptServices.
 const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-const typescriptServices = ['/js/typescriptServices.js'];
 /**
  * The script imports for initializing the LanguageServiceProxy.
+ * The ordering is important because of dependencies.
  */
-const scriptImports: string[] = systemImports.concat(typescriptServices).concat(['/js/ace-workers.js']);
+const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
 
 /**
  * The worker implementation for the LanguageServiceProxy.

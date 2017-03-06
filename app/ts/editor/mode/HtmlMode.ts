@@ -1,3 +1,4 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import { arrayToMap } from "../lib/lang";
 import Annotation from "../Annotation";
 import Completion from "../Completion";
@@ -78,10 +79,8 @@ export default class HtmlMode extends TextMode {
             session.clearAnnotations();
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(scriptImports, moduleName, 'HtmlWorker', (err: any) => {
+            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'HtmlWorker', (err: any) => {
                 if (!err) {
                     worker.attachToDocument(session.docOrThrow());
                     if (this.fragmentContext) {

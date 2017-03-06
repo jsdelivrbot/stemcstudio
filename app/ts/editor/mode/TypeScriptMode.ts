@@ -1,3 +1,4 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import Annotation from "../Annotation";
 import JavaScriptMode from "./JavaScriptMode";
 import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
@@ -44,10 +45,8 @@ export default class TypeScriptMode extends JavaScriptMode {
             session._emit("getFileNames", { data: event.data });
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(scriptImports, moduleName, 'TypeScriptWorker', function (err: any) {
+            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'TypeScriptWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.docOrThrow());
                     callback(void 0, worker);

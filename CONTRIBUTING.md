@@ -92,6 +92,9 @@ Make sure that the version references are correct in the following files:
 1. package.json
 2. Gruntfile.js
 3. jspm.config.js
+4. constants.ts
+
+git push origin master
 
 ### Upgrading TypeScript (version used at runtime)
 
@@ -112,15 +115,7 @@ bower install
 bower update
 jspm install
 jspm update
-``` 
-### Upgrading ace-workers
-
-1. Gruntfile.js
-2. package.json
-3. jspm.config.js
-
-git push origin master
-
+```
 ### Upgrading Jasmine Testing Framework
 
 1. Download latest stable release from https://jasmine.github.io

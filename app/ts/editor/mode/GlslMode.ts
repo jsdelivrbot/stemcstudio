@@ -1,4 +1,5 @@
 import Annotation from "../Annotation";
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import CppMode from './CppMode';
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import CstyleFoldMode from './folding/CstyleFoldMode';
@@ -39,10 +40,8 @@ export default class GlslMode extends CppMode {
             session.clearAnnotations();
         });
 
-        // FIXME: Must be able to inject the module name.
-        const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'GlslWorker', function (err: any) {
+            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'GlslWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.docOrThrow());
                     callback(void 0, worker);

@@ -1,4 +1,5 @@
 import * as ng from 'angular';
+import { ACE_WORKER_PATH } from '../../constants';
 import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
@@ -68,7 +69,7 @@ function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorP
             post: function ($scope: ProblemsScope, element: ng.IAugmentedJQuery, attrs: ProblemsAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
                 // Maybe these should be constants?
                 const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-                const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
+                const workerImports: string[] = systemImports.concat([ACE_WORKER_PATH]);
 
                 const ngModel: ng.INgModelController = controller[0];
 

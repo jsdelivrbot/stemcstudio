@@ -1,6 +1,8 @@
 import * as ng from 'angular';
 import applyTextChanges from './applyTextChanges';
 import ClojureMode from '../../editor/mode/ClojureMode';
+import { ACE_WORKER_PATH } from '../../constants';
+import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import CssMode from '../../editor/mode/CssMode';
 import GlslMode from '../../editor/mode/GlslMode';
 import HaskellMode from '../../editor/mode/HaskellMode';
@@ -94,8 +96,7 @@ function factory(
 
         // Maybe these should be constants?
         const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-        const typescriptServices = ['/js/typescriptServices.js'];
-        const workerImports: string[] = systemImports.concat(typescriptServices).concat(['/js/ace-workers.js']);
+        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
 
         const ngModel: ng.INgModelController = controllers[0];
         /**
