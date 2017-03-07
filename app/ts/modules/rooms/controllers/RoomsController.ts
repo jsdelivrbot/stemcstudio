@@ -6,6 +6,7 @@ import RoomsService from '../services/RoomsService';
 import ModalDialog from '../../../services/modalService/ModalDialog';
 import NavigationService from '../../../modules/navigation/NavigationService';
 import WsModel from '../../../wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../../wsmodel/constants';
 
 /**
  * A controller for a collection of rooms.
@@ -16,7 +17,7 @@ export default class RoomsController {
         'modalDialog',
         'navigation',
         'roomsService',
-        'wsModel'
+        WORKSPACE_MODEL
     ];
     constructor(
         private authManager: IGitHubAuthManager,

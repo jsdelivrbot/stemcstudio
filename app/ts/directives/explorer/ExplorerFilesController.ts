@@ -6,6 +6,7 @@ import ConfirmOptions from '../../services/modalService/ConfirmOptions';
 import PromptOptions from '../../services/modalService/PromptOptions';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../wsmodel/constants';
 
 /**
  * This controller is mostly used to define and manage the context menu for the files in the explorer.
@@ -13,7 +14,7 @@ import WsModel from '../../wsmodel/services/WsModel';
  */
 export default class ExplorerFilesController {
 
-    public static $inject: string[] = ['$scope', 'modalDialog', 'wsModel'];
+    public static $inject: string[] = ['$scope', 'modalDialog', WORKSPACE_MODEL];
 
     constructor($scope: ExplorerFilesScope, private modalService: ModalDialog, private wsModel: WsModel) {
         // Define the context menu used by the files.

@@ -77,10 +77,14 @@ import propsFilter from './filters/propsFilter';
 // Import them and then use their name as app module dependencies.
 import preferences from './modules/preferences/index';
 import rooms from './modules/rooms/index';
+/**
+ * The module for TypeScript Linting.
+ */
+import tslint from './modules/tslint/index';
 import stemcArXiv from './stemcArXiv/index';
 import editors from './modules/editors/index';
 import translate from './translate/index';
-import wsmodel from './wsmodel/module';
+import wsmodel from './wsmodel/index';
 
 import BackgroundService from './services/background/BackgroundService';
 import { BACKGROUND_UUID } from './services/background/Background';
@@ -116,6 +120,7 @@ const app: angular.IModule = angular.module('app', [
     preferences.name,
     rooms.name,
     stemcArXiv.name,
+    tslint.name,
     editors.name,
     translate.name,
     wsmodel.name
@@ -139,7 +144,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.21.119');
+app.constant('version', '2.22.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

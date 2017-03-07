@@ -21,6 +21,7 @@ import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import IOptionManager from '../../services/options/IOptionManager';
+import IWorkspaceModel from '../IWorkspaceModel';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
@@ -39,6 +40,7 @@ import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import Shareable from '../../base/Shareable';
 import StringShareableMap from '../../collections/StringShareableMap';
 import TextChange from '../../editor/workspace/TextChange';
+import { TsLintSettings, RuleArgumentType } from '../../modules/tslint/TsLintSettings';
 import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
 import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
@@ -47,10 +49,17 @@ import UnitListener from './UnitListener';
 import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
 
+const NEWLINE = '\n';
+
 /**
  * Symbolic constant for the package.json file.
  */
 const FILENAME_META = 'package.json';
+
+/**
+ * Symbolic constant for the tslint.json file.
+ */
+const FILENAME_TSLINT_JSON = 'tslint.json';
 
 // The order of importing is important.
 // Loading of scripts is synchronous.
@@ -110,10 +119,10 @@ function checkCallback(callback: (err: any) => any): void {
 }
 
 /**
- * Converts the metaInfo to a string using JSON.stringify and append a newline character.
+ * Converts the value to a string and append a newline character.
  */
-function stringifyInfo(metaInfo: IDoodleConfig): string {
-    return JSON.stringify(metaInfo, null, 2) + '\n';
+function stringifyFileContent(value: any): string {
+    return `${JSON.stringify(value, null, 4)}${NEWLINE}`;
 }
 
 /**
@@ -208,7 +217,7 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
  * for the lifetime of the application. At the same time, the user may serally edit multiple models 
  * and so this instance must have state so that it can manage the associated worker threads.
  */
-export default class WsModel implements Disposable, MwWorkspace, QuickInfoTooltipHost, Shareable, WorkspaceCompleterHost {
+export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace, QuickInfoTooltipHost, Shareable, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
@@ -345,21 +354,25 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     recycle(callback: (err: any) => any): void {
         if (this.zeroRefCount) {
-            this.zeroRefCount.then(() => {
-                this.zeroRefCount = void 0;
-                this.zeroRefCountDeferred = void 0;
-                this.recycle(callback);
-            }).catch((reason) => {
-                console.warn(`Error while waiting for references to return to zero: ${JSON.stringify(reason)}`);
-            });
+            this.zeroRefCount
+                .then(() => {
+                    this.zeroRefCount = void 0;
+                    this.zeroRefCountDeferred = void 0;
+                    this.recycle(callback);
+                })
+                .catch((reason) => {
+                    console.warn(`Error while waiting for references to return to zero: ${JSON.stringify(reason)}`);
+                });
         }
         else if (this.windingDown) {
-            this.windingDown.then(() => {
-                this.windingDown = void 0;
-                this.recycle(callback);
-            }).catch((reason) => {
-                console.warn(`Error while waiting for workspace to wind down: ${JSON.stringify(reason)}`);
-            });
+            this.windingDown
+                .then(() => {
+                    this.windingDown = void 0;
+                    this.recycle(callback);
+                })
+                .catch((reason) => {
+                    console.warn(`Error while waiting for workspace to wind down: ${JSON.stringify(reason)}`);
+                });
         }
         else {
             if (this.refCount > 0) {
@@ -952,7 +965,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                             this.updateSession(path, semanticErrors, session);
                             if (semanticErrors.length === 0) {
                                 this.inFlight++;
-                                this.languageServiceProxy.getLintErrors(path, (err: any, lintErrors: Diagnostic[]) => {
+                                const configuration = this.tslintConfiguration;
+                                this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
                                     this.inFlight--;
                                     if (err) {
                                         console.warn(`getLintErrors(${path}) => ${err}`);
@@ -1032,7 +1046,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('author', author, metaInfo);
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         finally {
             file.release();
@@ -1070,7 +1084,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             try {
                 const metaInfo: IDoodleConfig = JSON.parse(file.getText());
                 metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-                file.setText(stringifyInfo(metaInfo));
+                file.setText(stringifyFileContent(metaInfo));
             }
             finally {
                 file.release();
@@ -1107,7 +1121,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('description', description, metaInfo);
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         finally {
             file.release();
@@ -1140,7 +1154,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringArrayProperty('keywords', keywords, metaInfo);
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         finally {
             file.release();
@@ -1167,7 +1181,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.name = name;
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
@@ -1197,7 +1211,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         catch (e) {
             console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
@@ -1221,7 +1235,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.version = version;
-            file.setText(stringifyInfo(metaInfo));
+            file.setText(stringifyFileContent(metaInfo));
         }
         finally {
             file.release();
@@ -1537,7 +1551,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * Returns the file at the specified path.
      */
-    findFileByPath(path: string): WsFile {
+    findFileByPath(path: string): WsFile | undefined {
         if (this.files) {
             return this.files.get(path);
         }
@@ -1733,6 +1747,61 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
             const file = this.ensurePackageJson();
+            const text = file.getText();
+            file.release();
+            return JSON.parse(text);
+        }
+        catch (e) {
+            return void 0;
+        }
+    }
+
+    private ensureTsLintJson(): WsFile {
+        const existingFile = this.findFileByPath(FILENAME_TSLINT_JSON);
+        if (!existingFile) {
+            const configuration: TsLintSettings = {};
+            const rules: { [name: string]: boolean | RuleArgumentType[] } = {};
+            rules['array-type'] = [true, 'array'];
+            rules['curly'] = false;
+            rules['comment-format'] = [true, 'check-space'];
+            rules['eofline'] = true;
+            rules['forin'] = true;
+            rules['jsdoc-format'] = true;
+            rules['no-conditional-assignment'] = false;
+            rules['no-consecutive-blank-lines'] = true;
+            rules['no-construct'] = true;
+            rules['no-for-in-array'] = true;
+            rules['no-magic-numbers'] = false;
+            rules['no-shadowed-variable'] = true;
+            rules['no-string-throw'] = true;
+            rules['no-trailing-whitespace'] = [true, 'ignore-jsdoc'];
+            rules['no-var-keyword'] = true;
+            rules['one-variable-per-declaration'] = [true, 'ignore-for-loop'];
+            rules['prefer-const'] = true;
+            rules['prefer-for-of'] = true;
+            rules['prefer-function-over-method'] = false;
+            rules['radix'] = true;
+            rules['semicolon'] = [true, 'never'];
+            rules['trailing-comma'] = [true, { multiline: 'never', singleline: 'never' }];
+            rules['triple-equals'] = true;
+            rules['use-isnan'] = true;
+            configuration.rules = rules;
+            const content = stringifyFileContent(configuration);
+            return this.ensureFile(FILENAME_TSLINT_JSON, content);
+        }
+        else {
+            return existingFile;
+        }
+    }
+
+    /**
+     * 
+     */
+    get tslintConfiguration(): TsLintSettings {
+        try {
+            // Beware: We could have a tslint.json that doesn't parse.
+            // We must ensure that the user can recover the situation.
+            const file = this.ensureTsLintJson();
             const text = file.getText();
             file.release();
             return JSON.parse(text);

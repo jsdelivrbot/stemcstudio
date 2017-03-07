@@ -10,6 +10,7 @@ import QuickInfo from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
 import setModuleKindCallback from './SetModuleKindCallback';
 import setScriptTargetCallback from './SetScriptTargetCallback';
+import TsLintSettings from '../../modules/tslint/TsLintSettings';
 
 const EVENT_APPLY_DELTA = 'applyDelta';
 const EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';
@@ -230,9 +231,9 @@ export default class LanguageServiceProxy {
         this.worker.emit(EVENT_SET_TRACE, message);
     }
 
-    public getLintErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+    public getLintErrors(fileName: string, configuration: TsLintSettings, callback: (err: any, results: Diagnostic[]) => void): void {
         const callbackId = this.captureCallback(callback);
-        const message = { data: { fileName, callbackId } };
+        const message = { data: { fileName, configuration, callbackId } };
         this.worker.emit(EVENT_GET_LINT_ERRORS, message);
     }
 

@@ -8,6 +8,7 @@ import MwEdits from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import RoomsService from '../../modules/rooms/services/RoomsService';
 import WsModel from '../../wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../wsmodel/constants';
 
 /**
  * If the workspace is in the foreground, then the background is everything else that the
@@ -19,7 +20,7 @@ export default class BackgroundService implements Background {
         'cloud',
         'doodles',
         'roomsService',
-        'wsModel'
+        WORKSPACE_MODEL
     ];
     constructor(
         private cloud: CloudService,

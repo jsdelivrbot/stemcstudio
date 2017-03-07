@@ -57,6 +57,7 @@ import { LANGUAGE_XML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
+import { WORKSPACE_MODEL } from '../../wsmodel/constants';
 
 /**
  * A delay of 0 (zero) second.
@@ -153,7 +154,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'STYLES_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        'wsModel'
+        WORKSPACE_MODEL
     ];
 
     /**
