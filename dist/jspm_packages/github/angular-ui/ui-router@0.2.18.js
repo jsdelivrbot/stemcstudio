@@ -1,1 +1,0 @@
-module.exports = require("github:angular-ui/ui-router@0.2.18/angular-ui-router");

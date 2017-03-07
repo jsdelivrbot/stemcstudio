@@ -32,13 +32,13 @@ export default class PropertiesModalController {
          * of the dependencies of the doodle in order for the
          * Cancel processing to work correctly.
          */
-        $scope.toggleDependency = function (moduleName: string) {
-            const idx = $scope.f.dependencies.indexOf(moduleName);
+        $scope.toggleDependency = function (packageName: string) {
+            const idx = $scope.f.dependencies.indexOf(packageName);
             if (idx > -1) {
                 $scope.f.dependencies.splice(idx, 1);
             }
             else {
-                $scope.f.dependencies.push(moduleName);
+                $scope.f.dependencies.push(packageName);
             }
         };
 
@@ -46,7 +46,7 @@ export default class PropertiesModalController {
             pkgInfo.name = $scope.f.n;
             pkgInfo.version = $scope.f.v;
             pkgInfo.operatorOverloading = $scope.f.o;
-            pkgInfo.dependencies = $scope.f.dependencies.filter(function (moduleName) { return options.filter(function (option) { return option.visible && option.moduleName === moduleName; }).length > 0; });
+            pkgInfo.dependencies = $scope.f.dependencies.filter(function (packageName) { return options.filter(function (option) { return option.visible && option.packageName === packageName; }).length > 0; });
 
             $uibModalInstance.close(pkgInfo);
         };

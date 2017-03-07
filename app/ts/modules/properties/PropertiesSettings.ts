@@ -1,6 +1,6 @@
 interface PropertiesSettings {
     /**
-     * project name
+     * project name (a packageName)
      */
     name: string;
     /**
@@ -12,7 +12,7 @@ interface PropertiesSettings {
      */
     operatorOverloading: boolean;
     /**
-     * moduleName(s)
+     * packageName(s)
      */
     dependencies: string[];
 }

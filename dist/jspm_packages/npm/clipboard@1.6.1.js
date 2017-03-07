@@ -1,1 +1,0 @@
-module.exports = require("npm:clipboard@1.6.1/lib/clipboard.js");

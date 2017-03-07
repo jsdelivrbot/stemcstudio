@@ -1,1 +1,0 @@
-module.exports = require("npm:yargs-parser@4.2.1/index.js");

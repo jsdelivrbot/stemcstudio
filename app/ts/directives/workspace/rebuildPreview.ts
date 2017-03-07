@@ -28,6 +28,9 @@ const NEWLINE = '\n';
  * The argument to a SystemJS.config() call.
  */
 interface SystemJsConfigArg {
+    /**
+     * A mapping from the module name to the URL of the JavaScript library.
+     */
     map?: { [moduleName: string]: string };
 }
 
@@ -89,7 +92,7 @@ export default function rebuildPreview(
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return workspace.dependencies.indexOf(option.moduleName) > -1;
+                            return workspace.dependencies.indexOf(option.packageName) > -1;
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, options);
@@ -186,6 +189,7 @@ export default function rebuildPreview(
                                 // Using the un-minified version because of issue with react.
                                 const fileNames = importModule.js;
                                 for (const fileName of fileNames) {
+                                    // Be sure to use moduleName, not packageName here.
                                     config.map[importModule.moduleName] = fileName.replace(VENDOR_FOLDER_MARKER, './vendor');
                                 }
                             }

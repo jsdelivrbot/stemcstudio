@@ -1114,18 +1114,20 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <table>\n" +
     "                <thead>\n" +
     "                    <tr>\n" +
+    "                        <td>Package</td>\n" +
     "                        <td>Module</td>\n" +
     "                        <td>Global</td>\n" +
     "                        <td>Description</td>\n" +
     "                    </tr>\n" +
     "                </thead>\n" +
     "                <tbody>\n" +
-    "                    <tr ng-repeat='option in options track by option.moduleName'>\n" +
+    "                    <tr ng-repeat='option in options track by option.packageName'>\n" +
     "                        <td>\n" +
     "                            <label class='checkbox-inline'>\n" +
-    "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.moduleName) > -1' ng-click='toggleDependency(option.moduleName)'>{{option.moduleName}}</input>\n" +
+    "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.packageName) > -1' ng-click='toggleDependency(option.packageName)'>{{option.packageName}}</input>\n" +
     "                            </label>\n" +
     "                        </td>\n" +
+    "                        <td>{{option.moduleName}}</td>\n" +
     "                        <td>{{option.globalName}}</td>\n" +
     "                        <td><a href='{{option.homepage}}' target='_blank'>{{option.description}}</a></td>\n" +
     "                    </tr>\n" +

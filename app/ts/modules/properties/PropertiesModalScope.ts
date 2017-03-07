@@ -19,11 +19,11 @@ interface PropertiesModalScope {
          */
         o: boolean;
         /**
-         * dependency (moduleName only)
+         * dependency (packageName only)
          */
         dependencies: string[];
     };
-    toggleDependency(moduleName: string): void;
+    toggleDependency(packageName: string): void;
     options: IOption[];
     ok(): void;
     submit(): void;

@@ -1,1 +1,0 @@
-module.exports = require("npm:wrap-ansi@2.1.0/index");

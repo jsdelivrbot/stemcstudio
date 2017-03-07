@@ -1,1 +1,0 @@
-module.exports = require("npm:engine.io-parser@1.3.2/lib/browser.js");

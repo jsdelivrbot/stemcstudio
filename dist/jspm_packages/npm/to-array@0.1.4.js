@@ -1,1 +1,0 @@
-module.exports = require("npm:to-array@0.1.4/index");

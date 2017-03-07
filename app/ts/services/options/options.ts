@@ -2,7 +2,14 @@ import app from '../../app';
 import { IOption, LibraryKind } from './IOption';
 import IOptionManager from './IOptionManager';
 
+/**
+ * Eventually, all TypeScript definition files will be named this way.
+ */
 const INDEX_DTS = 'index.d.ts';
+/**
+ * Note that this constant includes a trailing slash.
+ */
+const TYPES_FOLDER = '@types/';
 
 app.factory('options', [
     'VENDOR_FOLDER_MARKER',
@@ -92,7 +99,7 @@ app.factory('options', [
         }
         function eight(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = `${isDts ? '@types/' : ''}davinci-eight`;
+            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-eight` : 'davinci-eight';
             const version = isDts ? void 0 : VERSION_EIGHT;
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
@@ -113,7 +120,7 @@ app.factory('options', [
         }
         function newton(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = `${isDts ? '@types/' : ''}davinci-newton`;
+            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-newton` : 'davinci-newton';
             const version = isDts ? void 0 : VERSION_NEWTON;
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
@@ -122,13 +129,13 @@ app.factory('options', [
         }
         function react(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = `${isDts ? '@types/' : ''}react`;
+            const packageFolder = isDts ? `${TYPES_FOLDER}react` : 'react';
             const version = isDts ? void 0 : VERSION_REACT;
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function reactDOM(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = `${isDts ? '@types/' : ''}react-dom`;
+            const packageFolder = isDts ? `${TYPES_FOLDER}react-dom` : 'react-dom';
             const version = isDts ? void 0 : VERSION_REACT_DOM;
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
@@ -158,15 +165,16 @@ app.factory('options', [
         // TODO: Make this external.
         let _options: IOption[] = [
             {
-                moduleName: 'angular',
+                packageName: 'angular',
+                moduleName: 'ng',
                 libraryKind: LibraryKind.Global,
-                globalName: 'AngularJS',
+                globalName: 'ng',
                 description: "HTML enhanced for web apps!",
                 homepage: 'https://angularjs.org',
                 version: VERSION_ANGULARJS,
                 visible: true,
                 css: [],
-                dts: [angular('angular.d.ts')],
+                dts: angular('angular.d.ts'),
                 js: [angular('angular.js')],
                 minJs: [angular('angular.min.js')],
                 dependencies: {}
@@ -186,6 +194,7 @@ app.factory('options', [
             },
             */
             {
+                packageName: 'biwascheme',
                 moduleName: 'biwascheme',
                 libraryKind: LibraryKind.Global,
                 globalName: 'BiwaScheme',
@@ -194,12 +203,13 @@ app.factory('options', [
                 version: VERSION_BIWASCHEME,
                 visible: false,
                 css: [],
-                dts: [biwascheme('biwascheme.d.ts')],
+                dts: biwascheme('biwascheme.d.ts'),
                 js: [biwascheme('biwascheme.js')],
                 minJs: [biwascheme('biwascheme.min.js')],
                 dependencies: {}
             },
             {
+                packageName: 'davinci-csv',
                 moduleName: 'davinci-csv',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'CSV',
@@ -208,12 +218,13 @@ app.factory('options', [
                 version: VERSION_CSV,
                 visible: true,
                 css: [],
-                dts: [csv('dist', 'davinci-csv.d.ts')],
+                dts: csv('dist', 'davinci-csv.d.ts'),
                 js: [csv('dist', 'davinci-csv.js')],
                 minJs: [csv('dist', 'davinci-csv.js')],
                 dependencies: {}
             },
             {
+                packageName: 'geocas',
                 moduleName: 'geocas',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'GeoCAS',
@@ -222,12 +233,13 @@ app.factory('options', [
                 version: VERSION_GEOCAS,
                 visible: true,
                 css: [],
-                dts: [geocas('dist', 'geocas.d.ts')],
+                dts: geocas('dist', 'geocas.d.ts'),
                 js: [geocas('dist', 'geocas.js')],
                 minJs: [geocas('dist', 'geocas.js')],
                 dependencies: {}
             },
             {
+                packageName: 'gl-matrix',
                 moduleName: 'gl-matrix',
                 libraryKind: LibraryKind.Global,
                 globalName: 'gl-matrix',
@@ -236,12 +248,13 @@ app.factory('options', [
                 version: VERSION_GLMATRIX,
                 visible: true,
                 css: [],
-                dts: [glMatrix('gl-matrix.d.ts')],
+                dts: glMatrix('gl-matrix.d.ts'),
                 js: [glMatrix('gl-matrix-min.js')],
                 minJs: [glMatrix('gl-matrix-min.js')],
                 dependencies: {}
             },
             {
+                packageName: 'dat-gui',
                 moduleName: 'dat-gui',
                 libraryKind: LibraryKind.Global,
                 globalName: 'dat.GUI',
@@ -250,41 +263,44 @@ app.factory('options', [
                 version: VERSION_DAT_GUI,
                 visible: true,
                 css: [],
-                dts: [datGUI('dat-gui.d.ts')],
+                dts: datGUI('dat-gui.d.ts'),
                 js: [datGUI('dat-gui.js')],
                 minJs: [datGUI('dat-gui.min.js')],
                 dependencies: {}
             },
             {
+                packageName: 'davinci-eight',
                 moduleName: 'davinci-eight',
                 libraryKind: LibraryKind.UMD,
-                globalName: 'EIGHT',
+                globalName: undefined,
                 description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
                 css: [eight('davinci-eight.css')],
-                dts: [eight(INDEX_DTS)],
+                dts: eight(INDEX_DTS),
                 js: [eight('davinci-eight.js')],
                 minJs: [eight('davinci-eight.js')],
                 dependencies: {}
             },
             {
+                packageName: 'davinci-newton',
                 moduleName: 'davinci-newton',
                 libraryKind: LibraryKind.UMD,
-                globalName: 'NEWTON',
+                globalName: undefined,
                 description: "Physics Engine and Kinematic Graphing.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-newton/index.html',
                 version: VERSION_NEWTON,
                 visible: true,
                 css: [],
-                dts: [newton(INDEX_DTS)],
+                dts: newton(INDEX_DTS),
                 js: [newton('davinci-newton.js')],
                 minJs: [newton('davinci-newton.js')],
                 dependencies: {}
             },
             {
-                moduleName: 'davinci-units',
+                packageName: 'davinci-units',
+                moduleName: 'units',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'UNITS',
                 description: "Dimensions, Units and Geometric Algebra.",
@@ -292,12 +308,13 @@ app.factory('options', [
                 version: VERSION_UNITS,
                 visible: true,
                 css: [],
-                dts: [units('dist', 'davinci-units.d.ts')],
+                dts: units('dist', 'davinci-units.d.ts'),
                 js: [units('dist', 'davinci-units.js')],
                 minJs: [units('dist', 'davinci-units.js')],
                 dependencies: {}
             },
             {
+                packageName: 'd3',
                 moduleName: 'd3',
                 libraryKind: LibraryKind.Global,
                 globalName: 'd3',
@@ -306,12 +323,13 @@ app.factory('options', [
                 version: VERSION_D3_V3,
                 visible: true,
                 css: [],
-                dts: [d3('d3.d.ts')],
+                dts: d3('d3.d.ts'),
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.min.js`],
                 dependencies: {}
             },
             {
+                packageName: 'DomReady',
                 moduleName: 'DomReady',
                 libraryKind: LibraryKind.Global,
                 globalName: 'DomReady',
@@ -320,12 +338,13 @@ app.factory('options', [
                 version: VERSION_DOMREADY,
                 visible: true,
                 css: [],
-                dts: [domready('domready.d.ts')],
+                dts: domready('domready.d.ts'),
                 js: [domready('domready.js')],
                 minJs: [domready('domready.js')],
                 dependencies: {}
             },
             {
+                packageName: 'jasmine',
                 moduleName: 'jasmine',
                 libraryKind: LibraryKind.Global,
                 globalName: 'Jasmine',
@@ -334,27 +353,29 @@ app.factory('options', [
                 version: VERSION_JASMINE,
                 visible: true,
                 css: [jasmine('jasmine.css')],
-                dts: [jasmine('jasmine.d.ts')],
+                dts: jasmine('jasmine.d.ts'),
                 js: [jasmine('jasmine.js'), jasmine('jasmine-html.js')],
                 minJs: [jasmine('jasmine.js'), jasmine('jasmine-html.js')],
                 dependencies: {}
             },
             {
+                packageName: 'jquery',
                 moduleName: 'jquery',
                 libraryKind: LibraryKind.Global,
-                globalName: 'jQuery',
+                globalName: '$',
                 description: "The Write Less, Do More, JavaScript Library.",
                 homepage: 'https://jquery.com',
                 version: VERSION_JQUERY,
                 visible: true,
                 css: [],
-                dts: [jquery('jquery.d.ts')],
+                dts: jquery('jquery.d.ts'),
                 js: [jquery('jquery.js')],
                 minJs: [jquery('jquery.min.js')],
                 dependencies: {}
             },
             // FIXME: baconjs temporarily placed here (after jquery) until dependencies are fixed.
             {
+                packageName: 'baconjs',
                 moduleName: 'baconjs',
                 libraryKind: LibraryKind.Global,
                 globalName: 'Bacon.js',
@@ -363,13 +384,14 @@ app.factory('options', [
                 version: VERSION_BACONJS,
                 visible: true,
                 css: [],
-                dts: [baconjs('baconjs.d.ts')],
+                dts: baconjs('baconjs.d.ts'),
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.min.js`],
                 dependencies: { 'jquery': VERSION_JQUERY }
             },
             // FIXME: deck temporarily placed here (after jquery) until dependencies are fixed.
             {
+                packageName: 'deck.js',
                 moduleName: 'deck.js',
                 libraryKind: LibraryKind.Global,
                 globalName: 'deckJS',
@@ -378,12 +400,13 @@ app.factory('options', [
                 version: VERSION_DECKJS,
                 visible: true,
                 css: [],
-                dts: [deck('deck.core.d.ts')],
+                dts: deck('deck.core.d.ts'),
                 js: [deck('deck.core.js')],
                 minJs: [deck('deck.core.js')],
                 dependencies: { 'jquery': VERSION_JQUERY }
             },
             {
+                packageName: 'jsxgraph',
                 moduleName: 'jsxgraph',
                 libraryKind: LibraryKind.Global,
                 globalName: 'JSXGraph',
@@ -392,7 +415,7 @@ app.factory('options', [
                 version: VERSION_JSXGRAPH,
                 visible: true,
                 css: [],
-                dts: [jsxgraph('jsxgraph.d.ts')],
+                dts: jsxgraph('jsxgraph.d.ts'),
                 // js: [jsxgraph('jsxgraphcore.js')],
                 // minJs: [jsxgraph('jsxgraphcore.js')],
                 // CDNJS does not deploy the correct version?
@@ -401,6 +424,7 @@ app.factory('options', [
                 dependencies: {}
             },
             {
+                packageName: 'plot.ly',
                 moduleName: 'plot.ly',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'Plotly',
@@ -409,12 +433,13 @@ app.factory('options', [
                 version: VERSION_PLOTLY,
                 visible: true,
                 css: [],
-                dts: [plotly('plotly.d.ts')],
+                dts: plotly('plotly.d.ts'),
                 js: [plotly('plotly.js')],
                 minJs: [plotly('plotly.min.js')],
                 dependencies: {}
             },
             {
+                packageName: 'react',
                 moduleName: 'react',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'React',
@@ -423,12 +448,13 @@ app.factory('options', [
                 version: VERSION_REACT,
                 visible: true,
                 css: [],
-                dts: [react(INDEX_DTS)],
+                dts: react(INDEX_DTS),
                 js: [react('react.js')],
                 minJs: [react('react.min.js')],
                 dependencies: {}
             },
             {
+                packageName: 'react-dom',
                 moduleName: 'react-dom',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'ReactDOM',
@@ -437,12 +463,13 @@ app.factory('options', [
                 version: VERSION_REACT_DOM,
                 visible: true,
                 css: [],
-                dts: [reactDOM(INDEX_DTS)],
+                dts: reactDOM(INDEX_DTS),
                 js: [reactDOM('react-dom.js')],
                 minJs: [reactDOM('react-dom.min.js')],
                 dependencies: { 'react': VERSION_REACT }
             },
             {
+                packageName: 'socket.io-client',
                 moduleName: 'socket.io-client',
                 libraryKind: LibraryKind.Global,
                 globalName: 'socket.io-client',
@@ -451,12 +478,13 @@ app.factory('options', [
                 version: VERSION_SOCKETIO_CLIENT,
                 visible: true,
                 css: [],
-                dts: [socketIoClient('socket.io-client.d.ts')],
+                dts: socketIoClient('socket.io-client.d.ts'),
                 js: [socketIoClient('socket.io.js')],
                 minJs: [socketIoClient('socket.io.js')],
                 dependencies: {}
             },
             {
+                packageName: 'stats.js',
                 moduleName: 'stats.js',
                 libraryKind: LibraryKind.Global,
                 globalName: 'Stats',
@@ -465,12 +493,13 @@ app.factory('options', [
                 version: VERSION_STATSJS,
                 visible: true,
                 css: [],
-                dts: [statsjs('stats.d.ts')],
+                dts: statsjs('stats.d.ts'),
                 js: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.js'],
                 minJs: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js'],
                 dependencies: {}
             },
             {
+                packageName: 'systemjs',
                 moduleName: 'systemjs',
                 libraryKind: LibraryKind.Global,
                 globalName: 'SystemJS',
@@ -479,12 +508,13 @@ app.factory('options', [
                 version: VERSION_SYSTEMJS,
                 visible: false,
                 css: [],
-                dts: [systemjs('system.d.ts')],
+                dts: systemjs('system.d.ts'),
                 js: [systemjs('system.js')],
                 minJs: [systemjs('system.js')],
                 dependencies: {}
             },
             {
+                packageName: 'three.js',
                 moduleName: 'three.js',
                 libraryKind: LibraryKind.Global,
                 globalName: 'THREE',
@@ -493,12 +523,13 @@ app.factory('options', [
                 version: VERSION_THREEJS,
                 visible: true,
                 css: [],
-                dts: [threejs('three.d.ts')],
+                dts: threejs('three.d.ts'),
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.min.js`],
                 dependencies: {}
             },
             {
+                packageName: 'two.js',
                 moduleName: 'two.js',
                 libraryKind: LibraryKind.Global,
                 globalName: 'Two.js',
@@ -507,7 +538,7 @@ app.factory('options', [
                 version: VERSION_TWO,
                 visible: true,
                 css: [],
-                dts: [two('two.d.ts')],
+                dts: two('two.d.ts'),
                 js: [two('two.js')],
                 minJs: [two('two.min.js')],
                 dependencies: {}
@@ -543,13 +574,13 @@ app.factory('options', [
                 return _options.filter(callback);
             },
 
-            deleteOption: function (moduleName: string) {
+            deleteOption: function (packageName: string) {
                 const options: IOption[] = [];
 
                 let i = 0;
                 let found: IOption | undefined;
                 while (i < _options.length) {
-                    if (_options[i].moduleName === moduleName) {
+                    if (_options[i].packageName === packageName) {
                         found = _options[i];
                     }
                     else {

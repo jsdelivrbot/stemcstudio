@@ -1,1 +1,0 @@
-module.exports = require("npm:component-emitter@1.2.0/index.js");

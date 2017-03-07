@@ -1,1 +1,0 @@
-module.exports = require("npm:base64-arraybuffer@0.1.2/lib/base64-arraybuffer");

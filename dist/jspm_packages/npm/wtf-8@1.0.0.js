@@ -1,1 +1,0 @@
-module.exports = require("npm:wtf-8@1.0.0/wtf-8.js");

@@ -1039,6 +1039,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
+    /**
+     * dependencies a list of package names, the unique identifier for libraries.
+     */
     get dependencies(): string[] {
         try {
             if (this.existsPackageJson()) {

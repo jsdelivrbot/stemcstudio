@@ -24,18 +24,20 @@
             <table>
                 <thead>
                     <tr>
+                        <td>Package</td>
                         <td>Module</td>
                         <td>Global</td>
                         <td>Description</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat='option in options track by option.moduleName'>
+                    <tr ng-repeat='option in options track by option.packageName'>
                         <td>
                             <label class='checkbox-inline'>
-                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.moduleName) > -1' ng-click='toggleDependency(option.moduleName)'>{{option.moduleName}}</input>
+                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.packageName) > -1' ng-click='toggleDependency(option.packageName)'>{{option.packageName}}</input>
                             </label>
                         </td>
+                        <td>{{option.moduleName}}</td>
                         <td>{{option.globalName}}</td>
                         <td><a href='{{option.homepage}}' target='_blank'>{{option.description}}</a></td>
                     </tr>

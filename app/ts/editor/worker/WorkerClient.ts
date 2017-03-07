@@ -9,6 +9,18 @@ import CallbackManager from './CallbackManager';
 import Disposable from '../../base/Disposable';
 
 /**
+ * Protocol for the initialization message.
+ * Using an interface ensures that we don't accidently pass the wrong data structure. 
+ */
+interface InitRequestMessage {
+    init: boolean;
+    scriptImports: string[];
+    moduleName: string;
+    className: string;
+    callbackId: number;
+};
+
+/**
  * <p>
  * WorkerClient controls the interaction between an editor document
  * and a Web Worker.
@@ -108,7 +120,9 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         const callbackId = this.callbackManager.captureCallback(callback);
 
         // Sending a postMessage starts the worker.
-        this.worker.postMessage({ init: true, scriptImports, moduleName, className, callbackId });
+        // 
+        const initMessage: InitRequestMessage = { init: true, scriptImports, moduleName, className, callbackId };
+        this.worker.postMessage(initMessage);
     }
 
     /**

@@ -1,1 +1,0 @@
-module.exports = require("npm:arraybuffer.slice@0.0.6/index");

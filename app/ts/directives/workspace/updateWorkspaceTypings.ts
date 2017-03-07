@@ -7,12 +7,12 @@ import scriptURL from './scriptURL';
 import WsModel from '../../wsmodel/services/WsModel';
 
 interface Unit {
-    name: string;
-    fileNames: string[];
+    packageName: string;
+    dts: string;
 }
 
-function optionsToModuleNames(options: IOption[]): string[] {
-    return options.map(function (option: IOption) { return option.moduleName; });
+function optionsToPackageNames(options: IOption[]): string[] {
+    return options.map(function (option: IOption) { return option.packageName; });
 }
 
 /**
@@ -24,6 +24,9 @@ function optionsToModuleNames(options: IOption[]): string[] {
 export default function updateWorkspaceTypings(
     wsModel: WsModel,
     options: IOptionManager,
+    /**
+     * The old dependencies (package names).
+     */
     olds: string[],
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     $http: angular.IHttpService,
@@ -33,9 +36,9 @@ export default function updateWorkspaceTypings(
 ) {
     // Load the wokspace with the appropriate TypeScript definitions.
     /**
-     * The new dependencies (module names).
+     * The new dependencies (package names).
      */
-    const news: string[] = optionsToModuleNames(closure(namesToOptions(wsModel.dependencies, options), options));
+    const news: string[] = optionsToPackageNames(closure(namesToOptions(wsModel.dependencies, options), options));
 
     // Determine what we need to add and remove from the workspace.
     //
@@ -60,16 +63,16 @@ export default function updateWorkspaceTypings(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, options);
 
-    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { name: option.moduleName, fileNames: option.dts }; });
+    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, options);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: Unit[] = addOpts.map(function (option) { return { name: option.moduleName, fileNames: option.dts }; });
+    let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {
-        addUnits = addUnits.concat({ name: 'lib', fileNames: [FILENAME_TYPESCRIPT_CURRENT_LIB_DTS] });
+        addUnits = addUnits.concat({ packageName: 'lib', dts: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
     }
 
     /**
@@ -94,19 +97,18 @@ export default function updateWorkspaceTypings(
     };
 
     rmvUnits.forEach((rmvUnit) => {
-        for (const fileName of rmvUnit.fileNames) {
-            wsModel.removeScript(fileName, (err) => {
-                if (!err) {
-                    const index = olds.indexOf(rmvUnit.name);
-                    if (index >= 0) {
-                        olds.splice(index, 1);
-                    }
+        // TODO: We could key by something else here.
+        wsModel.removeScript(rmvUnit.dts, (err) => {
+            if (!err) {
+                const index = olds.indexOf(rmvUnit.packageName);
+                if (index >= 0) {
+                    olds.splice(index, 1);
                 }
-                else {
-                    console.warn(`removeScript(${fileName}) failed. ${err}`);
-                }
-            });
-        }
+            }
+            else {
+                console.warn(`removeScript(${rmvUnit.dts}) failed. ${err}`);
+            }
+        });
     });
 
     // Make sure that the callback gets called, even when adding no files.
@@ -114,29 +116,31 @@ export default function updateWorkspaceTypings(
     const names = Object.keys(addUnits);
     const iLen = names.length;
     if (iLen > 0) {
+        /**
+         * Keeps track of all the asynchronous requests to read file contents.
+         */
         let inFlightCount = 0;
         for (let i = 0; i < iLen; i++) {
             const name = names[i];
             const addUnit: Unit = addUnits[name];
-            for (const fileName of addUnit.fileNames) {
-                inFlightCount++;
-                readFile(fileName, (err, content) => {
-                    if (!err) {
-                        wsModel.ensureScript(fileName, content.replace(/\r\n?/g, '\n'), (err) => {
-                            if (!err) {
-                                olds.unshift(addUnit.name);
-                            }
-                            else {
-                                console.warn(`ensureScript(${fileName}) failed. ${err}`);
-                            }
-                        });
-                    }
-                    inFlightCount--;
-                    if (0 === inFlightCount) {
-                        callback();
-                    }
-                });
-            }
+            inFlightCount++;
+            readFile(addUnit.dts, (err, content) => {
+                if (!err) {
+                    // TODO: We could key by something different here.
+                    wsModel.ensureScript(addUnit.dts, content.replace(/\r\n?/g, '\n'), (err) => {
+                        if (!err) {
+                            olds.unshift(addUnit.packageName);
+                        }
+                        else {
+                            console.warn(`ensureScript(${addUnit.dts}) failed. ${err}`);
+                        }
+                    });
+                }
+                inFlightCount--;
+                if (0 === inFlightCount) {
+                    callback();
+                }
+            });
         }
     }
     else {

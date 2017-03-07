@@ -1,1 +1,0 @@
-module.exports = require("npm:json3@3.3.2/lib/json3");

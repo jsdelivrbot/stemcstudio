@@ -1,1 +1,0 @@
-module.exports = require("npm:debug@0.7.4/debug.js");
