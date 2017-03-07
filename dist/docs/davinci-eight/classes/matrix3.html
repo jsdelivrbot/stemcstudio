@@ -1,0 +1,1681 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Matrix3 | EIGHT 6.0.7</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">EIGHT 6.0.7</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="matrix3.html">Matrix3</a>
+				</li>
+			</ul>
+			<h1>Class Matrix3</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>
+							A 3x3 (square) matrix of <code>number</code>s.
+						</p>
+						<p>
+							An adapter over a <code>Float32Array</code>, enabling it to be used directly with WebGL.
+						</p>
+						<p>
+							The 9 elements are stored in <em>column-major</em> order (the order expected by WebGL):
+							<table>
+								<tr><td>0</td><td>3</td><td>6</td></tr>
+								<tr><td>1</td><td>4</td><td>7</td></tr>
+								<tr><td>2</td><td>5</td><td>8</td></tr>
+							</table>
+						</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="abstractmatrix.html" class="tsd-signature-type">AbstractMatrix</a><span class="tsd-signature-symbol">&lt;</span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">&gt;</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Matrix3</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/lockable.html" class="tsd-signature-type">Lockable</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="matrix3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#modified" class="tsd-kind-icon">modified</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix3.html#one" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix3.html#zero" class="tsd-kind-icon">zero</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#dimensions" class="tsd-kind-icon">dimensions</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#elements" class="tsd-kind-icon">elements</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___add__" class="tsd-kind-icon">___add__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___mul__" class="tsd-kind-icon">___mul__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___neg__" class="tsd-kind-icon">___neg__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___pos__" class="tsd-kind-icon">___pos__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___radd__" class="tsd-kind-icon">___radd__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___rmul__" class="tsd-kind-icon">___rmul__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___rsub__" class="tsd-kind-icon">___rsub__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#___sub__" class="tsd-kind-icon">___sub__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#add2" class="tsd-kind-icon">add2</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#copy" class="tsd-kind-icon">copy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#det" class="tsd-kind-icon">det</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#getelement" class="tsd-kind-icon">get<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#inv" class="tsd-kind-icon">inv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="matrix3.html#isone" class="tsd-kind-icon">is<wbr>One</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#iszero" class="tsd-kind-icon">is<wbr>Zero</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#lock" class="tsd-kind-icon">lock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#mul" class="tsd-kind-icon">mul</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#mul2" class="tsd-kind-icon">mul2</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#neg" class="tsd-kind-icon">neg</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#normalfrommatrix4" class="tsd-kind-icon">normal<wbr>From<wbr>Matrix4</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#one-1" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#reflection" class="tsd-kind-icon">reflection</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#rmul" class="tsd-kind-icon">rmul</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#rotate" class="tsd-kind-icon">rotate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#rotation" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#row" class="tsd-kind-icon">row</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#scale" class="tsd-kind-icon">scale</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#setelement" class="tsd-kind-icon">set<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#sub" class="tsd-kind-icon">sub</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#toexponential" class="tsd-kind-icon">to<wbr>Exponential</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#translation" class="tsd-kind-icon">translation</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#transpose" class="tsd-kind-icon">transpose</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#unlock" class="tsd-kind-icon">unlock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix3.html#zero-1" class="tsd-kind-icon">zero</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix3.html#reflection-1" class="tsd-kind-icon">reflection</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix3.html#rotation-1" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix3.html#translation-1" class="tsd-kind-icon">translation</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Matrix3<span class="tsd-signature-symbol">(</span>elements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#constructor">constructor</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L50">davinci-eight/math/Matrix3.ts:50</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elements: <span class="tsd-signature-type">Float32Array</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="modified" class="tsd-anchor"></a>
+					<h3>modified</h3>
+					<div class="tsd-signature tsd-kind-icon">modified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#modified">modified</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L21">davinci-eight/math/AbstractMatrix.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="one" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> one</h3>
+					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Matrix3(new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1])))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L523">davinci-eight/math/Matrix3.ts:523</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identity matrix for multiplication.
+							The matrix is locked (immutable), but may be cloned.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="zero" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> zero</h3>
+					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Matrix3(new Float32Array([0, 0, 0, 0, 0, 0, 0, 0, 0])))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L550">davinci-eight/math/Matrix3.ts:550</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identity matrix for addition.
+							The matrix is locked (immutable), but may be cloned.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="dimensions" class="tsd-anchor"></a>
+					<h3>dimensions</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> dimensions<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> dimensions<span class="tsd-signature-symbol">(</span>unused<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L47">davinci-eight/math/AbstractMatrix.ts:47</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L50">davinci-eight/math/AbstractMatrix.ts:50</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>unused: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="elements" class="tsd-anchor"></a>
+					<h3>elements</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> elements<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> elements<span class="tsd-signature-symbol">(</span>elements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L54">davinci-eight/math/AbstractMatrix.ts:54</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Float32Array</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L57">davinci-eight/math/AbstractMatrix.ts:57</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elements: <span class="tsd-signature-type">Float32Array</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___add__" class="tsd-anchor"></a>
+					<h3>___add__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___add__<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L439">davinci-eight/math/Matrix3.ts:439</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___mul__" class="tsd-anchor"></a>
+					<h3>___mul__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___mul__<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L465">davinci-eight/math/Matrix3.ts:465</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___neg__" class="tsd-anchor"></a>
+					<h3>___neg__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___neg__<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L493">davinci-eight/math/Matrix3.ts:493</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___pos__" class="tsd-anchor"></a>
+					<h3>___pos__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___pos__<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L489">davinci-eight/math/Matrix3.ts:489</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___radd__" class="tsd-anchor"></a>
+					<h3>___radd__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___radd__<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L452">davinci-eight/math/Matrix3.ts:452</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___rmul__" class="tsd-anchor"></a>
+					<h3>___rmul__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___rmul__<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L477">davinci-eight/math/Matrix3.ts:477</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___rsub__" class="tsd-anchor"></a>
+					<h3>___rsub__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___rsub__<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L510">davinci-eight/math/Matrix3.ts:510</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___sub__" class="tsd-anchor"></a>
+					<h3>___sub__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___sub__<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L497">davinci-eight/math/Matrix3.ts:497</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="add" class="tsd-anchor"></a>
+					<h3>add</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L62">davinci-eight/math/Matrix3.ts:62</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="add2" class="tsd-anchor"></a>
+					<h3>add2</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">add2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L72">davinci-eight/math/Matrix3.ts:72</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+								</li>
+								<li>
+									<h5>b: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L80">davinci-eight/math/Matrix3.ts:80</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns a copy of this Matrix3 instance.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="copy" class="tsd-anchor"></a>
+					<h3>copy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#copy">copy</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L65">davinci-eight/math/AbstractMatrix.ts:65</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>m: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="det" class="tsd-anchor"></a>
+					<h3>det</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">det<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L87">davinci-eight/math/Matrix3.ts:87</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Computes the determinant.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="getelement" class="tsd-anchor"></a>
+					<h3>get<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Element<span class="tsd-signature-symbol">(</span>row<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#getelement">getElement</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L77">davinci-eight/math/AbstractMatrix.ts:77</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>row: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The zero-based row.</p>
+									</div>
+								</li>
+								<li>
+									<h5>column: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The zero-based column.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="inv" class="tsd-anchor"></a>
+					<h3>inv</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">inv<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L141">davinci-eight/math/Matrix3.ts:141</a></li>
+								</ul>
+							</aside>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="islocked" class="tsd-anchor"></a>
+					<h3>is<wbr>Locked</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Locked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#islocked">isLocked</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#islocked">isLocked</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L35">davinci-eight/math/AbstractMatrix.ts:35</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<a name="isone" class="tsd-anchor"></a>
+					<h3>is<wbr>One</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>One<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#isone">isOne</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L149">davinci-eight/math/Matrix3.ts:149</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="iszero" class="tsd-anchor"></a>
+					<h3>is<wbr>Zero</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Zero<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L160">davinci-eight/math/Matrix3.ts:160</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3>lock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#lock">lock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#lock">lock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L39">davinci-eight/math/AbstractMatrix.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="mul" class="tsd-anchor"></a>
+					<h3>mul</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">mul<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L171">davinci-eight/math/Matrix3.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="mul2" class="tsd-anchor"></a>
+					<h3>mul2</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">mul2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L187">davinci-eight/math/Matrix3.ts:187</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+								</li>
+								<li>
+									<h5>b: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="neg" class="tsd-anchor"></a>
+					<h3>neg</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">neg<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L195">davinci-eight/math/Matrix3.ts:195</a></li>
+								</ul>
+							</aside>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="normalfrommatrix4" class="tsd-anchor"></a>
+					<h3>normal<wbr>From<wbr>Matrix4</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">normal<wbr>From<wbr>Matrix4<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L207">davinci-eight/math/Matrix3.ts:207</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>
+										Sets this 3x3 matrix to the matrix required to properly transform normal vectors
+										(pseudo or axial vectors) based upon the 4x4 matrix used to transform polar vectors.
+									</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>m: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="one-1" class="tsd-anchor"></a>
+					<h3>one</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L214">davinci-eight/math/Matrix3.ts:214</a></li>
+								</ul>
+							</aside>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="reflection" class="tsd-anchor"></a>
+					<h3>reflection</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">reflection<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE2</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L229">davinci-eight/math/Matrix3.ts:229</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>
+										Sets this matrix to the transformation for a
+										reflection in the plane normal to the unit vector <code>n</code>.
+									</p>
+									<p>
+										<code>this ⟼ reflection(n)</code>
+									</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>n: <span class="tsd-signature-type">VectorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rmul" class="tsd-anchor"></a>
+					<h3>rmul</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rmul<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L178">davinci-eight/math/Matrix3.ts:178</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lhs: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rotate" class="tsd-anchor"></a>
+					<h3>rotate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpinorE2</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L258">davinci-eight/math/Matrix3.ts:258</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spinor: <span class="tsd-signature-type">SpinorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rotation" class="tsd-anchor"></a>
+					<h3>rotation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotation<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpinorE2</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L266">davinci-eight/math/Matrix3.ts:266</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spinor: <span class="tsd-signature-type">SpinorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="row" class="tsd-anchor"></a>
+					<h3>row</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">row<span class="tsd-signature-symbol">(</span>i<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L250">davinci-eight/math/Matrix3.ts:250</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>i: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the zero-based index of the row.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="scale" class="tsd-anchor"></a>
+					<h3>scale</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L278">davinci-eight/math/Matrix3.ts:278</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>s: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="set" class="tsd-anchor"></a>
+					<h3>set</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>n11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n13<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n23<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n31<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n32<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n33<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L307">davinci-eight/math/Matrix3.ts:307</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>
+										Sets all elements of this matrix to the supplied values (provided in <em>row-major</em> order).
+									</p>
+									<p>
+										An advantage of this method is that the function call resembles the matrix written out.
+									</p>
+									<p>
+										The parameters are named according to the 1-based row and column.
+									</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>n11: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n12: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n13: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n21: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n22: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n23: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n31: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n32: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>n33: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="setelement" class="tsd-anchor"></a>
+					<h3>set<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Element<span class="tsd-signature-symbol">(</span>row<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#setelement">setElement</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L108">davinci-eight/math/AbstractMatrix.ts:108</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>row: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The zero-based row.</p>
+									</div>
+								</li>
+								<li>
+									<h5>column: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The zero-based column.</p>
+									</div>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value of the element.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="sub" class="tsd-anchor"></a>
+					<h3>sub</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sub<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L323">davinci-eight/math/Matrix3.ts:323</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="toexponential" class="tsd-anchor"></a>
+					<h3>to<wbr>Exponential</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Exponential<span class="tsd-signature-symbol">(</span>fractionDigits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L361">davinci-eight/math/Matrix3.ts:361</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> fractionDigits: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="tofixed" class="tsd-anchor"></a>
+					<h3>to<wbr>Fixed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Fixed<span class="tsd-signature-symbol">(</span>fractionDigits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L372">davinci-eight/math/Matrix3.ts:372</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> fractionDigits: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="toprecision" class="tsd-anchor"></a>
+					<h3>to<wbr>Precision</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Precision<span class="tsd-signature-symbol">(</span>precision<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L383">davinci-eight/math/Matrix3.ts:383</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> precision: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span>radix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L394">davinci-eight/math/Matrix3.ts:394</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> radix: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="translation" class="tsd-anchor"></a>
+					<h3>translation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">translation<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE2</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L409">davinci-eight/math/Matrix3.ts:409</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>
+										Computes the homogeneous translation matrix for a 2D translation.
+									</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>d: <span class="tsd-signature-type">VectorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="transpose" class="tsd-anchor"></a>
+					<h3>transpose</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L421">davinci-eight/math/Matrix3.ts:421</a></li>
+								</ul>
+							</aside>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="unlock" class="tsd-anchor"></a>
+					<h3>unlock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#unlock">unlock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#unlock">unlock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/AbstractMatrix.ts#L43">davinci-eight/math/AbstractMatrix.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>token: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="zero-1" class="tsd-anchor"></a>
+					<h3>zero</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L435">davinci-eight/math/Matrix3.ts:435</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets this matrix to the identity element for addition, <b>0</b>.</p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="reflection-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> reflection</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">reflection<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L528">davinci-eight/math/Matrix3.ts:528</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>n: <span class="tsd-signature-type">VectorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="rotation-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> rotation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotation<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpinorE2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L535">davinci-eight/math/Matrix3.ts:535</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spinor: <span class="tsd-signature-type">SpinorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="translation-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> translation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">translation<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9dd15a0/src/davinci-eight/math/Matrix3.ts#L542">davinci-eight/math/Matrix3.ts:542</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>d: <span class="tsd-signature-type">VectorE2</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="matrix3.html" class="tsd-kind-icon">Matrix3</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+								<a href="matrix3.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#modified" class="tsd-kind-icon">modified</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix3.html#one" class="tsd-kind-icon">one</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix3.html#zero" class="tsd-kind-icon">zero</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#dimensions" class="tsd-kind-icon">dimensions</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#elements" class="tsd-kind-icon">elements</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___add__" class="tsd-kind-icon">___add__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___mul__" class="tsd-kind-icon">___mul__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___neg__" class="tsd-kind-icon">___neg__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___pos__" class="tsd-kind-icon">___pos__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___radd__" class="tsd-kind-icon">___radd__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___rmul__" class="tsd-kind-icon">___rmul__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___rsub__" class="tsd-kind-icon">___rsub__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#___sub__" class="tsd-kind-icon">___sub__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#add" class="tsd-kind-icon">add</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#add2" class="tsd-kind-icon">add2</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#clone" class="tsd-kind-icon">clone</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#copy" class="tsd-kind-icon">copy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#det" class="tsd-kind-icon">det</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#getelement" class="tsd-kind-icon">get<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#inv" class="tsd-kind-icon">inv</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+								<a href="matrix3.html#isone" class="tsd-kind-icon">is<wbr>One</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#iszero" class="tsd-kind-icon">is<wbr>Zero</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#mul" class="tsd-kind-icon">mul</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#mul2" class="tsd-kind-icon">mul2</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#neg" class="tsd-kind-icon">neg</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#normalfrommatrix4" class="tsd-kind-icon">normal<wbr>From<wbr>Matrix4</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#one-1" class="tsd-kind-icon">one</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#reflection" class="tsd-kind-icon">reflection</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#rmul" class="tsd-kind-icon">rmul</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#rotate" class="tsd-kind-icon">rotate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#rotation" class="tsd-kind-icon">rotation</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#row" class="tsd-kind-icon">row</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#scale" class="tsd-kind-icon">scale</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#set" class="tsd-kind-icon">set</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#setelement" class="tsd-kind-icon">set<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#sub" class="tsd-kind-icon">sub</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#toexponential" class="tsd-kind-icon">to<wbr>Exponential</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#translation" class="tsd-kind-icon">translation</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#transpose" class="tsd-kind-icon">transpose</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#unlock" class="tsd-kind-icon">unlock</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix3.html#zero-1" class="tsd-kind-icon">zero</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix3.html#reflection-1" class="tsd-kind-icon">reflection</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix3.html#rotation-1" class="tsd-kind-icon">rotation</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix3.html#translation-1" class="tsd-kind-icon">translation</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

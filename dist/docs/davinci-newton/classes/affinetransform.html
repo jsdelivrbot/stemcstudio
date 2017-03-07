@@ -1,0 +1,684 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>AffineTransform | NEWTON 0.0.38</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">NEWTON 0.0.38</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="affinetransform.html">AffineTransform</a>
+				</li>
+			</ul>
+			<h1>Class AffineTransform</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Specifies an immutable 2D affine transform.</p>
+					</div>
+					<p>The affine transform of a point <code>(x, y)</code> is given by:</p>
+					<p> [  m11  m21  dx  ] [ x ]   [ m11 x + m21 y + dx ]
+						[  m12  m22  dy  ] [ y ] = [ m12 x + m22 y + dy ]
+					[   0    0    1  ] [ 1 ]   [          1         ]</p>
+					<p>Rotation clockwise by theta radians:</p>
+					<p> [ cos(theta)  -sin(theta)   0 ]
+						[ sin(theta)   cos(theta)   0 ]
+					[     0            0        1 ]</p>
+					<p>Scale:</p>
+					<p> [  sx   0    0  ]
+						[  0   sy    0  ]
+					[  0    0    1  ]</p>
+					<p>Translate:</p>
+					<p> [  1    0   dx  ]
+						[  0    1   dy  ]
+					[  0    0    1  ]</p>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">AffineTransform</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="affinetransform.html#identity" class="tsd-kind-icon">IDENTITY</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#applytransform" class="tsd-kind-icon">apply<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#concatenate" class="tsd-kind-icon">concatenate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#lineto" class="tsd-kind-icon">line<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#moveto" class="tsd-kind-icon">move<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#rotate" class="tsd-kind-icon">rotate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#scale" class="tsd-kind-icon">scale</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#transform" class="tsd-kind-icon">transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="affinetransform.html#translate" class="tsd-kind-icon">translate</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Affine<wbr>Transform<span class="tsd-signature-symbol">(</span>m11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, dx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, dy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L56">davinci-newton/view/AffineTransform.ts:56</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>m11: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>m12: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>m21: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>m22: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>dx: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>dy: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="identity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> IDENTITY</h3>
+					<div class="tsd-signature tsd-kind-icon">IDENTITY<span class="tsd-signature-symbol">:</span> <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a><span class="tsd-signature-symbol"> =&nbsp;new AffineTransform(1, 0, 0, 1, 0, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L49">davinci-newton/view/AffineTransform.ts:49</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identity AffineTransform, which leaves a point unchanged when it is applied.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="applytransform" class="tsd-anchor"></a>
+					<h3>apply<wbr>Transform</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">apply<wbr>Transform<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L74">davinci-newton/view/AffineTransform.ts:74</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Multiplies the affine transform of the given context with this AffineTransform.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the canvas context to modify</p>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="concatenate" class="tsd-anchor"></a>
+					<h3>concatenate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">concatenate<span class="tsd-signature-symbol">(</span>at<span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L111">davinci-newton/view/AffineTransform.ts:111</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Right-multiply this AffineTransform by the given AffineTransform. This has the
+										effect that the given AffineTransform will be applied to the input vector before the
+									current AffineTransform.</p>
+								</div>
+								<p>Concatenating a transform A to transform B is equivalent to matrix multiplication of
+									the two transforms. Note that order matters: matrices are applied in right to left order
+								when transforming a vector</p>
+								<p>A B vector = A <em> (B </em> vector)</p>
+								<p>We can think of the B matrix being applied first, then the A matrix.  This method
+								returns the product with the input <code>at</code> matrix on the right</p>
+								<p>this * at</p>
+								<p>The mathematics is as follows: this matrix is on the left, the other <code>at</code> matrix is on
+								the right:</p>
+								<p> [  m11  m21  dx  ]  [  a11  a21  ax  ]
+									[  m12  m22  dy  ]  [  a12  a22  ay  ]
+								[   0    0    1  ]  [   0    0   1   ]</p>
+								<p>Result is:</p>
+								<p> [ (m11<em>a11 + m21</em>a12)  (m11<em>a21 + m21</em>a22)  (m11<em>ax + m21</em>ay + dx) ]
+									[ (m12<em>a11 + m22</em>a12)  (m12<em>a21 + m22</em>a22)  (m12<em>ax + m22</em>ay + dy) ]
+								[          0                    0                   1              ]</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>at: <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the AffineTransform matrix to right-multiply this AffineTransform matrix by</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+							<p>the product of this AffineTransform matrix right-multiplied by the <code>at</code> AffineTransform matrix</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="lineto" class="tsd-anchor"></a>
+					<h3>line<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">line<wbr>To<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L127">davinci-newton/view/AffineTransform.ts:127</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Draw a line to the transformed point.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal coordinate</p>
+									</div>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical coordinate</p>
+									</div>
+								</li>
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the canvas context to modify</p>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="moveto" class="tsd-anchor"></a>
+					<h3>move<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">move<wbr>To<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L139">davinci-newton/view/AffineTransform.ts:139</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets current position in context to the transformed point.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal coordinate</p>
+									</div>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical coordinate</p>
+									</div>
+								</li>
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the canvas context to modify</p>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rotate" class="tsd-anchor"></a>
+					<h3>rotate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L164">davinci-newton/view/AffineTransform.ts:164</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Concatenates a rotation transformation to this AffineTransform.</p>
+								</div>
+								<p>The mathematics is as follows: this matrix is on the left, the rotation matrix is on
+								the right, and the angle is represented by <code>t</code></p>
+								<p> [  m11  m21  dx  ]  [ cos(t)  -sin(t)   0 ]
+									[  m12  m22  dy  ]  [ sin(t)   cos(t)   0 ]
+								[   0    0    1  ]  [  0        0       1 ]</p>
+								<p>Result is:</p>
+								<p> [  (m11<em>cos(t) + m21</em>sin(t))  (-m11<em>sin(t) + m21</em>cos(t))  0  ]
+									[  (m12<em>cos(t) + m22</em>sin(t))  (-m12<em>sin(t) + m22</em>cos(t))  0  ]
+								[              0                          0               1  ]</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>angle: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>angle in radians to; positive angle rotates clockwise.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+							<p>a new AffineTransform equal to this AffineTransform rotated by the given angle</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="scale" class="tsd-anchor"></a>
+					<h3>scale</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L194">davinci-newton/view/AffineTransform.ts:194</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Concatenates a scaling transformation to this AffineTransform.</p>
+								</div>
+								<p>The mathematics is as follows: this matrix is on the left, the scaling matrix is on
+								the right:</p>
+								<p> [  m11  m21  dx  ]  [  x   0   0  ]
+									[  m12  m22  dy  ]  [  0   y   0  ]
+								[   0    0    1  ]  [  0   0   1  ]</p>
+								<p>Result is:</p>
+								<p> [  m11<em>x  m21</em>y  dx  ]
+									[  m12<em>x  m22</em>y  dy  ]
+								[   0      0      1  ]</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>factor to scale by in horizontal direction</p>
+									</div>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>factor to scale by in vertical direction</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+							<p>a new AffineTransform equal to this AffineTransform scaled by the given x and y factors</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="settransform" class="tsd-anchor"></a>
+					<h3>set<wbr>Transform</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Transform<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L206">davinci-newton/view/AffineTransform.ts:206</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the affine transform of the given context to match this AffineTransform.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the canvas context to modify</p>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="transform" class="tsd-anchor"></a>
+					<h3>transform</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">transform<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L231">davinci-newton/view/AffineTransform.ts:231</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Apply this transform to the given point, returning the transformation
+									of the given point.</p>
+								</div>
+								<p>The mathematics is as follows:</p>
+								<p> [  m11  m21  dx  ]  [ x ]
+									[  m12  m22  dy  ]  [ y ]
+								[   0    0    1  ]  [ 1 ]</p>
+								<p>Result is:</p>
+								<p> [ m11 x + m21 y + dx ]
+									[ m12 x + m22 y + dy ]
+								[          1         ]</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the x coordinate</p>
+									</div>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the y coordinate</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<p>the transformation of the given point.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="translate" class="tsd-anchor"></a>
+					<h3>translate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f8d451/src/davinci-newton/view/AffineTransform.ts#L257">davinci-newton/view/AffineTransform.ts:257</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Concatenates a translation to this AffineTransform.</p>
+								</div>
+								<p>The mathematics is as follows: this matrix is on the left, the scaling matrix is on
+								the right:</p>
+								<p> [  m11  m21  dx  ]  [  1    0   x  ]
+									[  m12  m22  dy  ]  [  0    1   y  ]
+								[   0    0    1  ]  [  0    0   1  ]</p>
+								<p>Result is:</p>
+								<p> [ m11  m21  (m11<em>x + m21</em>y + dx) ]
+									[ m12  m22  (m12<em>x + m22</em>y + dy) ]
+								[ 0    0            1            ]</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+							<p>a new AffineTransform equal to this AffineTransform  translated by the given amount</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="affinetransform.html" class="tsd-kind-icon">Affine<wbr>Transform</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="affinetransform.html#identity" class="tsd-kind-icon">IDENTITY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#applytransform" class="tsd-kind-icon">apply<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#concatenate" class="tsd-kind-icon">concatenate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#lineto" class="tsd-kind-icon">line<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#moveto" class="tsd-kind-icon">move<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#rotate" class="tsd-kind-icon">rotate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#scale" class="tsd-kind-icon">scale</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#transform" class="tsd-kind-icon">transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="affinetransform.html#translate" class="tsd-kind-icon">translate</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

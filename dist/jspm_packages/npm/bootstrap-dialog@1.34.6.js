@@ -1,0 +1,1 @@
+module.exports = require("npm:bootstrap-dialog@1.34.6/src/js/bootstrap-dialog.js");

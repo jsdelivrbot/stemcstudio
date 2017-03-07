@@ -1,0 +1,1 @@
+module.exports = require("github:angular/bower-angular-sanitize@1.6.2/angular-sanitize");

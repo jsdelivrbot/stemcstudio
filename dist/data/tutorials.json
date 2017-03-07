@@ -1,0 +1,74 @@
+[
+    {
+        "gistId": "da7095592fec3f107e53ef7e644b7bcc",
+        "title": "Engine",
+        "description": "Engine is a wrapper around the WebGLRenderingContext and HTMLCanvasElement.",
+        "imageSrc": "/img/tutorials/eight/engine.png",
+        "imageAlt": "",
+        "docsUrl": "/docs/davinci-eight/classes/engine.html",
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "f16b868c86064c4ce7300c825db31afa",
+        "title": "Scene",
+        "description": "A Scene allows you to render many objects with a single method call.",
+        "imageSrc": "/img/tutorials/eight/scene.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "8fdf3c4ac24ce5d701c8b3511ce56e3c",
+        "title": "Group",
+        "description": "Group provides a way to treat a collection of objects as a single entity.",
+        "imageSrc": "/img/tutorials/eight/group.png",
+        "imageAlt": "",
+        "docsUrl": "/docs/davinci-eight/classes/group.html",
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "189fde6e012664a541a0a29fae158293",
+        "title": "Mesh",
+        "description": "Mesh is a pairing of a Geometry and a Material.",
+        "imageSrc": "/img/tutorials/eight/mesh.png",
+        "imageAlt": "",
+        "docsUrl": "/docs/davinci-eight/classes/mesh.html",
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "600f762b5a220d0e57c2b29469537e84",
+        "title": "Primitive",
+        "description": "Primitive and GeometryArrays provide an easy way to build new Geometry.",
+        "imageSrc": "/img/tutorials/eight/primitive.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "b91a9e5a28f44f18d282b66ae15a8e00",
+        "title": "Parallelepiped",
+        "description": "A Parallelepiped is a dynamic shape whose edges are defined as vectors.",
+        "imageSrc": "/img/tutorials/eight/parallelepiped.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "c69d841fd4d98ba691d7205d146ac036",
+        "title": "Renderable",
+        "description": "Renderable is the fundamental interface for visible EIGHT objects.",
+        "imageSrc": "/img/tutorials/eight/renderable.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "081e4a40e232351ba32d0a7693d9d8e6",
+        "title": "VertexBuffer",
+        "description": "VertexBuffer is a wrapper around a WebGLBuffer for storing vertex data.",
+        "imageSrc": "/img/tutorials/eight/vertex-buffer.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    }
+]
