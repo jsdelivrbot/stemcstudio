@@ -1,14 +1,19 @@
-//
-// davinci-csv.d.ts
-//
+// Type definitions for davinci-csv 0.9.2
+// Project: https://github.com/geometryzen/davinci-csv
+// Definitions by: David Geo Holmes david.geo.holmes@gmail.com https://www.stemcstudio.com
+
 // This file was created manually in order to support the davinci-csv library.
 // These declarations are appropriate when using the library through the global
 // variable, 'CSV'.
 //
+
+export = CSV;
+export as namespace CSV;
+
 /**
  * Comma Separated Value (CSV) Library for JavaScript with TypeScript d.ts files.
  */
-declare module CSV {
+declare namespace CSV {
 
     /**
      * A format for relational data.

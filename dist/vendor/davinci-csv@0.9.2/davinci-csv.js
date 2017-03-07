@@ -439,22 +439,23 @@ define("../bower_components/almond/almond", function(){});
 
 define('davinci-csv/config',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Config = (function () {
         function Config() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-csv';
-            this.LAST_MODIFIED = '2017-02-21';
+            this.LAST_MODIFIED = '2017-03-07';
             this.NAMESPACE = 'CSV';
-            this.VERSION = '0.9.1';
+            this.VERSION = '0.9.2';
         }
         return Config;
     }());
     var config = new Config();
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = config;
 });
 
 define('davinci-csv/core/CSV',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var rxIsInt = /^\d+$/;
     var rxIsFloat = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
     var rxNeedsQuoting = /^\s|\s$|,|"|\n/;
@@ -654,6 +655,7 @@ define('davinci-csv/core/CSV',["require", "exports"], function (require, exports
 
 define('davinci-csv',["require", "exports", "./davinci-csv/config", "./davinci-csv/core/CSV"], function (require, exports, config_1, CSV_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var csv = {
         get LAST_MODIFIED() { return config_1.default.LAST_MODIFIED; },
         get VERSION() { return config_1.default.VERSION; },
@@ -661,7 +663,6 @@ define('davinci-csv',["require", "exports", "./davinci-csv/config", "./davinci-c
         get parse() { return CSV_1.parse; },
         get serialize() { return CSV_1.serialize; }
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = csv;
 });
 

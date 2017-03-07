@@ -529,20 +529,28 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-csv')
         },
         {
-            src: "bower_components/davinci-csv/dist/davinci-csv.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.1/dist/davinci-csv.d.ts')
+            src: "bower_components/davinci-csv/dist/index.d.ts",
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
         },
         {
             src: "bower_components/davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.1/dist/davinci-csv.js')
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/davinci-csv.js')
         },
         {
-            src: "../davinci-csv/dist/davinci-csv.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.1/dist/davinci-csv.d.ts')
+            src: "bower_components/davinci-csv/dist/index.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-csv/index.d.ts')
+        },
+        {
+            src: "../davinci-csv/dist/index.d.ts",
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
         },
         {
             src: "../davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.1/dist/davinci-csv.js')
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/davinci-csv.js')
+        },
+        {
+            src: "../davinci-csv/dist/index.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-csv/index.d.ts')
         },
         {
             expand: true,
