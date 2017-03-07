@@ -1,5 +1,5 @@
 import app from '../../app';
-import IOption from './IOption';
+import { IOption, LibraryKind } from './IOption';
 import IOptionManager from './IOptionManager';
 
 app.factory('options', [
@@ -37,18 +37,23 @@ app.factory('options', [
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
-        function vendorFolder(packageFolder: string, version: string, subFolder: string | undefined, fileName: string): string {
+        /**
+         * VENDOR_FOLDER_MARKER '/' packageFolder ['@' version] ['/' subFolder] '/' fileName
+         */
+        function vendorFolder(packageFolder: string, version: string | undefined, subFolder: string | undefined, fileName: string): string {
             const steps: string[] = [];
             steps.push(VENDOR_FOLDER_MARKER);
             steps.push('/');
             steps.push(packageFolder);
-            steps.push('@');
-            steps.push(version);
-            steps.push('/');
-            if (subFolder) {
-                steps.push(subFolder);
-                steps.push('/');
+            if (version) {
+                steps.push('@');
+                steps.push(version);
             }
+            if (subFolder) {
+                steps.push('/');
+                steps.push(subFolder);
+            }
+            steps.push('/');
             steps.push(fileName);
             return steps.join('');
         }
@@ -83,8 +88,11 @@ app.factory('options', [
         function d3(fileName: string): string {
             return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
         }
-        function eight(subFolder: string, fileName: string): string {
-            return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName);
+        function eight(fileName: string): string {
+            const isDts = fileName.endsWith('.d.ts');
+            const packageFolder = `${isDts ? '@types/' : ''}davinci-eight`;
+            const version = isDts ? void 0 : VERSION_EIGHT;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function geocas(subFolder: string, fileName: string): string {
             return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
@@ -108,10 +116,16 @@ app.factory('options', [
             return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
         }
         function react(fileName: string): string {
-            return vendorFolder('react', VERSION_REACT, void 0, fileName);
+            const isDts = fileName.endsWith('.d.ts');
+            const packageFolder = `${isDts ? '@types/' : ''}react`;
+            const version = isDts ? void 0 : VERSION_REACT;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function reactDOM(fileName: string): string {
-            return vendorFolder('react-dom', VERSION_REACT_DOM, void 0, fileName);
+            const isDts = fileName.endsWith('.d.ts');
+            const packageFolder = `${isDts ? '@types/' : ''}react-dom`;
+            const version = isDts ? void 0 : VERSION_REACT_DOM;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function socketIoClient(fileName: string): string {
             return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
@@ -139,8 +153,9 @@ app.factory('options', [
         // TODO: Make this external.
         let _options: IOption[] = [
             {
-                name: 'angular',
-                moniker: 'AngularJS',
+                moduleName: 'angular',
+                libraryKind: LibraryKind.Global,
+                globalName: 'AngularJS',
                 description: "HTML enhanced for web apps!",
                 homepage: 'https://angularjs.org',
                 version: VERSION_ANGULARJS,
@@ -154,7 +169,7 @@ app.factory('options', [
             /*
             {
                 name: 'async',
-                moniker: 'async',
+                globalName: 'async',
                 description: "Async utilities for node and the browser.",
                 homepage: 'https://github.com/caolan/async',
                 version: VERSION_ASYNC,
@@ -166,12 +181,13 @@ app.factory('options', [
             },
             */
             {
-                name: 'biwascheme',
-                moniker: 'BiwaScheme',
+                moduleName: 'biwascheme',
+                libraryKind: LibraryKind.Global,
+                globalName: 'BiwaScheme',
                 description: "Scheme interpreter written in JavaScript.",
                 homepage: 'https://github.com/biwascheme/biwascheme',
                 version: VERSION_BIWASCHEME,
-                visible: true,
+                visible: false,
                 css: [],
                 dts: [biwascheme('biwascheme.d.ts')],
                 js: [biwascheme('biwascheme.js')],
@@ -179,8 +195,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'davinci-csv',
-                moniker: 'CSV',
+                moduleName: 'davinci-csv',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'CSV',
                 description: "Comma Separated Value (CSV) Library",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-csv/index.html',
                 version: VERSION_CSV,
@@ -192,8 +209,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'geocas',
-                moniker: 'GeoCAS',
+                moduleName: 'geocas',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'GeoCAS',
                 description: "Geometric Computer Algebra System.",
                 homepage: 'https://www.stemcstudio.com/docs/GeoCAS/index.html',
                 version: VERSION_GEOCAS,
@@ -205,9 +223,10 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'gl-matrix',
-                moniker: 'gl-matrix',
-                description: "Matrix and Vector library for High Performance WebGL apps.",
+                moduleName: 'gl-matrix',
+                libraryKind: LibraryKind.Global,
+                globalName: 'gl-matrix',
+                description: "Matrix and Vector library for High Performance WebGL.",
                 homepage: 'http://glmatrix.net',
                 version: VERSION_GLMATRIX,
                 visible: true,
@@ -218,9 +237,10 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'dat-gui',
-                moniker: 'dat.GUI',
-                description: "dat.gui is a lightweight controller library for JavaScript.",
+                moduleName: 'dat-gui',
+                libraryKind: LibraryKind.Global,
+                globalName: 'dat.GUI',
+                description: "A lightweight controller library for JavaScript.",
                 homepage: 'https://github.com/dataarts/dat.gui',
                 version: VERSION_DAT_GUI,
                 visible: true,
@@ -231,22 +251,24 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'davinci-eight',
-                moniker: 'EIGHT',
+                moduleName: 'davinci-eight',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'EIGHT',
                 description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
-                css: [eight('dist', 'davinci-eight.css')],
-                dts: [eight('dist', 'davinci-eight.d.ts')],
-                js: [eight('dist', 'davinci-eight.js')],
-                minJs: [eight('dist', 'davinci-eight.js')],
+                css: [eight('davinci-eight.css')],
+                dts: [eight('index.d.ts')],
+                js: [eight('davinci-eight.js')],
+                minJs: [eight('davinci-eight.js')],
                 dependencies: {}
             },
             {
-                name: 'davinci-newton',
-                moniker: 'NEWTON',
-                description: "Experimental Physics Engine.",
+                moduleName: 'davinci-newton',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'NEWTON',
+                description: "Physics Engine and Kinematic Graphing.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-newton/index.html',
                 version: VERSION_NEWTON,
                 visible: true,
@@ -257,8 +279,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'davinci-units',
-                moniker: 'UNITS',
+                moduleName: 'davinci-units',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'UNITS',
                 description: "Dimensions, Units and Geometric Algebra.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-units/index.html',
                 version: VERSION_UNITS,
@@ -270,8 +293,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'd3',
-                moniker: 'd3',
+                moduleName: 'd3',
+                libraryKind: LibraryKind.Global,
+                globalName: 'd3',
                 description: "Data-Driven Documents.",
                 homepage: 'http://d3js.org',
                 version: VERSION_D3_V3,
@@ -283,9 +307,10 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'DomReady',
-                moniker: 'DomReady',
-                description: "Browser portable and safe way to know when DOM has loaded.",
+                moduleName: 'DomReady',
+                libraryKind: LibraryKind.Global,
+                globalName: 'DomReady',
+                description: "Know when the DOM has loaded.",
                 homepage: '',
                 version: VERSION_DOMREADY,
                 visible: true,
@@ -296,9 +321,10 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'jasmine',
-                moniker: 'Jasmine',
-                description: "Behavior-Driven JavaScript",
+                moduleName: 'jasmine',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Jasmine',
+                description: "Behavior-Driven JavaScript Testing Framework.",
                 homepage: 'https://jasmine.github.io',
                 version: VERSION_JASMINE,
                 visible: true,
@@ -309,8 +335,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'jquery',
-                moniker: 'jQuery',
+                moduleName: 'jquery',
+                libraryKind: LibraryKind.Global,
+                globalName: 'jQuery',
                 description: "The Write Less, Do More, JavaScript Library.",
                 homepage: 'https://jquery.com',
                 version: VERSION_JQUERY,
@@ -323,8 +350,9 @@ app.factory('options', [
             },
             // FIXME: baconjs temporarily placed here (after jquery) until dependencies are fixed.
             {
-                name: 'baconjs',
-                moniker: 'Bacon.js',
+                moduleName: 'baconjs',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Bacon.js',
                 description: "Functional Reactive Programming for JavaScript.",
                 homepage: 'https://baconjs.github.io',
                 version: VERSION_BACONJS,
@@ -337,8 +365,9 @@ app.factory('options', [
             },
             // FIXME: deck temporarily placed here (after jquery) until dependencies are fixed.
             {
-                name: 'deck.js',
-                moniker: 'deckJS',
+                moduleName: 'deck.js',
+                libraryKind: LibraryKind.Global,
+                globalName: 'deckJS',
                 description: "Modern HTML Presentations.",
                 homepage: 'http://imakewebthings.github.com/deck.js',
                 version: VERSION_DECKJS,
@@ -350,8 +379,9 @@ app.factory('options', [
                 dependencies: { 'jquery': VERSION_JQUERY }
             },
             {
-                name: 'jsxgraph',
-                moniker: 'JSXGraph',
+                moduleName: 'jsxgraph',
+                libraryKind: LibraryKind.Global,
+                globalName: 'JSXGraph',
                 description: "Interactive 2D Geometry, Plotting, and Visualization.",
                 homepage: 'http://jsxgraph.uni-bayreuth.de',
                 version: VERSION_JSXGRAPH,
@@ -366,9 +396,10 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'plot.ly',
-                moniker: 'plotly',
-                description: "The open source JavaScript graphing library that powers plotly.",
+                moduleName: 'plot.ly',
+                libraryKind: LibraryKind.Global,
+                globalName: 'plotly',
+                description: "JavaScript graphing library that powers plotly.",
                 homepage: 'https://plot.ly/javascript/',
                 version: VERSION_PLOTLY,
                 visible: true,
@@ -379,34 +410,37 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'react',
-                moniker: 'React',
+                moduleName: 'react',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'React',
                 description: "A JavaScript library for building user interfaces",
                 homepage: 'https://facebook.github.io/react/',
                 version: VERSION_REACT,
                 visible: true,
                 css: [],
-                dts: [react('react.d.ts')],
+                dts: [react('index.d.ts')],
                 js: [react('react.js')],
                 minJs: [react('react.min.js')],
                 dependencies: {}
             },
             {
-                name: 'react-dom',
-                moniker: 'ReactDOM',
+                moduleName: 'react-dom',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'ReactDOM',
                 description: "React package for working with the DOM",
                 homepage: 'https://facebook.github.io/react/',
                 version: VERSION_REACT_DOM,
                 visible: true,
                 css: [],
-                dts: [reactDOM('react-dom.d.ts')],
+                dts: [reactDOM('index.d.ts')],
                 js: [reactDOM('react-dom.js')],
                 minJs: [reactDOM('react-dom.min.js')],
                 dependencies: { 'react': VERSION_REACT }
             },
             {
-                name: 'socket.io-client',
-                moniker: 'socket.io-client',
+                moduleName: 'socket.io-client',
+                libraryKind: LibraryKind.Global,
+                globalName: 'socket.io-client',
                 description: "Realtime application framework (client)",
                 homepage: 'socket.io',
                 version: VERSION_SOCKETIO_CLIENT,
@@ -418,8 +452,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'stats.js',
-                moniker: 'Stats',
+                moduleName: 'stats.js',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Stats',
                 description: "JavaScript Performance Monitoring.",
                 homepage: 'https://github.com/mrdoob/stats.js',
                 version: VERSION_STATSJS,
@@ -431,12 +466,13 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'systemjs',
-                moniker: 'SystemJS',
+                moduleName: 'systemjs',
+                libraryKind: LibraryKind.Global,
+                globalName: 'SystemJS',
                 description: "Universal dynamic module loader.",
                 homepage: 'https://jspm.io',
                 version: VERSION_SYSTEMJS,
-                visible: true,
+                visible: false,
                 css: [],
                 dts: [systemjs('system.d.ts')],
                 js: [systemjs('system.js')],
@@ -444,8 +480,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'three.js',
-                moniker: 'Three.js',
+                moduleName: 'three.js',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Three.js',
                 description: "JavaScript 3D library.",
                 homepage: 'http://threejs.org/',
                 version: VERSION_THREEJS,
@@ -457,8 +494,9 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                name: 'two.js',
-                moniker: 'Two.js',
+                moduleName: 'two.js',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Two.js',
                 description: "A two-dimensional drawing api for modern browsers.",
                 homepage: 'http://jonobr1.github.io/two.js/',
                 version: VERSION_TWO,
@@ -472,7 +510,7 @@ app.factory('options', [
             /*
             {
                 name: 'underscore',
-                moniker: 'underscore',
+                globalName: 'underscore',
                 description: "Functional Programming Library.",
                 homepage: 'http://underscorejs.org',
                 version: VERSION_UNDERSCORE,
@@ -500,13 +538,13 @@ app.factory('options', [
                 return _options.filter(callback);
             },
 
-            deleteOption: function (name: string) {
+            deleteOption: function (moduleName: string) {
                 const options: IOption[] = [];
 
                 let i = 0;
                 let found: IOption | undefined;
                 while (i < _options.length) {
-                    if (_options[i].name === name) {
+                    if (_options[i].moduleName === moduleName) {
                         found = _options[i];
                     }
                     else {

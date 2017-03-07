@@ -3,7 +3,9 @@
     <fieldset>
         <!-- legend>Labels and Keywords</legend -->
         <div class="modal-header" style="clear: both">
-            <h3 class='modal-title' style="float: left;"><logo-text version='{{version}}'/></h3>
+            <h3 class='modal-title' style="float: left;">
+                <logo-text version='{{version}}' />
+            </h3>
             <h3 class='modal-title' style="float: right;">Project Properties</h3>
         </div>
         <div id='properties-modal-body' class="modal-body">
@@ -20,16 +22,22 @@
             </label>
             <h4>Dependencies</h4>
             <table>
+                <thead>
+                    <tr>
+                        <td>Module</td>
+                        <td>Global</td>
+                        <td>Description</td>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr ng-repeat='option in options track by option.name'>
+                    <tr ng-repeat='option in options track by option.moduleName'>
                         <td>
                             <label class='checkbox-inline'>
-                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
+                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.moduleName) > -1' ng-click='toggleDependency(option.moduleName)'>{{option.moduleName}}</input>
                             </label>
                         </td>
-                        <td>{{option.description}}</td>
-                        <!-- td>{{option.version}}</td -->
-                        <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>
+                        <td>{{option.globalName}}</td>
+                        <td><a href='{{option.homepage}}' target='_blank'>{{option.description}}</a></td>
                     </tr>
                 </tbody>
             </table>

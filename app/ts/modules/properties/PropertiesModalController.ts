@@ -24,7 +24,7 @@ export default class PropertiesModalController {
             o: isBoolean(pkgInfo.operatorOverloading) ? pkgInfo.operatorOverloading : false,
             dependencies: pkgInfo.dependencies
         };
-        $scope.options = options.filter(function(option: IOption) { return option.visible; });
+        $scope.options = options.filter(function (option: IOption) { return option.visible; });
 
         /**
          * This method changes the scope.dependencies array.
@@ -32,25 +32,25 @@ export default class PropertiesModalController {
          * of the dependencies of the doodle in order for the
          * Cancel processing to work correctly.
          */
-        $scope.toggleDependency = function(name: string) {
-            const idx = $scope.f.dependencies.indexOf(name);
+        $scope.toggleDependency = function (moduleName: string) {
+            const idx = $scope.f.dependencies.indexOf(moduleName);
             if (idx > -1) {
                 $scope.f.dependencies.splice(idx, 1);
             }
             else {
-                $scope.f.dependencies.push(name);
+                $scope.f.dependencies.push(moduleName);
             }
         };
 
-        $scope.ok = function() {
+        $scope.ok = function () {
             pkgInfo.name = $scope.f.n;
             pkgInfo.version = $scope.f.v;
             pkgInfo.operatorOverloading = $scope.f.o;
-            pkgInfo.dependencies = $scope.f.dependencies.filter(function(name) { return options.filter(function(option) { return option.visible && option.name === name; }).length > 0; });
+            pkgInfo.dependencies = $scope.f.dependencies.filter(function (moduleName) { return options.filter(function (option) { return option.visible && option.moduleName === moduleName; }).length > 0; });
 
             $uibModalInstance.close(pkgInfo);
         };
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };

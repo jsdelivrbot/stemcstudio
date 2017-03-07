@@ -5,7 +5,7 @@ import csvTypeFromContent from './csvTypeFromContent';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import isString from '../../utils/isString';
-import IOption from '../../services/options/IOption';
+import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
@@ -21,6 +21,13 @@ import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
 import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
+
+/**
+ * The argument to a SystemJS.config() call.
+ */
+interface SystemJsConfigArg {
+    map?: { [moduleName: string]: string };
+}
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -80,7 +87,7 @@ export default function rebuildPreview(
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return workspace.dependencies.indexOf(option.name) > -1;
+                            return workspace.dependencies.indexOf(option.moduleName) > -1;
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, options);
@@ -99,10 +106,14 @@ export default function rebuildPreview(
                             }
                         }
 
-                        const chosenJsFileNames: string[] = closureOpts.map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
+                        /**
+                         * Libraries that are Global must be included using <script> tags.
+                         * TODO: While transitioning to UMD and Modular from Global we load UMD both ways (<script> and SystemJS).
+                         */
+                        const globalJsFileNames: string[] = closureOpts.filter(isGlobalOrUMDLibrary).map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
 
-                        const scriptFileNames: string[] = workspace.operatorOverloading ? chosenJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
+                        const scriptFileNames: string[] = workspace.operatorOverloading ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
                             return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>\n`;
@@ -164,7 +175,22 @@ export default function rebuildPreview(
                                     console.warn(`Error applying operator overloading: ${e}`);
                                 }
                             }
-                            html = html.replace(CODE_MARKER, modulesJs.join('\n'));
+
+                            // Build the SystemJS.config for libraries that should be loaded as modules.
+                            const config: SystemJsConfigArg = {};
+                            const importModules = closureOpts.filter(isModularOrUMDLibrary);
+                            config.map = {};
+                            for (const importModule of importModules) {
+                                // Using the un-minified version because of issue with react.
+                                const fileNames = importModule.js;
+                                for (const fileName of fileNames) {
+                                    config.map[importModule.moduleName] = fileName.replace(VENDOR_FOLDER_MARKER, './vendor');
+                                }
+                            }
+
+                            const systemJsConfig = `SystemJS.config(${JSON.stringify(config, null, 2)});\n`;
+
+                            html = html.replace(CODE_MARKER, modulesJs.join('\n').concat(systemJsConfig));
                         }
                         else {
                             console.warn(`Unable to find '${CODE_MARKER}' in index.html file.`);

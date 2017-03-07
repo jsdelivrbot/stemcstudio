@@ -11,8 +11,8 @@ interface Unit {
     fileNames: string[];
 }
 
-function optionsToNames(options: IOption[]): string[] {
-    return options.map(function (option: IOption) { return option.name; });
+function optionsToModuleNames(options: IOption[]): string[] {
+    return options.map(function (option: IOption) { return option.moduleName; });
 }
 
 /**
@@ -33,9 +33,9 @@ export default function updateWorkspaceTypings(
 ) {
     // Load the wokspace with the appropriate TypeScript definitions.
     /**
-     * The new dependencies.
+     * The new dependencies (module names).
      */
-    const news: string[] = optionsToNames(closure(namesToOptions(wsModel.dependencies, options), options));
+    const news: string[] = optionsToModuleNames(closure(namesToOptions(wsModel.dependencies, options), options));
 
     // Determine what we need to add and remove from the workspace.
     //
@@ -60,12 +60,12 @@ export default function updateWorkspaceTypings(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, options);
 
-    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { name: option.name, fileNames: option.dts }; });
+    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { name: option.moduleName, fileNames: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, options);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: Unit[] = addOpts.map(function (option) { return { name: option.name, fileNames: option.dts }; });
+    let addUnits: Unit[] = addOpts.map(function (option) { return { name: option.moduleName, fileNames: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {

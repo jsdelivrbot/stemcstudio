@@ -221,16 +221,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.2.0/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.4.0/src/worker.js',
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.5.0/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.4.0/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers@2.4.0/ace-workers.js')
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.5.0/dist/ace-workers.js',
+            dest: prepend(target, 'js/ace-workers@2.5.0/ace-workers.js')
         },
         {
             src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, 'js/ace-workers@2.4.0/ace-workers.js')
+            dest: prepend(target, 'js/ace-workers@2.5.0/ace-workers.js')
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
@@ -447,10 +447,18 @@ function copies(target) {
             dest: prepend(target, 'vendor/react@15.4.2')
         },
         {
+            src: "museum/react@15.4.2/index.d.ts",
+            dest: prepend(target, 'vendor/@types/react/index.d.ts')
+        },
+        {
             expand: true,
             cwd: "museum/react-dom@15.4.2",
             src: ["**"],
             dest: prepend(target, 'vendor/react-dom@15.4.2')
+        },
+        {
+            src: "museum/react-dom@15.4.2/index.d.ts",
+            dest: prepend(target, 'vendor/@types/react-dom/index.d.ts')
         },
         {
             src: "museum/requirejs@2.1.9/require.d.ts",
@@ -544,27 +552,35 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.d.ts')
         },
         {
             src: "bower_components/davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.js')
         },
         {
             src: "bower_components/davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.css')
+        },
+        {
+            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.js')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/dist/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.css')
+        },
+        {
+            src: "../davinci-eight/dist/davinci-eight.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",

@@ -5,8 +5,8 @@ import IOptionManager from '../options/IOptionManager';
  * TODO: This is temporary until we do proper semantic versioning.
  */
 export default function dependenciesMap(names: string[], options: IOptionManager): { [key: string]: string } {
-    function version(name: string): string {
-        const matching = options.filter(function (option) { return option.name === name; });
+    function version(moduleName: string): string {
+        const matching = options.filter(function (option) { return option.moduleName === moduleName; });
         if (matching.length > 0) {
             return matching[0].version;
         }

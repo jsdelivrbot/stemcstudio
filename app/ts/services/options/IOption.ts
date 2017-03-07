@@ -1,17 +1,40 @@
+export enum LibraryKind {
+    Global = 1,
+    Modular = 2,
+    UMD = 3
+}
+
+// Removing until transition to Modular and UMD is complete.
+/*
+export function isGlobalLibrary(option: IOption): boolean {
+    return option.libraryKind === LibraryKind.Global;
+}
+*/
+
+export function isGlobalOrUMDLibrary(option: IOption): boolean {
+    return option.libraryKind === LibraryKind.Global || option.libraryKind === LibraryKind.UMD;
+}
+
+export function isModularOrUMDLibrary(option: IOption): boolean {
+    return option.libraryKind === LibraryKind.Modular || option.libraryKind === LibraryKind.UMD;
+}
+
+
 /**
  *
  */
-interface IOption {
+export interface IOption {
 
     /**
-     * The name is the unique identifier and correlates with the Bower name.
+     * The name is the unique identifier and correlates with the NPM or Bower name.
+     * It is the name that is used for ES6 imports if the library is Modular or UMD.
      */
-    name: string;
+    moduleName: string;
 
     /**
-     * How the option is known to the user. i.e. What we use in the user interface.
+     * The name that applies when the library becomes a property on the global namespace.
      */
-    moniker: string;
+    globalName: string;
 
     /**
      *
@@ -54,9 +77,17 @@ interface IOption {
     minJs: string[];
 
     /**
-     * The dependencies expressed as name => semantic version dependency map.
+     * Determines how the library should be loaded.
+     * Global libraries are loaded using a <script> tag in the HTML.
+     * Modular libraries are loaded using a Map Config.
+     * UMD libraries may be loaded in both ways.
      */
-    dependencies: { [name: string]: string };
+    libraryKind: LibraryKind;
+
+    /**
+     * The dependencies expressed as moduleName => semantic version dependency map.
+     */
+    dependencies: { [moduleName: string]: string };
 }
 
 export default IOption;

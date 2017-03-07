@@ -7,11 +7,11 @@ interface PropertiesModalScope {
      */
     f: {
         /**
-         * name
+         * project name
          */
         n: string;
         /**
-         * version
+         * project version
          */
         v: string;
         /**
@@ -19,11 +19,11 @@ interface PropertiesModalScope {
          */
         o: boolean;
         /**
-         * dependency (name only)
+         * dependency (moduleName only)
          */
         dependencies: string[];
     };
-    toggleDependency(name: string): void;
+    toggleDependency(moduleName: string): void;
     options: IOption[];
     ok(): void;
     submit(): void;

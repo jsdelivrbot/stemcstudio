@@ -7,23 +7,24 @@ import StringSet from '../../utils/StringSet';
  * Compute the closure of the options.
  */
 export default function closure(options: IOption[], manager: IOptionManager): IOption[] {
-    const nameSet = new StringSet();
-    options.forEach(function(option) {
-        nameSet.add(option.name);
+    const moduleNames = new StringSet();
+    options.forEach(function (option) {
+        moduleNames.add(option.moduleName);
     });
     let done = false;
     while (!done) {
-        const size = nameSet.size();
+        const size = moduleNames.size();
         // TODO: This only computes the closure. It does not sort into for dependencies.
-        namesToOptions(nameSet.toArray(), manager).forEach(function(option: IOption) {
-            for (let name in option.dependencies) {
-                if (option.dependencies.hasOwnProperty(name)) {
-                    nameSet.add(name);
+        namesToOptions(moduleNames.toArray(), manager).forEach(function (option: IOption) {
+            // TODO: Use Object.keys and for-of.
+            for (const moduleName in option.dependencies) {
+                if (option.dependencies.hasOwnProperty(moduleName)) {
+                    moduleNames.add(moduleName);
                 }
             }
         });
 
-        done = size === nameSet.size();
+        done = size === moduleNames.size();
     }
-    return namesToOptions(nameSet.toArray(), manager);
+    return namesToOptions(moduleNames.toArray(), manager);
 }

@@ -1093,7 +1093,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <fieldset>\n" +
     "        <!-- legend>Labels and Keywords</legend -->\n" +
     "        <div class=\"modal-header\" style=\"clear: both\">\n" +
-    "            <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "            <h3 class='modal-title' style=\"float: left;\">\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h3>\n" +
     "            <h3 class='modal-title' style=\"float: right;\">Project Properties</h3>\n" +
     "        </div>\n" +
     "        <div id='properties-modal-body' class=\"modal-body\">\n" +
@@ -1110,16 +1112,22 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </label>\n" +
     "            <h4>Dependencies</h4>\n" +
     "            <table>\n" +
+    "                <thead>\n" +
+    "                    <tr>\n" +
+    "                        <td>Module</td>\n" +
+    "                        <td>Global</td>\n" +
+    "                        <td>Description</td>\n" +
+    "                    </tr>\n" +
+    "                </thead>\n" +
     "                <tbody>\n" +
-    "                    <tr ng-repeat='option in options track by option.name'>\n" +
+    "                    <tr ng-repeat='option in options track by option.moduleName'>\n" +
     "                        <td>\n" +
     "                            <label class='checkbox-inline'>\n" +
-    "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
+    "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.moduleName) > -1' ng-click='toggleDependency(option.moduleName)'>{{option.moduleName}}</input>\n" +
     "                            </label>\n" +
     "                        </td>\n" +
-    "                        <td>{{option.description}}</td>\n" +
-    "                        <!-- td>{{option.version}}</td -->\n" +
-    "                        <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>\n" +
+    "                        <td>{{option.globalName}}</td>\n" +
+    "                        <td><a href='{{option.homepage}}' target='_blank'>{{option.description}}</a></td>\n" +
     "                    </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
@@ -1130,43 +1138,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "    </fieldset>\n" +
     "</form>"
-  );
-
-
-  $templateCache.put('properties.html',
-    "<div class=\"modal-content\">\n" +
-    "    <div class=\"modal-header\">\n" +
-    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
-    "        <h3>Project Properties</h3>\n" +
-    "    </div>\n" +
-    "    <div class='modal-body'>\n" +
-    "        <label>Name</label>\n" +
-    "        <input type='text' ng-model='zombie.name' style='min-width: 400px;' placeholder=\"my-package-name\" autofocus/>\n" +
-    "        <br/>\n" +
-    "        <label class='checkbox-inline'>\n" +
-    "            <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>\n" +
-    "        </label>\n" +
-    "        <h4>Dependencies</h4>\n" +
-    "        <table>\n" +
-    "            <tbody>\n" +
-    "                <tr ng-repeat='option in options track by option.name'>\n" +
-    "                    <td>\n" +
-    "                        <label class='checkbox-inline'>\n" +
-    "                            <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
-    "                        </label>\n" +
-    "                    </td>\n" +
-    "                    <td>{{option.description}}</td>\n" +
-    "                    <td>{{option.version}}</td>\n" +
-    "                    <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>\n" +
-    "                </tr>\n" +
-    "            </tbody>\n" +
-    "        </table>\n" +
-    "    </div>\n" +
-    "    <div class=\"modal-footer\" style=\"display: block;\">\n" +
-    "        <button class='btn btn-primary' ng-click='doOK()'>OK</button>\n" +
-    "        <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
-    "    </div>\n" +
-    "</div>"
   );
 
 
