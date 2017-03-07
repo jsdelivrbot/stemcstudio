@@ -128,7 +128,10 @@ app.factory('options', [
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function plotly(fileName: string): string {
-            return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
+            const isDts = fileName.endsWith(INDEX_DTS);
+            const packageFolder = isDts ? `${TYPES_FOLDER}plotly` : 'plotly';
+            const version = isDts ? void 0 : VERSION_PLOTLY;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function react(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
@@ -428,7 +431,7 @@ app.factory('options', [
             },
             {
                 packageName: 'plot.ly',
-                moduleName: 'plot.ly',
+                moduleName: 'plotly',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'Plotly',
                 description: "JavaScript graphing library that powers plotly.",
@@ -436,7 +439,7 @@ app.factory('options', [
                 version: VERSION_PLOTLY,
                 visible: true,
                 css: [],
-                dts: plotly('plotly.d.ts'),
+                dts: plotly(INDEX_DTS),
                 js: [plotly('plotly.js')],
                 minJs: [plotly('plotly.min.js')],
                 dependencies: {}

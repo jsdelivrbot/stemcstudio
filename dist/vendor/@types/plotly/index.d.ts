@@ -4,7 +4,11 @@
 // Copyright (c) 2016-2017 David Geo Holmes
 // Definitions by: David Geo Holmes <https://github.com/geometryzen>
 //
-declare module Plotly {
+
+export = Plotly;
+export as namespace Plotly;
+
+declare namespace Plotly {
 
     /**
      * 
