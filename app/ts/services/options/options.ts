@@ -2,6 +2,8 @@ import app from '../../app';
 import { IOption, LibraryKind } from './IOption';
 import IOptionManager from './IOptionManager';
 
+const INDEX_DTS = 'index.d.ts';
+
 app.factory('options', [
     'VENDOR_FOLDER_MARKER',
     function (
@@ -23,7 +25,7 @@ app.factory('options', [
         const VERSION_JASMINE = '2.5.2';
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.5';
-        const VERSION_NEWTON = '0.0.37';
+        const VERSION_NEWTON = '0.0.38';
         const VERSION_PLOTLY = '1.23.1';
         const VERSION_REACT = '15.4.2';
         const VERSION_REACT_DOM = '15.4.2';
@@ -89,7 +91,7 @@ app.factory('options', [
             return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
         }
         function eight(fileName: string): string {
-            const isDts = fileName.endsWith('.d.ts');
+            const isDts = fileName.endsWith(INDEX_DTS);
             const packageFolder = `${isDts ? '@types/' : ''}davinci-eight`;
             const version = isDts ? void 0 : VERSION_EIGHT;
             return vendorFolder(packageFolder, version, void 0, fileName);
@@ -109,20 +111,23 @@ app.factory('options', [
         function jsxgraph(fileName: string): string {
             return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
         }
-        function newton(subFolder: string, fileName: string): string {
-            return vendorFolder('davinci-newton', VERSION_NEWTON, subFolder, fileName);
+        function newton(fileName: string): string {
+            const isDts = fileName.endsWith(INDEX_DTS);
+            const packageFolder = `${isDts ? '@types/' : ''}davinci-newton`;
+            const version = isDts ? void 0 : VERSION_NEWTON;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function plotly(fileName: string): string {
             return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
         }
         function react(fileName: string): string {
-            const isDts = fileName.endsWith('.d.ts');
+            const isDts = fileName.endsWith(INDEX_DTS);
             const packageFolder = `${isDts ? '@types/' : ''}react`;
             const version = isDts ? void 0 : VERSION_REACT;
             return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function reactDOM(fileName: string): string {
-            const isDts = fileName.endsWith('.d.ts');
+            const isDts = fileName.endsWith(INDEX_DTS);
             const packageFolder = `${isDts ? '@types/' : ''}react-dom`;
             const version = isDts ? void 0 : VERSION_REACT_DOM;
             return vendorFolder(packageFolder, version, void 0, fileName);
@@ -259,7 +264,7 @@ app.factory('options', [
                 version: VERSION_EIGHT,
                 visible: true,
                 css: [eight('davinci-eight.css')],
-                dts: [eight('index.d.ts')],
+                dts: [eight(INDEX_DTS)],
                 js: [eight('davinci-eight.js')],
                 minJs: [eight('davinci-eight.js')],
                 dependencies: {}
@@ -273,9 +278,9 @@ app.factory('options', [
                 version: VERSION_NEWTON,
                 visible: true,
                 css: [],
-                dts: [newton('dist', 'davinci-newton.d.ts')],
-                js: [newton('dist', 'davinci-newton.js')],
-                minJs: [newton('dist', 'davinci-newton.js')],
+                dts: [newton(INDEX_DTS)],
+                js: [newton('davinci-newton.js')],
+                minJs: [newton('davinci-newton.js')],
                 dependencies: {}
             },
             {
@@ -418,7 +423,7 @@ app.factory('options', [
                 version: VERSION_REACT,
                 visible: true,
                 css: [],
-                dts: [react('index.d.ts')],
+                dts: [react(INDEX_DTS)],
                 js: [react('react.js')],
                 minJs: [react('react.min.js')],
                 dependencies: {}
@@ -432,7 +437,7 @@ app.factory('options', [
                 version: VERSION_REACT_DOM,
                 visible: true,
                 css: [],
-                dts: [reactDOM('index.d.ts')],
+                dts: [reactDOM(INDEX_DTS)],
                 js: [reactDOM('react-dom.js')],
                 minJs: [reactDOM('react-dom.min.js')],
                 dependencies: { 'react': VERSION_REACT }

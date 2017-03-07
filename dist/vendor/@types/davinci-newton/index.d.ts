@@ -1,14 +1,19 @@
-//
-// davinci-newton.d.ts
+// Type definitions for davinci-newton 0.0.38
+// Project: https://github.com/geometryzen/davinci-newton
+// Definitions by: David Geo Holmes david.geo.holmes@gmail.com https://www.stemcstudio.com
 //
 // This file was created manually in order to support the davinci-newton library.
 // These declarations are appropriate when using the library through the global
 // variable, 'NEWTON'.
 //
+
+export = NEWTON;
+export as namespace NEWTON;
+
 /**
  * JavaScript Physics Engine library for mathematical physics using Geometric Algebra.
  */
-declare module NEWTON {
+declare namespace NEWTON {
 
     /**
      * The QQ class represents a rational number.
@@ -1942,8 +1947,4 @@ declare module NEWTON {
          */
         constructor(canvasId: string, varsList: VarsList);
     }
-}
-
-declare module 'newton' {
-    export = NEWTON;
 }

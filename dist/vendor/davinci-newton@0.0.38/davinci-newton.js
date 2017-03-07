@@ -439,6 +439,7 @@ define("../bower_components/almond/almond", function(){});
 
 define('davinci-newton/solvers/AdaptiveStepSolver',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AdaptiveStepSolver = (function () {
         function AdaptiveStepSolver(diffEq, energySystem, diffEqSolver) {
             this.stepUBound = 1;
@@ -522,12 +523,12 @@ define('davinci-newton/solvers/AdaptiveStepSolver',["require", "exports"], funct
         return AdaptiveStepSolver;
     }());
     exports.AdaptiveStepSolver = AdaptiveStepSolver;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AdaptiveStepSolver;
 });
 
 define('davinci-newton/view/AlignH',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AlignH;
     (function (AlignH) {
         AlignH[AlignH["LEFT"] = 0] = "LEFT";
@@ -535,12 +536,12 @@ define('davinci-newton/view/AlignH',["require", "exports"], function (require, e
         AlignH[AlignH["RIGHT"] = 2] = "RIGHT";
         AlignH[AlignH["FULL"] = 3] = "FULL";
     })(AlignH = exports.AlignH || (exports.AlignH = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AlignH;
 });
 
 define('davinci-newton/view/AlignV',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AlignV;
     (function (AlignV) {
         AlignV[AlignV["TOP"] = 0] = "TOP";
@@ -548,24 +549,24 @@ define('davinci-newton/view/AlignV',["require", "exports"], function (require, e
         AlignV[AlignV["BOTTOM"] = 2] = "BOTTOM";
         AlignV[AlignV["FULL"] = 3] = "FULL";
     })(AlignV = exports.AlignV || (exports.AlignV = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AlignV;
 });
 
 define('davinci-newton/graph/AxisChoice',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AxisChoice;
     (function (AxisChoice) {
         AxisChoice[AxisChoice["HORIZONTAL"] = 1] = "HORIZONTAL";
         AxisChoice[AxisChoice["VERTICAL"] = 2] = "VERTICAL";
         AxisChoice[AxisChoice["BOTH"] = 3] = "BOTH";
     })(AxisChoice = exports.AxisChoice || (exports.AxisChoice = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AxisChoice;
 });
 
 define('davinci-newton/math/approx',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function approx(coords, n) {
         var max = 0;
         var iLen = coords.length;
@@ -579,39 +580,39 @@ define('davinci-newton/math/approx',["require", "exports"], function (require, e
             }
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = approx;
 });
 
 define('davinci-newton/checks/isDefined',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isDefined(arg) {
         return (typeof arg !== 'undefined');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isDefined;
 });
 
 define('davinci-newton/checks/isNull',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function default_1(x) {
         return x === null;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/checks/isUndefined',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isUndefined(arg) {
         return (typeof arg === 'undefined');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isUndefined;
 });
 
 define('davinci-newton/math/arraysEQ',["require", "exports", "../checks/isDefined", "../checks/isNull", "../checks/isUndefined"], function (require, exports, isDefined_1, isNull_1, isUndefined_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function default_1(a, b) {
         if (isDefined_1.default(a)) {
             if (isDefined_1.default(b)) {
@@ -647,21 +648,21 @@ define('davinci-newton/math/arraysEQ',["require", "exports", "../checks/isDefine
             return isUndefined_1.default(b);
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/math/dotVectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function dotVectorE3(a, b) {
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = dotVectorE3;
 });
 
 define('davinci-newton/math/compG3Get',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var COORD_W = 0;
     var COORD_X = 1;
     var COORD_Y = 2;
@@ -701,12 +702,12 @@ define('davinci-newton/math/compG3Get',["require", "exports"], function (require
             }
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = compG3Get;
 });
 
 define('davinci-newton/math/extE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function extE3(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, index) {
         a0 = +a0;
         a1 = +a1;
@@ -773,12 +774,12 @@ define('davinci-newton/math/extE3',["require", "exports"], function (require, ex
         }
         return +x;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = extE3;
 });
 
 define('davinci-newton/math/compG3Set',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var COORD_W = 0;
     var COORD_X = 1;
     var COORD_Y = 2;
@@ -825,12 +826,12 @@ define('davinci-newton/math/compG3Set',["require", "exports"], function (require
                 throw new Error("index => " + index);
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = compG3Set;
 });
 
 define('davinci-newton/math/DimensionsSummary',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DimensionsSummary;
     (function (DimensionsSummary) {
         DimensionsSummary[DimensionsSummary["AMOUNT_OF_SUBSTANCE"] = 0] = "AMOUNT_OF_SUBSTANCE";
@@ -862,12 +863,12 @@ define('davinci-newton/math/DimensionsSummary',["require", "exports"], function 
         DimensionsSummary[DimensionsSummary["VELOCITY_SQUARED"] = 26] = "VELOCITY_SQUARED";
         DimensionsSummary[DimensionsSummary["VOLUME"] = 27] = "VOLUME";
     })(DimensionsSummary = exports.DimensionsSummary || (exports.DimensionsSummary = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DimensionsSummary;
 });
 
 define('davinci-newton/math/QQ',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var QQ = (function () {
         function QQ(n, d) {
             var g;
@@ -1162,12 +1163,12 @@ define('davinci-newton/math/QQ',["require", "exports"], function (require, expor
     QQ.NEG_03_01 = new QQ(-3, 1);
     QQ.POS_02_03 = new QQ(2, 3);
     exports.QQ = QQ;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = QQ;
 });
 
 define('davinci-newton/math/detectDimensions',["require", "exports", "./DimensionsSummary"], function (require, exports, DimensionsSummary_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function detectDimensions(M, L, T, Q, temperature, amount, intensity) {
         if (M.numer === -1) {
             if (M.denom === 1) {
@@ -1775,12 +1776,12 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
         }
         return void 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = detectDimensions;
 });
 
 define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSummary", "../math/QQ", "./detectDimensions"], function (require, exports, DimensionsSummary_1, QQ_1, detectDimensions_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var R0 = QQ_1.default.valueOf(0, 1);
     var R1 = QQ_1.default.valueOf(1, 1);
     var R2 = QQ_1.default.valueOf(2, 1);
@@ -2025,12 +2026,12 @@ define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSumm
     Dimensions.VELOCITY = new Dimensions(R0, R1, M1, R0, R0, R0, R0, DimensionsSummary_1.default.VELOCITY);
     Dimensions.VELOCITY_SQUARED = new Dimensions(R0, R2, M2, R0, R0, R0, R0, DimensionsSummary_1.default.VELOCITY_SQUARED);
     exports.Dimensions = Dimensions;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Dimensions;
 });
 
 define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "../math/DimensionsSummary", "../checks/isUndefined"], function (require, exports, Dimensions_1, DimensionsSummary_1, isUndefined_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var SYMBOLS_SI = ['kg', 'm', 's', 'C', 'K', 'mol', 'cd'];
     var patterns = [
         [-1, 1, -3, 1, 2, 1, 2, 1, 0, 1, 0, 1, 0, 1],
@@ -2560,12 +2561,12 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
     Unit.METER_SQUARED_PER_SECOND = new Unit(1, Dimensions_1.default.RATE_OF_CHANGE_OF_AREA, SYMBOLS_SI);
     Unit.METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.VELOCITY_SQUARED, SYMBOLS_SI);
     exports.Unit = Unit;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Unit;
 });
 
 define('davinci-newton/math/extG3',["require", "exports", "./compG3Get", "./extE3", "./compG3Set", "./Unit"], function (require, exports, compG3Get_1, extE3_1, compG3Set_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function extG3(a, b, out) {
         out.uom = Unit_1.default.mul(a.uom, b.uom);
         var a0 = compG3Get_1.default(a, 0);
@@ -2589,12 +2590,12 @@ define('davinci-newton/math/extG3',["require", "exports", "./compG3Get", "./extE
         }
         return out;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = extG3;
 });
 
 define('davinci-newton/math/gauss',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var abs = Math.abs;
     function makeColumnVector(n, v) {
         var a = [];
@@ -2658,39 +2659,39 @@ define('davinci-newton/math/gauss',["require", "exports"], function (require, ex
         }
         return solve(A, N);
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = gauss;
 });
 
 define('davinci-newton/math/isScalarG3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isScalarG3(m) {
         return m.x === 0 && m.y === 0 && m.z === 0 && m.xy === 0 && m.yz === 0 && m.zx === 0 && m.b === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isScalarG3;
 });
 
 define('davinci-newton/checks/isNumber',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isNumber(x) {
         return (typeof x === 'number');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isNumber;
 });
 
 define('davinci-newton/checks/isObject',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isObject(x) {
         return (typeof x === 'object');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isObject;
 });
 
 define('davinci-newton/math/isVectorE3',["require", "exports", "../checks/isNull", "../checks/isNumber", "../checks/isObject"], function (require, exports, isNull_1, isNumber_1, isObject_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isVectorE3(v) {
         if (isObject_1.default(v) && !isNull_1.default(v)) {
             return isNumber_1.default(v.x) && isNumber_1.default(v.y) && isNumber_1.default(v.z);
@@ -2699,48 +2700,48 @@ define('davinci-newton/math/isVectorE3',["require", "exports", "../checks/isNull
             return false;
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isVectorE3;
 });
 
 define('davinci-newton/math/isVectorG3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isVectorG3(m) {
         return m.a === 0 && m.xy === 0 && m.yz === 0 && m.zx === 0 && m.b === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isVectorG3;
 });
 
 define('davinci-newton/math/isZeroBivectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isZeroBivectorE3(m) {
         return m.yz === 0 && m.zx === 0 && m.xy === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isZeroBivectorE3;
 });
 
 define('davinci-newton/math/isZeroVectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isZeroVectorE3(v) {
         return v.x === 0 && v.y === 0 && v.z === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isZeroVectorE3;
 });
 
 define('davinci-newton/math/isZeroGeometricE3',["require", "exports", "./isZeroBivectorE3", "./isZeroVectorE3"], function (require, exports, isZeroBivectorE3_1, isZeroVectorE3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isZeroGeometricE3(m) {
         return isZeroVectorE3_1.default(m) && isZeroBivectorE3_1.default(m) && m.a === 0 && m.b === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isZeroGeometricE3;
 });
 
 define('davinci-newton/math/lcoE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function lcoE3(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, index) {
         a0 = +a0;
         a1 = +a1;
@@ -2807,12 +2808,12 @@ define('davinci-newton/math/lcoE3',["require", "exports"], function (require, ex
         }
         return +x;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = lcoE3;
 });
 
 define('davinci-newton/math/lcoG3',["require", "exports", "./compG3Get", "./lcoE3", "./compG3Set", "./Unit"], function (require, exports, compG3Get_1, lcoE3_1, compG3Set_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function lcoG3(a, b, out) {
         out.uom = Unit_1.default.mul(a.uom, b.uom);
         var a0 = compG3Get_1.default(a, 0);
@@ -2836,12 +2837,12 @@ define('davinci-newton/math/lcoG3',["require", "exports", "./compG3Get", "./lcoE
         }
         return out;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = lcoG3;
 });
 
 define('davinci-newton/math/maskG3',["require", "exports", "../checks/isNumber", "../checks/isObject", "./Unit"], function (require, exports, isNumber_1, isObject_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ONE = void 0;
     var scratch = { a: 0, x: 0, y: 0, z: 0, yz: 0, zx: 0, xy: 0, b: 0, uom: ONE };
     function maskG3(arg) {
@@ -2899,12 +2900,12 @@ define('davinci-newton/math/maskG3',["require", "exports", "../checks/isNumber",
             return void 0;
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = maskG3;
 });
 
 define('davinci-newton/math/mulE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mulE3(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, index) {
         switch (index) {
             case 0: {
@@ -2936,21 +2937,21 @@ define('davinci-newton/math/mulE3',["require", "exports"], function (require, ex
             }
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mulE3;
 });
 
 define('davinci-newton/math/randomRange',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function default_1(a, b) {
         return (b - a) * Math.random() + a;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/checks/mustSatisfy',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mustSatisfy(name, condition, messageBuilder, contextBuilder) {
         if (!condition) {
             var message = messageBuilder ? messageBuilder() : "satisfy some condition";
@@ -2958,21 +2959,21 @@ define('davinci-newton/checks/mustSatisfy',["require", "exports"], function (req
             throw new Error(name + " must " + message + context + ".");
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustSatisfy;
 });
 
 define('davinci-newton/checks/isString',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isString(s) {
         return (typeof s === 'string');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isString;
 });
 
 define('davinci-newton/checks/mustBeString',["require", "exports", "../checks/mustSatisfy", "../checks/isString"], function (require, exports, mustSatisfy_1, isString_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beAString() {
         return "be a string";
     }
@@ -2980,12 +2981,12 @@ define('davinci-newton/checks/mustBeString',["require", "exports", "../checks/mu
         mustSatisfy_1.default(name, isString_1.default(value), beAString, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/i18n/readOnly',["require", "exports", "../checks/mustBeString"], function (require, exports, mustBeString_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function readOnly(name) {
         mustBeString_1.default('name', name);
         var message = {
@@ -2995,12 +2996,12 @@ define('davinci-newton/i18n/readOnly',["require", "exports", "../checks/mustBeSt
         };
         return message;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = readOnly;
 });
 
 define('davinci-newton/math/rcoE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function rcoE3(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, index) {
         a0 = +a0;
         a1 = +a1;
@@ -3067,12 +3068,12 @@ define('davinci-newton/math/rcoE3',["require", "exports"], function (require, ex
         }
         return +x;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = rcoE3;
 });
 
 define('davinci-newton/math/rcoG3',["require", "exports", "./compG3Get", "./rcoE3", "./compG3Set", "./Unit"], function (require, exports, compG3Get_1, rcoE3_1, compG3Set_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function rcoG3(a, b, out) {
         out.uom = Unit_1.default.mul(a.uom, b.uom);
         var a0 = compG3Get_1.default(a, 0);
@@ -3096,51 +3097,51 @@ define('davinci-newton/math/rcoG3',["require", "exports", "./compG3Get", "./rcoE
         }
         return out;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = rcoG3;
 });
 
 define('davinci-newton/math/quadVectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function quadVectorE3(vector) {
         var x = vector.x;
         var y = vector.y;
         var z = vector.z;
         return x * x + y * y + z * z;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = quadVectorE3;
 });
 
 define('davinci-newton/math/wedgeXY',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function wedgeXY(ax, ay, az, bx, by, bz) {
         return ax * by - ay * bx;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = wedgeXY;
 });
 
 define('davinci-newton/math/wedgeYZ',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function wedgeYZ(ax, ay, az, bx, by, bz) {
         return ay * bz - az * by;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = wedgeYZ;
 });
 
 define('davinci-newton/math/wedgeZX',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function wedgeZX(ax, ay, az, bx, by, bz) {
         return az * bx - ax * bz;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = wedgeZX;
 });
 
 define('davinci-newton/math/rotorFromDirectionsE3',["require", "exports", "./dotVectorE3", "./quadVectorE3", "./wedgeXY", "./wedgeYZ", "./wedgeZX"], function (require, exports, dotVectorE3_1, quadVectorE3_1, wedgeXY_1, wedgeYZ_1, wedgeZX_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var sqrt = Math.sqrt;
     var cosPIdiv4 = Math.cos(Math.PI / 4);
     var sinPIdiv4 = Math.sin(Math.PI / 4);
@@ -3294,12 +3295,12 @@ define('davinci-newton/math/rotorFromDirectionsE3',["require", "exports", "./dot
             }
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = rotorFromDirectionsE3;
 });
 
 define('davinci-newton/math/scpG3',["require", "exports", "../math/compG3Get", "../math/mulE3", "../math/compG3Set", "../math/Unit"], function (require, exports, compG3Get_1, mulE3_1, compG3Set_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function scpG3(a, b, out) {
         var a0 = compG3Get_1.default(a, 0);
         var a1 = compG3Get_1.default(a, 1);
@@ -3328,12 +3329,12 @@ define('davinci-newton/math/scpG3',["require", "exports", "../math/compG3Get", "
         out.uom = Unit_1.default.mul(a.uom, b.uom);
         return out;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = scpG3;
 });
 
 define('davinci-newton/math/squaredNormG3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function squaredNormG3(m) {
         var a = m.a;
         var x = m.x;
@@ -3345,21 +3346,21 @@ define('davinci-newton/math/squaredNormG3',["require", "exports"], function (req
         var b = m.b;
         return a * a + x * x + y * y + z * z + yz * yz + zx * zx + xy * xy + b * b;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = squaredNormG3;
 });
 
 define('davinci-newton/checks/isArray',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isArray(x) {
         return Object.prototype.toString.call(x) === '[object Array]';
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isArray;
 });
 
 define('davinci-newton/checks/mustBeArray',["require", "exports", "../checks/mustSatisfy", "../checks/isArray"], function (require, exports, mustSatisfy_1, isArray_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beAnArray() {
         return "be an array";
     }
@@ -3367,12 +3368,12 @@ define('davinci-newton/checks/mustBeArray',["require", "exports", "../checks/mus
         mustSatisfy_1.default(name, isArray_1.default(value), beAnArray, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/math/stringFromCoordinates',["require", "exports", "../checks/isDefined", "../checks/mustBeArray", "./Unit"], function (require, exports, isDefined_1, mustBeArray_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isLabelOne(label) {
         if (typeof label === 'string') {
             return label === "1";
@@ -3475,12 +3476,12 @@ define('davinci-newton/math/stringFromCoordinates',["require", "exports", "../ch
             return sb.length > 0 ? sb.join("") + " " + uom.toString(10, true) : "0";
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = stringFromCoordinates;
 });
 
 define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./arraysEQ", "./dotVectorE3", "./extG3", "./gauss", "../checks/isDefined", "./isScalarG3", "./isVectorE3", "./isVectorG3", "./isZeroGeometricE3", "./isZeroVectorE3", "./lcoG3", "./maskG3", "./mulE3", "./QQ", "./randomRange", "../i18n/readOnly", "./rcoG3", "./rotorFromDirectionsE3", "./scpG3", "./squaredNormG3", "./stringFromCoordinates", "./Unit", "./wedgeXY", "./wedgeYZ", "./wedgeZX"], function (require, exports, approx_1, arraysEQ_1, dotVectorE3_1, extG3_1, gauss_1, isDefined_1, isScalarG3_1, isVectorE3_1, isVectorG3_1, isZeroGeometricE3_1, isZeroVectorE3_1, lcoG3_1, maskG3_1, mulE3_1, QQ_1, randomRange_1, readOnly_1, rcoG3_1, rotorFromDirectionsE3_1, scpG3_1, squaredNormG3_1, stringFromCoordinates_1, Unit_1, wedgeXY_1, wedgeYZ_1, wedgeZX_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var COORD_SCALAR = 0;
     var COORD_X = 1;
     var COORD_Y = 2;
@@ -5193,12 +5194,12 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
     Geometric3.newton = lock(new Geometric3(scalar(1), Unit_1.default.NEWTON));
     Geometric3.joule = lock(new Geometric3(scalar(1), Unit_1.default.JOULE));
     exports.Geometric3 = Geometric3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Geometric3;
 });
 
 define('davinci-newton/checks/mustBeDefined',["require", "exports", "../checks/mustSatisfy", "../checks/isDefined"], function (require, exports, mustSatisfy_1, isDefined_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beDefined() {
         return "not be 'undefined'";
     }
@@ -5206,21 +5207,21 @@ define('davinci-newton/checks/mustBeDefined',["require", "exports", "../checks/m
         mustSatisfy_1.default(name, isDefined_1.default(value), beDefined, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeDefined;
 });
 
 define('davinci-newton/checks/isInteger',["require", "exports", "../checks/isNumber"], function (require, exports, isNumber_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isInteger(x) {
         return isNumber_1.default(x) && x % 1 === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isInteger;
 });
 
 define('davinci-newton/checks/mustBeInteger',["require", "exports", "../checks/mustSatisfy", "../checks/isInteger"], function (require, exports, mustSatisfy_1, isInteger_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beAnInteger() {
         return "be an integer";
     }
@@ -5228,12 +5229,12 @@ define('davinci-newton/checks/mustBeInteger',["require", "exports", "../checks/m
         mustSatisfy_1.default(name, isInteger_1.default(value), beAnInteger, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeInteger;
 });
 
 define('davinci-newton/checks/mustBeNumber',["require", "exports", "../checks/mustSatisfy", "../checks/isNumber"], function (require, exports, mustSatisfy_1, isNumber_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beANumber() {
         return "be a `number`";
     }
@@ -5241,12 +5242,12 @@ define('davinci-newton/checks/mustBeNumber',["require", "exports", "../checks/mu
         mustSatisfy_1.default(name, isNumber_1.default(value), beANumber, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
 });
 
 define('davinci-newton/checks/expectArg',["require", "exports", "../checks/isUndefined", "../checks/mustBeNumber"], function (require, exports, isUndefined_1, mustBeNumber_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function message(standard, override) {
         return isUndefined_1.default(override) ? standard : override();
     }
@@ -5344,12 +5345,12 @@ define('davinci-newton/checks/expectArg',["require", "exports", "../checks/isUnd
         };
         return arg;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = expectArg;
 });
 
 define('davinci-newton/math/AbstractMatrix',["require", "exports", "../checks/mustBeDefined", "../checks/mustBeInteger", "../checks/expectArg", "./Unit"], function (require, exports, mustBeDefined_1, mustBeInteger_1, expectArg_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AbstractMatrix = (function () {
         function AbstractMatrix(elements, dimensions, uom) {
             this._elements = mustBeDefined_1.default('elements', elements);
@@ -5414,24 +5415,24 @@ define('davinci-newton/math/AbstractMatrix',["require", "exports", "../checks/mu
         };
         return AbstractMatrix;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AbstractMatrix;
 });
 
 define('davinci-newton/math/det3x3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function det3x3(m) {
         var m00 = m[0x0], m01 = m[0x3], m02 = m[0x6];
         var m10 = m[0x1], m11 = m[0x4], m12 = m[0x7];
         var m20 = m[0x2], m21 = m[0x5], m22 = m[0x8];
         return m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m00 * m12 * m21 - m01 * m10 * m22 - m02 * m11 * m20;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = det3x3;
 });
 
 define('davinci-newton/math/inv3x3',["require", "exports", "../math/det3x3"], function (require, exports, det3x3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function inv3x3(m, te) {
         var det = det3x3_1.default(m);
         var m11 = m[0x0], m12 = m[0x3], m13 = m[0x6];
@@ -5457,12 +5458,12 @@ define('davinci-newton/math/inv3x3',["require", "exports", "../math/det3x3"], fu
         te[0x5] = o32 * α;
         te[0x8] = o33 * α;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = inv3x3;
 });
 
 define('davinci-newton/math/mul3x3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mul3x3(a, b, c) {
         var a11 = a[0x0], a12 = a[0x3], a13 = a[0x6];
         var a21 = a[0x1], a22 = a[0x4], a23 = a[0x7];
@@ -5481,7 +5482,6 @@ define('davinci-newton/math/mul3x3',["require", "exports"], function (require, e
         c[0x8] = a31 * b13 + a32 * b23 + a33 * b33;
         return c;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mul3x3;
 });
 
@@ -5497,6 +5497,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/math/Matrix3',["require", "exports", "./AbstractMatrix", "./inv3x3", "./mul3x3"], function (require, exports, AbstractMatrix_1, inv3x3_1, mul3x3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Matrix3 = (function (_super) {
         __extends(Matrix3, _super);
         function Matrix3(elements, uom) {
@@ -5584,12 +5585,12 @@ define('davinci-newton/math/Matrix3',["require", "exports", "./AbstractMatrix", 
         return Matrix3;
     }(AbstractMatrix_1.default));
     exports.Matrix3 = Matrix3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Matrix3;
 });
 
 define('davinci-newton/objects/AbstractSimObject',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AbstractSimObject = (function () {
         function AbstractSimObject() {
             this.expireTime_ = Number.POSITIVE_INFINITY;
@@ -5607,12 +5608,12 @@ define('davinci-newton/objects/AbstractSimObject',["require", "exports"], functi
         return AbstractSimObject;
     }());
     exports.AbstractSimObject = AbstractSimObject;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AbstractSimObject;
 });
 
 define('davinci-newton/math/isBivectorE3',["require", "exports", "../checks/isNull", "../checks/isNumber", "../checks/isObject"], function (require, exports, isNull_1, isNumber_1, isObject_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isBivectorE3(v) {
         if (isObject_1.default(v) && !isNull_1.default(v)) {
             return isNumber_1.default(v.xy) && isNumber_1.default(v.yz) && isNumber_1.default(v.zx);
@@ -5621,36 +5622,36 @@ define('davinci-newton/math/isBivectorE3',["require", "exports", "../checks/isNu
             return false;
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isBivectorE3;
 });
 
 define('davinci-newton/math/mustBeBivectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mustBeBivectorE3(name, B) {
         if (isNaN(B.yz) || isNaN(B.zx) || isNaN(B.xy)) {
             throw new Error(name + ", (" + B.yz + ", " + B.zx + ", " + B.xy + "), must be a BivectorE3.");
         }
         return B;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeBivectorE3;
 });
 
 define('davinci-newton/math/mustBeVectorE3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mustBeVectorE3(name, v) {
         if (isNaN(v.x) || isNaN(v.y) || isNaN(v.z)) {
             throw new Error(name + ", (" + v.x + ", " + v.y + ", " + v.z + "), must be a VectorE3.");
         }
         return v;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeVectorE3;
 });
 
 define('davinci-newton/math/wedge3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function wedgeYZ(a, b) {
         return a.y * b.z - a.z * b.y;
     }
@@ -5667,6 +5668,7 @@ define('davinci-newton/math/wedge3',["require", "exports"], function (require, e
 
 define('davinci-newton/math/Bivector3',["require", "exports", "./isBivectorE3", "../checks/isNumber", "./isVectorE3", "./mustBeBivectorE3", "../checks/mustBeNumber", "./mustBeVectorE3", "./Unit", "./wedge3"], function (require, exports, isBivectorE3_1, isNumber_1, isVectorE3_1, mustBeBivectorE3_1, mustBeNumber_1, mustBeVectorE3_1, Unit_1, wedge3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Bivector3 = (function () {
         function Bivector3(yz, zx, xy, uom) {
             this.yz = mustBeNumber_1.default('yz', yz);
@@ -5825,12 +5827,12 @@ define('davinci-newton/math/Bivector3',["require", "exports", "./isBivectorE3", 
         return Bivector3;
     }());
     exports.Bivector3 = Bivector3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Bivector3;
 });
 
 define('davinci-newton/math/Mat3',["require", "exports", "./Matrix3", "./Unit"], function (require, exports, Matrix3_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Mat3 = (function () {
         function Mat3(source) {
             this.data = Matrix3_1.default.one();
@@ -5865,21 +5867,21 @@ define('davinci-newton/math/Mat3',["require", "exports", "./Matrix3", "./Unit"],
         return Mat3;
     }());
     exports.Mat3 = Mat3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Mat3;
 });
 
 define('davinci-newton/checks/isFunction',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isFunction(x) {
         return (typeof x === 'function');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isFunction;
 });
 
 define('davinci-newton/checks/mustBeFunction',["require", "exports", "../checks/mustSatisfy", "../checks/isFunction"], function (require, exports, mustSatisfy_1, isFunction_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beFunction() {
         return "be a function";
     }
@@ -5887,12 +5889,12 @@ define('davinci-newton/checks/mustBeFunction',["require", "exports", "../checks/
         mustSatisfy_1.default(name, isFunction_1.default(value), beFunction, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeFunction;
 });
 
 define('davinci-newton/checks/mustBeNonNullObject',["require", "exports", "../checks/mustSatisfy", "../checks/isNull", "../checks/isObject"], function (require, exports, mustSatisfy_1, isNull_1, isObject_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function beObject() {
         return "be a non-null `object`";
     }
@@ -5900,12 +5902,12 @@ define('davinci-newton/checks/mustBeNonNullObject',["require", "exports", "../ch
         mustSatisfy_1.default(name, isObject_1.default(value) && !isNull_1.default(value), beObject, contextBuilder);
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeObject;
 });
 
 define('davinci-newton/math/Scalar3',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Scalar3 = (function () {
         function Scalar3(a, uom) {
             this.a_ = a;
@@ -5931,12 +5933,12 @@ define('davinci-newton/math/Scalar3',["require", "exports"], function (require, 
         return Scalar3;
     }());
     exports.Scalar3 = Scalar3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Scalar3;
 });
 
 define('davinci-newton/util/veryDifferent',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function veryDifferent(arg1, arg2, epsilon, magnitude) {
         if (epsilon === void 0) { epsilon = 1E-14; }
         if (magnitude === void 0) { magnitude = 1; }
@@ -5950,12 +5952,12 @@ define('davinci-newton/util/veryDifferent',["require", "exports"], function (req
         var max = maxArg > magnitude ? maxArg : magnitude;
         return Math.abs(arg1 - arg2) > max * epsilon;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = veryDifferent;
 });
 
 define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber", "./Scalar3", "./Unit", "../util/veryDifferent"], function (require, exports, mustBeNumber_1, Scalar3_1, Unit_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Vec3 = (function () {
         function Vec3(x, y, z, uom) {
             this.x_ = mustBeNumber_1.default('x', x);
@@ -6131,7 +6133,6 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
     Vec3.e3 = new Vec3(0, 0, 1);
     Vec3.zero = new Vec3(0, 0, 0);
     exports.Vec3 = Vec3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Vec3;
 });
 
@@ -6147,6 +6148,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/AbstractSimObject", "../math/Bivector3", "../math/Geometric3", "../math/Mat3", "../math/Matrix3", "../checks/mustBeFunction", "../checks/mustBeNonNullObject", "../checks/mustBeNumber", "../math/Unit", "../math/Vec3"], function (require, exports, AbstractSimObject_1, Bivector3_1, Geometric3_1, Mat3_1, Matrix3_1, mustBeFunction_1, mustBeNonNullObject_1, mustBeNumber_1, Unit_1, Vec3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function assertConsistentUnits(aName, A, bName, B) {
         if (!A.isZero() && !B.isZero()) {
             if (Unit_1.default.isOne(A.uom)) {
@@ -6348,7 +6350,6 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
         return RigidBody3;
     }(AbstractSimObject_1.default));
     exports.RigidBody3 = RigidBody3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = RigidBody3;
 });
 
@@ -6364,6 +6365,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometric3", "../math/Matrix3", "./RigidBody3", "../math/Unit"], function (require, exports, Geometric3_1, Matrix3_1, RigidBody3_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Block3 = (function (_super) {
         __extends(Block3, _super);
         function Block3(width, height, depth) {
@@ -6450,24 +6452,24 @@ define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometri
         return Block3;
     }(RigidBody3_1.default));
     exports.Block3 = Block3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Block3;
 });
 
 define('davinci-newton/util/UtilityCore',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var UtilityCore = (function () {
         function UtilityCore() {
         }
         return UtilityCore;
     }());
     UtilityCore.MAX_INTEGER = Math.pow(2, 53);
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = UtilityCore;
 });
 
 define('davinci-newton/util/CircularList',["require", "exports", "./UtilityCore"], function (require, exports, UtilityCore_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var MAX_INDEX_ERROR = 'exceeded max int';
     var CircularList = (function () {
         function CircularList(capacity) {
@@ -6555,7 +6557,6 @@ define('davinci-newton/util/CircularList',["require", "exports", "./UtilityCore"
         };
         return CircularList;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = CircularList;
     var CircularListIterator = (function () {
         function CircularListIterator(cList, startIndex) {
@@ -6626,12 +6627,13 @@ define('davinci-newton/util/CircularList',["require", "exports", "./UtilityCore"
 
 define('davinci-newton/config',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-02-17';
+            this.LAST_MODIFIED = '2017-03-07';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.37';
+            this.VERSION = '0.0.38';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -6664,12 +6666,12 @@ define('davinci-newton/config',["require", "exports"], function (require, export
         return Newton;
     }());
     var config = new Newton();
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = config;
 });
 
 define('davinci-newton/solvers/ConstantEnergySolver',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ConstantEnergySolver = (function () {
         function ConstantEnergySolver(simulation, energySystem, solverMethod) {
             this.stepUpperBound = 1;
@@ -6735,18 +6737,17 @@ define('davinci-newton/solvers/ConstantEnergySolver',["require", "exports"], fun
         return ConstantEnergySolver;
     }());
     exports.ConstantEnergySolver = ConstantEnergySolver;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ConstantEnergySolver;
 });
 
 define('davinci-newton/model/CoordType',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var CoordType;
     (function (CoordType) {
         CoordType[CoordType["LOCAL"] = 0] = "LOCAL";
         CoordType[CoordType["WORLD"] = 1] = "WORLD";
     })(CoordType = exports.CoordType || (exports.CoordType = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = CoordType;
 });
 
@@ -6762,6 +6763,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Force3',["require", "exports", "../objects/AbstractSimObject", "../math/Bivector3", "../model/CoordType", "../math/Geometric3"], function (require, exports, AbstractSimObject_1, Bivector3_1, CoordType_1, Geometric3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Force3 = (function (_super) {
         __extends(Force3, _super);
         function Force3(body_) {
@@ -6833,7 +6835,6 @@ define('davinci-newton/engine3D/Force3',["require", "exports", "../objects/Abstr
         return Force3;
     }(AbstractSimObject_1.default));
     exports.Force3 = Force3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Force3;
 });
 
@@ -6849,6 +6850,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/ConstantForceLaw3',["require", "exports", "../objects/AbstractSimObject", "../model/CoordType", "./Force3", "../math/Geometric3"], function (require, exports, AbstractSimObject_1, CoordType_1, Force3_1, Geometric3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ConstantForceLaw3 = (function (_super) {
         __extends(ConstantForceLaw3, _super);
         function ConstantForceLaw3(body_, vector, vectorCoordType) {
@@ -6889,7 +6891,6 @@ define('davinci-newton/engine3D/ConstantForceLaw3',["require", "exports", "../ob
         return ConstantForceLaw3;
     }(AbstractSimObject_1.default));
     exports.ConstantForceLaw3 = ConstantForceLaw3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ConstantForceLaw3;
 });
 
@@ -6905,6 +6906,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/CoulombLaw3',["require", "exports", "../objects/AbstractSimObject", "../model/CoordType", "./Force3", "../math/Geometric3"], function (require, exports, AbstractSimObject_1, CoordType_1, Force3_1, Geometric3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var CoulombLaw3 = (function (_super) {
         __extends(CoulombLaw3, _super);
         function CoulombLaw3(body1_, body2_, k) {
@@ -6954,7 +6956,6 @@ define('davinci-newton/engine3D/CoulombLaw3',["require", "exports", "../objects/
         return CoulombLaw3;
     }(AbstractSimObject_1.default));
     exports.CoulombLaw3 = CoulombLaw3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = CoulombLaw3;
 });
 
@@ -6970,6 +6971,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Geometric3", "../math/Matrix3", "./RigidBody3", "../math/Unit"], function (require, exports, Geometric3_1, Matrix3_1, RigidBody3_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Cylinder3 = (function (_super) {
         __extends(Cylinder3, _super);
         function Cylinder3(radius, height) {
@@ -7026,12 +7028,12 @@ define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Geome
         return Cylinder3;
     }(RigidBody3_1.default));
     exports.Cylinder3 = Cylinder3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Cylinder3;
 });
 
 define('davinci-newton/strategy/DefaultAdvanceStrategy',["require", "exports", "../checks/mustBeNonNullObject"], function (require, exports, mustBeNonNullObject_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DefaultAdvanceStrategy = (function () {
         function DefaultAdvanceStrategy(simulation, solver) {
             this.simulation_ = mustBeNonNullObject_1.default('simulation', simulation);
@@ -7045,12 +7047,12 @@ define('davinci-newton/strategy/DefaultAdvanceStrategy',["require", "exports", "
         return DefaultAdvanceStrategy;
     }());
     exports.DefaultAdvanceStrategy = DefaultAdvanceStrategy;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DefaultAdvanceStrategy;
 });
 
 define('davinci-newton/util/contains',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function contains(xs, x) {
         var N = xs.length;
         for (var i = 0; i < N; i++) {
@@ -7060,23 +7062,23 @@ define('davinci-newton/util/contains',["require", "exports"], function (require,
         }
         return false;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = contains;
 });
 
 define('davinci-newton/view/DrawingMode',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DrawingMode;
     (function (DrawingMode) {
         DrawingMode[DrawingMode["DOTS"] = 0] = "DOTS";
         DrawingMode[DrawingMode["LINES"] = 1] = "LINES";
     })(DrawingMode = exports.DrawingMode || (exports.DrawingMode = {}));
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DrawingMode;
 });
 
 define('davinci-newton/util/clone',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function clone(xs) {
         var length = xs.length;
         var rv = new Array(length);
@@ -7085,12 +7087,12 @@ define('davinci-newton/util/clone',["require", "exports"], function (require, ex
         }
         return rv;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = clone;
 });
 
 define('davinci-newton/util/findIndex',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function findIndex(xs, test) {
         var N = xs.length;
         for (var i = 0; i < N; i++) {
@@ -7101,43 +7103,43 @@ define('davinci-newton/util/findIndex',["require", "exports"], function (require
         }
         return -1;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = findIndex;
 });
 
 define('davinci-newton/util/find',["require", "exports", "./findIndex"], function (require, exports, findIndex_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function find(xs, test) {
         var i = findIndex_1.default(xs, test);
         return i < 0 ? null : xs[i];
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = find;
 });
 
 define('davinci-newton/util/toName',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function toName(text) {
         return text.toUpperCase().replace(/[ -]/g, '_');
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = toName;
 });
 
 define('davinci-newton/util/validName',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function validName(text) {
         if (!text.match(/^[A-Z_][A-Z_0-9]*$/)) {
             throw new Error('not a valid name: ' + text);
         }
         return text;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = validName;
 });
 
 define('davinci-newton/util/ParameterBoolean',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ParameterBoolean = (function () {
         function ParameterBoolean(subject, name, getter, setter, choices, values) {
             this.subject_ = subject;
@@ -7167,12 +7169,12 @@ define('davinci-newton/util/ParameterBoolean',["require", "exports", "./toName",
         return ParameterBoolean;
     }());
     exports.ParameterBoolean = ParameterBoolean;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ParameterBoolean;
 });
 
 define('davinci-newton/util/ParameterNumber',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ParameterNumber = (function () {
         function ParameterNumber(subject, name, getter, setter, choices, values) {
             this.subject_ = subject;
@@ -7219,12 +7221,12 @@ define('davinci-newton/util/ParameterNumber',["require", "exports", "./toName", 
         return ParameterNumber;
     }());
     exports.ParameterNumber = ParameterNumber;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ParameterNumber;
 });
 
 define('davinci-newton/util/ParameterString',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ParameterString = (function () {
         function ParameterString(subject, name, getter, setter, choices, values) {
             this.subject_ = subject;
@@ -7260,21 +7262,21 @@ define('davinci-newton/util/ParameterString',["require", "exports", "./toName", 
         return ParameterString;
     }());
     exports.ParameterString = ParameterString;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ParameterString;
 });
 
 define('davinci-newton/util/removeAt',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function removeAt(xs, index) {
         return Array.prototype.splice.call(xs, index, 1).length === 1;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = removeAt;
 });
 
 define('davinci-newton/util/remove',["require", "exports", "./removeAt"], function (require, exports, removeAt_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function remove(xs, x) {
         var i = xs.indexOf(x);
         var rv;
@@ -7283,12 +7285,12 @@ define('davinci-newton/util/remove',["require", "exports", "./removeAt"], functi
         }
         return rv;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = remove;
 });
 
 define('davinci-newton/util/AbstractSubject',["require", "exports", "./clone", "./contains", "./find", "./ParameterBoolean", "./ParameterNumber", "./ParameterString", "./remove", "../util/toName"], function (require, exports, clone_1, contains_1, find_1, ParameterBoolean_1, ParameterNumber_1, ParameterString_1, remove_1, toName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AbstractSubject = (function () {
         function AbstractSubject() {
             this.doBroadcast_ = true;
@@ -7372,12 +7374,12 @@ define('davinci-newton/util/AbstractSubject',["require", "exports", "./clone", "
         return AbstractSubject;
     }());
     exports.AbstractSubject = AbstractSubject;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AbstractSubject;
 });
 
 define('davinci-newton/util/GenericEvent',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GenericEvent = (function () {
         function GenericEvent(subject_, name, value_) {
             this.subject_ = subject_;
@@ -7400,12 +7402,12 @@ define('davinci-newton/util/GenericEvent',["require", "exports", "./toName", "./
         return GenericEvent;
     }());
     exports.GenericEvent = GenericEvent;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GenericEvent;
 });
 
 define('davinci-newton/graph/GraphPoint',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GraphPoint = (function () {
         function GraphPoint(x, y, seqX, seqY) {
             this.x = x;
@@ -7418,12 +7420,12 @@ define('davinci-newton/graph/GraphPoint',["require", "exports"], function (requi
         };
         return GraphPoint;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GraphPoint;
 });
 
 define('davinci-newton/graph/GraphStyle',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GraphStyle = (function () {
         function GraphStyle(index_, drawingMode, color_, lineWidth) {
             this.index_ = index_;
@@ -7433,7 +7435,6 @@ define('davinci-newton/graph/GraphStyle',["require", "exports"], function (requi
         }
         return GraphStyle;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GraphStyle;
 });
 
@@ -7449,6 +7450,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/graph/GraphLine',["require", "exports", "../util/AbstractSubject", "../util/CircularList", "../view/DrawingMode", "../util/GenericEvent", "./GraphPoint", "./GraphStyle", "../checks/isObject", "../util/ParameterNumber", "../util/ParameterString", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, CircularList_1, DrawingMode_1, GenericEvent_1, GraphPoint_1, GraphStyle_1, isObject_1, ParameterNumber_1, ParameterString_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GraphLine = (function (_super) {
         __extends(GraphLine, _super);
         function GraphLine(varsList, capacity) {
@@ -7646,12 +7648,12 @@ define('davinci-newton/graph/GraphLine',["require", "exports", "../util/Abstract
     GraphLine.PARAM_NAME_COLOR = 'color';
     GraphLine.PARAM_NAME_DRAWING_MODE = 'drawing mode';
     GraphLine.RESET = 'RESET';
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GraphLine;
 });
 
 define('davinci-newton/util/repeat',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function repeat(value, N) {
         var xs = [];
         for (var i = 0; i < N; i++) {
@@ -7659,12 +7661,12 @@ define('davinci-newton/util/repeat',["require", "exports"], function (require, e
         }
         return xs;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = repeat;
 });
 
 define('davinci-newton/view/ScreenRect',["require", "exports", "../checks/isFunction", "../util/veryDifferent"], function (require, exports, isFunction_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ScreenRect = (function () {
         function ScreenRect(left, top_, width, height) {
             if (width < 0 || height < 0) {
@@ -7755,12 +7757,12 @@ define('davinci-newton/view/ScreenRect',["require", "exports", "../checks/isFunc
         return ScreenRect;
     }());
     ScreenRect.EMPTY_RECT = new ScreenRect(0, 0, 0, 0);
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ScreenRect;
 });
 
 define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/contains", "../view/DrawingMode", "./GraphLine", "../checks/isDefined", "../util/removeAt", "../util/repeat", "../view/ScreenRect"], function (require, exports, contains_1, DrawingMode_1, GraphLine_1, isDefined_1, removeAt_1, repeat_1, ScreenRect_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DisplayGraph = (function () {
         function DisplayGraph() {
             this.graphLines_ = [];
@@ -7950,12 +7952,12 @@ define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/conta
         };
         return DisplayGraph;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DisplayGraph;
 });
 
 define('davinci-newton/view/Point',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Point = (function () {
         function Point(x_, y_) {
             this.x_ = x_;
@@ -7977,12 +7979,12 @@ define('davinci-newton/view/Point',["require", "exports"], function (require, ex
         });
         return Point;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Point;
 });
 
 define('davinci-newton/view/DoubleRect',["require", "exports", "./Point", "../util/veryDifferent"], function (require, exports, Point_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DoubleRect = (function () {
         function DoubleRect(left, bottom, right, top) {
             this.left_ = left;
@@ -8143,12 +8145,12 @@ define('davinci-newton/view/DoubleRect',["require", "exports", "./Point", "../ut
         return DoubleRect;
     }());
     DoubleRect.EMPTY_RECT = new DoubleRect(0, 0, 0, 0);
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DoubleRect;
 });
 
 define('davinci-newton/view/AffineTransform',["require", "exports", "./Point"], function (require, exports, Point_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AffineTransform = (function () {
         function AffineTransform(m11, m12, m21, m22, dx, dy) {
             this.m11_ = m11;
@@ -8214,24 +8216,24 @@ define('davinci-newton/view/AffineTransform',["require", "exports", "./Point"], 
         return AffineTransform;
     }());
     AffineTransform.IDENTITY = new AffineTransform(1, 0, 0, 1, 0, 0);
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AffineTransform;
 });
 
 define('davinci-newton/checks/mustBeFinite',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function mustBeFinite(value) {
         if (typeof value !== 'number' || !isFinite(value)) {
             throw new Error('not a finite number ' + value);
         }
         return value;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeFinite;
 });
 
 define('davinci-newton/view/CoordMap',["require", "exports", "./AffineTransform", "./AlignH", "./AlignV", "./DoubleRect", "../checks/mustBeFinite", "./Point", "./ScreenRect"], function (require, exports, AffineTransform_1, AlignH_1, AlignV_1, DoubleRect_1, mustBeFinite_1, Point_1, ScreenRect_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var MIN_SIZE = 1E-15;
     var CoordMap = (function () {
         function CoordMap(screen_left, screen_bottom, sim_left, sim_bottom, pixel_per_unit_x, pixel_per_unit_y) {
@@ -8395,12 +8397,12 @@ define('davinci-newton/view/CoordMap',["require", "exports", "./AffineTransform"
         };
         return CoordMap;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = CoordMap;
 });
 
 define('davinci-newton/util/insertAt',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function slice(xs, start, opt_end) {
         if (arguments.length <= 2) {
             return Array.prototype.slice.call(xs, start);
@@ -8416,7 +8418,6 @@ define('davinci-newton/util/insertAt',["require", "exports"], function (require,
         if (index === void 0) { index = 0; }
         splice(xs, index, 0, x);
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = insertAt;
 });
 
@@ -8432,6 +8433,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/view/DisplayList',["require", "exports", "../util/AbstractSubject", "../util/GenericEvent", "../util/insertAt", "../checks/isObject"], function (require, exports, AbstractSubject_1, GenericEvent_1, insertAt_1, isObject_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var DisplayList = (function (_super) {
         __extends(DisplayList, _super);
         function DisplayList() {
@@ -8488,7 +8490,6 @@ define('davinci-newton/view/DisplayList',["require", "exports", "../util/Abstrac
     DisplayList.OBJECT_ADDED = 'OBJECT_ADDED';
     DisplayList.OBJECT_REMOVED = 'OBJECT_REMOVED';
     exports.DisplayList = DisplayList;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DisplayList;
 });
 
@@ -8504,6 +8505,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSubject", "./AlignH", "./AlignV", "../util/clone", "../util/contains", "./CoordMap", "./DisplayList", "./DoubleRect", "../util/GenericEvent", "../util/ParameterBoolean", "../util/ParameterNumber", "../util/remove", "./ScreenRect", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, AlignH_1, AlignV_1, clone_1, contains_1, CoordMap_1, DisplayList_1, DoubleRect_1, GenericEvent_1, ParameterBoolean_1, ParameterNumber_1, remove_1, ScreenRect_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var SimView = (function (_super) {
         __extends(SimView, _super);
         function SimView(simRect) {
@@ -8743,7 +8745,6 @@ define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSub
     SimView.SCREEN_RECT_CHANGED = 'SCREEN_RECT_CHANGED';
     SimView.SIM_RECT_CHANGED = 'SIM_RECT_CHANGED';
     exports.SimView = SimView;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = SimView;
 });
 
@@ -8759,6 +8760,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/graph/AutoScale',["require", "exports", "../util/AbstractSubject", "./AxisChoice", "../util/contains", "../view/DoubleRect", "../util/GenericEvent", "./GraphLine", "../util/removeAt", "../util/ParameterNumber", "../util/repeat", "../view/SimView", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, AxisChoice_1, contains_1, DoubleRect_1, GenericEvent_1, GraphLine_1, removeAt_1, ParameterNumber_1, repeat_1, SimView_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var AutoScale = (function (_super) {
         __extends(AutoScale, _super);
         function AutoScale(simView) {
@@ -9053,12 +9055,12 @@ define('davinci-newton/graph/AutoScale',["require", "exports", "../util/Abstract
     AutoScale.ACTIVE = 'ACTIVE';
     AutoScale.AUTO_SCALE = 'AUTO_SCALE';
     AutoScale.ENABLED = 'ENABLED';
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = AutoScale;
 });
 
 define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH", "../view/AlignV", "../view/DoubleRect", "../math/Unit", "../checks/isDefined"], function (require, exports, AlignH_1, AlignV_1, DoubleRect_1, Unit_1, isDefined_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function makeLabelScale(label, scale) {
         if (Unit_1.default.isOne(scale)) {
             return label;
@@ -9337,12 +9339,12 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
         };
         return DisplayAxes;
     }());
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DisplayAxes;
 });
 
 define('davinci-newton/util/GenericObserver',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GenericObserver = (function () {
         function GenericObserver(subject, observeFn) {
             this.subject_ = subject;
@@ -9358,16 +9360,15 @@ define('davinci-newton/util/GenericObserver',["require", "exports"], function (r
         return GenericObserver;
     }());
     exports.GenericObserver = GenericObserver;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GenericObserver;
 });
 
 define('davinci-newton/util/isEmpty',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function isEmpty(xs) {
         return xs.length === 0;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isEmpty;
 });
 
@@ -9383,6 +9384,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/view/LabCanvas',["require", "exports", "../util/AbstractSubject", "../util/clone", "../util/contains", "../util/GenericEvent", "../util/isEmpty", "../checks/isNumber", "../checks/mustBeNonNullObject", "../util/remove", "./ScreenRect", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, clone_1, contains_1, GenericEvent_1, isEmpty_1, isNumber_1, mustBeNonNullObject_1, remove_1, ScreenRect_1, veryDifferent_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var WIDTH = 'width';
     var HEIGHT = 'height';
     var ALPHA = 'alpha';
@@ -9569,7 +9571,6 @@ define('davinci-newton/view/LabCanvas',["require", "exports", "../util/AbstractS
     LabCanvas.VIEW_ADDED = 'VIEW_ADDED';
     LabCanvas.VIEW_REMOVED = 'VIEW_REMOVED';
     exports.LabCanvas = LabCanvas;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = LabCanvas;
 });
 
@@ -9585,6 +9586,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/graph/Graph',["require", "exports", "../util/AbstractSubject", "../view/AlignH", "../view/AlignV", "./AutoScale", "./DisplayAxes", "./DisplayGraph", "../view/DoubleRect", "../util/GenericObserver", "./GraphLine", "../view/LabCanvas", "../checks/mustBeNumber", "../checks/mustBeString", "../view/SimView"], function (require, exports, AbstractSubject_1, AlignH_1, AlignV_1, AutoScale_1, DisplayAxes_1, DisplayGraph_1, DoubleRect_1, GenericObserver_1, GraphLine_1, LabCanvas_1, mustBeNumber_1, mustBeString_1, SimView_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Graph = (function (_super) {
         __extends(Graph, _super);
         function Graph(canvasId, varsList) {
@@ -9643,7 +9645,6 @@ define('davinci-newton/graph/Graph',["require", "exports", "../util/AbstractSubj
         return Graph;
     }(AbstractSubject_1.default));
     exports.Graph = Graph;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Graph;
 });
 
@@ -9659,6 +9660,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/core/SimList',["require", "exports", "../util/AbstractSubject", "../util/contains", "../util/GenericEvent", "../checks/mustBeNonNullObject", "../util/remove"], function (require, exports, AbstractSubject_1, contains_1, GenericEvent_1, mustBeNonNullObject_1, remove_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var SimList = (function (_super) {
         __extends(SimList, _super);
         function SimList() {
@@ -9698,12 +9700,12 @@ define('davinci-newton/core/SimList',["require", "exports", "../util/AbstractSub
     SimList.OBJECT_ADDED = 'OBJECT_ADDED';
     SimList.OBJECT_REMOVED = 'OBJECT_REMOVED';
     exports.SimList = SimList;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = SimList;
 });
 
 define('davinci-newton/model/ConcreteVariable',["require", "exports", "../util/toName", "../util/validName"], function (require, exports, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ConcreteVariable = (function () {
         function ConcreteVariable(varsList_, name) {
             this.varsList_ = varsList_;
@@ -9759,12 +9761,12 @@ define('davinci-newton/model/ConcreteVariable',["require", "exports", "../util/t
         return ConcreteVariable;
     }());
     exports.ConcreteVariable = ConcreteVariable;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ConcreteVariable;
 });
 
 define('davinci-newton/util/extendArray',["require", "exports", "../checks/isArray"], function (require, exports, isArray_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function extendArray(array, quantity, value) {
         if (quantity === 0) {
             return;
@@ -9789,7 +9791,6 @@ define('davinci-newton/util/extendArray',["require", "exports", "../checks/isArr
             }
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = extendArray;
 });
 
@@ -9805,6 +9806,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/core/VarsList',["require", "exports", "../util/AbstractSubject", "../util/clone", "../model/ConcreteVariable", "../util/extendArray", "../util/find", "../util/findIndex", "../util/GenericEvent", "../checks/isNumber", "../checks/isString", "../util/toName", "../util/validName"], function (require, exports, AbstractSubject_1, clone_1, ConcreteVariable_1, extendArray_1, find_1, findIndex_1, GenericEvent_1, isNumber_1, isString_1, toName_1, validName_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var VarsList = (function (_super) {
         __extends(VarsList, _super);
         function VarsList(names) {
@@ -10044,7 +10046,6 @@ define('davinci-newton/core/VarsList',["require", "exports", "../util/AbstractSu
     VarsList.TIME = 'TIME';
     VarsList.VARS_MODIFIED = 'VARS_MODIFIED';
     exports.VarsList = VarsList;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = VarsList;
 });
 
@@ -10060,6 +10061,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/AbstractSubject", "../util/contains", "../math/Geometric3", "../math/isZeroBivectorE3", "../math/isZeroVectorE3", "../util/remove", "../core/SimList", "../math/Unit", "../core/VarsList", "../math/wedge3"], function (require, exports, AbstractSubject_1, contains_1, Geometric3_1, isZeroBivectorE3_1, isZeroVectorE3_1, remove_1, SimList_1, Unit_1, VarsList_1, wedge3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var var_names = [
         VarsList_1.default.TIME,
         "translational kinetic energy",
@@ -10415,7 +10417,6 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
     Physics3.OFFSET_ANGULAR_MOMENTUM_ZX = 11;
     Physics3.OFFSET_ANGULAR_MOMENTUM_XY = 12;
     exports.Physics3 = Physics3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Physics3;
 });
 
@@ -10431,6 +10432,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/graph/EnergyTimeGraph',["require", "exports", "../view/AlignH", "../view/AlignV", "./Graph", "../engine3D/Physics3"], function (require, exports, AlignH_1, AlignV_1, Graph_1, Physics3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var EnergyTimeGraph = (function (_super) {
         __extends(EnergyTimeGraph, _super);
         function EnergyTimeGraph(canvasId, varsList) {
@@ -10453,24 +10455,24 @@ define('davinci-newton/graph/EnergyTimeGraph',["require", "exports", "../view/Al
         return EnergyTimeGraph;
     }(Graph_1.default));
     exports.EnergyTimeGraph = EnergyTimeGraph;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = EnergyTimeGraph;
 });
 
 define('davinci-newton/util/zeroArray',["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function zeroArray(xs) {
         var length = xs.length;
         for (var i = 0; i < length; i++) {
             xs[i] = 0;
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = zeroArray;
 });
 
 define('davinci-newton/solvers/EulerMethod',["require", "exports", "../util/zeroArray"], function (require, exports, zeroArray_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var EulerMethod = (function () {
         function EulerMethod(sim_) {
             this.sim_ = sim_;
@@ -10499,7 +10501,6 @@ define('davinci-newton/solvers/EulerMethod',["require", "exports", "../util/zero
         return EulerMethod;
     }());
     exports.EulerMethod = EulerMethod;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = EulerMethod;
 });
 
@@ -10515,6 +10516,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/GravitationLaw3',["require", "exports", "../objects/AbstractSimObject", "../model/CoordType", "./Force3", "../math/Geometric3"], function (require, exports, AbstractSimObject_1, CoordType_1, Force3_1, Geometric3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var GravitationLaw3 = (function (_super) {
         __extends(GravitationLaw3, _super);
         function GravitationLaw3(body1_, body2_, G) {
@@ -10564,12 +10566,12 @@ define('davinci-newton/engine3D/GravitationLaw3',["require", "exports", "../obje
         return GravitationLaw3;
     }(AbstractSimObject_1.default));
     exports.GravitationLaw3 = GravitationLaw3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GravitationLaw3;
 });
 
 define('davinci-newton/solvers/ModifiedEuler',["require", "exports", "../util/zeroArray"], function (require, exports, zeroArray_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var ModifiedEuler = (function () {
         function ModifiedEuler(sim_) {
             this.sim_ = sim_;
@@ -10606,7 +10608,6 @@ define('davinci-newton/solvers/ModifiedEuler',["require", "exports", "../util/ze
         return ModifiedEuler;
     }());
     exports.ModifiedEuler = ModifiedEuler;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = ModifiedEuler;
 });
 
@@ -10622,6 +10623,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Particle3',["require", "exports", "../math/Geometric3", "./RigidBody3"], function (require, exports, Geometric3_1, RigidBody3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Particle3 = (function (_super) {
         __extends(Particle3, _super);
         function Particle3(M, Q) {
@@ -10645,12 +10647,12 @@ define('davinci-newton/engine3D/Particle3',["require", "exports", "../math/Geome
         return Particle3;
     }(RigidBody3_1.default));
     exports.Particle3 = Particle3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Particle3;
 });
 
 define('davinci-newton/solvers/RungeKutta',["require", "exports", "../util/zeroArray"], function (require, exports, zeroArray_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var RungeKutta = (function () {
         function RungeKutta(simulation) {
             this.inp_ = [];
@@ -10703,7 +10705,6 @@ define('davinci-newton/solvers/RungeKutta',["require", "exports", "../util/zeroA
         return RungeKutta;
     }());
     exports.RungeKutta = RungeKutta;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = RungeKutta;
 });
 
@@ -10719,6 +10720,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometric3", "../math/Matrix3", "./RigidBody3", "../math/Unit"], function (require, exports, Geometric3_1, Matrix3_1, RigidBody3_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var Sphere3 = (function (_super) {
         __extends(Sphere3, _super);
         function Sphere3(radius) {
@@ -10763,7 +10765,6 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
         return Sphere3;
     }(RigidBody3_1.default));
     exports.Sphere3 = Sphere3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Sphere3;
 });
 
@@ -10779,6 +10780,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/AbstractSimObject", "../model/CoordType", "./Force3", "../math/Geometric3", "../math/Vec3", "../math/Unit"], function (require, exports, AbstractSimObject_1, CoordType_1, Force3_1, Geometric3_1, Vec3_1, Unit_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function assertConsistentUnits(aName, A, bName, B) {
         if (!A.isZero() && !B.isZero()) {
             if (Unit_1.default.isOne(A.uom)) {
@@ -10900,12 +10902,12 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
         return Spring3;
     }(AbstractSimObject_1.default));
     exports.Spring3 = Spring3;
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Spring3;
 });
 
 define('davinci-newton',["require", "exports", "./davinci-newton/solvers/AdaptiveStepSolver", "./davinci-newton/view/AlignH", "./davinci-newton/view/AlignV", "./davinci-newton/graph/AxisChoice", "./davinci-newton/engine3D/Block3", "./davinci-newton/util/CircularList", "./davinci-newton/config", "./davinci-newton/solvers/ConstantEnergySolver", "./davinci-newton/engine3D/ConstantForceLaw3", "./davinci-newton/model/CoordType", "./davinci-newton/engine3D/CoulombLaw3", "./davinci-newton/engine3D/Cylinder3", "./davinci-newton/strategy/DefaultAdvanceStrategy", "./davinci-newton/math/Dimensions", "./davinci-newton/graph/DisplayGraph", "./davinci-newton/view/DrawingMode", "./davinci-newton/graph/EnergyTimeGraph", "./davinci-newton/solvers/EulerMethod", "./davinci-newton/engine3D/Force3", "./davinci-newton/math/Geometric3", "./davinci-newton/graph/Graph", "./davinci-newton/graph/GraphLine", "./davinci-newton/engine3D/GravitationLaw3", "./davinci-newton/view/LabCanvas", "./davinci-newton/math/Matrix3", "./davinci-newton/solvers/ModifiedEuler", "./davinci-newton/math/QQ", "./davinci-newton/engine3D/RigidBody3", "./davinci-newton/engine3D/Particle3", "./davinci-newton/engine3D/Physics3", "./davinci-newton/solvers/RungeKutta", "./davinci-newton/view/SimView", "./davinci-newton/engine3D/Sphere3", "./davinci-newton/engine3D/Spring3", "./davinci-newton/math/Unit", "./davinci-newton/core/VarsList", "./davinci-newton/math/Vec3"], function (require, exports, AdaptiveStepSolver_1, AlignH_1, AlignV_1, AxisChoice_1, Block3_1, CircularList_1, config_1, ConstantEnergySolver_1, ConstantForceLaw3_1, CoordType_1, CoulombLaw3_1, Cylinder3_1, DefaultAdvanceStrategy_1, Dimensions_1, DisplayGraph_1, DrawingMode_1, EnergyTimeGraph_1, EulerMethod_1, Force3_1, Geometric3_1, Graph_1, GraphLine_1, GravitationLaw3_1, LabCanvas_1, Matrix3_1, ModifiedEuler_1, QQ_1, RigidBody3_1, Particle3_1, Physics3_1, RungeKutta_1, SimView_1, Sphere3_1, Spring3_1, Unit_1, VarsList_1, Vec3_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var newton = {
         get LAST_MODIFIED() { return config_1.default.LAST_MODIFIED; },
         get VERSION() { return config_1.default.VERSION; },
@@ -10946,7 +10948,6 @@ define('davinci-newton',["require", "exports", "./davinci-newton/solvers/Adaptiv
         get VarsList() { return VarsList_1.default; },
         get Vec3() { return Vec3_1.default; }
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = newton;
 });
 
