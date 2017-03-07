@@ -17,7 +17,7 @@ app.factory('options', [
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3_V3 = '3.5.17';
-        const VERSION_EIGHT = '6.0.6';
+        const VERSION_EIGHT = '6.0.7';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.5.2';
@@ -397,8 +397,8 @@ app.factory('options', [
             },
             {
                 moduleName: 'plot.ly',
-                libraryKind: LibraryKind.Global,
-                globalName: 'plotly',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'Plotly',
                 description: "JavaScript graphing library that powers plotly.",
                 homepage: 'https://plot.ly/javascript/',
                 version: VERSION_PLOTLY,
@@ -482,7 +482,7 @@ app.factory('options', [
             {
                 moduleName: 'three.js',
                 libraryKind: LibraryKind.Global,
-                globalName: 'Three.js',
+                globalName: 'THREE',
                 description: "JavaScript 3D library.",
                 homepage: 'http://threejs.org/',
                 version: VERSION_THREEJS,

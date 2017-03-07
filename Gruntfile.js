@@ -551,35 +551,35 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-eight')
         },
         {
-            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.d.ts')
+            src: "bower_components/davinci-eight/dist/index.d.ts",
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/index.d.ts')
         },
         {
             src: "bower_components/davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/davinci-eight.js')
         },
         {
             src: "bower_components/davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/davinci-eight.css')
         },
         {
-            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
+            src: "bower_components/davinci-eight/dist/index.d.ts",
             dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
         },
         {
-            src: "../davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.d.ts')
+            src: "../davinci-eight/dist/index.d.ts",
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/index.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/davinci-eight.js')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.6/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/davinci-eight.css')
         },
         {
-            src: "../davinci-eight/dist/davinci-eight.d.ts",
+            src: "../davinci-eight/dist/index.d.ts",
             dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
         },
         {

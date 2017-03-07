@@ -22,6 +22,8 @@ import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
 import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
 
+const NEWLINE = '\n';
+
 /**
  * The argument to a SystemJS.config() call.
  */
@@ -94,7 +96,7 @@ export default function rebuildPreview(
 
                         const chosenCssFileNames: string[] = closureOpts.map(function (option: IOption) { return option.css; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         const stylesTags = chosenCssFileNames.map((fileName: string) => {
-                            return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></link>\n";
+                            return `<link rel='stylesheet' href='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></link>${NEWLINE}`;
                         });
 
                         if (detectMarker(STYLES_MARKER, workspace, bestFile)) {
@@ -116,7 +118,7 @@ export default function rebuildPreview(
                         const scriptFileNames: string[] = workspace.operatorOverloading ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
-                            return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>\n`;
+                            return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>${NEWLINE}`;
                         });
 
                         if (detectMarker(SCRIPTS_MARKER, workspace, bestFile)) {
@@ -188,9 +190,9 @@ export default function rebuildPreview(
                                 }
                             }
 
-                            const systemJsConfig = `SystemJS.config(${JSON.stringify(config, null, 2)});\n`;
+                            const systemJsConfig = `SystemJS.config(${JSON.stringify(config, null, 2)});${NEWLINE}`;
 
-                            html = html.replace(CODE_MARKER, modulesJs.join('\n').concat(systemJsConfig));
+                            html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));
                         }
                         else {
                             console.warn(`Unable to find '${CODE_MARKER}' in index.html file.`);
