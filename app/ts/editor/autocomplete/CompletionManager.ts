@@ -205,7 +205,12 @@ export default class CompletionManager {
      */
     private insertMatch(data?: Completion): void {
         if (!data) {
-            data = this.popup.getData(this.popup.getRow());
+            if (this.popup) {
+                data = this.popup.getData(this.popup.getRow());
+            }
+            else {
+                return;
+            }
         }
 
         if (!data) {
@@ -241,34 +246,38 @@ export default class CompletionManager {
     }
 
     /**
-     * @param where
+     *
      */
     private goTo(where: 'up' | 'down' | 'start' | 'end' | 'pageUp' | 'pageDown'): void {
 
-        let row = this.popup.getRow();
-        const max = this.popup.getLength() - 1;
+        if (this.popup) {
+            let row = this.popup.getRow();
+            const max = this.popup.getLength() - 1;
 
-        switch (where) {
-            case "up": row = row <= 0 ? max : row - 1; break;
-            case "down": row = row >= max ? -1 : row + 1; break;
-            case "start": row = 0; break;
-            case "end": row = max; break;
-            default: {
-                // Do nothing.
+            switch (where) {
+                case "up": row = row <= 0 ? max : row - 1; break;
+                case "down": row = row >= max ? -1 : row + 1; break;
+                case "start": row = 0; break;
+                case "end": row = max; break;
+                default: {
+                    // Do nothing.
+                }
             }
-        }
 
-        this.popup.setRow(row);
+            this.popup.setRow(row);
+        }
     }
 
     /**
      *
      */
     private down(): void {
-        let row = this.popup.getRow();
-        const max = this.popup.getLength() - 1;
-        row = row >= max ? -1 : row + 1;
-        this.popup.setRow(row);
+        if (this.popup) {
+            let row = this.popup.getRow();
+            const max = this.popup.getLength() - 1;
+            row = row >= max ? -1 : row + 1;
+            this.popup.setRow(row);
+        }
     }
 
     /**
@@ -491,28 +500,30 @@ export default class CompletionManager {
      *
      */
     private updateDocTooltip(): void {
-        const popup = this.popup;
-        const all = popup.data;
-        const selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
-        let doc: any = null;
-        if (!selected || !this.editor || !this.popup.isOpen)
-            return this.hideDocTooltip();
-        this.editor.completers.some(function (completer) {
-            if (completer.getDocTooltip) {
-                doc = completer.getDocTooltip(selected);
-            }
-            return doc;
-        });
-        if (!doc)
-            doc = selected;
+        if (this.popup) {
+            const popup = this.popup;
+            const all = popup.data;
+            const selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
+            let doc: any = null;
+            if (!selected || !this.editor || !this.popup.isOpen)
+                return this.hideDocTooltip();
+            this.editor.completers.some(function (completer) {
+                if (completer.getDocTooltip) {
+                    doc = completer.getDocTooltip(selected);
+                }
+                return doc;
+            });
+            if (!doc)
+                doc = selected;
 
-        if (typeof doc === "string") {
-            doc = { docText: doc };
+            if (typeof doc === "string") {
+                doc = { docText: doc };
+            }
+            if (!doc || !(doc.docHTML || doc.docText)) {
+                return this.hideDocTooltip();
+            }
+            this.showDocTooltip(doc);
         }
-        if (!doc || !(doc.docHTML || doc.docText)) {
-            return this.hideDocTooltip();
-        }
-        this.showDocTooltip(doc);
     }
 
     /**
@@ -538,18 +549,20 @@ export default class CompletionManager {
         if (!tooltipNode.parentNode) {
             document.body.appendChild(tooltipNode);
         }
-        const popup = this.popup;
-        const rect = popup.container.getBoundingClientRect();
-        tooltipNode.style.top = popup.container.style.top;
-        tooltipNode.style.bottom = popup.container.style.bottom;
+        if (this.popup) {
+            const popup = this.popup;
+            const rect = popup.container.getBoundingClientRect();
+            tooltipNode.style.top = popup.container.style.top;
+            tooltipNode.style.bottom = popup.container.style.bottom;
 
-        if (window.innerWidth - rect.right < 320) {
-            tooltipNode.style.right = window.innerWidth - rect.left + "px";
-            tooltipNode.style.left = "";
-        }
-        else {
-            tooltipNode.style.left = (rect.right + 1) + "px";
-            tooltipNode.style.right = "";
+            if (window.innerWidth - rect.right < 320) {
+                tooltipNode.style.right = window.innerWidth - rect.left + "px";
+                tooltipNode.style.left = "";
+            }
+            else {
+                tooltipNode.style.left = (rect.right + 1) + "px";
+                tooltipNode.style.right = "";
+            }
         }
         tooltipNode.style.display = "block";
     }

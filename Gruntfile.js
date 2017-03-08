@@ -633,20 +633,20 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-units')
         },
         {
-            src: "bower_components/davinci-units/dist/davinci-units.d.ts",
-            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.d.ts')
+            src: "bower_components/davinci-units/dist/index.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-units/index.d.ts')
         },
         {
             src: "bower_components/davinci-units/dist/davinci-units.js",
-            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.js')
+            dest: prepend(target, 'vendor/davinci-units@1.5.5/davinci-units.js')
         },
         {
-            src: "../davinci-units/dist/davinci-units.d.ts",
-            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.d.ts')
+            src: "../davinci-units/dist/index.d.ts",
+            dest: prepend(target, 'vendor/@types/davinci-units/index.d.ts')
         },
         {
             src: "../davinci-units/dist/davinci-units.js",
-            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.js')
+            dest: prepend(target, 'vendor/davinci-units@1.5.5/davinci-units.js')
         },
         {
             expand: true,

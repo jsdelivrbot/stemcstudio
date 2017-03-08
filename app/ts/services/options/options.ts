@@ -42,7 +42,7 @@ app.factory('options', [
         const VERSION_THREEJS = '0.82.0';
         const RELEASE_THREEJS = 'r82';
         const VERSION_TWO = '0.6.0';
-        const VERSION_UNITS = '1.5.4';
+        const VERSION_UNITS = '1.5.5';
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
@@ -165,8 +165,11 @@ app.factory('options', [
           return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
         }
         */
-        function units(subFolder: string, fileName: string): string {
-            return vendorFolder('davinci-units', VERSION_UNITS, subFolder, fileName);
+        function units(fileName: string): string {
+            const isDts = fileName.endsWith(INDEX_DTS);
+            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-units` : 'davinci-units';
+            const version = isDts ? void 0 : VERSION_UNITS;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         // TODO: Make this external.
         let _options: IOption[] = [
@@ -278,7 +281,7 @@ app.factory('options', [
                 packageName: 'davinci-eight',
                 moduleName: 'davinci-eight',
                 libraryKind: LibraryKind.UMD,
-                globalName: undefined,
+                globalName: 'EIGHT',
                 description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
@@ -293,7 +296,7 @@ app.factory('options', [
                 packageName: 'davinci-newton',
                 moduleName: 'davinci-newton',
                 libraryKind: LibraryKind.UMD,
-                globalName: undefined,
+                globalName: 'NEWTON',
                 description: "Physics Engine and Kinematic Graphing.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-newton/index.html',
                 version: VERSION_NEWTON,
@@ -306,7 +309,7 @@ app.factory('options', [
             },
             {
                 packageName: 'davinci-units',
-                moduleName: 'units',
+                moduleName: 'davinci-units',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'UNITS',
                 description: "Dimensions, Units and Geometric Algebra.",
@@ -314,9 +317,9 @@ app.factory('options', [
                 version: VERSION_UNITS,
                 visible: true,
                 css: [],
-                dts: units('dist', 'davinci-units.d.ts'),
-                js: [units('dist', 'davinci-units.js')],
-                minJs: [units('dist', 'davinci-units.js')],
+                dts: units(INDEX_DTS),
+                js: [units('davinci-units.js')],
+                minJs: [units('davinci-units.js')],
                 dependencies: {}
             },
             {
