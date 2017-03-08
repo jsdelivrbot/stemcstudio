@@ -47,7 +47,7 @@ export default function (tabString: string): string {
     lines.push(_ + "scene.render(ambients)");
     lines.push("");
     lines.push(_ + "requestAnimationFrame(animate)");
-    lines.push("};");
+    lines.push("}");
     lines.push("");
     lines.push("requestAnimationFrame(animate)");
     return lines.join(NEWLINE).concat(NEWLINE);
