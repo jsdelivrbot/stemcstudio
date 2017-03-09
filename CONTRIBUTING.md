@@ -116,6 +116,30 @@ bower update
 jspm install
 jspm update
 ```
+
+### Upgrading davinci-mathscript
+
+1. bower.json (version)
+2. package.json (jspm)
+3. app.ts (FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS)
+4. Gruntfile.js
+5. jspm.config.js (3 places)
+
+```
+npm install
+npm update
+bower install
+bower update
+jspm install
+jspm update
+```
+
+6. Update typings-manual/browser/ambient/davinci-mathscript/index.d.ts
+
+```
+grunt
+```
+
 ### Upgrading Jasmine Testing Framework
 
 1. Download latest stable release from https://jasmine.github.io

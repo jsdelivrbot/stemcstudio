@@ -1,0 +1,48 @@
+{
+    "name": "davinci-mathscript",
+    "version": "1.2.0",
+    "description": "MathScript transcompiler to JavaScript.",
+    "author": {
+        "name": "David Holmes",
+        "email": "david.geo.holmes@gmail.com"
+    },
+    "main": "./dist/davinci-mathscript.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/geometryzen/davinci-mathscript.git"
+    },
+    "bugs": {
+        "url": "https://github.com/geometryzen/davinci-mathscript/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/geometryzen/davinci-mathscript/blob/master/LICENSE"
+        }
+    ],
+    "devDependencies": {
+        "jasmine": "^2.5.2",
+        "almond": "^0.3.3",
+        "r.js": "~2.3.3",
+        "requirejs": "~2.3.3",
+        "jscover": "http://github.com/tntim96/JSCover.git"
+    },
+    "ignore": [
+        ".settings",
+        "node_modules",
+        "test",
+        "typings",
+        "bower_components",
+        ".gitignore",
+        ".npmignore",
+        ".travis.yml",
+        "Jakefile.js",
+        "README.md",
+        "bower.json",
+        "build.js",
+        "grunt.js",
+        "package.json",
+        "tsd.json"
+    ],
+    "analytics": false
+}
