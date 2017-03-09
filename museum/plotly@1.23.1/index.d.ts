@@ -231,6 +231,21 @@ declare namespace Plotly {
         size?: number;
 
         /**
+         * 
+         */
+        sizemin?: number;
+
+        /**
+         * 
+         */
+        sizemode?: 'area' | 'diameter';
+
+        /**
+         * 
+         */
+        sizeref?: number;
+
+        /**
          * Sets the marker symbol type.
          * Adding 100 is equivalent to appending "-open" to a symbol name.
          * Adding 200 is equivalent to appending "-dot" to a symbol name.

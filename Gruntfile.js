@@ -429,16 +429,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/jsxgraph@0.99.5')
         },
         {
-            src: "museum/plotly@1.23.1/index.d.ts",
+            src: "museum/plotly@1.24.1/index.d.ts",
             dest: prepend(target, 'vendor/@types/plotly/index.d.ts')
         },
         {
-            src: "museum/plotly@1.23.1/plotly.js",
-            dest: prepend(target, 'vendor/plotly@1.23.1/plotly.js')
+            src: "museum/plotly@1.24.1/plotly.js",
+            dest: prepend(target, 'vendor/plotly@1.24.1/plotly.js')
         },
         {
-            src: "museum/plotly@1.23.1/plotly.min.js",
-            dest: prepend(target, 'vendor/plotly@1.23.1/plotly.min.js')
+            src: "museum/plotly@1.24.1/plotly.min.js",
+            dest: prepend(target, 'vendor/plotly@1.24.1/plotly.min.js')
         },
         {
             expand: true,

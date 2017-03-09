@@ -1,6 +1,6 @@
 //
-// TypeScript definitions for plot.ly 1.23.1
-//
+// TypeScript definitions for plotly.js 1.24.1
+// Project: https://github.com/plotly/plotly.js
 // Copyright (c) 2016-2017 David Geo Holmes
 // Definitions by: David Geo Holmes <https://github.com/geometryzen>
 //
@@ -227,8 +227,24 @@ declare namespace Plotly {
          * Sets the marker size (in px).
          * Must be a number greater than or equal to 0.
          * default: 6
+         * This can also be an array of numbers corresponding to each data point.
          */
-        size?: number;
+        size?: number | number[];
+
+        /**
+         * 
+         */
+        sizemin?: number;
+
+        /**
+         * 
+         */
+        sizemode?: 'area' | 'diameter';
+
+        /**
+         * 
+         */
+        sizeref?: number;
 
         /**
          * Sets the marker symbol type.

@@ -33,7 +33,7 @@ app.factory('options', [
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.5';
         const VERSION_NEWTON = '0.0.38';
-        const VERSION_PLOTLY = '1.23.1';
+        const VERSION_PLOTLY = '1.24.1';
         const VERSION_REACT = '15.4.2';
         const VERSION_REACT_DOM = '15.4.2';
         const VERSION_SOCKETIO_CLIENT = '1.5.1';
