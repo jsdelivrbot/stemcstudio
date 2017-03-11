@@ -51,7 +51,7 @@ export interface Rule<T> {
     /**
      *
      */
-    onMatch?: ((value: string, state: string, stack: string[]) => any) | null;
+    onMatch?: ((value: string, state: string, stack: string[], line?: string) => any) | null;
 
     /**
      *

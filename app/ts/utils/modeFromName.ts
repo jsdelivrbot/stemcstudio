@@ -16,6 +16,7 @@ import { LANGUAGE_TEXT } from '../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_TSX } from '../languages/modes';
 import { LANGUAGE_XML } from '../languages/modes';
+import { LANGUAGE_YAML } from '../languages/modes';
 
 const extensionToMode: { [ext: string]: string } = {};
 const fileNameToMode: { [fileName: string]: string } = {};
@@ -41,6 +42,7 @@ extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT;
 extensionToMode['tsx'] = LANGUAGE_TSX;
 extensionToMode['txt'] = LANGUAGE_TEXT;
 extensionToMode['xml'] = LANGUAGE_XML;
+extensionToMode['yaml'] = LANGUAGE_YAML;
 
 fileNameToMode['LICENSE'] = LANGUAGE_TEXT;
 fileNameToMode['.gitignore'] = LANGUAGE_TEXT;

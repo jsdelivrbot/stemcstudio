@@ -17,3 +17,4 @@ export const LANGUAGE_TEXT = 'Text';
 export const LANGUAGE_TSX = 'TypeScriptExtension';
 export const LANGUAGE_TYPE_SCRIPT = 'TypeScript';
 export const LANGUAGE_XML = 'XML';
+export const LANGUAGE_YAML = 'YAML';

@@ -1108,7 +1108,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <input type='text' placeholder=\"1.0.0\" style=\"min-width: 500px;\" name=\"version\" ng-model=\"f.v\" />\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline'>\n" +
-    "                <input type='checkbox' ng-model='f.noLoopCheck'>Disable Infinite Loop Detection</input>\n" +
+    "                <input type='checkbox' ng-model='f.loopCheck'>Infinite Loop Detection</input>\n" +
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline'>\n" +

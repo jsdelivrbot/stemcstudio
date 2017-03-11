@@ -16,6 +16,7 @@ import TextMode from '../../editor/mode/TextMode';
 import TypeScriptMode from '../../editor/mode/TypeScriptMode';
 import TsxMode from '../../editor/mode/TsxMode';
 import XmlMode from '../../editor/mode/XmlMode';
+import YamlMode from '../../editor/mode/YamlMode';
 import EditSession from '../../editor/EditSession';
 import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
@@ -51,6 +52,7 @@ import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
+import { LANGUAGE_YAML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
 import refChange from '../../utils/refChange';
 
@@ -406,6 +408,15 @@ function factory(
                             }
                             case LANGUAGE_XML: {
                                 session.setLanguageMode(new XmlMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
+                            case LANGUAGE_YAML: {
+                                session.setLanguageMode(new YamlMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }

@@ -1,7 +1,7 @@
 import { deepCopy } from "../lib/lang";
-import { Rule } from '../Rule';
 import Highlighter from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
+import { Rule } from '../Rule';
 
 const pushState = function (this: Rule<string>, currentState: string, stack: string[]): string {
     if (currentState !== "start" || stack.length) {

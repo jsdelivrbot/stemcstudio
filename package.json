@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.22.6",
+  "version": "2.22.7",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -17,7 +17,7 @@
   "author": "David Holmes",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^15.0.15",
+    "@types/react": "^15.0.16",
     "@types/react-dom": "^0.14.23",
     "bootstrap": "^3.3.7",
     "concurrently": "^3.4.0",

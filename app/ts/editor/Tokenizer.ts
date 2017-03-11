@@ -313,7 +313,7 @@ export default class Tokenizer {
                 rule = rules[mapping[i]];
 
                 if (rule.onMatch)
-                    type = rule.onMatch(value, currentState, stack);
+                    type = rule.onMatch(value, currentState, stack, line);
                 else
                     type = rule.token;
 
@@ -348,12 +348,14 @@ export default class Tokenizer {
                 if (typeof type === "string") {
                     if ((!rule || rule.merge !== false) && token.type === type) {
                         token.value += value;
-                    } else {
+                    }
+                    else {
                         if (token.type)
                             tokens.push(token);
                         token = { type: type, value: value };
                     }
-                } else if (type) {
+                }
+                else if (type) {
                     if (token.type)
                         tokens.push(token);
                     token = { type: null, value: "" };

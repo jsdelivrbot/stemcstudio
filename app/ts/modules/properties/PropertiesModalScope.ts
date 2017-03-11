@@ -17,7 +17,7 @@ interface PropertiesModalScope {
         /**
          * disable infinite loop detection.
          */
-        noLoopCheck: boolean;
+        loopCheck: boolean;
         /**
          * operatorOverloading.
          */

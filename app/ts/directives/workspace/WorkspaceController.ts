@@ -54,6 +54,7 @@ import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
+import { LANGUAGE_YAML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
@@ -644,7 +645,8 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:
-            case LANGUAGE_XML: {
+            case LANGUAGE_XML:
+            case LANGUAGE_YAML: {
                 // Ignore.
                 break;
             }
@@ -825,8 +827,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:
-            case LANGUAGE_XML: {
-                // Ignore
+            case LANGUAGE_XML:
+            case LANGUAGE_YAML: {
+                // Ignore.
                 break;
             }
             case LANGUAGE_CSS:
