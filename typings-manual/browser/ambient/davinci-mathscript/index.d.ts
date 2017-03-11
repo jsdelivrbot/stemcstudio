@@ -1,5 +1,6 @@
-//
-// davinci-mathscript.d.ts
+// Type definitions for davinci-mathscript 1.2.2
+// Project: https://github.com/geometryzen/davinci-mathscript
+// Definitions by: David Geo Holmes david.geo.holmes@gmail.com
 //
 // This file was created manually in order to support the davinci-mathscript library.
 //
@@ -13,11 +14,17 @@ declare module Ms {
    */
   export const VERSION: string;
 
+  /**
+   *
+   */
   export interface TranspileOptions {
     comment?: boolean;
     attachComment?: boolean;
     sourceType?: 'module' | 'script';
     jsx?: boolean;
+    timeout?: number;
+    noLoopCheck?: boolean;
+    operatorOverloading?: boolean;
   }
 
   export function transpile(code: string, options?: TranspileOptions): string;

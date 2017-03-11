@@ -193,6 +193,33 @@ export default class Doodle {
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
+    get noLoopCheck(): boolean {
+        if (this.existsPackageJson()) {
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.noLoopCheck ? true : false;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    set noLoopCheck(noLoopCheck: boolean) {
+        try {
+            const file = this.ensurePackageJson();
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
+            file.content = JSON.stringify(metaInfo, null, 2);
+        }
+        catch (e) {
+            console.warn(`Unable to set noLoopCheck property in file '${FILENAME_META}'.`);
+        }
+    }
+
     get operatorOverloading(): boolean {
         if (this.existsPackageJson()) {
             const pkgInfo = this.packageInfo;

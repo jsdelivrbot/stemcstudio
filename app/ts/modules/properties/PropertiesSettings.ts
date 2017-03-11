@@ -1,18 +1,23 @@
 interface PropertiesSettings {
     /**
-     * project name (a packageName)
+     * project name (a packageName).
+     * TODO: Rename.
      */
     name: string;
     /**
-     * project version
+     * project version.
      */
     version: string;
     /**
-     * operator overloading enabled
+     * disable infinite looping detection.
+     */
+    noLoopCheck: boolean;
+    /**
+     * operator overloading enabled.
      */
     operatorOverloading: boolean;
     /**
-     * packageName(s)
+     * packageName(s).
      */
     dependencies: string[];
 }

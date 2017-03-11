@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  script(src='jspm_packages/system.js')
-  script(src='jspm.config.js')
+  script(src=jspmSystemJs)
+  script(src=jspmConfigJs)
   script.
     var systemLocate = System.locate;
     System.locate = function(load) {

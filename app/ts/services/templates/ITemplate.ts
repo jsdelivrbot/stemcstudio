@@ -5,6 +5,7 @@ interface ITemplate {
     description: string;
     files: { [path: string]: ITemplateFile };
     dependencies: string[];
+    noLoopCheck: boolean;
     operatorOverloading: boolean;
 }
 

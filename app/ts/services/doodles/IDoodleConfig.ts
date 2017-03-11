@@ -8,6 +8,7 @@ interface IDoodleConfig {
     description?: string;
     author?: string;
     dependencies: { [key: string]: string };
+    noLoopCheck: boolean;
     operatorOverloading: boolean;
     keywords: string[];
 }

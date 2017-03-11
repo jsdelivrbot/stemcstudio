@@ -53,6 +53,7 @@ app.factory('templates', [
             description: "Minimal Program",
             files: {},
             dependencies: ['DomReady'],
+            noLoopCheck: false,
             operatorOverloading: true
         };
         BASIC.files[FILENAME_HTML] = { content: HTML(tab, './index.js'), language: LANGUAGE_HTML };
@@ -65,6 +66,7 @@ app.factory('templates', [
             description: "EIGHT WebGL 3D Graphics",
             files: {},
             dependencies: ['DomReady', 'jasmine', 'davinci-eight'],
+            noLoopCheck: false,
             operatorOverloading: true
         };
         EIGHT.files[FILENAME_HTML] = { content: HTML(tab, './index.js', { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
@@ -80,6 +82,7 @@ app.factory('templates', [
             description: "Jasmine Testing Framework",
             files: {},
             dependencies: ['DomReady', 'jasmine'],
+            noLoopCheck: false,
             operatorOverloading: true
         };
         JASMINE.files[FILENAME_HTML] = { content: HTML(tab, './index.js'), language: LANGUAGE_HTML };

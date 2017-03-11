@@ -39,6 +39,11 @@ interface IDoodle {
     lastKnownJs: { [name: string]: string };
 
     /**
+     * disable infinite loop detection.
+     */
+    noLoopCheck: boolean;
+
+    /**
      *
      */
     operatorOverloading: boolean;

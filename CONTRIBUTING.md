@@ -119,11 +119,11 @@ jspm update
 
 ### Upgrading davinci-mathscript
 
-1. bower.json (version)
-2. package.json (jspm)
-3. app.ts (FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS)
-4. Gruntfile.js
-5. jspm.config.js (3 places)
+1. package.json (jspm)
+2. bower.json (version)
+3. app/ts/app.ts (FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS)
+4. jspm.config.js (3 places)
+5. Gruntfile.js
 
 ```
 npm install

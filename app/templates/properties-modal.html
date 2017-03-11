@@ -18,6 +18,10 @@
             <input type='text' placeholder="1.0.0" style="min-width: 500px;" name="version" ng-model="f.v" />
             <br/>
             <label class='checkbox-inline'>
+                <input type='checkbox' ng-model='f.noLoopCheck'>Disable Infinite Loop Detection</input>
+            </label>
+            <br/>
+            <label class='checkbox-inline'>
                 <input type='checkbox' ng-model='f.o'>Operator Overloading</input>
             </label>
             <h4>Dependencies</h4>

@@ -167,13 +167,19 @@ export default function rebuildPreview(
                         }
                         else if (detectMarker(CODE_MARKER, workspace, bestFile)) {
                             const modulesJs: string[] = [];
-                            const names: string[] = Object.keys(workspace.lastKnownJs);
-                            const iLen: number = names.length;
-                            for (let i = 0; i < iLen; i++) {
-                                const name = names[i];
-                                const moduleJs = workspace.lastKnownJs[name];
+                            const paths: string[] = Object.keys(workspace.lastKnownJs);
+                            for (const path of paths) {
+                                const moduleJs = workspace.lastKnownJs[path];
                                 try {
-                                    const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
+                                    const options: mathscript.TranspileOptions = {
+                                        timeout: 1000,
+                                        noLoopCheck: workspace.noLoopCheck,
+                                        operatorOverloading: workspace.operatorOverloading
+                                    };
+                                    /**
+                                     * The JavaScript code with operators replaced by function calls and infinite loop detection.
+                                     */
+                                    const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs, options) : moduleJs;
                                     modulesJs.push(moduleMs);
                                 }
                                 catch (e) {

@@ -7,19 +7,23 @@ interface PropertiesModalScope {
      */
     f: {
         /**
-         * project name
+         * project name (package name).
          */
         n: string;
         /**
-         * project version
+         * project version.
          */
         v: string;
         /**
-         * operatorOverloading
+         * disable infinite loop detection.
+         */
+        noLoopCheck: boolean;
+        /**
+         * operatorOverloading.
          */
         o: boolean;
         /**
-         * dependency (packageName only)
+         * dependency (packageName only).
          */
         dependencies: string[];
     };

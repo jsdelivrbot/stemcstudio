@@ -865,7 +865,7 @@
   "github:angular/bower-angular-sanitize@1.5.9": {
     "angular": "jspm:angular@^1.3.0"
   },
-  "github:geometryzen/davinci-mathscript@1.2.0": {
+  "github:geometryzen/davinci-mathscript@1.2.2": {
     "ts": "github:frankwallis/plugin-typescript@^2.6.0"
   }
 }

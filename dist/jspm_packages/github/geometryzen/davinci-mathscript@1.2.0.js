@@ -1,1 +1,0 @@
-module.exports = require("github:geometryzen/davinci-mathscript@1.2.0/dist/davinci-mathscript.min.js");

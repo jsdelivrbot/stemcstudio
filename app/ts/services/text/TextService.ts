@@ -1,8 +1,7 @@
 import ITextService from './ITextService';
 
 /**
- * The TypeScript compiler will transpile this class into a function of the same name.
- * We've got an easy-to-test POJsO here.
+ *
  */
 export default class TextService implements ITextService {
     /**

@@ -245,7 +245,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     updated_at: string;
 
     /**
-     * 
+     * A mapping from the file path to the last JavaScript code emitted by the TypeScript compiler.
      */
     lastKnownJs: { [path: string]: string } = {};
 
@@ -1185,6 +1185,36 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
+        }
+        finally {
+            file.release();
+        }
+    }
+
+    get noLoopCheck(): boolean {
+        if (this.existsPackageJson()) {
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.noLoopCheck ? true : false;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    set noLoopCheck(noLoopCheck: boolean) {
+        const file = this.ensurePackageJson();
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
+            file.setText(stringifyFileContent(metaInfo));
+        }
+        catch (e) {
+            console.warn(`Unable to set noLoopCheck property in file '${FILENAME_META}'.`);
         }
         finally {
             file.release();

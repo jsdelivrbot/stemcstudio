@@ -145,6 +145,8 @@ app.get("/*", (req: express.Request, res: express.Response, next) => {
     res.render("index", {
         css: `/css/app.css?version=${npm.version}`,
         js: `/js/app.js?version=${npm.version}`,
+        jspmSystemJs: `jspm_packages/system.js?version=${npm.version}`,
+        jspmConfigJs: `jspm.config.js?version=${npm.version}`,
         npm: npm
     });
 });

@@ -80,7 +80,7 @@ export default function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle
     copyTrash(workspace, doodle);
 
     // Ignore properties which are maintained in package.json and so do not need to be copied.
-    // This includes 'author', 'dependencies', 'description', 'keywords', 'name', 'operatorOverloading', and 'version'.
+    // This includes 'author', 'dependencies', 'description', 'keywords', 'name', 'noLoopCheck', 'operatorOverloading', and 'version'.
     doodle.created_at = workspace.created_at;
     doodle.gistId = workspace.gistId;
     doodle.isCodeVisible = workspace.isCodeVisible;

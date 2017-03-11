@@ -32,6 +32,7 @@ export default class PropertiesFlow {
                 const defaults = {
                     name: this.wsModel.name,
                     version: this.wsModel.version,
+                    noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.operatorOverloading,
                     dependencies: this.wsModel.dependencies
                 };
@@ -54,6 +55,7 @@ export default class PropertiesFlow {
             if (!err) {
                 this.wsModel.name = facts.settings.value.name;
                 this.wsModel.version = facts.settings.value.version;
+                this.wsModel.noLoopCheck = facts.settings.value.noLoopCheck;
                 this.wsModel.operatorOverloading = facts.settings.value.operatorOverloading;
                 this.wsModel.dependencies = facts.settings.value.dependencies;
 

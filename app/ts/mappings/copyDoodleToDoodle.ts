@@ -5,8 +5,7 @@ export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle):
     // Copy the files first so that the setting properties side-effect of creating files
     // does not cause duplicated files.
     const paths = Object.keys(doodleIn.files);
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
+    for (const path of paths) {
         const doodleFileIn = doodleIn.files[path];
         const doodleFile = doodleOut.newFile(path);
         doodleFile.content = doodleFileIn.content;
@@ -22,5 +21,6 @@ export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle):
 
     doodleOut.description = doodleIn.description;
     doodleOut.dependencies = doodleIn.dependencies;
+    doodleOut.noLoopCheck = doodleIn.noLoopCheck;
     doodleOut.operatorOverloading = doodleIn.operatorOverloading;
 }

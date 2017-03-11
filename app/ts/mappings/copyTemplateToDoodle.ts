@@ -6,8 +6,7 @@ export default function copyTemplateToDoodle(template: ITemplate, doodle: Doodle
     // Copy the files first so that the setting properties side-effect of creating files
     // does not cause duplicated files.
     const paths = Object.keys(template.files);
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
+    for (const path of paths) {
         const templateFile = template.files[path];
         const doodleFile = doodle.newFile(path);
         doodleFile.content = templateFile.content;
@@ -21,5 +20,6 @@ export default function copyTemplateToDoodle(template: ITemplate, doodle: Doodle
 
     doodle.description = template.description;
     doodle.dependencies = template.dependencies;
+    doodle.noLoopCheck = template.noLoopCheck;
     doodle.operatorOverloading = template.operatorOverloading;
 }
