@@ -49,5 +49,5 @@ snippet do
 	do {
 		\${2:/* code */}
 	} while (\${1:/* condition */});`);
-console.log(JSON.stringify(snippets, null, 2));
+// console.log(JSON.stringify(snippets, null, 2));
 export default snippets;

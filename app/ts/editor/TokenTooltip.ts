@@ -21,6 +21,16 @@ interface RendererEx extends Renderer {
 
 /**
  * This class may be useful for developing highlighters.
+ * 
+ * bindCheckbox("highlight_token", function(checked) {
+ *     if (editor.tokenTooltip && !checked) {
+ *         editor.tokenTooltip.destroy();
+ *         delete editor.tokenTooltip;
+ *     }
+ *     else if (checked) {
+ *         editor.tokenTooltip = new TokenTooltip(editor);
+ *     }
+ * });
  */
 export default class TokenTooltip extends Tooltip {
     private editor: Editor;

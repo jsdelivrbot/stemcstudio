@@ -1378,12 +1378,24 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.renderer.setFontSize(fontSize);
     }
 
+    /**
+     * Handles a request to insert a snippet from a completion manager.
+     */
     insertSnippet(content: string, options?: SnippetOptions): void {
         return this.snippetManager.insertSnippet(this, content, options);
     }
 
-    expandSnippet(options?: SnippetOptions): boolean {
-        return this.snippetManager.expandWithTab(this, options);
+    /**
+     * Handles request to expand a snippet (is the fact that a tab was used important?).
+     * The editor will attempt to find a snippet that is appropriate for the trigger and scope.
+     */
+    expandSnippetWithTab(options?: SnippetOptions): boolean {
+        if (this.snippetManager) {
+            return this.snippetManager.expandWithTab(this, options);
+        }
+        else {
+            return false;
+        }
     }
 
     /**

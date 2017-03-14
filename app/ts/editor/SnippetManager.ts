@@ -49,6 +49,8 @@ function isExpectingIf(element: TabstopToken): element is TabstopToken {
     }
 }
 
+export type TokenizerStateName = 'start' | 'snippetVar' | 'formatString';
+
 /**
  * 
  */
@@ -122,7 +124,7 @@ const startRuleAnyDigitOrChar: TabstopRule = {
 const startRuleClosingBrace: TabstopRule = {
     regex: /}/,
     onMatch: function (this: TabstopRule, value: string, state: string, stack: TabstopStack): MatchResult {
-        return [stack.length ? stack.shift() : value];
+        return [stack.length ? <TabstopStackElement>stack.shift() : value];
     }
 };
 
@@ -265,7 +267,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     /**
      * 
      */
-    public tokenizeTmSnippet(str: string, startState?: string) {
+    public tokenizeTmSnippet(str: string, startState?: TokenizerStateName) {
         return this.getTokenizer().getLineTokens(str, startState).tokens.map(function (tsToken) {
             return <string>tsToken['value'] || <(string | ChangeCaseElement | TabstopIndex | TabstopText)>tsToken;
         });
@@ -332,17 +334,23 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
+     * The purpose of this method is to reformat the snippet text such that it can be inserted into the editor.
+     * This involves resolving variables used in the snippet.
+     * Other formatting may occur, as defined by the snippet text.
+     * This method is called by the tabstop manager during the updating of linked fields and also recusively in resolving variables.
      * Formats according to
      * http://manual.macromates.com/en/regular_expressions#replacement_string_syntax_format_strings
      */
-    public tmStrFormat(str: string, chIn: TmFormat, editor?: Editor): string {
+    public tmStrFormat(snippetText: string, chIn: TmFormat, editor?: Editor): string {
+
+        console.log(`tmStrFormat() snippetText =< ${snippetText} chIn=>${JSON.stringify(chIn, null, 2)}`);
 
         const flag = chIn.flag || "";
         const re = new RegExp(chIn.guard, flag.replace(/[^gi]/, ""));
         const fmtTokens = this.tokenizeTmSnippet(chIn.fmt, "formatString");
 
         const self = this;
-        const formatted = str.replace(re, function () {
+        const formatted = snippetText.replace(re, function () {
             // TS2496: The 'arguments' object cannot be referenced in an arrow function.
             // Instead, we use a standard function and capture this in the self variable.
             self.variables['__'] = <any>arguments;
@@ -502,7 +510,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 // p must be a string, or maybe null or undefined.
                 return;
             }
-            const id = fmtPart.tabstopId;
+            const id = <number>fmtPart.tabstopId;
             let ts = tabstops[id];
             if (!ts) {
                 // The cast is required because a Tabstop is more than just an Array<Range>.
@@ -532,14 +540,14 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         // expand tabstop values
         tabstops.forEach(function (ts) { ts.length = 0; });
         const expanding = {};
-        function copyValue(val: (string | TmFormatPart)[]) {
+        function copyValue(parts: (string | TmFormatPart)[]) {
             const copy: (string | TmFormatPart)[] = [];
-            for (let i = 0; i < val.length; i++) {
-                let p = val[i];
+            for (let i = 0; i < parts.length; i++) {
+                let p = parts[i];
                 if (typeof p === "object") {
-                    if (expanding[p.tabstopId])
+                    if (expanding[<number>p.tabstopId])
                         continue;
-                    const j = val.lastIndexOf(p, i - 1);
+                    const j = parts.lastIndexOf(p, i - 1);
                     p = copy[j] || { tabstopId: p.tabstopId };
                 }
                 copy[i] = p;
@@ -550,7 +558,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             const p = fmtParts[i];
             if (typeof p !== "object")
                 continue;
-            const id = p.tabstopId;
+            const id = <number>p.tabstopId;
             const i1 = fmtParts.indexOf(p, i + 1);
             if (expanding[id]) {
                 // if reached closing bracket clear expanding state
@@ -603,17 +611,20 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * The Editor delegates to this method
+     * The Editor delegates to this method.
+     * The snippet text is inserted for each selection.
+     * The editor tabs to the first insertion point.
      */
     public insertSnippet(editor: Editor, snippetText: string, options?: SnippetOptions): void {
 
         if (editor.inVirtualSelectionMode) {
-            return this.insertSnippetForSelection(editor, snippetText);
+            this.insertSnippetForSelection(editor, snippetText);
         }
-
-        editor.forEachSelection(() => { this.insertSnippetForSelection(editor, snippetText); }, null, { keepOrder: true });
-        if (editor.tabstopManager) {
-            editor.tabstopManager.tabNext();
+        else {
+            editor.forEachSelection(() => { this.insertSnippetForSelection(editor, snippetText); }, null, { keepOrder: true });
+            if (editor.tabstopManager) {
+                editor.tabstopManager.tabNext();
+            }
         }
     }
 

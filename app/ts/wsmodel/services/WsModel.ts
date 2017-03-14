@@ -22,7 +22,7 @@ import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import IWorkspaceModel from '../IWorkspaceModel';
-// import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
+import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
@@ -40,11 +40,12 @@ import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import Shareable from '../../base/Shareable';
-// import SnippetCompleter from '../../editor/SnippetCompleter';
+import SnippetCompleter from '../../editor/SnippetCompleter';
 import StringShareableMap from '../../collections/StringShareableMap';
 import TextChange from '../../editor/workspace/TextChange';
 // import TextCompleter from '../../editor/autocomplete/TextCompleter';
 import { TsLintSettings, RuleArgumentType } from '../../modules/tslint/TsLintSettings';
+import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
 import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
@@ -619,15 +620,30 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
 
         // This makes more sense; it is editor specific.
-        if (isTypeScript(path) || isJavaScript(path)) {
+        if (isTypeScript(path)) {
             // Enable auto completion using the workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             // FIXME: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
-            // editor.completers.push(new SnippetCompleter());
-            // editor.snippetManager.register(javascriptSnippets);
+            editor.completers.push(new SnippetCompleter());
+            editor.snippetManager.register(typescriptSnippets);
+
+            // Finally, enable QuickInfo.
+            const quickInfo = new QuickInfoTooltip(path, editor, this);
+            quickInfo.init();
+            this.quickin[path] = quickInfo;
+        }
+        else if (isJavaScript(path)) {
+            // Enable auto completion using the workspace.
+            // The command seems to be required on order to enable method completion.
+            // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
+            // FIXME: How do we remove these later?
+            editor.commands.addCommand(new AutoCompleteCommand());
+            editor.completers.push(new WorkspaceCompleter(path, this));
+            editor.completers.push(new SnippetCompleter());
+            editor.snippetManager.register(javascriptSnippets);
 
             // Finally, enable QuickInfo.
             const quickInfo = new QuickInfoTooltip(path, editor, this);
@@ -637,12 +653,12 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         else if (isHtmlScript(path)) {
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new KeywordCompleter());
-            // editor.completers.push(new SnippetCompleter());
+            editor.completers.push(new SnippetCompleter());
         }
         else {
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new KeywordCompleter());
-            // editor.completers.push(new SnippetCompleter());
+            editor.completers.push(new SnippetCompleter());
         }
 
         this.attachSession(path, editor.getSession());
@@ -662,7 +678,17 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
             this.setFileEditor(path, void 0);
 
-            if (isTypeScript(path) || isJavaScript(path)) {
+            if (isTypeScript(path)) {
+                // Remove QuickInfo
+                if (this.quickin[path]) {
+                    const quickInfo = this.quickin[path];
+                    quickInfo.terminate();
+                    delete this.quickin[path];
+                }
+                // TODO: Remove the completer?
+                // TODO: Remove the AutoCompleteCommand:
+            }
+            else if (isJavaScript(path)) {
                 // Remove QuickInfo
                 if (this.quickin[path]) {
                     const quickInfo = this.quickin[path];

@@ -3,6 +3,15 @@ import Position from "./Position";
 import Range from './Range';
 
 /**
+ * Parameter used when formatting (transforming) snippet text for insertion into the editor.
+ */
+export interface TmFormat {
+    guard: string;
+    flag?: string;
+    fmt: string;
+}
+
+/**
  * A Range which has been decorated with a few extra properties.
  * It's also an element in the Tabstop array.
  * TOOD: Should this be called a TabstopMarker?
@@ -25,9 +34,11 @@ export interface TabstopRange extends Range {
     markerId: number | null;
 
     /**
+     * The purpose of this property is to act
      * TODO: TabstopRange or TabstopToken?
+     * TODO: The API demands TmFormat!
      */
-    original: TabstopRange;
+    original: TmFormat;
 
     /**
      * The tabstop that this range belongs to.
@@ -70,12 +81,6 @@ export interface TmFormatPart {
     tabstopId?: number;
     start?: Position;
     end?: Position;
-}
-
-export interface TmFormat {
-    guard: string;
-    flag?: string;
-    fmt: string;
 }
 
 export interface TabstopIndex {

@@ -204,7 +204,7 @@ export default class CompletionManager {
     /**
      *
      */
-    private insertMatch(data?: Completion, options?: { deleteSuffix: boolean }): void {
+    private insertMatch(data?: Completion | null, options?: { deleteSuffix: boolean }): void {
         if (!data) {
             if (this.popup) {
                 data = this.popup.getData(this.popup.getRow());

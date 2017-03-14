@@ -77,7 +77,7 @@ describe("SnippetManager", function () {
             });
         });
     });
-    describe("insertSnippet", function () {
+    xdescribe("insertSnippet", function () {
         const doc = new Document("");
         const session = new EditSession(doc);
         const editor = new Editor(void 0, session);

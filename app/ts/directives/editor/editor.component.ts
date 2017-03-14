@@ -243,7 +243,7 @@ function factory(
                             name: 'expandSnippet',
                             bindKey: 'Tab',
                             exec: function (editor: Editor) {
-                                const success = editor.expandSnippet();
+                                const success = editor.expandSnippetWithTab({ dryRun: false });
                                 if (!success) {
                                     const indentCommand = editor.commands.getCommandByName(COMMAND_NAME_INDENT);
                                     editor.execCommand(indentCommand);
@@ -297,7 +297,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -307,7 +307,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -318,7 +318,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -327,7 +327,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -336,7 +336,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -345,7 +345,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -354,7 +354,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -363,7 +363,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -372,7 +372,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -382,7 +382,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -394,7 +394,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -405,7 +405,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -415,7 +415,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -424,7 +424,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
@@ -433,7 +433,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = wsController.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = wsController.attachEditor($scope.path, <string>file.mode, editor);
                                 });
                                 break;
                             }
