@@ -1,5 +1,5 @@
-import { Rule } from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
+import { HighlighterRule, HighlighterStack, HighlighterStackElement } from './Highlighter';
 
 export default class YamlHighlightRules extends TextHighlightRules {
     constructor() {
@@ -51,10 +51,10 @@ export default class YamlHighlightRules extends TextHighlightRules {
                 {
                     token: "string", // multi line string start
                     regex: '[|>][-+\\d\\s]*$',
-                    onMatch: function (this: Rule<string>, val: string, state: string, stack: any[], line: string) {
+                    onMatch: function (this: HighlighterRule, val: string, state: string, stack: HighlighterStack, line: string) {
                         const indent = /^\s*(?:[-?]\s)?/.exec(line)[0];
                         if (stack.length < 1) {
-                            stack.push(this.next);
+                            stack.push(<HighlighterStackElement>this.next);
                         }
                         else {
                             stack[0] = "mlString";
@@ -103,7 +103,7 @@ export default class YamlHighlightRules extends TextHighlightRules {
                 {
                     token: "indent",
                     regex: /^\s*/,
-                    onMatch: function (this: Rule<string>, val: string, state: string, stack: (number | string)[]) {
+                    onMatch: function (this: HighlighterRule, val: string, state: string, stack: HighlighterStack) {
                         const curIndent = stack[1];
 
                         if (curIndent >= val.length) {

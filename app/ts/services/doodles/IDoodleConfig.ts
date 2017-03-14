@@ -3,8 +3,8 @@
  * TODO: Rename to say PackageInfo and move to a more common location.
  */
 interface IDoodleConfig {
-    name: string;
-    version: string;
+    name: string | undefined;
+    version: string | undefined;
     description?: string;
     author?: string;
     dependencies: { [key: string]: string };

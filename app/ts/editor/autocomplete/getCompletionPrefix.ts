@@ -11,13 +11,14 @@ import retrievePrecedingIdentifier from './retrievePrecedingIdentifier';
  */
 export default function getCompletionPrefix(this: void, editor: Editor): string {
     const pos: Position = editor.getCursorPosition();
-    const line: string = editor.session.getLine(pos.row);
-    let prefix: string;
+    const line: string = editor.sessionOrThrow().getLine(pos.row);
+    let prefix: string | undefined;
     editor.completers.forEach((completer) => {
         if (completer.identifierRegexps) {
             completer.identifierRegexps.forEach(function (identifierRegex: RegExp) {
-                if (!prefix && identifierRegex)
+                if (!prefix && identifierRegex) {
                     prefix = retrievePrecedingIdentifier(line, pos.column, identifierRegex);
+                }
             });
         }
     });

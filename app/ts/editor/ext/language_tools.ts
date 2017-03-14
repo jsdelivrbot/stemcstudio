@@ -1,6 +1,6 @@
 // import Command from '../commands/Command';
 // import AutoCompleteCommand from '../autocomplete/AutoCompleteCommand';
-import Completer from '../autocomplete/Completer';
+// import Completer from '../autocomplete/Completer';
 // import CompletionManager from '../autocomplete/CompletionManager';
 // import retrievePrecedingIdentifier from "../autocomplete/retrievePrecedingIdentifier";
 // import Completion from "../Completion";
@@ -47,11 +47,15 @@ export var snippetCompleter: Completer = {
     }
 };
 */
+
+// Is this used?
+/*
 const completers: Completer[] = [];
 
 export function addCompleter(completer: Completer) {
     completers.push(completer);
 };
+*/
 
 /*
 var expandSnippet: Command = {

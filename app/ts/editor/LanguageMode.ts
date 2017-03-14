@@ -7,6 +7,7 @@ import TextAndSelection from "./TextAndSelection";
 import Tokenizer from "./Tokenizer";
 import WorkerClient from "./worker/WorkerClient";
 import FoldMode from "./mode/folding/FoldMode";
+import { HighlighterToken, HighlighterStack, HighlighterStackElement } from './mode/Highlighter';
 
 /**
  *
@@ -81,7 +82,7 @@ interface LanguageMode {
     /**
      *
      */
-    getTokenizer(): Tokenizer;
+    getTokenizer(): Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;
 
     /**
      *

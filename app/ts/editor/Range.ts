@@ -1,6 +1,6 @@
 import Position from "./Position";
 import RangeBasic from './RangeBasic';
-import Tabstop from './Tabstop';
+// import Tabstop from './Tabstop';
 
 export default class Range implements RangeBasic {
 
@@ -45,37 +45,37 @@ export default class Range implements RangeBasic {
     /**
      * Used by the TabstopManager.
      */
-    public tabstop?: Tabstop;
+    // public tabstop?: Tabstop;
 
     /**
      * Used by the TabstopManager.
      */
-    public original?: Range;
+    // public original?: Range;
 
     /**
      * Used by the TabstopManager.
      */
-    public linked: boolean;
+    // public linked: boolean;
 
     /**
      * Used by the TabstopManager.
      */
-    public fmtString: string;
+    // public fmtString: string;
 
     /**
      * Used by the TabstopManager.
      */
-    public guard: string;
+    // public guard: string;
 
     /**
      * Used by the TabstopManager.
      */
-    public fmt: string;
+    // public fmt: string;
 
     /**
      * Used by the TabstopManager.
      */
-    public flag: string;
+    // public flag: string;
 
     /**
      * Creates a new `EditorRange` object with the given starting and ending row and column points.

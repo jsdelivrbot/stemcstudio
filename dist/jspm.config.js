@@ -196,7 +196,7 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "elliptic": "npm:elliptic@6.4.0",
       "inherits": "npm:inherits@2.0.1",
-      "parse-asn1": "npm:parse-asn1@5.0.0",
+      "parse-asn1": "npm:parse-asn1@5.1.0",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:browserify-zlib@0.1.4": {
@@ -490,7 +490,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:parse-asn1@5.0.0": {
+    "npm:parse-asn1@5.1.0": {
       "asn1.js": "npm:asn1.js@4.9.1",
       "browserify-aes": "npm:browserify-aes@1.0.6",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -558,7 +558,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "parse-asn1": "npm:parse-asn1@5.0.0",
+      "parse-asn1": "npm:parse-asn1@5.1.0",
       "randombytes": "npm:randombytes@2.0.3"
     },
     "npm:punycode@1.3.2": {

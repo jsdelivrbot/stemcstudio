@@ -1,7 +1,6 @@
 import DocCommentHighlightRules from "./DocCommentHighlightRules";
-import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
-import { HighlighterRule, HighlighterStackElement } from './Highlighter';
+import { HighlighterRule, HighlighterStack, HighlighterStackElement } from './Highlighter';
 
 // keywords which can be followed by regular expressions
 const kwBeforeRe = "case|do|else|finally|in|instanceof|return|throw|try|typeof|yield|void";
@@ -248,7 +247,8 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
                     token: "empty",
                     regex: "$",
                     next: "no_regex"
-                }, {
+                },
+                {
                     defaultToken: "string.regexp"
                 }
             ],
@@ -342,7 +342,7 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
             this.$rules['no_regex'].unshift(
                 {
                     regex: "[{}]",
-                    onMatch: function (this: Rule<string>, value: string, state: string, stack: string[]) {
+                    onMatch: function (this: HighlighterRule, value: string, state: string, stack: HighlighterStack) {
                         this.next = value === "{" ? this.nextState : "";
                         if (value === "{" && stack.length) {
                             stack.unshift("start", state);
@@ -351,8 +351,9 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
                         else if (value === "}" && stack.length) {
                             stack.shift();
                             this.next = stack.shift();
-                            if (this.next.indexOf("string") !== -1)
+                            if ((<string>this.next).indexOf("string") !== -1) {
                                 return "paren.quasi.end";
+                            }
                         }
                         return value === "{" ? "paren.lparen" : "paren.rparen";
                     },
@@ -432,7 +433,7 @@ function JSX(this: JavaScriptHighlightRules) {
         nextState: "jsx"
     };
     this.$rules.start.unshift(jsxTag);
-    const jsxJsRule: Rule<string> = {
+    const jsxJsRule: HighlighterRule = {
         regex: "{",
         token: "paren.quasi.start",
         push: "start"
@@ -443,13 +444,13 @@ function JSX(this: JavaScriptHighlightRules) {
         { include: "reference" },
         { defaultToken: "string" }
     ];
-    const jsxAttributes: Rule<string>[] = [];
+    const jsxAttributes: HighlighterRule[] = [];
     this.$rules.jsxAttributes = jsxAttributes;
     this.$rules.jsxAttributes = [
         {
             token: "meta.tag.punctuation.tag-close.xml",
             regex: "/?>",
-            onMatch: function (this: Rule<string>, value: string, currentState: string, stack: any[]) {
+            onMatch: function (this: HighlighterRule, value: string, currentState: string, stack: any[]) {
                 if (currentState === stack[0])
                     stack.shift();
                 if (value.length === 2) {
@@ -507,7 +508,7 @@ function JSX(this: JavaScriptHighlightRules) {
     }];
 }
 
-function commentsML(next: string): Rule<string> {
+function commentsML(next: string): HighlighterRule {
     return {
         token: "comment", // multi line comment
         regex: /\/\*/,
@@ -519,7 +520,7 @@ function commentsML(next: string): Rule<string> {
     };
 }
 
-function commentsSL(next: string): Rule<string> {
+function commentsSL(next: string): HighlighterRule {
 
     return {
         token: "comment",

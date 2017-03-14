@@ -1,5 +1,5 @@
-import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
+import { HighlighterRule } from './Highlighter';
 
 /**
  * 
@@ -25,7 +25,7 @@ export default class DocCommentHighlightRules extends TextHighlightRules {
         };
     }
 
-    public static getStartRule(start: string): Rule<string> {
+    public static getStartRule(start: string): HighlighterRule {
         return {
             token: "comment.doc", // doc comment
             regex: "\\/\\*(?=\\*)",
@@ -33,7 +33,7 @@ export default class DocCommentHighlightRules extends TextHighlightRules {
         };
     }
 
-    public static getEndRule(start: string): Rule<string> {
+    public static getEndRule(start: string): HighlighterRule {
         return {
             token: "comment.doc", // closing comment
             regex: "\\*\\/",
@@ -41,7 +41,7 @@ export default class DocCommentHighlightRules extends TextHighlightRules {
         };
     }
 
-    public static getTagRule(start?: string): Rule<string> {
+    public static getTagRule(start?: string): HighlighterRule {
         return {
             token: "comment.doc.tag.storage.type",
             regex: "\\b(?:TODO|FIXME|XXX|HACK)\\b"

@@ -5,7 +5,7 @@ import Document from './Document';
 import EventEmitterClass from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
 import Tokenizer from './Tokenizer';
-import { BasicToken } from './Token';
+import { HighlighterStackElement, HighlighterStack, HighlighterToken } from './mode/Highlighter';
 
 /**
  * Symbolic constant for the timer handle.
@@ -28,11 +28,11 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * This could be called tokensByLine.
      * The first index access is by line number and returns an array of tokens.
      */
-    private lines: (BasicToken[] | null)[] = [];
+    private lines: (HighlighterToken[] | null)[] = [];
 
-    private states: (string | string[] | null)[] = [];
+    private states: (HighlighterStackElement | HighlighterStack | null)[] = [];
     private currentLine = 0;
-    private tokenizer: Tokenizer;
+    private tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;
     private doc: Document | undefined;
 
     /**
@@ -45,7 +45,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * Creates a new background tokenizer object using a tokenizer supplied by the language mode.
      */
-    constructor(tokenizer: Tokenizer, unused?: EditSession) {
+    constructor(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>, unused?: EditSession) {
         this.eventBus = new EventEmitterClass<any, BackgroundTokenizer>(this);
         this.tokenizer = tokenizer;
 
@@ -146,7 +146,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
             // We don't seem to end up here in normal scenarios.
             // There is good reason to believe that this method MUST return a string.
             if (state.length > 0) {
-                return state[0];
+                return <string>state[0];
             }
             else {
                 // We are in uncharted territory...
@@ -168,7 +168,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * Gives list of tokens of the row. (tokens are cached).
      */
-    getTokens(row: number): BasicToken[] {
+    getTokens(row: number): HighlighterToken[] {
         return this.lines[row] || this.tokenizeRow(row);
     }
 
@@ -187,7 +187,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * Sets a new tokenizer for this object.
      */
-    setTokenizer(tokenizer: Tokenizer): void {
+    setTokenizer(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>): void {
         // TODO: Why don't we stop first?
         this.tokenizer = tokenizer;
         this.lines = [];
@@ -271,7 +271,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * For the given row, updates the lines[row] and sets the currentLine to row + 1.
      * Returns null if there is no document.
      */
-    public tokenizeRow(row: number): BasicToken[] {
+    public tokenizeRow(row: number): HighlighterToken[] {
         if (this.doc) {
             const line: string = this.doc.getLine(row);
             const state = this.states[row - 1];
@@ -290,7 +290,8 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
                 this.currentLine = row + 1;
             }
 
-            return this.lines[row] = data.tokens;
+            this.lines[row] = data.tokens;
+            return this.lines[row];
         }
         else {
             throw new Error("must be a document to tokenize a row");

@@ -1,12 +1,13 @@
+import { BasicToken } from './Token';
 /**
  *
  */
-interface TokenizedLine<T> {
+interface TokenizedLine<T extends BasicToken, E, S extends Array<string | E>> {
 
     /**
      *
      */
-    state: string | string[];
+    state: string | S;
 
     /**
      *

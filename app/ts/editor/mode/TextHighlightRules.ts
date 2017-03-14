@@ -1,16 +1,15 @@
 import { deepCopy } from "../lib/lang";
-import Highlighter from './Highlighter';
+import { Highlighter, HighlighterRule, HighlighterStack } from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
-import { Rule } from '../Rule';
 
-const pushState = function (this: Rule<string>, currentState: string, stack: string[]): string {
+const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): string {
     if (currentState !== "start" || stack.length) {
         stack.unshift(this.nextState, currentState);
     }
     return this.nextState;
 };
 
-const popState = function (this: Rule<string>, currentState: string, stack: string[]): string {
+const popState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack) {
     stack.shift();
     return stack.shift() || "start";
 };
@@ -22,7 +21,7 @@ export default class TextHighlightRules implements Highlighter {
     /**
      * This could be called rulesByStateName.
      */
-    $rules: { [stateName: string]: Rule<string>[] };
+    $rules: { [stateName: string]: HighlighterRule[] };
 
     private readonly $embeds: string[] = [];
 
@@ -52,7 +51,7 @@ export default class TextHighlightRules implements Highlighter {
     /**
      *
      */
-    addRules(rules: { [name: string]: Rule<string>[] }, prefix?: string): void {
+    addRules(rules: { [name: string]: HighlighterRule[] }, prefix?: string): void {
         if (!prefix) {
             for (const key in rules) {
                 if (rules.hasOwnProperty(key)) {
@@ -83,14 +82,14 @@ export default class TextHighlightRules implements Highlighter {
     /**
      *
      */
-    getRules(): { [name: string]: Rule<string>[] } {
+    getRules(): { [name: string]: HighlighterRule[] } {
         return this.$rules;
     }
 
     /**
      * FIXME: typing of 1st parameter.
      */
-    embedRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule<string>[] }, prefix: string, escapeRules: Rule<string>[], states?: string[], append?: boolean): void {
+    embedRules(highlightRules: HighlighterFactory | { [stateName: string]: HighlighterRule[] }, prefix: string, escapeRules: HighlighterRule[], states?: string[], append?: boolean): void {
         const embedRules = typeof highlightRules === "function"
             ? new highlightRules().getRules()
             : highlightRules;
@@ -140,7 +139,7 @@ export default class TextHighlightRules implements Highlighter {
             state['processed'] = true;
             for (let i = 0; i < state.length; i++) {
                 let rule = state[i];
-                let toInsert: Rule<string>[] = null;
+                let toInsert: HighlighterRule[] = null;
                 if (Array.isArray(rule)) {
                     toInsert = rule;
                     rule = {};
@@ -213,7 +212,7 @@ export default class TextHighlightRules implements Highlighter {
                 }
 
                 if (toInsert) {
-                    let args: (number | Rule<string>)[] = [i, 1];
+                    let args: (number | HighlighterRule)[] = [i, 1];
                     args = args.concat(toInsert);
                     if (rule.noEscape)
                         args = args.filter(function (x) {
@@ -231,8 +230,10 @@ export default class TextHighlightRules implements Highlighter {
                 }
 
                 if (rule.keywordMap) {
+                    // TODO: Check that this cast is valid.
+                    const defaultToken = <string>rule.defaultToken || "text";
                     rule.token = this.createKeywordMapper(
-                        rule.keywordMap, rule.defaultToken || "text", rule.caseInsensitive
+                        rule.keywordMap, defaultToken, rule.caseInsensitive
                     );
                     delete rule.defaultToken;
                 }

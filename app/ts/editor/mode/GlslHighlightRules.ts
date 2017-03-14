@@ -1,5 +1,4 @@
 import CppHighlightRules from './CppHighlightRules';
-import Rule from '../Rule';
 
 const keywords = (
     "attribute|const|uniform|varying|break|continue|do|for|while|" +
@@ -38,7 +37,7 @@ export default class GlslHighlightRules extends CppHighlightRules {
         }, "identifier");
 
         this.$rules = new CppHighlightRules().$rules;
-        this.$rules['start'].forEach(function (rule: Rule<string>) {
+        this.$rules['start'].forEach(function (rule) {
             if (typeof rule.token === "function")
                 rule.token = keywordMapper;
         });

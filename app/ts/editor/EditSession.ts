@@ -24,7 +24,6 @@ import RangeBasic from "./RangeBasic";
 import Shareable from './base/Shareable';
 import { BasicToken, mutateExtendToken, TokenWithIndex } from "./Token";
 import Token from "./Token";
-import Tokenizer from "./Tokenizer";
 import Document from "./Document";
 import BackgroundTokenizer from "./BackgroundTokenizer";
 import SearchHighlight from "./SearchHighlight";
@@ -202,14 +201,15 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     // private $modes: { [path: string]: LanguageMode } = {};
 
     /**
-     *
+     * This properrty should be accessed from outside ising modeOrThrow() or getMode().
      */
-    public $mode: LanguageMode | null = null;
+    private $mode: LanguageMode | null = null;
 
     /**
      * The worker corresponding to the mode (i.e. Language).
      */
     private $worker: WorkerClient | null;
+
     public tokenRe: RegExp;
     public nonTokenRe: RegExp;
     public $scrollTop = 0;
@@ -678,11 +678,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Pass `true` to enable the use of soft tabs.
      * Soft tabs means you're using spaces instead of the tab character (`'\t'`).
-     *
-     * @method setUseSoftTabs
-     * @param useSoftTabs {boolean} Value indicating whether or not to use soft tabs.
-     * @returns {EditSession}
-     * @chainable
      */
     public setUseSoftTabs(useSoftTabs: boolean): EditSession {
         this.$useSoftTabs = useSoftTabs;
@@ -883,7 +878,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Adds a new marker to the given `Range`, returning the new marker id.
      * If `inFront` is `true`, a front marker is defined, and the `'changeFrontMarker'` event fires; otherwise, the `'changeBackMarker'` event fires.
      */
-    public addMarker(range: Range, clazz: string, type: MarkerType = 'line', renderer?: MarkerRenderer, inFront?: boolean): number {
+    public addMarker(range: Range, clazz: string, type: MarkerType = 'line', renderer?: MarkerRenderer | null, inFront?: boolean): number {
         const id = this.$markerId++;
 
         if (range) {
@@ -1180,7 +1175,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         /**
          * The tokenizer for highlighting, and behaviours runs independently of the worker thread.
          */
-        const tokenizer: Tokenizer = mode.getTokenizer();
+        const tokenizer = mode.getTokenizer();
 
         if (tokenizer['addEventListener'] !== undefined) {
             const onReloadTokenizer = this.onReloadTokenizer.bind(this);

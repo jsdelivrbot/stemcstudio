@@ -299,6 +299,12 @@ function copies(target) {
             dest: prepend(target, 'themes')
         },
         {
+            expand: true,
+            cwd: "app/ts/editor/snippets",
+            src: ["**/*.snippets"],
+            dest: prepend(target, 'snippets')
+        },
+        {
             src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
             dest: prepend(target, 'fonts/glyphicons-halflings-regular.eot')
         },

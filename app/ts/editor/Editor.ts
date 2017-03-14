@@ -41,6 +41,7 @@ import refChange from '../utils/refChange';
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
 import SnippetManager from './SnippetManager';
+import SnippetOptions from './SnippetOptions';
 import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, preventDefault, stopEvent } from "./lib/event";
 import TabstopManager from './TabstopManager';
 import EditorChangeSessionEvent from './events/EditorChangeSessionEvent';
@@ -56,18 +57,24 @@ const search = new Search();
 const DRAG_OFFSET = 0; // pixels
 
 type CursorStyle = 'ace' | 'slim' | 'smooth' | 'wide';
+export type EditorStyle = 'ace_selecting' | 'ace_multiselect';
 
-function find(session: EditSession, needle: string | RegExp, dir: number): Range | null | undefined {
+export enum Direction {
+    UP = -1,
+    DOWN = +1
+}
+
+function find(session: EditSession, needle: string | RegExp, direction: Direction): Range | null | undefined {
     search.$options.wrap = true;
     search.$options.needle = needle;
-    search.$options.backwards = (dir === -1);
+    search.$options.backwards = (direction === Direction.UP);
     return search.find(session);
 }
 
 // const DragdropHandler = require("./mouse/dragdrop_handler").DragdropHandler;
 
 /**
- * The `Editor` acts as a controller, mediating between the editSession and renderer.
+ * The `Editor` acts as a controller, mediating between the session and renderer.
  */
 export class Editor implements Disposable, EventBus<any, Editor> {
 
@@ -221,18 +228,21 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Creates a new `Editor` object.
      */
-    constructor(renderer: Renderer, session: EditSession | undefined) {
+    constructor(renderer: Renderer | undefined, session: EditSession | undefined) {
         refChange('start');
         refChange(this.uuid, 'Editor', +1);
         this.eventBus = new EventEmitterClass<any, Editor>(this);
         this.curOp = null;
         this.prevOp = {};
         this.$mergeableCommands = [COMMAND_NAME_BACKSPACE, COMMAND_NAME_DEL, COMMAND_NAME_INSERT_STRING];
-        this.container = renderer.getContainerElement();
-        this.renderer = renderer;
 
-        this.textInput = new TextInput(renderer.getTextAreaContainer(), this);
-        this.renderer.textarea = this.textInput.getElement();
+        if (renderer) {
+            this.container = renderer.getContainerElement();
+            this.renderer = renderer;
+            this.textInput = new TextInput(renderer.getTextAreaContainer(), this);
+            this.renderer.textarea = this.textInput.getElement();
+        }
+
         this.keyBinding = new KeyBinding(this);
 
         this.$mouseHandler = new MouseHandler(this);
@@ -276,14 +286,22 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
             const onAddRange = (event: SelectionAddRangeEvent, selection: Selection) => {
                 this.addSelectionMarker(event.range);
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
+
+                const renderer = this.renderer;
+                if (renderer) {
+                    renderer.updateCursor();
+                    renderer.updateBackMarkers();
+                }
             };
 
             const onRemoveRange = (event: SelectionRemoveRangeEvent, selection: Selection) => {
                 this.removeSelectionMarkers(event.ranges);
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
+
+                const renderer = this.renderer;
+                if (renderer) {
+                    renderer.updateCursor();
+                    renderer.updateBackMarkers();
+                }
             };
 
             const keyboardMultiSelect = new KeyboardHandler([{
@@ -348,8 +366,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                 this.keyBinding.addKeyboardHandler(keyboardMultiSelect);
                 this.commands.setDefaultHandler("exec", onMultiSelectExec);
 
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
+                const renderer = this.renderer;
+                if (renderer) {
+                    renderer.updateCursor();
+                    renderer.updateBackMarkers();
+                }
             };
 
             const onSingleSelect = (unused: SelectionSingleSelectEvent | undefined, selection: Selection) => {
@@ -364,8 +385,13 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                     this.keyBinding.removeKeyboardHandler(keyboardMultiSelect);
 
                     this.commands.removeDefaultHandler("exec", onMultiSelectExec);
-                    this.renderer.updateCursor();
-                    this.renderer.updateBackMarkers();
+
+                    const renderer = this.renderer;
+                    if (renderer) {
+                        renderer.updateCursor();
+                        renderer.updateBackMarkers();
+                    }
+
                     this._emit("changeSelection");
                 }
             };
@@ -441,8 +467,25 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.$mouseHandler.cancelContextMenu();
     }
 
+    tabNext(direction?: number) {
+        const tabstopManager = this.tabstopManager;
+        if (tabstopManager) {
+            tabstopManager.tabNext(direction);
+        }
+    }
+
     selectionOrThrow(): Selection {
         return this.sessionOrThrow().selectionOrThrow();
+    }
+
+    multiSelectOrThrow(): Selection {
+        const multiSelect = this.multiSelect;
+        if (multiSelect) {
+            return multiSelect;
+        }
+        else {
+            throw new Error(`multiSelect is ${typeof multiSelect}`);
+        }
     }
 
     /**
@@ -590,11 +633,8 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Adds a cursor above or below the active cursor.
-     *
-     * @param dir The direction of lines to select: -1 for up, 1 for down
-     * @param skip If `true`, removes the active selection range.
      */
-    selectMoreLines(dir: number, skip?: boolean): void {
+    selectMoreLines(direction: Direction, skip?: boolean): void {
         const session = this.sessionOrThrow();
         if (this.selection) {
             const range = this.selection.toOrientedRange();
@@ -605,14 +645,14 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                 screenLead.column = this.selection.$desiredColumn;
             }
 
-            const lead = session.screenToDocumentPosition(screenLead.row + dir, screenLead.column);
+            const lead = session.screenToDocumentPosition(screenLead.row + direction, screenLead.column);
 
             let anchor: Position;
             if (!range.isEmpty()) {
                 const row = isBackwards ? range.end.row : range.start.row;
                 const column = isBackwards ? range.end.column : range.start.column;
                 const screenAnchor = session.documentToScreenPosition(row, column);
-                anchor = session.screenToDocumentPosition(screenAnchor.row + dir, screenAnchor.column);
+                anchor = session.screenToDocumentPosition(screenAnchor.row + direction, screenAnchor.column);
             }
             else {
                 anchor = lead;
@@ -649,12 +689,8 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
     /** 
      * Finds the next occurence of text in an active selection and adds it to the selections.
-     *
-     * @param dir The direction of lines to select: -1 for up, 1 for down
-     * @param skip If `true`, removes the active selection range.
-     * @param stopAtFirst
      */
-    selectMore(dir: number, skip?: boolean, stopAtFirst?: boolean): void {
+    selectMore(direction: Direction, skip?: boolean, stopAtFirst?: boolean): void {
         const session = this.sessionOrThrow();
         const multiSelect = session.multiSelect;
         if (multiSelect) {
@@ -662,17 +698,18 @@ export class Editor implements Disposable, EventBus<any, Editor> {
             let range = multiSelect.toOrientedRange();
             if (range.isEmpty()) {
                 range = session.getWordRange(range.start.row, range.start.column);
-                range.cursor = dir === -1 ? range.start : range.end;
+                range.cursor = direction === Direction.UP ? range.start : range.end;
                 multiSelect.addRange(range);
-                if (stopAtFirst)
+                if (stopAtFirst) {
                     return;
+                }
             }
 
             const needle = session.getTextRange(range);
 
-            const newRange = find(session, needle, dir);
+            const newRange = find(session, needle, direction);
             if (newRange) {
-                newRange.cursor = (dir === -1) ? newRange.start : newRange.end;
+                newRange.cursor = direction === Direction.UP ? newRange.start : newRange.end;
                 this.$blockScrolling += 1;
                 try {
                     session.unfold(newRange);
@@ -681,7 +718,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                 finally {
                     this.$blockScrolling -= 1;
                 }
-                this.renderer.scrollCursorIntoView(void 0, 0.5);
+
+                const renderer = this.renderer;
+                if (renderer) {
+                    renderer.scrollCursorIntoView(void 0, 0.5);
+                }
             }
             if (skip) {
                 multiSelect.substractPoint(range.cursor);
@@ -769,8 +810,12 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                     r.cursor = r.end;
                 });
                 multiSelect.fromOrientedRange(ranges[0]);
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
+
+                const renderer = this.renderer;
+                if (renderer) {
+                    renderer.updateCursor();
+                    renderer.updateBackMarkers();
+                }
             }
         }
     }
@@ -846,9 +891,9 @@ export class Editor implements Disposable, EventBus<any, Editor> {
             this.startOperation(e);
 
             const command = e.command;
-            if (command.aceCommandGroup === "fileJump") {
+            if (command.group === "fileJump") {
                 const prev = this.prevOp;
-                if (!prev || prev.command && prev.command.aceCommandGroup !== "fileJump") {
+                if (!prev || prev.command && prev.command.group !== "fileJump") {
                     this.lastFileJumpPos = last(this.selectionRanges_);
                 }
             }
@@ -860,7 +905,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.commands.on("afterExec", (e: { command: Command }, cm: CommandManager) => {
             const command = e.command;
 
-            if (command.aceCommandGroup === "fileJump") {
+            if (command.group === "fileJump") {
                 if (this.lastFileJumpPos && this.curOp && !this.curOp.selectionChanged) {
                     if (this.selection) {
                         this.selection.fromJSON(this.lastFileJumpPos);
@@ -910,7 +955,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.curOp = {
             command: commandEvent.command || {},
             args: commandEvent.args,
-            scrollTop: this.renderer.scrollTop
+            scrollTop: this.renderer ? this.renderer.scrollTop : 0
         };
 
         const command = this.curOp.command;
@@ -925,25 +970,32 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         }
     }
 
-    private endOperation(unused?: any): void {
+    private endOperation(unused?: { command: Command }): void {
         if (this.curOp) {
             const command = this.curOp.command;
             if (command && command.scrollIntoView) {
                 this.$blockScrolling--;
+                const renderer = this.renderer;
                 switch (command.scrollIntoView) {
                     case "center":
-                        this.renderer.scrollCursorIntoView(void 0, 0.5);
+                        if (renderer) {
+                            renderer.scrollCursorIntoView(void 0, 0.5);
+                        }
                         break;
                     case "animate":
                     case "cursor":
-                        this.renderer.scrollCursorIntoView();
+                        if (renderer) {
+                            this.renderer.scrollCursorIntoView();
+                        }
                         break;
                     case "selectionPart":
                         if (this.selection) {
                             const range = this.selection.getRange();
-                            const config = this.renderer.layerConfig;
-                            if (range.start.row >= config.lastRow || range.end.row <= config.firstRow) {
-                                this.renderer.scrollSelectionIntoView(this.selection.anchor, this.selection.lead);
+                            if (renderer) {
+                                const config = this.renderer.layerConfig;
+                                if (range.start.row >= config.lastRow || range.end.row <= config.firstRow) {
+                                    this.renderer.scrollSelectionIntoView(this.selection.anchor, this.selection.lead);
+                                }
                             }
                         }
                         break;
@@ -1078,7 +1130,9 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             session.on("change", this.$onDocumentChange);
-            this.renderer.setSession(session);
+            if (this.renderer) {
+                this.renderer.setSession(session);
+            }
 
             this.$onChangeMode = this.onChangeMode.bind(this);
             session.on("changeMode", this.$onChangeMode);
@@ -1086,8 +1140,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
             this.$onTokenizerUpdate = this.onTokenizerUpdate.bind(this);
             session.on("tokenizerUpdate", this.$onTokenizerUpdate);
 
-            this.$onChangeTabSize = this.renderer.onChangeTabSize.bind(this.renderer);
-            session.on("changeTabSize", this.$onChangeTabSize);
+            if (this.renderer) {
+                this.$onChangeTabSize = this.renderer.onChangeTabSize.bind(this.renderer);
+                session.on("changeTabSize", this.$onChangeTabSize);
+            }
 
             this.$onChangeWrapLimit = this.onChangeWrapLimit.bind(this);
             session.on("changeWrapLimit", this.$onChangeWrapLimit);
@@ -1149,14 +1205,19 @@ export class Editor implements Disposable, EventBus<any, Editor> {
             this.onChangeBackMarker(void 0, this.session);
             this.onChangeBreakpoint(void 0, this.session);
             this.onChangeAnnotation(void 0, this.session);
-            if (session.getUseWrapMode()) {
-                this.renderer.adjustWrapLimit();
+
+            if (this.renderer) {
+                if (session.getUseWrapMode()) {
+                    this.renderer.adjustWrapLimit();
+                }
+                this.renderer.updateFull();
             }
-            this.renderer.updateFull();
         }
         else {
             // Clear the renderer first in case the layers try to access the selection.
-            this.renderer.setSession(void 0);
+            if (this.renderer) {
+                this.renderer.setSession(void 0);
+            }
 
             // Make sure that the selection is cleared BEFORE clearing the session.
             // Defere the following line until strict null checking is done.
@@ -1282,17 +1343,23 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @param style A class name.
+     *
      */
-    setStyle(style: string): void {
-        this.renderer.setStyle(style);
+    setStyle(className: EditorStyle): void {
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.setStyle(className);
+        }
     }
 
     /**
-     * @param style
+     *
      */
-    unsetStyle(style: string): void {
-        this.renderer.unsetStyle(style);
+    unsetStyle(className: EditorStyle): void {
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.unsetStyle(className);
+        }
     }
 
     /**
@@ -1311,11 +1378,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.renderer.setFontSize(fontSize);
     }
 
-    insertSnippet(content: string, options?: any): void {
+    insertSnippet(content: string, options?: SnippetOptions): void {
         return this.snippetManager.insertSnippet(this, content, options);
     }
 
-    expandSnippet(options?: any): boolean {
+    expandSnippet(options?: SnippetOptions): boolean {
         return this.snippetManager.expandWithTab(this, options);
     }
 
@@ -1345,8 +1412,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                 if (pos) {
                     range = new Range(pos.row, pos.column, pos.row, pos.column + 1);
                 }
-                else if (session.$mode && session.$mode.getMatching) {
-                    range = session.$mode.getMatching(session);
+                else {
+                    const mode = session.getMode();
+                    if (mode && mode.getMatching) {
+                        range = mode.getMatching(session);
+                    }
                 }
                 if (range) {
                     session.$bracketHighlight = session.addMarker(range, "ace_bracket", "text");
@@ -1520,7 +1590,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      * Calls the renderer updateCursor method.
      */
     private $cursorChange(): void {
-        this.renderer.updateCursor();
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateCursor();
+        }
     }
 
     /**
@@ -1531,7 +1604,11 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         // Rerender and emit "change" event.
         const session = this.sessionOrThrow();
         const lastRow = (delta.start.row === delta.end.row ? delta.end.row : Infinity);
-        this.renderer.updateLines(delta.start.row, lastRow, session.$useWrapMode);
+
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateLines(delta.start.row, lastRow, session.$useWrapMode);
+        }
 
         this.eventBus._signal("change", delta);
 
@@ -1543,16 +1620,25 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     private onTokenizerUpdate(event: { data: FirstAndLast }, session: EditSession) {
         const { first, last } = event.data;
         this.sessionOrThrow().tokenizerUpdateFoldWidgets(event, session);
-        this.renderer.updateLines(first, last);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateLines(first, last);
+        }
     }
 
 
     private onScrollTopChange(event: any, session: EditSession): void {
-        this.renderer.scrollToY(session.getScrollTop());
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.scrollToY(session.getScrollTop());
+        }
     }
 
     private onScrollLeftChange(event: any, session: EditSession): void {
-        this.renderer.scrollToX(session.getScrollLeft());
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.scrollToX(session.getScrollLeft());
+        }
     }
 
     /**
@@ -1563,7 +1649,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.$cursorChange();
 
         if (this.$blockScrolling === 0) {
-            this.renderer.scrollCursorIntoView();
+            const renderer = this.renderer;
+            if (renderer) {
+                renderer.scrollCursorIntoView();
+            }
         }
 
         this.$highlightBrackets();
@@ -1580,7 +1669,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.$cursorChange();
 
         if (this.$blockScrolling === 0) {
-            this.renderer.scrollCursorIntoView();
+            const renderer = this.renderer;
+            if (renderer) {
+                renderer.scrollCursorIntoView();
+            }
         }
 
         this.$highlightBrackets();
@@ -1596,14 +1688,13 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
         const session = this.sessionOrThrow();
         const renderer = this.renderer;
-
         let highlight: Position | undefined;
         if (this.$highlightActiveLine) {
             const selection = this.selectionOrThrow();
             if ((this.$selectionStyle !== "line" || !selection.isMultiLine())) {
                 highlight = this.getCursorPosition();
             }
-            if (renderer.maxLines && session.getLength() === 1 && !(renderer.minLines > 1)) {
+            if (renderer && renderer.maxLines && session.getLength() === 1 && !(renderer.minLines > 1)) {
                 // FIXME: This just makes life more difficult, with stupid casting.
                 // The tests that follow are all truthy or falsey, which gives the same
                 // result for null, undefined, and false.
@@ -1697,21 +1788,27 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      * This must be a fat-arrow method because we use it as an event handler.
      */
     private onChangeFrontMarker = (event: any, session: EditSession): void => {
-        this.renderer.updateFrontMarkers();
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateFrontMarkers();
+        }
     }
 
     /**
      * This must be a fat-arrow method because we use it as an event handler.
      */
     private onChangeBackMarker = (event: any, session: EditSession): void => {
-        this.renderer.updateBackMarkers();
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateBackMarkers();
+        }
     }
 
     private onChangeBreakpoint(event: any, editSession: EditSession): void {
-        this.renderer.updateBreakpoints();
-        /**
-         * @event changeBreakpoint
-         */
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateBreakpoints();
+        }
         this.eventBus._emit("changeBreakpoint", event);
     }
 
@@ -1720,31 +1817,35 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         // When the session notifies that has changed its annotations,
         // the controller applies them to the renderer.
         // Finally, we propagate this event upwards.
-        this.renderer.setAnnotations(session.getAnnotations());
-        /**
-         * @event changeAnnotation
-         */
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.setAnnotations(session.getAnnotations());
+        }
         this.eventBus._emit("changeAnnotation", event);
     }
 
 
     private onChangeMode(event: any, session: EditSession): void {
-
-        this.renderer.updateText();
-
-        /**
-         * @event changeMode
-         */
-        this.eventBus._emit("changeMode", event);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateText();
+            this.eventBus._emit("changeMode", event);
+        }
     }
 
 
     private onChangeWrapLimit(event: any, session: EditSession): void {
-        this.renderer.updateFull();
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateFull();
+        }
     }
 
     private onChangeWrapMode(event: any, session: EditSession): void {
-        this.renderer.onResize(true);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.onResize(true);
+        }
     }
 
 
@@ -1753,7 +1854,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         // line range on the screen might have changed.
         this.$updateHighlightActiveLine();
         // TODO: This might be too much updating. Okay for now.
-        this.renderer.updateFull();
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.updateFull();
+        }
     }
 
     /**
@@ -1893,9 +1997,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @param capturing
+     *
      */
     on(eventName: string, callback: (data: any, editor: Editor) => any, capturing?: boolean) {
         this.eventBus.on(eventName, callback, capturing);
@@ -1905,8 +2007,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @param eventName {string}
-     * @param callback
+     *
      */
     off(eventName: string, callback: (data: any, source: Editor) => any, capturing?: boolean): void {
         this.eventBus.off(eventName, callback/*, capturing*/);
@@ -1958,9 +2059,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @param e
-     * @param hashId
-     * @param keyCode
+     *
      */
     public onCommandKey(e: KeyboardEvent, hashId: number, keyCode: number): void {
         this.keyBinding.onCommandKey(e, hashId, keyCode);
@@ -2067,7 +2166,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      *
      */
     setHighlightGutterLine(highlightGutterLine: boolean): void {
-        this.renderer.setHighlightGutterLine(highlightGutterLine);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.setHighlightGutterLine(highlightGutterLine);
+        }
     }
 
     /**
@@ -2802,15 +2904,15 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         };
     }
 
-    onCompositionStart(text?: string) {
+    onCompositionStart(text?: string): void {
         this.renderer.showComposition(this.getCursorPosition());
     }
 
-    onCompositionUpdate(text?: string) {
+    onCompositionUpdate(text?: string): void {
         this.renderer.setCompositionText(text);
     }
 
-    onCompositionEnd() {
+    onCompositionEnd(): void {
         this.renderer.hideComposition();
     }
 
@@ -2856,37 +2958,39 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      */
     private $moveByPage(direction: number, select?: boolean): void {
         const renderer = this.renderer;
-        const config = this.renderer.layerConfig;
-        const rows = direction * Math.floor(config.height / config.lineHeight);
+        if (renderer) {
+            const config = renderer.layerConfig;
+            const rows = direction * Math.floor(config.height / config.lineHeight);
 
-        this.$blockScrolling++;
-        try {
-            if (this.selection) {
-                if (select === true) {
-                    this.selection.$moveSelection(function () {
-                        this.moveCursorBy(rows, 0);
-                    });
-                }
-                else if (select === false) {
-                    this.selection.moveCursorBy(rows, 0);
-                    this.selection.clearSelection();
+            this.$blockScrolling++;
+            try {
+                if (this.selection) {
+                    if (select === true) {
+                        this.selection.$moveSelection(function () {
+                            this.moveCursorBy(rows, 0);
+                        });
+                    }
+                    else if (select === false) {
+                        this.selection.moveCursorBy(rows, 0);
+                        this.selection.clearSelection();
+                    }
                 }
             }
-        }
-        finally {
-            this.$blockScrolling--;
-        }
+            finally {
+                this.$blockScrolling--;
+            }
 
-        const scrollTop = renderer.scrollTop;
+            const scrollTop = renderer.scrollTop;
 
-        renderer.scrollBy(0, rows * config.lineHeight);
-        // FIXME: Why don't we assert our args and do typeof select === 'undefined'?
-        if (select != null) {
-            // This is called when select is undefined.
-            renderer.scrollCursorIntoView(void 0, 0.5);
+            renderer.scrollBy(0, rows * config.lineHeight);
+            // FIXME: Why don't we assert our args and do typeof select === 'undefined'?
+            if (select != null) {
+                // This is called when select is undefined.
+                renderer.scrollCursorIntoView(void 0, 0.5);
+            }
+
+            renderer.animateScrolling(scrollTop);
         }
-
-        renderer.animateScrolling(scrollTop);
     }
 
     /**
@@ -3648,7 +3752,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.$blockScrolling++;
         session.getUndoManager().undo();
         this.$blockScrolling--;
-        this.renderer.scrollCursorIntoView(void 0, 0.5);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.scrollCursorIntoView(void 0, 0.5);
+        }
     }
 
     /**
@@ -3660,7 +3767,10 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         this.$blockScrolling++;
         session.getUndoManager().redo();
         this.$blockScrolling--;
-        this.renderer.scrollCursorIntoView(void 0, 0.5);
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.scrollCursorIntoView(void 0, 0.5);
+        }
     }
 
     /**
@@ -3786,16 +3896,19 @@ class FoldHandler {
         // The following handler detects clicks on the gutter.
         editor.on('gutterclick', function (e: EditorMouseEvent) {
             const session = editor.sessionOrThrow();
-            const gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
-            if (gutterRegion === 'foldWidgets') {
-                const row = e.getDocumentPosition().row;
-                if (session.foldWidgets && session.foldWidgets[row]) {
-                    session.onFoldWidgetClick(row, e);
+            const renderer = editor.renderer;
+            if (renderer) {
+                const gutterRegion = renderer.$gutterLayer.getRegion(e);
+                if (gutterRegion === 'foldWidgets') {
+                    const row = e.getDocumentPosition().row;
+                    if (session.foldWidgets && session.foldWidgets[row]) {
+                        session.onFoldWidgetClick(row, e);
+                    }
+                    if (!editor.isFocused()) {
+                        editor.focus();
+                    }
+                    e.stop();
                 }
-                if (!editor.isFocused()) {
-                    editor.focus();
-                }
-                e.stop();
             }
         });
 
@@ -3817,7 +3930,10 @@ class FoldHandler {
                     }
                     else {
                         session.addPlaceholderFold("...", range);
-                        editor.renderer.scrollCursorIntoView({ row: range.start.row, column: 0 });
+                        const renderer = editor.renderer;
+                        if (renderer) {
+                            renderer.scrollCursorIntoView({ row: range.start.row, column: 0 });
+                        }
                     }
                 }
                 e.stop();
@@ -3887,62 +4003,65 @@ class MouseHandler implements IGestureHandler {
             editor.focus();
         };
 
-        const mouseTarget: HTMLDivElement = editor.renderer.getMouseEventTarget();
-        addListener(mouseTarget, "click", this.onMouseEvent.bind(this, "click"));
-        addListener(mouseTarget, "mousemove", this.onMouseMove.bind(this, "mousemove"));
-        addMultiMouseDownListener(mouseTarget, [400, 300, 250], this, "onMouseEvent");
-        if (editor.renderer.scrollBarV) {
-            addMultiMouseDownListener(editor.renderer.scrollBarV.inner, [400, 300, 250], this, "onMouseEvent");
-            addMultiMouseDownListener(editor.renderer.scrollBarH.inner, [400, 300, 250], this, "onMouseEvent");
-            if (isIE) {
-                addListener(editor.renderer.scrollBarV.element, "mousedown", onMouseDown);
-                // TODO: I wonder if we should be responding to mousedown (by symmetry)?
-                addListener(editor.renderer.scrollBarH.element, "mousemove", onMouseDown);
-            }
-        }
-
-        // We hook 'mousewheel' using the portable 
-        addMouseWheelListener(editor.container, this.emitEditorMouseWheelEvent.bind(this, "mousewheel"));
-
-        const gutterEl = editor.renderer.$gutter;
-        addListener(gutterEl, "mousedown", this.onMouseEvent.bind(this, "guttermousedown"));
-        addListener(gutterEl, "click", this.onMouseEvent.bind(this, "gutterclick"));
-        addListener(gutterEl, "dblclick", this.onMouseEvent.bind(this, "gutterdblclick"));
-        addListener(gutterEl, "mousemove", this.onMouseEvent.bind(this, "guttermousemove"));
-
-        addListener(mouseTarget, "mousedown", onMouseDown);
-
-        addListener(gutterEl, "mousedown", function (e) {
-            editor.focus();
-            return preventDefault(e);
-        });
-
-        // Handle `mousemove` while the mouse is over the editing area (and not the gutter).
-        editor.on('mousemove', function (e: MouseEvent) {
-            if (_self.state || _self.$dragDelay || !_self.$dragEnabled) {
-                return;
-            }
-            // FIXME: Probably s/b clientXY
-            const char = editor.renderer.screenToTextCoordinates(e.x, e.y);
-            const session = editor.getSession();
-            if (session) {
-                const selection = session.getSelection();
-                if (selection) {
-                    const range = selection.getRange();
-                    const renderer = editor.renderer;
-
-                    if (!range.isEmpty() && range.insideStart(char.row, char.column)) {
-                        renderer.setCursorStyle('default');
-                    }
-                    else {
-                        renderer.setCursorStyle("");
-                    }
+        const renderer = editor.renderer;
+        if (renderer) {
+            const mouseTarget: HTMLDivElement = renderer.getMouseEventTarget();
+            addListener(mouseTarget, "click", this.onMouseEvent.bind(this, "click"));
+            addListener(mouseTarget, "mousemove", this.onMouseMove.bind(this, "mousemove"));
+            addMultiMouseDownListener(mouseTarget, [400, 300, 250], this, "onMouseEvent");
+            if (renderer.scrollBarV) {
+                addMultiMouseDownListener(renderer.scrollBarV.inner, [400, 300, 250], this, "onMouseEvent");
+                addMultiMouseDownListener(renderer.scrollBarH.inner, [400, 300, 250], this, "onMouseEvent");
+                if (isIE) {
+                    addListener(renderer.scrollBarV.element, "mousedown", onMouseDown);
+                    // TODO: I wonder if we should be responding to mousedown (by symmetry)?
+                    addListener(renderer.scrollBarH.element, "mousemove", onMouseDown);
                 }
             }
-            else {
-                console.warn("editor.session is not defined.");
-            }
-        });
+
+            // We hook 'mousewheel' using the portable 
+            addMouseWheelListener(editor.container, this.emitEditorMouseWheelEvent.bind(this, "mousewheel"));
+
+            const gutterEl = renderer.$gutter;
+            addListener(gutterEl, "mousedown", this.onMouseEvent.bind(this, "guttermousedown"));
+            addListener(gutterEl, "click", this.onMouseEvent.bind(this, "gutterclick"));
+            addListener(gutterEl, "dblclick", this.onMouseEvent.bind(this, "gutterdblclick"));
+            addListener(gutterEl, "mousemove", this.onMouseEvent.bind(this, "guttermousemove"));
+
+            addListener(mouseTarget, "mousedown", onMouseDown);
+
+            addListener(gutterEl, "mousedown", function (e) {
+                editor.focus();
+                return preventDefault(e);
+            });
+
+            // Handle `mousemove` while the mouse is over the editing area (and not the gutter).
+            editor.on('mousemove', function (e: MouseEvent) {
+                if (_self.state || _self.$dragDelay || !_self.$dragEnabled) {
+                    return;
+                }
+                // FIXME: Probably s/b clientXY
+                const char = editor.renderer.screenToTextCoordinates(e.x, e.y);
+                const session = editor.getSession();
+                if (session) {
+                    const selection = session.getSelection();
+                    if (selection) {
+                        const range = selection.getRange();
+                        const renderer = editor.renderer;
+
+                        if (!range.isEmpty() && range.insideStart(char.row, char.column)) {
+                            renderer.setCursorStyle('default');
+                        }
+                        else {
+                            renderer.setCursorStyle("");
+                        }
+                    }
+                }
+                else {
+                    console.warn("editor.session is not defined.");
+                }
+            });
+        }
     }
 
     onMouseEvent(name: string, e: MouseEvent) {
@@ -4147,6 +4266,7 @@ class MouseHandler implements IGestureHandler {
     }
 
 }
+
 /*
 defOptions(MouseHandler.prototype, "mouseHandler", {
     scrollSpeed: { initialValue: 2 },
@@ -4346,144 +4466,147 @@ function calcRangeOrientation(range: Range, cursor: { row: number; column: numbe
 class GutterHandler {
     constructor(mouseHandler: MouseHandler) {
         const editor: Editor = mouseHandler.editor;
-        const gutter: GutterLayer = editor.renderer.$gutterLayer;
-        const tooltip = new GutterTooltip(editor.container);
+        const renderer = editor.renderer;
+        if (renderer) {
+            const gutter: GutterLayer = editor.renderer.$gutterLayer;
+            const tooltip = new GutterTooltip(editor.container);
 
-        mouseHandler.editor.setDefaultHandler("guttermousedown", function (e: EditorMouseEvent) {
-            if (!editor.isFocused() || e.getButton() !== 0) {
-                return;
-            }
-
-            const gutterRegion = gutter.getRegion(e);
-
-            if (gutterRegion === "foldWidgets") {
-                return;
-            }
-
-            const row = e.getDocumentPosition().row;
-            const selection = editor.selectionOrThrow();
-
-            if (e.getShiftKey()) {
-                selection.selectTo(row, 0);
-            }
-            else {
-                if (e.domEvent.detail === 2) {
-                    editor.selectAll();
-                    return e.preventDefault();
+            mouseHandler.editor.setDefaultHandler("guttermousedown", function (e: EditorMouseEvent) {
+                if (!editor.isFocused() || e.getButton() !== 0) {
+                    return;
                 }
-                mouseHandler.$clickSelection = selection.getLineRange(row);
-            }
-            mouseHandler.setState("selectByLines");
-            mouseHandler.captureMouse(e);
-            return e.preventDefault();
-        });
+
+                const gutterRegion = gutter.getRegion(e);
+
+                if (gutterRegion === "foldWidgets") {
+                    return;
+                }
+
+                const row = e.getDocumentPosition().row;
+                const selection = editor.selectionOrThrow();
+
+                if (e.getShiftKey()) {
+                    selection.selectTo(row, 0);
+                }
+                else {
+                    if (e.domEvent.detail === 2) {
+                        editor.selectAll();
+                        return e.preventDefault();
+                    }
+                    mouseHandler.$clickSelection = selection.getLineRange(row);
+                }
+                mouseHandler.setState("selectByLines");
+                mouseHandler.captureMouse(e);
+                return e.preventDefault();
+            });
 
 
-        /**
-         * The null value is used to indicate that there is no active timer scheduled.
-         */
-        let tooltipTimeout: number | null | undefined;
-        let mouseEvent: EditorMouseEvent | null;
-        let tooltipAnnotation: string | null;
+            /**
+             * The null value is used to indicate that there is no active timer scheduled.
+             */
+            let tooltipTimeout: number | null | undefined;
+            let mouseEvent: EditorMouseEvent | null;
+            let tooltipAnnotation: string | null;
 
-        function showTooltip() {
-            if (mouseEvent) {
-                const session = editor.sessionOrThrow();
-                const row = mouseEvent.getDocumentPosition().row;
-                const annotation = gutter.$annotations[row];
-                if (!annotation) {
+            const hideTooltip = function (event: EditorChangeSessionEvent | undefined, editor: Editor) {
+                if (tooltipTimeout) {
+                    clearTimeout(tooltipTimeout);
+                    tooltipTimeout = undefined;
+                }
+                if (tooltipAnnotation) {
+                    tooltip.hide();
+                    tooltipAnnotation = null;
+                    editor.off("mousewheel", hideTooltip);
+                }
+            };
+
+            const moveTooltip = function (event: EditorMouseEvent) {
+                tooltip.setPosition(event.clientX, event.clientY);
+            };
+
+            const showTooltip = function () {
+                if (mouseEvent) {
+                    const session = editor.sessionOrThrow();
+                    const row = mouseEvent.getDocumentPosition().row;
+                    const annotation = gutter.$annotations[row];
+                    if (!annotation) {
+                        return hideTooltip(void 0, editor);
+                    }
+
+                    const maxRow = session.getLength();
+                    if (row === maxRow) {
+                        const screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
+                        const pos = mouseEvent.getDocumentPosition();
+                        if (screenRow > session.documentToScreenRow(pos.row, pos.column)) {
+                            return hideTooltip(void 0, editor);
+                        }
+                    }
+
+                    // TODO: Looks like the gutter annotation might also be a string?
+                    // This cannot be the case.
+                    // if (tooltipAnnotation === annotation) {
+                    //     return;
+                    // }
+
+                    // TODO: The GutterLayer annotations are subtly different from Annotation
+                    // in that the text property is a string[] rather than string.
+                    tooltipAnnotation = annotation.text.join("<br/>");
+
+                    tooltip.setHtml(tooltipAnnotation);
+
+                    tooltip.show();
+
+                    editor.on("mousewheel", hideTooltip);
+
+                    if (mouseHandler.$tooltipFollowsMouse) {
+                        moveTooltip(mouseEvent);
+                    }
+                    else {
+                        const gutterElement = gutter.$cells[session.documentToScreenRow(row, 0)].element;
+                        const rect = gutterElement.getBoundingClientRect();
+                        const style = tooltip.getElement().style;
+                        style.left = rect.right + "px";
+                        style.top = rect.bottom + "px";
+                    }
+                }
+            };
+
+            mouseHandler.editor.setDefaultHandler("guttermousemove", function (e: EditorMouseEvent) {
+                // FIXME: Obfuscating the type of target to thwart compiler.
+                const target: any = e.domEvent.target || e.domEvent.srcElement;
+                if (hasCssClass(target, "ace_fold-widget")) {
                     return hideTooltip(void 0, editor);
                 }
 
-                const maxRow = session.getLength();
-                if (row === maxRow) {
-                    const screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
-                    const pos = mouseEvent.getDocumentPosition();
-                    if (screenRow > session.documentToScreenRow(pos.row, pos.column)) {
-                        return hideTooltip(void 0, editor);
-                    }
+                if (tooltipAnnotation && mouseHandler.$tooltipFollowsMouse) {
+                    moveTooltip(e);
                 }
 
-                // TODO: Looks like the gutter annotation might also be a string?
-                // This cannot be the case.
-                // if (tooltipAnnotation === annotation) {
-                //     return;
-                // }
-
-                // TODO: The GutterLayer annotations are subtly different from Annotation
-                // in that the text property is a string[] rather than string.
-                tooltipAnnotation = annotation.text.join("<br/>");
-
-                tooltip.setHtml(tooltipAnnotation);
-
-                tooltip.show();
-
-                editor.on("mousewheel", hideTooltip);
-
-                if (mouseHandler.$tooltipFollowsMouse) {
-                    moveTooltip(mouseEvent);
+                mouseEvent = e;
+                if (tooltipTimeout) {
+                    return;
                 }
-                else {
-                    const gutterElement = gutter.$cells[session.documentToScreenRow(row, 0)].element;
-                    const rect = gutterElement.getBoundingClientRect();
-                    const style = tooltip.getElement().style;
-                    style.left = rect.right + "px";
-                    style.top = rect.bottom + "px";
-                }
-            }
-        }
+                tooltipTimeout = window.setTimeout(function () {
+                    tooltipTimeout = null;
+                    if (mouseEvent && !mouseHandler.isMousePressed)
+                        showTooltip();
+                    else
+                        hideTooltip(void 0, editor);
+                }, 50);
+            });
 
-        function hideTooltip(event: EditorChangeSessionEvent | undefined, editor: Editor) {
-            if (tooltipTimeout) {
-                clearTimeout(tooltipTimeout);
-                tooltipTimeout = undefined;
-            }
-            if (tooltipAnnotation) {
-                tooltip.hide();
-                tooltipAnnotation = null;
-                editor.off("mousewheel", hideTooltip);
-            }
-        }
+            addListener(editor.renderer.$gutter, "mouseout", function (e: MouseEvent) {
+                mouseEvent = null;
+                if (!tooltipAnnotation || tooltipTimeout)
+                    return;
 
-        function moveTooltip(event: EditorMouseEvent) {
-            tooltip.setPosition(event.clientX, event.clientY);
-        }
-
-        mouseHandler.editor.setDefaultHandler("guttermousemove", function (e: EditorMouseEvent) {
-            // FIXME: Obfuscating the type of target to thwart compiler.
-            const target: any = e.domEvent.target || e.domEvent.srcElement;
-            if (hasCssClass(target, "ace_fold-widget")) {
-                return hideTooltip(void 0, editor);
-            }
-
-            if (tooltipAnnotation && mouseHandler.$tooltipFollowsMouse) {
-                moveTooltip(e);
-            }
-
-            mouseEvent = e;
-            if (tooltipTimeout) {
-                return;
-            }
-            tooltipTimeout = window.setTimeout(function () {
-                tooltipTimeout = null;
-                if (mouseEvent && !mouseHandler.isMousePressed)
-                    showTooltip();
-                else
+                tooltipTimeout = window.setTimeout(function () {
+                    tooltipTimeout = null;
                     hideTooltip(void 0, editor);
-            }, 50);
-        });
+                }, 50);
+            });
 
-        addListener(editor.renderer.$gutter, "mouseout", function (e: MouseEvent) {
-            mouseEvent = null;
-            if (!tooltipAnnotation || tooltipTimeout)
-                return;
-
-            tooltipTimeout = window.setTimeout(function () {
-                tooltipTimeout = null;
-                hideTooltip(void 0, editor);
-            }, 50);
-        });
-
-        editor.on("changeSession", hideTooltip);
+            editor.on("changeSession", hideTooltip);
+        }
     }
 }

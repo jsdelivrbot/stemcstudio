@@ -1,7 +1,7 @@
 import Completer from './autocomplete/Completer';
 
 /**
- *
+ * TODO: Why do we have caption, value, and name? caption should be enough?
  */
 interface Completion {
 
@@ -16,9 +16,9 @@ interface Completion {
     value?: string;
 
     /**
-     *
+     * Caption is required because the CompletionManager sorts based upon the caption.toLowerCase()
      */
-    caption?: string;
+    caption: string;
 
     /**
      *
@@ -30,6 +30,9 @@ interface Completion {
      */
     matchMask?: number;
 
+    /**
+     *
+     */
     name?: string;
 
     /**

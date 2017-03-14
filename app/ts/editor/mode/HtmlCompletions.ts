@@ -271,6 +271,7 @@ export default class HtmlCompletions {
     getTagCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
         return elements.map(function (element: string) {
             return {
+                caption: element,
                 value: element,
                 meta: "tag",
                 score: Number.MAX_VALUE

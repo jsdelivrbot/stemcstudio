@@ -49,7 +49,7 @@ interface Command {
     /**
      * "fileJump", what else?
      */
-    aceCommandGroup?: 'fileJump';
+    group?: 'fileJump';
 
     /**
      * 'single' is an instruction to exit the multi selection mode.
@@ -62,7 +62,7 @@ interface Command {
     passEvent?: boolean;
 
     /**
-     *
+     * false if this command should not apply in readOnly mode
      */
     readOnly?: boolean;
 
@@ -72,7 +72,7 @@ interface Command {
     scrollIntoView?: 'animate' | 'center' | 'cursor' | 'none' | 'selection' | 'selectionPart';
 
     /**
-     *
+     * Determines the context for the command.
      */
     isAvailable?: (editor: Editor) => boolean;
 }

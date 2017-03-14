@@ -4,14 +4,9 @@
 interface Snippet {
 
     /**
-     *
+     * 
      */
-    content?: string;
-
-    /**
-     *
-     */
-    endGuard?: string;
+    content: string;
 
     /**
      *
@@ -19,7 +14,12 @@ interface Snippet {
     endRe?: RegExp;
 
     /**
-     *
+     * The begin marker for a Trigger (optional).
+     */
+    trigger?: string;
+
+    /**
+     * The end marker for a Trigger (optional)
      */
     endTrigger?: string;
 
@@ -29,19 +29,24 @@ interface Snippet {
     endTriggerRe?: RegExp;
 
     /**
-     *
+     * The begin marker for a Guard (optional).
      */
     guard?: string;
 
     /**
-     *
+     * The end marker for a Guard (optional).
      */
-    matchAfter?: any;
+    endGuard?: string;
 
     /**
      *
      */
-    matchBefore?: any;
+    matchAfter?: RegExpExecArray | string[];
+
+    /**
+     *
+     */
+    matchBefore?: RegExpExecArray | string[];
 
     /**
      *
@@ -51,12 +56,12 @@ interface Snippet {
     /**
      *
      */
-    replaceAfter?: any;
+    replaceAfter?: string;
 
     /**
      *
      */
-    replaceBefore?: any;
+    replaceBefore?: string;
 
     /**
      *
@@ -72,11 +77,6 @@ interface Snippet {
      *
      */
     tabTrigger?: string;
-
-    /**
-     *
-     */
-    trigger?: string;
 
     /**
      *

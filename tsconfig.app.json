@@ -30,6 +30,8 @@
         "app/ts/controllers/DownloadController.ts",
         "app/ts/controllers/ExamplesController.ts",
         "app/ts/controllers/HomeController.ts",
+        "app/ts/editor/SnippetManager.spec.ts",
+        "app/ts/editor/snippets/parseSnippetFile.spec.ts",
         "app/ts/fugly/ga/ga.ts",
         "app/ts/services/base64/Base64.ts",
         "app/ts/services/cookie/cookie.ts",

@@ -4,13 +4,15 @@
 // Therefore, the Tokenizer would appear to be the authority on the type definition for Rule.
 //
 
-export type RuleToken<T> = string | string[] | ((value: any, state: string, stack: T[]) => any) | null | undefined;
+export type RuleToken<T, E, S extends Array<string | E>> = string | string[] | ((value: string, state: string, stack: S) => any) | null | undefined;
 
 /**
- * The type parameter T is the type for the stack entry.
+ * The type patameter T is for the token.
+ * The type parameter E is the type for the stack entry.
+ * The type parameter S is the type for the stack, which may be more than just an array
  * In normal tokenizing the stack entry is a string.
  */
-export interface Rule<T> {
+export interface Rule<T, E, S extends Array<string | E>> {
 
     /**
      * Legacy?
@@ -26,7 +28,7 @@ export interface Rule<T> {
      * FIXME: Is this too general?
      */
     // defaultToken?: string | string[] | ((value: any, state: string, stack: string[]) => any);
-    defaultToken?: string;
+    defaultToken?: string | RuleToken<T, E, S>;
 
     /**
      *
@@ -51,7 +53,7 @@ export interface Rule<T> {
     /**
      *
      */
-    onMatch?: ((value: string, state: string, stack: string[], line?: string) => any) | null;
+    onMatch?: ((value: string, state: string, stack: S, line?: string) => any) | null;
 
     /**
      *
@@ -61,7 +63,7 @@ export interface Rule<T> {
     /**
      *
      */
-    push?: string | Rule<T>[];
+    push?: string | Rule<T, E, S>[];
 
     /**
      *
@@ -71,7 +73,7 @@ export interface Rule<T> {
     /**
      * 
      */
-    rules?: { [stateName: string]: Rule<T>[] };
+    rules?: { [stateName: string]: Rule<T, E, S>[] };
 
     /**
      *
@@ -81,7 +83,7 @@ export interface Rule<T> {
     /**
      * The token may be a string, or a string[], or a function (like an onMatch).
      */
-    token?: RuleToken<T>;
+    token?: RuleToken<T, E, S>;
 
     /**
      *
@@ -89,10 +91,9 @@ export interface Rule<T> {
     tokenArray?: string[];
 
     /**
-     * The Tokenizer believes that this is either a string or a function.
-     * I think the stack should be a string[]
+     *
      */
-    next?: string | Rule<T>[] | ((currentState: string, stack: T[]) => string);
+    next?: E | Rule<T, E, S>[] | ((currentState: string, stack: S) => number | string);
 
     /**
      *

@@ -2,7 +2,6 @@ import Completer from '../autocomplete/Completer';
 import Completion from '../Completion';
 import CompletionEntry from './CompletionEntry';
 import Editor from '../Editor';
-import EditSession from "../EditSession";
 import Position from "../Position";
 import WorkspaceCompleterHost from './WorkspaceCompleterHost';
 
@@ -20,9 +19,7 @@ export default class WorkspaceCompleter implements Completer {
     }
 
     /**
-     * @param editor
-     * @param position
-     * @param prefix
+     *
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
@@ -45,8 +42,9 @@ export default class WorkspaceCompleter implements Completer {
                 });
         });
     }
-    getCompletions(editor: Editor, session: EditSession, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
-        return this.getCompletionsAtPosition(editor, position, prefix)
+
+    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
+        this.getCompletionsAtPosition(editor, position, prefix)
             .then(function (completions) {
                 callback(void 0, completions);
             })

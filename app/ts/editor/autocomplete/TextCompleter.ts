@@ -99,15 +99,10 @@ function wordDistance(position: Position, session: EditSession): WordScores {
 }
 
 /**
- *
+ * Provides completions based upon nearby words.
  */
 export default class TextCompleter implements Completer {
 
-    /**
-     * @param editor
-     * @param position
-     * @param prefix
-     */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
         const session = editor.getSession();
@@ -129,8 +124,9 @@ export default class TextCompleter implements Completer {
 
         });
     }
-    getCompletions(editor: Editor, session: EditSession, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
-        return this.getCompletionsAtPosition(editor, position, prefix)
+
+    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
+        this.getCompletionsAtPosition(editor, position, prefix)
             .then(function (completions) {
                 callback(void 0, completions);
             })

@@ -303,15 +303,6 @@
     "constants": "github:jspm/nodelibs-constants@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:parse-asn1@5.0.0": {
-    "asn1.js": "npm:asn1.js@^4.0.0",
-    "browserify-aes": "npm:browserify-aes@^1.0.0",
-    "create-hash": "npm:create-hash@^1.1.0",
-    "evp_bytestokey": "npm:evp_bytestokey@^1.0.0",
-    "pbkdf2": "npm:pbkdf2@^3.0.3",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  },
   "npm:ripemd160@1.0.1": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
@@ -867,5 +858,14 @@
   },
   "github:geometryzen/davinci-mathscript@1.2.2": {
     "ts": "github:frankwallis/plugin-typescript@^2.6.0"
+  },
+  "npm:parse-asn1@5.1.0": {
+    "asn1.js": "npm:asn1.js@^4.0.0",
+    "browserify-aes": "npm:browserify-aes@^1.0.0",
+    "create-hash": "npm:create-hash@^1.1.0",
+    "evp_bytestokey": "npm:evp_bytestokey@^1.0.0",
+    "pbkdf2": "npm:pbkdf2@^3.0.3",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   }
 }

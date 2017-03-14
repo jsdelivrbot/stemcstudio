@@ -1,6 +1,6 @@
 import HighlighterFactory from './HighlighterFactory';
-import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
+import { HighlighterRule, HighlighterStack } from './Highlighter';
 
 export default class XmlHighlightRules extends TextHighlightRules {
     constructor(normalize?: boolean) {
@@ -183,7 +183,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
         }
     }
 
-    embedTagRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule<string>[] }, prefix: string, tag: string): void {
+    embedTagRules(highlightRules: HighlighterFactory | { [stateName: string]: HighlighterRule[] }, prefix: string, tag: string): void {
         this.$rules['tag'].unshift({
             token: ["meta.tag.punctuation.tag-open.xml", "meta.tag." + tag + ".tag-name.xml"],
             regex: "(<)(" + tag + "(?=\\s|>|$))",
@@ -197,7 +197,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
             { include: "attributes" },
             {
                 token: "meta.tag.punctuation.tag-close.xml", regex: "/?>", next: "start",
-                onMatch: function (this: Rule<string>, value: string, currentState: string, stack: string[]) {
+                onMatch: function (this: HighlighterRule, value: string, currentState: string, stack: HighlighterStack) {
                     stack.splice(0);
                     return this.token;
                 }

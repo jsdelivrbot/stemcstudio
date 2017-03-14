@@ -4,6 +4,7 @@ import Command from './Command';
 import Editor from '../Editor';
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
+import { COMMAND_NAME_INDENT } from "../editor_protocol";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 
 function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
@@ -150,7 +151,7 @@ const commands: Command[] = [
         multiSelectAction: "forEach",
         readOnly: true,
         scrollIntoView: "animate",
-        aceCommandGroup: "fileJump"
+        group: "fileJump"
     },
     {
         name: "gotostart",
@@ -159,7 +160,7 @@ const commands: Command[] = [
         multiSelectAction: "forEach",
         readOnly: true,
         scrollIntoView: "animate",
-        aceCommandGroup: "fileJump"
+        group: "fileJump"
     },
     {
         name: "selectup",
@@ -182,7 +183,7 @@ const commands: Command[] = [
         multiSelectAction: "forEach",
         readOnly: true,
         scrollIntoView: "animate",
-        aceCommandGroup: "fileJump"
+        group: "fileJump"
     },
     {
         name: "gotoend",
@@ -191,7 +192,7 @@ const commands: Command[] = [
         multiSelectAction: "forEach",
         readOnly: true,
         scrollIntoView: "animate",
-        aceCommandGroup: "fileJump"
+        group: "fileJump"
     },
     {
         name: "selectdown",
@@ -566,7 +567,7 @@ const commands: Command[] = [
         scrollIntoView: "selectionPart"
     },
     {
-        name: "indent",
+        name: COMMAND_NAME_INDENT,
         bindKey: bindKey("Tab", "Tab"),
         exec: function (editor: Editor) { editor.indent(); },
         multiSelectAction: "forEach",

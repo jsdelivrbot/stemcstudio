@@ -60,7 +60,7 @@ export default class WsFile implements MwEditor, Shareable {
      * Note that the editSession contains a $mode: LanguageMode.
      * TODO: Eventually, we would like the mode to be extensible.
      */
-    mode: string;
+    mode: string | undefined;
 
     /**
      * The file is open for editing.

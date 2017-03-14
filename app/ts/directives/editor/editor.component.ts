@@ -3,6 +3,8 @@ import applyTextChanges from './applyTextChanges';
 import ClojureMode from '../../editor/mode/ClojureMode';
 import { ACE_WORKER_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
+import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
+import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
 import CssMode from '../../editor/mode/CssMode';
 import GlslMode from '../../editor/mode/GlslMode';
 import HaskellMode from '../../editor/mode/HaskellMode';
@@ -190,7 +192,7 @@ function factory(
                         const undoManager = new UndoManager();
                         session.setUndoManager(undoManager);
                         editor.commands.addCommand({
-                            name: 'Find',
+                            name: COMMAND_NAME_FIND,
                             bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
                             exec: function (editor: Editor) {
                                 showFindReplace(editor, false);
@@ -223,20 +225,31 @@ function factory(
                             scrollIntoView: 'animate',
                             readOnly: true
                         });
-                        editor.commands.addCommands([{
+                        editor.commands.addCommand({
                             name: "showGreekKeyboard",
                             bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
                             exec: function (editor: Editor, line: any) {
                                 showGreekKeyboard(editor);
                             }
-                        }]);
-                        editor.commands.addCommands([{
+                        });
+                        editor.commands.addCommand({
                             name: "showKeyboardShortcuts",
                             bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
                             exec: function (editor: Editor, line: any) {
                                 showKeyboardShortcuts(editor);
                             }
-                        }]);
+                        });
+                        editor.commands.addCommand({
+                            name: 'expandSnippet',
+                            bindKey: 'Tab',
+                            exec: function (editor: Editor) {
+                                const success = editor.expandSnippet();
+                                if (!success) {
+                                    const indentCommand = editor.commands.getCommandByName(COMMAND_NAME_INDENT);
+                                    editor.execCommand(indentCommand);
+                                }
+                            }
+                        });
                         editor.commands.addCommand({
                             name: 'formatDocument',
                             bindKey: { win: 'Ctrl-Shift-I', mac: 'Command-Alt-I' },

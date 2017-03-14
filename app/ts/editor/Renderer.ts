@@ -1976,11 +1976,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * Removes the class `style` from the editor.
-     * @param style A class name
+     * Removes the class `className` from the editor container.
      */
-    unsetStyle(style: string): void {
-        removeCssClass(this.container, style);
+    unsetStyle(className: string): void {
+        removeCssClass(this.container, className);
     }
 
     /**

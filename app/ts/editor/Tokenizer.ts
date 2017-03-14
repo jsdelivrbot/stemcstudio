@@ -8,9 +8,9 @@ let MAX_TOKEN_COUNT = 2000;
 /**
  * 
  */
-function $applyToken(this: Rule<string>, str: string): BasicToken[] | undefined {
+function $applyToken<T extends BasicToken, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): T[] | undefined {
     if (typeof this.token === 'function') {
-        const tokens: BasicToken[] = [];
+        const tokens: T[] = [];
         if (this.splitRegex) {
             const splits = this.splitRegex.exec(str);
             if (splits) {
@@ -20,12 +20,12 @@ function $applyToken(this: Rule<string>, str: string): BasicToken[] | undefined 
 
                 // required for compatibility with old modes
                 if (typeof types === "string") {
-                    return [{ type: types, value: str }];
+                    return [<T>{ type: types, value: str }];
                 }
 
                 for (let i = 0, l = types.length; i < l; i++) {
                     if (values[i]) {
-                        tokens[tokens.length] = { type: types[i], value: values[i] };
+                        tokens[tokens.length] = <T>{ type: types[i], value: values[i] };
                     }
                 }
             }
@@ -38,11 +38,11 @@ function $applyToken(this: Rule<string>, str: string): BasicToken[] | undefined 
     }
 }
 
-function $arrayTokens(this: Rule<string>, str: string): 'text' | BasicToken[] {
+function $arrayTokens<T extends BasicToken, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): 'text' | T[] {
     if (!str) {
         return [];
     }
-    const tokens: BasicToken[] = [];
+    const tokens: T[] = [];
     if (this.splitRegex) {
         const values = this.splitRegex.exec(str);
         if (!values) {
@@ -52,7 +52,7 @@ function $arrayTokens(this: Rule<string>, str: string): 'text' | BasicToken[] {
         if (types) {
             for (let i = 0, l = types.length; i < l; i++) {
                 if (values[i + 1]) {
-                    tokens[tokens.length] = { type: types[i], value: values[i + 1] };
+                    tokens[tokens.length] = <T>{ type: types[i], value: values[i + 1] };
                 }
             }
         }
@@ -114,12 +114,12 @@ function createSplitterRegexp(src: string, flag?: string): RegExp {
  * This class takes a set of highlighting rules, and creates a tokenizer out of them.
  * For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
  */
-export default class Tokenizer {
+export default class Tokenizer<T extends BasicToken, E, S extends Array<string | E>> {
     // Mode wants access to the states (rules)
     /**
      * 
      */
-    public readonly states: { [stateName: string]: Rule<string>[] };
+    public readonly states: { [stateName: string]: Rule<T, E, S>[] };
 
     /**
      * 
@@ -129,14 +129,14 @@ export default class Tokenizer {
     /**
      * 
      */
-    private readonly matchMappings: { [stateName: string]: Rule<string> } = {};
+    private readonly matchMappings: { [stateName: string]: Rule<T, E, S> } = {};
 
     /**
      * Constructs a new tokenizer based on the given rules and flags.
      *
      * @param states The highlighting rules for each state (rulesByState).
      */
-    constructor(rulesByState: { [stateName: string]: Rule<string>[] }) {
+    constructor(rulesByState: { [stateName: string]: Rule<T, E, S>[] }) {
         this.states = rulesByState;
 
         for (const key in this.states) {
@@ -145,10 +145,10 @@ export default class Tokenizer {
                 const rules = this.states[key];
                 const ruleRegExps: string[] = [];
                 let matchTotal = 0;
-                const mapping: Rule<string> = this.matchMappings[key] = { defaultToken: "text" };
+                const mapping: Rule<T, E, S> = this.matchMappings[key] = { defaultToken: "text" };
                 let flag = "g";
 
-                const splitterRules: Rule<string>[] = [];
+                const splitterRules: Rule<T, E, S>[] = [];
                 for (let i = 0; i < rules.length; i++) {
                     const rule = rules[i];
                     if (rule.defaultToken)
@@ -249,11 +249,11 @@ export default class Tokenizer {
     /**
      * startState is usually undefined.
      */
-    public getLineTokens(line: string, startState: string | string[] | null | undefined): TokenizedLine<BasicToken> {
+    public getLineTokens(line: string, startState: string | E | S | null | undefined): TokenizedLine<T, E, S> {
 
-        let stack: string[];
-        if (startState && typeof startState !== "string") {
-            stack = startState.slice(0);
+        let stack: S;
+        if (startState && Array.isArray(startState)) {
+            stack = <S>startState.slice(0);
             startState = stack[0];
             if (startState === "#tmp") {
                 stack.shift();
@@ -261,10 +261,10 @@ export default class Tokenizer {
             }
         }
         else {
-            stack = [];
+            stack = <S>[];
         }
 
-        let currentState: string = <string>startState || "start";
+        let currentState = <string>startState || "start";
         let rules = this.states[currentState];
         if (!rules) {
             currentState = "start";
@@ -275,15 +275,15 @@ export default class Tokenizer {
         re.lastIndex = 0;
 
         let match: RegExpExecArray | null;
-        const tokens: BasicToken[] = [];
+        const tokens: T[] = [];
         let lastIndex = 0;
         let matchAttempts = 0;
 
-        let token: BasicToken = { type: null, value: "" };
+        let token: T = <T>{ type: null, value: "" };
 
         while (match = re.exec(line)) {
-            let type: RuleToken<string> = mapping.defaultToken;
-            let rule = null;
+            let type: RuleToken<T, E, S> = mapping.defaultToken;
+            let rule: Rule<T, E, S> = null;
             const value = match[0];
             const index = re.lastIndex;
 
@@ -298,7 +298,7 @@ export default class Tokenizer {
                     }
                     // FIXME: Is the cast valid?
                     if (typeof type === 'string') {
-                        token = { type: type, value: skipped };
+                        token = <T>{ type: type, value: skipped };
                     }
                     else {
                         console.warn(`Unexpected type => ${type}`);
@@ -325,8 +325,8 @@ export default class Tokenizer {
                         // This case should not happen because or rule normalization?
                         console.warn("rule.next: Rule[] is not being handled by the Tokenizer.");
                     }
-                    else {
-                        currentState = rule.next(currentState, stack);
+                    else if (typeof rule.next === 'function') {
+                        currentState = <string>rule.next(currentState, stack);
                     }
 
                     rules = this.states[currentState];
@@ -352,13 +352,13 @@ export default class Tokenizer {
                     else {
                         if (token.type)
                             tokens.push(token);
-                        token = { type: type, value: value };
+                        token = <T>{ type: type, value: value };
                     }
                 }
                 else if (type) {
                     if (token.type)
                         tokens.push(token);
-                    token = { type: null, value: "" };
+                    token = <T>{ type: null, value: "" };
                     for (let i = 0; i < type.length; i++)
                         tokens.push(type[i]);
                 }
@@ -377,10 +377,10 @@ export default class Tokenizer {
                 while (lastIndex < line.length) {
                     if (token.type)
                         tokens.push(token);
-                    token = { value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
+                    token = <T>{ value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
                 }
                 currentState = "start";
-                stack = [];
+                stack = <S>[];
                 break;
             }
         }

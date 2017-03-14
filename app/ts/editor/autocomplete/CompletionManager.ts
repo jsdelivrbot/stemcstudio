@@ -92,19 +92,22 @@ export default class CompletionManager {
 
         this.commands = {
             "Up": (editor: Editor) => { this.goTo("up"); },
+            "Down": (editor: Editor) => { this.goTo("down"); },
             "Ctrl-Up|Ctrl-Home": (editor: Editor) => { this.goTo("start"); },
             "Ctrl-Down|Ctrl-End": (editor: Editor) => { this.goTo("end"); },
 
-            "Space": (editor: Editor) => { this.detach(); editor.insert(" ", false); },
+            // "Space": (editor: Editor) => { this.detach(); editor.insert(" ", false); },
+            "Esc": (editor: Editor) => { this.detach(); },
             "Return": (editor: Editor) => { return this.insertMatch(); },
-            "Shift-Return": (editor: Editor) => { this.insertMatch(true); },
+            "Shift-Return": (editor: Editor) => { this.insertMatch(null, { deleteSuffix: true }); },
             "Tab": (editor: Editor) => {
                 const result = this.insertMatch();
                 if (!result && !editor.tabstopManager) {
                     this.goTo("down");
                 }
-                else
+                else {
                     return result;
+                }
             },
 
             "PageUp": (editor: Editor) => { this.goTo('pageUp'); },
@@ -141,8 +144,6 @@ export default class CompletionManager {
     /**
      * This method is called in order to display the completions list.
      * It is typically called as part of an editor action.
-     *
-     * @param editor
      */
     public attach(editor: Editor): void {
 
@@ -201,9 +202,9 @@ export default class CompletionManager {
     }
 
     /**
-     * @param data
+     *
      */
-    private insertMatch(data?: Completion): void {
+    private insertMatch(data?: Completion, options?: { deleteSuffix: boolean }): void {
         if (!data) {
             if (this.popup) {
                 data = this.popup.getData(this.popup.getRow());
@@ -223,19 +224,18 @@ export default class CompletionManager {
             data.completer.insertMatch(this.editor);
         }
         else {
+            // TODO: add support for options.deleteSuffix
             // If we have filterText, remove that from the editor before performing the full insert.
             if (this.completions && this.completions.filterText) {
                 const ranges: Range[] = this.editor.selectionOrThrow().getAllRanges();
-                for (let i = 0, iLength = ranges.length; i < iLength; i++) {
-                    const range = ranges[i];
+                for (const range of ranges) {
                     range.start.column -= this.completions.filterText.length;
                     this.editor.sessionOrThrow().remove(range);
                 }
             }
 
             if (data.snippet) {
-                // FIXME TODO: The existing implementation made use of a global snippet manager.
-                // snippetManager.insertSnippet(this.editor, data.snippet);
+                this.editor.insertSnippet(data.snippet);
             }
             else {
                 const insertstringCommand = this.editor.commands.getCommandByName(COMMAND_NAME_INSERT_STRING);
@@ -283,17 +283,17 @@ export default class CompletionManager {
     /**
      * 
      */
-    private gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
+    private gatherCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
         const session = editor.sessionOrThrow();
 
-        this.base = new Anchor(session.docOrThrow(), pos.row, pos.column - prefix.length);
+        this.base = new Anchor(session.docOrThrow(), position.row, position.column - prefix.length);
         this.base.insertRight = true;
 
         let matches: Completion[] = [];
         let total = editor.completers.length;
 
         editor.completers.forEach(function (completer: Completer, index: number) {
-            completer.getCompletions(editor, session, pos, prefix, function (err, results: Completion[]) {
+            completer.getCompletions(editor, position, prefix, function (err, results: Completion[]) {
                 if (err) {
                     callback(err);
                 }

@@ -9,7 +9,7 @@ import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import FoldMode from './folding/FoldMode';
 import { packages } from "../unicode";
 import { escapeRegExp } from "../lib/lang";
-import Highlighter from './Highlighter';
+import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
 import Token from '../Token';
@@ -20,7 +20,9 @@ import EditSession from '../EditSession';
 import Editor from '../Editor';
 import WorkerClient from "../worker/WorkerClient";
 import LanguageMode from '../LanguageMode';
-import Rule from '../Rule';
+// import Rule from '../Rule';
+
+// type HighlighterRule = Rule<HighlighterStackElement, HighlighterStack>
 
 /**
  *
@@ -68,7 +70,7 @@ export default class TextMode implements LanguageMode {
     protected lineCommentStart: string | string[] = "";
     protected blockComment: BlockComment;
     public $id = "ace/mode/text";
-    private $tokenizer: Tokenizer;
+    private $tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;
     private $highlightRules: Highlighter;
     private $keywordList: string[];
     private $embeds: string[];
@@ -105,7 +107,7 @@ export default class TextMode implements LanguageMode {
     /**
      *
      */
-    getTokenizer(): Tokenizer {
+    getTokenizer(): Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack> {
         if (!this.$tokenizer) {
             this.$highlightRules = this.$highlightRules || new this.HighlightRules(this.$highlightRuleConfig);
             this.$tokenizer = new Tokenizer(this.$highlightRules.getRules());
@@ -448,7 +450,7 @@ export default class TextMode implements LanguageMode {
         const completionKeywords: string[] = [];
         if (!this.completionKeywords) {
 
-            const rulesByState: { [stateName: string]: Rule<string>[] } = this.$tokenizer.states;
+            const rulesByState = this.$tokenizer.states;
             const stateNames = Object.keys(rulesByState);
             const sLen = stateNames.length;
             for (let s = 0; s < sLen; s++) {
@@ -456,7 +458,7 @@ export default class TextMode implements LanguageMode {
                 /**
                  * The rules for this particular state.
                  */
-                const rules: Rule<string>[] = rulesByState[stateName];
+                const rules = rulesByState[stateName];
                 for (let r = 0, l = rules.length; r < l; r++) {
                     const rule = rules[r];
                     if (typeof rule.token === "string") {
@@ -506,6 +508,7 @@ export default class TextMode implements LanguageMode {
         const keywords: string[] = this.$keywordList || this.$createKeywordList();
         return keywords.map(function (word: string) {
             return {
+                caption: word,
                 name: word,
                 value: word,
                 score: 0,

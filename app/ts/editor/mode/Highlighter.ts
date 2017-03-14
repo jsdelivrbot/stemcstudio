@@ -1,11 +1,14 @@
+import { BasicToken } from '../Token';
 import Rule from '../Rule';
 import HighlighterFactory from './HighlighterFactory';
 
 /**
  * The number possibility enters when using JSX or TSX.
  */
+export type HighlighterToken = BasicToken;
 export type HighlighterStackElement = number | string;
-export type HighlighterRule = Rule<HighlighterStackElement>;
+export type HighlighterStack = HighlighterStackElement[];
+export type HighlighterRule = Rule<HighlighterToken, HighlighterStackElement, HighlighterStack>;
 
 /**
  *

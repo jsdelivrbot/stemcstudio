@@ -34,7 +34,7 @@ export interface Marker {
     /**
      *
      */
-    renderer?: MarkerRenderer;
+    renderer?: MarkerRenderer | null;
 
     /**
      * One of "fullLine", "line", "text", or "screenLine".
