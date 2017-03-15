@@ -200,10 +200,11 @@ function prepend(target, filePath) {
  */
 function copies(target) {
     return [
-        {
-            src: 'app/index.html',
-            dest: prepend(target, 'index.html')
-        },
+        { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
+        { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
+        /*
+        { src: 'app/index.html', dest: prepend(target, 'index.html') },
+        */
         {
             src: 'manual/typescript@2.2.0/typescriptServices.js',
             dest: prepend(target, 'js/typescript@2.2.0/typescriptServices.js')

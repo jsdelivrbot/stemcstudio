@@ -4,6 +4,12 @@ block content
   script(src=jspmSystemJs)
   script(src=jspmConfigJs)
   script.
+    if ('serviceWorker'in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(function() { console.log("STEMCstudio service worker registered."); });
+    }
+  script.
     var systemLocate = System.locate;
     System.locate = function(load) {
       var System = this;
@@ -12,5 +18,5 @@ block content
       });
     };
     System.cacheBust = '?bust=' + Date.now();
-    System.import('js/bootstrap.js')
+    System.import('js/bootstrap.js');
   div(data-ui-view)

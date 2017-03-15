@@ -1,0 +1,9 @@
+{
+    "name": "STEMCstudio - Expressing Ideas through Computational Modeling",
+    "short_name": "STEMCstudio",
+    "icons": [],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#555555",
+    "theme_color": "#ff9900"
+}

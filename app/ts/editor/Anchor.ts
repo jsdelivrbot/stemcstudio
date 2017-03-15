@@ -38,7 +38,10 @@ function getTransformedPoint(this: void, delta: Delta, point: Position, moveIfEq
 }
 
 /**
+ * Defines a floating pointer in the document.
  * An anchor adjusts its position as text is changed around it.
+ * Whenever text is inserted or deleted before the cursor,
+ * the position of the anchor is updated.
  */
 export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Position {
 
@@ -60,9 +63,6 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
     /**
      * Callback function for when the document changes.
      *
-     * @property documentChangeHandler
-     * @type (delta: Delta, doc: Document) => void
-     * @private
      */
     private documentChangeHandler: (delta: Delta, doc: Document) => void;
 
@@ -113,9 +113,6 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
 
     /**
      * Returns an object identifying the `row` and `column` position of the current anchor.
-     *
-     * @method getPosition
-     * @return {Position}
      */
     public getPosition(): Position {
         return this.clipPositionToDocument(this.row, this.column);
@@ -123,9 +120,6 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
 
     /**
      * Returns the current document.
-     *
-     * @method getDocument
-     * @return {Document}
      */
     public getDocument(): Document {
         return this.document;
@@ -135,23 +129,23 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      * Sets the anchor position to the specified row and column.
      * If `noClip` is `true`, the position is not clipped.
      *
-     * @method setPostion
-     * @param row {number} The row index to move the anchor to
-     * @param column {number} The column index to move the anchor to
-     * @param [noClip] {boolean} Identifies if you want the position to be clipped.
-     * @return {void}
+     * @param row The row index to move the anchor to
+     * @param column The column index to move the anchor to
+     * @param noClip Identifies if you want the position to be clipped.
      */
     public setPosition(row: number, column: number, noClip?: boolean): void {
         let pos: Position;
         if (noClip) {
             pos = { row: row, column: column };
-        } else {
+        }
+        else {
             pos = this.clipPositionToDocument(row, column);
         }
 
         if (this.row === pos.row && this.column === pos.column) {
             return;
-        } else {
+        }
+        else {
             const old: Position = { row: this.row, column: this.column };
 
             this.row = pos.row;
@@ -159,9 +153,6 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
 
             /**
              * Fires whenever the anchor position changes.
-             *
-             * @event change
-             * @param event {AnchorChangeEvent}
              */
             const event: AnchorChangeEvent = { oldPosition: old, position: pos };
             this.eventBus._signal("change", event);
@@ -170,18 +161,13 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
 
     /**
      * When called, the `'change'` event listener is removed.
-     *
-     * @method detach
-     * @return {void}
      */
     public detach(): void {
         this.document.removeChangeListener(this.documentChangeHandler);
     }
 
     /**
-     * @method attach
-     * @param [doc] {Document}
-     * @return {void}
+     *
      */
     public attach(doc?: Document): void {
         this.document = doc || this.document;
@@ -189,20 +175,16 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event: AnchorChangeEvent, source: Anchor) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     public on(eventName: string, callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event: AnchorChangeEvent, source: Anchor) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     public off(eventName: string, callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
         this.eventBus.off(eventName, callback);
@@ -211,11 +193,8 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
     /**
      * Clips the anchor position to the specified row and column.
      *
-     * @method clipPositionToDocument
-     * @param {Number} row The row index to clip the anchor to
-     * @param {Number} column The column index to clip the anchor to
-     * @return {Position}
-     * @private
+     * @param row The row index to clip the anchor to
+     * @param  column The column index to clip the anchor to.
      */
     private clipPositionToDocument(row: number, column: number): Position {
 
@@ -224,10 +203,12 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
         if (row >= this.document.getLength()) {
             pos.row = Math.max(0, this.document.getLength() - 1);
             pos.column = this.document.getLine(pos.row).length;
-        } else if (row < 0) {
+        }
+        else if (row < 0) {
             pos.row = 0;
             pos.column = 0;
-        } else {
+        }
+        else {
             pos.row = row;
             pos.column = Math.min(this.document.getLine(pos.row).length, Math.max(0, column));
         }
