@@ -12,7 +12,6 @@ import { escapeRegExp } from "../lib/lang";
 import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
-import Token from '../Token';
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
@@ -94,7 +93,7 @@ export default class TextMode implements LanguageMode {
     /**
      *
      */
-    constructor(workerUrl: string, scriptImports: string[]) {
+    constructor(workerUrl = '', scriptImports: string[] = []) {
         if (typeof workerUrl === 'string') {
             this.workerUrl = workerUrl;
         }
@@ -163,9 +162,11 @@ export default class TextMode implements LanguageMode {
                     return true;
                 }
                 const tokens = session.getTokens(row);
-                for (let i = 0; i < tokens.length; i++) {
-                    if (tokens[i].type === 'comment')
-                        return true;
+                if (tokens) {
+                    for (let i = 0; i < tokens.length; i++) {
+                        if (tokens[i].type === 'comment')
+                            return true;
+                    }
                 }
                 return false;
             };
@@ -272,7 +273,7 @@ export default class TextMode implements LanguageMode {
             comment = comment[0];
 
         const outerIterator = new TokenIterator(session, cursor.row, cursor.column);
-        let outerToken: Token | undefined | null = outerIterator.getCurrentToken();
+        let outerToken = outerIterator.getCurrentToken();
 
         const selection = session.selectionOrThrow();
         const initialRange = selection.toOrientedRange();
@@ -294,7 +295,7 @@ export default class TextMode implements LanguageMode {
             }
 
             const innerIterator = new TokenIterator(session, cursor.row, cursor.column);
-            let innerToken: Token | null | undefined = innerIterator.getCurrentToken();
+            let innerToken = innerIterator.getCurrentToken();
             while (innerToken && /comment/.test(innerToken.type)) {
                 const i = innerToken.value.indexOf(comment.end);
                 if (i !== -1) {

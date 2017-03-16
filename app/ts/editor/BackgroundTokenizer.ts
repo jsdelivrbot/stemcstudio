@@ -28,9 +28,13 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * This could be called tokensByLine.
      * The first index access is by line number and returns an array of tokens.
      */
-    private lines: (HighlighterToken[] | null)[] = [];
+    private readonly lines: (HighlighterToken[] | null)[] = [];
 
-    private states: (HighlighterStackElement | HighlighterStack | null)[] = [];
+    /**
+     * 
+     */
+    public readonly states: (HighlighterStackElement | HighlighterStack | null)[] = [];
+
     private currentLine = 0;
     private tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;
     private doc: Document | undefined;
@@ -177,8 +181,8 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      */
     setDocument(doc: Document | undefined): void {
         this.doc = doc;
-        this.lines = [];
-        this.states = [];
+        this.lines.length = 0;
+        this.states.length = 0;
 
         // TODO: Why do we stop? What is the lifecycle? Documentation!
         this.stop();
@@ -190,8 +194,8 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     setTokenizer(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>): void {
         // TODO: Why don't we stop first?
         this.tokenizer = tokenizer;
-        this.lines = [];
-        this.states = [];
+        this.lines.length = 0;
+        this.states.length = 0;
 
         // Start at row zero.
         this.start(0);
@@ -290,8 +294,9 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
                 this.currentLine = row + 1;
             }
 
-            this.lines[row] = data.tokens;
-            return this.lines[row];
+            const tokens = data.tokens;
+            this.lines[row] = tokens;
+            return tokens;
         }
         else {
             throw new Error("must be a document to tokenize a row");

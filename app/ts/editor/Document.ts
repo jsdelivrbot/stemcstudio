@@ -59,11 +59,13 @@ function clipPosition(doc: Document, position: Position): Position {
 
 const CHANGE = 'change';
 const CHANGE_NEW_LINE_MODE = 'changeNewLineMode';
+export type EVENT_NAME_TYPE = 'change' | 'changeNewLineMode';
+export type NewLineMode = 'auto' | 'unix' | 'windows';
 
 /**
  *
  */
-export default class Document implements Shareable {
+export class Document implements Shareable {
 
     /**
      * The lines of text.
@@ -79,7 +81,7 @@ export default class Document implements Shareable {
     /**
      *
      */
-    private _newLineMode = "auto";
+    private _newLineMode: NewLineMode = "auto";
 
     /**
      *
@@ -191,10 +193,10 @@ export default class Document implements Shareable {
     /**
      * Sets the new line mode.
      *
-     * @param newLineMode The newline mode to use; can be either `windows`, `unix`, or `auto`.
+     * newLineMode is the newline mode to use; can be either `windows`, `unix`, or `auto`.
      * Emits 'changeNewLineMode'
      */
-    setNewLineMode(newLineMode: string): void {
+    setNewLineMode(newLineMode: NewLineMode): void {
         if (this._newLineMode === newLineMode) {
             return;
         }
@@ -205,7 +207,7 @@ export default class Document implements Shareable {
     /**
      * Returns the type of newlines being used; either `windows`, `unix`, or `auto`.
      */
-    getNewLineMode(): string {
+    getNewLineMode(): NewLineMode {
         return this._newLineMode;
     }
 
@@ -285,7 +287,7 @@ export default class Document implements Shareable {
 
     /**
      * Inserts a block of `text` at the indicated `position`.
-     * Returns the end position of the inserted text.
+     * Returns the end position of the inserted text, the character immediately after the last character inserted.
      * This method also triggers the 'change' event.
      */
     insert(position: Position, text: string): Position {
@@ -341,32 +343,40 @@ export default class Document implements Shareable {
         return { row: row, column: column };
     }
 
-    /**
-     *
-     */
-    public addChangeListener(callback: (event: Delta, source: Document) => any): () => void {
-        return this.eventBusOrThrow().on(CHANGE, callback, false);
+    on(eventName: EVENT_NAME_TYPE, callback: (event: any, source: Document) => any, capturing?: boolean): () => void {
+        return this.eventBusOrThrow().on(eventName, callback, capturing);
+    }
+
+    off(eventName: EVENT_NAME_TYPE, callback: (event: any, source: Document) => any, capturing?: boolean): void {
+        return this.eventBusOrThrow().off(eventName, callback, capturing);
     }
 
     /**
      *
      */
-    public addChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
-        this.eventBusOrThrow().on(CHANGE_NEW_LINE_MODE, callback, false);
+    addChangeListener(callback: (event: Delta, source: Document) => any): () => void {
+        return this.on(CHANGE, callback, false);
     }
 
     /**
      *
      */
-    public removeChangeListener(callback: (event: Delta, source: Document) => any): void {
-        this.eventBusOrThrow().off(CHANGE, callback);
+    addChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
+        this.on(CHANGE_NEW_LINE_MODE, callback, false);
     }
 
     /**
      *
      */
-    public removeChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
-        this.eventBusOrThrow().off(CHANGE_NEW_LINE_MODE, callback);
+    removeChangeListener(callback: (event: Delta, source: Document) => any): void {
+        this.off(CHANGE, callback);
+    }
+
+    /**
+     *
+     */
+    removeChangeNewLineModeListener(callback: (event: any, source: Document) => any): void {
+        this.off(CHANGE_NEW_LINE_MODE, callback);
     }
 
     /**
@@ -442,11 +452,10 @@ export default class Document implements Shareable {
      * Removes the specified columns from the `row`.
      * This method also triggers the `'change'` event.
      *
-     * @method removeInLine
-     * @param {Number} row The row to remove from
-     * @param {Number} startColumn The column to start removing at 
-     * @param {Number} endColumn The column to stop removing at
-     * @return {Position} Returns an object containing `startRow` and `startColumn`, indicating the new row and column values.<br/>If `startColumn` is equal to `endColumn`, this function returns nothing.
+     * @param row The row to remove from
+     * @param startColumn The column to start removing at 
+     * @param endColumn The column to stop removing at
+     * @returns An object containing `startRow` and `startColumn`, indicating the new row and column values.<br/>If `startColumn` is equal to `endColumn`, this function returns nothing.
      *
      */
     removeInLine(row: number, startColumn: number, endColumn: number): Position {
@@ -504,9 +513,7 @@ export default class Document implements Shareable {
     /**
      * Removes the new line between `row` and the row immediately following it.
      *
-     * @method removeNewLine
-     * @param row {number} The row to check.
-     * @return {void}
+     * @param row The row to check.
      */
     removeNewLine(row: number): void {
         if (row < this.getLength() - 1 && row >= 0) {
@@ -692,3 +699,5 @@ export default class Document implements Shareable {
         return index + position.column;
     }
 }
+
+export default Document;

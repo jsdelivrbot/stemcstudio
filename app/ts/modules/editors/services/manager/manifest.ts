@@ -56,6 +56,12 @@ const themes: Theme[] = [
         fileName: 'vibrant_ink.css'
     },
     {
+        name: "Visual Studio",
+        isDark: false,
+        cssClass: 'ace-vs',
+        fileName: 'visualstudio.css'
+    },
+    {
         name: "Xcode",
         isDark: false,
         cssClass: 'ace-xcode',

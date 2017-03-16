@@ -28,7 +28,6 @@ import EventEmitterClass from "./lib/EventEmitterClass";
 import Command from "./commands/Command";
 import CommandManager from "./commands/CommandManager";
 import defaultCommands from "./commands/default_commands";
-import Token from "./Token";
 import TokenIterator from "./TokenIterator";
 import { COMMAND_NAME_AUTO_COMPLETE } from './editor_protocol';
 import { COMMAND_NAME_BACKSPACE } from './editor_protocol';
@@ -1458,7 +1457,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
 
             const pos = this.getCursorPosition();
             const iterator = new TokenIterator(session, pos.row, pos.column);
-            let token: Token | null | undefined = iterator.getCurrentToken();
+            let token = iterator.getCurrentToken();
 
             if (!token || token.type.indexOf('tag-name') === -1) {
                 if (session.$tagHighlight) {
@@ -3156,14 +3155,16 @@ export class Editor implements Disposable, EventBus<any, Editor> {
         const session = this.sessionOrThrow();
         const cursor = this.getCursorPosition();
         const iterator = new TokenIterator(session, cursor.row, cursor.column);
-        let prevToken: Token | null = iterator.getCurrentToken();
-        let token: Token | null | undefined = prevToken;
+        let prevToken = iterator.getCurrentToken();
+        let token = prevToken;
 
-        if (!token)
+        if (!token) {
             token = iterator.stepForward();
+        }
 
-        if (!token)
+        if (!token) {
             return;
+        }
 
         // get next closing tag or bracket
         let matchType: 'bracket' | 'tag' | undefined;

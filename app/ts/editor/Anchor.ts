@@ -178,16 +178,16 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      * @param eventName
      * @param callback
      */
-    public on(eventName: string, callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
-        this.eventBus.on(eventName, callback, false);
+    public on(eventName: 'change', callback: (event: AnchorChangeEvent, source: Anchor) => any): () => void {
+        return this.eventBus.on(eventName, callback, false);
     }
 
     /**
      * @param eventName
      * @param callback
      */
-    public off(eventName: string, callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
-        this.eventBus.off(eventName, callback);
+    public off(eventName: 'change', callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
+        this.eventBus.off(eventName, callback, false);
     }
 
     /**

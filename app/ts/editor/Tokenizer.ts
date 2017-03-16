@@ -283,7 +283,7 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
 
         while (match = re.exec(line)) {
             let type: RuleToken<T, E, S> = mapping.defaultToken;
-            let rule: Rule<T, E, S> = null;
+            let rule: Rule<T, E, S> | null = null;
             const value = match[0];
             const index = re.lastIndex;
 

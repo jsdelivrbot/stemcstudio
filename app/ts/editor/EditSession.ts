@@ -22,9 +22,9 @@ import MarkerRenderer from "./layer/MarkerRenderer";
 import Range from "./Range";
 import RangeBasic from "./RangeBasic";
 import Shareable from './base/Shareable';
-import { BasicToken, mutateExtendToken, TokenWithIndex } from "./Token";
+import { mutateExtendToken, TokenWithIndex } from "./Token";
 import Token from "./Token";
-import Document from "./Document";
+import { Document, NewLineMode } from "./Document";
 import BackgroundTokenizer from "./BackgroundTokenizer";
 import SearchHighlight from "./SearchHighlight";
 import BracketMatch from "./BracketMatch";
@@ -36,6 +36,7 @@ import LineWidgetManager from './LineWidgetManager';
 import Position from './Position';
 import FoldMode from "./mode/folding/FoldMode";
 import TextMode from "./mode/TextMode";
+import { HighlighterToken } from './mode/Highlighter';
 
 // "Tokens"
 const CHAR = 1;
@@ -86,6 +87,15 @@ function isFullWidth(c: number): boolean {
         c >= 0xFF01 && c <= 0xFF60 ||
         c >= 0xFFE0 && c <= 0xFFE6;
 }
+
+const defaultModeCallback = function (err: any) {
+    if (!err) {
+        // Do nothing.
+    }
+    else {
+        console.warn(`${err}`);
+    }
+};
 
 /**
  *
@@ -254,8 +264,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $bracketMatcher = new BracketMatch(this);
     private refCount = 1;
 
-    constructor(doc: Document) {
-        if (!(doc instanceof Document)) {
+    constructor(doc: string | Document, mode: LanguageMode = new TextMode(), callback = defaultModeCallback) {
+        if ((typeof doc !== 'string') && !(doc instanceof Document)) {
             throw new TypeError('doc must be an Document');
         }
         this.$breakpoints = [];
@@ -269,19 +279,17 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         this.eventBus.on("changeFold", this.onChangeFold.bind(this));
 
-        this.setDocument(doc);
+        if (typeof doc === 'string') {
+            this.setDocument(new Document(doc));
+        }
+        else {
+            this.setDocument(doc);
+        }
         this.selection = new Selection(this);
 
-        // FIXME: Can we avoid setting a "temporary mode".
+        // FIXME: Can we avoid setting a "temporary mode"?
         // The reason is that the worker can fail.
-        this.setLanguageMode(new TextMode('', []), function (err: any) {
-            if (!err) {
-                // Do nothing.
-            }
-            else {
-                console.warn(`${err}`);
-            }
-        });
+        this.setLanguageMode(mode, callback);
         this.eventBus._signal("session", this);
     }
 
@@ -378,10 +386,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method $resetRowCache
-     * @param docRow {number} The row to work with.
-     * @returns {void}
-     * @private
+     *
      */
     private $resetRowCache(docRow: number): void {
         if (!docRow) {
@@ -521,10 +526,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Sets the current selection.
-     *
-     * @method setSelection
-     * @param selection {Selection}
-     * @returns {void}
      */
     public setSelection(selection: Selection | undefined): void {
         this.selection = selection;
@@ -543,7 +544,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Returns a list of objects of the tokenized rows.
      * Throws an Error if there is no background tokenizer.
      */
-    public getTokens(row: number): BasicToken[] {
+    public getTokens(row: number): HighlighterToken[] {
         return this.bgTokenizerOrThrow().getTokens(row);
     }
 
@@ -563,25 +564,30 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     public getTokenAt(row: number, column?: number): TokenWithIndex | null | undefined {
         if (this.bgTokenizer) {
-            const tokens: BasicToken[] = this.bgTokenizer.getTokens(row);
-            let c = 0;
-            let i: number;
-            if (typeof column !== 'number') {
-                i = tokens.length - 1;
-                c = this.getLine(row).length;
-            }
-            else {
-                for (i = 0; i < tokens.length; i++) {
-                    c += tokens[i].value.length;
-                    if (c >= column) {
-                        break;
+            const tokens = this.bgTokenizer.getTokens(row);
+            if (tokens) {
+                let c = 0;
+                let i: number;
+                if (typeof column !== 'number') {
+                    i = tokens.length - 1;
+                    c = this.getLine(row).length;
+                }
+                else {
+                    for (i = 0; i < tokens.length; i++) {
+                        c += tokens[i].value.length;
+                        if (c >= column) {
+                            break;
+                        }
                     }
                 }
-            }
-            if (tokens[i]) {
-                const basicToken = tokens[i];
-                const start = c - basicToken.value.length;
-                return mutateExtendToken(basicToken, i, start);
+                if (tokens[i]) {
+                    const basicToken = tokens[i];
+                    const start = c - basicToken.value.length;
+                    return mutateExtendToken(basicToken, i, start);
+                }
+                else {
+                    return null;
+                }
             }
             else {
                 return null;
@@ -638,9 +644,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Starts a new group in undo history.
-     *
-     * @method markUndoGroup
-     * @returns {void}
      */
     public markUndoGroup(): void {
         if (this.$syncInformUndoManager) {
@@ -650,9 +653,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the current undo manager.
-     *
-     * @method getUndoManager
-     * @returns {UndoManager}
      */
     public getUndoManager(): UndoManager {
         // FIXME: Want simple API, don't want to cast.
@@ -662,9 +662,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Returns the current value for tabs.
      * If the user is using soft tabs, this will be a series of spaces (defined by [[EditSession.getTabSize `getTabSize()`]]); otherwise it's simply `'\t'`.
-     *
-     * @method getTabString
-     * @returns {string}
      */
     public getTabString(): string {
         if (this.getUseSoftTabs()) {
@@ -723,9 +720,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Returns `true` if the character at the position is a soft tab.
      *
-     * @method isTabStop
-     * @param position {Position} The position to check.
-     * @returns {boolean}
+     * @param position The position to check.
      */
     public isTabStop(position: Position): boolean {
         return this.$useSoftTabs && (position.column % this.$tabSize === 0);
@@ -736,9 +731,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *
      * If overwrites is enabled, any text you enter will type over any text after it. If the value of `overwrite` changes, this function also emites the `changeOverwrite` event.
      *
-     * @method setOverwrite
-     * @param overwrite {boolean} Defines whether or not to set overwrites.
-     * @returns {void}
+     * @param overwrite Defines whether or not to set overwrites.
      */
     public setOverwrite(overwrite: boolean): void {
         this.$overwrite = overwrite;
@@ -747,9 +740,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns `true` if overwrites are enabled; `false` otherwise.
-     *
-     * @method getOverwrite
-     * @returns {boolean}
      */
     public getOverwrite(): boolean {
         return this.$overwrite;
@@ -757,9 +747,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Sets the value of overwrite to the opposite of whatever it currently is.
-     *
-     * @method toggleOverwrite
-     * @returns {void}
      */
     public toggleOverwrite(): void {
         this.setOverwrite(!this.$overwrite);
@@ -768,10 +755,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Adds `className` to the `row`, to be used for CSS stylings and whatnot.
      *
-     * @method addGutterDecoration
-     * @param {Number} row The row number
-     * @param {String} className The class to add
-     * @returns {void}
+     * @param row The row number.
+     * @param className The class to add.
      */
     public addGutterDecoration(row: number, className: string): void {
         if (!this.$decorations[row]) {
@@ -787,10 +772,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Removes `className` from the `row`.
      *
-     * @method removeGutterDecoration
-     * @param {Number} row The row number
-     * @param {String} className The class to add
-     * @returns {void}
+     * @param row The row number.
+     * @param className The class to add.
      */
     public removeGutterDecoration(row: number, className: string): void {
         this.$decorations[row] = (this.$decorations[row] || "").replace(" " + className, "");
@@ -840,10 +823,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Sets a breakpoint on the row number given by `rows`.
      * This function also emites the `'changeBreakpoint'` event.
      *
-     * @method setBreakpoint
-     * @param {Number} row A row index
-     * @param {String} className Class of the breakpoint
-     * @returns {void}
+     * @param row A row index
+     * @param className Class of the breakpoint.
      */
     public setBreakpoint(row: number, className: string): void {
         if (className === undefined)
@@ -862,9 +843,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Removes a breakpoint on the row number given by `rows`.
      * This function also emites the `'changeBreakpoint'` event.
      *
-     * @method clearBreakpoint
-     * @param {Number} row A row index
-     * @returns {void}
+     * @param row A row index
      */
     public clearBreakpoint(row: number): void {
         delete this.$breakpoints[row];
@@ -996,7 +975,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * This functions emits the `'changeAnnotation'` event.
      */
     public setAnnotations(annotations: Annotation[]): void {
-
         this.$annotations = annotations;
         this.eventBus._signal("changeAnnotation", {});
     }
@@ -1012,9 +990,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Clears all the annotations for this session.
      * This function also triggers the `'changeAnnotation'` event.
      * This is called by the language modes when the worker terminates.
-     *
-     * @method clearAnnotations
-     * @returns {void}
      */
     public clearAnnotations(): void {
         this.setAnnotations([]);
@@ -1023,9 +998,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * If `text` contains either the newline (`\n`) or carriage-return ('\r') characters, `$autoNewLine` stores that value.
      *
-     * @method $detectNewLine
-     * @param {String} text A block of text
-     * @returns {void}
+     * @param text A block of text.
      */
     public $detectNewLine(text: string): void {
         const match = text.match(/^.*?(\r?\n)/m);
@@ -1079,10 +1052,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Gets the range of a word, including its right whitespace.
      *
-     * @method getAWordRange
-     * @param {Number} row The row number to start from
-     * @param {Number} column The column number to start from
-     * @returns {Range}
+     * @param row The row number to start from.
+     * @param column The column number to start from.
      */
     public getAWordRange(row: number, column: number): Range {
         const wordRange = this.getWordRange(row, column);
@@ -1104,17 +1075,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
     }
 
-    /**
-     * 
-     */
-    public setNewLineMode(newLineMode: string): void {
+    public setNewLineMode(newLineMode: NewLineMode): void {
         this.docOrThrow().setNewLineMode(newLineMode);
     }
 
-    /**
-     * Returns the current new line mode.
-     */
-    public getNewLineMode(): string {
+    public getNewLineMode(): NewLineMode {
         return this.docOrThrow().getNewLineMode();
     }
 
@@ -3399,52 +3364,54 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     getCommentFoldRange(row: number, column: number, dir?: number): Range | undefined {
         const startTokens = new TokenIterator(this, row, column);
-        let token: Token | null | undefined = startTokens.getCurrentToken();
-        let type = token.type;
-        if (token && /^comment|string/.test(type)) {
-            const matches = type.match(/comment|string/);
-            if (matches) {
-                type = matches[0];
-                if (type === "comment") {
-                    type += "|doc-start";
-                }
-                const re = new RegExp(type);
-                if (dir !== 1) {
-                    do {
-                        token = startTokens.stepBackward();
+        let token: Token | null = startTokens.getCurrentToken();
+        if (token) {
+            const type = token.type;
+            if (/^comment|string/.test(type)) {
+                const matches = type.match(/comment|string/);
+                if (matches) {
+                    let type = matches[0];
+                    if (type === "comment") {
+                        type += "|doc-start";
                     }
-                    while (token && re.test(token.type));
-                    startTokens.stepForward();
-                }
-                const startRow = startTokens.getCurrentTokenRow();
-                const startColumn = startTokens.getCurrentTokenColumn() + 2;
+                    const re = new RegExp(type);
+                    if (dir !== 1) {
+                        do {
+                            token = startTokens.stepBackward();
+                        }
+                        while (token && re.test(token.type));
+                        startTokens.stepForward();
+                    }
+                    const startRow = startTokens.getCurrentTokenRow();
+                    const startColumn = startTokens.getCurrentTokenColumn() + 2;
 
-                const endTokens = new TokenIterator(this, row, column);
+                    const endTokens = new TokenIterator(this, row, column);
 
-                if (dir !== -1) {
-                    let lastRow = -1;
-                    do {
-                        token = endTokens.stepForward();
-                        if (lastRow === -1) {
-                            const state = this.getState(endTokens.getCurrentTokenRow());
-                            if (!re.test(state)) {
-                                lastRow = endTokens.getCurrentTokenRow();
+                    if (dir !== -1) {
+                        let lastRow = -1;
+                        do {
+                            token = endTokens.stepForward();
+                            if (lastRow === -1) {
+                                const state = this.getState(endTokens.getCurrentTokenRow());
+                                if (!re.test(state)) {
+                                    lastRow = endTokens.getCurrentTokenRow();
+                                }
+                            }
+                            else if (endTokens.getCurrentTokenRow() > lastRow) {
+                                break;
                             }
                         }
-                        else if (endTokens.getCurrentTokenRow() > lastRow) {
-                            break;
-                        }
+                        while (token && re.test(token.type));
+                        token = endTokens.stepBackward();
                     }
-                    while (token && re.test(token.type));
-                    token = endTokens.stepBackward();
-                }
-                else {
-                    token = endTokens.getCurrentToken();
-                }
-                if (token) {
-                    const endRow = endTokens.getCurrentTokenRow();
-                    const endColumn = endTokens.getCurrentTokenColumn() + token.value.length - 2;
-                    return new Range(startRow, startColumn, endRow, endColumn);
+                    else {
+                        token = endTokens.getCurrentToken();
+                    }
+                    if (token) {
+                        const endRow = endTokens.getCurrentTokenRow();
+                        const endColumn = endTokens.getCurrentTokenColumn() + token.value.length - 2;
+                        return new Range(startRow, startColumn, endRow, endColumn);
+                    }
                 }
             }
         }

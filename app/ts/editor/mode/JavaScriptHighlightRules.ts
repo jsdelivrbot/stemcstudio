@@ -307,15 +307,18 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
                 {
                     token: "constant.language.escape",
                     regex: escapedRe
-                }, {
+                },
+                {
                     token: "string",
                     regex: "\\\\$",
                     next: "qqstring"
-                }, {
+                },
+                {
                     token: "string",
                     regex: '"|$',
                     next: "no_regex"
-                }, {
+                },
+                {
                     defaultToken: "string"
                 }
             ],
@@ -323,15 +326,18 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
                 {
                     token: "constant.language.escape",
                     regex: escapedRe
-                }, {
+                },
+                {
                     token: "string",
                     regex: "\\\\$",
                     next: "qstring"
-                }, {
+                },
+                {
                     token: "string",
                     regex: "'|$",
                     next: "no_regex"
-                }, {
+                },
+                {
                     defaultToken: "string"
                 }
             ]

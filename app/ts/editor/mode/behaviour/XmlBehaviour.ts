@@ -29,7 +29,7 @@ export default class XmlBehaviour extends Behaviour {
             function callback(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | undefined {
                 if (text === '"' || text === "'") {
                     const quote = text;
-                    const selected = session.doc.getTextRange(editor.getSelectionRange());
+                    const selected = session.docOrThrow().getTextRange(editor.getSelectionRange());
                     if (selected !== "" && selected !== "'" && selected !== '"' && editor.getWrapBehavioursEnabled()) {
                         return {
                             text: quote + selected + quote,
@@ -38,10 +38,10 @@ export default class XmlBehaviour extends Behaviour {
                     }
 
                     const cursor = editor.getCursorPosition();
-                    const line = session.doc.getLine(cursor.row);
+                    const line = session.docOrThrow().getLine(cursor.row);
                     const rightChar = line.substring(cursor.column, cursor.column + 1);
                     const iterator = new TokenIterator(session, cursor.row, cursor.column);
-                    let token: Token | undefined | null = iterator.getCurrentToken();
+                    let token = iterator.getCurrentToken();
 
                     if (rightChar === quote && (is(token, "attribute-value") || is(token, "string"))) {
                         // Ignore input and move right one if we're typing over the closing quote.
@@ -74,9 +74,9 @@ export default class XmlBehaviour extends Behaviour {
 
         this.add("string_dquotes", "deletion",
             function callback(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
-                const selected: string = session.doc.getTextRange(range);
+                const selected: string = session.docOrThrow().getTextRange(range);
                 if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
-                    const line = session.doc.getLine(range.start.row);
+                    const line = session.docOrThrow().getLine(range.start.row);
                     const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
                     if (rightChar === selected) {
                         range.end.column++;

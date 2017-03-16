@@ -111,9 +111,10 @@ export default class XmlFoldMode extends FoldMode {
      * reads a full tag and places the iterator after the tag
      */
     _readTagForward(iterator: TokenIterator): Tag | null {
-        let token: Token | null | undefined = iterator.getCurrentToken();
-        if (!token)
+        let token = iterator.getCurrentToken();
+        if (!token) {
             return null;
+        }
 
         const tag = new Tag();
         do {
@@ -138,9 +139,10 @@ export default class XmlFoldMode extends FoldMode {
     }
 
     _readTagBackward(iterator: TokenIterator): Tag | null {
-        let token: Token | null | undefined = iterator.getCurrentToken();
-        if (!token)
+        let token = iterator.getCurrentToken();
+        if (!token) {
             return null;
+        }
 
         const tag = new Tag();
         do {

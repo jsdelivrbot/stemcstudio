@@ -18,7 +18,7 @@ export default class JavaScriptMode extends TextMode {
     /**
      *
      */
-    constructor(workerUrl: string, scriptImports: string[]) {
+    constructor(workerUrl = '', scriptImports: string[] = []) {
         super(workerUrl, scriptImports);
         this.$id = "ace/mode/javascript";
         // The Tokenizer will be built using these rules.
@@ -74,7 +74,7 @@ export default class JavaScriptMode extends TextMode {
         this.$outdent.autoOutdent(session, row);
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient | undefined) => any): void {
 
         const worker = new WorkerClient(this.workerUrl);
 
@@ -97,8 +97,15 @@ export default class JavaScriptMode extends TextMode {
         try {
             worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'JavaScriptWorker', function (err: any) {
                 if (!err) {
-                    worker.attachToDocument(session.getDocument());
-                    callback(void 0, worker);
+                    const doc = session.getDocument();
+                    if (doc) {
+                        worker.attachToDocument(doc);
+                        callback(void 0, worker);
+                    }
+                    else {
+                        console.warn(`JavaScriptWorker init fail: ${err}`);
+                        callback(err, void 0);
+                    }
                 }
                 else {
                     console.warn(`JavaScriptWorker init fail: ${err}`);

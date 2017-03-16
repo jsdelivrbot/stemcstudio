@@ -1,4 +1,3 @@
-import Token from './Token';
 import TokenIterator from "./TokenIterator";
 import EditSession from "./EditSession";
 import Position from "./Position";
@@ -107,7 +106,7 @@ export default class BracketMatch {
         let depth = 1;
 
         const iterator = new TokenIterator(this.editSession, position.row, position.column);
-        let token: Token | null | undefined = iterator.getCurrentToken();
+        let token = iterator.getCurrentToken();
         if (!token) {
             token = iterator.stepForward();
         }
@@ -169,7 +168,7 @@ export default class BracketMatch {
         let depth = 1;
 
         const iterator = new TokenIterator(this.editSession, position.row, position.column);
-        let token: Token | null | undefined = iterator.getCurrentToken();
+        let token = iterator.getCurrentToken();
         if (!token) {
             token = iterator.stepForward();
         }

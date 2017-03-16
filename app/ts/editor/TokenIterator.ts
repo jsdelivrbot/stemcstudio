@@ -2,6 +2,20 @@ import EditSession from './EditSession';
 import Token from './Token';
 
 /**
+ * Temporary check for undefined token values. 
+ */
+/*
+function check<T>(xs: T[], where: string): T[] {
+    for (const x of xs) {
+        if (typeof x === 'undefined') {
+            console.warn(`undefined token value at ${where}`);
+        }
+    }
+    return xs;
+}
+*/
+
+/**
  * This class provides an easy way to treat the document as a stream of tokens.
  * Provides methods to iterate over these tokens.
  * The heavy lifting is really being done by the edit session.
@@ -63,7 +77,7 @@ export default class TokenIterator {
      * @returns If the current point is at the end of the file, this function returns `null`.
      *                 Otherwise, it returns the tokenized string.
      */
-    stepForward(): Token | undefined | null {
+    stepForward(): Token | null {
         if (this.$rowTokens) {
             if (typeof this.$tokenIndex === 'number') {
                 this.$tokenIndex += 1;
@@ -89,20 +103,36 @@ export default class TokenIterator {
             }
         }
         else {
-            return void 0;
+            return null;
         }
     }
 
     /** 
      * Returns the current token.
+     * If the token index is out of bounds, returns null.
      * If there is no token index, throws an exception.
      */
-    getCurrentToken(): Token {
-        if (typeof this.$tokenIndex === 'number') {
-            return this.$rowTokens[this.$tokenIndex];
+    getCurrentToken(): Token | null {
+        const tokenIndex = this.$tokenIndex;
+        if (typeof tokenIndex === 'number') {
+            const rowTokens = this.$rowTokens;
+            if (tokenIndex >= 0 && tokenIndex < rowTokens.length) {
+                const token = rowTokens[tokenIndex];
+                if (typeof token !== 'undefined') {
+                    return token;
+                }
+                else {
+                    // Assertion.
+                    throw new Error(`token[${tokenIndex}] has type ${typeof token} [0, ${rowTokens.length}]`);
+                }
+            }
+            else {
+                return null;
+            }
         }
         else {
-            throw new Error(`tokenIndex has type ${typeof this.$tokenIndex}`);
+            // Assertion.
+            throw new Error(`tokenIndex has type ${typeof tokenIndex}`);
         }
     }
 
