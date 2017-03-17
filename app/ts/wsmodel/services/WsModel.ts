@@ -33,11 +33,13 @@ import MwEditor from '../../synchronization/MwEditor';
 import MwEdits from '../../synchronization/MwEdits';
 import MwUnit from '../../synchronization/MwUnit';
 import MwWorkspace from '../../synchronization/MwWorkspace';
+import { OutputFilesMessage, outputFilesTopic } from '../IWorkspaceModel';
 import OutputFile from '../../editor/workspace/OutputFile';
 import QuickInfo from '../../editor/workspace/QuickInfo';
 import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
 import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
+import { RenamedFileMessage, renamedFileTopic } from '../IWorkspaceModel';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import Shareable from '../../base/Shareable';
 import SnippetCompleter from '../../editor/SnippetCompleter';
@@ -479,7 +481,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Notifies the callback when the specified event happens.
      * The function returned may be used to remove the watch.
      */
-    watch<T>(eventName: string, callback: (event: T, source: WsModel) => any) {
+    watch<T>(eventName: string, callback: (event: T, source: WsModel) => any): () => any {
         return this.eventBus.watch(eventName, callback);
     }
 
@@ -1088,19 +1090,23 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     private outputFilesForPath(path: string): void {
-
-        checkPath(path);
-        if (this.languageServiceProxy) {
-            this.inFlight++;
-            this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
-                this.inFlight--;
-                if (!err) {
-                    this.eventBus.emit('outputFiles', { data: outputFiles });
-                }
-                else {
-                    console.warn(`getOutputFiles(${path}) => ${err}`);
-                }
-            });
+        if (isTypeScript(path) || isJavaScript(path)) {
+            checkPath(path);
+            if (this.languageServiceProxy) {
+                this.inFlight++;
+                this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
+                    this.inFlight--;
+                    if (!err) {
+                        this.eventBus.emit(outputFilesTopic, new OutputFilesMessage(outputFiles));
+                    }
+                    else {
+                        console.warn(`getOutputFilesForPath(${path}) => ${err}`);
+                    }
+                });
+            }
+        }
+        else {
+            console.warn(`getOutputFilesForPath(${path}) ignored.`);
         }
     }
 
@@ -1398,8 +1404,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     /**
      * 1. Ends monitoring of the Document at the specified path.
-     * 2. Removes the file from the workspace.
-     * 3. Updates Local Storage.
+     * 2. Removes the file from the workspace, placing it in trash if need be for GitHub.
+     * 3. Removes the corresponding last known JavaScript.
+     * 4. Updates Local Storage.
      */
     deleteFile(path: string, callback: (reason: Error | null) => any): void {
         const file = this.files ? this.files.getWeakRef(path) : void 0;
@@ -1410,18 +1417,16 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                 if (file.existsInGitHub) {
                     // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
                     this.moveFileToTrash(path);
-                    this.updateStorage();
-                    callback(null);
                 }
                 else {
                     // It's a file that does NOT exist on GitHub. Remove it completely.
                     if (this.files) {
                         this.files.remove(path).release();
                     }
-                    delete this.lastKnownJs[path];
-                    this.updateStorage();
-                    callback(null);
                 }
+                delete this.lastKnownJs[path];
+                this.updateStorage();
+                callback(null);
             });
         }
         else {
@@ -1493,10 +1498,16 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                         theFile.mode = mode;
                     }
                 }
-                // Delete the file by the old path.
+                // Delete the file by the old path, remove monitoring etc.
                 this.deleteFile(oldPath, (reason: Error) => {
                     if (reason) {
                         console.warn(`renameFile('${oldPath}', '${newPath}') could not delete the oldFile: ${reason.message}`);
+                    }
+                });
+                this.beginDocumentMonitoring(newPath, (err) => {
+                    if (!err) {
+                        this.eventBus.emit(renamedFileTopic, new RenamedFileMessage(oldPath, newPath));
+                        this.outputFilesForPath(newPath);
                     }
                 });
             }
@@ -1995,6 +2006,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             return file;
         }
         else {
+            // We know that the file is defined so the cast is appropriate.
             return <WsFile>this.findFileByPath(path);
         }
     }
@@ -2032,6 +2044,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    /**
+     * Restores a file from trash. The file is not monitored.
+     */
     private restoreFileFromTrash(path: string): void {
         const trash = this.trash;
         const files = this.files;

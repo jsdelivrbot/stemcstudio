@@ -20,12 +20,12 @@ export default class Doodle {
     /**
      * The owner's login name.
      */
-    public owner: string;
+    public owner: string | undefined;
 
     /**
      * The repository name property.
      */
-    public repo: string;
+    public repo: string | undefined;
 
     /**
      * The room identifier (collaboration).
@@ -37,8 +37,8 @@ export default class Doodle {
     public lastKnownJs: { [name: string]: string };
     public files: { [path: string]: DoodleFile };
     public trash: { [path: string]: DoodleFile } = {};
-    public created_at: string;
-    public updated_at: string;
+    public created_at: string | undefined;
+    public updated_at: string | undefined;
 
     constructor(private options: IOptionManager) {
         this.isCodeVisible = true;

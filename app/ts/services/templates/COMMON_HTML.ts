@@ -8,7 +8,7 @@ export interface HtmlOptions {
  * tabString is supplied from the editor settings.
  * bootstrap is the System.import method argument, usually './index.js' for the 'index.ts' entry point.
  */
-export function HTML(tabString: string, bootstrap: string, systemJsVersion: string, options: Partial<HtmlOptions> = {}): string {
+export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, options: Partial<HtmlOptions> = {}): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
@@ -25,8 +25,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsVersion: stri
     lines.push(_ + _ + "<style>");
     lines.push(_ + _ + "/* STYLE-MARKER */");
     lines.push(_ + _ + "</style>");
-    lines.push(_ + _ + `<script src='https://cdnjs.cloudflare.com/ajax/libs/systemjs/${systemJsVersion}/system.js'></script>`);
-    // lines.push(_ + _ + "<script src='https://jspm.io/system.js'></script>");
+    lines.push(_ + _ + `<script src='${systemJsUrl}'></script>`);
     lines.push(_ + _ + "<!-- CSV-FILES-MARKER -->");
     lines.push(_ + _ + "<!-- SHADERS-MARKER -->");
     lines.push(_ + _ + "<!-- SCRIPTS-MARKER -->");

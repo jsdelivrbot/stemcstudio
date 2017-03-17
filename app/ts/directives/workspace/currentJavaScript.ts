@@ -7,8 +7,8 @@ import WsModel from '../../wsmodel/services/WsModel';
  * The transpilation step also perfoms detection of infinite loops.
  * This function will soon be dead code as support for 1.x is dropped.
  */
-export default function currentJavaScript(fileName: string, workspace: WsModel): string {
-    const code = workspace.lastKnownJs[fileName];
+export default function currentJavaScript(path: string, workspace: WsModel): string {
+    const code = workspace.lastKnownJs[path];
     if (code) {
         try {
             const options: mathscript.TranspileOptions = {

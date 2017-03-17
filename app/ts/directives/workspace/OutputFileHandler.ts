@@ -1,10 +1,10 @@
-import OutputFile from '../../editor/workspace/OutputFile';
+import { OutputFilesMessage } from '../../wsmodel/IWorkspaceModel';
 
 /**
  *
  */
 interface OutputFileHandler<T> {
-    (event: { data: OutputFile[] }, source: T): any;
+    (message: OutputFilesMessage, source: T): any;
 }
 
 export default OutputFileHandler;

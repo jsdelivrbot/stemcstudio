@@ -23,9 +23,12 @@ import { GITHUB_AUTH_MANAGER } from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
+import { OutputFilesMessage, outputFilesTopic } from '../../wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
+import RenamedFileHandler from './RenamedFileHandler';
+import { RenamedFileMessage, renamedFileTopic } from '../../wsmodel/IWorkspaceModel';
 import { STATE_GIST } from '../../modules/navigation/NavigationService';
 import { STATE_REPO } from '../../modules/navigation/NavigationService';
 import { STATE_ROOM } from '../../modules/navigation/NavigationService';
@@ -96,6 +99,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     private readonly olds: string[] = [];
 
     private outputFilesWatchRemover: (() => void) | undefined;
+    private renamedFileWatchRemover: (() => void) | undefined;
     private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
@@ -228,7 +232,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 const paths = wsModel.getFileDocumentPaths();
                 for (let i = 0; i < paths.length; i++) {
                     const path = paths[i];
-                    fs[path] = wsModel.getFileWeakRef(path);
+                    const file = wsModel.getFileWeakRef(path);
+                    if (file) {
+                        fs[path] = file;
+                    }
                 }
             }
             return fs;
@@ -270,7 +277,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             if (!wsModel.isZombie()) {
 
                 const previousFilePath = wsModel.getHtmlFileChoiceOrBestAvailable();
-                this.disableMarkdownDocumentChangeTracking(previousFilePath);
+                if (previousFilePath) {
+                    this.disableMarkdownDocumentChangeTracking(previousFilePath);
+                }
 
                 const chosenFile = wsModel.getFileWeakRef(chosenFilePath);
                 if (chosenFile) {
@@ -457,7 +466,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                     }
                 });
 
-                this.outputFilesWatchRemover = this.wsModel.watch('outputFiles', this.createOutputFilesEventHandler());
+                this.outputFilesWatchRemover = this.wsModel.watch(outputFilesTopic, this.createOutputFilesEventHandler());
+                this.renamedFileWatchRemover = this.wsModel.watch(renamedFileTopic, this.createRenamedFileEventHandler());
             }
             else {
                 this.modalDialog.alert({ title: "Start Workspace Error", message: `${err}` });
@@ -482,6 +492,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         if (this.outputFilesWatchRemover) {
             this.outputFilesWatchRemover();
             this.outputFilesWatchRemover = void 0;
+        }
+
+        if (this.renamedFileWatchRemover) {
+            this.renamedFileWatchRemover();
+            this.renamedFileWatchRemover = void 0;
         }
 
         if (this.resizeListener) {
@@ -559,7 +574,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 return;
             }
             const markdownFilePath = this.wsModel.getMarkdownFileChoiceOrBestAvailable();
-            if (this.wsModel.existsFile(markdownFilePath)) {
+            if (markdownFilePath && this.wsModel.existsFile(markdownFilePath)) {
                 if (isVisible) {
                     this.enableMarkdownDocumentChangeTracking(markdownFilePath);
                     this.updateMarkdownView(WAIT_NO_MORE);
@@ -621,7 +636,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             for (let i = 0; i < iLen; i++) {
                 const path = paths[i];
                 const editor = this.wsModel.getFileEditor(path);
-                editor.resize(true);
+                if (editor) {
+                    editor.resize(true);
+                }
             }
         }
     }
@@ -682,13 +699,14 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * Creates the handler function used to respond to (transpiled) 'outputFiles' events from the editor.
+     * Creates the handler function used to respond to (transpiled) output files events from the editor.
      * The handler function is cached so that it can be removed when the editor is detached from the workspace.
      */
     private createOutputFilesEventHandler(): OutputFileHandler<WsModel> {
-        const handler = (event: { data: OutputFile[] }, unused: WsModel) => {
+        const handler = (message: OutputFilesMessage, unused: WsModel) => {
+            // console.log(`${outputFilesTopic} => ${JSON.stringify(message.files.map(function (outputFile) { return outputFile.name; }))}`);
             // It's OK to capture the current Doodle here, but not outside the handler!
-            const outputFiles = event.data;
+            const outputFiles = message.files;
             outputFiles.forEach((outputFile: OutputFile) => {
                 if (this.wsModel.isZombie()) {
                     return;
@@ -703,6 +721,14 @@ export default class WorkspaceController implements WorkspaceMixin {
                     this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                 }
             });
+        };
+        return handler;
+    }
+
+    private createRenamedFileEventHandler(): RenamedFileHandler<WsModel> {
+        const handler = (message: RenamedFileMessage, unused: WsModel) => {
+            // console.log(`${renamedFileTopic} => ${JSON.stringify(message)}`);
+            // No action is required. We are expecting another event for the output files.
         };
         return handler;
     }
@@ -751,26 +777,28 @@ export default class WorkspaceController implements WorkspaceMixin {
     private enableMarkdownDocumentChangeTracking(filePath: string): void {
         if (!this.markdownChangeHandlers[filePath]) {
             const file = this.wsModel.findFileByPath(filePath);
-            try {
-                const doc = file.getDocument();
-                if (doc) {
-                    try {
-                        if (this.markdownChangeHandlers[filePath]) {
-                            console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
-                            return;
+            if (file) {
+                try {
+                    const doc = file.getDocument();
+                    if (doc) {
+                        try {
+                            if (this.markdownChangeHandlers[filePath]) {
+                                console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
+                                return;
+                            }
+                            const handler = this.createMarkdownChangeHandler(filePath);
+                            doc.addChangeListener(handler);
+                            this.markdownChangeHandlers[filePath] = handler;
+                            this.updateMarkdownView(WAIT_NO_MORE);
                         }
-                        const handler = this.createMarkdownChangeHandler(filePath);
-                        doc.addChangeListener(handler);
-                        this.markdownChangeHandlers[filePath] = handler;
-                        this.updateMarkdownView(WAIT_NO_MORE);
-                    }
-                    finally {
-                        doc.release();
+                        finally {
+                            doc.release();
+                        }
                     }
                 }
-            }
-            finally {
-                file.release();
+                finally {
+                    file.release();
+                }
             }
         }
         else {
@@ -785,26 +813,28 @@ export default class WorkspaceController implements WorkspaceMixin {
     private disableMarkdownDocumentChangeTracking(filePath: string): void {
         if (this.markdownChangeHandlers[filePath]) {
             const file = this.wsModel.findFileByPath(filePath);
-            try {
-                const doc = file.getDocument();
-                if (doc) {
-                    try {
-                        const handler = this.markdownChangeHandlers[filePath];
-                        if (handler) {
-                            doc.removeChangeListener(handler);
-                            delete this.markdownChangeHandlers[filePath];
+            if (file) {
+                try {
+                    const doc = file.getDocument();
+                    if (doc) {
+                        try {
+                            const handler = this.markdownChangeHandlers[filePath];
+                            if (handler) {
+                                doc.removeChangeListener(handler);
+                                delete this.markdownChangeHandlers[filePath];
+                            }
+                            else {
+                                console.warn(`Expecting to find a Markdown change handler for file ${filePath}.`);
+                            }
                         }
-                        else {
-                            console.warn(`Expecting to find a Markdown change handler for file ${filePath}.`);
+                        finally {
+                            doc.release();
                         }
-                    }
-                    finally {
-                        doc.release();
                     }
                 }
-            }
-            finally {
-                file.release();
+                finally {
+                    file.release();
+                }
             }
         }
         else {

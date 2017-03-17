@@ -48,11 +48,14 @@ app.factory('templates', [
          */
         const tab = tabString(editorPreferences);
         /**
-         * The version of SystemJS on CDNJS.
+         * WARNING! The choice of src for the SystemJS universal module loader is critical.
+         * I have not yet had complete success with CDNJS, and so I am using the experimental
+         * CDN serving the jspm registry.
          * As of Mar 16 2017, the most current version is 0.20.9
          * The migration from 0.19.x to 0.20.x requires some care.
+         * The entry below is used on jspm.io and appears to be an alias for 0.19.34
          */
-        const systemJsVersion = '0.19.46';
+        const systemJsUrl = 'https://jspm.io/system@0.19.js';
 
         const BASIC: ITemplate = {
             name: "BASIC",
@@ -62,7 +65,7 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        BASIC.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsVersion), language: LANGUAGE_HTML };
+        BASIC.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsUrl), language: LANGUAGE_HTML };
         BASIC.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
         BASIC.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         BASIC.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
@@ -75,11 +78,11 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        EIGHT.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsVersion, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
+        EIGHT.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
         EIGHT.files['index.ts'] = { content: EIGHT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         EIGHT.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
-        EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsVersion), language: LANGUAGE_HTML };
+        EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
 
@@ -91,11 +94,11 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        JASMINE.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsVersion), language: LANGUAGE_HTML };
+        JASMINE.files[FILENAME_HTML] = { content: HTML(tab, './index.js', systemJsUrl), language: LANGUAGE_HTML };
         JASMINE.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
         JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         JASMINE.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
-        JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsVersion), language: LANGUAGE_HTML };
+        JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
         JASMINE.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
 
