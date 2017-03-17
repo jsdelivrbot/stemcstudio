@@ -32,6 +32,10 @@ interface SystemJsConfigArg {
      * A mapping from the module name to the URL of the JavaScript library.
      */
     map?: { [moduleName: string]: string };
+    /**
+     * Use to discover deprecation warnings.
+     */
+    warnings?: boolean;
 }
 
 export default function rebuildPreview(
@@ -71,7 +75,7 @@ export default function rebuildPreview(
                 /**
                  * The HTML file that will be used for insertion.
                  */
-                const bestFile: string = workspace.getHtmlFileChoiceOrBestAvailable();
+                const bestFile = workspace.getHtmlFileChoiceOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 
                     $scope.previewIFrame = document.createElement('iframe');
@@ -179,7 +183,7 @@ export default function rebuildPreview(
                                     /**
                                      * The JavaScript code with operators replaced by function calls and infinite loop detection.
                                      */
-                                    const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs, options) : moduleJs;
+                                    const moduleMs = mathscript.transpile(moduleJs, options);
                                     modulesJs.push(moduleMs);
                                 }
                                 catch (e) {
@@ -188,15 +192,19 @@ export default function rebuildPreview(
                             }
 
                             // Build the SystemJS.config for libraries that should be loaded as modules.
-                            const config: SystemJsConfigArg = {};
+                            // Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
+                            const config: SystemJsConfigArg = { warnings: false };
                             const importModules = closureOpts.filter(isModularOrUMDLibrary);
                             config.map = {};
                             for (const importModule of importModules) {
-                                // Using the un-minified version because of issue with react.
-                                const fileNames = importModule.js;
-                                for (const fileName of fileNames) {
-                                    // Be sure to use moduleName, not packageName here.
-                                    config.map[importModule.moduleName] = fileName.replace(VENDOR_FOLDER_MARKER, './vendor');
+                                const moduleName = importModule.moduleName;
+                                if (typeof moduleName === 'string') {
+                                    // Using the un-minified version because of issue with react.
+                                    const fileNames = importModule.js;
+                                    for (const fileName of fileNames) {
+                                        // Be sure to use moduleName, not packageName here.
+                                        config.map[moduleName] = fileName.replace(VENDOR_FOLDER_MARKER, './vendor');
+                                    }
                                 }
                             }
 

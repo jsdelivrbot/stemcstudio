@@ -627,7 +627,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             // FIXME: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
-            editor.completers.push(new SnippetCompleter());
+            // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
+            // editor.completers.push(new SnippetCompleter());
             editor.snippetManager.register(typescriptSnippets);
 
             // Finally, enable QuickInfo.
@@ -642,7 +643,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             // FIXME: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
-            editor.completers.push(new SnippetCompleter());
+            // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
+            // editor.completers.push(new SnippetCompleter());
             editor.snippetManager.register(javascriptSnippets);
 
             // Finally, enable QuickInfo.

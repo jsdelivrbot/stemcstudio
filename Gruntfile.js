@@ -436,6 +436,10 @@ function copies(target) {
             dest: prepend(target, 'vendor/jsxgraph@0.99.5')
         },
         {
+            src: "museum/jsxgraph@0.99.5/index.d.ts",
+            dest: prepend(target, 'vendor/@types/jsxgraph/index.d.ts')
+        },
+        {
             src: "museum/plotly@1.24.1/index.d.ts",
             dest: prepend(target, 'vendor/@types/plotly/index.d.ts')
         },

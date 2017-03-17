@@ -119,7 +119,10 @@ app.factory('options', [
             return vendorFolder('jquery', VERSION_JQUERY, 'dist', fileName);
         }
         function jsxgraph(fileName: string): string {
-            return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
+            const isDts = fileName.endsWith(INDEX_DTS);
+            const packageFolder = isDts ? `${TYPES_FOLDER}jsxgraph` : 'jsxgraph';
+            const version = isDts ? void 0 : VERSION_JSXGRAPH;
+            return vendorFolder(packageFolder, version, void 0, fileName);
         }
         function newton(fileName: string): string {
             const isDts = fileName.endsWith(INDEX_DTS);
@@ -418,13 +421,13 @@ app.factory('options', [
                 packageName: 'jsxgraph',
                 moduleName: 'jsxgraph',
                 libraryKind: LibraryKind.Global,
-                globalName: 'JSXGraph',
+                globalName: 'JXG',
                 description: "Interactive 2D Geometry, Plotting, and Visualization.",
                 homepage: 'http://jsxgraph.uni-bayreuth.de',
                 version: VERSION_JSXGRAPH,
                 visible: true,
                 css: [],
-                dts: jsxgraph('jsxgraph.d.ts'),
+                dts: jsxgraph('index.d.ts'),
                 // js: [jsxgraph('jsxgraphcore.js')],
                 // minJs: [jsxgraph('jsxgraphcore.js')],
                 // CDNJS does not deploy the correct version?

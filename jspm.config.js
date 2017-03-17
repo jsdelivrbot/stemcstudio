@@ -6,6 +6,7 @@ System.config({
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
   },
+  warnings: false,
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",

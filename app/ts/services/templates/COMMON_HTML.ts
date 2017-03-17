@@ -1,14 +1,14 @@
 const NEWLINE = '\n';
 
 export interface HtmlOptions {
-    canvasId: string;
+    canvasId?: string;
 }
 
 /**
  * tabString is supplied from the editor settings.
  * bootstrap is the System.import method argument, usually './index.js' for the 'index.ts' entry point.
  */
-export default function HTML(tabString: string, bootstrap: string, options: Partial<HtmlOptions> = {}): string {
+export function HTML(tabString: string, bootstrap: string, systemJsVersion: string, options: Partial<HtmlOptions> = {}): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
@@ -25,7 +25,8 @@ export default function HTML(tabString: string, bootstrap: string, options: Part
     lines.push(_ + _ + "<style>");
     lines.push(_ + _ + "/* STYLE-MARKER */");
     lines.push(_ + _ + "</style>");
-    lines.push(_ + _ + "<script src='https://jspm.io/system.js'></script>");
+    lines.push(_ + _ + `<script src='https://cdnjs.cloudflare.com/ajax/libs/systemjs/${systemJsVersion}/system.js'></script>`);
+    // lines.push(_ + _ + "<script src='https://jspm.io/system.js'></script>");
     lines.push(_ + _ + "<!-- CSV-FILES-MARKER -->");
     lines.push(_ + _ + "<!-- SHADERS-MARKER -->");
     lines.push(_ + _ + "<!-- SCRIPTS-MARKER -->");
@@ -38,7 +39,7 @@ export default function HTML(tabString: string, bootstrap: string, options: Part
     lines.push(_ + _ + "// CODE-MARKER");
     lines.push(_ + _ + "</script>");
     lines.push(_ + _ + "<script>");
-    lines.push(_ + _ + `System.import('${bootstrap}')`);
+    lines.push(_ + _ + `SystemJS.import('${bootstrap}')`);
     lines.push(_ + _ + "</script>");
     lines.push(_ + "</body>");
     lines.push("</html>");

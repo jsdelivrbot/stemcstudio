@@ -10,24 +10,21 @@ import WsModel from '../../wsmodel/services/WsModel';
 export default function currentJavaScript(fileName: string, workspace: WsModel): string {
     const code = workspace.lastKnownJs[fileName];
     if (code) {
-        if (workspace.operatorOverloading) {
-            try {
-                const options: mathscript.TranspileOptions = {
-                    timeout: 1000,
-                    noLoopCheck: workspace.noLoopCheck,
-                    operatorOverloading: workspace.operatorOverloading
-                };
-                // In this location we are transpiling the code.
-                return mathscript.transpile(code, options);
-            }
-            catch (e) {
-                // We might end up here if there is an error in the source code.
-                // TODO: Distinguish errors in transpile from errors in source code.
-                console.warn(e);
-                return code;
-            }
+        try {
+            const options: mathscript.TranspileOptions = {
+                timeout: 1000,
+                noLoopCheck: workspace.noLoopCheck,
+                operatorOverloading: workspace.operatorOverloading
+            };
+            /**
+             * The JavaScript code with operators replaced by function calls and infinite loop detection.
+             */
+            return mathscript.transpile(code, options);
         }
-        else {
+        catch (e) {
+            // We might end up here if there is an error in the source code.
+            // TODO: Distinguish errors in transpile from errors in source code.
+            console.warn(e);
             return code;
         }
     }

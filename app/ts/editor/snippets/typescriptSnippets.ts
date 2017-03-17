@@ -11,6 +11,16 @@ snippet class
 		}
 	}
 
+snippet forin
+	for (const \${1:key} in \${2:object}) {
+		\${0:$2[$1]}
+	}
+
+snippet forof
+	for (const \${1:element} of \${2:array}) {
+		\${3:// body...}
+	}
+
 snippet function
 	function \${1?:functionName}(\${2:/* [parameter [, parameter]*] */}): \${3:void} {
 		\${4:// body...}

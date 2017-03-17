@@ -1,17 +1,17 @@
 {
   "name": "stemcstudio",
-  "version": "2.22.11",
+  "version": "2.22.12",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
-    "node": "6.3.1"
+    "node": "7.7.3"
   },
   "scripts": {
-    "start": "NODE_ENV=development nodemon web.js",
+    "start": "NODE_ENV=development node web.js",
     "start-n-watch": "concurrently \"npm run watch\" \"npm run serve-web\" ",
     "watch": "grunt watch",
     "serve-dev": "lite-server",
-    "serve-web": "NODE_ENV=development nodemon web.js",
+    "serve-web": "NODE_ENV=development node web.js",
     "typings": "typings"
   },
   "author": "David Holmes",
@@ -29,7 +29,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-ts": "^6.0.0-beta.15",
     "grunt-tslint": "^4.0.1",
-    "jspm": "^0.16.52",
+    "jspm": "^0.16.53",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",

@@ -1,7 +1,8 @@
 //
-// Copyright 2015-2016 David Holmes, https://github.com/geometryzen
+// Copyright 2015-2017 David Holmes, https://github.com/geometryzen
 // JSXGraph 0.99.5
 //
+
 /**
  * JXG namespace.
  */
