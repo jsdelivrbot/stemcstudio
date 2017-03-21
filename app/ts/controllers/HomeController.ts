@@ -1,12 +1,15 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
+import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
+import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
+import NewProjectService from '../modules/project/NewProjectService';
 import StemcArXiv from '../stemcArXiv/StemcArXiv';
 
 /**
@@ -22,6 +25,7 @@ export default class HomeController extends AbstractPageController {
         'ga',
         'modalDialog',
         'navigation',
+        'newProject',
         'stemcArXiv',
         'FEATURE_COOKBOOK_ENABLED',
         'FEATURE_DASHBOARD_ENABLED',
@@ -42,6 +46,7 @@ export default class HomeController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         navigation: NavigationService,
+        newProject: NewProjectService,
         stemcArXiv: StemcArXiv,
         FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
@@ -81,26 +86,28 @@ export default class HomeController extends AbstractPageController {
         };
 
         $scope.clickCodeNow = (label?: string, value?: number) => {
-            // There seems to be very little point in creating a totally empty project.
-            // It could also create a barrier for new users.
-            // Instead, we navigate to New and choose a template for a new project.
-            // The existing code is retained for now.
-            /*
-            const doodle = doodles.createDoodle();
-            doodles.addHead(doodle);
-            doodles.updateStorage();
-            navigation.gotoDoodle(label, value);
-            */
-            navigation.gotoNew(label, value);
+            newProject.open(initNewProjectDefaults(doodles.suggestName()))
+                .then(function (settings) {
+                    const doodle = doodles.createDoodle();
+                    copyNewProjectSettingsToDoodle(settings, doodle);
+                    doodles.addHead(doodle);
+                    doodles.updateStorage();
+                    navigation.gotoDoodle();
+                })
+                .catch(function (reason) {
+                    // The user cancelled from the dialog.
+                });
         };
 
         $scope.goExamples = () => {
             if (FEATURE_EXAMPLES_ENABLED) {
-                navigation.gotoExamples().then(function () {
-                    // Nothing to do.
-                }).catch(function (reason: any) {
-                    console.warn(`gotoExamples() failed: ${JSON.stringify(reason, null, 2)}`);
-                });
+                navigation.gotoExamples()
+                    .then(function () {
+                        // Nothing to do.
+                    })
+                    .catch(function (reason: any) {
+                        console.warn(`gotoExamples() failed: ${JSON.stringify(reason, null, 2)}`);
+                    });
             }
             else {
                 console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`);

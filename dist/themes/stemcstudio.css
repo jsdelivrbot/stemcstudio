@@ -1,0 +1,171 @@
+/**
+ * Keywords import, from, const, new, function
+ * Not sure why the second one looks a bit pale.
+ */
+.cm-keyword{color:#708}
+.or-keyword{color:#c792ea}
+
+.cm-s-default .cm-atom{color:#219}
+.cm-s-default .cm-number{color:#164}
+/**
+ * declaration are a slightly subdued gray
+ * operators seem to be the same color
+ */
+.cm-def{color:#00f}
+.or-def{color:#e9eded}
+
+/**
+ * Variables are a nice blue.
+ */
+.cm-variable{color:#82B1FF}
+.cm-variable-2{color:#05a}
+
+.cm-s-default .cm-variable-3{color:#085}
+.cm-s-default .cm-comment{color:#a50}
+
+/**
+ * String literal
+ */
+.cm-string{color:#a11}
+.or-string{color:#C3E88D}
+
+.cm-s-default .cm-string-2{color:#f50}
+.cm-s-default .cm-meta{color:#555}
+.cm-s-default .cm-qualifier{color:#555}
+.cm-s-default .cm-builtin{color:#30a}
+.cm-s-default .cm-bracket{color:#997}
+.cm-s-default .cm-tag{color:#170}
+.cm-s-default .cm-attribute{color:#00c}
+.cm-s-default .cm-hr{color:#999}
+.cm-s-default .cm-link{color:#00c}
+.cm-s-default .cm-error{color:#f00}
+.cm-invalidchar{color:#f00}
+
+
+.ace-stemcstudio .ace_gutter {
+  background: #232323;
+  color: #E2E2E2
+}
+
+.ace-stemcstudio .ace_print-margin {
+  width: 1px;
+  background: #232323
+}
+
+.ace-stemcstudio {
+  background-color: #141414;
+  color: #F8F8F8
+}
+
+.ace-stemcstudio .ace_cursor {
+  color: #A7A7A7
+}
+
+.ace-stemcstudio .ace_marker-layer .ace_selection {
+  background: rgba(221, 240, 255, 0.20)
+}
+
+.ace-stemcstudio.ace_multiselect .ace_selection.ace_start {
+  box-shadow: 0 0 3px 0px #141414;
+}
+
+.ace-stemcstudio .ace_marker-layer .ace_step {
+  background: rgb(102, 82, 0)
+}
+
+.ace-stemcstudio .ace_marker-layer .ace_bracket {
+  margin: -1px 0 0 -1px;
+  border: 1px solid rgba(255, 255, 255, 0.25)
+}
+
+.ace-stemcstudio .ace_marker-layer .ace_active-line {
+  background: rgba(255, 255, 255, 0.031)
+}
+
+.ace-stemcstudio .ace_gutter-active-line {
+  background-color: rgba(255, 255, 255, 0.031)
+}
+
+.ace-stemcstudio .ace_marker-layer .ace_selected-word {
+  border: 1px solid rgba(221, 240, 255, 0.20)
+}
+
+.ace-stemcstudio .ace_invisible {
+  color: rgba(255, 255, 255, 0.25)
+}
+
+.ace-stemcstudio .ace_keyword,
+.ace-stemcstudio .ace_meta {
+  color: #CDA869
+}
+
+.ace-stemcstudio .ace_constant,
+.ace-stemcstudio .ace_constant.ace_character,
+.ace-stemcstudio .ace_constant.ace_character.ace_escape,
+.ace-stemcstudio .ace_constant.ace_other,
+.ace-stemcstudio .ace_heading,
+.ace-stemcstudio .ace_markup.ace_heading,
+.ace-stemcstudio .ace_support.ace_constant {
+  color: #CF6A4C
+}
+
+.ace-stemcstudio .ace_invalid.ace_illegal {
+  color: #F8F8F8;
+  background-color: rgba(86, 45, 86, 0.75)
+}
+
+.ace-stemcstudio .ace_invalid.ace_deprecated {
+  text-decoration: underline;
+  font-style: italic;
+  color: #D2A8A1
+}
+
+.ace-stemcstudio .ace_support {
+  color: #9B859D
+}
+
+.ace-stemcstudio .ace_fold {
+  background-color: #AC885B;
+  border-color: #F8F8F8
+}
+
+.ace-stemcstudio .ace_support.ace_function {
+  color: #DAD085
+}
+
+.ace-stemcstudio .ace_list,
+.ace-stemcstudio .ace_markup.ace_list,
+.ace-stemcstudio .ace_storage {
+  color: #F9EE98
+}
+
+.ace-stemcstudio .ace_entity.ace_name.ace_function,
+.ace-stemcstudio .ace_meta.ace_tag,
+.ace-stemcstudio .ace_variable {
+  color: #AC885B
+}
+
+.ace-stemcstudio .ace_string {
+  color: #8F9D6A
+}
+
+.ace-stemcstudio .ace_string.ace_regexp {
+  color: #E9C062
+}
+
+.ace-stemcstudio .ace_comment {
+  font-style: italic;
+  color: #5F5A60
+}
+
+.ace-stemcstudio .ace_variable {
+  color: #7587A6
+}
+
+.ace-stemcstudio .ace_xml-pe {
+  color: #494949
+}
+
+.ace-stemcstudio .ace_indent-guide {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWMQERFpYLC1tf0PAAgOAnPnhxyiAAAAAElFTkSuQmCC) right repeat-y
+}

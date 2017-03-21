@@ -1,9 +1,10 @@
 import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
+import LabelDialog from './LabelDialog';
 import LabelSettings from './LabelSettings';
 import LabelModalController from './LabelModalController';
 
-export default class LabelDialogService {
+export default class LabelDialogService implements LabelDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: uib.IModalService) {
         // Do nothing.
@@ -15,7 +16,7 @@ export default class LabelDialogService {
             templateUrl: 'label-modal.html'
         };
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return defaults;
             }
         };

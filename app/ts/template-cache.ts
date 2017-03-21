@@ -750,7 +750,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "\n" +
     "</div>"
   );
 
@@ -1033,22 +1032,38 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('new.html',
-    "<div class='modal-content'>\n" +
-    "  <div class='modal-header'>\n" +
-    "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
-    "    <h3>Create a New Project</h3>\n" +
-    "  </div>\n" +
-    "  <div class='modal-body'>\n" +
-    "    <input type='text' ng-model='description' placeholder=\"Enter description\" autofocus/>\n" +
-    "    <label class='text-muted'>Template:</label>\n" +
-    "    <select ng-model='template' ng-options='template.description for template in templates track by template.name'></select>\n" +
-    "  </div>\n" +
-    "  <div class='modal-footer'>\n" +
-    "    <button class='btn btn-primary' ng-click='doOK()'>Create project</button>\n" +
-    "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
-    "  </div>\n" +
-    "</div>"
+  $templateCache.put('messages.html',
+    "Field is required."
+  );
+
+
+  $templateCache.put('new-project-modal.html',
+    "<!-- The name attribute pushes the form into the scope -->\n" +
+    "<!-- Using AngularJSform validation requires a name for the form. -->\n" +
+    "<!-- The novalidate attribute prevents the browser from natively validating the form. -->\n" +
+    "<form name='form' ng-submit='ok()' novalidate class=\"css-form\">\n" +
+    "    <fieldset>\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <h3 class='modal-title' style=\"float: left;\">\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Create a New Project</h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-body\">\n" +
+    "            <label class='text-muted'>Description: <input type='text' name=\"description\" ng-model='project.description' placeholder=\"Your project description\" required/></label><br/>\n" +
+    "            <br/>\n" +
+    "            <div ng-show=\"form.$submitted || form.description.$touched\">\n" +
+    "                <div ng-show=\"form.description.$error.required\">Description is required.</div>\n" +
+    "            </div>\n" +
+    "            <label class='text-muted'>Template: <select ng-model='project.template' ng-options='template.description for template in templates track by template.name'></select></label>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <!-- button class=\"btn btn-tertiary\" type=\"button\" data-ng-click=\"reset(form)\">Reset</button -->\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"form.$invalid\">OK</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
   );
 
 
@@ -1089,7 +1104,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
 
   $templateCache.put('properties-modal.html',
     "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
-    "<form name='labelForm' ng-submit='ok()'>\n" +
+    "<form name='propertiesForm' ng-submit='ok()'>\n" +
     "    <fieldset>\n" +
     "        <!-- legend>Labels and Keywords</legend -->\n" +
     "        <div class=\"modal-header\" style=\"clear: both\">\n" +

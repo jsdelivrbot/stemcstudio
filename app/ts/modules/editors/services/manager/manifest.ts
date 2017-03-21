@@ -38,6 +38,12 @@ const themes: Theme[] = [
         fileName: 'monokai.css'
     },
     {
+        name: "STEMCstudio",
+        isDark: true,
+        cssClass: 'ace-stemcstudio',
+        fileName: 'stemcstudio.css'
+    },
+    {
         name: "TextMate",
         isDark: false,
         cssClass: 'ace-tm',

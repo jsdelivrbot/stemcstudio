@@ -6,6 +6,9 @@ import IOptionManager from '../../services/options/IOptionManager';
 import PropertiesModalScope from './PropertiesModalScope';
 import PropertiesSettings from './PropertiesSettings';
 
+/**
+ * The controller for the PropertiesModalScope.
+ */
 export default class PropertiesModalController {
     public static $inject: string[] = [
         '$scope',
@@ -62,6 +65,6 @@ export default class PropertiesModalController {
     }
     $onDestroy(): void {
         // This is NOT called. Don't know why.
-        console.warn("PropertiesModalController.$onDestroy");
+        console.warn("$onDestroy");
     }
 }

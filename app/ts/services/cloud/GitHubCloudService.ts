@@ -72,7 +72,7 @@ export default class GitHubCloudService implements CloudService {
                             doodle.renameFile(LEGACY_META, this.FILENAME_META);
                             // Ensure that the package.json file gets the name and version properties.
                             if (typeof doodle.name !== 'string') {
-                                doodle.name = hyphenate(gist.description).toLowerCase();
+                                doodle.name = hyphenate(gist.description);
                             }
                             if (typeof doodle.version !== 'string') {
                                 doodle.version = "0.1.0";

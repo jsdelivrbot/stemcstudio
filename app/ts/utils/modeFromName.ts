@@ -21,7 +21,6 @@ import { LANGUAGE_YAML } from '../languages/modes';
 const extensionToMode: { [ext: string]: string } = {};
 const fileNameToMode: { [fileName: string]: string } = {};
 
-// extensionToMode['coffee'] = 'CoffeeScript'
 extensionToMode['c'] = LANGUAGE_C;
 extensionToMode['cpp'] = LANGUAGE_CPP;
 extensionToMode['css'] = LANGUAGE_CSS;

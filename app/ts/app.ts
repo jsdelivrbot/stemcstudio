@@ -51,7 +51,6 @@ import ITranslateProvider from './translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
-import NewController from './features/doodle/controllers/NewController';
 import OpenController from './controllers/OpenController';
 import CopyController from './features/doodle/controllers/CopyController';
 
@@ -60,15 +59,13 @@ import GitHubLoginController from './controllers/login/github/GitHubLoginControl
 import TwitterLoginController from './controllers/login/twitter/TwitterLoginController';
 
 import LabelDialogService from './modules/publish/LabelDialogService';
-import LabelModalController from './modules/publish/LabelModalController';
-
+import NewProjectService from './modules/project/NewProjectService';
 import PropertiesDialogService from './modules/properties/PropertiesDialogService';
-import PropertiesModalController from './modules/properties/PropertiesModalController';
-
 import PublishDialogService from './modules/publish/PublishDialogService';
 import brand from './directives/brand/brand';
 import domain from './directives/domain/domain';
 import logoText from './directives/logoText/logoText';
+import packageName from './directives/packageName/packageName';
 import pageTitle from './directives/pageTitle/pageTitle';
 
 import propsFilter from './filters/propsFilter';
@@ -101,7 +98,6 @@ import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
 import { STATE_EXAMPLES } from './modules/navigation/NavigationService';
 import { STATE_GIST } from './modules/navigation/NavigationService';
 import { STATE_HOME } from './modules/navigation/NavigationService';
-import { STATE_NEW } from './modules/navigation/NavigationService';
 import { STATE_OPEN } from './modules/navigation/NavigationService';
 import { STATE_REPO } from './modules/navigation/NavigationService';
 import { STATE_ROOM } from './modules/navigation/NavigationService';
@@ -144,7 +140,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.22.13');
+app.constant('version', '2.22.14');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -234,9 +230,6 @@ app.controller(ABOUT_CONTROLLER_NAME, AboutController);
 const HOME_CONTROLLER_NAME = 'HomeController';
 app.controller(HOME_CONTROLLER_NAME, HomeController);
 
-const NEW_CONTROLLER_NAME = 'NewController';
-app.controller(NEW_CONTROLLER_NAME, NewController);
-
 const OPEN_CONTROLLER_NAME = 'OpenController';
 app.controller(OPEN_CONTROLLER_NAME, OpenController);
 
@@ -254,6 +247,7 @@ app.directive('brand', brand);
 app.directive('domain', domain);
 app.directive('logoText', logoText);
 app.directive('pageTitle', pageTitle);
+app.directive('packageName', packageName);
 
 app.directive('githubSignInButton', githubSignInButton);
 app.directive('googleSignInButton', googleSignInButton);
@@ -263,9 +257,8 @@ app.filter('propsFilter', propsFilter);
 app.service('credentials', CredentialsService);
 
 app.service('labelDialog', LabelDialogService);
-app.controller('LabelModalController', LabelModalController);
+app.service('newProject', NewProjectService);
 app.service('propertiesDialog', PropertiesDialogService);
-app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_UUID, BackgroundService);
@@ -310,11 +303,6 @@ app.config([
                 url: '/doodle',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
-            })
-            .state(STATE_NEW, {
-                url: '/new',
-                templateUrl: 'new.html',
-                controller: NEW_CONTROLLER_NAME
             })
             .state(STATE_OPEN, {
                 url: '/open',

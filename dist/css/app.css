@@ -7894,6 +7894,17 @@ article.ace_dts code {
   border-left-color: transparent!important;
   top: -5px;
 }
+/*
+.css-form input.ng-invalid.ng-touched {
+    // background-color: #FA787E;
+    border: 1px solid #FA787E;
+}
+*/
+/*
+.css-form input.ng-valid.ng-touched {
+    background-color: #78FA89;
+}
+*/
 #gist-comments {
   padding-top: 4px;
   padding-left: 4px;

@@ -42,6 +42,7 @@ export interface Rule<T, E, S extends Array<string | E>> {
 
     /**
      * FIXME: It could be that next and nextState are the same thing?
+     * FIXME: Should this be an E?
      */
     nextState?: string;/* | Rule[] | ((currentState: string, stack: string[]) => string);*/
 

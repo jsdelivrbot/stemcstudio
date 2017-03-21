@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 interface PropertiesSettings {
     /**
      * project name (a packageName).

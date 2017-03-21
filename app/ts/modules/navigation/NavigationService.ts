@@ -49,11 +49,6 @@ export const STATE_HOME = 'home';
 /**
  * 
  */
-export const STATE_NEW = 'new';
-
-/**
- * 
- */
 export const STATE_OPEN = 'open';
 
 /**
@@ -114,10 +109,6 @@ export default class NavigationService {
 
     public gotoHome(label?: string, value?: number) {
         return this.navigateTo(STATE_HOME, void 0, void 0, label, value);
-    }
-
-    public gotoNew(label?: string, value?: number) {
-        return this.navigateTo(STATE_NEW, void 0, void 0, label, value);
     }
 
     public gotoOpen(label?: string, value?: number) {

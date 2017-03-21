@@ -50,17 +50,19 @@ interface LanguageMode {
     tokenRe: RegExp;
 
     /**
-     *
+     * Performs any replacement needed to outdent the current line.
      */
     autoOutdent(state: string, session: EditSession, row: number): void;
 
     /**
-     *
+     * text us the character sequence entered.
+     * Should return true or false on whether to call autoOutdent.
      */
     checkOutdent(state: string, line: string, text: string): boolean;
 
     /**
-     *
+     * Called to create a worker which can perform analysis in the background.
+     * This analysis is usually for detecting syntax errors.
      */
     createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void;
 

@@ -3,6 +3,7 @@ import Rule from '../Rule';
 import HighlighterFactory from './HighlighterFactory';
 
 /**
+ * The basic stack element is simply a string.
  * The number possibility enters when using JSX or TSX.
  */
 export type HighlighterToken = BasicToken;

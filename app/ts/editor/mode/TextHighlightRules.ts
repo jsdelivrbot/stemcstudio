@@ -1,15 +1,15 @@
 import { deepCopy } from "../lib/lang";
-import { Highlighter, HighlighterRule, HighlighterStack } from './Highlighter';
+import { Highlighter, HighlighterRule, HighlighterStack, HighlighterStackElement } from './Highlighter';
 import HighlighterFactory from './HighlighterFactory';
 
-const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): string {
+const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement {
     if (currentState !== "start" || stack.length) {
         stack.unshift(this.nextState, currentState);
     }
     return this.nextState;
 };
 
-const popState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack) {
+const popState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement {
     stack.shift();
     return stack.shift() || "start";
 };
@@ -49,7 +49,7 @@ export default class TextHighlightRules implements Highlighter {
     }
 
     /**
-     *
+     * Adds a set of rules, prefixing all state names with the given prefix.
      */
     addRules(rules: { [name: string]: HighlighterRule[] }, prefix?: string): void {
         if (!prefix) {
@@ -80,13 +80,14 @@ export default class TextHighlightRules implements Highlighter {
     }
 
     /**
-     *
+     * Returns the rules for this highlighter.
      */
     getRules(): { [name: string]: HighlighterRule[] } {
         return this.$rules;
     }
 
     /**
+     * Allows embedding a highlighter.
      * FIXME: typing of 1st parameter.
      */
     embedRules(highlightRules: HighlighterFactory | { [stateName: string]: HighlighterRule[] }, prefix: string, escapeRules: HighlighterRule[], states?: string[], append?: boolean): void {

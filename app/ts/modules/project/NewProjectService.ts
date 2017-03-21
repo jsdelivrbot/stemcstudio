@@ -1,22 +1,23 @@
 import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
-import PropertiesDialog from './PropertiesDialog';
-import PropertiesSettings from './PropertiesSettings';
-import PropertiesModalController from './PropertiesModalController';
+import NewProjectDialog from './NewProjectDialog';
+import NewProjectDefaults from './NewProjectDefaults';
+import NewProjectSettings from './NewProjectSettings';
+import NewProjectController from './NewProjectController';
 
 /**
  * The implementation that is registered with the application module.
  */
-export default class PropertiesDialogService implements PropertiesDialog {
+export default class NewProjectService implements NewProjectDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: uib.IModalService) {
         // Do nothing.
     }
-    open(defaults: PropertiesSettings): ng.IPromise<PropertiesSettings> {
+    open(defaults: NewProjectDefaults): ng.IPromise<NewProjectSettings> {
         const settings: uib.IModalSettings = {
             backdrop: 'static',
-            controller: PropertiesModalController,
-            templateUrl: 'properties-modal.html'
+            controller: NewProjectController,
+            templateUrl: 'new-project-modal.html'
         };
         settings.resolve = {
             pkgInfo: function () {

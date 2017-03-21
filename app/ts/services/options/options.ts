@@ -1,6 +1,25 @@
 import app from '../../app';
 import { IOption, LibraryKind } from './IOption';
 import IOptionManager from './IOptionManager';
+import { validate } from '../../utils/validateNpmPackageName';
+
+const ensurePackageName = function (packageName: string): string {
+    const result = validate(packageName);
+    if (result.validForNewPackages && result.validForOldPackages) {
+        return packageName;
+    }
+    else {
+        if (result.errors) {
+            throw new Error(result.errors.join(' '));
+        }
+        else if (result.warnings) {
+            throw new Error(result.warnings.join(' '));
+        }
+        else {
+            throw new Error(`${packageName} is not a valid package name`);
+        }
+    }
+};
 
 /**
  * Eventually, all TypeScript definition files will be named this way.
@@ -177,7 +196,7 @@ app.factory('options', [
         // TODO: Make this external.
         let _options: IOption[] = [
             {
-                packageName: 'angular',
+                packageName: ensurePackageName('angular'),
                 moduleName: 'ng',
                 libraryKind: LibraryKind.Global,
                 globalName: 'ng',
@@ -436,7 +455,7 @@ app.factory('options', [
                 dependencies: {}
             },
             {
-                packageName: 'plot.ly',
+                packageName: ensurePackageName('plot.ly'),
                 moduleName: 'plotly',
                 libraryKind: LibraryKind.UMD,
                 globalName: 'Plotly',
@@ -481,7 +500,7 @@ app.factory('options', [
                 dependencies: { 'react': VERSION_REACT }
             },
             {
-                packageName: 'socket.io-client',
+                packageName: ensurePackageName('socket.io-client'),
                 moduleName: 'socket.io-client',
                 libraryKind: LibraryKind.Global,
                 globalName: 'socket.io-client',

@@ -11,15 +11,17 @@ import ResizableScope from './ResizableScope';
 // touch handling rather than forcing them to do the same thing.
 //
 export default function () {
-    let toCall: () => any;
+    let toCall: (() => any) | undefined;
 
     // This function is used to regulate the resizing events that are broadcast.
     function throttle(fun: () => any) {
         if (toCall === void 0) {
             toCall = fun;
             setTimeout(function () {
-                toCall();
-                toCall = void 0;
+                if (toCall) {
+                    toCall();
+                    toCall = void 0;
+                }
             }, 100);
         }
         else {
@@ -56,7 +58,7 @@ export default function () {
 
             element.addClass('resizable');
 
-            const style = window.getComputedStyle(element[0], null);
+            const style = window.getComputedStyle(element[0], void 0);
 
             /**
              * The style width property value captured at dragStart.
@@ -94,7 +96,7 @@ export default function () {
              */
             let axis: string;
 
-            const info: { id: string; height: (boolean | number); width: (boolean | number) } = { id: void 0, width: false, height: false };
+            const info: { id: string | undefined; height: (boolean | number); width: (boolean | number) } = { id: void 0, width: false, height: false };
 
             /**
              * `updateInfo` is called for all mouse events.
@@ -103,11 +105,19 @@ export default function () {
             const updateInfo = function () {
                 info.width = false;
                 info.height = false;
+                const elementZero = element[0];
+                const flexBasis = elementZero.style.flexBasis;
                 if (axis === 'x') {
-                    info.width = scope.rFlex ? parseInt(element[0].style.flexBasis, 10) : parseInt(element[0].style.width, 10);
+                    const width = elementZero.style.width;
+                    if (typeof flexBasis === 'string' && typeof width === 'string') {
+                        info.width = scope.rFlex ? parseInt(flexBasis, 10) : parseInt(width, 10);
+                    }
                 }
                 else {
-                    info.height = scope.rFlex ? parseInt(element[0].style.flexBasis, 10) : parseInt(element[0].style.height, 10);
+                    const height = elementZero.style.height;
+                    if (typeof flexBasis === 'string' && typeof height === 'string') {
+                        info.height = scope.rFlex ? parseInt(flexBasis, 10) : parseInt(height, 10);
+                    }
                 }
                 info.id = element[0].id;
             };

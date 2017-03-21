@@ -760,9 +760,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:ansi-regex@2.1.1": {},
-  "npm:hosted-git-info@2.2.0": {
-    "url": "github:jspm/nodelibs-url@^0.1.0"
-  },
   "npm:showdown@1.6.4": {
     "yargs": "npm:yargs@^6.6.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -867,5 +864,8 @@
     "pbkdf2": "npm:pbkdf2@^3.0.3",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:hosted-git-info@2.3.1": {
+    "url": "github:jspm/nodelibs-url@^0.1.0"
   }
 }
