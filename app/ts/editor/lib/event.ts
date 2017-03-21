@@ -188,7 +188,7 @@ export function addMultiMouseDownListener(el: ListenerTarget, timeouts: number[]
     let clicks = 0;
     let startX: number;
     let startY: number;
-    let timer: number;
+    let timer: number | null;
     const eventNames = {
         2: "dblclick",
         3: "tripleclick",
@@ -244,9 +244,9 @@ export function getModifierString(e: KeyboardEvent) {
 }
 
 let pressedKeys: {
-    [keyCode: number]: boolean;
+    [keyCode: number]: boolean | null;
     altGr: boolean | number;
-} = null;
+} | null = null;
 
 function resetPressedKeys(e: any) {
     pressedKeys = Object.create(null);
@@ -254,7 +254,7 @@ function resetPressedKeys(e: any) {
 
 let ts = 0;
 
-function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any, e: KeyboardEvent, keyCode: number) {
+function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any, e: KeyboardEvent, keyCode: number | null) {
     let hashId = getModifierHash(e);
 
     if (!isMac && pressedKeys) {
@@ -279,8 +279,8 @@ function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCo
         }
     }
 
-    if (keyCode in MODIFIER_KEYS) {
-        switch (MODIFIER_KEYS[keyCode]) {
+    if (keyCode as number in MODIFIER_KEYS) {
+        switch (MODIFIER_KEYS[keyCode as number]) {
             case "Alt":
                 hashId = 2;
                 break;
@@ -310,7 +310,7 @@ function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCo
     }
 
     if (isChromeOS && hashId & 8) {
-        callback(e, hashId, keyCode);
+        callback(e, hashId, keyCode as number);
         if (e.defaultPrevented)
             return;
         else
@@ -320,11 +320,11 @@ function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCo
     // If there is no hashId and the keyCode is not a function key, then
     // we don't call the callback as we don't handle a command key here
     // (it's a normal key/character input).
-    if (!hashId && !(keyCode in FUNCTION_KEYS) && !(keyCode in PRINTABLE_KEYS)) {
+    if (!hashId && !(keyCode as number in FUNCTION_KEYS) && !(keyCode as number in PRINTABLE_KEYS)) {
         return false;
     }
 
-    return callback(e, hashId, keyCode);
+    return callback(e, hashId, keyCode as number);
 }
 
 export function addCommandKeyListener(el: ListenerTarget, callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any) {
@@ -335,7 +335,7 @@ export function addCommandKeyListener(el: ListenerTarget, callback: (e: Keyboard
         // To emulate the 'right' keydown behavior, the keyCode of the initial
         // keyDown event is stored and in the following keypress events the
         // stores keyCode is used to emulate a keyDown event.
-        let lastKeyDownKeyCode: number = null;
+        let lastKeyDownKeyCode: number | null = null;
         addListener(el, "keydown", function (e: KeyboardEvent) {
             lastKeyDownKeyCode = e.keyCode;
         });
@@ -344,10 +344,12 @@ export function addCommandKeyListener(el: ListenerTarget, callback: (e: Keyboard
         });
     }
     else {
-        let lastDefaultPrevented: boolean = null;
+        let lastDefaultPrevented: boolean | null = null;
 
         addListener(el, "keydown", function (e: KeyboardEvent) {
-            pressedKeys[e.keyCode] = true;
+            if (pressedKeys) {
+                pressedKeys[e.keyCode] = true;
+            }
             const result = normalizeCommandKeys(callback, e, e.keyCode);
             lastDefaultPrevented = e.defaultPrevented;
             return result;
@@ -361,7 +363,9 @@ export function addCommandKeyListener(el: ListenerTarget, callback: (e: Keyboard
         });
 
         addListener(el, 'keyup', function (e: KeyboardEvent) {
-            pressedKeys[e.keyCode] = null;
+            if (pressedKeys) {
+                pressedKeys[e.keyCode] = null;
+            }
         });
 
         if (!pressedKeys) {

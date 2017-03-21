@@ -1,7 +1,12 @@
 /**
+ * The annotation type determines the graphic used in the gutter.
+ */
+export type AnnotationType = 'info' | 'warning' | 'error';
+
+/**
  * 
  */
-interface Annotation {
+export interface Annotation {
 
     /**
      *
@@ -31,7 +36,7 @@ interface Annotation {
     /**
      *
      */
-    type: 'info' | 'warning' | 'error';
+    type: AnnotationType;
 }
 
 export default Annotation;

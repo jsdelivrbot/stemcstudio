@@ -1,0 +1,61 @@
+/**
+ * @license
+ * Copyright 2013 Palantir Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/// <reference path="../../../../../typings/typescriptServices.d.ts" />
+
+import { AbstractRule } from '../language/rule/abstractRule';
+import { IRuleMetadata, RuleFailure } from '../language/rule/rule';
+import { dedent } from '../utils';
+import { RuleWalker } from '../language/walker/ruleWalker';
+
+export class Rule extends AbstractRule {
+    /* tslint:disable:object-literal-sort-keys */
+    public static metadata: IRuleMetadata = {
+        ruleName: "no-eval",
+        description: "Disallows `eval` function invocations.",
+        rationale: dedent`
+            \`eval()\` is dangerous as it allows arbitrary code execution with full privileges. There are
+            [alternatives](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
+            for most of the use cases for \`eval()\`.`,
+        optionsDescription: "Not configurable.",
+        options: null,
+        optionExamples: ["true"],
+        type: "functionality",
+        typescriptOnly: false,
+    };
+    /* tslint:enable:object-literal-sort-keys */
+
+    public static FAILURE_STRING = "forbidden eval";
+
+    public apply(sourceFile: ts.SourceFile): RuleFailure[] {
+        return this.applyWithWalker(new NoEvalWalker(sourceFile, this.getOptions()));
+    }
+}
+
+class NoEvalWalker extends RuleWalker {
+    public visitCallExpression(node: ts.CallExpression) {
+        const expression = node.expression;
+        if (expression.kind === ts.SyntaxKind.Identifier) {
+            const expressionName = (expression as ts.Identifier).text;
+            if (expressionName === "eval") {
+                this.addFailureAtNode(expression, Rule.FAILURE_STRING);
+            }
+        }
+
+        super.visitCallExpression(node);
+    }
+}

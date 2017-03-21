@@ -92,7 +92,7 @@ Make sure that the version references are correct in the following files:
 1. package.json
 2. Gruntfile.js
 3. jspm.config.js
-4. constants.ts
+4. constants.ts (ACE_WORKER_VERSION)
 
 git push origin master
 

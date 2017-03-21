@@ -1,4 +1,5 @@
 import { addCssClass, createElement, createHTMLDivElement, removeCssClass, setCssClass } from "./lib/dom";
+import { isIE } from './lib/useragent';
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
 import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import Disposable from '../base/Disposable';
@@ -63,6 +64,8 @@ function changesToString(changes: number): string {
     return a.trim();
 }
 */
+
+export type TextDirection = 'ltr' | 'rtl' | 'auto';
 
 /**
  * Computes steps for animation purposes.
@@ -269,6 +272,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.eventBus = new EventEmitterClass<any, Renderer>(this);
 
         this.container = container || <HTMLDivElement>createElement("div");
+        this.container.dir = 'ltr';
 
         // TODO: this breaks rendering in Cloud9 with multiple ace instances
         // // Imports CSS once per DOM document ('ace_editor' serves as an identifier).
@@ -765,6 +769,27 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      */
     getAnimatedScroll() {
         return this.animatedScroll;
+    }
+
+    setTextDirection(value: TextDirection): void {
+        if (value === 'ltr' || value === 'rtl') {
+            this.container.dir = value;
+        }
+        else if (value === 'auto' && !isIE) {
+            this.container.dir = value;
+        }
+    }
+
+    getTextDirection(): TextDirection {
+        const dir = this.container.dir;
+        switch (dir) {
+            case 'ltr': return dir;
+            case 'rtl': return dir;
+            case 'auto': return dir;
+            default: {
+                throw new Error(`dir must be a TextDirection`);
+            }
+        }
     }
 
     /**

@@ -836,7 +836,6 @@
     "is-arrayish": "npm:is-arrayish@^0.2.1",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.7.0": {},
   "npm:normalize-package-data@2.3.6": {
     "hosted-git-info": "npm:hosted-git-info@^2.1.4",
     "is-builtin-module": "npm:is-builtin-module@^1.0.0",
@@ -867,5 +866,6 @@
   },
   "npm:hosted-git-info@2.3.1": {
     "url": "github:jspm/nodelibs-url@^0.1.0"
-  }
+  },
+  "github:geometryzen/ace-workers@2.9.0": {}
 }

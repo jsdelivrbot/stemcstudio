@@ -1,7 +1,7 @@
 import * as ng from 'angular';
 import { ACE_WORKER_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
-import Annotation from '../../editor/Annotation';
+import { Annotation, AnnotationType } from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
@@ -82,14 +82,51 @@ const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).c
  */
 const workerUrl = '/js/worker.js';
 
+type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
+
+/**
+ * Syntax and Semantic diagnostics are reported to the user as errors.
+ * Lint diagnostics are reported as warning.
+ */
+function diagnosticOriginToAnnotationType(origin: DiagnosticOrigin): AnnotationType {
+    switch (origin) {
+        case 'syntax':
+        case 'semantic': {
+            return 'error';
+        }
+        case 'lint': {
+            return 'warning';
+        }
+        default: {
+            throw new Error(`origin: DiagnosticOrigin => ${origin}`);
+        }
+    }
+}
+
+function diagnosticOriginToMarkerClass(origin: DiagnosticOrigin): string {
+    switch (origin) {
+        case 'syntax':
+        case 'semantic': {
+            return 'ace_error-marker';
+        }
+        case 'lint': {
+            return 'ace_highlight-marker';
+        }
+        default: {
+            throw new Error(`origin: DiagnosticOrigin => ${origin}`);
+        }
+    }
+}
+
 /**
  * Converts a Diagnostic to an Annotation.
- * The type of the annotation is assumed to be 'error'.
+ * The type of the annotation is currently based upon the origin.
  */
-function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic): Annotation {
+function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic, origin: DiagnosticOrigin): Annotation {
     const minChar = diagnostic.start;
     const pos: Position = getPosition(doc, minChar);
-    return { row: pos.row, column: pos.column, text: diagnostic.message, type: 'error' };
+    const type = diagnosticOriginToAnnotationType(origin);
+    return { row: pos.row, column: pos.column, text: diagnostic.message, type };
 }
 
 function checkPath(path: string): void {
@@ -980,8 +1017,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
-    private updateSession(path: string, errors: Diagnostic[], session: EditSession): void {
-        // We have the path and diagnostics, so we should be able to provide hyperlinks to errors!
+    private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
+        // We have the path and diagnostics, so we should be able to provide hyperlinks to errors.
         if (session) {
             checkSession(session);
         }
@@ -996,26 +1033,29 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
         const doc = session.docOrThrow();
 
-        const annotations = errors.map(function (error) {
+        const annotations = diagnostics.map(function (diagnostic) {
             if (file) {
                 file.tainted = true;
             }
-            return diagnosticToAnnotation(doc, error);
+            return diagnosticToAnnotation(doc, diagnostic, origin);
         });
         session.setAnnotations(annotations);
 
         this.errorMarkerIds.forEach(function (markerId) { session.removeMarker(markerId); });
 
-        errors.forEach((error) => {
-            const minChar = error.start;
-            const limChar = minChar + error.length;
+
+        // Add highlighting markers to the text.
+        const markerClass = diagnosticOriginToMarkerClass(origin);
+        diagnostics.forEach((diagnostic) => {
+            const minChar = diagnostic.start;
+            const limChar = minChar + diagnostic.length;
             const start = getPosition(doc, minChar);
             const end = getPosition(doc, limChar);
             const range = new Range(start.row, start.column, end.row, end.column);
             // Add a new marker to the given Range. The last argument (inFront) causes a
             // front marker to be defined and the 'changeFrontMarker' event fires.
             // The class parameter is a css stylesheet class so you must have it in your CSS.
-            this.errorMarkerIds.push(session.addMarker(range, "ace_error-marker", "text", null, true));
+            this.errorMarkerIds.push(session.addMarker(range, markerClass, "text", null, true));
         });
     }
 
@@ -1030,7 +1070,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     callback(err);
                 }
                 else {
-                    this.updateSession(path, syntaxErrors, session);
+                    this.updateSession(path, syntaxErrors, session, 'syntax');
                     if (syntaxErrors.length === 0) {
                         if (this.languageServiceProxy) {
                             this.inFlight++;
@@ -1041,7 +1081,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                                     callback(err);
                                 }
                                 else {
-                                    this.updateSession(path, semanticErrors, session);
+                                    this.updateSession(path, semanticErrors, session, 'semantic');
                                     if (semanticErrors.length === 0) {
                                         if (this.languageServiceProxy) {
                                             const configuration = this.tslintConfiguration;
@@ -1054,7 +1094,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                                                         callback(err);
                                                     }
                                                     else {
-                                                        this.updateSession(path, lintErrors, session);
+                                                        this.updateSession(path, lintErrors, session, 'lint');
                                                         callback(void 0);
                                                     }
                                                 });
@@ -1947,10 +1987,12 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             rules['eofline'] = true;
             rules['forin'] = true;
             rules['jsdoc-format'] = true;
+            rules['new-parens'] = true;
             rules['no-conditional-assignment'] = false;
             rules['no-consecutive-blank-lines'] = true;
             rules['no-construct'] = true;
             rules['no-for-in-array'] = true;
+            rules['no-inferrable-types'] = [true];
             rules['no-magic-numbers'] = false;
             rules['no-shadowed-variable'] = true;
             rules['no-string-throw'] = true;
@@ -1960,6 +2002,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             rules['prefer-const'] = true;
             rules['prefer-for-of'] = true;
             rules['prefer-function-over-method'] = false;
+            rules['prefer-method-signature'] = true;
             rules['radix'] = true;
             rules['semicolon'] = [true, 'never'];
             rules['trailing-comma'] = [true, { multiline: 'never', singleline: 'never' }];
