@@ -1,7 +1,7 @@
 import * as ng from 'angular';
 import controller from './ExplorerController';
 import ExplorerScope from './ExplorerScope';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 /**
  * interface for the DOM attributes.

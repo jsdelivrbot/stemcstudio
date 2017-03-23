@@ -1,6 +1,6 @@
 import IExplorer from './IExplorer';
-import WsModel from '../../wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../wsmodel/constants';
+import WsModel from '../../modules/wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
 
 export default class ExplorerController implements IExplorer {
 

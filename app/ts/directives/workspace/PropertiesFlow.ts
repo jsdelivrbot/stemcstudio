@@ -5,7 +5,7 @@ import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import IOptionManager from '../../services/options/IOptionManager';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 export default class PropertiesFlow {
     constructor(

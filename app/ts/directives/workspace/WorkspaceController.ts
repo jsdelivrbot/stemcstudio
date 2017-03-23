@@ -23,24 +23,25 @@ import { GITHUB_AUTH_MANAGER } from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
-import { OutputFilesMessage, outputFilesTopic } from '../../wsmodel/IWorkspaceModel';
+import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
 import RenamedFileHandler from './RenamedFileHandler';
-import { RenamedFileMessage, renamedFileTopic } from '../../wsmodel/IWorkspaceModel';
+import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import { STATE_GIST } from '../../modules/navigation/NavigationService';
 import { STATE_REPO } from '../../modules/navigation/NavigationService';
 import { STATE_ROOM } from '../../modules/navigation/NavigationService';
-import StemcArXiv from '../../stemcArXiv/StemcArXiv';
+import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
-import WsFile from '../../wsmodel/services/WsFile';
-import WsModel from '../../wsmodel/services/WsModel';
+import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
+import WsFile from '../../modules/wsmodel/services/WsFile';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -61,7 +62,7 @@ import { LANGUAGE_YAML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
-import { WORKSPACE_MODEL } from '../../wsmodel/constants';
+import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
 
 /**
  * A delay of 0 (zero) second.
@@ -140,6 +141,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         GITHUB_AUTH_MANAGER,
         'cloud',
         'templates',
+        TRANSLATE_SERVICE_UUID,
         'flow',
         'ga',
         'labelDialog',
@@ -179,6 +181,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         authManager: IGitHubAuthManager,
         private cloud: CloudService,
         templates: Doodle[],
+        translateService: ITranslateService,
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,

@@ -4,6 +4,7 @@ import isString from '../../utils/isString';
 import ITemplate from '../../services/templates/ITemplate';
 import NewProjectScope from './NewProjectScope';
 import NewProjectSettings from './NewProjectSettings';
+import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 
 function defaultTemplate(template: ITemplate, templates: ITemplate[]): ITemplate {
     if (template) {
@@ -26,12 +27,14 @@ export default class NewProjectController {
         '$scope',
         '$uibModalInstance',
         'templates',
+        TRANSLATE_SERVICE_UUID,
         'pkgInfo'];
 
     constructor(
         $scope: NewProjectScope,
         $uibModalInstance: uib.IModalServiceInstance,
         templates: ITemplate[],
+        translateService: ITranslateService,
         pkgInfo: NewProjectSettings) {
 
         $scope.project = {
@@ -58,8 +61,15 @@ export default class NewProjectController {
             form.$setUntouched();
         };
     }
+
+    /**
+     * 
+     */
     $onInit(): void {
-        // This IS called.
+        //
+        // Note that when $onInit is called, we are already inside a digest loop.
+        // We must not call apply on the scope.
+        //
     }
     $onDestroy(): void {
         // This is NOT called. Don't know why.

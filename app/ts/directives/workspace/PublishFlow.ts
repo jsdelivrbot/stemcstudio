@@ -2,9 +2,9 @@ import CredentialsService from '../../services/credentials/CredentialsService';
 import FlowService from '../../services/flow/FlowService';
 import PublishFacts from './PublishFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import StemcArXiv from '../../stemcArXiv/StemcArXiv';
-import SubmitParams from '../../stemcArXiv/SubmitParams';
-import WsModel from '../../wsmodel/services/WsModel';
+import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
+import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 /**
  *

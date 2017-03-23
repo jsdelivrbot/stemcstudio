@@ -21,7 +21,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "\n" +
     "    <div class='md-docs-header'>\n" +
     "        <div class='container'>\n" +
-    "            <h1><logo-text version='{{version}}'/></h1>\n" +
+    "            <h1>\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h1>\n" +
     "            <p>\n" +
     "                Learning STEM through Computational Modeling.\n" +
     "            </p>\n" +
@@ -32,7 +34,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div class='row'>\n" +
     "            <div class='col-md-9' role='main'>\n" +
     "                <div class='md-docs-section'>\n" +
-    "                    <h1 id='overview' class='page-header'>{{ 'APP_NAME' | translate }} Overview</h1>\n" +
+    "                    <h1 id='overview' class='page-header'>STEMCstudio Overview</h1>\n" +
     "                    <p class='lead'>\n" +
     "                        The principle behind STEMCstudio is to provide a learning environment in which the student can verify personal understanding\n" +
     "                        and conceptual models by constructing a working software model. This learning environment takes the\n" +
@@ -154,8 +156,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                and see the results in the browser.\n" +
     "                            </dd>\n" +
     "                            <dt>\n" +
-    "                            README Documentation and LATEX support.\n" +
-    "                        </dt>\n" +
+    "                                README Documentation and LATEX support.\n" +
+    "                            </dt>\n" +
     "                            <dd>\n" +
     "                                A README (Markdown) file is an invaluable adjunct to any coding project. It may describe any aspect of the project and is\n" +
     "                                a standard file in a GitHub repository. STEMCstudio supports the README markdown file format\n" +
@@ -209,10 +211,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        Workshops are available for both students and educators and may be customized according to your needs.\n" +
     "                    </p>\n" +
     "                    <address>\n" +
-    "                    <strong>David Geo Holmes</strong><br/>\n" +
-    "                    <strong>david</strong>&nbsp;DOT&nbsp;<strong>geo</strong>&nbsp;DOT&nbsp;<strong>holmes</strong>&nbsp;AT&nbsp;<strong>gmail</strong>&nbsp;DOT&nbsp;<strong>com</strong><br/>\n" +
-    "                    (919)&nbsp;880-8589<br/>\n" +
-    "                </address>\n" +
+    "                        <strong>David Geo Holmes</strong><br/>\n" +
+    "                        <strong>david</strong>&nbsp;DOT&nbsp;<strong>geo</strong>&nbsp;DOT&nbsp;<strong>holmes</strong>&nbsp;AT&nbsp;<strong>gmail</strong>&nbsp;DOT&nbsp;<strong>com</strong><br/>                        (919)&nbsp;880-8589\n" +
+    "                        <br/>\n" +
+    "                    </address>\n" +
     "                </div>\n" +
     "\n" +
     "            </div>\n" +
@@ -822,11 +824,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button>\n" +
     "                <button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
-    "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
+    "                <!--button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button-->\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
-    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"{{ 'Search STEMC arXiv' | translate }}\">\n" +
+    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search STEMC arXiv\">\n" +
     "                </form>\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
@@ -870,8 +872,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </article>\n" +
     "                    </div>\n" +
     "                    <div ng-if='found === 0 && params.query === query'>\n" +
-    "                        <p>Your search - <b>{{query}}</b> - did not match any documents.</p>\n" +
-    "                        <p>Suggestions:</p>\n" +
+    "                        <p>Your search did not match any documents.</p>\n" +
+    "                        <p><span>Suggestions</span>:</p>\n" +
     "                        <ul>\n" +
     "                            <li>Make sure all words are spelled correctly.</li>\n" +
     "                            <li>Try different keywords.</li>\n" +
@@ -900,7 +902,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    </div>\n" +
     "                    <div ng-if='doodles().length === 0'>\n" +
     "                        <p>Your do not have any documents in your Local Storage.</p>\n" +
-    "                        <p>Suggestions:</p>\n" +
+    "                        <p><span>Suggestions</span>:</p>\n" +
     "                        <ul>\n" +
     "                            <li>Code Now!</li>\n" +
     "                            <li>Learn using the Tutorials.</li>\n" +
@@ -972,7 +974,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </p>\n" +
     "                        <div class='login-provider-buttons'>\n" +
     "                            <div ng-controller='github-login-controller as github' ng-if='FEATURE_GITHUB_SIGNIN_ENABLED' button-id=\"github-button-id\"\n" +
-    "                            options=\"options\" class='login-provider-button-container'>\n" +
+    "                                options=\"options\" class='login-provider-button-container'>\n" +
     "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
     "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"github.login()\">\n" +
     "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
@@ -988,7 +990,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </div>\n" +
     "                    </div>\n" +
     "                    <div class='md-docs-section'>\n" +
-    "                        <h1 class='page-header'>{{ 'APP_NAME' | translate }} Platform</h1>\n" +
+    "                        <h1 class='page-header'>STEMCstudio Platform</h1>\n" +
     "                        <p class='lead'>\n" +
     "                            Publish your work, and gain access to other platform features.\n" +
     "                        </p>\n" +
@@ -997,7 +999,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <google-sign-in-button ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' button-id=\"google-button-id\" options=\"googleSignInOptions\"></google-sign-in-button>\n" +
     "                            </div>\n" +
     "                            <div ng-controller='twitter-login-controller as twitter' ng-if='FEATURE_TWITTER_SIGNIN_ENABLED' button-id=\"github-button-id\"\n" +
-    "                            options=\"options\" class='login-provider-button-container'>\n" +
+    "                                options=\"options\" class='login-provider-button-container'>\n" +
     "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonTwitter\">\n" +
     "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"twitter.login()\">\n" +
     "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
@@ -1010,7 +1012,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                </div>\n" +
     "                            </div>\n" +
     "                            <div ng-controller='facebook-login-controller as facebook' ng-if='FEATURE_FACEBOOK_SIGNIN_ENABLED' button-id=\"github-button-id\"\n" +
-    "                            options=\"options\" class='login-provider-button-container'>\n" +
+    "                                options=\"options\" class='login-provider-button-container'>\n" +
     "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonFacebook\">\n" +
     "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"facebook.login()\">\n" +
     "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
@@ -1050,15 +1052,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <h3 class='modal-title' style=\"float: right;\">Create a New Project</h3>\n" +
     "        </div>\n" +
     "        <div class=\"modal-body\">\n" +
-    "            <label class='text-muted'>Description: <input type='text' name=\"description\" ng-model='project.description' placeholder=\"Your project description\" required/></label><br/>\n" +
+    "            <label class='text-muted'><span>Description</span>: <input type='text' name=\"description\" ng-model='project.description' placeholder=\"Your project description\" required/></label><br/>\n" +
     "            <br/>\n" +
     "            <div ng-show=\"form.$submitted || form.description.$touched\">\n" +
     "                <div ng-show=\"form.description.$error.required\">Description is required.</div>\n" +
     "            </div>\n" +
-    "            <label class='text-muted'>Template: <select ng-model='project.template' ng-options='template.description for template in templates track by template.name'></select></label>\n" +
+    "            <label class='text-muted'><span>Template</span>: <select ng-model='project.template' ng-options='template.description for template in templates track by template.name'></select></label>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
-    "            <!-- button class=\"btn btn-tertiary\" type=\"button\" data-ng-click=\"reset(form)\">Reset</button -->\n" +
     "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
     "            <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"form.$invalid\">OK</button>\n" +
     "        </div>\n" +

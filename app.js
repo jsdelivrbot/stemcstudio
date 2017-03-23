@@ -16,6 +16,7 @@ require('multer');
 var errorHandler = require("errorhandler");
 var rooms = require("./server/routes/rooms/index");
 var stemcArXiv = require("./server/routes/stemcArXiv/index");
+var translations = require("./server/routes/translations/index");
 var npm = require('./package.json');
 require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
@@ -97,6 +98,7 @@ app.get('/rooms/:id', rooms.getRoom);
 app.delete('/rooms/:id', rooms.destroyRoom);
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);
+app.get('/translations/:input', translations.getTranslation);
 app.get("/*", function (req, res, next) {
     res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("index", {

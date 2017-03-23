@@ -864,8 +864,9 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
-  "npm:hosted-git-info@2.3.1": {
+  "github:geometryzen/ace-workers@2.9.0": {},
+  "npm:hosted-git-info@2.4.1": {
+    "util": "github:jspm/nodelibs-util@^0.1.0",
     "url": "github:jspm/nodelibs-url@^0.1.0"
-  },
-  "github:geometryzen/ace-workers@2.9.0": {}
+  }
 }

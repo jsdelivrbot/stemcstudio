@@ -89,7 +89,7 @@ export default class CredentialsService {
     /**
      * Google Sign-In.
      */
-    googleSignIn(token: string): void {
+    googleSignIn(token: string | undefined): void {
         if (token) {
             this._Logins[PROVIDER_NAME_GOOGLE_PLUS] = token;
         }

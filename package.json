@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.22.15",
+  "version": "2.22.16",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -35,13 +35,13 @@
     "karma-jasmine": "^1.1.0",
     "karma-jspm": "^2.2.2",
     "lite-server": "^2.3.0",
-    "plotly.js": "^1.24.2",
+    "plotly.js": "^1.25.0",
     "protractor": "^3.3.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "systemjs-builder": "0.15.35",
     "tslint": "^4.5.1",
-    "typedoc": "^0.5.7",
+    "typedoc": "^0.5.9",
     "typescript": "^2.2.1",
     "typings": "^2.1.0"
   },
@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@angular/router": "^0.2.0",
+    "@google-cloud/translate": "^0.7.0",
     "angular": "1.5.9",
     "angular-material-icons": "^0.7.1",
     "angular2": "2.0.0-beta.21",

@@ -5,10 +5,10 @@ import Doodle from '../../services/doodles/Doodle';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import isString from '../../utils/isString';
 import MwEdits from '../../synchronization/MwEdits';
-import RoomAgent from '../../modules/rooms/services/RoomAgent';
-import RoomsService from '../../modules/rooms/services/RoomsService';
-import WsModel from '../../wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../wsmodel/constants';
+import RoomAgent from '../../modules/rooms/RoomAgent';
+import { IRoomsService, ROOMS_SERVICE_UUID } from '../../modules/rooms/api';
+import WsModel from '../../modules/wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
 
 /**
  * If the workspace is in the foreground, then the background is everything else that the
@@ -19,13 +19,13 @@ export default class BackgroundService implements Background {
     public static $inject: string[] = [
         'cloud',
         'doodles',
-        'roomsService',
+        ROOMS_SERVICE_UUID,
         WORKSPACE_MODEL
     ];
     constructor(
         private cloud: CloudService,
         private doodles: IDoodleManager,
-        private roomsService: RoomsService,
+        private roomsService: IRoomsService,
         private wsModel: WsModel) {
         // Do nothing.
     }

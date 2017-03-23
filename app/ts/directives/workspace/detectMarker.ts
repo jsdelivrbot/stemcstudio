@@ -1,5 +1,5 @@
-import WsFile from '../../wsmodel/services/WsFile';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsFile from '../../modules/wsmodel/services/WsFile';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 import fileExists from './fileExists';
 
 /**

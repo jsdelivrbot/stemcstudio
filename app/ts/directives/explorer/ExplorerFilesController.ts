@@ -4,9 +4,9 @@ import ModalDialog from '../../services/modalService/ModalDialog';
 import AlertOptions from '../../services/modalService/AlertOptions';
 import ConfirmOptions from '../../services/modalService/ConfirmOptions';
 import PromptOptions from '../../services/modalService/PromptOptions';
-import WsFile from '../../wsmodel/services/WsFile';
-import WsModel from '../../wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../wsmodel/constants';
+import WsFile from '../../modules/wsmodel/services/WsFile';
+import WsModel from '../../modules/wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
 
 /**
  * This controller is mostly used to define and manage the context menu for the files in the explorer.

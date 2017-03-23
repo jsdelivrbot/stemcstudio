@@ -10,7 +10,7 @@ import PromptOptions from '../../services/modalService/PromptOptions';
 import RepoData from '../../services/github/RepoData';
 import isNumber from '../../utils/isNumber';
 import Method from './Method';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 const FEATURE_GIST_ENABLED = true;
 const FEATURE_REPO_ENABLED = false;

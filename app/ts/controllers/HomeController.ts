@@ -10,7 +10,8 @@ import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
 import NewProjectService from '../modules/project/NewProjectService';
-import StemcArXiv from '../stemcArXiv/StemcArXiv';
+import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
+import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
  * Manages the Home Page.
@@ -27,6 +28,7 @@ export default class HomeController extends AbstractPageController {
         'navigation',
         'newProject',
         'stemcArXiv',
+        TRANSLATE_SERVICE_UUID,
         'FEATURE_COOKBOOK_ENABLED',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
@@ -48,6 +50,7 @@ export default class HomeController extends AbstractPageController {
         navigation: NavigationService,
         newProject: NewProjectService,
         stemcArXiv: StemcArXiv,
+        translateService: ITranslateService,
         FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,

@@ -425,8 +425,9 @@ System.config({
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:hosted-git-info@2.3.1": {
-      "url": "github:jspm/nodelibs-url@0.1.0"
+    "npm:hosted-git-info@2.4.1": {
+      "url": "github:jspm/nodelibs-url@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:https-browserify@0.0.0": {
       "http": "github:jspm/nodelibs-http@1.7.1"
@@ -471,7 +472,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:normalize-package-data@2.3.6": {
-      "hosted-git-info": "npm:hosted-git-info@2.3.1",
+      "hosted-git-info": "npm:hosted-git-info@2.4.1",
       "is-builtin-module": "npm:is-builtin-module@1.0.0",
       "semver": "npm:semver@5.3.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",

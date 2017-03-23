@@ -55,7 +55,7 @@ import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import { LANGUAGE_YAML } from '../../languages/modes';
-import WsFile from '../../wsmodel/services/WsFile';
+import WsFile from '../../modules/wsmodel/services/WsFile';
 import refChange from '../../utils/refChange';
 
 function isTypeScript(path: string): boolean {

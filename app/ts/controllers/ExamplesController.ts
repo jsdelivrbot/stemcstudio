@@ -4,6 +4,7 @@ import ExamplesScope from '../scopes/ExamplesScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
+import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
  * The examples are currently not data-driven and not very pretty!
@@ -14,6 +15,7 @@ export default class ExamplesController extends AbstractPageController {
         '$scope',
         '$window',
         GITHUB_AUTH_MANAGER,
+        TRANSLATE_SERVICE_UUID,
         'ga',
         'modalDialog',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
@@ -23,6 +25,7 @@ export default class ExamplesController extends AbstractPageController {
         $scope: ExamplesScope,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
+        translateService: ITranslateService,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
@@ -350,5 +353,21 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Chemistry'
             }
         ];
+    }
+
+    /**
+     *
+     */
+    $onInit(): void {
+        // This method is NOT called.
+        console.warn("ExamplesController.$onInit");
+    }
+
+    /**
+     *
+     */
+    $onDestroy(): void {
+        // This method is NOT called.
+        console.warn("ExamplesController.$onDestroy");
     }
 }

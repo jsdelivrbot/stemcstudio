@@ -1,4 +1,4 @@
-import { OutputFilesMessage } from '../../wsmodel/IWorkspaceModel';
+import { OutputFilesMessage } from '../../modules/wsmodel/IWorkspaceModel';
 
 /**
  *

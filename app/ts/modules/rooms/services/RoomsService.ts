@@ -1,24 +1,17 @@
 import * as ng from 'angular';
-import RoomParams from './RoomParams';
-import Room from './Room';
-import RoomAgent from './RoomAgent';
+import { IRoomsService, Room, RoomParams } from '../api';
+import RoomAgent from '../RoomAgent';
 
 /**
  * 
  */
-export default class RoomsService {
-    public static $inject: string[] = [
-        '$http',
-        '$q'
-    ];
+export default class RoomsService implements IRoomsService {
+    public static $inject: string[] = ['$http', '$q'];
 
     /**
      * 
      */
-    constructor(
-        private $http: ng.IHttpService,
-        private $q: ng.IQService
-    ) {
+    constructor(private $http: ng.IHttpService, private $q: ng.IQService) {
         // Do nothing yet.
     }
 

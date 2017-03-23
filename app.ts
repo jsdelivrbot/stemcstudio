@@ -19,6 +19,7 @@ import errorHandler = require('errorhandler');
 // Temporary disable rooms to prevent Redis from loading.
 import * as rooms from './server/routes/rooms/index';
 import * as stemcArXiv from './server/routes/stemcArXiv/index';
+import * as translations from './server/routes/translations/index';
 
 const npm = require('./package.json');
 require('./configure');
@@ -138,6 +139,8 @@ app.delete('/rooms/:id', rooms.destroyRoom);
 
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);
+
+app.get('/translations/:input', translations.getTranslation);
 
 app.get("/*", (req: express.Request, res: express.Response, next) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.

@@ -47,7 +47,6 @@ import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
-import ITranslateProvider from './translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
@@ -78,10 +77,18 @@ import rooms from './modules/rooms/index';
  * The module for TypeScript Linting.
  */
 import tslint from './modules/tslint/index';
-import stemcArXiv from './stemcArXiv/index';
+import stemcArXiv from './modules/stemcArXiv/index';
 import editors from './modules/editors/index';
-import translate from './translate/index';
-import wsmodel from './wsmodel/index';
+//
+// Registering the module for translation makes the service and directives available.
+// We also configure the service so that it knows the source language.
+//
+import translate from './modules/translate/index';
+import { ITranslateGatewayProvider, TRANSLATE_GATEWAY_PROVIDER_UUID } from './modules/translate/api';
+import { ITranslateServiceProvider, TRANSLATE_SERVICE_PROVIDER_UUID } from './modules/translate/api';
+import { ITranslateService, TRANSLATE_SERVICE_UUID } from './modules/translate/api';
+
+import wsmodel from './modules/wsmodel/index';
 
 import BackgroundService from './services/background/BackgroundService';
 import { BACKGROUND_UUID } from './services/background/Background';
@@ -140,7 +147,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.22.15');
+app.constant('version', '2.22.16');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -271,7 +278,8 @@ app.service('navigation', NavigationService);
 //
 app.config([
     '$stateProvider',
-    '$translateProvider',
+    TRANSLATE_SERVICE_PROVIDER_UUID,
+    TRANSLATE_GATEWAY_PROVIDER_UUID,
     '$urlRouterProvider',
     'FEATURE_COOKBOOK_ENABLED',
     'FEATURE_DASHBOARD_ENABLED',
@@ -281,9 +289,10 @@ app.config([
     'FEATURE_ROOM_ENABLED',
     'FEATURE_TUTORIALS_ENABLED',
     function (
-        $stateProvider: angular.ui.IStateProvider,
-        $translateProvider: ITranslateProvider,
-        $urlRouterProvider: angular.ui.IUrlRouterProvider,
+        stateProvider: angular.ui.IStateProvider,
+        translateServiceProvider: ITranslateServiceProvider,
+        translateGatewayProvider: ITranslateGatewayProvider,
+        urlRouterProvider: angular.ui.IUrlRouterProvider,
         FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
@@ -292,8 +301,10 @@ app.config([
         FEATURE_ROOM_ENABLED: boolean,
         FEATURE_TUTORIALS_ENABLED: boolean
     ) {
+        // console.lg(`${app.name}.config(...)`);
+
         // FIXME: Some of the states should be replaced by modal dialogs.
-        $stateProvider
+        stateProvider
             .state(STATE_HOME, {
                 url: '/',
                 templateUrl: 'home.html',
@@ -326,7 +337,7 @@ app.config([
             });
 
         if (FEATURE_COOKBOOK_ENABLED) {
-            $stateProvider.state(STATE_COOKBOOK, {
+            stateProvider.state(STATE_COOKBOOK, {
                 url: '/cookbook',
                 templateUrl: 'cookbook.html',
                 controller: 'cookbook-controller'
@@ -337,7 +348,7 @@ app.config([
         }
 
         if (FEATURE_DASHBOARD_ENABLED) {
-            $stateProvider.state(STATE_DASHBOARD, {
+            stateProvider.state(STATE_DASHBOARD, {
                 url: '/dashboard',
                 templateUrl: 'dashboard.html',
                 controller: 'DashboardController'
@@ -348,7 +359,7 @@ app.config([
         }
 
         if (FEATURE_EXAMPLES_ENABLED) {
-            $stateProvider.state(STATE_EXAMPLES, {
+            stateProvider.state(STATE_EXAMPLES, {
                 url: '/examples',
                 templateUrl: 'examples.html',
                 controller: 'examples-controller'
@@ -359,7 +370,7 @@ app.config([
         }
 
         if (FEATURE_GIST_ENABLED) {
-            $stateProvider.state(STATE_GIST, {
+            stateProvider.state(STATE_GIST, {
                 url: '/gists/{gistId}?output',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -370,7 +381,7 @@ app.config([
         }
 
         if (FEATURE_REPO_ENABLED) {
-            $stateProvider.state(STATE_REPO, {
+            stateProvider.state(STATE_REPO, {
                 url: '/users/{owner}/repos/{repo}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -381,7 +392,7 @@ app.config([
         }
 
         if (FEATURE_ROOM_ENABLED) {
-            $stateProvider.state(STATE_ROOM, {
+            stateProvider.state(STATE_ROOM, {
                 url: '/rooms/{roomId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -392,7 +403,7 @@ app.config([
         }
 
         if (FEATURE_TUTORIALS_ENABLED) {
-            $stateProvider.state(STATE_TUTORIALS, {
+            stateProvider.state(STATE_TUTORIALS, {
                 url: '/tutorials',
                 templateUrl: 'tutorials.html',
                 controller: 'tutorials-controller'
@@ -402,23 +413,11 @@ app.config([
             // TODO: Recognize the url but go to a no droids here.
         }
 
-        $urlRouterProvider.otherwise('/');
+        urlRouterProvider.otherwise('/');
 
-        $translateProvider
-            .translations('en', {
-                APP_NAME: 'STEMCstudio',
-                BUTTON_TEXT_EN: 'english',
-                BUTTON_TEXT_DE: 'german'
-            })
-            .translations('de', {
-                APP_NAME: 'STEMCstudio',
-                BUTTON_TEXT_EN: 'englisch',
-                BUTTON_TEXT_DE: 'deutsch'
-            });
-
-        $translateProvider.preferredLanguage = 'en';
-        $translateProvider.useLocalStorage();
-
+        translateGatewayProvider.path = 'translations';
+        // The source language must be English, because that is how the application was developed.
+        translateServiceProvider.sourceLanguage = 'en';
     }]);
 
 
@@ -429,6 +428,7 @@ app.run([
     '$rootScope',
     '$state',
     '$stateParams',
+    TRANSLATE_SERVICE_UUID,
     'credentials',
     'cookie',
     'version',
@@ -440,6 +440,7 @@ app.run([
         $rootScope: AppScope,
         $state: angular.ui.IStateService,
         $stateParams: angular.ui.IStateParamsService,
+        translateService: ITranslateService,
         credentials: CredentialsService,
         cookie: CookieService,
         version: string,

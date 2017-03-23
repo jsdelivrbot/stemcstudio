@@ -1,3 +1,4 @@
+import INavigationService from './INavigationService';
 // Names of routing states.
 // WARNING: Changing state names can break ui-sref directives.
 
@@ -69,7 +70,7 @@ export const STATE_TUTORIALS = 'tutorials';
 /**
  * 
  */
-export default class NavigationService {
+export default class NavigationService implements INavigationService {
     public static $inject: string[] = ['$state', 'ga'];
     constructor(private $state: angular.ui.IStateService, private ga: UniversalAnalytics.ga) {
         // Do nothing.

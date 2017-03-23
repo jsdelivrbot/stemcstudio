@@ -1,6 +1,6 @@
 import TsLintSettingsService from '../TsLintSettingsService';
-import { WORKSPACE_MODEL } from '../../../wsmodel/constants';
-import IWorkspaceModel from '../../../wsmodel/IWorkspaceModel';
+import { WORKSPACE_MODEL } from '../../wsmodel/constants';
+import IWorkspaceModel from '../../wsmodel/IWorkspaceModel';
 
 export class TsLintSettingsJsonFileService implements TsLintSettingsService {
     public static $inject: string[] = [

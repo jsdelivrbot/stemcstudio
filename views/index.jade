@@ -7,7 +7,9 @@ block content
     if ('serviceWorker'in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
-        .then(function() { console.log("STEMCstudio service worker registered."); });
+        .then(function() {
+          /* console.log("STEMCstudio service worker registered."); */
+        });
     }
   script.
     var systemLocate = System.locate;

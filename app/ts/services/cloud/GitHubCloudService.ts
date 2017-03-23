@@ -29,7 +29,7 @@ import RepoElement from '../github/RepoElement';
 import TreeData from '../github/TreeData';
 import TreeKey from '../github/TreeKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 const LEGACY_META = 'doodle.json';
 

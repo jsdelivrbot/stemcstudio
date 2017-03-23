@@ -1,6 +1,6 @@
 import DoodleScope from './DoodleScope';
-import WsModel from '../wsmodel/services/WsModel';
-import WsFile from '../wsmodel/services/WsFile';
+import WsModel from '../modules/wsmodel/services/WsModel';
+import WsFile from '../modules/wsmodel/services/WsFile';
 
 interface WorkspaceScope extends DoodleScope {
 

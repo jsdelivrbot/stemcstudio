@@ -1,4 +1,4 @@
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 /**
  * Determines whether the workspace contains the specified file by path.

@@ -10,7 +10,7 @@ import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 const noop = function () { /* Do nothing. */ };
 

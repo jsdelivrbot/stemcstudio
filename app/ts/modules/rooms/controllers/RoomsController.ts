@@ -1,12 +1,11 @@
 import IGitHubAuthManager from '../../../services/gham/IGitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from '../../../services/gham/IGitHubAuthManager';
-import RoomAgent from '../services/RoomAgent';
-import RoomParams from '../services/RoomParams';
-import RoomsService from '../services/RoomsService';
+import RoomAgent from '../RoomAgent';
+import { IRoomsService, RoomParams, ROOMS_SERVICE_UUID } from '../api';
 import ModalDialog from '../../../services/modalService/ModalDialog';
-import NavigationService from '../../../modules/navigation/NavigationService';
-import WsModel from '../../../wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../../wsmodel/constants';
+import NavigationService from '../../navigation/NavigationService';
+import WsModel from '../../wsmodel/services/WsModel';
+import { WORKSPACE_MODEL } from '../../wsmodel/constants';
 
 /**
  * A controller for a collection of rooms.
@@ -16,14 +15,14 @@ export default class RoomsController {
         GITHUB_AUTH_MANAGER,
         'modalDialog',
         'navigation',
-        'roomsService',
+        ROOMS_SERVICE_UUID,
         WORKSPACE_MODEL
     ];
     constructor(
         private authManager: IGitHubAuthManager,
         private modalDialog: ModalDialog,
         private navigation: NavigationService,
-        private roomsService: RoomsService,
+        private roomsService: IRoomsService,
         private wsModel: WsModel
     ) {
         // Do nothing yet.
@@ -52,7 +51,13 @@ export default class RoomsController {
     }
 
     isDestroyRoomEnabled(): boolean {
-        return this.wsModel.isConnectedToRoom() && this.authManager.isSignedIn() && this.wsModel.isRoomOwner(<string>this.authManager.userLogin());
+        if (this.wsModel.isConnectedToRoom() && this.authManager.isSignedIn()) {
+            // FIXME: Why is the result if isRoomOwner undecided (undefined)?
+            if (this.wsModel.isRoomOwner(<string>this.authManager.userLogin())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

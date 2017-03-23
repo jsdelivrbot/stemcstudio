@@ -1,6 +1,6 @@
 import * as ng from 'angular';
 import ContextMenuItem from '../contextMenu/ContextMenuItem';
-import WsFile from '../../wsmodel/services/WsFile';
+import WsFile from '../../modules/wsmodel/services/WsFile';
 
 /**
  * The shape of the menu property dictates the form of the DOM attribute in the context-menu.

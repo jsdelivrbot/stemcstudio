@@ -4,7 +4,7 @@ import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import namesToOptions from './namesToOptions';
 import scriptURL from './scriptURL';
-import WsModel from '../../wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/services/WsModel';
 
 interface Unit {
     packageName: string;

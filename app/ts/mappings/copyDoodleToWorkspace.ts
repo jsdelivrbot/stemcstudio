@@ -1,6 +1,6 @@
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
-import WsModel from '../wsmodel/services/WsModel';
+import WsModel from '../modules/wsmodel/services/WsModel';
 
 /**
  * 

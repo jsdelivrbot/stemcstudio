@@ -20,7 +20,7 @@
                         </p>
                         <div class='login-provider-buttons'>
                             <div ng-controller='github-login-controller as github' ng-if='FEATURE_GITHUB_SIGNIN_ENABLED' button-id="github-button-id"
-                            options="options" class='login-provider-button-container'>
+                                options="options" class='login-provider-button-container'>
                                 <div style="height:34px;width:240px;" class="stemcButton stemcButtonGray">
                                     <div class="stemcButtonContentWrapper" ng-click="github.login()">
                                         <div class="stemcButtonIcon" style="padding:7px;">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class='md-docs-section'>
-                        <h1 class='page-header'>{{ 'APP_NAME' | translate }} Platform</h1>
+                        <h1 class='page-header'>STEMCstudio Platform</h1>
                         <p class='lead'>
                             Publish your work, and gain access to other platform features.
                         </p>
@@ -45,7 +45,7 @@
                                 <google-sign-in-button ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' button-id="google-button-id" options="googleSignInOptions"></google-sign-in-button>
                             </div>
                             <div ng-controller='twitter-login-controller as twitter' ng-if='FEATURE_TWITTER_SIGNIN_ENABLED' button-id="github-button-id"
-                            options="options" class='login-provider-button-container'>
+                                options="options" class='login-provider-button-container'>
                                 <div style="height:34px;width:240px;" class="stemcButton stemcButtonTwitter">
                                     <div class="stemcButtonContentWrapper" ng-click="twitter.login()">
                                         <div class="stemcButtonIcon" style="padding:7px;">
@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                             <div ng-controller='facebook-login-controller as facebook' ng-if='FEATURE_FACEBOOK_SIGNIN_ENABLED' button-id="github-button-id"
-                            options="options" class='login-provider-button-container'>
+                                options="options" class='login-provider-button-container'>
                                 <div style="height:34px;width:240px;" class="stemcButton stemcButtonFacebook">
                                     <div class="stemcButtonContentWrapper" ng-click="facebook.login()">
                                         <div class="stemcButtonIcon" style="padding:7px;">

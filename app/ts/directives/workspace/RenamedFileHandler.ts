@@ -1,4 +1,4 @@
-import { RenamedFileMessage } from '../../wsmodel/IWorkspaceModel';
+import { RenamedFileMessage } from '../../modules/wsmodel/IWorkspaceModel';
 
 /**
  *
