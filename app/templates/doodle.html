@@ -16,19 +16,19 @@
 					<li>
 						<a role='button' ng-click='toggleExplorer()'>
 							<ng-md-icon icon="{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}" style="fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}"
-								size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}" tooltip-placement='bottom'>
+							 size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}" tooltip-placement='bottom'>
 								<ng-md-icon>
 						</a>
 					</li>
 					<li ng-if='htmlFileCount() > 0'>
 						<a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
 							<ng-md-icon icon='launch' style="fill: {{true ? '#00ff00' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Launch Program"
-								tooltip-placement='bottom'>
+							 tooltip-placement='bottom'>
 								<ng-md-icon>
 						</a>
 						<a role='button' ng-click='toggleView()' ng-show='isViewVisible'>
 							<ng-md-icon icon='stop' style="fill: {{true ? '#ff9900' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Stop Program"
-								tooltip-placement='bottom'>
+							 tooltip-placement='bottom'>
 								<ng-md-icon>
 						</a>
 					</li>
@@ -48,7 +48,7 @@
 					<li ng-if='markdownFileCount() > 0'>
 						<a role='button' ng-click='toggleMarkdownVisible()'>
 							<ng-md-icon icon='description' style="fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}"
-								tooltip-placement='bottom'>
+							 tooltip-placement='bottom'>
 								<ng-md-icon>
 						</a>
 					</li>
@@ -86,10 +86,10 @@
 								<a role='button' ng-click='doNew()'>New Project</a>
 							</li>
 							<li>
-								<a role='button' ng-click='doOpen()'>Open Project</a>
+								<a role='button' ng-click='doOpen()'>Open Project from Local Storage</a>
 							</li>
 							<li>
-								<a role='button' ng-click='doCopy()'>Copy Project</a>
+								<a role='button' ng-click='doCopy()'>Copy current Project</a>
 							</li>
 						</ul>
 					</li>

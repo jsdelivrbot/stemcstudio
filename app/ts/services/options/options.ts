@@ -200,7 +200,7 @@ app.factory('options', [
                 moduleName: 'ng',
                 libraryKind: LibraryKind.Global,
                 globalName: 'ng',
-                description: "HTML enhanced for web apps!",
+                description: "AngularJS: HTML enhanced for web apps!",
                 homepage: 'https://angularjs.org',
                 version: VERSION_ANGULARJS,
                 visible: true,

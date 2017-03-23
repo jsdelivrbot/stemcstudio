@@ -16,7 +16,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "outDir": "generated/js",
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
         "traceResolution": false
     },

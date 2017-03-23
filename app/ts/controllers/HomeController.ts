@@ -9,7 +9,7 @@ import HomeScope from '../scopes/HomeScope';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
-import NewProjectService from '../modules/project/NewProjectService';
+import NewProjectDialog from '../modules/project/NewProjectDialog';
 import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
@@ -48,7 +48,7 @@ export default class HomeController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         navigation: NavigationService,
-        newProject: NewProjectService,
+        newProjectDialog: NewProjectDialog,
         stemcArXiv: StemcArXiv,
         translateService: ITranslateService,
         FEATURE_COOKBOOK_ENABLED: boolean,
@@ -89,7 +89,7 @@ export default class HomeController extends AbstractPageController {
         };
 
         $scope.clickCodeNow = (label?: string, value?: number) => {
-            newProject.open(initNewProjectDefaults(doodles.suggestName()))
+            newProjectDialog.open(initNewProjectDefaults(doodles.suggestName()))
                 .then(function (settings) {
                     const doodle = doodles.createDoodle();
                     copyNewProjectSettingsToDoodle(settings, doodle);

@@ -4,7 +4,7 @@ import ITemplate from '../../services/templates/ITemplate';
 /**
  * 
  */
-interface NewProjectScope extends angular.IRootScopeService {
+export interface NewProjectScope extends angular.IRootScopeService {
     /**
      * 
      */

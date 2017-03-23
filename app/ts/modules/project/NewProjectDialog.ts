@@ -3,7 +3,7 @@ import NewProjectDefaults from './NewProjectDefaults';
 import NewProjectSettings from './NewProjectSettings';
 
 /**
- * Provides the interface for the NewProjectService.
+ * Provides the capability for opening a modal dialog to obtain settings for a new project.
  */
 interface NewProjectDialog {
     /**

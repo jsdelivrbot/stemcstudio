@@ -50,11 +50,6 @@ export const STATE_HOME = 'home';
 /**
  * 
  */
-export const STATE_OPEN = 'open';
-
-/**
- * 
- */
 export const STATE_REPO = 'repo';
 
 /**
@@ -110,10 +105,6 @@ export default class NavigationService implements INavigationService {
 
     public gotoHome(label?: string, value?: number) {
         return this.navigateTo(STATE_HOME, void 0, void 0, label, value);
-    }
-
-    public gotoOpen(label?: string, value?: number) {
-        return this.navigateTo(STATE_OPEN, void 0, void 0, label, value);
     }
 
     public gotoRepo(owner: string, repo: string) {

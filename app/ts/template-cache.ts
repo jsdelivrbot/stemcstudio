@@ -407,19 +407,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "					<li>\n" +
     "						<a role='button' ng-click='toggleExplorer()'>\n" +
     "							<ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\"\n" +
-    "								size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\" tooltip-placement='bottom'>\n" +
+    "							 size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\" tooltip-placement='bottom'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "					</li>\n" +
     "					<li ng-if='htmlFileCount() > 0'>\n" +
     "						<a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
     "							<ng-md-icon icon='launch' style=\"fill: {{true ? '#00ff00' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Launch Program\"\n" +
-    "								tooltip-placement='bottom'>\n" +
+    "							 tooltip-placement='bottom'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "						<a role='button' ng-click='toggleView()' ng-show='isViewVisible'>\n" +
     "							<ng-md-icon icon='stop' style=\"fill: {{true ? '#ff9900' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Stop Program\"\n" +
-    "								tooltip-placement='bottom'>\n" +
+    "							 tooltip-placement='bottom'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "					</li>\n" +
@@ -439,7 +439,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "					<li ng-if='markdownFileCount() > 0'>\n" +
     "						<a role='button' ng-click='toggleMarkdownVisible()'>\n" +
     "							<ng-md-icon icon='description' style=\"fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}\"\n" +
-    "								tooltip-placement='bottom'>\n" +
+    "							 tooltip-placement='bottom'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "					</li>\n" +
@@ -477,10 +477,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "								<a role='button' ng-click='doNew()'>New Project</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a role='button' ng-click='doOpen()'>Open Project</a>\n" +
+    "								<a role='button' ng-click='doOpen()'>Open Project from Local Storage</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a role='button' ng-click='doCopy()'>Copy Project</a>\n" +
+    "								<a role='button' ng-click='doCopy()'>Copy current Project</a>\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</li>\n" +
@@ -1068,22 +1068,23 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('open.html',
-    "<div class='modal-content'>\n" +
-    "  <div class='modal-header'>\n" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doClose()'>&times;</button>\n" +
-    "    <h3>Open Project</h3>\n" +
-    "  </div>\n" +
-    "  <div class='modal-body'>\n" +
+  $templateCache.put('open-project-modal.html',
+    "<!--div class='modal-content'-->\n" +
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\">\n" +
+    "        <logo-text version='{{version}}' />\n" +
+    "    </h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">Open Project from Local Storage</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
     "    <p ng-repeat='doodle in doodles()'>\n" +
-    "      <a role='button' ng-click='doDelete(doodle)' class='delete' uib-tooltip=\"Delete...\" tooltop-placement='bottom'>&times;</a>\n" +
-    "      <a role='button' ng-click='doOpen(doodle)'>{{doodle.description}}</a>\n" +
+    "        <a role='button' ng-click='doOpen(doodle)'>{{doodle.description}}</a>\n" +
     "    </p>\n" +
-    "  </div>\n" +
-    "  <div class='modal-footer'>\n" +
+    "</div>\n" +
+    "<div class='modal-footer'>\n" +
     "    <button class='btn' ng-click='doClose()'>Close</button>\n" +
-    "  </div>\n" +
-    "</div>\n"
+    "</div>\n" +
+    "<!--/div-->"
   );
 
 

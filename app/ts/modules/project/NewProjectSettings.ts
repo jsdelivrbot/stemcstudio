@@ -3,7 +3,7 @@ import ITemplate from '../../services/templates/ITemplate';
 /**
  * The chosen values for creating a new project.
  */
-interface NewProjectSettings {
+export interface NewProjectSettings {
     /**
      * The description entered by the user.
      */

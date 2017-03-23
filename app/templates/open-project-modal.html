@@ -1,0 +1,16 @@
+<!--div class='modal-content'-->
+<div class="modal-header" style="clear: both">
+    <h3 class='modal-title' style="float: left;">
+        <logo-text version='{{version}}' />
+    </h3>
+    <h3 class='modal-title' style="float: right;">Open Project from Local Storage</h3>
+</div>
+<div class="modal-body">
+    <p ng-repeat='doodle in doodles()'>
+        <a role='button' ng-click='doOpen(doodle)'>{{doodle.description}}</a>
+    </p>
+</div>
+<div class='modal-footer'>
+    <button class='btn' ng-click='doClose()'>Close</button>
+</div>
+<!--/div-->

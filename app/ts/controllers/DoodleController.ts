@@ -9,7 +9,8 @@ import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ITemplate from '../services/templates/ITemplate';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
-import NewProjectService from '../modules/project/NewProjectService';
+import NewProjectDialog from '../modules/project/NewProjectDialog';
+import OpenProjectDialog from '../modules/project/OpenProjectDialog';
 
 /**
  * This class could probably be merged with the WorkspaceController?
@@ -25,6 +26,7 @@ export default class DoodleController extends AbstractPageController {
         'modalDialog',
         'navigation',
         'newProject',
+        'openProject',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'];
     constructor(
         $scope: DoodleScope,
@@ -35,7 +37,8 @@ export default class DoodleController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         navigation: NavigationService,
-        newProject: NewProjectService,
+        newProjectDialog: NewProjectDialog,
+        openProjectDialog: OpenProjectDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
         super($window, authManager, modalDialog, 'hidden');
@@ -55,7 +58,7 @@ export default class DoodleController extends AbstractPageController {
         $scope.templates = templates;
 
         $scope.doNew = (label?: string, value?: number) => {
-            newProject.open(initNewProjectDefaults(doodles.suggestName()))
+            newProjectDialog.open(initNewProjectDefaults(doodles.suggestName()))
                 .then(function (settings) {
                     const doodle = doodles.createDoodle();
                     copyNewProjectSettingsToDoodle(settings, doodle);
@@ -69,7 +72,26 @@ export default class DoodleController extends AbstractPageController {
         };
 
         $scope.doOpen = (label?: string, value?: number) => {
-            navigation.gotoOpen(label, value);
+            openProjectDialog.open({})
+                .then(function (settings) {
+                    const doodle = settings.doodle;
+                    if (doodle) {
+                        doodles.makeCurrent(doodle);
+                        doodles.updateStorage();
+                        if (doodle.owner && doodle.repo) {
+                            navigation.gotoRepo(doodle.owner, doodle.repo);
+                        }
+                        else if (doodle.gistId) {
+                            navigation.gotoGist(doodle.gistId);
+                        }
+                        else {
+                            navigation.gotoDoodle();
+                        }
+                    }
+                })
+                .catch(function (reason) {
+                    // The user cancelled from the dialog.
+                });
         };
 
         $scope.doCopy = (label?: string, value?: number) => {

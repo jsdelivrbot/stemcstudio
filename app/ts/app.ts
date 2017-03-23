@@ -50,7 +50,6 @@ import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
-import OpenController from './controllers/OpenController';
 import CopyController from './features/doodle/controllers/CopyController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
@@ -59,6 +58,7 @@ import TwitterLoginController from './controllers/login/twitter/TwitterLoginCont
 
 import LabelDialogService from './modules/publish/LabelDialogService';
 import NewProjectService from './modules/project/NewProjectService';
+import OpenProjectService from './modules/project/OpenProjectService';
 import PropertiesDialogService from './modules/properties/PropertiesDialogService';
 import PublishDialogService from './modules/publish/PublishDialogService';
 import brand from './directives/brand/brand';
@@ -105,7 +105,6 @@ import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
 import { STATE_EXAMPLES } from './modules/navigation/NavigationService';
 import { STATE_GIST } from './modules/navigation/NavigationService';
 import { STATE_HOME } from './modules/navigation/NavigationService';
-import { STATE_OPEN } from './modules/navigation/NavigationService';
 import { STATE_REPO } from './modules/navigation/NavigationService';
 import { STATE_ROOM } from './modules/navigation/NavigationService';
 import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
@@ -147,7 +146,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.22.16');
+app.constant('version', '2.22.17');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -237,9 +236,6 @@ app.controller(ABOUT_CONTROLLER_NAME, AboutController);
 const HOME_CONTROLLER_NAME = 'HomeController';
 app.controller(HOME_CONTROLLER_NAME, HomeController);
 
-const OPEN_CONTROLLER_NAME = 'OpenController';
-app.controller(OPEN_CONTROLLER_NAME, OpenController);
-
 const COPY_CONTROLLER_NAME = 'CopyController';
 app.controller(COPY_CONTROLLER_NAME, CopyController);
 
@@ -265,6 +261,7 @@ app.service('credentials', CredentialsService);
 
 app.service('labelDialog', LabelDialogService);
 app.service('newProject', NewProjectService);
+app.service('openProject', OpenProjectService);
 app.service('propertiesDialog', PropertiesDialogService);
 app.service('publishDialog', PublishDialogService);
 
@@ -314,11 +311,6 @@ app.config([
                 url: '/doodle',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
-            })
-            .state(STATE_OPEN, {
-                url: '/open',
-                templateUrl: 'open.html',
-                controller: OPEN_CONTROLLER_NAME
             })
             .state(STATE_COPY, {
                 url: '/copy',
