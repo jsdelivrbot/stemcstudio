@@ -60,7 +60,7 @@ app.factory('options', [
         const VERSION_SYSTEMJS = '0.19.37';
         const VERSION_THREEJS = '0.82.0';
         const RELEASE_THREEJS = 'r82';
-        const VERSION_TWO = '0.6.0';
+        const VERSION_TWO = '0.6.1';
         const VERSION_UNITS = '1.5.5';
         // const VERSION_UNDERSCORE = '1.8.3';
 

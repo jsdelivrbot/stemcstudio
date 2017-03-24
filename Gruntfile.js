@@ -504,16 +504,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/threejs@0.82.0')
         },
         {
-            src: "museum/two@0.6.0/two.d.ts",
-            dest: prepend(target, 'vendor/two@0.6.0/two.d.ts')
+            src: "museum/two@0.6.1/two.d.ts",
+            dest: prepend(target, 'vendor/two@0.6.1/two.d.ts')
         },
         {
-            src: "museum/two@0.6.0/two.js",
-            dest: prepend(target, 'vendor/two@0.6.0/two.js')
+            src: "museum/two@0.6.1/two.js",
+            dest: prepend(target, 'vendor/two@0.6.1/two.js')
         },
         {
-            src: "museum/two@0.6.0/two.min.js",
-            dest: prepend(target, 'vendor/two@0.6.0/two.min.js')
+            src: "museum/two@0.6.1/two.min.js",
+            dest: prepend(target, 'vendor/two@0.6.1/two.min.js')
         },
         {
             expand: true,
