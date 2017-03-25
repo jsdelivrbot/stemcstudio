@@ -202,6 +202,7 @@ function copies(target) {
     return [
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
         { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
+        { src: 'app/stemcstudio-overview-2017-03-24.pdf', dest: prepend(target, 'stemcstudio-overview-2017-03-24.pdf') },
         /*
         { src: 'app/index.html', dest: prepend(target, 'index.html') },
         */
