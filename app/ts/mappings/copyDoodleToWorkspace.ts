@@ -77,6 +77,7 @@ export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel
     workspace.isCodeVisible = doodle.isCodeVisible;
     workspace.isViewVisible = doodle.isViewVisible;
     workspace.lastKnownJs = doodle.lastKnownJs;
+    workspace.lastKnownJsMap = doodle.lastKnownJsMap;
     workspace.owner = doodle.owner;
     workspace.repo = doodle.repo;
     workspace.updated_at = doodle.updated_at;

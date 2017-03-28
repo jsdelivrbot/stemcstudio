@@ -35,6 +35,7 @@ export default class Doodle {
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
     public lastKnownJs: { [name: string]: string };
+    public lastKnownJsMap: { [name: string]: string };
     public files: { [path: string]: DoodleFile };
     public trash: { [path: string]: DoodleFile } = {};
     public created_at: string | undefined;
@@ -44,6 +45,7 @@ export default class Doodle {
         this.isCodeVisible = true;
         this.isViewVisible = false;
         this.lastKnownJs = {};
+        this.lastKnownJsMap = {};
     }
 
     get packageInfo(): Partial<IDoodleConfig> {
@@ -346,6 +348,7 @@ export default class Doodle {
                 // It's a file that does not exist on GitHub.
                 delete this.files[path];
                 delete this.lastKnownJs[path];
+                delete this.lastKnownJsMap[path];
             }
         }
         else {

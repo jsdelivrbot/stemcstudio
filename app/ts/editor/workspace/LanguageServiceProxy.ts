@@ -65,86 +65,114 @@ export default class LanguageServiceProxy {
 
         this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: (err: any) => void = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_DEFAULT_LIB_CONTENT, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: (err: any) => void = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: (err: any) => void = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_REMOVE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: (err: any) => void = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_GET_LINT_ERRORS, (response: { data: WorkerClientData<RuleFailure[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, results?: RuleFailure[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_SYNTAX_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, results?: Diagnostic[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_SEMANTIC_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, results?: Diagnostic[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_COMPLETIONS_AT_POSITION, (response: { data: WorkerClientData<CompletionEntry[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, results?: CompletionEntry[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, (response: { data: WorkerClientData<TextChange[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, textChanges?: TextChange[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_QUICK_INFO_AT_POSITION, (response: { data: WorkerClientData<QuickInfo> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, quickInfo?: QuickInfo) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_GET_OUTPUT_FILES, (response: { data: WorkerClientData<OutputFile[]> }) => {
             const { err, value, callbackId } = response.data;
-            const callback: (err: any, outputFiles?: OutputFile[]) => void = this.releaseCallback(callbackId);
-            callback(err, value);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
         });
 
         this.worker.on(EVENT_SET_MODULE_KIND, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: setModuleKindCallback = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_SET_SCRIPT_TARGET, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: setScriptTargetCallback = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
 
         this.worker.on(EVENT_SET_TRACE, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
-            const callback: (err: any) => any = this.releaseCallback(callbackId);
-            callback(err);
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
         });
     }
 
@@ -167,6 +195,11 @@ export default class LanguageServiceProxy {
         this.worker.emit(EVENT_DEFAULT_LIB_CONTENT, message);
     }
 
+    /**
+     * Exchanges the callback function for a numeric token.
+     * This token is posted to the worker thread along with the request.
+     * When the response arrives, the token is used to find the original callback function.
+     */
     private captureCallback(callback: (err: any, results?: any) => any): number {
         if (callback) {
             const callbackId = this.callbackId++;
@@ -174,7 +207,8 @@ export default class LanguageServiceProxy {
             return callbackId;
         }
         else {
-            return void 0;
+            throw new Error("callback must be supplied.");
+            // return void 0;
         }
     }
 

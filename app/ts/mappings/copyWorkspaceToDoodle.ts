@@ -30,17 +30,19 @@ function copyFiles(workspace: WsModel, doodle: Doodle) {
         const path = paths[i];
         const doodleFile = ensureDoodleFile(doodle, path);
         const wsFile = workspace.findFileByPath(path);
-        try {
-            doodleFile.content = wsFile.getText();
-            doodleFile.language = wsFile.mode;
-            doodleFile.isOpen = wsFile.isOpen;
-            doodleFile.htmlChoice = wsFile.htmlChoice;
-            doodleFile.markdownChoice = wsFile.markdownChoice;
-            doodleFile.raw_url = wsFile.existsInGitHub ? "bogusURL" : void 0;
-            doodleFile.selected = wsFile.selected;
-        }
-        finally {
-            wsFile.release();
+        if (wsFile) {
+            try {
+                doodleFile.content = wsFile.getText();
+                doodleFile.language = wsFile.mode;
+                doodleFile.isOpen = wsFile.isOpen;
+                doodleFile.htmlChoice = wsFile.htmlChoice;
+                doodleFile.markdownChoice = wsFile.markdownChoice;
+                doodleFile.raw_url = wsFile.existsInGitHub ? "bogusURL" : void 0;
+                doodleFile.selected = wsFile.selected;
+            }
+            finally {
+                wsFile.release();
+            }
         }
     }
 }
@@ -86,6 +88,7 @@ export default function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle
     doodle.isCodeVisible = workspace.isCodeVisible;
     doodle.isViewVisible = workspace.isViewVisible;
     doodle.lastKnownJs = workspace.lastKnownJs;
+    doodle.lastKnownJsMap = workspace.lastKnownJsMap;
     doodle.owner = workspace.owner;
     doodle.repo = workspace.repo;
     doodle.updated_at = workspace.updated_at;

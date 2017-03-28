@@ -22,6 +22,7 @@ interface IDoodleDS {
      * This is a mapping from the fileName to the JavaScript text.
      */
     lastKnownJs: { [name: string]: string };
+    lastKnownJsMap: { [name: string]: string };
 
     /**
      * 

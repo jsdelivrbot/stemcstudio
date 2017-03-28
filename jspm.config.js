@@ -21,7 +21,7 @@ System.config({
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.0",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.2",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.6.4",
@@ -188,7 +188,7 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "randombytes": "npm:randombytes@2.0.3"
     },
-    "npm:browserify-sign@4.0.0": {
+    "npm:browserify-sign@4.0.4": {
       "bn.js": "npm:bn.js@4.11.6",
       "browserify-rsa": "npm:browserify-rsa@4.0.1",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -198,7 +198,8 @@ System.config({
       "elliptic": "npm:elliptic@6.4.0",
       "inherits": "npm:inherits@2.0.1",
       "parse-asn1": "npm:parse-asn1@5.1.0",
-      "stream": "github:jspm/nodelibs-stream@0.1.0"
+      "stream": "github:jspm/nodelibs-stream@0.1.0",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:browserify-zlib@0.1.4": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -277,7 +278,7 @@ System.config({
     },
     "npm:crypto-browserify@3.11.0": {
       "browserify-cipher": "npm:browserify-cipher@1.0.0",
-      "browserify-sign": "npm:browserify-sign@4.0.0",
+      "browserify-sign": "npm:browserify-sign@4.0.4",
       "create-ecdh": "npm:create-ecdh@4.0.0",
       "create-hash": "npm:create-hash@1.1.2",
       "create-hmac": "npm:create-hmac@1.1.4",

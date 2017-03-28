@@ -49,6 +49,7 @@ export default class CopyController {
                 doodle.name = 'copy-of-' + original.name;
             }
             doodle.lastKnownJs = {};
+            doodle.lastKnownJsMap = {};
             doodle.owner = void 0;
             doodle.repo = void 0;
             doodle.updated_at = void 0;

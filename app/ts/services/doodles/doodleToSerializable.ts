@@ -32,6 +32,7 @@ export default function doodleToSerializable(dude: Doodle): IDoodleDS {
         repo: dude.repo,
         gistId: dude.gistId,
         lastKnownJs: dude.lastKnownJs,
+        lastKnownJsMap: dude.lastKnownJsMap,
         files: dude.files ? mapDoodleFilesToIDoodleFiles(dude.files) : void 0,
         trash: dude.trash ? mapDoodleFilesToIDoodleFiles(dude.trash) : void 0,
         created_at: dude.created_at,

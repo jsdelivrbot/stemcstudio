@@ -48,20 +48,20 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      * The underlying Web Worker.
      */
-    private worker: Worker;
+    private worker: Worker | undefined;
 
     /**
      * Changes in the Document are queued here so that they can
      * later be posted to the worker thread.
      */
-    private deltaQueue: Delta[];
+    private deltaQueue: Delta[] | undefined;
 
     private callbackManager = new CallbackManager();
 
     /**
      * 
      */
-    private $doc: Document;
+    private $doc: Document | null;
 
     /**
      *
@@ -309,24 +309,26 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      */
     private sendDeltaQueue(): void {
         const doc = this.$doc;
-        const queue = this.deltaQueue;
-        if (!queue) return;
-        this.deltaQueue = void 0;
+        if (doc) {
+            const queue = this.deltaQueue;
+            if (!queue) return;
+            this.deltaQueue = void 0;
 
-        // We're going to post all the changes in one message, but we apply a
-        // heuristic to just send the actual document if there are enough changes.
-        if (queue.length > 20 && queue.length > doc.getLength() >> 1) {
-            // TODO: If there is no callback then call is the same as send,
-            // which is a postCommand.
-            this.call("setValue", [doc.getValue()], function () {
-                // Do nothing.
-            });
-        }
-        else {
-            // TODO: This method should probably be called 'changes', since the
-            // data was accumulated from one or more change events.
-            // TODO: emit cound be renamed postEvent, which is more descriptive.
-            this.emit("change", { data: queue });
+            // We're going to post all the changes in one message, but we apply a
+            // heuristic to just send the actual document if there are enough changes.
+            if (queue.length > 20 && queue.length > doc.getLength() >> 1) {
+                // TODO: If there is no callback then call is the same as send,
+                // which is a postCommand.
+                this.call("setValue", [doc.getValue()], function () {
+                    // Do nothing.
+                });
+            }
+            else {
+                // TODO: This method should probably be called 'changes', since the
+                // data was accumulated from one or more change events.
+                // TODO: emit cound be renamed postEvent, which is more descriptive.
+                this.emit("change", { data: queue });
+            }
         }
     }
 

@@ -55,6 +55,7 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
         d.owner = inDoodle.owner;
         d.repo = inDoodle.repo;
         d.lastKnownJs = inDoodle.lastKnownJs;
+        d.lastKnownJsMap = inDoodle.lastKnownJsMap;
         ds.push(d);
     }
     return ds;

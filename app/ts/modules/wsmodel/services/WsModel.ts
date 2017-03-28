@@ -309,6 +309,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * A mapping from the file path to the last JavaScript code emitted by the TypeScript compiler.
      */
     lastKnownJs: { [path: string]: string } = {};
+    lastKnownJsMap: { [path: string]: string } = {};
 
     /**
      * 
@@ -1465,6 +1466,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     }
                 }
                 delete this.lastKnownJs[path];
+                delete this.lastKnownJsMap[path];
                 this.updateStorage();
                 callback(null);
             });

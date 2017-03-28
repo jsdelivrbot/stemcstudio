@@ -89,6 +89,15 @@ const MODULE_KIND_SYSTEM = 'system';
 const SCRIPT_TARGET_ES5 = 'es5';
 const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
+function endsWith(str: string, suffix: string): boolean {
+    const expectedPos = str.length - suffix.length;
+    return expectedPos >= 0 && str.indexOf(suffix, expectedPos) === expectedPos;
+}
+
+function fileExtensionIs(path: string, extension: string): boolean {
+    return path.length > extension.length && endsWith(path, extension);
+}
+
 /**
  *
  */
@@ -707,21 +716,32 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private createOutputFilesEventHandler(): OutputFileHandler<WsModel> {
         const handler = (message: OutputFilesMessage, unused: WsModel) => {
-            // console.log(`${outputFilesTopic} => ${JSON.stringify(message.files.map(function (outputFile) { return outputFile.name; }))}`);
-            // It's OK to capture the current Doodle here, but not outside the handler!
             const outputFiles = message.files;
             outputFiles.forEach((outputFile: OutputFile) => {
                 if (this.wsModel.isZombie()) {
                     return;
                 }
-                if (typeof this.wsModel.lastKnownJs !== 'object') {
-                    this.wsModel.lastKnownJs = {};
+                const path = outputFile.name;
+                if (fileExtensionIs(path, '.js')) {
+                    if (typeof this.wsModel.lastKnownJs !== 'object') {
+                        this.wsModel.lastKnownJs = {};
+                    }
+                    if (this.wsModel.lastKnownJs[path] !== outputFile.text) {
+                        this.wsModel.lastKnownJs[path] = outputFile.text;
+                        this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+                    }
                 }
-                // TODO: The output files could be both JavaScript and d.ts
-                // We should be sure to only select the JavaScript file. 
-                if (this.wsModel.lastKnownJs[outputFile.name] !== outputFile.text) {
-                    this.wsModel.lastKnownJs[outputFile.name] = outputFile.text;
-                    this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+                else if (fileExtensionIs(path, '.js.map')) {
+                    if (typeof this.wsModel.lastKnownJsMap !== 'object') {
+                        this.wsModel.lastKnownJsMap = {};
+                    }
+                    if (this.wsModel.lastKnownJsMap[path] !== outputFile.text) {
+                        this.wsModel.lastKnownJsMap[path] = outputFile.text;
+                        this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+                    }
+                }
+                else {
+                    console.warn(`Unexpected outputFile => ${outputFile.name}`);
                 }
             });
         };
