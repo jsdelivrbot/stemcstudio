@@ -107,6 +107,7 @@ git push origin master
 ------------------------
 |1.8.0     |1.x        |
 |2.2.0     |2.x        |
+|2.3.1     |2.9.3      | (Operator Overloading)
 
 ```
 npm install

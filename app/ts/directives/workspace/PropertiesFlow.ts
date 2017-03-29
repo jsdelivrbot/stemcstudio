@@ -29,9 +29,9 @@ export default class PropertiesFlow {
                 return facts.settings.isUndefined();
             },
             (facts, session, next) => {
-                const defaults = {
-                    name: this.wsModel.name,
-                    version: this.wsModel.version,
+                const defaults: PropertiesSettings = {
+                    name: <string>this.wsModel.name,
+                    version: <string>this.wsModel.version,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.operatorOverloading,
                     dependencies: this.wsModel.dependencies
@@ -53,11 +53,17 @@ export default class PropertiesFlow {
 
         session.execute((err: any, facts: PropertiesFacts) => {
             if (!err) {
-                this.wsModel.name = facts.settings.value.name;
-                this.wsModel.version = facts.settings.value.version;
-                this.wsModel.noLoopCheck = facts.settings.value.noLoopCheck;
-                this.wsModel.operatorOverloading = facts.settings.value.operatorOverloading;
-                this.wsModel.dependencies = facts.settings.value.dependencies;
+                const value = facts.settings.value;
+                if (value) {
+                    this.wsModel.name = value.name;
+                    this.wsModel.version = value.version;
+                    this.wsModel.noLoopCheck = value.noLoopCheck;
+                    this.wsModel.operatorOverloading = value.operatorOverloading;
+                    this.wsModel.dependencies = value.dependencies;
+                }
+                else {
+                    console.warn("Why are settings not defined?");
+                }
 
                 updateWorkspaceTypings(
                     this.wsModel,
@@ -67,7 +73,17 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
-                        this.wsModel.semanticDiagnostics(callback);
+                        // TODO: 
+                        this.wsModel.synchOperatorOverloading()
+                            .then(() => {
+                                this.wsModel.refreshDiagnostics(function (err) {
+                                    callback(err);
+                                });
+                            })
+                            .catch((reason: any) => {
+                                console.warn(JSON.stringify(reason, null, 2));
+                                callback(reason);
+                            });
                     });
             }
             else {

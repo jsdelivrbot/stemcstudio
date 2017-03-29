@@ -40,6 +40,7 @@ import QuickInfoTooltip from '../../../editor/workspace/QuickInfoTooltip';
 import QuickInfoTooltipHost from '../../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from '../IWorkspaceModel';
+import { ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../IWorkspaceModel';
 import RoomAgent from '../../rooms/RoomAgent';
 import Shareable from '../../../base/Shareable';
 import SnippetCompleter from '../../../editor/SnippetCompleter';
@@ -599,6 +600,40 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    /**
+     * Synchronizes the local operatorOverloading with the language service.
+     */
+    synchOperatorOverloading(): Promise<boolean> {
+        const operatorOverloading = this.operatorOverloading;
+        return new Promise<boolean>((resolve, reject) => {
+            this.setOperatorOverloading(operatorOverloading, function (reason) {
+                if (!reason) {
+                    resolve(operatorOverloading);
+                }
+                else {
+                    reject(reason);
+                }
+            });
+        });
+    }
+
+    /**
+     * Helper method for updating the operatorOverloading setting in the language service.
+     */
+    private setOperatorOverloading(operatorOverloading: boolean, callback: (err: any) => any): void {
+        checkCallback(callback);
+        if (this.languageServiceProxy) {
+            this.inFlight++;
+            this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (err: any) => {
+                this.inFlight--;
+                callback(err);
+            });
+        }
+        else {
+            callback(new Error("operatorOverloading is not available."));
+        }
+    }
+
     setScriptTarget(scriptTarget: string, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
@@ -764,8 +799,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                 /**
                  * Wrapper to throttle requests for semantic errors.
                  */
-                const requestSemanticDiagnostics = debounce(() => {
-                    this.semanticDiagnostics(function (err) {
+                const refreshDiagnosticsCleanup = debounce(() => {
+                    this.refreshDiagnostics(function (err) {
                         if (err) {
                             console.warn(`Error returned from request for semantic diagnostics for path => ${path}: ${err}`);
                         }
@@ -783,7 +818,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     const annotations = event.data;
                     if (annotations.length === 0) {
                         // A change in a single file triggers analysis of all files.
-                        requestSemanticDiagnostics();
+                        refreshDiagnosticsCleanup();
                     }
                 };
                 session.on('annotations', annotationsHandler);
@@ -993,9 +1028,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     /**
-     * 
+     * Requests the diagnostics for all edit sessions.
+     * The results are used to update the corresponding edit session objects.
      */
-    public semanticDiagnostics(callback: (err: any) => any): void {
+    public refreshDiagnostics(callback: (err: any) => any): void {
         const tsPaths = this.getFileSessionPaths().filter(isTypeScript);
         const tsLength = tsPaths.length;
         let tsRemaining = tsLength;
@@ -1018,6 +1054,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    /**
+     * Transfers the diagnostic information to the appropriate edit session.
+     */
     private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
         // We have the path and diagnostics, so we should be able to provide hyperlinks to errors.
         if (session) {
@@ -1060,6 +1099,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         });
     }
 
+    /**
+     * Requests the disgnostics for the specified file.
+     * The results are used to update the appropriate edit session.
+     */
     private diagnosticsForSession(path: string, session: EditSession, callback: (err: any) => any): void {
         checkPath(path);
         if (this.languageServiceProxy) {
@@ -1118,7 +1161,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     /**
-     *
+     * Requests the output files (JavaScript and source maps) for all files that are transpiled.
+     * The responses are published on the outputFilesTopic.
      */
     public outputFiles(): void {
         const paths = this.getFileDocumentPaths();
@@ -1130,6 +1174,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    /**
+     * Requests the output files (JavaScript and source maps) for the specified file.
+     * The response is published on the outputFilesTopic.
+     */
     private outputFilesForPath(path: string): void {
         if (isTypeScript(path) || isJavaScript(path)) {
             checkPath(path);
@@ -1368,17 +1416,30 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     set operatorOverloading(operatorOverloading: boolean) {
-        const file = this.ensurePackageJson();
-        try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-            setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-            file.setText(stringifyFileContent(metaInfo));
-        }
-        catch (e) {
-            console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
-        }
-        finally {
-            file.release();
+        const oldValue = this.operatorOverloading;
+        if (operatorOverloading !== oldValue) {
+            const file = this.ensurePackageJson();
+            try {
+                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+                setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
+                file.setText(stringifyFileContent(metaInfo));
+                if (this.languageServiceProxy) {
+                    this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (err) => {
+                        if (err) {
+                            console.warn("Unable to set operator overloading on language service.");
+                        }
+                        else {
+                            this.eventBus.emit(changedOperatorOverloadingTopic, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
+                        }
+                    });
+                }
+            }
+            catch (e) {
+                console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
+            }
+            finally {
+                file.release();
+            }
         }
     }
 

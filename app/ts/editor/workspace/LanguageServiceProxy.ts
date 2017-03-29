@@ -9,23 +9,30 @@ import RuleFailure from './RuleFailure';
 import QuickInfo from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
 import setModuleKindCallback from './SetModuleKindCallback';
+import setOperatorOverloadingCallback from './SetOperatorOverloadingCallback';
 import setScriptTargetCallback from './SetScriptTargetCallback';
 import TsLintSettings from '../../modules/tslint/TsLintSettings';
+import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
+import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';
+import { EVENT_ENSURE_SCRIPT } from './LanguageServiceEvents';
+import { EVENT_REMOVE_SCRIPT } from './LanguageServiceEvents';
+import { EVENT_GET_LINT_ERRORS } from './LanguageServiceEvents';
+import { EVENT_GET_SYNTAX_ERRORS } from './LanguageServiceEvents';
+import { EVENT_GET_SEMANTIC_ERRORS } from './LanguageServiceEvents';
+import { EVENT_GET_COMPLETIONS_AT_POSITION } from './LanguageServiceEvents';
+import { EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT } from './LanguageServiceEvents';
+import { EVENT_GET_QUICK_INFO_AT_POSITION } from './LanguageServiceEvents';
+import { EVENT_GET_OUTPUT_FILES } from './LanguageServiceEvents';
+import { EVENT_SET_MODULE_KIND } from './LanguageServiceEvents';
+import { EVENT_SET_OPERATOR_OVERLOADING } from './LanguageServiceEvents';
+import { EVENT_SET_SCRIPT_TARGET } from './LanguageServiceEvents';
+import { EVENT_SET_TRACE } from './LanguageServiceEvents';
+import { EnsureScriptRequest } from './LanguageServiceEvents';
+import { GetOutputFilesRequest } from './LanguageServiceEvents';
+import { SetModuleKindRequest } from './LanguageServiceEvents';
+import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
+import { SetTraceRequest } from './LanguageServiceEvents';
 
-const EVENT_APPLY_DELTA = 'applyDelta';
-const EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';
-const EVENT_ENSURE_SCRIPT = 'ensureScript';
-const EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition';
-const EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT = 'getFormattingEditsForDocument';
-const EVENT_GET_LINT_ERRORS = 'getLintErrors';
-const EVENT_GET_OUTPUT_FILES = 'getOutputFiles';
-const EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors';
-const EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors';
-const EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
-const EVENT_REMOVE_SCRIPT = 'removeScript';
-const EVENT_SET_MODULE_KIND = 'setModuleKind';
-const EVENT_SET_SCRIPT_TARGET = 'setScriptTarget';
-const EVENT_SET_TRACE = 'setTrace';
 
 interface WorkerClientData<T> {
     err?: any;
@@ -159,6 +166,14 @@ export default class LanguageServiceProxy {
             }
         });
 
+        this.worker.on(EVENT_SET_OPERATOR_OVERLOADING, (response: { data: WorkerClientData<any> }) => {
+            const { err, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err);
+            }
+        });
+
         this.worker.on(EVENT_SET_SCRIPT_TARGET, (response: { data: WorkerClientData<any> }) => {
             const { err, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
@@ -226,7 +241,7 @@ export default class LanguageServiceProxy {
     ensureScript(path: string, content: string, callback: (err: any) => any): void {
         const callbackId = this.captureCallback(callback);
         // content = content.replace(/\r\n?/g, '\n');
-        const message = { data: { fileName: path, content, callbackId } };
+        const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
         this.worker.emit(EVENT_ENSURE_SCRIPT, message);
     }
 
@@ -249,8 +264,14 @@ export default class LanguageServiceProxy {
 
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {
         const callbackId = this.captureCallback(callback);
-        const message = { data: { moduleKind, callbackId } };
+        const message: { data: SetModuleKindRequest } = { data: { moduleKind, callbackId } };
         this.worker.emit(EVENT_SET_MODULE_KIND, message);
+    }
+
+    public setOperatorOverloading(operatorOverloading: boolean, callback: setOperatorOverloadingCallback): void {
+        const callbackId = this.captureCallback(callback);
+        const message: { data: SetOperatorOverloadingRequest } = { data: { operatorOverloading, callbackId } };
+        this.worker.emit(EVENT_SET_OPERATOR_OVERLOADING, message);
     }
 
     public setScriptTarget(scriptTarget: string, callback: setScriptTargetCallback): void {
@@ -261,7 +282,7 @@ export default class LanguageServiceProxy {
 
     public setTrace(trace: boolean, callback: (err: any) => any): void {
         const callbackId = this.captureCallback(callback);
-        const message = { data: { trace, callbackId } };
+        const message: { data: SetTraceRequest } = { data: { trace, callbackId } };
         this.worker.emit(EVENT_SET_TRACE, message);
     }
 
@@ -316,7 +337,7 @@ export default class LanguageServiceProxy {
 
     getOutputFiles(fileName: string, callback: (err: any, outputFiles: OutputFile[]) => any): void {
         const callbackId = this.captureCallback(callback);
-        const message = { data: { fileName, callbackId } };
+        const message: { data: GetOutputFilesRequest } = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_OUTPUT_FILES, message);
     }
 }

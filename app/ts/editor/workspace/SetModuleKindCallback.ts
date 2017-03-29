@@ -1,5 +1,5 @@
 interface SetModuleKindCallback {
-  (err: any): void;
+    (err: any): void;
 }
 
 export default SetModuleKindCallback;

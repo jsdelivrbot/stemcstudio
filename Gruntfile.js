@@ -207,32 +207,32 @@ function copies(target) {
         { src: 'app/index.html', dest: prepend(target, 'index.html') },
         */
         {
-            src: 'manual/typescript@2.3.0/typescriptServices.js',
-            dest: prepend(target, 'js/typescript@2.3.0/typescriptServices.js')
+            src: 'manual/typescript@2.3.1/typescriptServices.js',
+            dest: prepend(target, 'js/typescript@2.3.1/typescriptServices.js')
         },
         {
-            src: 'manual/typescript@2.3.0/typescriptServices.js.map',
-            dest: prepend(target, 'js/typescript@2.3.0/typescriptServices.js.map')
+            src: 'manual/typescript@2.3.1/typescriptServices.js.map',
+            dest: prepend(target, 'js/typescript@2.3.1/typescriptServices.js.map')
         },
         {
-            src: 'manual/typescript@2.3.0/lib.es6.d.ts',
+            src: 'manual/typescript@2.3.1/lib.es6.d.ts',
             dest: prepend(target, 'typings/lib.es6.d.ts')
         },
         {
-            src: 'manual/typescript@2.3.0/lib.d.ts',
-            dest: prepend(target, 'vendor/typescript@2.3.0/lib.d.ts')
+            src: 'manual/typescript@2.3.1/lib.d.ts',
+            dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.2/src/worker.js',
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.3/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.2/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers@2.9.2/ace-workers.js')
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.3/dist/ace-workers.js',
+            dest: prepend(target, 'js/ace-workers@2.9.3/ace-workers.js')
         },
         {
             src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, 'js/ace-workers@2.9.2/ace-workers.js')
+            dest: prepend(target, 'js/ace-workers@2.9.3/ace-workers.js')
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',

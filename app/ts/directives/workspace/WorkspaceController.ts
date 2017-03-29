@@ -383,9 +383,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.propertiesDialog,
                 wsModel);
 
-            propertiesFlow.execute((err) => {
-                // 
-                $scope.$applyAsync();
+            propertiesFlow.execute((reason) => {
+                if (!reason) {
+                    $scope.$applyAsync();
+                }
+                else {
+                    console.warn(`propertiesFlow() failed ${reason}`);
+                }
             });
         };
 
@@ -607,19 +611,23 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.VENDOR_FOLDER_MARKER, () => {
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
+                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
+                // TODO: This returns a promise and should be combined in a Promise.all
+                // TODO: We can then have a synchLanguageService method.
+                this.wsModel.synchOperatorOverloading();
+                // TODO: Promisify....
                 this.wsModel.setModuleKind(moduleKind, (moduleKindError) => {
                     if (!moduleKindError) {
                         // Set the script target for transpilation consistent with the version.
-                        const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
                         this.wsModel.setScriptTarget(scriptTarget, (scriptTargetError) => {
                             if (!scriptTargetError) {
-                                this.wsModel.semanticDiagnostics((diagnosticsError) => {
+                                this.wsModel.refreshDiagnostics((diagnosticsError) => {
                                     if (!diagnosticsError) {
                                         this.$scope.$applyAsync();
                                     }
                                     else {
-                                        console.warn(`semanticDiagnostics() failed ${diagnosticsError}`);
+                                        console.warn(`refreshDiagnostics() failed ${diagnosticsError}`);
                                     }
                                 });
                                 this.wsModel.outputFiles();
