@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as uib from 'angular-bootstrap';
 import LabelModalScope from './LabelModalScope';
 import LabelSettings from './LabelSettings';
@@ -14,13 +13,13 @@ export default class LabelModalController {
             k: angular.isArray(options.keywords) ? options.keywords.join(', ') : ""
         };
 
-        $scope.ok = function() {
+        $scope.ok = function () {
             options.title = $scope.f.t;
             options.author = $scope.f.a;
             options.keywords = splitStringToKeywords(',', $scope.f.k);
             $uibModalInstance.close(options);
         };
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };

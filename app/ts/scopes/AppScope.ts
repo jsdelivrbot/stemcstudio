@@ -1,9 +1,7 @@
-import * as angular from 'angular';
-
 /**
  * The Application Root Scope.
  */
-interface AppScope extends angular.IRootScopeService {
+interface AppScope extends ng.IRootScopeService {
     $state: angular.ui.IStateService;
     $stateParams: angular.ui.IStateParamsService;
 

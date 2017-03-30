@@ -4,3 +4,4 @@ function default_1(arg) {
     return Array.isArray(arg);
 }
 exports.default = default_1;
+//# sourceMappingURL=isArray.js.map

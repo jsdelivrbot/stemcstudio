@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import { IRoomsService, Room, RoomParams } from '../api';
 import RoomAgent from '../RoomAgent';
 

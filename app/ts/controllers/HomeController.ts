@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import Doodle from '../services/doodles/Doodle';
@@ -42,7 +41,7 @@ export default class HomeController extends AbstractPageController {
      */
     constructor(
         $scope: HomeScope,
-        $window: angular.IWindowService,
+        $window: ng.IWindowService,
         doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,

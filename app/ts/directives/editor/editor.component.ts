@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import applyTextChanges from './applyTextChanges';
 import ClojureMode from '../../editor/mode/ClojureMode';
 import { ACE_WORKER_PATH } from '../../constants';
@@ -154,7 +153,7 @@ function factory(
 
         // formatters update the viewValue from the modelValue
         ngModel.$formatters.push(function (modelValue: string) {
-            if (ng.isUndefined(modelValue) || modelValue === null) {
+            if (angular.isUndefined(modelValue) || modelValue === null) {
                 return void 0;
             }
             // We are returning the viewValue. We could make an object literal here.

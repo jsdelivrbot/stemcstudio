@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import Doodle from '../doodles/Doodle';
 import Gist from '../github/Gist';
 import RepoData from '../github/RepoData';

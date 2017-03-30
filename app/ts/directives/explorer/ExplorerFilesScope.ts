@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import ContextMenuItem from '../contextMenu/ContextMenuItem';
 import WsFile from '../../modules/wsmodel/services/WsFile';
 

@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import SearchParams from './SearchParams';
 import SearchResponse from './SearchResponse';
 import SubmitParams from './SubmitParams';

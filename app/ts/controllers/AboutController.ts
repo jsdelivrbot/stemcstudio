@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import AboutScope from '../scopes/AboutScope';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
@@ -15,7 +14,7 @@ export default class AboutController extends AbstractPageController {
         'UNIVERSAL_ANALYTICS_TRACKING_ID'];
     constructor(
         $scope: AboutScope,
-        $window: angular.IWindowService,
+        $window: ng.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,

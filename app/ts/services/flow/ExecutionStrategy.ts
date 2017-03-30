@@ -1,9 +1,8 @@
-import * as angular from 'angular';
 import Flow from './Flow';
 import RootNode from './nodes/RootNode';
 
 /**
- * @class ExecutionStrategy
+ *
  */
 export default class ExecutionStrategy<T> {
     flow: Flow<T>;
@@ -63,7 +62,7 @@ export default class ExecutionStrategy<T> {
         }
     }
 
-    __handleAsyncNext(next: angular.IPromise<any>): void {
+    __handleAsyncNext(next: ng.IPromise<any>): any {
         return next.then((promiseValue) => {
             this.looping = false;
             if (!this.agenda.isEmpty()) {

@@ -1,5 +1,3 @@
-import * as ng from 'angular';
-
 import Blob from './Blob';
 import BlobData from './BlobData';
 import BlobKey from './BlobKey';

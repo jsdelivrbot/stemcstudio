@@ -1,16 +1,20 @@
-import * as ng from 'angular';
-
 /**
  * Directive Definition Factory
  * Usage <brand />
  */
-export default function(): ng.IDirective {
+export function brandDirective(): ng.IDirective {
     return {
         restrict: 'E',
         scope: {},
-        template: [
-            "<span class='md-logo-text-stem'>STEM</span>",
-            "<span class='md-logo-text-math'>C</span>",
-            "<span class='md-logo-text-studio'>studio</span>"].join('')
+        bindToController: {
+            // No binding.
+        },
+        // Place the template on one line in order to avoid spaces between the parts of the brand name.
+        template: "<span class='md-logo-text-stem'>STEM</span><span class='md-logo-text-math'>C</span><span class='md-logo-text-studio'>studio</span>",
+        controller: function () {
+            // Do nothing.
+        },
+        // Not being used in this directive.
+        controllerAs: 'ctrl'
     };
 }

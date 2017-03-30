@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
 import EditorPreferencesDialog from '../../contracts/EditorPreferencesDialog';
 import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';

@@ -19,9 +19,9 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         'githubKey',
     ];
     constructor(
-        private $http: angular.IHttpService,
-        private $location: angular.ILocationService,
-        private $window: angular.IWindowService,
+        private $http: ng.IHttpService,
+        private $location: ng.ILocationService,
+        private $window: ng.IWindowService,
         private cookie: CookieService,
         private github: GitHubService,
         private githubKey: string

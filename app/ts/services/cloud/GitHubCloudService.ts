@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
 import Base64Service from '../base64/Base64Service';
 import BlobKey from '../github/BlobKey';

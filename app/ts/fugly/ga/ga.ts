@@ -4,7 +4,7 @@ app.factory('ga', [
   '$window',
   'NAMESPACE_GOOGLE_ANALYTICS',
   function (
-    $window: angular.IWindowService,
+    $window: ng.IWindowService,
     NAMESPACE_GOOGLE_ANALYTICS: string
   ) {
     //

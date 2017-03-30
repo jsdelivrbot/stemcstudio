@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import { ACE_WORKER_PATH } from '../../constants';
 import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';

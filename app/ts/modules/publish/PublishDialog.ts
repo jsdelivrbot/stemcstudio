@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import PublishSettings from './PublishSettings';
 
 interface PublishDialog {

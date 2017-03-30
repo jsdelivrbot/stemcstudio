@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import Theme from './Theme';
 import EditorPreferencesEvent from './EditorPreferencesEvent';
 
@@ -22,7 +21,7 @@ interface EditorPreferencesService {
     /**
      * Returns the available list of fontSizes. 
      */
-    getFontSizes(): angular.IPromise<string[]>;
+    getFontSizes(): ng.IPromise<string[]>;
     /**
      * 
      */
@@ -34,15 +33,15 @@ interface EditorPreferencesService {
     /**
      * Returns the available list of tabSizes. 
      */
-    getTabSizes(): angular.IPromise<number[]>;
+    getTabSizes(): ng.IPromise<number[]>;
     /**
      * Returns the available list of themes as identifiers. 
      */
-    getThemes(): angular.IPromise<Theme[]>;
+    getThemes(): ng.IPromise<Theme[]>;
     /**
      * Returns the available list of themes as identifiers. 
      */
-    getThemeNames(): angular.IPromise<string[]>;
+    getThemeNames(): ng.IPromise<string[]>;
     /**
      * Returns the identifier for the current theme.
      */

@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import closure from './closure';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
@@ -29,8 +28,8 @@ export default function updateWorkspaceTypings(
      */
     olds: string[],
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-    $http: angular.IHttpService,
-    $location: angular.ILocationService,
+    $http: ng.IHttpService,
+    $location: ng.ILocationService,
     VENDOR_FOLDER_MARKER: string,
     callback: () => any
 ) {
@@ -85,7 +84,7 @@ export default function updateWorkspaceTypings(
     const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
     // We're loading d.ts files here. Why don't we cache them so that we don't need the HTTP request?
-    const readFile = (fileName: string, callback: (err: any, data: string) => void) => {
+    const readFile = (fileName: string, callback: (err: any, data?: string) => void) => {
         const url = scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER);
         $http.get<string>(url)
             .then(function successCallback(arg) {
@@ -127,14 +126,16 @@ export default function updateWorkspaceTypings(
             readFile(addUnit.dts, (err, content) => {
                 if (!err) {
                     // TODO: We could key by something different here.
-                    wsModel.ensureScript(addUnit.dts, content.replace(/\r\n?/g, '\n'), (err) => {
-                        if (!err) {
-                            olds.unshift(addUnit.packageName);
-                        }
-                        else {
-                            console.warn(`ensureScript(${addUnit.dts}) failed. ${err}`);
-                        }
-                    });
+                    if (content) {
+                        wsModel.ensureScript(addUnit.dts, content.replace(/\r\n?/g, '\n'), (err) => {
+                            if (!err) {
+                                olds.unshift(addUnit.packageName);
+                            }
+                            else {
+                                console.warn(`ensureScript(${addUnit.dts}) failed. ${err}`);
+                            }
+                        });
+                    }
                 }
                 inFlightCount--;
                 if (0 === inFlightCount) {

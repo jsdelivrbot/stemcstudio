@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import TranslateController from './controllers/TranslateController';
 import translateDirective from './directives/translate';
 import translateFilter from './filters/translate';
@@ -7,7 +5,7 @@ import TranslateGatewayProvider from './services/TranslateGatewayProvider';
 import TranslateServiceProvider from './services/TranslateServiceProvider';
 import { TRANSLATE_GATEWAY_UUID, TRANSLATE_SERVICE_UUID } from './api';
 
-const translate: angular.IModule = angular.module('translate', []);
+const translate: ng.IModule = angular.module('translate', []);
 
 // The controller is used for changing the language.
 translate.controller('translate-controller', TranslateController);

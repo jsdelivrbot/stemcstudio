@@ -111,3 +111,4 @@ app.get("/*", function (req, res, next) {
 });
 app.use(errorHandler());
 exports.default = app;
+//# sourceMappingURL=app.js.map

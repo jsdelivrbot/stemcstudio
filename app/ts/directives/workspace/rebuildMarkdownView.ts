@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
@@ -16,15 +15,17 @@ const STAR_FSLASH = '*/';
 export default function rebuildMarkdownView(
     workspace: WsModel,
     $scope: WorkspaceScope,
-    $window: angular.IWindowService
+    $window: ng.IWindowService
 ) {
     try {
         const elementId = 'readme';
         // Kill any existing frames.
-        const hostElement: HTMLElement = $window.document.getElementById(elementId);
+        const hostElement = $window.document.getElementById(elementId);
         if (hostElement) {
             while (hostElement.children.length > 0) {
-                hostElement.removeChild(hostElement.firstChild);
+                if (hostElement.firstChild) {
+                    hostElement.removeChild(hostElement.firstChild);
+                }
             }
             if (workspace && !workspace.isZombie() && $scope.isMarkdownVisible) {
                 const iframe: HTMLIFrameElement = document.createElement('iframe');
@@ -40,7 +41,7 @@ export default function rebuildMarkdownView(
                 const content = iframe.contentDocument || iframe.contentWindow.document;
 
                 const markdownFilePath = workspace.getMarkdownFileChoiceOrBestAvailable();
-                if (fileExists(markdownFilePath, workspace)) {
+                if (markdownFilePath && fileExists(markdownFilePath, workspace)) {
                     const markdown: string = fileContent(markdownFilePath, workspace);
                     const converter: sd.Converter = new sd.Converter({ tables: true });
                     const markdownHTML = converter.makeHtml(markdown);

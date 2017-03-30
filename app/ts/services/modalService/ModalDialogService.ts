@@ -69,7 +69,7 @@ export default class ModalServiceClazz implements ModalDialog {
         const mergedOptions: AlertOptions = { title: '', message: '' };
         ng.extend(mergedOptions, DEFAULT_ALERT_OPTIONS, options);
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return mergedOptions;
             }
         };
@@ -93,7 +93,7 @@ export default class ModalServiceClazz implements ModalDialog {
         const mergedOptions: ConfirmOptions = { title: '', message: '' };
         ng.extend(mergedOptions, DEFAULT_CONFIRM_OPTIONS, options);
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return mergedOptions;
             }
         };
@@ -117,7 +117,7 @@ export default class ModalServiceClazz implements ModalDialog {
         const mergedOptions: PromptOptions = { title: '', message: '', text: '', placeholder: '' };
         ng.extend(mergedOptions, DEFAULT_PROMPT_OPTIONS, options);
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return mergedOptions;
             }
         };
@@ -141,7 +141,7 @@ export default class ModalServiceClazz implements ModalDialog {
         const mergedOptions: ShareOptions = { title: '', message: '', text: '' };
         ng.extend(mergedOptions, DEFAULT_SHARE_OPTIONS, options);
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return mergedOptions;
             }
         };

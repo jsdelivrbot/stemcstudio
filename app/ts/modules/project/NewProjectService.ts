@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
 import NewProjectDialog from './NewProjectDialog';
 import NewProjectDefaults from './NewProjectDefaults';

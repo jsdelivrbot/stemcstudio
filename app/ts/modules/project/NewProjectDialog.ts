@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import NewProjectDefaults from './NewProjectDefaults';
 import NewProjectSettings from './NewProjectSettings';
 

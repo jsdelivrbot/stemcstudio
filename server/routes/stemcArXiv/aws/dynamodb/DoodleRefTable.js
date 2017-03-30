@@ -7,3 +7,4 @@ exports.TYPE = 'Type';
 exports.TITLE = 'Title';
 exports.AUTHOR = 'Author';
 exports.KEYWORDS = 'Keywords';
+//# sourceMappingURL=DoodleRefTable.js.map

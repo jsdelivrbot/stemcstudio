@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as uib from 'angular-bootstrap';
 import isString from '../../utils/isString';
 import ITemplate from '../../services/templates/ITemplate';
@@ -54,7 +53,7 @@ export default class NewProjectController {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };
-        $scope.reset = function (form: angular.IFormController) {
+        $scope.reset = function (form: ng.IFormController) {
             // This code demonstrates a technique for future development.
             // The Reset button is currently disabled.
             form.$setPristine();

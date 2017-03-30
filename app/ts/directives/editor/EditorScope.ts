@@ -1,5 +1,3 @@
-import * as ng from 'angular';
-
 /**
  * Isolate scope for the editor component.
  */

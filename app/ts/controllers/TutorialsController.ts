@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import Tutorial from '../models/Tutorial';
 import TutorialsScope from '../scopes/TutorialsScope';
@@ -24,11 +23,11 @@ export default class TutorialsController extends AbstractPageController {
     ];
 
     constructor(
-        $http: angular.IHttpService,
-        $sce: angular.ISCEService,
+        $http: ng.IHttpService,
+        $sce: ng.ISCEService,
         $scope: TutorialsScope,
-        $templateCache: angular.ITemplateCacheService,
-        $window: angular.IWindowService,
+        $templateCache: ng.ITemplateCacheService,
+        $window: ng.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,

@@ -17,3 +17,4 @@ function addTrailingPadding(patches, paddingLength, nullPadding) {
     }
 }
 exports.default = addTrailingPadding;
+//# sourceMappingURL=addTrailingPadding.js.map

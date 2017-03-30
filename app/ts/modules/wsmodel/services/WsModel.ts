@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import { ACE_WORKER_PATH } from '../../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../../constants';
 import { Annotation, AnnotationType } from '../../../editor/Annotation';

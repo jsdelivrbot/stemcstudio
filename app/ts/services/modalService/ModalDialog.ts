@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import AlertOptions from './AlertOptions';
 import ConfirmOptions from './ConfirmOptions';
 import PromptOptions from './PromptOptions';

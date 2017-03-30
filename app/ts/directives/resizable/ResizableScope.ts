@@ -1,11 +1,9 @@
-import * as angular from 'angular';
-
 /**
  * resizeStart
  * resizing
  * resizeEnd
  */
-interface ResizableScope extends angular.IScope {
+interface ResizableScope extends ng.IScope {
 
   /**
    * integer or $scope variable

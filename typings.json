@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": false,
+  "version": "2.23.2",
   "ambientDependencies": {
     "angular": "registry:dt/angular#1.5.0+20160318102130",
     "angular-ui-bootstrap": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-bootstrap/angular-ui-bootstrap.d.ts#86dbea8fc37d9473fee465da4f0a21bea4f8cbd9",

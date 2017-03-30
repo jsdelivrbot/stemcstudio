@@ -1,6 +1,4 @@
-import * as angular from 'angular';
-
-import {EDITOR_PREFERENCES_STORAGE, PREFERENCES_MODULE} from './constants';
+import { EDITOR_PREFERENCES_STORAGE, PREFERENCES_MODULE } from './constants';
 import EditorPreferencesStorageImplementation from './services/EditorPreferencesStorageImplementation';
 
 //
@@ -8,7 +6,7 @@ import EditorPreferencesStorageImplementation from './services/EditorPreferences
 // use the name property in the application. It should, however,
 // be reasonably unique. I'm using a reverse-domain convention.
 //
-const m: angular.IModule = angular.module(PREFERENCES_MODULE, []);
+const m: ng.IModule = angular.module(PREFERENCES_MODULE, []);
 
 m.service(EDITOR_PREFERENCES_STORAGE, EditorPreferencesStorageImplementation);
 

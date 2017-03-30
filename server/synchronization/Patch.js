@@ -55,3 +55,4 @@ var Patch = (function () {
     return Patch;
 }());
 exports.default = Patch;
+//# sourceMappingURL=Patch.js.map

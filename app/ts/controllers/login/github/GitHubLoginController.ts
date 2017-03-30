@@ -14,7 +14,7 @@ import IUuidService from '../../../services/uuid/IUuidService';
 const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
 
 /**
- * @class GitHubLoginController
+ *
  */
 export default class GitHubLoginController {
     public static $inject: string[] = [
@@ -30,17 +30,15 @@ export default class GitHubLoginController {
         'GITHUB_TOKEN_COOKIE_NAME'
     ];
     /**
-     * @class GitHubLoginController
-     * @constructor
      * @param $scope
      * @param $window
      * @param cookie
-     * @param gitHubKey {string}
-     * @param uuid4 {IUuidService} Use to generate a unique string for extra security.
+     * @param gitHubKey
+     * @param uuid4 Use to generate a unique string for extra security.
      */
     constructor(
         private $scope: GitHubLoginScope,
-        private $window: angular.IWindowService,
+        private $window: ng.IWindowService,
         private cookie: CookieService,
         private githubKey: string,
         private uuid4: IUuidService,
@@ -54,24 +52,21 @@ export default class GitHubLoginController {
     }
 
     /**
-     * @method $onInit
-     * @return {void}
+     *
      */
     $onInit(): void {
         // Do nothing.
     }
 
     /**
-     * @method $onDestroy
-     * @return {void}
+     *
      */
     $onDestroy(): void {
         // Do nothing.
     }
 
     /**
-     * @method login
-     * @return {void}
+     *
      */
     login(): void {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
@@ -117,8 +112,7 @@ export default class GitHubLoginController {
     }
 
     /**
-     * @method logout
-     * @return {void}
+     *
      */
     logout(): void {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
@@ -133,8 +127,7 @@ export default class GitHubLoginController {
     }
 
     /**
-     * @method isLoggedIn
-     * @return {boolean}
+     *
      */
     isLoggedIn(): boolean {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
@@ -148,9 +141,6 @@ export default class GitHubLoginController {
 
     /**
      * Convenience method for the user interface.
-     *
-     * @method toggleLogin
-     * @return {void}
      */
     toggleLogin(): void {
         if (this.isLoggedIn()) {

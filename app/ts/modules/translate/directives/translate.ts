@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../api';
 import TranslateScope from '../scopes/TranslateScope';
 
@@ -7,22 +6,22 @@ import TranslateScope from '../scopes/TranslateScope';
  * Usage <div translate>Hello</div> or <translate>Hello</translate>
  */
 function factory(
-    $interpolate: angular.IInterpolateService,
-    $rootScope: angular.IRootScopeService,
-    $parse: angular.IParseService,
-    $compile: angular.ICompileService,
+    $interpolate: ng.IInterpolateService,
+    $rootScope: ng.IRootScopeService,
+    $parse: ng.IParseService,
+    $compile: ng.ICompileService,
     translateService: ITranslateService): ng.IDirective {
 
     return {
         restrict: 'AE',
         scope: true,
         priority: translateService.directivePriority,
-        compile(tElement: angular.IAugmentedJQuery, tAttr: angular.IAttributes) {
+        compile(tElement: ng.IAugmentedJQuery, tAttr: ng.IAttributes) {
 
             const interpolateRegExp = '^(.*)(' + $interpolate.startSymbol() + '.*' + $interpolate.endSymbol() + ')(.*)';
             const watcherRegExp = '^(.*)' + $interpolate.startSymbol() + '(.*)' + $interpolate.endSymbol() + '(.*)';
 
-            return function linkFn(scope: TranslateScope, iElement: angular.IAugmentedJQuery, iAttr: angular.IAttributes) {
+            return function linkFn(scope: TranslateScope, iElement: ng.IAugmentedJQuery, iAttr: ng.IAttributes) {
 
                 scope.preText = '';
                 scope.postText = '';

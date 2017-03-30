@@ -1,9 +1,8 @@
 //
 // GENERATED FILE
 //
-import * as angular from 'angular';
 import app from './app';
-app.run(['$templateCache', function($templateCache: angular.ITemplateCacheService) {
+app.run(['$templateCache', function($templateCache: ng.ITemplateCacheService) {
 
   'use strict';
 
@@ -381,9 +380,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "				<a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
     "					<brand />\n" +
     "				</a>\n" +
-    "				<!--div ng-hide='isGoHomeEnabled' class='navbar-brand'>\n" +
-    "					<brand/>\n" +
-    "				</div-->\n" +
     "			</div>\n" +
     "			<div class='ignore-collapse ignore-navbar-collapse'>\n" +
     "				<ul class='nav navbar-nav'>\n" +

@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import app from '../../app';
 import Blob from './Blob';
 import BlobData from './BlobData';

@@ -18,3 +18,4 @@ function getTranslation(request, response) {
     });
 }
 exports.getTranslation = getTranslation;
+//# sourceMappingURL=index.js.map

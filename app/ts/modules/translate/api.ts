@@ -1,13 +1,11 @@
-import * as angular from 'angular';
-
 /**
  * The translation gateway is a remote REST server that
  */
 export interface ITranslateGateway {
-    translate(input: string): angular.IPromise<string>;
+    translate(input: string): ng.IPromise<string>;
 }
 
-export interface ITranslateGatewayProvider extends angular.IServiceProvider {
+export interface ITranslateGatewayProvider extends ng.IServiceProvider {
     /**
      * 
      */
@@ -18,7 +16,7 @@ export interface ITranslateService {
     directivePriority: number;
     isKeepContent(): boolean;
     isPostCompilingEnabled(): boolean;
-    translate(input: string): angular.IPromise<string>;
+    translate(input: string): ng.IPromise<string>;
     uses(langKey: string): void;
 }
 
@@ -29,7 +27,7 @@ export interface ITranslationTable {
 /**
  * Allows the translation service to be configured in the application configuration step.
  */
-export interface ITranslateServiceProvider extends angular.IServiceProvider {
+export interface ITranslateServiceProvider extends ng.IServiceProvider {
     /**
      * The source language is static and is determined by the application developer.
      * This parameter will be injected into the service upon construction.

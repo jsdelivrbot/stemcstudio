@@ -70,9 +70,8 @@ module.exports = function (grunt) {
                             "//\n" +
                             "// GENERATED FILE\n" +
                             "//\n" +
-                            "import * as angular from 'angular';\n" +
                             "import app from './app';\n" +
-                            "app.run(['$templateCache', function($templateCache: angular.ITemplateCacheService) {\n" +
+                            "app.run(['$templateCache', function($templateCache: ng.ITemplateCacheService) {\n" +
                             '\n' +
                             script +
                             '\n' +

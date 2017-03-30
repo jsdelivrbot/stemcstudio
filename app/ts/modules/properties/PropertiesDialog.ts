@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import PropertiesSettings from './PropertiesSettings';
 
 /**

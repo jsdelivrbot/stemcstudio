@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import ExamplesScope from '../scopes/ExamplesScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
@@ -23,7 +22,7 @@ export default class ExamplesController extends AbstractPageController {
 
     constructor(
         $scope: ExamplesScope,
-        $window: angular.IWindowService,
+        $window: ng.IWindowService,
         authManager: IGitHubAuthManager,
         translateService: ITranslateService,
         ga: UniversalAnalytics.ga,

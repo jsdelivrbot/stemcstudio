@@ -161,3 +161,4 @@ var MwRemote = (function () {
     return MwRemote;
 }());
 exports.default = MwRemote;
+//# sourceMappingURL=MwRemote.js.map

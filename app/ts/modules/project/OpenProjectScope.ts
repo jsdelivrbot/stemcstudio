@@ -1,10 +1,9 @@
-import * as angular from 'angular';
 import Doodle from '../../services/doodles/Doodle';
 
 /**
  * 
  */
-export interface OpenProjectScope extends angular.IRootScopeService {
+export interface OpenProjectScope extends ng.IRootScopeService {
 
     /**
      * The doodle that the user wants to open from Local Storage.

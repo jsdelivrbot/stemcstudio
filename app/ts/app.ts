@@ -1,10 +1,4 @@
 //
-// At runtime, angular is found using the System loader.
-// At designtime, angular is specified in tsconfig.json.
-//
-import * as angular from 'angular';
-
-//
 // The following imports are to be found in the jspm.config.js file.
 // The module name that we require may be different.
 //
@@ -63,7 +57,7 @@ import OpenProjectService from './modules/project/OpenProjectService';
 import CopyProjectService from './modules/project/CopyProjectService';
 import PropertiesDialogService from './modules/properties/PropertiesDialogService';
 import PublishDialogService from './modules/publish/PublishDialogService';
-import brand from './directives/brand/brand';
+import { brandDirective } from './directives/brand/brand';
 import domain from './directives/domain/domain';
 import logoText from './directives/logoText/logoText';
 import packageName from './directives/packageName/packageName';
@@ -113,7 +107,7 @@ import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
-const app: angular.IModule = angular.module('app', [
+const app: ng.IModule = angular.module('app', [
     'ngMdIcons',
     'ngSanitize',
     'ui.bootstrap',
@@ -244,7 +238,7 @@ app.controller('facebook-login-controller', FacebookLoginController);
 app.controller('github-login-controller', GitHubLoginController);
 app.controller('twitter-login-controller', TwitterLoginController);
 
-app.directive('brand', brand);
+app.directive('brand', brandDirective);
 app.directive('domain', domain);
 app.directive('logoText', logoText);
 app.directive('pageTitle', pageTitle);

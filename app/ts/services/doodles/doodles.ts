@@ -86,7 +86,7 @@ app.factory('doodles', [
     'options',
     'doodlesKey',
     function (
-        $window: angular.IWindowService,
+        $window: ng.IWindowService,
         options: IOptionManager,
         doodlesKey: string
     ) {

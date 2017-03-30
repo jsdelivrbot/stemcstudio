@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import CredentialsService from '../../services/credentials/CredentialsService';
 import Delta from '../../editor/Delta';
 import Document from '../../editor/Document';
@@ -117,7 +116,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Promise to update the README view for throttling.
      */
-    private readmePromise: angular.IPromise<void> | undefined;
+    private readmePromise: ng.IPromise<void> | undefined;
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
@@ -182,10 +181,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $scope: WorkspaceScope,
         private $state: angular.ui.IStateService,
         private $stateParams: angular.ui.IStateParamsService,
-        private $http: angular.IHttpService,
-        private $location: angular.ILocationService,
-        private $timeout: angular.ITimeoutService,
-        private $window: angular.IWindowService,
+        private $http: ng.IHttpService,
+        private $location: ng.ILocationService,
+        private $timeout: ng.ITimeoutService,
+        private $window: ng.IWindowService,
         private credentials: CredentialsService,
         private background: Background,
         private github: GitHubService,
@@ -217,7 +216,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
         $scope.FEATURE_ROOM_ENABLED = FEATURE_ROOM_ENABLED;
 
-        let rebuildPromise: angular.IPromise<void> | undefined;
+        let rebuildPromise: ng.IPromise<void> | undefined;
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
             rebuildPromise = $timeout(() => {
@@ -580,21 +579,21 @@ export default class WorkspaceController implements WorkspaceMixin {
         // No such issue with the README.md
         this.$scope.isMarkdownVisible = true;
 
-        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal: boolean, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal: boolean, unused: ng.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
             this.wsModel.isViewVisible = this.$scope.isViewVisible;
         }));
 
-        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal: boolean, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal: boolean, unused: ng.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
             this.wsModel.isCodeVisible = this.$scope.isEditMode;
         }));
 
-        this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal: boolean, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal: boolean, unused: ng.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }

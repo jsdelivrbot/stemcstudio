@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import RoomsController from './controllers/RoomsController';
 import RoomsService from './services/RoomsService';
 import { ROOMS_SERVICE_UUID } from './api';
@@ -9,7 +7,7 @@ import { ROOMS_SERVICE_UUID } from './api';
 // use the name property in the application. It should, however,
 // be reasonably unique. I'm using a reverse-domain convention.
 //
-const rooms: angular.IModule = angular.module('com.stemcstudio.rooms', []);
+const rooms: ng.IModule = angular.module('com.stemcstudio.rooms', []);
 
 rooms.controller('rooms-controller', RoomsController);
 rooms.service(ROOMS_SERVICE_UUID, RoomsService);

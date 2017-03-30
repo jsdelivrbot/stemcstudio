@@ -1,7 +1,7 @@
 import app from '../../app';
 
 function twitterFactory(
-    $window: angular.IWindowService,
+    $window: ng.IWindowService,
     NAMESPACE_TWITTER_WIDGETS: string
 ) {
     // Load the widgets.js file asynchronously. 

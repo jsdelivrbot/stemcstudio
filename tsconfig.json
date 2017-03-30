@@ -3,7 +3,7 @@
         "target": "es5",
         "module": "system",
         "moduleResolution": "node",
-        "sourceMap": false,
+        "sourceMap": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "preserveConstEnums": true,
@@ -57,6 +57,6 @@
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
-        "./node_modules/typescript/lib/lib.d.ts"
+        "node_modules/typescript/lib/lib.d.ts"
     ]
 }

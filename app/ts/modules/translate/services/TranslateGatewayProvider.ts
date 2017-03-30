@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import { ITranslateGatewayProvider, ITranslateGateway, ITranslationTable } from '../api';
 import TranslateGateway from './TranslateGateway';
 

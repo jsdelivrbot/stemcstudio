@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import CopyProjectSettings from './CopyProjectSettings';
 
 /**

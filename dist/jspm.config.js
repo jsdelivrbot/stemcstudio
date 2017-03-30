@@ -9,12 +9,13 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/router": "npm:@angular/router@0.2.0",
-    "angular": "github:angular/bower-angular@1.5.9",
-    "angular-animate": "github:angular/bower-angular-animate@1.5.9",
+    "@angular/router": "npm:@angular/router@4.0.1",
+    "@angular/upgrade/static": "npm:@angular/upgrade/bundles/upgrade-static.umd.js",
+    "angular": "github:angular/bower-angular@1.6.3",
+    "angular-animate": "github:angular/bower-angular-animate@1.6.3",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.6.3",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -30,13 +31,13 @@ System.config({
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.9"
+      "angular": "github:angular/bower-angular@1.6.3"
     },
-    "github:angular/bower-angular-animate@1.5.9": {
-      "angular": "github:angular/bower-angular@1.5.9"
+    "github:angular/bower-angular-animate@1.6.3": {
+      "angular": "github:angular/bower-angular@1.6.3"
     },
-    "github:angular/bower-angular-sanitize@1.5.9": {
-      "angular": "github:angular/bower-angular@1.5.9"
+    "github:angular/bower-angular-sanitize@1.6.3": {
+      "angular": "github:angular/bower-angular@1.6.3"
     },
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
@@ -103,8 +104,26 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/router@0.2.0": {
+    "npm:@angular/common@4.0.1": {
+      "@angular/core": "npm:@angular/core@4.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:@angular/core@4.0.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "rxjs": "npm:rxjs@5.2.0",
+      "zone.js": "npm:zone.js@0.8.5"
+    },
+    "npm:@angular/platform-browser@4.0.1": {
+      "@angular/common": "npm:@angular/common@4.0.1",
+      "@angular/core": "npm:@angular/core@4.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:@angular/router@4.0.1": {
+      "@angular/common": "npm:@angular/common@4.0.1",
+      "@angular/core": "npm:@angular/core@4.0.1",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "rxjs": "npm:rxjs@5.2.0"
     },
     "npm:accepts@1.3.1": {
       "mime-types": "npm:mime-types@2.1.11",
@@ -833,6 +852,13 @@ System.config({
       "yargs-parser": "npm:yargs-parser@4.2.1"
     },
     "npm:zone.js@0.6.26": {
+      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
+      "events": "github:jspm/nodelibs-events@0.1.1",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "timers": "github:jspm/nodelibs-timers@0.1.0"
+    },
+    "npm:zone.js@0.8.5": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

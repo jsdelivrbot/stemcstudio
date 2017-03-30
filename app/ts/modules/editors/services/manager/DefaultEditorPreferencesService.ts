@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import themes from './manifest';
 import Theme from '../../Theme';
 import EditorPreferencesService from '../../EditorPreferencesService';
@@ -277,12 +276,12 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     }
 }
 
-function getThemeByName(name: string): Theme {
-    const index = themeNames.indexOf(name);
+function getThemeByName(themeName: string): Theme {
+    const index = themeNames.indexOf(themeName);
     if (index >= 0) {
         return themes[index];
     }
     else {
-        return void 0;
+        throw new Error(`themeName => ${themeName}`);
     }
 }

@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import FlowService from '../../services/flow/FlowService';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFacts from './PropertiesFacts';
@@ -12,8 +11,8 @@ export default class PropertiesFlow {
         private options: IOptionManager,
         private olds: string[],
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        private $http: angular.IHttpService,
-        private $location: angular.ILocationService,
+        private $http: ng.IHttpService,
+        private $location: ng.ILocationService,
         private VENDOR_FOLDER_MARKER: string,
         private flowService: FlowService,
         private propertiesDialog: PropertiesDialog,

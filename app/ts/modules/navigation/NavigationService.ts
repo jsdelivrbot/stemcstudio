@@ -110,7 +110,7 @@ export default class NavigationService implements INavigationService {
         return this.navigateTo(STATE_TUTORIALS, void 0, void 0, label, value);
     }
 
-    private navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): angular.IPromise<any> {
+    private navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): ng.IPromise<any> {
         this.ga('send', 'event', 'navigateTo', to, label, value);
         return this.$state.go(to, params, options);
     }

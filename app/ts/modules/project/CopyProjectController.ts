@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as uib from 'angular-bootstrap';
 import isString from '../../utils/isString';
 import CopyProjectScope from './CopyProjectScope';
@@ -45,7 +44,7 @@ export default class CopyProjectController {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };
-        $scope.reset = function (form: angular.IFormController) {
+        $scope.reset = function (form: ng.IFormController) {
             copySettingsToScope(settings, $scope);
             // This code demonstrates a technique for future development.
             // The Reset button is currently disabled.

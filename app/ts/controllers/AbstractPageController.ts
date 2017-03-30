@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 
@@ -15,7 +14,7 @@ export default class AbstractPageController {
      * @param overflow 'hidden' or 'auto' to control scrollbars on the page.
      */
     constructor(
-        $window: angular.IWindowService,
+        $window: ng.IWindowService,
         authManager: IGitHubAuthManager,
         modalDialog: ModalDialog,
         overflow: string) {

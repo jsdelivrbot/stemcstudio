@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import closure from './closure';
 import csvTypeFromContent from './csvTypeFromContent';
@@ -42,8 +41,8 @@ export default function rebuildPreview(
     workspace: WsModel,
     options: IOptionManager,
     $scope: WorkspaceScope,
-    $location: angular.ILocationService,
-    $window: angular.IWindowService,
+    $location: ng.ILocationService,
+    $window: ng.IWindowService,
     FILENAME_CODE: string,
     FILENAME_LESS: string,
     FILENAME_LIBS: string,

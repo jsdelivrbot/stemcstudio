@@ -4,3 +4,4 @@ function default_1(value) {
     return typeof value === 'string';
 }
 exports.default = default_1;
+//# sourceMappingURL=isString.js.map

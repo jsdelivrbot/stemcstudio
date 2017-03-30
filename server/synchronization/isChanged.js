@@ -5,3 +5,4 @@ function isChanged(diffs) {
     return diffs.length !== 1 || diffs[0][0] !== DIFF_EQUAL_1.default;
 }
 exports.default = isChanged;
+//# sourceMappingURL=isChanged.js.map

@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import RoomAgent from './RoomAgent';
 
 export interface RoomParams {

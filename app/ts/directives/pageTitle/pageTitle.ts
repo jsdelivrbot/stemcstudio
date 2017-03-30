@@ -1,10 +1,8 @@
-import * as ng from 'angular';
-
 /**
  * Directive Definition Factory
  * Usage <page-title>
  */
-export default function(): ng.IDirective {
+export default function (): ng.IDirective {
     return {
         restrict: 'E',
         scope: { title: '@' },

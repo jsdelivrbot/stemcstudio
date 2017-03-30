@@ -592,3 +592,4 @@ function destroyRoom(request, response) {
     });
 }
 exports.destroyRoom = destroyRoom;
+//# sourceMappingURL=index.js.map

@@ -1,10 +1,8 @@
-import * as angular from 'angular';
-
 import { WORKSPACE_MODEL, WSMODEL_MODULE } from './constants';
 
 import WsModel from './services/WsModel';
 
-const wsmodel: angular.IModule = angular.module(WSMODEL_MODULE, []);
+const wsmodel: ng.IModule = angular.module(WSMODEL_MODULE, []);
 
 wsmodel.service(WORKSPACE_MODEL, WsModel);
 

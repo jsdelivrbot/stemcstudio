@@ -73,7 +73,7 @@ const DEFAULTS: Preferences = {
 export default class PreferencesManagerService implements EditorPreferencesStorage {
     public static $inject: string[] = ['$window'];
     private cache: Partial<Preferences> = {};
-    constructor(private $window: angular.IWindowService) {
+    constructor(private $window: ng.IWindowService) {
         const value = this.$window.localStorage[PREFERENCES_KEY];
         if (value) {
             this.cache = JSON.parse(value);

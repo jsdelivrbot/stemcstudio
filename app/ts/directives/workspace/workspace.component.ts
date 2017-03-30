@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import controller from './WorkspaceController';
 
 function factory() {
@@ -7,7 +6,7 @@ function factory() {
         // Do nothing.
     }
 
-    const directive: angular.IDirective = {
+    const directive: ng.IDirective = {
         require: [],
         restrict: 'E',
         controller,

@@ -92,13 +92,13 @@ const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
     let body = "";
     const req = https.request(options, (res) => {
         res.setEncoding('utf8');
-        res.on('data', (chunk) => { body += chunk; });
+        res.on('data', (chunk: string) => { body += chunk; });
         res.on('end', () => { cb(null, qs.parse(body).access_token); });
     });
 
     req.write(data);
     req.end();
-    req.on('error', (e) => { cb(e.message); });
+    req.on('error', (e: { message: string }) => { cb(e.message); });
 };
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com

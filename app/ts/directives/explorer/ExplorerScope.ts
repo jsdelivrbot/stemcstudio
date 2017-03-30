@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import WsModel from '../../modules/wsmodel/services/WsModel';
 
 /**
