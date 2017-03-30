@@ -341,23 +341,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('copy.html',
-    "<div class='modal-content'>\n" +
-    "    <div class='modal-header'>\n" +
-    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
-    "        <h3>Make Copy of Project \"{{oldDescription}}\"</h3>\n" +
-    "    </div>\n" +
-    "    <div class='modal-body'>\n" +
-    "        <input type='text' ng-model='newDescription' placeholder=\"Enter description\" autofocus/>\n" +
-    "    </div>\n" +
-    "    <div class='modal-footer'>\n" +
-    "        <button class='btn btn-primary' ng-click='doOK()'>Copy project</button>\n" +
-    "        <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
-    "    </div>\n" +
-    "</div>"
-  );
-
-
   $templateCache.put('dashboard.html',
     "<div id='dashboard-page'>\n" +
     "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
@@ -1040,13 +1023,44 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('new-project-modal.html',
+  $templateCache.put('project-copy.html',
     "<!-- The name attribute pushes the form into the scope -->\n" +
     "<!-- Using AngularJSform validation requires a name for the form. -->\n" +
     "<!-- The novalidate attribute prevents the browser from natively validating the form. -->\n" +
     "<form name='form' ng-submit='ok()' novalidate class=\"css-form\">\n" +
     "    <fieldset>\n" +
     "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='cancel()'>&times;</button>\n" +
+    "            <h3 class='modal-title' style=\"float: left;\">\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Copy Project \"{{project.oldDescription}}\"</h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-body\">\n" +
+    "            <label class='text-muted'><span>Description</span>: <input type='text' name=\"description\" ng-model='project.newDescription' placeholder=\"Enter description\" required/></label><br/>\n" +
+    "            <br/>\n" +
+    "            <div ng-show=\"form.$submitted || form.description.$touched\">\n" +
+    "                <div ng-show=\"form.description.$error.required\">Description is required.</div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"reset(form)\">Reset</button>\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"form.$invalid\">Copy project</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
+  );
+
+
+  $templateCache.put('project-new.html',
+    "<!-- The name attribute pushes the form into the scope -->\n" +
+    "<!-- Using AngularJSform validation requires a name for the form. -->\n" +
+    "<!-- The novalidate attribute prevents the browser from natively validating the form. -->\n" +
+    "<form name='form' ng-submit='ok()' novalidate class=\"css-form\">\n" +
+    "    <fieldset>\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='cancel()'>&times;</button>\n" +
     "            <h3 class='modal-title' style=\"float: left;\">\n" +
     "                <logo-text version='{{version}}' />\n" +
     "            </h3>\n" +
@@ -1069,9 +1083,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('open-project-modal.html',
-    "<!--div class='modal-content'-->\n" +
+  $templateCache.put('project-open.html',
     "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='cancel()'>&times;</button>\n" +
     "    <h3 class='modal-title' style=\"float: left;\">\n" +
     "        <logo-text version='{{version}}' />\n" +
     "    </h3>\n" +
@@ -1084,8 +1098,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "</div>\n" +
     "<div class='modal-footer'>\n" +
     "    <button class='btn' ng-click='doClose()'>Close</button>\n" +
-    "</div>\n" +
-    "<!--/div-->"
+    "</div>\n"
   );
 
 

@@ -4,22 +4,23 @@
 <form name='form' ng-submit='ok()' novalidate class="css-form">
     <fieldset>
         <div class="modal-header" style="clear: both">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='cancel()'>&times;</button>
             <h3 class='modal-title' style="float: left;">
                 <logo-text version='{{version}}' />
             </h3>
-            <h3 class='modal-title' style="float: right;">Create a New Project</h3>
+            <h3 class='modal-title' style="float: right;">Copy Project "{{project.oldDescription}}"</h3>
         </div>
         <div class="modal-body">
-            <label class='text-muted'><span>Description</span>: <input type='text' name="description" ng-model='project.description' placeholder="Your project description" required/></label><br/>
+            <label class='text-muted'><span>Description</span>: <input type='text' name="description" ng-model='project.newDescription' placeholder="Enter description" required/></label><br/>
             <br/>
             <div ng-show="form.$submitted || form.description.$touched">
                 <div ng-show="form.description.$error.required">Description is required.</div>
             </div>
-            <label class='text-muted'><span>Template</span>: <select ng-model='project.template' ng-options='template.description for template in templates track by template.name'></select></label>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-ng-click="reset(form)">Reset</button>
             <button class="btn btn-secondary" type="button" data-ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">OK</button>
+            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">Copy project</button>
         </div>
     </fieldset>
 </form>

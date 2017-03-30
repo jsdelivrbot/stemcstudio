@@ -621,30 +621,19 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
                 const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
-                // TODO: This returns a promise and should be combined in a Promise.all
-                // TODO: We can then have a synchLanguageService method.
-                this.wsModel.synchOperatorOverloading();
-                // TODO: Promisify....
-                this.wsModel.setModuleKind(moduleKind, (moduleKindError) => {
-                    if (!moduleKindError) {
-                        // Set the script target for transpilation consistent with the version.
-
-                        this.wsModel.setScriptTarget(scriptTarget, (scriptTargetError) => {
-                            if (!scriptTargetError) {
-                                this.compile();
-                                this.$scope.workspaceLoaded = true;
-                                // The following line may be redundant because we handle the files elsewhare.
-                                this.$scope.updatePreview(WAIT_NO_MORE);
-                            }
-                            else {
-                                console.warn(`setScriptTarget(${scriptTarget}) failed ${scriptTargetError}`);
-                            }
-                        });
-                    }
-                    else {
-                        console.warn(`setModuleKind(${moduleKind}) failed ${moduleKindError}`);
-                    }
-                });
+                const promise1: Promise<any> = this.wsModel.synchOperatorOverloading();
+                const promise2: Promise<any> = this.wsModel.synchModuleKind(moduleKind);
+                const promise3: Promise<any> = this.wsModel.synchScriptTarget(scriptTarget);
+                Promise.all([promise1, promise2, promise3])
+                    .then(() => {
+                        this.compile();
+                        this.$scope.workspaceLoaded = true;
+                        // The following line may be redundant because we handle the files elsewhare.
+                        this.$scope.updatePreview(WAIT_NO_MORE);
+                    }).catch((reason) => {
+                        console.warn(`setModuleKind(${moduleKind}) failed ${reason}`);
+                        console.warn(`setScriptTarget(${scriptTarget}) failed ${reason}`);
+                    });
             });
     }
 
@@ -731,7 +720,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
     }
 
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, tectChanges: TextChange[]) => any): void {
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
         this.wsModel.getFormattingEditsForDocument(path, settings, callback);
     }
 

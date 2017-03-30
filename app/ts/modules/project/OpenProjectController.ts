@@ -34,6 +34,10 @@ export default class OpenProjectController {
         };
 
         $scope.doClose = function () {
+            $scope.cancel();
+        };
+
+        $scope.cancel = function () {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };

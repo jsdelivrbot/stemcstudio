@@ -83,6 +83,9 @@ const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).c
  */
 const workerUrl = '/js/worker.js';
 
+/**
+ * Classify diagnostics so that they can be reported with differing severity.
+ */
 type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
 
 /**
@@ -310,6 +313,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * A mapping from the file path to the last JavaScript code emitted by the TypeScript compiler.
      */
     lastKnownJs: { [path: string]: string } = {};
+    /**
+     * Source maps will be used to relate runtime exceptions to the source location.
+     */
     lastKnownJsMap: { [path: string]: string } = {};
 
     /**
@@ -339,7 +345,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private inFlight = 0;
 
-    private quickin: { [path: string]: QuickInfoTooltip } = {};
+    private quickInfo: { [path: string]: QuickInfoTooltip } = {};
     private annotationHandlers: { [path: string]: (event: { data: Annotation[], type: 'annotation' }) => any } = {};
 
     private refMarkers: number[] = [];
@@ -401,10 +407,13 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private eventBus: EventBus<any, WsModel> = new EventBus<any, WsModel>(this);
 
-    public static $inject: string[] = ['options', '$q', 'doodles'];
-
     public trace_ = false;
 
+    public static $inject: string[] = ['options', '$q', 'doodles'];
+
+    /**
+     * AngularJS service; parameters must match static $inject property.
+     */
     constructor(private options: IOptionManager, private $q: ng.IQService, private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
@@ -520,7 +529,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Notifies the callback when the specified event happens.
      * The function returned may be used to remove the watch.
      */
-    watch<T>(eventName: string, callback: (event: T, source: WsModel) => any): () => any {
+    watch<T>(eventName: string, callback: (event: T, source: WsModel) => void): () => any {
         return this.eventBus.watch(eventName, callback);
     }
 
@@ -586,7 +595,20 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         });
     }
 
-    setModuleKind(moduleKind: string, callback: (err: any) => any): void {
+    synchModuleKind(moduleKind: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this.setModuleKind(moduleKind, function (reason) {
+                if (!reason) {
+                    resolve(moduleKind);
+                }
+                else {
+                    reject(reason);
+                }
+            });
+        });
+    }
+
+    private setModuleKind(moduleKind: string, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
@@ -634,7 +656,20 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
-    setScriptTarget(scriptTarget: string, callback: (err: any) => any): void {
+    synchScriptTarget(scriptTarget: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this.setScriptTarget(scriptTarget, function (reason) {
+                if (!reason) {
+                    resolve(scriptTarget);
+                }
+                else {
+                    reject(reason);
+                }
+            });
+        });
+    }
+
+    private setScriptTarget(scriptTarget: string, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
@@ -709,7 +744,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             // Finally, enable QuickInfo.
             const quickInfo = new QuickInfoTooltip(path, editor, this);
             quickInfo.init();
-            this.quickin[path] = quickInfo;
+            this.quickInfo[path] = quickInfo;
         }
         else if (isJavaScript(path)) {
             // Enable auto completion using the workspace.
@@ -725,7 +760,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             // Finally, enable QuickInfo.
             const quickInfo = new QuickInfoTooltip(path, editor, this);
             quickInfo.init();
-            this.quickin[path] = quickInfo;
+            this.quickInfo[path] = quickInfo;
         }
         else if (isHtmlScript(path)) {
             editor.commands.addCommand(new AutoCompleteCommand());
@@ -757,20 +792,20 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
             if (isTypeScript(path)) {
                 // Remove QuickInfo
-                if (this.quickin[path]) {
-                    const quickInfo = this.quickin[path];
+                if (this.quickInfo[path]) {
+                    const quickInfo = this.quickInfo[path];
                     quickInfo.terminate();
-                    delete this.quickin[path];
+                    delete this.quickInfo[path];
                 }
                 // TODO: Remove the completer?
                 // TODO: Remove the AutoCompleteCommand:
             }
             else if (isJavaScript(path)) {
                 // Remove QuickInfo
-                if (this.quickin[path]) {
-                    const quickInfo = this.quickin[path];
+                if (this.quickInfo[path]) {
+                    const quickInfo = this.quickInfo[path];
                     quickInfo.terminate();
-                    delete this.quickin[path];
+                    delete this.quickInfo[path];
                 }
                 // TODO: Remove the completer?
                 // TODO: Remove the AutoCompleteCommand:
@@ -2186,7 +2221,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * @param room The room to connect to.
      * @param master <code>true</code> if the room was created with this workspace as the master.
      */
-    connectToRoom(room: RoomAgent, master: boolean) {
+    connectToRoom(room: RoomAgent, master: boolean): void {
 
         if (this.room) {
             this.disconnectFromRoom();
@@ -2267,12 +2302,12 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     }
                 }
             }
-            // remove the listener on the room agent.
+            // Remove the listener on the room agent.
             if (this.roomListener) {
                 this.room.removeListener(this.roomListener);
                 this.roomListener = void 0;
             }
-            // release the room reference.
+            // Release the room reference.
             const room = this.room;
             this.room = void 0;
             return room;
@@ -2286,7 +2321,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * For each file, collect the edits and send them to the room.
      */
-    uploadToRoom(room: RoomAgent) {
+    uploadToRoom(room: RoomAgent): void {
         if (room) {
             const files = this.files;
             if (files) {
@@ -2365,7 +2400,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
-    updateFileEditorFrontMarkers(path: string) {
+    updateFileEditorFrontMarkers(path: string): void {
         const editor = this.getFileEditor(path);
         if (editor) {
             editor.renderer.updateFrontMarkers();

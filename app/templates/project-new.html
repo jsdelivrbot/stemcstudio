@@ -1,0 +1,26 @@
+<!-- The name attribute pushes the form into the scope -->
+<!-- Using AngularJSform validation requires a name for the form. -->
+<!-- The novalidate attribute prevents the browser from natively validating the form. -->
+<form name='form' ng-submit='ok()' novalidate class="css-form">
+    <fieldset>
+        <div class="modal-header" style="clear: both">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='cancel()'>&times;</button>
+            <h3 class='modal-title' style="float: left;">
+                <logo-text version='{{version}}' />
+            </h3>
+            <h3 class='modal-title' style="float: right;">Create a New Project</h3>
+        </div>
+        <div class="modal-body">
+            <label class='text-muted'><span>Description</span>: <input type='text' name="description" ng-model='project.description' placeholder="Your project description" required/></label><br/>
+            <br/>
+            <div ng-show="form.$submitted || form.description.$touched">
+                <div ng-show="form.description.$error.required">Description is required.</div>
+            </div>
+            <label class='text-muted'><span>Template</span>: <select ng-model='project.template' ng-options='template.description for template in templates track by template.name'></select></label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">OK</button>
+        </div>
+    </fieldset>
+</form>

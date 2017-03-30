@@ -16,7 +16,7 @@ interface WorkspaceMixin {
     attachEditor(path: string, mode: string, editor: Editor): () => void;
 
     /**
-     *
+     * TODO: Replace with Promise<TextChange[]>
      */
     getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void;
 }

@@ -22,6 +22,10 @@ export interface OpenProjectScope extends angular.IRootScopeService {
      * 
      */
     doClose(): void;
+    /**
+     * 
+     */
+    cancel(): void;
 }
 
 export default OpenProjectScope;

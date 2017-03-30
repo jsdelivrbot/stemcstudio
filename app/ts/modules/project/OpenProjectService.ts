@@ -13,16 +13,16 @@ export default class OpenProjectService implements OpenProjectDialog {
         // Do nothing.
     }
     open(defaults: OpenProjectSettings): ng.IPromise<OpenProjectSettings> {
-        const settings: uib.IModalSettings = {
+        const modalSettings: uib.IModalSettings = {
             backdrop: 'static',
             controller: OpenProjectController,
-            templateUrl: 'open-project-modal.html'
+            templateUrl: 'project-open.html'
         };
-        settings.resolve = {
+        modalSettings.resolve = {
             pkgInfo: function () {
                 return defaults;
             }
         };
-        return this.$uibModal.open(settings).result;
+        return this.$uibModal.open(modalSettings).result;
     }
 }
