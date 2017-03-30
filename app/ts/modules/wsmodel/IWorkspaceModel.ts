@@ -11,16 +11,32 @@ export const changedOperatorOverloadingTopic = 'changedOperatorOverloading';
 export const outputFilesTopic = 'outputFiles';
 export const renamedFileTopic = 'renamedFile';
 
+/**
+ * 
+ */
 export class ChangedOperatorOverloadingMessage {
     constructor(public oldValue: boolean, public newValue: boolean) {
     }
 }
 
+/**
+ *
+ */
+export interface ChangedOperatorOverloadingHandler<T> {
+    (message: ChangedOperatorOverloadingMessage, source: T): any;
+}
+
+/**
+ * 
+ */
 export class OutputFilesMessage {
     constructor(public files: OutputFile[]) {
     }
 }
 
+/**
+ * 
+ */
 export class RenamedFileMessage {
     constructor(public oldPath: string, public newPath: string) {
     }

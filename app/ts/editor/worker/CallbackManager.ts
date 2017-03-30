@@ -2,8 +2,6 @@ const INITIAL_CALLBACK_ID = 1;
 
 /**
  * Manage a cache of callback functions by trading for a generated numeric callback identifier.
- * 
- * @class CallbackManager
  */
 export default class CallbackManager {
     private callbacks: { [id: number]: (data: any) => any } = {};
@@ -15,10 +13,6 @@ export default class CallbackManager {
 
     /**
      * Trades the incoming callback function for a number.
-     *
-     * @method captureCallback
-     * @param callback {(err: any) => any}
-     * @return {number}
      */
     public captureCallback(callback: (err: any) => any): number {
         const callbackId = this.callbackId++;
@@ -28,10 +22,6 @@ export default class CallbackManager {
 
     /**
      * Trades the incomind number for a callback function.
-     * 
-     * @method releaseCallback
-     * @param callbackId {number}
-     * @return {(err: any) => any}
      */
     public releaseCallback(callbackId: number): (err: any) => any {
         const callback = this.callbacks[callbackId];

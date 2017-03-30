@@ -139,6 +139,7 @@ function factory(
         editor.setPadding(4);
 
         const changeAnnotationHandler = function (data: any, editor: Editor) {
+            // console.log(`changeAnnotation: data => ${JSON.stringify(data)}`);
             // Asynchronously trigger Angular digest loop so that files in explorer are updated.
             $scope.$applyAsync(function () {
                 // Nothing to see here.

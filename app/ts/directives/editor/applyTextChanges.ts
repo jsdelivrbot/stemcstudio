@@ -19,30 +19,31 @@ export default function applyTextChanges(edits: TextChange[], session: EditSessi
     let runningOffset = 0;
 
     const document = session.getDocument();
+    if (document) {
+        for (const edit of edits) {
+            const oldTextLength = edit.span.length;
+            const editStartIndex = edit.span.start + runningOffset;
+            const editEndIndex = editStartIndex + oldTextLength;
+            const start: Position = document.indexToPosition(editStartIndex);
+            const end: Position = document.indexToPosition(editEndIndex);
+            const range = { start, end };
 
-    for (const edit of edits) {
-        const oldTextLength = edit.span.length;
-        const editStartIndex = edit.span.start + runningOffset;
-        const editEndIndex = editStartIndex + oldTextLength;
-        const start: Position = document.indexToPosition(editStartIndex);
-        const end: Position = document.indexToPosition(editEndIndex);
-        const range = { start, end };
+            // If these are formatting edits then we ensure that the text being replaced is whitespace only.
+            const oldText = session.getTextRange(range);
+            const newText = edit.newText;
+            if (removeWhitespace(oldText).length > 0) {
+                console.warn(`Abandoning formatting edits because non-whitespace detected in old text, '${oldText}'.`);
+                return;
+            }
+            if (removeWhitespace(newText).length > 0) {
+                console.warn(`Abandoning formatting edits because non-whitespace detected in new text, '${newText}'.`);
+                return;
+            }
 
-        // If these are formatting edits then we ensure that the text being replaced is whitespace only.
-        const oldText = session.getTextRange(range);
-        const newText = edit.newText;
-        if (removeWhitespace(oldText).length > 0) {
-            console.warn(`Abandoning formatting edits because non-whitespace detected in old text, '${oldText}'.`);
-            return;
+            session.replace(range, newText);
+
+            const offset = newText.length - oldTextLength;
+            runningOffset += offset;
         }
-        if (removeWhitespace(newText).length > 0) {
-            console.warn(`Abandoning formatting edits because non-whitespace detected in new text, '${newText}'.`);
-            return;
-        }
-
-        session.replace(range, newText);
-
-        const offset = newText.length - oldTextLength;
-        runningOffset += offset;
     }
 }

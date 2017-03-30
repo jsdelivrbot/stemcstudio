@@ -25810,7 +25810,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                     var _this = this;
                     this.sender = sender;
                     this.trace = false;
-                    this.host_ = new DefaultLanguageServiceHost_1.default();
+                    this.lsHost = new DefaultLanguageServiceHost_1.default();
                     this.documentRegistry_ = new DocumentRegistryInspector_1.default(ts.createDocumentRegistry(useCaseSensitiveFileNames));
                     sender.on(LanguageServiceEvents_15.EVENT_SET_TRACE, function (message) {
                         var _a = message.data,
@@ -25833,9 +25833,9 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT + "(" + _this.host_.getDefaultLibFileName({}) + ")");
+                                console.log(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT + "(" + _this.lsHost.getDefaultLibFileName({}) + ")");
                             }
-                            _this.host_.ensureScript(_this.host_.getDefaultLibFileName({}), content);
+                            _this.lsHost.ensureScript(_this.lsHost.getDefaultLibFileName({}), content);
                             _this.resolve(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT, reason, callbackId);
@@ -25850,7 +25850,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_3.EVENT_ENSURE_SCRIPT + "(" + fileName + ")");
                             }
-                            _this.host_.ensureScript(fileName, content);
+                            _this.lsHost.ensureScript(fileName, content);
                             _this.resolve(LanguageServiceEvents_3.EVENT_ENSURE_SCRIPT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_3.EVENT_ENSURE_SCRIPT, reason, callbackId);
@@ -25865,7 +25865,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_1.EVENT_APPLY_DELTA + "(" + fileName + ", " + JSON.stringify(delta, null, 2) + ")");
                             }
-                            _this.host_.applyDelta(fileName, delta);
+                            _this.lsHost.applyDelta(fileName, delta);
                             _this.resolve(LanguageServiceEvents_1.EVENT_APPLY_DELTA, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_1.EVENT_APPLY_DELTA, reason, callbackId);
@@ -25879,7 +25879,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_11.EVENT_REMOVE_SCRIPT + "(" + fileName + ")");
                             }
-                            _this.host_.removeScript(fileName);
+                            _this.lsHost.removeScript(fileName);
                             _this.resolve(LanguageServiceEvents_11.EVENT_REMOVE_SCRIPT, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_11.EVENT_REMOVE_SCRIPT, reason, callbackId);
@@ -25893,7 +25893,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_12.EVENT_SET_MODULE_KIND + "(" + moduleKind + ")");
                             }
-                            _this.host_.moduleKind = moduleKind;
+                            _this.lsHost.moduleKind = moduleKind;
                             _this.resolve(LanguageServiceEvents_12.EVENT_SET_MODULE_KIND, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_12.EVENT_SET_MODULE_KIND, reason, callbackId);
@@ -25907,7 +25907,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_13.EVENT_SET_OPERATOR_OVERLOADING + "(" + operatorOverloading + ")");
                             }
-                            _this.host_.operatorOverloading = operatorOverloading;
+                            _this.operatorOverloading = operatorOverloading;
                             _this.resolve(LanguageServiceEvents_13.EVENT_SET_OPERATOR_OVERLOADING, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_13.EVENT_SET_OPERATOR_OVERLOADING, reason, callbackId);
@@ -25921,7 +25921,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_14.EVENT_SET_SCRIPT_TARGET + "(" + scriptTarget + ")");
                             }
-                            _this.host_.scriptTarget = scriptTarget;
+                            _this.lsHost.scriptTarget = scriptTarget;
                             _this.resolve(LanguageServiceEvents_14.EVENT_SET_SCRIPT_TARGET, void 0, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_14.EVENT_SET_SCRIPT_TARGET, reason, callbackId);
@@ -26011,7 +26011,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             var program = languageService.getProgram();
                             var sourceFile = program.getSourceFile(fileName);
                             sourceFile.moduleName = systemModuleName('./', fileName, 'js');
-                            var output = transpileModule_1.default(program, sourceFile, _this.host_.getCustomTransformers());
+                            var output = transpileModule_1.default(program, sourceFile, _this.lsHost.getCustomTransformers());
                             var outputFiles = [];
                             if (output.outputText) {
                                 outputFiles.push({ name: systemModuleName(void 0, fileName, 'js'), text: output.outputText, writeByteOrderMark: void 0 });
@@ -26064,33 +26064,28 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                 }
                 Object.defineProperty(LanguageServiceWorker.prototype, "operatorOverloading", {
                     get: function () {
-                        return this.host_.operatorOverloading;
+                        return this.lsHost.operatorOverloading;
                     },
                     set: function (operatorOverloading) {
-                        this.host_.operatorOverloading = operatorOverloading;
+                        if (this.lsHost.operatorOverloading !== operatorOverloading) {
+                            if (this.languageService) {
+                                this.languageService.cleanupSemanticCache();
+                            }
+                            this.lsHost.operatorOverloading = operatorOverloading;
+                        }
                     },
                     enumerable: true,
                     configurable: true
                 });
                 LanguageServiceWorker.prototype.ensureLS = function () {
-                    if (!this.languageService_) {
+                    if (!this.languageService) {
                         if (this.trace) {
                             console.log("LanguageServiceWorker.ensureLS()");
                             console.log("Calling createLanguageService()");
                         }
-                        this.languageService_ = ts.createLanguageService(this.host_, this.documentRegistry_);
+                        this.languageService = ts.createLanguageService(this.lsHost, this.documentRegistry_);
                     }
-                    return this.languageService_;
-                };
-                LanguageServiceWorker.prototype.disposeLS = function () {
-                    if (this.languageService_) {
-                        if (this.trace) {
-                            console.log("LanguageServiceWorker.disposeLS()");
-                            console.log("Calling LanguageService.dispose");
-                        }
-                        this.languageService_.dispose();
-                        this.languageService_ = void 0;
-                    }
+                    return this.languageService;
                 };
                 LanguageServiceWorker.prototype.resolve = function (eventName, value, callbackId) {
                     if (this.trace) {

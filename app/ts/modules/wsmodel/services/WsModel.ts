@@ -1424,9 +1424,11 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                 setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
                 file.setText(stringifyFileContent(metaInfo));
                 if (this.languageServiceProxy) {
-                    this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (err) => {
-                        if (err) {
-                            console.warn("Unable to set operator overloading on language service.");
+                    this.inFlight++;
+                    this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (reason) => {
+                        this.inFlight--;
+                        if (reason) {
+                            console.warn(`Unable to set operator overloading on language service. Cause: ${reason}`);
                         }
                         else {
                             this.eventBus.emit(changedOperatorOverloadingTopic, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
@@ -1435,7 +1437,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                 }
             }
             catch (e) {
-                console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
+                console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'. Cause: ${e}`);
             }
             finally {
                 file.release();

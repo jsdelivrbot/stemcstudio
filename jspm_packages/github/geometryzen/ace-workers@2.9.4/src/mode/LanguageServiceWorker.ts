@@ -107,8 +107,10 @@ function ruleFailureToEditorDiagnostic(ruleFailure: RuleFailure): Diagnostic {
         code: ruleName
     };
 }
+
 /**
- *
+ * A worker for the TypeScript LanguageService.
+ * The constructor is consistent with the WorkerClient - WorkerCallback architecture.
  */
 export default class LanguageServiceWorker {
 
@@ -121,13 +123,13 @@ export default class LanguageServiceWorker {
     /**
      * The host contains the file contents and compiler options.
      */
-    private readonly host_: DefaultLanguageServiceHost;
+    private readonly lsHost: DefaultLanguageServiceHost;
 
     /**
      * The language service answers the tough queries.
      * It is created lazily.
      */
-    private languageService_: ts.LanguageService;
+    private languageService: ts.LanguageService;
 
     /**
      * The document registry is the same for the lifetime of the application and shared across language services.
@@ -140,7 +142,7 @@ export default class LanguageServiceWorker {
      */
     constructor(private sender: WorkerCallback) {
 
-        this.host_ = new DefaultLanguageServiceHost();
+        this.lsHost = new DefaultLanguageServiceHost();
 
         this.documentRegistry_ = new DocumentRegistryInspector(ts.createDocumentRegistry(useCaseSensitiveFileNames));
 
@@ -163,9 +165,9 @@ export default class LanguageServiceWorker {
             const { content, callbackId } = message.data;
             try {
                 if (this.trace) {
-                    console.log(`${EVENT_DEFAULT_LIB_CONTENT}(${this.host_.getDefaultLibFileName({})})`);
+                    console.log(`${EVENT_DEFAULT_LIB_CONTENT}(${this.lsHost.getDefaultLibFileName({})})`);
                 }
-                this.host_.ensureScript(this.host_.getDefaultLibFileName({}), content);
+                this.lsHost.ensureScript(this.lsHost.getDefaultLibFileName({}), content);
                 this.resolve(EVENT_DEFAULT_LIB_CONTENT, void 0, callbackId);
             }
             catch (reason) {
@@ -179,7 +181,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_ENSURE_SCRIPT}(${fileName})`);
                 }
-                this.host_.ensureScript(fileName, content);
+                this.lsHost.ensureScript(fileName, content);
                 this.resolve(EVENT_ENSURE_SCRIPT, void 0, callbackId);
             }
             catch (reason) {
@@ -193,7 +195,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_APPLY_DELTA}(${fileName}, ${JSON.stringify(delta, null, 2)})`);
                 }
-                this.host_.applyDelta(fileName, delta);
+                this.lsHost.applyDelta(fileName, delta);
                 this.resolve(EVENT_APPLY_DELTA, void 0, callbackId);
             }
             catch (reason) {
@@ -207,7 +209,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_REMOVE_SCRIPT}(${fileName})`);
                 }
-                this.host_.removeScript(fileName);
+                this.lsHost.removeScript(fileName);
                 this.resolve(EVENT_REMOVE_SCRIPT, void 0, callbackId);
             }
             catch (reason) {
@@ -221,7 +223,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_SET_MODULE_KIND}(${moduleKind})`);
                 }
-                this.host_.moduleKind = moduleKind;
+                this.lsHost.moduleKind = moduleKind;
                 this.resolve(EVENT_SET_MODULE_KIND, void 0, callbackId);
             }
             catch (reason) {
@@ -235,7 +237,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_SET_OPERATOR_OVERLOADING}(${operatorOverloading})`);
                 }
-                this.host_.operatorOverloading = operatorOverloading;
+                this.operatorOverloading = operatorOverloading;
                 this.resolve(EVENT_SET_OPERATOR_OVERLOADING, void 0, callbackId);
             }
             catch (reason) {
@@ -249,7 +251,7 @@ export default class LanguageServiceWorker {
                 if (this.trace) {
                     console.log(`${EVENT_SET_SCRIPT_TARGET}(${scriptTarget})`);
                 }
-                this.host_.scriptTarget = scriptTarget;
+                this.lsHost.scriptTarget = scriptTarget;
                 this.resolve(EVENT_SET_SCRIPT_TARGET, void 0, callbackId);
             }
             catch (reason) {
@@ -340,7 +342,7 @@ export default class LanguageServiceWorker {
                 // We want named modules so that we can bundle in the Browser.
                 sourceFile.moduleName = systemModuleName('./', fileName, 'js');
                 // We implement our own transpileModule in order to use the custom transformers.
-                const output: ts.TranspileOutput = transpileModule(program, sourceFile, this.host_.getCustomTransformers());
+                const output: ts.TranspileOutput = transpileModule(program, sourceFile, this.lsHost.getCustomTransformers());
                 const outputFiles: ts.OutputFile[] = [];
                 if (output.outputText) {
                     outputFiles.push({ name: systemModuleName(void 0, fileName, 'js'), text: output.outputText, writeByteOrderMark: void 0 });
@@ -392,41 +394,55 @@ export default class LanguageServiceWorker {
     }
 
     get operatorOverloading(): boolean {
-        return this.host_.operatorOverloading;
+        return this.lsHost.operatorOverloading;
     }
 
+    /**
+     * Disposes of the Language Service if the compiler setting changes,
+     * forcing it to be lazily created again when required.
+     */
     set operatorOverloading(operatorOverloading: boolean) {
-        this.host_.operatorOverloading = operatorOverloading;
+        if (this.lsHost.operatorOverloading !== operatorOverloading) {
+            // This effectively drops the program, forcing it to be recreated when needed.
+            if (this.languageService) {
+                this.languageService.cleanupSemanticCache();
+            }
+            this.lsHost.operatorOverloading = operatorOverloading;
+        }
     }
 
     /**
      * Ensures a LanguageService is cached, until it is invalidated.
      */
     private ensureLS(): ts.LanguageService {
-        if (!this.languageService_) {
+        if (!this.languageService) {
             if (this.trace) {
                 console.log(`LanguageServiceWorker.ensureLS()`);
                 console.log("Calling createLanguageService()");
             }
-            this.languageService_ = ts.createLanguageService(this.host_, this.documentRegistry_);
+            this.languageService = ts.createLanguageService(this.lsHost, this.documentRegistry_);
         }
-        return this.languageService_;
+        return this.languageService;
     }
 
     /**
      * Disposes of the LanguageService.
      * This is needed when files change or compilation settings change.
      */
-    public disposeLS(): void {
-        if (this.languageService_) {
+    /*
+    private disposeLS(): void {
+        if (this.languageService) {
             if (this.trace) {
                 console.log(`LanguageServiceWorker.disposeLS()`);
                 console.log(`Calling LanguageService.dispose`);
             }
-            this.languageService_.dispose();
-            this.languageService_ = void 0;
+            // signal language service to release source files acquired from document registry.
+            // this.languageService.
+            this.languageService.dispose();
+            this.languageService = void 0;
         }
     }
+    */
 
     /**
      * Helper function for resolving a request.

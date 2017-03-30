@@ -9,6 +9,7 @@ import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import Background from '../../services/background/BackgroundService';
 import { BACKGROUND_UUID } from '../../services/background/Background';
+import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
@@ -110,6 +111,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
+    private changedOperatorOverloadingRemover: (() => void) | undefined;
     private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
@@ -388,7 +390,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                     $scope.$applyAsync();
                 }
                 else {
-                    console.warn(`propertiesFlow() failed ${reason}`);
+                    // Most likely the user cancelled, but we could be more precise.
+                    // console.warn(`propertiesFlow() failed '${reason}'`);
                 }
             });
         };
@@ -484,6 +487,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                 this.outputFilesWatchRemover = this.wsModel.watch(outputFilesTopic, this.createOutputFilesEventHandler());
                 this.renamedFileWatchRemover = this.wsModel.watch(renamedFileTopic, this.createRenamedFileEventHandler());
+                this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloadingTopic, this.createChangedOperatorOverloadingEventHandler());
             }
             else {
                 this.modalDialog.alert({ title: "Start Workspace Error", message: `${err}` });
@@ -513,6 +517,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         if (this.renamedFileWatchRemover) {
             this.renamedFileWatchRemover();
             this.renamedFileWatchRemover = void 0;
+        }
+
+        if (this.changedOperatorOverloadingRemover) {
+            this.changedOperatorOverloadingRemover();
+            this.changedOperatorOverloadingRemover = void 0;
         }
 
         if (this.resizeListener) {
@@ -622,16 +631,9 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         this.wsModel.setScriptTarget(scriptTarget, (scriptTargetError) => {
                             if (!scriptTargetError) {
-                                this.wsModel.refreshDiagnostics((diagnosticsError) => {
-                                    if (!diagnosticsError) {
-                                        this.$scope.$applyAsync();
-                                    }
-                                    else {
-                                        console.warn(`refreshDiagnostics() failed ${diagnosticsError}`);
-                                    }
-                                });
-                                this.wsModel.outputFiles();
+                                this.compile();
                                 this.$scope.workspaceLoaded = true;
+                                // The following line may be redundant because we handle the files elsewhare.
                                 this.$scope.updatePreview(WAIT_NO_MORE);
                             }
                             else {
@@ -644,6 +646,21 @@ export default class WorkspaceController implements WorkspaceMixin {
                     }
                 });
             });
+    }
+
+    /**
+     * Refreshes the diagnostics and output files.
+     */
+    private compile(): void {
+        this.wsModel.refreshDiagnostics((diagnosticsError) => {
+            if (!diagnosticsError) {
+                this.$scope.$applyAsync();
+            }
+            else {
+                console.warn(`refreshDiagnostics() failed ${diagnosticsError}`);
+            }
+        });
+        this.wsModel.outputFiles();
     }
 
     /**
@@ -752,6 +769,24 @@ export default class WorkspaceController implements WorkspaceMixin {
                     console.warn(`Unexpected outputFile => ${outputFile.name}`);
                 }
             });
+        };
+        return handler;
+    }
+
+    /**
+     * When the operator overloading value changes, we will generally want to refresh both
+     * the diagnostic messages and the transpiled code.
+     */
+    private createChangedOperatorOverloadingEventHandler(): ChangedOperatorOverloadingHandler<WsModel> {
+        const handler = (message: ChangedOperatorOverloadingMessage, unused: WsModel) => {
+            const { oldValue, newValue } = message;
+            if (oldValue !== newValue) {
+                this.compile();
+            }
+            else {
+                // Not expecting to get an event when there is no difference.
+                console.warn(`operatorOverloading ${oldValue} => ${newValue}`);
+            }
         };
         return handler;
     }

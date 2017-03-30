@@ -869,5 +869,5 @@
     "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.3": {}
+  "github:geometryzen/ace-workers@2.9.4": {}
 }

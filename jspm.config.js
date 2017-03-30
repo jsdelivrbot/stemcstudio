@@ -21,7 +21,7 @@ System.config({
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.3",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.4",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.6.4",
