@@ -4,7 +4,8 @@
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
-    "node": "4.8.0"
+    "node": "4.8.0",
+    "npm": "4.4.0"
   },
   "scripts": {
     "start": "NODE_ENV=development node web.js",
