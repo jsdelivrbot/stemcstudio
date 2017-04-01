@@ -8,7 +8,7 @@ Learning STEM through Computational Modeling.
 
 ### Typings
 ```
-npm install -g typings
+(sudo) npm install -g typings
 ```
 
 ### Karma
