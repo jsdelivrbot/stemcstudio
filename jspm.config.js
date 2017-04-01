@@ -14,6 +14,8 @@ System.config({
     "@angular/core": "npm:@angular/core@4.0.1",
     "@angular/forms": "npm:@angular/forms@4.0.1",
     "@angular/http": "npm:@angular/http@4.0.1",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.0.1",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.0.1",
     "@angular/router": "npm:@angular/router@4.0.1",
     "@angular/upgrade": "npm:@angular/upgrade@4.0.1",
     "@angular/upgrade/static": "npm:@angular/upgrade/bundles/upgrade-static.umd.js",
