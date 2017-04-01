@@ -1,3 +1,4 @@
+import { IPromise, IQService } from 'angular';
 import { ITranslateGateway } from '../api';
 import { ITranslateService } from '../api';
 
@@ -13,7 +14,7 @@ export default class TranslateService implements ITranslateService {
     /**
      * 
      */
-    constructor(private $q: ng.IQService, private translateGateway: ITranslateGateway, sourceLanguage: string) {
+    constructor(private $q: IQService, private translateGateway: ITranslateGateway, sourceLanguage: string) {
         // We can receive arguments from the provider.
         // We don't use $inject because the provider does it for us.
         this.sourceLanguage_ = sourceLanguage;
@@ -39,7 +40,7 @@ export default class TranslateService implements ITranslateService {
      * Translates the input string asynchronously from
      * the sourceLanguage (static) to the targetLanguage (dynamic).
      */
-    translate(input: string): ng.IPromise<string> {
+    translate(input: string): IPromise<string> {
         const deferred = this.$q.defer<string>();
 
         // TODO: Before going directly to the gateway, we will be checking a local cache.

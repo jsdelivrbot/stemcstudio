@@ -1,4 +1,4 @@
-import * as uib from 'angular-bootstrap';
+import { IModalServiceInstance } from 'angular-bootstrap';
 import EditorPreferencesDialogScope from './EditorPreferencesDialogScope';
 import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
 import EditorPreferencesService from '../../EditorPreferencesService';
@@ -15,7 +15,7 @@ export default class EditorPreferencesDialogController {
         'model'];
     constructor(
         private $scope: EditorPreferencesDialogScope,
-        private $uibModalInstance: uib.IModalServiceInstance,
+        private $uibModalInstance: IModalServiceInstance,
         private editorPreferencesService: EditorPreferencesService,
         private dialogModel: EditorPreferencesDialogModel) {
     }

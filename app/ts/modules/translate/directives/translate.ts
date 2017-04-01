@@ -1,3 +1,6 @@
+import { equals, isArray, isDefined } from 'angular';
+import { IAttributes, IAugmentedJQuery, ICompileService, IDirective, IInterpolateService, IParseService, IRootScopeService } from 'angular';
+
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../api';
 import TranslateScope from '../scopes/TranslateScope';
 
@@ -6,22 +9,22 @@ import TranslateScope from '../scopes/TranslateScope';
  * Usage <div translate>Hello</div> or <translate>Hello</translate>
  */
 function factory(
-    $interpolate: ng.IInterpolateService,
-    $rootScope: ng.IRootScopeService,
-    $parse: ng.IParseService,
-    $compile: ng.ICompileService,
-    translateService: ITranslateService): ng.IDirective {
+    $interpolate: IInterpolateService,
+    $rootScope: IRootScopeService,
+    $parse: IParseService,
+    $compile: ICompileService,
+    translateService: ITranslateService): IDirective {
 
     return {
         restrict: 'AE',
         scope: true,
         priority: translateService.directivePriority,
-        compile(tElement: ng.IAugmentedJQuery, tAttr: ng.IAttributes) {
+        compile(tElement: IAugmentedJQuery, tAttr: IAttributes) {
 
             const interpolateRegExp = '^(.*)(' + $interpolate.startSymbol() + '.*' + $interpolate.endSymbol() + ')(.*)';
             const watcherRegExp = '^(.*)' + $interpolate.startSymbol() + '(.*)' + $interpolate.endSymbol() + '(.*)';
 
-            return function linkFn(scope: TranslateScope, iElement: ng.IAugmentedJQuery, iAttr: ng.IAttributes) {
+            return function linkFn(scope: TranslateScope, iElement: IAugmentedJQuery, iAttr: IAttributes) {
 
                 scope.preText = '';
                 scope.postText = '';
@@ -101,18 +104,18 @@ function factory(
                         unwatchOld = void 0;
                     }
 
-                    if (angular.equals(translationId, '') || !angular.isDefined(translationId)) {
+                    if (equals(translationId, '') || !isDefined(translationId)) {
                         const iElementText = iElement.text().trim();
 
                         // Resolve translation id by inner html if required
                         const interpolateMatches = iElementText.match(interpolateRegExp);
                         // Interpolate translation id if required
-                        if (interpolateMatches && angular.isArray(interpolateMatches)) {
+                        if (interpolateMatches && isArray(interpolateMatches)) {
                             scope.preText = interpolateMatches[1];
                             scope.postText = interpolateMatches[3];
                             translationIds.translate = $interpolate(interpolateMatches[2])(scope.$parent);
                             const watcherMatches = iElementText.match(watcherRegExp);
-                            if (watcherMatches && angular.isArray(watcherMatches) && watcherMatches[2] && watcherMatches[2].length) {
+                            if (watcherMatches && isArray(watcherMatches) && watcherMatches[2] && watcherMatches[2].length) {
                                 unwatchOld = scope.$watch<string>(watcherMatches[2], function (newValue) {
                                     translationIds.translate = newValue;
                                     updateTranslations();

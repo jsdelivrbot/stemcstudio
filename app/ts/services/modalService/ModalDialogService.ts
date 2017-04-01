@@ -1,12 +1,13 @@
-import * as ng from 'angular';
-import * as uib from 'angular-bootstrap';
+import { extend } from 'angular';
+import { IPromise } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import ModalDialog from './ModalDialog';
 import AlertOptions from './AlertOptions';
 import ConfirmOptions from './ConfirmOptions';
 import PromptOptions from './PromptOptions';
 import ShareOptions from './ShareOptions';
 
-const DEFAULT_MODAL_SETTINGS: uib.IModalSettings = {
+const DEFAULT_MODAL_SETTINGS: IModalSettings = {
     backdrop: true,
     keyboard: true
 };
@@ -49,25 +50,25 @@ export default class ModalServiceClazz implements ModalDialog {
     /**
      *
      */
-    constructor(private $uibModal: uib.IModalService) {
+    constructor(private $uibModal: IModalService) {
         // Do nothing.
     }
 
     /**
      *
      */
-    alert(options: AlertOptions): ng.IPromise<boolean> {
+    alert(options: AlertOptions): IPromise<boolean> {
 
-        const settings: uib.IModalSettings = {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'AlertController',
             templateUrl: 'alert-modal.html'
         };
 
-        ng.extend(settings, DEFAULT_MODAL_SETTINGS);
+        extend(settings, DEFAULT_MODAL_SETTINGS);
 
         const mergedOptions: AlertOptions = { title: '', message: '' };
-        ng.extend(mergedOptions, DEFAULT_ALERT_OPTIONS, options);
+        extend(mergedOptions, DEFAULT_ALERT_OPTIONS, options);
         settings.resolve = {
             options: function () {
                 return mergedOptions;
@@ -80,18 +81,18 @@ export default class ModalServiceClazz implements ModalDialog {
     /**
      *
      */
-    confirm(options: ConfirmOptions): ng.IPromise<any> {
+    confirm(options: ConfirmOptions): IPromise<any> {
 
-        const settings: uib.IModalSettings = {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'ConfirmController',
             templateUrl: 'confirm-modal.html'
         };
 
-        ng.extend(settings, DEFAULT_MODAL_SETTINGS);
+        extend(settings, DEFAULT_MODAL_SETTINGS);
 
         const mergedOptions: ConfirmOptions = { title: '', message: '' };
-        ng.extend(mergedOptions, DEFAULT_CONFIRM_OPTIONS, options);
+        extend(mergedOptions, DEFAULT_CONFIRM_OPTIONS, options);
         settings.resolve = {
             options: function () {
                 return mergedOptions;
@@ -104,18 +105,18 @@ export default class ModalServiceClazz implements ModalDialog {
     /**
      *
      */
-    prompt(options: PromptOptions): ng.IPromise<string> {
+    prompt(options: PromptOptions): IPromise<string> {
 
-        const settings: uib.IModalSettings = {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'PromptController',
             templateUrl: 'prompt-modal.html'
         };
 
-        ng.extend(settings, DEFAULT_MODAL_SETTINGS);
+        extend(settings, DEFAULT_MODAL_SETTINGS);
 
         const mergedOptions: PromptOptions = { title: '', message: '', text: '', placeholder: '' };
-        ng.extend(mergedOptions, DEFAULT_PROMPT_OPTIONS, options);
+        extend(mergedOptions, DEFAULT_PROMPT_OPTIONS, options);
         settings.resolve = {
             options: function () {
                 return mergedOptions;
@@ -128,18 +129,18 @@ export default class ModalServiceClazz implements ModalDialog {
     /**
      *
      */
-    share(options: PromptOptions): ng.IPromise<string> {
+    share(options: PromptOptions): IPromise<string> {
 
-        const settings: uib.IModalSettings = {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'ShareController',
             templateUrl: 'share-modal.html'
         };
 
-        ng.extend(settings, DEFAULT_MODAL_SETTINGS);
+        extend(settings, DEFAULT_MODAL_SETTINGS);
 
         const mergedOptions: ShareOptions = { title: '', message: '', text: '' };
-        ng.extend(mergedOptions, DEFAULT_SHARE_OPTIONS, options);
+        extend(mergedOptions, DEFAULT_SHARE_OPTIONS, options);
         settings.resolve = {
             options: function () {
                 return mergedOptions;

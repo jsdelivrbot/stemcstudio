@@ -1,6 +1,7 @@
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
+import { IWindowService } from 'angular';
 import readMeHTML from './readMeHTML';
 import sd from 'showdown';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
@@ -15,7 +16,7 @@ const STAR_FSLASH = '*/';
 export default function rebuildMarkdownView(
     workspace: WsModel,
     $scope: WorkspaceScope,
-    $window: ng.IWindowService
+    $window: IWindowService
 ) {
     try {
         const elementId = 'readme';

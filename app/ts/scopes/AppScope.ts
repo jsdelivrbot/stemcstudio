@@ -1,9 +1,12 @@
+import { IRootScopeService } from 'angular';
+import { IStateService, IStateParamsService } from 'angular-ui-router';
+
 /**
  * The Application Root Scope.
  */
-interface AppScope extends ng.IRootScopeService {
-    $state: angular.ui.IStateService;
-    $stateParams: angular.ui.IStateParamsService;
+interface AppScope extends IRootScopeService {
+    $state: IStateService;
+    $stateParams: IStateParamsService;
 
     /**
      * This is the GitHub client id for OAuth2.

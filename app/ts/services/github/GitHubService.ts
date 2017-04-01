@@ -1,3 +1,4 @@
+import { IHttpPromise, IPromise } from 'angular';
 import Blob from './Blob';
 import BlobData from './BlobData';
 import BlobKey from './BlobKey';
@@ -42,84 +43,84 @@ interface GitHubService {
     /**
      *
      */
-    getGists(): ng.IHttpPromise<Gist[]>;
+    getGists(): IHttpPromise<Gist[]>;
 
     /**
      * Used for pagination of Gists.
      */
-    getGistsPage(href: string): ng.IHttpPromise<Gist[]>;
+    getGistsPage(href: string): IHttpPromise<Gist[]>;
 
     /**
      * Returns the contents of a file or directory in the repository.
      */
-    getPathContents(owner: string, repo: string, path: string): ng.IPromise<PathContents>;
+    getPathContents(owner: string, repo: string, path: string): IPromise<PathContents>;
 
     /**
      * 
      */
     getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any): void;
-    getUser(): ng.IHttpPromise<GitHubUser>;
+    getUser(): IHttpPromise<GitHubUser>;
     getUserGists(user: string, done: (err: any, response: any) => any): void;
     getUserRepos(done: (err: any, repos: Repo[]) => any): void;
 
-    getGist(gistId: string): ng.IHttpPromise<Gist>;
-    createGist(data: GistData): ng.IHttpPromise<Gist>;
-    updateGist(gistId: string, data: GistData): ng.IHttpPromise<Gist>;
+    getGist(gistId: string): IHttpPromise<Gist>;
+    createGist(data: GistData): IHttpPromise<Gist>;
+    updateGist(gistId: string, data: GistData): IHttpPromise<Gist>;
     deleteGist(gistId: string, done: (err: any, response: any) => any): void;
-    getGistComments(gistId: string): ng.IHttpPromise<GistComment[]>;
+    getGistComments(gistId: string): IHttpPromise<GistComment[]>;
 
     /**
      * 
      */
-    getRepo(owner: string, repo: string): ng.IHttpPromise<Repo>;
+    getRepo(owner: string, repo: string): IHttpPromise<Repo>;
 
     /**
      * 
      */
-    createRepo(data: RepoData): ng.IHttpPromise<RepoKey>;
+    createRepo(data: RepoData): IHttpPromise<RepoKey>;
 
-    putFile(owner: string, repo: string, path: string, message: string, content: string, sha: string): ng.IHttpPromise<PutFileResponse>;
+    putFile(owner: string, repo: string, path: string, message: string, content: string, sha: string): IHttpPromise<PutFileResponse>;
 
     /**
      * Get a Blob
      * The content in the response will always be Base64 encoded.
      * This API supports blobs up to 100 megabytes in size.
      */
-    getBlob(owner: string, repo: string, sha: string): ng.IHttpPromise<Blob>;
+    getBlob(owner: string, repo: string, sha: string): IHttpPromise<Blob>;
 
     /**
      * Create a Blob
      */
-    createBlob(owner: string, repo: string, data: BlobData): ng.IHttpPromise<BlobKey>;
+    createBlob(owner: string, repo: string, data: BlobData): IHttpPromise<BlobKey>;
 
     /**
      * 
      */
-    getTree(owner: string, repo: string, sha: string): ng.IHttpPromise<Tree>;
+    getTree(owner: string, repo: string, sha: string): IHttpPromise<Tree>;
 
     /**
      * 
      */
-    createTree(owner: string, repo: string, tree: TreeData): ng.IHttpPromise<TreeKey>;
+    createTree(owner: string, repo: string, tree: TreeData): IHttpPromise<TreeKey>;
 
     /**
      * 
      */
-    getCommit(owner: string, repo: string, sha: string): ng.IHttpPromise<Commit>;
+    getCommit(owner: string, repo: string, sha: string): IHttpPromise<Commit>;
 
     /**
      * 
      */
-    createCommit(owner: string, repo: string, commit: CommitData): ng.IHttpPromise<CommitKey>;
+    createCommit(owner: string, repo: string, commit: CommitData): IHttpPromise<CommitKey>;
 
     /**
      * The ref must be formatted as 'heads/branch', not just 'branch'.
      */
-    getReference(owner: string, repo: string, ref: string): ng.IHttpPromise<Reference>;
+    getReference(owner: string, repo: string, ref: string): IHttpPromise<Reference>;
 
-    createReference(owner: string, repo: string, data: ReferenceCreateData): ng.IHttpPromise<Reference>;
+    createReference(owner: string, repo: string, data: ReferenceCreateData): IHttpPromise<Reference>;
 
-    updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): ng.IHttpPromise<Reference>;
+    updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): IHttpPromise<Reference>;
 }
 
 export default GitHubService;

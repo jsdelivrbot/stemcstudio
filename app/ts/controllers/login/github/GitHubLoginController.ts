@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import CookieService from '../../../services/cookie/CookieService';
 import GitHubLoginScope from './GitHubLoginScope';
 import IGitHubItem from '../../../services/gham/IGitHubItem';
@@ -38,7 +39,7 @@ export default class GitHubLoginController {
      */
     constructor(
         private $scope: GitHubLoginScope,
-        private $window: ng.IWindowService,
+        private $window: IWindowService,
         private cookie: CookieService,
         private githubKey: string,
         private uuid4: IUuidService,

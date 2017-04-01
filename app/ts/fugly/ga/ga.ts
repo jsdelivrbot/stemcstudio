@@ -1,10 +1,11 @@
+import { IWindowService } from 'angular';
 import app from '../../app';
 
 app.factory('ga', [
   '$window',
   'NAMESPACE_GOOGLE_ANALYTICS',
   function (
-    $window: ng.IWindowService,
+    $window: IWindowService,
     NAMESPACE_GOOGLE_ANALYTICS: string
   ) {
     //
@@ -37,8 +38,8 @@ app.factory('ga', [
     */
     // FIXME: Might be better here to get an interface. 
     const service = function (this: any) {
-      if (angular.isArray(arguments[0])) {
-        for (var i = 0; i < arguments.length; ++i) {
+      if (Array.isArray(arguments[0])) {
+        for (let i = 0; i < arguments.length; ++i) {
           service.apply(this, arguments[i]);
         }
         return;

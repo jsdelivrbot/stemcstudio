@@ -1,3 +1,4 @@
+import { IHttpService, IPromise, IQService } from 'angular';
 import ISearchParams from '../SearchParams';
 import ISearchResponse from '../SearchResponse';
 import IStemcArXiv from '../StemcArXiv';
@@ -8,11 +9,11 @@ export default class SearchService implements IStemcArXiv {
 
     public static $inject: string[] = ['$q', '$http'];
 
-    constructor(private $q: ng.IQService, private $http: ng.IHttpService) {
+    constructor(private $q: IQService, private $http: IHttpService) {
         // Do nothing.
     }
 
-    search(params: ISearchParams): ng.IPromise<ISearchResponse> {
+    search(params: ISearchParams): IPromise<ISearchResponse> {
         const d = this.$q.defer<ISearchResponse>();
         this.$http.post<ISearchResponse>('/search', params)
             .then(function (promiseValue) {
@@ -25,7 +26,7 @@ export default class SearchService implements IStemcArXiv {
         return d.promise;
     }
 
-    submit(params: ISubmitParams): ng.IPromise<ISubmitResponse> {
+    submit(params: ISubmitParams): IPromise<ISubmitResponse> {
         const d = this.$q.defer<ISubmitResponse>();
         this.$http.post<ISubmitResponse>('/submissions', params)
             .then(function (promiseValue) {

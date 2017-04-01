@@ -1,7 +1,9 @@
+import { IScope } from 'angular';
+
 /**
  * 
  */
-interface GoogleSignInScope extends ng.IScope {
+interface GoogleSignInScope extends IScope {
     options: () => any;
 }
 

@@ -1,17 +1,18 @@
+import { IAttributes, IAugmentedJQuery, IDirective, INgModelController } from 'angular';
 import { validate } from '../../utils/validateNpmPackageName';
 
 /**
  * Directive Definition Factory
  * Usage <package-name>
  */
-export default function (): ng.IDirective {
+export default function (): IDirective {
     // Requires an isolated model.
     return {
         // Restrict to an attribute type.
         restrict: 'A',
         // Element must have an ng-model attribute.
         require: 'ngModel',
-        link: function (scope, element: ng.IAugmentedJQuery, attr: ng.IAttributes, ctrl: ng.INgModelController) {
+        link: function (scope, element: IAugmentedJQuery, attr: IAttributes, ctrl: INgModelController) {
 
             // We have two ways of doing this, $parsers or $validators.
             ctrl.$parsers.unshift(function (value: string) {

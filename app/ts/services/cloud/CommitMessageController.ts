@@ -1,14 +1,14 @@
-import * as uib from 'angular-bootstrap';
+import { IModalServiceInstance } from 'angular-bootstrap';
 import CommitMessageScope from './CommitMessageScope';
 import CommitMessageOptions from './CommitMessageOptions';
 
 export default class CommitMessageModalController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
-    constructor($scope: CommitMessageScope, $uibModalInstance: uib.IModalServiceInstance, options: CommitMessageOptions) {
+    constructor($scope: CommitMessageScope, $uibModalInstance: IModalServiceInstance, options: CommitMessageOptions) {
 
         $scope.options = options;
 
-        $scope.ok = function() {
+        $scope.ok = function () {
             const message = $scope.options.text.trim();
             if (message) {
                 $uibModalInstance.close(message);
@@ -20,7 +20,7 @@ export default class CommitMessageModalController {
             }
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel click');
         };
     }

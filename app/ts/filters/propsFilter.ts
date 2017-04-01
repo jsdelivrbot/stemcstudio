@@ -1,3 +1,5 @@
+import { isArray } from 'angular';
+
 /**
  * AngularJS default filter with the following expression:
  * "person in people | filter: {name: $select.search, age: $select.search}"
@@ -7,7 +9,7 @@
 function propsFilter<T>() {
     return function (items: T[], props: { [name: string]: string }) {
 
-        if (angular.isArray(items)) {
+        if (isArray(items)) {
             const out: T[] = [];
             const keys = Object.keys(props);
 

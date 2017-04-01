@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import NewProjectDefaults from './NewProjectDefaults';
 import NewProjectSettings from './NewProjectSettings';
 
@@ -8,7 +9,7 @@ interface NewProjectDialog {
     /**
      * Opens the dialog. The promise resolves when the user completes the dialog.
      */
-    open(defaults: NewProjectDefaults): ng.IPromise<NewProjectSettings>;
+    open(defaults: NewProjectDefaults): IPromise<NewProjectSettings>;
 }
 
 export default NewProjectDialog;

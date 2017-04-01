@@ -1,3 +1,4 @@
+import { IHttpService, ILocationService } from 'angular';
 import closure from './closure';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
@@ -28,8 +29,8 @@ export default function updateWorkspaceTypings(
      */
     olds: string[],
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-    $http: ng.IHttpService,
-    $location: ng.ILocationService,
+    $http: IHttpService,
+    $location: ILocationService,
     VENDOR_FOLDER_MARKER: string,
     callback: () => any
 ) {

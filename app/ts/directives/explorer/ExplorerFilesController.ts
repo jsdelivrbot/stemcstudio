@@ -1,4 +1,3 @@
-// import * as uib from 'angular-bootstrap';
 import ExplorerFilesScope from './ExplorerFilesScope';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import AlertOptions from '../../services/modalService/AlertOptions';

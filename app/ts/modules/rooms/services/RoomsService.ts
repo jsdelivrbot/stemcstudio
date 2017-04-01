@@ -1,3 +1,4 @@
+import { IHttpService, IPromise, IQService } from 'angular';
 import { IRoomsService, Room, RoomParams } from '../api';
 import RoomAgent from '../RoomAgent';
 
@@ -10,14 +11,14 @@ export default class RoomsService implements IRoomsService {
     /**
      * 
      */
-    constructor(private $http: ng.IHttpService, private $q: ng.IQService) {
+    constructor(private $http: IHttpService, private $q: IQService) {
         // Do nothing yet.
     }
 
     /**
      * Creates a room
      */
-    createRoom(params: RoomParams): ng.IPromise<RoomAgent> {
+    createRoom(params: RoomParams): IPromise<RoomAgent> {
         const d = this.$q.defer<RoomAgent>();
         this.$http.post<Room>('/rooms', params)
             .then(function (promiseValue) {
@@ -40,7 +41,7 @@ export default class RoomsService implements IRoomsService {
     /**
      * 
      */
-    getRoom(roomId: string): ng.IPromise<RoomAgent> {
+    getRoom(roomId: string): IPromise<RoomAgent> {
         const d = this.$q.defer<RoomAgent>();
         this.$http.get<Room>(`/rooms/${roomId}`)
             .then(function (promiseValue) {
@@ -68,7 +69,7 @@ export default class RoomsService implements IRoomsService {
         return d.promise;
     }
 
-    destroyRoom(roomId: string): ng.IPromise<boolean> {
+    destroyRoom(roomId: string): IPromise<boolean> {
         const d = this.$q.defer<boolean>();
         this.$http.delete<boolean>(`/rooms/${roomId}`)
             .then(function (promiseValue) {

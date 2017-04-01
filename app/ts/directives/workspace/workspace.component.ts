@@ -1,12 +1,13 @@
+import { IAttributes, IAugmentedJQuery, IDirective, IScope, ITranscludeFunction } from 'angular';
 import controller from './WorkspaceController';
 
 function factory() {
 
-    function link($scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: {}, transclude: ng.ITranscludeFunction) {
+    function link($scope: IScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction) {
         // Do nothing.
     }
 
-    const directive: ng.IDirective = {
+    const directive: IDirective = {
         require: [],
         restrict: 'E',
         controller,

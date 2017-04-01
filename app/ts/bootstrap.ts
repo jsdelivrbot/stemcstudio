@@ -3,13 +3,14 @@
 //
 
 /**
- * app is the top-level angular.IModule.
+ * app is the top-level AnngularJS module.
  */
 import app from './app';
 //
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
 //
+import { bootstrap, element } from 'angular';
 import Base64 from './services/base64/Base64';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
@@ -116,6 +117,6 @@ import './template-cache';
 //
 // Nothing happens unless we bootstrap the application.
 //
-angular.element(document).ready(function () {
-    angular.bootstrap(document.documentElement, [app.name], { strictDi: true });
+element(document).ready(function () {
+    bootstrap(document.documentElement, [app.name], { strictDi: true });
 });

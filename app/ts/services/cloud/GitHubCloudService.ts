@@ -1,4 +1,5 @@
-import * as uib from 'angular-bootstrap';
+import { IHttpPromise, IPromise, IQService } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import Base64Service from '../base64/Base64Service';
 import BlobKey from '../github/BlobKey';
 import Commit from '../github/Commit';
@@ -43,8 +44,8 @@ export default class GitHubCloudService implements CloudService {
         'options'
     ];
     constructor(
-        private $q: ng.IQService,
-        private $uibModal: uib.IModalService,
+        private $q: IQService,
+        private $uibModal: IModalService,
         private base64: Base64Service,
         private flow: FlowService,
         private github: GitHubService,
@@ -104,7 +105,7 @@ export default class GitHubCloudService implements CloudService {
                 doodle.owner = owner;
                 doodle.repo = repo;
                 doodle.gistId = void 0;
-                const promises: ng.IPromise<PathContents>[] = [];
+                const promises: IPromise<PathContents>[] = [];
                 for (let c = 0; c < contents.length; c++) {
                     const element = contents[c];
                     promises.push(this.github.getPathContents(owner, repo, element.path));
@@ -145,7 +146,7 @@ export default class GitHubCloudService implements CloudService {
      * 
      * The implementation challenge will be to do the recursive tree fetch and callback (or promise update).
      */
-    downloadTree(owner: string, repo: string, ref: string): ng.IPromise<Doodle> {
+    downloadTree(owner: string, repo: string, ref: string): IPromise<Doodle> {
         const deferred = this.$q.defer<Doodle>();
         const github = this.github;
         const base64 = this.base64;
@@ -255,22 +256,22 @@ export default class GitHubCloudService implements CloudService {
         return deferred.promise;
     }
 
-    createGist(workspace: WsModel): ng.IHttpPromise<Gist> {
+    createGist(workspace: WsModel): IHttpPromise<Gist> {
         const data: GistData = workspaceToGistData(workspace);
         return this.github.createGist(data);
     }
 
-    updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist> {
+    updateGist(workspace: WsModel, gistId: string): IHttpPromise<Gist> {
         const data: GistData = workspaceToGistData(workspace);
         return this.github.updateGist(gistId, data);
     }
 
-    createRepo(data: RepoData): ng.IHttpPromise<RepoKey> {
+    createRepo(data: RepoData): IHttpPromise<RepoKey> {
         return this.github.createRepo(data);
     }
 
-    createBlobsInRepo(workspace: WsModel, owner: string, repo: string, paths: string[]): ng.IHttpPromise<BlobKey>[] {
-        const blobs: ng.IHttpPromise<BlobKey>[] = [];
+    createBlobsInRepo(workspace: WsModel, owner: string, repo: string, paths: string[]): IHttpPromise<BlobKey>[] {
+        const blobs: IHttpPromise<BlobKey>[] = [];
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
             const file = workspace.getFileWeakRef(path);
@@ -283,7 +284,7 @@ export default class GitHubCloudService implements CloudService {
         return blobs;
     }
 
-    createTreeInRepo(blobs: ng.IHttpPromise<BlobKey>[], paths: string[], treeSHA: string, owner: string, repo: string): ng.IPromise<TreeKey> {
+    createTreeInRepo(blobs: IHttpPromise<BlobKey>[], paths: string[], treeSHA: string, owner: string, repo: string): IPromise<TreeKey> {
         const deferred = this.$q.defer<TreeKey>();
         const treeData: TreeData = { base_tree: treeSHA, tree: [] };
         this.$q.all(blobs)
@@ -509,8 +510,8 @@ export default class GitHubCloudService implements CloudService {
     /**
      *
      */
-    chooseGistOrRepo(title: string): ng.IPromise<string> {
-        const settings: uib.IModalSettings = {
+    chooseGistOrRepo(title: string): IPromise<string> {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'ChooseGistOrRepoController',
             templateUrl: 'choose-gist-or-repo-modal.html'
@@ -540,8 +541,8 @@ export default class GitHubCloudService implements CloudService {
     /**
      *
      */
-    repoData(title: string, data: RepoData): ng.IPromise<RepoData> {
-        const settings: uib.IModalSettings = {
+    repoData(title: string, data: RepoData): IPromise<RepoData> {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'RepoDataController',
             templateUrl: 'repo-data-modal.html'
@@ -571,8 +572,8 @@ export default class GitHubCloudService implements CloudService {
     /**
      *
      */
-    commitMessage(title: string): ng.IPromise<string> {
-        const settings: uib.IModalSettings = {
+    commitMessage(title: string): IPromise<string> {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: 'CommitMessageController',
             templateUrl: 'commit-message-modal.html'

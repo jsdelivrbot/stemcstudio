@@ -829,7 +829,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:angular@1.6.3": {},
   "github:geometryzen/davinci-mathscript@1.2.2": {
     "ts": "github:frankwallis/plugin-typescript@^2.6.0"
   },
@@ -888,11 +887,12 @@
     "zone.js": "npm:zone.js@^0.8.4",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:angular/bower-angular-animate@1.6.3": {
+  "github:angular/bower-angular-sanitize@1.5.9": {
     "angular": "jspm:angular@^1.3.0"
   },
-  "github:angular/bower-angular-sanitize@1.6.3": {
+  "github:angular/bower-angular@1.5.9": {},
+  "github:angular/bower-angular-animate@1.5.9": {
     "angular": "jspm:angular@^1.3.0"
   },
-  "github:angular/bower-angular@1.6.3": {}
+  "npm:angular@1.6.4": {}
 }

@@ -1,3 +1,4 @@
+import { IDeferred, IPromise, IQService } from 'angular';
 import { ACE_WORKER_PATH } from '../../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../../constants';
 import { Annotation, AnnotationType } from '../../../editor/Annotation';
@@ -390,7 +391,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * This promise is defined once the refCount has reached zero.
      * It is resolved when monitoring has ended on all documents.
      */
-    private windingDown: ng.IPromise<any> | undefined;
+    private windingDown: IPromise<any> | undefined;
 
     /**
      * This promise is defined once the reference count goes above zero
@@ -398,8 +399,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * It's a promise that the reference count will fall to zero, eventually.
      * This is used to prevent re-initialization before all references have been dropped.
      */
-    private zeroRefCount: ng.IPromise<any> | undefined;
-    private zeroRefCountDeferred: ng.IDeferred<any> | undefined;
+    private zeroRefCount: IPromise<any> | undefined;
+    private zeroRefCountDeferred: IDeferred<any> | undefined;
 
     /**
      * 
@@ -413,7 +414,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * AngularJS service; parameters must match static $inject property.
      */
-    constructor(private options: IOptionManager, private $q: ng.IQService, private doodles: IDoodleManager) {
+    constructor(private options: IOptionManager, private $q: IQService, private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }

@@ -1,3 +1,4 @@
+import { IHttpService, ILocationService, IWindowService } from 'angular';
 import CookieService from '../cookie/CookieService';
 import GitHubService from '../github/GitHubService';
 import IGitHubAuthManager from './IGitHubAuthManager';
@@ -19,9 +20,9 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         'githubKey',
     ];
     constructor(
-        private $http: ng.IHttpService,
-        private $location: ng.ILocationService,
-        private $window: ng.IWindowService,
+        private $http: IHttpService,
+        private $location: ILocationService,
+        private $window: IWindowService,
         private cookie: CookieService,
         private github: GitHubService,
         private githubKey: string

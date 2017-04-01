@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import Theme from './Theme';
 import EditorPreferencesEvent from './EditorPreferencesEvent';
 
@@ -21,7 +22,7 @@ interface EditorPreferencesService {
     /**
      * Returns the available list of fontSizes. 
      */
-    getFontSizes(): ng.IPromise<string[]>;
+    getFontSizes(): IPromise<string[]>;
     /**
      * 
      */
@@ -33,15 +34,15 @@ interface EditorPreferencesService {
     /**
      * Returns the available list of tabSizes. 
      */
-    getTabSizes(): ng.IPromise<number[]>;
+    getTabSizes(): IPromise<number[]>;
     /**
      * Returns the available list of themes as identifiers. 
      */
-    getThemes(): ng.IPromise<Theme[]>;
+    getThemes(): IPromise<Theme[]>;
     /**
      * Returns the available list of themes as identifiers. 
      */
-    getThemeNames(): ng.IPromise<string[]>;
+    getThemeNames(): IPromise<string[]>;
     /**
      * Returns the identifier for the current theme.
      */

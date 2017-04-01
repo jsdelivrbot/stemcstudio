@@ -1,4 +1,5 @@
-import * as uib from 'angular-bootstrap';
+import { IPromise } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import EditorPreferencesDialog from '../../contracts/EditorPreferencesDialog';
 import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
 import EditorPreferencesDialogController from './EditorPreferencesDialogController';
@@ -8,14 +9,14 @@ import EditorPreferencesDialogController from './EditorPreferencesDialogControll
  */
 export default class ThemesDialogService implements EditorPreferencesDialog {
     public static $inject: string[] = ['$uibModal'];
-    constructor(private $uibModal: uib.IModalService) {
+    constructor(private $uibModal: IModalService) {
         // Do nothing.
     }
     /**
      * The open method will be invoked by some controller.
      */
-    open(defaults: EditorPreferencesDialogModel): ng.IPromise<EditorPreferencesDialogModel> {
-        const settings: uib.IModalSettings = {
+    open(defaults: EditorPreferencesDialogModel): IPromise<EditorPreferencesDialogModel> {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: EditorPreferencesDialogController,
             templateUrl: 'editor-preferences-dialog.html'

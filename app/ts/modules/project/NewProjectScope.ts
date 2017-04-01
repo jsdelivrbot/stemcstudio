@@ -1,9 +1,10 @@
+import { IFormController, IRootScopeService } from 'angular';
 import ITemplate from '../../services/templates/ITemplate';
 
 /**
  * 
  */
-export interface NewProjectScope extends ng.IRootScopeService {
+export interface NewProjectScope extends IRootScopeService {
     /**
      * 
      */
@@ -15,7 +16,7 @@ export interface NewProjectScope extends ng.IRootScopeService {
 
     templates: ITemplate[];
 
-    reset(form: ng.IFormController): void;
+    reset(form: IFormController): void;
     cancel(): void;
     ok(): void;
 }

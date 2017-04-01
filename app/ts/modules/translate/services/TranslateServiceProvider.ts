@@ -1,3 +1,4 @@
+import { IQService } from 'angular';
 import { ITranslateServiceProvider, ITranslateService, ITranslationTable } from '../api';
 import { ITranslateGateway, TRANSLATE_GATEWAY_UUID } from '../api';
 import TranslateService from './TranslateService';
@@ -39,7 +40,7 @@ export default class TranslateServiceProvider implements ITranslateServiceProvid
      * IServiceProvider.$get returns an instance of the service.
      * We use a fat arrow to bind this correctly.
      */
-    $get = ['$q', TRANSLATE_GATEWAY_UUID, ($q: ng.IQService, translateGateway: ITranslateGateway): ITranslateService => {
+    $get = ['$q', TRANSLATE_GATEWAY_UUID, ($q: IQService, translateGateway: ITranslateGateway): ITranslateService => {
         return new TranslateService($q, translateGateway, this.sourceLanguage_);
     }];
 }

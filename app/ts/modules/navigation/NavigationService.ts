@@ -1,3 +1,5 @@
+import { IPromise } from 'angular';
+import { IStateOptions, IStateService } from 'angular-ui-router';
 import INavigationService from './INavigationService';
 // Names of routing states.
 // WARNING: Changing state names can break ui-sref directives.
@@ -62,7 +64,7 @@ export const STATE_TUTORIALS = 'tutorials';
  */
 export default class NavigationService implements INavigationService {
     public static $inject: string[] = ['$state', 'ga'];
-    constructor(private $state: angular.ui.IStateService, private ga: UniversalAnalytics.ga) {
+    constructor(private $state: IStateService, private ga: UniversalAnalytics.ga) {
         // Do nothing.
     }
 
@@ -110,7 +112,7 @@ export default class NavigationService implements INavigationService {
         return this.navigateTo(STATE_TUTORIALS, void 0, void 0, label, value);
     }
 
-    private navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): ng.IPromise<any> {
+    private navigateTo(to: string, params?: {}, options?: IStateOptions, label?: string, value?: number): IPromise<any> {
         this.ga('send', 'event', 'navigateTo', to, label, value);
         return this.$state.go(to, params, options);
     }

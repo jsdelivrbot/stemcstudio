@@ -1,3 +1,4 @@
+import { IHttpPromise, IHttpService, IQService } from 'angular';
 import app from '../../app';
 import Blob from './Blob';
 import BlobData from './BlobData';
@@ -25,7 +26,7 @@ import TreeData from './TreeData';
 import TreeKey from './TreeKey';
 import GitHubUser from './GitHubUser';
 // TODO: Get rid of the underscore dependency.
-import * as _ from 'underscore';
+import { map } from 'underscore';
 
 /**
  * Explicity request the v3 version of the API
@@ -48,7 +49,7 @@ const HTTP_METHOD_POST = 'POST';
 const HTTP_METHOD_PUT = 'PUT';
 
 app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
-    function ($http: ng.IHttpService, $q: ng.IQService, cookie: CookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
+    function ($http: IHttpService, $q: IQService, cookie: CookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
 
         /**
          * api.github.com over HTTPS protocol.
@@ -73,7 +74,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             return headers;
         }
         return {
-            getUser: function (): ng.IHttpPromise<GitHubUser> {
+            getUser: function (): IHttpPromise<GitHubUser> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/user`;
                 const headers = requestHeaders();
@@ -90,7 +91,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     return done(new Error(response.message), response);
                 });
             },
-            getRepo(owner: string, repo: string): ng.IHttpPromise<Repo> {
+            getRepo(owner: string, repo: string): IHttpPromise<Repo> {
                 if (!isString(owner)) {
                     throw new Error("owner must be a string");
                 }
@@ -122,7 +123,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             /**
              * We're using this method in the GitHubCloudService to download a Repo
              */
-            getPathContents: function (owner: string, repo: string, path: string): ng.IHttpPromise<PathContents> {
+            getPathContents: function (owner: string, repo: string, path: string): IHttpPromise<PathContents> {
                 const method = HTTP_METHOD_GET;
                 const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents/${path}`;
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
@@ -136,7 +137,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             requires the blob SHA of the file being replaced. In effect, the existence of the sha
             determines whether the intention is to create a new file or update an existing one.
             */
-            putFile: function (owner: string, repo: string, path: string, message: string, content: string, sha: string): ng.IHttpPromise<PutFileResponse> {
+            putFile: function (owner: string, repo: string, path: string, message: string, content: string, sha: string): IHttpPromise<PutFileResponse> {
                 const method = HTTP_METHOD_PUT;
                 const url = `${gitHub()}/repos/${owner}/${repo}/contents/${path}`;
                 const data = { message, content, sha };
@@ -160,7 +161,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     return done(new Error(response.message), response);
                 });
             },
-            createRepo: function (data: RepoData): ng.IHttpPromise<RepoKey> {
+            createRepo: function (data: RepoData): IHttpPromise<RepoKey> {
                 const url = repos();
                 const method = HTTP_METHOD_POST;
                 const headers = requestHeaders();
@@ -178,19 +179,19 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     return done(new Error(response.message), response);
                 });
             },
-            getGist: function (gistId: string): ng.IHttpPromise<Gist> {
+            getGist: function (gistId: string): IHttpPromise<Gist> {
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_GET;
                 const headers = requestHeaders();
                 return $http<Gist>({ method, url, headers });
             },
-            createGist: function (data: GistData): ng.IHttpPromise<Gist> {
+            createGist: function (data: GistData): IHttpPromise<Gist> {
                 const url = gists();
                 const method = HTTP_METHOD_POST;
                 const headers = requestHeaders();
                 return $http<Gist>({ method, url, data, headers });
             },
-            updateGist: function (gistId: string, data: GistData): ng.IHttpPromise<Gist> {
+            updateGist: function (gistId: string, data: GistData): IHttpPromise<Gist> {
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_PATCH;
                 const headers = requestHeaders();
@@ -208,7 +209,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                         return done(new Error(response.message), response);
                     });
             },
-            getGistComments: function (gistId: string): ng.IHttpPromise<GistComment[]> {
+            getGistComments: function (gistId: string): IHttpPromise<GistComment[]> {
                 const url = `${gists()}/${gistId}/comments`;
                 const method = HTTP_METHOD_GET;
                 const headers = requestHeaders();
@@ -220,7 +221,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/users/" + user + "/gists",
                     headers: requestHeaders()
                 }).then(function (gists: any) {
-                    gists = _.map(gists, function (gist: any) {
+                    gists = map(gists, function (gist: any) {
                         return gist;
                     });
                     return done(null, gists);
@@ -235,37 +236,37 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             getGistsPage: function (url: string) {
                 return $http<Gist[]>({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() });
             },
-            getReference: function (owner: string, repo: string, ref: string): ng.IHttpPromise<Reference> {
+            getReference: function (owner: string, repo: string, ref: string): IHttpPromise<Reference> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/refs/${ref}`;
                 const headers = requestHeaders();
                 return $http<Reference>({ method, url, headers });
             },
-            getCommit: function (owner: string, repo: string, sha: string): ng.IHttpPromise<Commit> {
+            getCommit: function (owner: string, repo: string, sha: string): IHttpPromise<Commit> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/commits/${sha}`;
                 const headers = requestHeaders();
                 return $http<Commit>({ method, url, headers });
             },
-            getTree: function (owner: string, repo: string, sha: string): ng.IHttpPromise<Tree> {
+            getTree: function (owner: string, repo: string, sha: string): IHttpPromise<Tree> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/trees/${sha}`;
                 const headers = requestHeaders();
                 return $http<Tree>({ method, url, headers });
             },
-            getBlob: function (owner: string, repo: string, sha: string): ng.IHttpPromise<Blob> {
+            getBlob: function (owner: string, repo: string, sha: string): IHttpPromise<Blob> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/blobs/${sha}`;
                 const headers = requestHeaders();
                 return $http<Blob>({ method, url, headers });
             },
-            createBlob(owner: string, repo: string, data: BlobData): ng.IHttpPromise<BlobKey> {
+            createBlob(owner: string, repo: string, data: BlobData): IHttpPromise<BlobKey> {
                 const method = HTTP_METHOD_POST;
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/blobs`;
                 const headers = requestHeaders();
                 return $http({ method, url, data, headers });
             },
-            createTree(owner: string, repo: string, data: TreeData): ng.IHttpPromise<TreeKey> {
+            createTree(owner: string, repo: string, data: TreeData): IHttpPromise<TreeKey> {
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/trees`;
                 return $http({
                     method: HTTP_METHOD_POST,
@@ -274,7 +275,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     headers: requestHeaders()
                 });
             },
-            createCommit(owner: string, repo: string, data: CommitData): ng.IHttpPromise<CommitKey> {
+            createCommit(owner: string, repo: string, data: CommitData): IHttpPromise<CommitKey> {
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/commits`;
                 return $http({
                     method: HTTP_METHOD_POST,
@@ -283,7 +284,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     headers: requestHeaders()
                 });
             },
-            createReference(owner: string, repo: string, data: ReferenceCreateData): ng.IHttpPromise<Reference> {
+            createReference(owner: string, repo: string, data: ReferenceCreateData): IHttpPromise<Reference> {
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/refs`;
                 return $http({
                     method: HTTP_METHOD_POST,
@@ -292,7 +293,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     headers: requestHeaders()
                 });
             },
-            updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): ng.IHttpPromise<Reference> {
+            updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): IHttpPromise<Reference> {
                 const url = `${gitHub()}/repos/${owner}/${repo}/git/refs/${ref}`;
                 return $http({
                     method: HTTP_METHOD_PATCH,

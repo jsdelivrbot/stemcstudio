@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import DashboardScope from '../scopes/DashboardScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
@@ -17,7 +18,7 @@ export default class DashboardController extends AbstractPageController {
 
     constructor(
         $scope: DashboardScope,
-        $window: ng.IWindowService,
+        $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,

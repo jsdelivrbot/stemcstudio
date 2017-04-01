@@ -1,4 +1,4 @@
-import * as uib from 'angular-bootstrap';
+import { IModalServiceInstance } from 'angular-bootstrap';
 import OpenProjectScope from './OpenProjectScope';
 import OpenProjectSettings from './OpenProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
@@ -19,7 +19,7 @@ export default class OpenProjectController {
 
     constructor(
         $scope: OpenProjectScope,
-        $uibModalInstance: uib.IModalServiceInstance,
+        $uibModalInstance: IModalServiceInstance,
         doodles: IDoodleManager,
         translateService: ITranslateService,
         pkgInfo: OpenProjectSettings) {

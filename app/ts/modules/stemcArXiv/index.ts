@@ -1,6 +1,7 @@
+import { module } from 'angular';
 import SearchService from './services/SearchService';
 
-const search: ng.IModule = angular.module('stemcArXiv', []);
+const search = module('stemcArXiv', []);
 
 search.service('stemcArXiv', SearchService);
 

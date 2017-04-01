@@ -1,3 +1,4 @@
+import { IHttpService, ISCEService, ITemplateCacheService, IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import Tutorial from '../models/Tutorial';
 import TutorialsScope from '../scopes/TutorialsScope';
@@ -23,11 +24,11 @@ export default class TutorialsController extends AbstractPageController {
     ];
 
     constructor(
-        $http: ng.IHttpService,
-        $sce: ng.ISCEService,
+        $http: IHttpService,
+        $sce: ISCEService,
         $scope: TutorialsScope,
-        $templateCache: ng.ITemplateCacheService,
-        $window: ng.IWindowService,
+        $templateCache: ITemplateCacheService,
+        $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,

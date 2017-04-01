@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
@@ -33,7 +34,7 @@ export default class DoodleController extends AbstractPageController {
         'UNIVERSAL_ANALYTICS_TRACKING_ID'];
     constructor(
         $scope: DoodleScope,
-        $window: ng.IWindowService,
+        $window: IWindowService,
         doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         templates: ITemplate[],

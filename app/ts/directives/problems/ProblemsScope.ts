@@ -1,7 +1,9 @@
+import { IScope } from 'angular';
+
 /**
  *
  */
-interface ProblemsScope extends ng.IScope {
+interface ProblemsScope extends IScope {
 }
 
 export default ProblemsScope;

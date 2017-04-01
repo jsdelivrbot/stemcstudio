@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import app from '../../app';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
@@ -86,7 +87,7 @@ app.factory('doodles', [
     'options',
     'doodlesKey',
     function (
-        $window: ng.IWindowService,
+        $window: IWindowService,
         options: IOptionManager,
         doodlesKey: string
     ) {

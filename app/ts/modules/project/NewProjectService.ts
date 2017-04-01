@@ -1,4 +1,5 @@
-import * as uib from 'angular-bootstrap';
+import { IPromise } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import NewProjectDialog from './NewProjectDialog';
 import NewProjectDefaults from './NewProjectDefaults';
 import NewProjectSettings from './NewProjectSettings';
@@ -9,11 +10,11 @@ import NewProjectController from './NewProjectController';
  */
 export default class NewProjectService implements NewProjectDialog {
     public static $inject: string[] = ['$uibModal'];
-    constructor(private $uibModal: uib.IModalService) {
+    constructor(private $uibModal: IModalService) {
         // Do nothing.
     }
-    open(defaults: NewProjectDefaults): ng.IPromise<NewProjectSettings> {
-        const modalSettings: uib.IModalSettings = {
+    open(defaults: NewProjectDefaults): IPromise<NewProjectSettings> {
+        const modalSettings: IModalSettings = {
             backdrop: 'static',
             controller: NewProjectController,
             templateUrl: 'project-new.html'

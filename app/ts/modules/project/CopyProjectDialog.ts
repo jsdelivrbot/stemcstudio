@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import CopyProjectSettings from './CopyProjectSettings';
 
 /**
@@ -7,7 +8,7 @@ interface CopyProjectDialog {
     /**
      * Opens the dialog. The promise resolves when the user completes the dialog.
      */
-    open(defaults: CopyProjectSettings): ng.IPromise<CopyProjectSettings>;
+    open(defaults: CopyProjectSettings): IPromise<CopyProjectSettings>;
 }
 
 export default CopyProjectDialog;

@@ -1,7 +1,8 @@
+import { IScope } from 'angular';
 /**
  * Isolate scope for the editor component.
  */
-interface EditorScope extends ng.IScope {
+interface EditorScope extends IScope {
     path: string;
 }
 

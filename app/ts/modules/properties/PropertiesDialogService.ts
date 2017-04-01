@@ -1,4 +1,5 @@
-import * as uib from 'angular-bootstrap';
+import { IPromise } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import PropertiesDialog from './PropertiesDialog';
 import PropertiesSettings from './PropertiesSettings';
 import PropertiesModalController from './PropertiesModalController';
@@ -8,11 +9,11 @@ import PropertiesModalController from './PropertiesModalController';
  */
 export default class PropertiesDialogService implements PropertiesDialog {
     public static $inject: string[] = ['$uibModal'];
-    constructor(private $uibModal: uib.IModalService) {
+    constructor(private $uibModal: IModalService) {
         // Do nothing.
     }
-    open(defaults: PropertiesSettings): ng.IPromise<PropertiesSettings> {
-        const settings: uib.IModalSettings = {
+    open(defaults: PropertiesSettings): IPromise<PropertiesSettings> {
+        const settings: IModalSettings = {
             backdrop: 'static',
             controller: PropertiesModalController,
             templateUrl: 'properties-modal.html'

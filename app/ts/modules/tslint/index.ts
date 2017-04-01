@@ -1,3 +1,4 @@
+import { module } from 'angular';
 import { TSLINT_SETTINGS_SERVICE, TSLINT_MODULE } from './constants';
 import TsLintSettingsJsonFileService from './services/TsLintSettingsJsonFileService';
 
@@ -10,7 +11,7 @@ import TsLintSettingsJsonFileService from './services/TsLintSettingsJsonFileServ
 /**
  * The module for TypeScript Linting.
  */
-const m: ng.IModule = angular.module(TSLINT_MODULE, []);
+const m = module(TSLINT_MODULE, []);
 
 m.service(TSLINT_SETTINGS_SERVICE, TsLintSettingsJsonFileService);
 

@@ -1,3 +1,4 @@
+import { IHttpPromise, IPromise } from 'angular';
 import Doodle from '../doodles/Doodle';
 import Gist from '../github/Gist';
 import RepoData from '../github/RepoData';
@@ -18,12 +19,12 @@ interface CloudService {
     /**
      *
      */
-    createGist(workspace: WsModel): ng.IHttpPromise<Gist>;
+    createGist(workspace: WsModel): IHttpPromise<Gist>;
 
     /**
      *
      */
-    updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist>;
+    updateGist(workspace: WsModel, gistId: string): IHttpPromise<Gist>;
 
     /**
      *
@@ -32,17 +33,16 @@ interface CloudService {
     /**
      * @param data
      */
-    createRepo(data: RepoData): ng.IHttpPromise<RepoKey>;
+    createRepo(data: RepoData): IHttpPromise<RepoKey>;
 
     /**
      * TODO: Why is there no specification of the branch (commit).
      */
     downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void): void;
-    downloadTree(owner: string, repo: string, ref: string): ng.IPromise<Doodle>;
+    downloadTree(owner: string, repo: string, ref: string): IPromise<Doodle>;
 
     /**
      * TODO: This is currently fire-and-forget.
-     * TODO: Use an ng.IPromise to provide progress.
      *
      * @param doodle
      * @param owner
@@ -55,18 +55,18 @@ interface CloudService {
     /**
      * @param title Provides the title and human readable context for the modal dialog.
      */
-    chooseGistOrRepo(title: string): ng.IPromise<string>;
+    chooseGistOrRepo(title: string): IPromise<string>;
 
     /**
      * @param title Provides the title and human readable context for the modal dialog.
      * @param data Provides the defaults.
      */
-    repoData(title: string, data: RepoData): ng.IPromise<RepoData>;
+    repoData(title: string, data: RepoData): IPromise<RepoData>;
 
     /**
      * @param title Provides the title and human readable context for the modal dialog.
      */
-    commitMessage(title: string): ng.IPromise<string>;
+    commitMessage(title: string): IPromise<string>;
 }
 
 export default CloudService;

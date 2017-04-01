@@ -1,4 +1,5 @@
-import * as uib from 'angular-bootstrap';
+import { IPromise } from 'angular';
+import { IModalService, IModalSettings } from 'angular-bootstrap';
 import CopyProjectDialog from './CopyProjectDialog';
 import CopyProjectSettings from './CopyProjectSettings';
 import CopyProjectController from './CopyProjectController';
@@ -8,11 +9,11 @@ import CopyProjectController from './CopyProjectController';
  */
 export default class CopyProjectService implements CopyProjectDialog {
     public static $inject: string[] = ['$uibModal'];
-    constructor(private $uibModal: uib.IModalService) {
+    constructor(private $uibModal: IModalService) {
         // Do nothing.
     }
-    open(defaults: CopyProjectSettings): ng.IPromise<CopyProjectSettings> {
-        const modalSettings: uib.IModalSettings = {
+    open(defaults: CopyProjectSettings): IPromise<CopyProjectSettings> {
+        const modalSettings: IModalSettings = {
             backdrop: 'static',
             controller: CopyProjectController,
             templateUrl: 'project-copy.html'

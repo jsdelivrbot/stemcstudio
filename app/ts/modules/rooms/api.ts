@@ -18,6 +18,8 @@ export interface RoomParams {
     public: boolean;
 }
 
+import { IPromise } from 'angular';
+
 export interface Room {
     id: string;
     owner: string;
@@ -32,17 +34,17 @@ export interface IRoomsService {
     /**
      * 
      */
-    createRoom(params: RoomParams): ng.IPromise<RoomAgent>;
+    createRoom(params: RoomParams): IPromise<RoomAgent>;
 
     /**
      * 
      */
-    getRoom(roomId: string): ng.IPromise<RoomAgent>;
+    getRoom(roomId: string): IPromise<RoomAgent>;
 
     /**
      * 
      */
-    destroyRoom(roomId: string): ng.IPromise<boolean>;
+    destroyRoom(roomId: string): IPromise<boolean>;
 }
 
 /**

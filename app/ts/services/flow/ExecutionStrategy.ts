@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import Flow from './Flow';
 import RootNode from './nodes/RootNode';
 
@@ -62,7 +63,7 @@ export default class ExecutionStrategy<T> {
         }
     }
 
-    __handleAsyncNext(next: ng.IPromise<any>): any {
+    __handleAsyncNext(next: IPromise<any>): any {
         return next.then((promiseValue) => {
             this.looping = false;
             if (!this.agenda.isEmpty()) {

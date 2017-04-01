@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import EditorPreferencesStorage from '../EditorPreferencesStorage';
 
 /**
@@ -73,7 +74,7 @@ const DEFAULTS: Preferences = {
 export default class PreferencesManagerService implements EditorPreferencesStorage {
     public static $inject: string[] = ['$window'];
     private cache: Partial<Preferences> = {};
-    constructor(private $window: ng.IWindowService) {
+    constructor(private $window: IWindowService) {
         const value = this.$window.localStorage[PREFERENCES_KEY];
         if (value) {
             this.cache = JSON.parse(value);

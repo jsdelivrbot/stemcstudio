@@ -1,4 +1,4 @@
-import * as uib from 'angular-bootstrap';
+import { IModalServiceInstance } from 'angular-bootstrap';
 import isBoolean from '../../utils/isBoolean';
 import isString from '../../utils/isString';
 import IOption from '../../services/options/IOption';
@@ -17,7 +17,7 @@ export default class PropertiesModalController {
         'pkgInfo'];
     constructor(
         $scope: PropertiesModalScope,
-        $uibModalInstance: uib.IModalServiceInstance,
+        $uibModalInstance: IModalServiceInstance,
         options: IOptionManager,
         pkgInfo: PropertiesSettings) {
 

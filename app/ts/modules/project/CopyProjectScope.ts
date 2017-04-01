@@ -1,7 +1,8 @@
+import { IFormController, IRootScopeService } from 'angular';
 /**
  * 
  */
-export interface CopyProjectScope extends ng.IRootScopeService {
+export interface CopyProjectScope extends IRootScopeService {
     /**
      * 
      */
@@ -12,7 +13,7 @@ export interface CopyProjectScope extends ng.IRootScopeService {
         oldVersion: string;
     };
 
-    reset(form: ng.IFormController): void;
+    reset(form: IFormController): void;
     cancel(): void;
     ok(): void;
 }

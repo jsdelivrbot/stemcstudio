@@ -2,6 +2,7 @@ import { ACE_WORKER_PATH } from '../../constants';
 import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
+import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import ProblemsScope from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
 import TextMode from '../../editor/mode/TextMode';
@@ -16,21 +17,21 @@ const noop = function () { /* Do nothing. */ };
 /**
  * interface for the DOM attributes.
  */
-interface ProblemsAttributes extends ng.IAttributes {
+interface ProblemsAttributes extends IAttributes {
 
 }
 
 /**
  * The 'problems' directive.
  */
-function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorPreferencesService): ng.IDirective {
-    function compile(tElem: ng.IAugmentedJQuery, tAttrs: ng.IAttributes): ng.IDirectivePrePost {
+function factory($timeout: ITimeoutService, editorPreferencesService: EditorPreferencesService): IDirective {
+    function compile(tElem: IAugmentedJQuery, tAttrs: IAttributes): IDirectivePrePost {
         return {
             /**
              * The preLink step always takes place from top to bottom in the DOM hierarchy.
              */
-            pre: function ($scope: ProblemsScope, iElem: ng.IAugmentedJQuery, iAttrs: ProblemsAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
-                const ngModel: ng.INgModelController = controller[0];
+            pre: function ($scope: ProblemsScope, iElem: IAugmentedJQuery, iAttrs: ProblemsAttributes, controller: {}, transclude: ITranscludeFunction) {
+                const ngModel: INgModelController = controller[0];
                 ngModel.$formatters.push(function (modelValue: WsModel) {
                     if (modelValue) {
                         if (modelValue instanceof WsModel) {
@@ -65,12 +66,12 @@ function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorP
             /**
              * The postLink step always takes place from bottom to top in the DOM hierarchy.
              */
-            post: function ($scope: ProblemsScope, element: ng.IAugmentedJQuery, attrs: ProblemsAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
+            post: function ($scope: ProblemsScope, element: IAugmentedJQuery, attrs: ProblemsAttributes, controller: {}, transclude: ITranscludeFunction) {
                 // Maybe these should be constants?
                 const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
                 const workerImports: string[] = systemImports.concat([ACE_WORKER_PATH]);
 
-                const ngModel: ng.INgModelController = controller[0];
+                const ngModel: INgModelController = controller[0];
 
                 const container: HTMLElement = element[0];
                 const renderer: Renderer = new Renderer(container);
@@ -167,7 +168,7 @@ function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorP
     /**
      * 
      */
-    const directive: ng.IDirective = {
+    const directive: IDirective = {
         require: ['ngModel'],
         restrict: 'E',
         priority: 1,

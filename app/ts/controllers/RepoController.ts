@@ -1,3 +1,4 @@
+import { IWindowService } from 'angular';
 import BodyScope from '../scopes/BodyScope';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
@@ -18,7 +19,7 @@ export default class RepoController extends AbstractPageController {
     ];
     constructor(
         $scope: BodyScope,
-        $window: ng.IWindowService,
+        $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,

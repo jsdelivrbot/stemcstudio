@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import EditorPreferencesDialogModel from './EditorPreferencesDialogModel';
 
 /**
@@ -5,7 +6,7 @@ import EditorPreferencesDialogModel from './EditorPreferencesDialogModel';
  * Controllers interact with this service.
  */
 interface EditorPreferencesDialog {
-    open(defaults: EditorPreferencesDialogModel): ng.IPromise<EditorPreferencesDialogModel>;
+    open(defaults: EditorPreferencesDialogModel): IPromise<EditorPreferencesDialogModel>;
 }
 
 export default EditorPreferencesDialog;

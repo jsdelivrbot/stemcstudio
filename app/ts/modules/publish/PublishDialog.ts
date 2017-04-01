@@ -1,7 +1,8 @@
+import { IPromise } from 'angular';
 import PublishSettings from './PublishSettings';
 
 interface PublishDialog {
-    open(): ng.IPromise<PublishSettings>;
+    open(): IPromise<PublishSettings>;
 }
 
 export default PublishDialog;

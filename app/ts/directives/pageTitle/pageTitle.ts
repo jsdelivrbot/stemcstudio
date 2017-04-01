@@ -1,8 +1,10 @@
+import { IDirective } from 'angular';
+
 /**
  * Directive Definition Factory
  * Usage <page-title>
  */
-export default function (): ng.IDirective {
+export default function (): IDirective {
     return {
         restrict: 'E',
         scope: { title: '@' },

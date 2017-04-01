@@ -4,6 +4,7 @@ import EditorPreferencesService from '../../EditorPreferencesService';
 import EditorPreferencesEvent from '../../EditorPreferencesEvent';
 import { currentTheme } from '../../EditorPreferencesEvent';
 import { EDITOR_PREFERENCES_STORAGE } from '../../../preferences/constants';
+import { IDeferred, IPromise, IQService } from 'angular';
 import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
 
 const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
@@ -18,7 +19,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     public static $inject: string[] = ['$q', EDITOR_PREFERENCES_STORAGE];
     private callbacksByEventName: { [eventName: string]: EditorPreferencesCallback[] } = {};
     private currentTheme: Theme;
-    constructor(private $q: ng.IQService, private storage: EditorPreferencesStorage) {
+    constructor(private $q: IQService, private storage: EditorPreferencesStorage) {
         // Do nothing yet.
         this.currentTheme = getThemeByName(storage.theme);
     }
@@ -81,8 +82,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
-    getFontSizes(): ng.IPromise<string[]> {
-        const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+    getFontSizes(): IPromise<string[]> {
+        const deferred: IDeferred<string[]> = this.$q.defer<string[]>();
         deferred.resolve(fontSizes);
         return deferred.promise;
     }
@@ -105,8 +106,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
-    getTabSizes(): ng.IPromise<number[]> {
-        const deferred: ng.IDeferred<number[]> = this.$q.defer<number[]>();
+    getTabSizes(): IPromise<number[]> {
+        const deferred: IDeferred<number[]> = this.$q.defer<number[]>();
         deferred.resolve(tabSizes);
         return deferred.promise;
     }
@@ -114,8 +115,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
-    getThemes(): ng.IPromise<Theme[]> {
-        const deferred: ng.IDeferred<Theme[]> = this.$q.defer<Theme[]>();
+    getThemes(): IPromise<Theme[]> {
+        const deferred: IDeferred<Theme[]> = this.$q.defer<Theme[]>();
         deferred.resolve(themes);
         return deferred.promise;
     }
@@ -123,8 +124,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
-    getThemeNames(): ng.IPromise<string[]> {
-        const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+    getThemeNames(): IPromise<string[]> {
+        const deferred: IDeferred<string[]> = this.$q.defer<string[]>();
         deferred.resolve(themeNames);
         return deferred.promise;
     }

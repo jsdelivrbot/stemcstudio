@@ -1,3 +1,4 @@
+import { IAttributes, IAugmentedJQuery } from 'angular';
 import ResizableScope from './ResizableScope';
 
 //
@@ -41,7 +42,7 @@ export default function () {
             rDisabled: '@',
             rNoThrottle: '='
         },
-        link: function (scope: ResizableScope, element: ng.IAugmentedJQuery, attr: ng.IAttributes) {
+        link: function (scope: ResizableScope, element: IAugmentedJQuery, attr: IAttributes) {
             const flexBasis =
                 'flexBasis' in document.documentElement.style ? 'flexBasis' :
                     'webkitFlexBasis' in document.documentElement.style ? 'webkitFlexBasis' :

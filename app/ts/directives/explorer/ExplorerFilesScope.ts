@@ -1,3 +1,4 @@
+import { IScope } from 'angular';
 import ContextMenuItem from '../contextMenu/ContextMenuItem';
 import WsFile from '../../modules/wsmodel/services/WsFile';
 
@@ -6,7 +7,7 @@ import WsFile from '../../modules/wsmodel/services/WsFile';
  * e.g.
  * context-menu = 'menu(name, file)'
  */
-interface ExplorerFilesScope extends ng.IScope {
+interface ExplorerFilesScope extends IScope {
     /**
      * The null entry in the returned array corresponds to a menu divider.
      */

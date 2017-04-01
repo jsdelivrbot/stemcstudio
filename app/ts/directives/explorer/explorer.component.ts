@@ -1,3 +1,4 @@
+import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITranscludeFunction } from 'angular';
 import controller from './ExplorerController';
 import ExplorerScope from './ExplorerScope';
 import WsModel from '../../modules/wsmodel/services/WsModel';
@@ -5,13 +6,13 @@ import WsModel from '../../modules/wsmodel/services/WsModel';
 /**
  * interface for the DOM attributes.
  */
-interface ExplorerAttributes extends ng.IAttributes {
+interface ExplorerAttributes extends IAttributes {
 
 }
 
-function factory(): ng.IDirective {
+function factory(): IDirective {
 
-    const directive: ng.IDirective = {
+    const directive: IDirective = {
         require: ['ngModel'],
         restrict: 'E',
         bindToController: {
@@ -22,13 +23,13 @@ function factory(): ng.IDirective {
         /**
          * The compile step ordering relative to the DOM depends upon whether we transclude.
          */
-        compile: function (tElem: ng.IAugmentedJQuery, tAttrs: ng.IAttributes): ng.IDirectivePrePost {
+        compile: function (tElem: IAugmentedJQuery, tAttrs: IAttributes): IDirectivePrePost {
             return {
                 /**
                  * The preLink step always takes place from top to bottom in the DOM hierarchy.
                  */
-                pre: function ($scope: ExplorerScope, iElem: ng.IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
-                    const ngModel: ng.INgModelController = controller[0];
+                pre: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ITranscludeFunction) {
+                    const ngModel: INgModelController = controller[0];
                     ngModel.$formatters.push(function (modelValue: WsModel) {
                         if (modelValue) {
                             if (modelValue instanceof WsModel) {
@@ -56,8 +57,8 @@ function factory(): ng.IDirective {
                 /**
                  * The postLink step always takes place from bottom to top in the DOM hierarchy.
                  */
-                post: function ($scope: ExplorerScope, iElem: ng.IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
-                    const ngModel: ng.INgModelController = controller[0];
+                post: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ITranscludeFunction) {
+                    const ngModel: INgModelController = controller[0];
 
                     // $render is the notification that the model has changed and so the view needs to be rendered.
                     // Furthermore, we are being asked to use $viewValue, which has been passed through our formatters.

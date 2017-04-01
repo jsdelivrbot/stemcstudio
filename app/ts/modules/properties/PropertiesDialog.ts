@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import PropertiesSettings from './PropertiesSettings';
 
 /**
@@ -7,7 +8,7 @@ interface PropertiesDialog {
     /**
      * Opens the dialog. The promise resolves when the user completes the dialog.
      */
-    open(defaults: PropertiesSettings): ng.IPromise<PropertiesSettings>;
+    open(defaults: PropertiesSettings): IPromise<PropertiesSettings>;
 }
 
 export default PropertiesDialog;

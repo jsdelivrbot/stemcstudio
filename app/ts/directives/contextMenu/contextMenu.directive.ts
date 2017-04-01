@@ -1,9 +1,11 @@
+import { element, forEach, isFunction } from 'angular';
+import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, IPromise, IQService, IScope, ITranscludeFunction } from 'angular';
 import ContextMenuItem from './ContextMenuItem';
 
 /**
  * interface for the DOM attributes.
  */
-interface ContextMenuAttributes extends ng.IAttributes {
+interface ContextMenuAttributes extends IAttributes {
     /**
      * The expression used to build the context menu.
      * This should evaluate to an array of ContextMenuItem.
@@ -15,12 +17,12 @@ interface ContextMenuAttributes extends ng.IAttributes {
  * This implementation was inspired by...
  * https://github.com/Templarian/ui.bootstrap.contextMenu
  */
-function factory($q: ng.IQService) {
+function factory($q: IQService) {
 
     /**
      * Our mutable state includes the currently displayed context menu.
      */
-    let currentContextMenu: ng.IAugmentedJQuery | undefined = void 0;
+    let currentContextMenu: IAugmentedJQuery | undefined = void 0;
 
     /**
      * 
@@ -35,11 +37,11 @@ function factory($q: ng.IQService) {
     /**
      *
      */
-    function handlePromises(ul: ng.IAugmentedJQuery, event: JQueryEventObject, promises: ng.IPromise<any>[]) {
+    function handlePromises(ul: IAugmentedJQuery, event: JQueryEventObject, promises: IPromise<any>[]) {
         $q.all(promises).then(function () {
 
             let topCoordinate = event.pageY;
-            const menuHeight: number = angular.element(ul[0]).prop('offsetHeight');
+            const menuHeight: number = element(ul[0]).prop('offsetHeight');
             // TODO: What is view?
             const winHeight: number = event['view'].innerHeight;
             if (topCoordinate > menuHeight && winHeight - topCoordinate < menuHeight) {
@@ -47,7 +49,7 @@ function factory($q: ng.IQService) {
             }
 
             let leftCoordinate = event.pageX;
-            const menuWidth = angular.element(ul[0]).prop('offsetWidth');
+            const menuWidth = element(ul[0]).prop('offsetWidth');
             const winWidth = event['view'].innerWidth;
             if (leftCoordinate > menuWidth && winWidth - leftCoordinate < menuWidth) {
                 leftCoordinate = event.pageX - menuWidth;
@@ -62,15 +64,15 @@ function factory($q: ng.IQService) {
         });
     }
 
-    function registerEventHandler($scope: ng.IScope, enabled: boolean, menuItem: ContextMenuItem, li: ng.IAugmentedJQuery, contextMenuEvent: JQueryEventObject) {
+    function registerEventHandler($scope: IScope, enabled: boolean, menuItem: ContextMenuItem, li: IAugmentedJQuery, contextMenuEvent: JQueryEventObject) {
         if (enabled) {
             li.on('click', function (clickEvent: JQueryMouseEventObject) {
                 // WARNING: href='#' will drive us back to the home page if we don't prevent the default action for click.
                 clickEvent.preventDefault();
                 $scope.$apply(function () {
-                    angular.element(contextMenuEvent.currentTarget).removeClass('context');
+                    element(contextMenuEvent.currentTarget).removeClass('context');
                     removeContextMenus();
-                    if (angular.isFunction(menuItem.action)) {
+                    if (isFunction(menuItem.action)) {
                         menuItem.action();
                     }
                     else {
@@ -90,13 +92,13 @@ function factory($q: ng.IQService) {
     /**
      *
      */
-    function processLabel(menuItem: ContextMenuItem, promises: ng.IPromise<string>[]): ng.IAugmentedJQuery {
-        const anchor = angular.element('<a>');
+    function processLabel(menuItem: ContextMenuItem, promises: IPromise<string>[]): IAugmentedJQuery {
+        const anchor = element('<a>');
         anchor.css('padding-right', '8px');
         // href='#' makes the mouse cursor correct but we must prevent the default action when we register the event handler. 
         anchor.attr({ tabIndex: '-1', href: '#' });
 
-        const promise: ng.IPromise<string> = $q.when(menuItem.label);
+        const promise: IPromise<string> = $q.when(menuItem.label);
         promise.then(function (text: string) {
             anchor.text(text);
         });
@@ -106,8 +108,8 @@ function factory($q: ng.IQService) {
     /**
      *
      */
-    function renderContextMenuItem($scope: ng.IScope, contextMenuEvent: JQueryEventObject, li: ng.IAugmentedJQuery, menuItem: ContextMenuItem, promises: ng.IPromise<string>[]): void {
-        const label: ng.IAugmentedJQuery = processLabel(menuItem, promises);
+    function renderContextMenuItem($scope: IScope, contextMenuEvent: JQueryEventObject, li: IAugmentedJQuery, menuItem: ContextMenuItem, promises: IPromise<string>[]): void {
+        const label: IAugmentedJQuery = processLabel(menuItem, promises);
         li.append(label);
 
         registerEventHandler($scope, true, menuItem, li, contextMenuEvent);
@@ -130,18 +132,18 @@ function factory($q: ng.IQService) {
      *
      * Accessibility provided by including the role and aria- attributes.
      */
-    function renderContextMenu($scope: ng.IScope, contextMenuEvent: JQueryEventObject, menu: ContextMenuItem[]) {
+    function renderContextMenu($scope: IScope, contextMenuEvent: JQueryEventObject, menu: ContextMenuItem[]) {
 
         /**
          * TODO: Documentation
          */
-        const promises: ng.IPromise<string>[] = [];
+        const promises: IPromise<string>[] = [];
 
-        angular.element(contextMenuEvent.currentTarget).addClass('context');
-        const contextMenu: ng.IAugmentedJQuery = angular.element('<div>');
+        element(contextMenuEvent.currentTarget).addClass('context');
+        const contextMenu: IAugmentedJQuery = element('<div>');
         currentContextMenu = contextMenu;
         contextMenu.addClass('dropdown clearfix');
-        const ul: ng.IAugmentedJQuery = angular.element('<ul>');
+        const ul: IAugmentedJQuery = element('<ul>');
         ul.addClass('dropdown-menu');
         ul.attr({ role: 'menu' });
         ul.css({
@@ -152,8 +154,8 @@ function factory($q: ng.IQService) {
             'z-index': 1000
         });
 
-        angular.forEach(menu, function (menuItem: ContextMenuItem) {
-            const li: ng.IAugmentedJQuery = angular.element('<li>');
+        forEach(menu, function (menuItem: ContextMenuItem) {
+            const li: IAugmentedJQuery = element('<li>');
             ul.append(li);
             if (menuItem === null) {
                 li.addClass('divider');
@@ -177,7 +179,7 @@ function factory($q: ng.IQService) {
             left: 0,
             zIndex: 9999
         });
-        angular.element(document).find('body').append(contextMenu);
+        element(document).find('body').append(contextMenu);
 
         // Now that the menu has been built, we make some adjustments to the dimensions.
         handlePromises(ul, contextMenuEvent, promises);
@@ -185,8 +187,8 @@ function factory($q: ng.IQService) {
         contextMenu.on('mousedown', function (event: JQueryEventObject) {
             // The following code dismisses the context menu if a mousedown event
             // occurs outside of the menu items.
-            if (angular.element(event.target).hasClass('dropdown')) {
-                angular.element(event.currentTarget).removeClass('context');
+            if (element(event.target).hasClass('dropdown')) {
+                element(event.currentTarget).removeClass('context');
                 removeContextMenus();
             }
         });
@@ -197,21 +199,21 @@ function factory($q: ng.IQService) {
      * The compile step is called once.
      * The pre- and post-Link steps are called once for each context-menu directive (DOM attribute) instance.
      */
-    function compile(tElem: ng.IAugmentedJQuery, tAttrs: ng.IAttributes): ng.IDirectivePrePost {
+    function compile(tElem: IAugmentedJQuery, tAttrs: IAttributes): IDirectivePrePost {
         // We currently don't do anything during the compile step.
         return {
 
             /**
              * The preLink step always takes place from top to bottom in the DOM hierarchy.
              */
-            pre: function (scope: ng.IScope, iElem: ng.IAugmentedJQuery, iAttrs: ContextMenuAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
+            pre: function (scope: IScope, iElem: IAugmentedJQuery, iAttrs: ContextMenuAttributes, controller: {}, transclude: ITranscludeFunction) {
                 // Do nothing.
             },
 
             /**
              * The postLink step always takes place from bottom to top in the DOM hierarchy.
              */
-            post: function ($scope: ng.IScope, iElem: ng.IAugmentedJQuery, iAttrs: ContextMenuAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
+            post: function ($scope: IScope, iElem: IAugmentedJQuery, iAttrs: ContextMenuAttributes, controller: {}, transclude: ITranscludeFunction) {
                 function contextMenuEventHandler(contextMenuEvent: JQueryEventObject) {
                     contextMenuEvent.stopPropagation();
                     $scope.$apply(function () {
@@ -240,7 +242,7 @@ function factory($q: ng.IQService) {
     /**
      * The factory function returns an IDirective.
      */
-    const directive: ng.IDirective = {
+    const directive: IDirective = {
         require: [],
         restrict: 'A',
         compile

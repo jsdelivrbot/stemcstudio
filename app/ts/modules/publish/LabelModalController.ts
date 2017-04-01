@@ -1,16 +1,17 @@
-import * as uib from 'angular-bootstrap';
+import { isArray, isString } from 'angular';
+import { IModalServiceInstance } from 'angular-bootstrap';
 import LabelModalScope from './LabelModalScope';
 import LabelSettings from './LabelSettings';
 import splitStringToKeywords from './splitStringToKeywords';
 
 export default class LabelModalController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
-    constructor($scope: LabelModalScope, $uibModalInstance: uib.IModalServiceInstance, options: LabelSettings) {
+    constructor($scope: LabelModalScope, $uibModalInstance: IModalServiceInstance, options: LabelSettings) {
 
         $scope.f = {
-            t: angular.isString(options.title) ? options.title : "",
-            a: angular.isString(options.author) ? options.author : "",
-            k: angular.isArray(options.keywords) ? options.keywords.join(', ') : ""
+            t: isString(options.title) ? options.title : "",
+            a: isString(options.author) ? options.author : "",
+            k: isArray(options.keywords) ? options.keywords.join(', ') : ""
         };
 
         $scope.ok = function () {

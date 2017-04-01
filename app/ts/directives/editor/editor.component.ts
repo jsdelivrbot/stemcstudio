@@ -1,3 +1,5 @@
+import { isUndefined } from 'angular';
+import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import applyTextChanges from './applyTextChanges';
 import ClojureMode from '../../editor/mode/ClojureMode';
 import { ACE_WORKER_PATH } from '../../constants';
@@ -83,10 +85,10 @@ function isTypeScript(path: string): boolean {
  * When changing the parameters to this function, be sure to update the $inject property.
  */
 function factory(
-    $timeout: ng.ITimeoutService,
+    $timeout: ITimeoutService,
     settings: ISettingsService,
     textService: ITextService,
-    editorPreferencesService: EditorPreferencesService): ng.IDirective {
+    editorPreferencesService: EditorPreferencesService): IDirective {
 
     /**
      * $scope Used to monitor $onDestroy and support transclude.
@@ -95,13 +97,13 @@ function factory(
      * controllers
      * transclude This parameter will only be set if we set the transclude option to true.
      */
-    function link($scope: EditorScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: {}, transclude: ng.ITranscludeFunction) {
+    function link($scope: EditorScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction) {
 
         // Maybe these should be constants?
         const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
         const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
 
-        const ngModel: ng.INgModelController = controllers[0];
+        const ngModel: INgModelController = controllers[0];
         /**
          * The controller that is a proxy for the workspace.
          */
@@ -153,7 +155,7 @@ function factory(
 
         // formatters update the viewValue from the modelValue
         ngModel.$formatters.push(function (modelValue: string) {
-            if (angular.isUndefined(modelValue) || modelValue === null) {
+            if (isUndefined(modelValue) || modelValue === null) {
                 return void 0;
             }
             // We are returning the viewValue. We could make an object literal here.
@@ -522,7 +524,7 @@ function factory(
         $scope.$on('$destroy', onDestroyScope);
     }
 
-    const directive: ng.IDirective = {
+    const directive: IDirective = {
         require: ['ngModel', '^^workspace'],
         // NOTE: Using priority 1 to make sure that this link function (post-link),
         // is executed after the ng-show link function (priority 0 - they are

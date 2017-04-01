@@ -1,8 +1,9 @@
+import { IDirective } from 'angular';
 /**
  * Directive Definition Factory
  * Usage <brand />
  */
-export function brandDirective(): ng.IDirective {
+export function brandDirective(): IDirective {
     return {
         restrict: 'E',
         scope: {},

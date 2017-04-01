@@ -1,7 +1,14 @@
 //
 // The following imports are to be found in the jspm.config.js file.
 // The module name that we require may be different.
+// Be careful when modifying these imports; some work because of side-effects,
+// some imports (interface definitions) don't have the side effect of module loading.
 //
+
+//
+// Module that provides AngularJS (1.x)
+//
+import { module } from 'angular';
 
 // 
 // Module that provides the 'ngMdIcons' module.
@@ -27,6 +34,10 @@ import 'angular-sanitize';
 // Module that provides the 'ui.router' module.
 //
 import 'angular-ui-router';
+//
+//
+//
+import { IStateParamsService, IStateService, IStateProvider, IUrlRouterProvider } from 'angular-ui-router';
 
 //
 // Module that provides the 'ui.select' module.
@@ -107,7 +118,7 @@ import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
-const app: ng.IModule = angular.module('app', [
+const app = module('app', [
     'ngMdIcons',
     'ngSanitize',
     'ui.bootstrap',
@@ -141,7 +152,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.23.2');
+app.constant('version', '2.23.3');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -279,10 +290,10 @@ app.config([
     'FEATURE_ROOM_ENABLED',
     'FEATURE_TUTORIALS_ENABLED',
     function (
-        stateProvider: angular.ui.IStateProvider,
+        stateProvider: IStateProvider,
         translateServiceProvider: ITranslateServiceProvider,
         translateGatewayProvider: ITranslateGatewayProvider,
-        urlRouterProvider: angular.ui.IUrlRouterProvider,
+        urlRouterProvider: IUrlRouterProvider,
         FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
@@ -418,8 +429,8 @@ app.run([
     'GITHUB_TOKEN_COOKIE_NAME',
     function (
         $rootScope: AppScope,
-        $state: angular.ui.IStateService,
-        $stateParams: angular.ui.IStateParamsService,
+        $state: IStateService,
+        $stateParams: IStateParamsService,
         translateService: ITranslateService,
         credentials: CredentialsService,
         cookie: CookieService,
