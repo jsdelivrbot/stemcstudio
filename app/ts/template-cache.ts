@@ -1,9 +1,9 @@
 //
 // GENERATED FILE
 //
-import {ITemplateCacheService} from 'angular';
+import { ITemplateCacheService } from 'angular';
 import app from './app';
-app.run(['$templateCache', function($templateCache: ITemplateCacheService) {
+app.run(['$templateCache', function ($templateCache: ITemplateCacheService) {
 
   'use strict';
 

@@ -12,7 +12,6 @@
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "noLib": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "outDir": "generated/js",
