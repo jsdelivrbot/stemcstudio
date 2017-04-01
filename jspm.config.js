@@ -17,7 +17,6 @@ System.config({
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
-    "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
@@ -131,11 +130,6 @@ System.config({
     },
     "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.6.4"
-    },
-    "npm:angular2@2.0.0-beta.21": {
-      "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.2.0",
-      "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.6",
@@ -623,10 +617,6 @@ System.config({
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
     },
-    "npm:reflect-metadata@0.1.2": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:require-directory@2.1.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0"
@@ -850,13 +840,6 @@ System.config({
       "which-module": "npm:which-module@1.0.0",
       "y18n": "npm:y18n@3.2.1",
       "yargs-parser": "npm:yargs-parser@4.2.1"
-    },
-    "npm:zone.js@0.6.26": {
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "events": "github:jspm/nodelibs-events@0.1.1",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "timers": "github:jspm/nodelibs-timers@0.1.0"
     },
     "npm:zone.js@0.8.5": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
