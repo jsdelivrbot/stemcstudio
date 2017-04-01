@@ -764,11 +764,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:rxjs@5.2.0": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:brorand@1.1.0": {},
   "npm:minimalistic-crypto-utils@1.0.1": {},
   "npm:hmac-drbg@1.0.0": {
@@ -878,5 +873,10 @@
   "github:angular/bower-angular-animate@1.5.9": {
     "angular": "jspm:angular@^1.3.0"
   },
-  "npm:angular@1.6.4": {}
+  "npm:angular@1.6.4": {},
+  "npm:rxjs@5.2.0": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  }
 }
