@@ -1,6 +1,9 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { UpgradeModule } from '@angular/upgrade/static';
-import { AppModule } from './app.module';
+//
+// THIS IS NOW DEAD CODE.
+// This is the entry point when the appplication was purely AngularJS (1.x).
+// The application is undergoing migration to Angular.
+// Keeping this module as a reference.
+//
 
 //
 // We import the app so that we can bootstrap.
@@ -14,6 +17,7 @@ import app from './app';
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
 //
+import { bootstrap, element } from 'angular';
 import Base64 from './services/base64/Base64';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
@@ -117,7 +121,9 @@ app.service('textService', TextService);
 
 import './template-cache';
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {
-    const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
-    upgrade.bootstrap(document.documentElement, [app.name]);
+//
+// Nothing happens unless we bootstrap the application.
+//
+element(document).ready(function () {
+    bootstrap(document.documentElement, [app.name], { strictDi: true });
 });

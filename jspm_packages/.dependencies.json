@@ -905,5 +905,7 @@
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:reflect-metadata@0.1.10": {},
+  "github:es-shims/es6-shim@0.35.3": {}
 }

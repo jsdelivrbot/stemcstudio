@@ -12,6 +12,7 @@
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
+        "noLib": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "outDir": "generated/js",
@@ -23,6 +24,7 @@
     "files": [
         "app/ts/app.ts",
         "app/ts/bootstrap.ts",
+        "app/ts/bootstrapJS.ts",
         "app/ts/controllers/AboutController.ts",
         "app/ts/controllers/BodyController.ts",
         "app/ts/controllers/DoodleController.ts",
@@ -56,6 +58,7 @@
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
-        "./node_modules/typescript/lib/lib.d.ts"
+        "node_modules/typescript/lib/lib.dom.d.ts",
+        "node_modules/typescript/lib/lib.es2016.d.ts"
     ]
 }

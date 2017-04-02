@@ -1,4 +1,20 @@
 //
+// Why don't the latest Angular examples contain these imports?
+//
+import 'zone.js';
+import 'reflect-metadata';
+// You may need es6-shim if you get an error relating to list.fill
+
+//
+// I'm not sure why this import is required, but it is.
+//
+import 'angular';
+
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { UpgradeModule } from '@angular/upgrade/static';
+import { AppModule } from './app.module';
+
+//
 // We import the app so that we can bootstrap.
 //
 
@@ -10,7 +26,6 @@ import app from './app';
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
 //
-import { bootstrap, element } from 'angular';
 import Base64 from './services/base64/Base64';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
@@ -115,8 +130,10 @@ app.service('textService', TextService);
 import './template-cache';
 
 //
-// Nothing happens unless we bootstrap the application.
+// Hybrid bootstrap running both AngularJS and Angular at the same time.
 //
-element(document).ready(function () {
-    bootstrap(document.documentElement, [app.name], { strictDi: true });
+platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {
+    const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
+    // I'm not sure whether the strictDi option is doing anything here.
+    upgrade.bootstrap(document.documentElement, [app.name], { strictDi: true });
 });
