@@ -1,4 +1,4 @@
-interface Background {
+export interface IBackgroundService {
     /**
      * @param owner
      * @param repo
@@ -9,6 +9,7 @@ interface Background {
     loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any): void;
 }
 
-export default Background;
-
-export const BACKGROUND_UUID = "com.stemcstudio.background";
+/**
+ * The registration token for AngularJS.
+ */
+export const BACKGROUND_SERVICE_UUID = "backgroundService";

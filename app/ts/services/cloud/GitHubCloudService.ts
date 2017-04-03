@@ -1,6 +1,6 @@
 import { IHttpPromise, IPromise, IQService } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import Base64Service from '../base64/Base64Service';
+import { BASE64_SERVICE_UUID, IBase64Service } from '../base64/IBase64Service';
 import BlobKey from '../github/BlobKey';
 import Commit from '../github/Commit';
 import CommitData from '../github/CommitData';
@@ -37,7 +37,7 @@ export default class GitHubCloudService implements CloudService {
     public static $inject: string[] = [
         '$q',
         '$uibModal',
-        'base64',
+        BASE64_SERVICE_UUID,
         'flow',
         'GitHub',
         'FILENAME_META',
@@ -46,7 +46,7 @@ export default class GitHubCloudService implements CloudService {
     constructor(
         private $q: IQService,
         private $uibModal: IModalService,
-        private base64: Base64Service,
+        private base64Service: IBase64Service,
         private flow: FlowService,
         private github: GitHubService,
         private FILENAME_META: string,
@@ -119,8 +119,8 @@ export default class GitHubCloudService implements CloudService {
                         // The type should be 'file'.
                         // The size should match the decoded length.
                         // The path is probably what we should use for the key to the map.
-                        // The encoding will usually be 'base64'.
-                        const fileContent = this.base64.decode(repoFile.content);
+                        // The encoding will usually be base 64.
+                        const fileContent = this.base64Service.decode(repoFile.content);
                         const file = doodle.newFile(repoFile.path);
                         file.content = fileContent;
                         // The sha is needed in order to perform an update?
@@ -149,7 +149,7 @@ export default class GitHubCloudService implements CloudService {
     downloadTree(owner: string, repo: string, ref: string): IPromise<Doodle> {
         const deferred = this.$q.defer<Doodle>();
         const github = this.github;
-        const base64 = this.base64;
+        const base64Service = this.base64Service;
 
         let todoCount = 0;
         let doneCount = 0;
@@ -201,7 +201,7 @@ export default class GitHubCloudService implements CloudService {
                                                         if (blob) {
                                                             switch (blob.encoding) {
                                                                 case 'base64': {
-                                                                    const content = base64.decode(blob.content);
+                                                                    const content = base64Service.decode(blob.content);
                                                                     const file = doodle.newFile(child.path);
                                                                     file.content = content;
                                                                     break;
@@ -276,7 +276,7 @@ export default class GitHubCloudService implements CloudService {
             const path = paths[p];
             const file = workspace.getFileWeakRef(path);
             if (file) {
-                const content = this.base64.encode(file.getText());
+                const content = this.base64Service.encode(file.getText());
                 const encoding = 'base64';
                 blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
             }

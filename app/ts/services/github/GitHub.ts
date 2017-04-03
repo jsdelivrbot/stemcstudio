@@ -15,7 +15,7 @@ import RepoData from './RepoData';
 import RepoElement from './RepoElement';
 import RepoKey from './RepoKey';
 import GitHubService from './GitHubService';
-import CookieService from '../cookie/CookieService';
+import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
 import PathContents from './PathContents';
 import PutFileResponse from './PutFileResponse';
 import Reference from './Reference';
@@ -48,8 +48,8 @@ const HTTP_METHOD_PATCH = 'PATCH';
 const HTTP_METHOD_POST = 'POST';
 const HTTP_METHOD_PUT = 'PUT';
 
-app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
-    function ($http: IHttpService, $q: IQService, cookie: CookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
+app.factory('GitHub', ['$http', '$q', COOKIE_SERVICE_UUID, 'GITHUB_TOKEN_COOKIE_NAME',
+    function ($http: IHttpService, $q: IQService, cookieService: ICookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
 
         /**
          * api.github.com over HTTPS protocol.
@@ -64,7 +64,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             return `${gitHub()}/user/repos`;
         }
         function requestHeaders(): { 'Accept': string; 'Authorization'?: string } {
-            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+            const token = cookieService.getItem(GITHUB_TOKEN_COOKIE_NAME);
             const headers: { 'Accept': string; 'Authorization'?: string; } = {
                 Accept: ACCEPT_HEADER
             };

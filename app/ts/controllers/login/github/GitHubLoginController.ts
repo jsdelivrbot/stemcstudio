@@ -1,8 +1,8 @@
 import { IWindowService } from 'angular';
-import CookieService from '../../../services/cookie/CookieService';
+import { COOKIE_SERVICE_UUID, ICookieService } from '../../../services/cookie/ICookieService';
 import GitHubLoginScope from './GitHubLoginScope';
 import IGitHubItem from '../../../services/gham/IGitHubItem';
-import IUuidService from '../../../services/uuid/IUuidService';
+import { UUID_SERVICE_UUID, IUuidService } from '../../../services/uuid/IUuidService';
 
 //
 // TODO: DRY & refactor so that there is a GitHub service.
@@ -21,9 +21,9 @@ export default class GitHubLoginController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        'cookie',
+        COOKIE_SERVICE_UUID,
         'githubKey',
-        'uuid4',
+        UUID_SERVICE_UUID,
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
         'FEATURE_GITHUB_SIGNIN_ENABLED',
@@ -33,16 +33,16 @@ export default class GitHubLoginController {
     /**
      * @param $scope
      * @param $window
-     * @param cookie
+     * @param cookieService
      * @param gitHubKey
-     * @param uuid4 Use to generate a unique string for extra security.
+     * @param uuidService Use to generate a unique string for extra security.
      */
     constructor(
         private $scope: GitHubLoginScope,
         private $window: IWindowService,
-        private cookie: CookieService,
+        private cookieService: ICookieService,
         private githubKey: string,
-        private uuid4: IUuidService,
+        private uuidService: IUuidService,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
         private FEATURE_GITHUB_SIGNIN_ENABLED: boolean,
@@ -92,7 +92,7 @@ export default class GitHubLoginController {
             /**
              * This little string provides a bit more security - the unguessable random string.
              */
-            const pending = this.uuid4.generate();
+            const pending = this.uuidService.generate();
 
             /**
              * The GitHub OAuth2 endpoint URL.
@@ -119,8 +119,8 @@ export default class GitHubLoginController {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
             ga('send', 'event', 'GitHub', 'logout');
             // FIXME: Would be nice to encapsulate this.
-            this.cookie.removeItem(this.GITHUB_TOKEN_COOKIE_NAME);
-            this.cookie.removeItem(this.GITHUB_LOGIN_COOKIE_NAME);
+            this.cookieService.removeItem(this.GITHUB_TOKEN_COOKIE_NAME);
+            this.cookieService.removeItem(this.GITHUB_LOGIN_COOKIE_NAME);
         }
         else {
             console.warn(`FEATURE_GITHUB_SIGNIN_ENABLED => ${this.FEATURE_GITHUB_SIGNIN_ENABLED}`);
@@ -132,7 +132,7 @@ export default class GitHubLoginController {
      */
     isLoggedIn(): boolean {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
-            return this.cookie.hasItem(this.GITHUB_TOKEN_COOKIE_NAME);
+            return this.cookieService.hasItem(this.GITHUB_TOKEN_COOKIE_NAME);
         }
         else {
             console.warn(`FEATURE_GITHUB_SIGNIN_ENABLED => ${this.FEATURE_GITHUB_SIGNIN_ENABLED}`);

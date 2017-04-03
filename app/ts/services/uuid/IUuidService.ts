@@ -1,6 +1,6 @@
-interface IUuidService {
+export interface IUuidService {
     generate(): string;
     validate(uuid: string): boolean;
 }
 
-export default IUuidService;
+export const UUID_SERVICE_UUID = 'uuidService';

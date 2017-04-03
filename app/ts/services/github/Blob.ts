@@ -4,9 +4,9 @@ interface Blob {
     url: string;
     content: string;
     /**
-     * 'base64'
+     *
      */
-    encoding: string;
+    encoding: 'base64';
 }
 
 export default Blob;

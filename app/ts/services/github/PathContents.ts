@@ -19,9 +19,9 @@ interface PathContents {
      */
     content: string;
     /**
-     * 'base64'
+     *
      */
-    encoding: string;
+    encoding: 'base64';
     _links: {
         self: string;
         git: string;

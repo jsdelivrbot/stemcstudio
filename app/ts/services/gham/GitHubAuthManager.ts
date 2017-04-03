@@ -1,5 +1,5 @@
 import { IHttpService, ILocationService, IWindowService } from 'angular';
-import CookieService from '../cookie/CookieService';
+import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
 import GitHubService from '../github/GitHubService';
 import IGitHubAuthManager from './IGitHubAuthManager';
 import IGitHubItem from './IGitHubItem';
@@ -15,7 +15,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         '$http',
         '$location',
         '$window',
-        'cookie',
+        COOKIE_SERVICE_UUID,
         'GitHub',
         'githubKey',
     ];
@@ -23,7 +23,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         private $http: IHttpService,
         private $location: ILocationService,
         private $window: IWindowService,
-        private cookie: CookieService,
+        private cookieService: ICookieService,
         private github: GitHubService,
         private githubKey: string
     ) {
@@ -34,7 +34,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
      * 
      */
     clientId(): string | null {
-        return this.cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
+        return this.cookieService.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
     }
 
     /**
@@ -65,12 +65,12 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                         if (data) {
                             const token = data.token;
                             if (token) {
-                                this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
+                                this.cookieService.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                                 this.github.getUser()
                                     .then((response) => {
                                         const user = response.data;
                                         if (user) {
-                                            this.cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
+                                            this.cookieService.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                                         }
                                         done(null, token);
                                     })
@@ -132,7 +132,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
      * 
      */
     isSignedIn(): boolean {
-        return this.cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
+        return this.cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
     }
 
     /**
@@ -140,7 +140,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
      */
     userLogin(): string | undefined | null {
         if (this.isSignedIn()) {
-            return this.cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
+            return this.cookieService.getItem(GITHUB_LOGIN_COOKIE_NAME);
         }
         else {
             return void 0;

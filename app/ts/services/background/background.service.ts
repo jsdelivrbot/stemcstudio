@@ -1,4 +1,5 @@
-import Background from './Background';
+import { IBackgroundService } from './IBackgroundService';
+// import { Injectable } from '@angular/core';
 import CloudService from '../../services/cloud/CloudService';
 import copyDoodleToWorkspace from '../../mappings/copyDoodleToWorkspace';
 import Doodle from '../../services/doodles/Doodle';
@@ -15,7 +16,8 @@ import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
  * workspace interacts with. This service allows the workspace to be decoupled from the
  * background for unit testing.
  */
-export default class BackgroundService implements Background {
+// @Injectable()
+export class BackgroundService implements IBackgroundService {
     public static $inject: string[] = [
         'cloud',
         'doodles',

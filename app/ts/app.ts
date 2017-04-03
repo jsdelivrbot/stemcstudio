@@ -1,3 +1,5 @@
+import { downgradeInjectable } from '@angular/upgrade/static';
+
 //
 // The following imports are to be found in the jspm.config.js file.
 // The module name that we require may be different.
@@ -51,7 +53,7 @@ import { TYPESCRIPT_SERVICES_VERSION } from './constants';
 //
 import CredentialsService from './services/credentials/CredentialsService';
 import AppScope from './scopes/AppScope';
-import CookieService from './services/cookie/CookieService';
+import { COOKIE_SERVICE_UUID, ICookieService } from './services/cookie/ICookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import BodyController from './controllers/BodyController';
@@ -97,8 +99,8 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from './modules/translate/a
 
 import wsmodel from './modules/wsmodel/index';
 
-import BackgroundService from './services/background/BackgroundService';
-import { BACKGROUND_UUID } from './services/background/Background';
+import { BackgroundService } from './services/background/background.service';
+import { BACKGROUND_SERVICE_UUID } from './services/background/IBackgroundService';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from './services/gham/IGitHubAuthManager';
 import Iso8601 from './services/iso8601/Iso8601';
@@ -114,6 +116,8 @@ import { STATE_HOME } from './modules/navigation/NavigationService';
 import { STATE_REPO } from './modules/navigation/NavigationService';
 import { STATE_ROOM } from './modules/navigation/NavigationService';
 import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
+import { UuidService } from './services/uuid/uuid.service';
+import { UUID_SERVICE_UUID } from './services/uuid/IUuidService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -152,7 +156,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.1');
+app.constant('version', '2.24.2');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -269,10 +273,11 @@ app.service('copyProject', CopyProjectService);
 app.service('propertiesDialog', PropertiesDialogService);
 app.service('publishDialog', PublishDialogService);
 
-app.service(BACKGROUND_UUID, BackgroundService);
+app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
 app.service('iso8601', Iso8601);
 app.service('navigation', NavigationService);
+app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
 
 //
 // Register work which needs to be performed on module loading.
@@ -421,7 +426,7 @@ app.run([
     '$stateParams',
     TRANSLATE_SERVICE_UUID,
     'credentials',
-    'cookie',
+    COOKIE_SERVICE_UUID,
     'version',
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_LOGIN_ENABLED',
@@ -433,7 +438,7 @@ app.run([
         $stateParams: IStateParamsService,
         translateService: ITranslateService,
         credentials: CredentialsService,
-        cookie: CookieService,
+        cookieService: ICookieService,
         version: string,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
@@ -458,7 +463,7 @@ app.run([
         // The server drops this cookie so that we can make the GitHub autorization request.
         $rootScope.clientId = function () {
             if (FEATURE_LOGIN_ENABLED) {
-                return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
+                return cookieService.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
             }
             else {
                 return void 0;
@@ -467,7 +472,7 @@ app.run([
 
         $rootScope.isGitHubSignedIn = function () {
             if (FEATURE_LOGIN_ENABLED) {
-                return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
+                return cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
             }
             else {
                 console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
@@ -477,7 +482,7 @@ app.run([
 
         $rootScope.userLogin = function () {
             if (FEATURE_LOGIN_ENABLED) {
-                return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
+                return cookieService.getItem(GITHUB_LOGIN_COOKIE_NAME);
             }
             else {
                 console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);

@@ -8,8 +8,7 @@ import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
-import Background from '../../services/background/BackgroundService';
-import { BACKGROUND_UUID } from '../../services/background/Background';
+import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
@@ -148,7 +147,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$timeout',
         '$window',
         'credentials',
-        BACKGROUND_UUID,
+        BACKGROUND_SERVICE_UUID,
         'GitHub',
         GITHUB_AUTH_MANAGER,
         'cloud',
@@ -188,7 +187,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $timeout: ITimeoutService,
         private $window: IWindowService,
         private credentials: CredentialsService,
-        private background: Background,
+        private backgroundService: IBackgroundService,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
         private cloud: CloudService,
@@ -454,7 +453,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         this.wsModel.recycle((err) => {
             if (!err) {
-                this.background.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
+                this.backgroundService.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
                     if (!err) {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.

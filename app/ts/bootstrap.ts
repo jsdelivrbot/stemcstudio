@@ -13,6 +13,7 @@ import 'angular';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { UpgradeModule } from '@angular/upgrade/static';
 import { AppModule } from './app.module';
+import { downgradeInjectable } from '@angular/upgrade/static';
 
 //
 // We import the app so that we can bootstrap.
@@ -26,7 +27,10 @@ import app from './app';
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
 //
-import Base64 from './services/base64/Base64';
+import { BASE64_SERVICE_UUID } from './services/base64/IBase64Service';
+import { Base64Service } from './services/base64/base64.service';
+import { COOKIE_SERVICE_UUID } from './services/cookie/ICookieService';
+import { CookieService } from './services/cookie/cookie.service';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
@@ -110,15 +114,15 @@ app.filter('contiguous', contiguous);
 import './fugly/ga/ga';
 
 // FIXME: Don't like this style of import.
-import './services/cookie/cookie';
 import './services/doodles/doodles';
 import './services/github/GitHub';
 import './services/options/options';
 import './services/settings/settings';
 import './services/templates/templates';
 // import './services/tw/tw';
-import './services/uuid/UuidService';
-app.service('base64', Base64);
+
+app.factory(BASE64_SERVICE_UUID, downgradeInjectable(Base64Service));
+app.factory(COOKIE_SERVICE_UUID, downgradeInjectable(CookieService));
 app.service('cloud', GitHubCloudService);
 app.service('modalDialog', ModalDialogService);
 

@@ -1,8 +1,9 @@
-import Base64Service from './Base64Service';
+import { IBase64Service } from './IBase64Service';
+import { Injectable } from '@angular/core';
 
 const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-const _utf8_decode = function(utftext: string): string {
+const _utf8_decode = function (utftext: string): string {
     let decoded = "";
     let i = 0;
     let c = 0;
@@ -32,7 +33,7 @@ const _utf8_decode = function(utftext: string): string {
     return decoded;
 };
 
-const _utf8_encode = function(s: string): string {
+const _utf8_encode = function (s: string): string {
     s = s.replace(/\r\n/g, "\n");
     let encoded = "";
 
@@ -56,7 +57,8 @@ const _utf8_encode = function(s: string): string {
     return encoded;
 };
 
-export default class Base64 implements Base64Service {
+@Injectable()
+export class Base64Service implements IBase64Service {
     constructor() {
         // Do nothing.
     }
