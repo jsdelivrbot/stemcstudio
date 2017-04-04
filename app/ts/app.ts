@@ -1,3 +1,4 @@
+import { downgradeComponent } from '@angular/upgrade/static';
 import { downgradeInjectable } from '@angular/upgrade/static';
 
 //
@@ -11,6 +12,7 @@ import { downgradeInjectable } from '@angular/upgrade/static';
 // Module that provides AngularJS (1.x)
 //
 import { module } from 'angular';
+import { IDirectiveFactory } from 'angular';
 
 // 
 // Module that provides the 'ngMdIcons' module.
@@ -71,7 +73,8 @@ import OpenProjectService from './modules/project/OpenProjectService';
 import CopyProjectService from './modules/project/CopyProjectService';
 import PropertiesDialogService from './modules/properties/PropertiesDialogService';
 import PublishDialogService from './modules/publish/PublishDialogService';
-import { brandDirective } from './directives/brand/brand';
+
+import { BrandComponent } from './directives/brand/brand.component';
 import domain from './directives/domain/domain';
 import logoText from './directives/logoText/logoText';
 import packageName from './directives/packageName/packageName';
@@ -254,7 +257,7 @@ app.controller('facebook-login-controller', FacebookLoginController);
 app.controller('github-login-controller', GitHubLoginController);
 app.controller('twitter-login-controller', TwitterLoginController);
 
-app.directive('brand', brandDirective);
+app.directive('brand', downgradeComponent({ component: BrandComponent }) as IDirectiveFactory);
 app.directive('domain', domain);
 app.directive('logoText', logoText);
 app.directive('pageTitle', pageTitle);

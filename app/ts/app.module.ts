@@ -8,10 +8,15 @@ import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
 import { UuidService } from './services/uuid/uuid.service';
 
+import { BrandComponent } from './directives/brand/brand.component';
+
 @NgModule({
     imports: [
         BrowserModule,
         UpgradeModule
+    ],
+    declarations: [
+        BrandComponent
     ],
     providers: [
         //         BackgroundService,
@@ -19,10 +24,15 @@ import { UuidService } from './services/uuid/uuid.service';
         CookieService,
         CredentialsService,
         UuidService
+    ],
+    entryComponents: [
+        BrandComponent
     ]
 })
 export class AppModule {
+    // Prevent Angular from bootstrapping itself using an empty method.
+    // Instead, we hybrid bootstrap in bootstrap.ts
     ngDoBootstrap() {
-        // Do nothing yet
+        // Do nothing yet.
     }
 }
