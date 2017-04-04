@@ -1,4 +1,4 @@
-import CredentialsService from '../../services/credentials/CredentialsService';
+import { ICredentialsService } from '../../services/credentials/ICredentialsService';
 import FlowService from '../../services/flow/FlowService';
 import PublishFacts from './PublishFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
@@ -15,7 +15,7 @@ export default class PublishFlow {
         private owner: string | null | undefined,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
-        private credentialsService: CredentialsService,
+        private credentialsService: ICredentialsService,
         private stemcArXiv: StemcArXiv,
         private wsModel: WsModel
     ) {

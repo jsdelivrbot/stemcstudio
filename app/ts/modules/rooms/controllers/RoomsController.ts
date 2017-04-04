@@ -3,7 +3,7 @@ import { GITHUB_AUTH_MANAGER } from '../../../services/gham/IGitHubAuthManager';
 import RoomAgent from '../RoomAgent';
 import { IRoomsService, RoomParams, ROOMS_SERVICE_UUID } from '../api';
 import ModalDialog from '../../../services/modalService/ModalDialog';
-import NavigationService from '../../navigation/NavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../../navigation/INavigationService';
 import WsModel from '../../wsmodel/services/WsModel';
 import { WORKSPACE_MODEL } from '../../wsmodel/constants';
 
@@ -14,14 +14,14 @@ export default class RoomsController {
     public static $inject: string[] = [
         GITHUB_AUTH_MANAGER,
         'modalDialog',
-        'navigation',
+        NAVIGATION_SERVICE_UUID,
         ROOMS_SERVICE_UUID,
         WORKSPACE_MODEL
     ];
     constructor(
         private authManager: IGitHubAuthManager,
         private modalDialog: ModalDialog,
-        private navigation: NavigationService,
+        private navigation: INavigationService,
         private roomsService: IRoomsService,
         private wsModel: WsModel
     ) {

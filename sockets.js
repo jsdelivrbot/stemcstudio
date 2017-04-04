@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sio = require("socket.io");
-var rooms = require("./server/routes/rooms/index");
+var index_1 = require("./server/routes/rooms/index");
 var socketByNodeId = {};
 function sockets(app, server) {
     var io = sio(server, {});
@@ -9,7 +9,7 @@ function sockets(app, server) {
         console.log('A socket connected.');
         socket.on('download', function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
-            rooms.getEdits(fromId, roomId, function (err, data) {
+            index_1.getEdits(fromId, roomId, function (err, data) {
                 if (!err) {
                     var files = data.files;
                     ack(err, files);
@@ -25,7 +25,7 @@ function sockets(app, server) {
             socket.leaveAll();
             socket.join(roomId, function (err) {
                 ack();
-                rooms.getEdits(fromId, roomId, function (err, data) {
+                index_1.getEdits(fromId, roomId, function (err, data) {
                     var fromId = data.fromId, roomId = data.roomId, files = data.files;
                     var paths = Object.keys(files);
                     for (var i = 0; i < paths.length; i++) {
@@ -39,7 +39,7 @@ function sockets(app, server) {
         socket.on('edits', function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
             socketByNodeId[fromId] = socket;
-            rooms.setEdits(fromId, roomId, path, edits, function (err, data) {
+            index_1.setEdits(fromId, roomId, path, edits, function (err, data) {
                 ack();
                 if (!err) {
                     if (data) {

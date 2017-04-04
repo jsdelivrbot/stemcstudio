@@ -124,7 +124,7 @@ System.config({
     },
     "npm:@angular/core@4.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.2.0",
+      "rxjs": "npm:rxjs@5.3.0",
       "zone.js": "npm:zone.js@0.8.5"
     },
     "npm:@angular/forms@4.0.1": {
@@ -136,7 +136,7 @@ System.config({
     "npm:@angular/http@4.0.1": {
       "@angular/core": "npm:@angular/core@4.0.1",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.0.1",
-      "rxjs": "npm:rxjs@5.2.0"
+      "rxjs": "npm:rxjs@5.3.0"
     },
     "npm:@angular/platform-browser-dynamic@4.0.1": {
       "@angular/common": "npm:@angular/common@4.0.1",
@@ -154,7 +154,7 @@ System.config({
       "@angular/core": "npm:@angular/core@4.0.1",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.2.0"
+      "rxjs": "npm:rxjs@5.3.0"
     },
     "npm:@angular/upgrade@4.0.1": {
       "@angular/compiler": "npm:@angular/compiler@4.0.1",
@@ -666,7 +666,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.2.0": {
+    "npm:rxjs@5.3.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"

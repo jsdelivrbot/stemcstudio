@@ -1,34 +1,26 @@
 import GitHubAccountScope from '../scopes/GitHubAccountScope';
-import GitHubService from '../services/github/GitHubService';
+import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import GitHubUser from '../services/github/GitHubUser';
 import Repo from '../services/github/Repo';
 
 /**
- * @class GitHubAccountScope
+ *
  */
 export default class GitHubAccountController {
-    public static $inject: string[] = [
-        '$scope',
-        'GitHub'
-    ];
+    public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID];
     /**
-     * @class GitHubAccountScope
-     * @constructor
-     * @param $scope {GitHubAccountScope}
+     *
      */
-    constructor(
-        private $scope: GitHubAccountScope,
-        private gitHub: GitHubService) {
+    constructor(private $scope: GitHubAccountScope, private githubService: IGitHubService) {
         // Do nothing.
     }
 
     /**
-     * @method $onInit
-     * @return {void}
+     *
      */
     $onInit(): void {
 
-        this.gitHub.getUser().then((promiseValue) => {
+        this.githubService.getUser().then((promiseValue) => {
             if (promiseValue.data) {
                 this.$scope.user = promiseValue.data;
             }
@@ -36,7 +28,7 @@ export default class GitHubAccountController {
             this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
         });
 
-        this.gitHub.getUserRepos((err: any, repos: Repo[]) => {
+        this.githubService.getUserRepos((err: any, repos: Repo[]) => {
             if (!err) {
                 this.$scope.repos = repos;
             }

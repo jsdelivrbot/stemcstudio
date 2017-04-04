@@ -3,7 +3,7 @@ import Doodle from './Doodle';
 /**
  * API for LocalStorage of Doodle(s).
  */
-interface IDoodleManager {
+export interface IDoodleManager {
 
     /**
      * Inserts the doodle at the front of the list of doodles, making it the current doodle.
@@ -33,4 +33,4 @@ interface IDoodleManager {
     suggestName(): string;
 }
 
-export default IDoodleManager;
+export const DOODLE_MANAGER_SERVICE_UUID = 'doodleManager';

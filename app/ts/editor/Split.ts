@@ -189,7 +189,7 @@ export default class Split {
         // aren't added to the undo manager from the new and the old session.
         s.$informUndoManager = lang.delayedCall(function () { s.$deltas = []; });
 
-        // Copy over 'settings' from the session.
+        // Copy values from the session.
         s.setTabSize(session.getTabSize());
         s.setUseSoftTabs(session.getUseSoftTabs());
         s.setOverwrite(session.getOverwrite());

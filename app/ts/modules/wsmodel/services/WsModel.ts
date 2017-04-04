@@ -19,7 +19,7 @@ import { get } from '../../../editor/lib/net';
 import getPosition from '../../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../../services/doodles/IDoodleConfig';
-import IDoodleManager from '../../../services/doodles/IDoodleManager';
+import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../../services/doodles/IDoodleManager';
 import IOptionManager from '../../../services/options/IOptionManager';
 import IWorkspaceModel from '../IWorkspaceModel';
 import javascriptSnippets from '../../../editor/snippets/javascriptSnippets';
@@ -409,7 +409,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     public trace_ = false;
 
-    public static $inject: string[] = ['options', '$q', 'doodles'];
+    public static $inject: string[] = ['options', '$q', DOODLE_MANAGER_SERVICE_UUID];
 
     /**
      * AngularJS service; parameters must match static $inject property.

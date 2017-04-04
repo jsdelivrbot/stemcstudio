@@ -1,8 +1,8 @@
 import BodyScope from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
-import GitHubService from '../services/github/GitHubService';
+import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import linkToMap from '../utils/linkToMap';
-import NavigationService from '../modules/navigation/NavigationService';
+import {NAVIGATION_SERVICE_UUID,INavigationService} from '../modules/navigation/INavigationService';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
@@ -10,8 +10,8 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
  * The controller is referred to as 'body-controller' in layout.jade.
  */
 export default class BodyController {
-    public static $inject: string[] = ['$scope', 'GitHub', 'navigation', TRANSLATE_SERVICE_UUID];
-    constructor($scope: BodyScope, github: GitHubService, navigation: NavigationService, translateService: ITranslateService) {
+    public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
+    constructor($scope: BodyScope, githubService: IGitHubService, navigation: INavigationService, translateService: ITranslateService) {
 
         $scope.goHome = (label?: string, value?: number) => {
             navigation.gotoHome(label, value)
@@ -25,7 +25,7 @@ export default class BodyController {
 
         $scope.clickDownload = function (label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
-            github.getGists()
+            githubService.getGists()
                 .then(function (promiseValue) {
                     if (promiseValue.data) {
                         $scope.gists = promiseValue.data;

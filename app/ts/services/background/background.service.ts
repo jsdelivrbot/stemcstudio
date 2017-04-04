@@ -1,9 +1,9 @@
 import { IBackgroundService } from './IBackgroundService';
 // import { Injectable } from '@angular/core';
-import CloudService from '../../services/cloud/CloudService';
+import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import copyDoodleToWorkspace from '../../mappings/copyDoodleToWorkspace';
 import Doodle from '../../services/doodles/Doodle';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
+import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
 import isString from '../../utils/isString';
 import MwEdits from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/RoomAgent';
@@ -19,14 +19,14 @@ import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
 // @Injectable()
 export class BackgroundService implements IBackgroundService {
     public static $inject: string[] = [
-        'cloud',
-        'doodles',
+        CLOUD_SERVICE_UUID,
+        DOODLE_MANAGER_SERVICE_UUID,
         ROOMS_SERVICE_UUID,
         WORKSPACE_MODEL
     ];
     constructor(
-        private cloud: CloudService,
-        private doodles: IDoodleManager,
+        private cloudService: ICloudService,
+        private doodleManager: IDoodleManager,
         private roomsService: IRoomsService,
         private wsModel: WsModel) {
         // Do nothing.
@@ -44,7 +44,7 @@ export class BackgroundService implements IBackgroundService {
     loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error | undefined) => any) {
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
-        const matches = this.doodles.filter(function (doodle: Doodle) {
+        const matches = this.doodleManager.filter(function (doodle: Doodle) {
             if (isString(owner) && isString(repo)) {
                 return doodle.owner === owner && doodle.repo === repo;
             }
@@ -62,15 +62,15 @@ export class BackgroundService implements IBackgroundService {
             // We certainly don't want to overwrite anything in local storage.
             // The user should be advised and then may delete manually from local storage.
             const match = matches[0];
-            this.doodles.makeCurrent(match);
+            this.doodleManager.makeCurrent(match);
             copyDoodleToWorkspace(match, this.wsModel, callback);
         }
         else {
             if (owner && repo) {
-                this.cloud.downloadTree(owner, repo, 'heads/master')
+                this.cloudService.downloadTree(owner, repo, 'heads/master')
                     .then((doodle) => {
-                        this.doodles.addHead(doodle);
-                        this.doodles.updateStorage();
+                        this.doodleManager.addHead(doodle);
+                        this.doodleManager.updateStorage();
                         copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }, (reason) => {
                         callback(new Error(`Error attempting to download repository '${repo}':  ${JSON.stringify(reason, null, 2)}`));
@@ -79,10 +79,10 @@ export class BackgroundService implements IBackgroundService {
                     });
             }
             else if (gistId) {
-                this.cloud.downloadGist(gistId, (reason: any, doodle: Doodle) => {
+                this.cloudService.downloadGist(gistId, (reason: any, doodle: Doodle) => {
                     if (!reason) {
-                        this.doodles.addHead(doodle);
-                        this.doodles.updateStorage();
+                        this.doodleManager.addHead(doodle);
+                        this.doodleManager.updateStorage();
                         copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }
                     else {
@@ -126,11 +126,11 @@ export class BackgroundService implements IBackgroundService {
                                 }
                                 // Because we are already connected, setting the edits should trigger the acknowledgement.
                                 // this.wsModel.uploadToRoom(room);
-                                const doodle = this.doodles.createDoodle();
+                                const doodle = this.doodleManager.createDoodle();
                                 // Tag the Doodle with the roomId so that we can serialize to it without making it the
                                 // current doodle. Add it to the tail of the list and maybe remove it later?
                                 doodle.roomId = roomId;
-                                this.doodles.addTail(doodle);
+                                this.doodleManager.addTail(doodle);
                                 this.wsModel.updateStorage();
                                 callback(void 0);
                             }
@@ -148,16 +148,16 @@ export class BackgroundService implements IBackgroundService {
                 });
             }
             else {
-                if (this.doodles.length > 0) {
-                    const doodle = this.doodles.current();
+                if (this.doodleManager.length > 0) {
+                    const doodle = this.doodleManager.current();
                     if (doodle) {
                         copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }
                 }
                 else {
-                    const doodle = this.doodles.createDoodle();
-                    this.doodles.addHead(doodle);
-                    this.doodles.updateStorage();
+                    const doodle = this.doodleManager.createDoodle();
+                    this.doodleManager.addHead(doodle);
+                    this.doodleManager.updateStorage();
                     copyDoodleToWorkspace(doodle, this.wsModel, callback);
                 }
             }

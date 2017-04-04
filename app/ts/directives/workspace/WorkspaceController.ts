@@ -1,6 +1,6 @@
 import { IAngularEvent, IHttpService, ILocationService, IPromise, IScope, ITimeoutService, IWindowService } from 'angular';
 import { IStateParamsService, IStateService } from 'angular-ui-router';
-import CredentialsService from '../../services/credentials/CredentialsService';
+import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import Delta from '../../editor/Delta';
 import Document from '../../editor/Document';
 import DocumentChangeHandler from './DocumentChangeHandler';
@@ -10,10 +10,10 @@ import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../../modules/wsmodel/IWorkspaceModel';
-import CloudService from '../../services/cloud/CloudService';
+import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
-import GitHubService from '../../services/github/GitHubService';
+import { GITHUB_SERVICE_UUID, IGitHubService } from '../../services/github/IGitHubService';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFlow from './LabelFlow';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
@@ -27,7 +27,7 @@ import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import NavigationService from '../../modules/navigation/NavigationService';
+import {NAVIGATION_SERVICE_UUID,INavigationService} from '../../modules/navigation/INavigationService';
 import RenamedFileHandler from './RenamedFileHandler';
 import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import { STATE_GIST } from '../../modules/navigation/NavigationService';
@@ -146,18 +146,18 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$location',
         '$timeout',
         '$window',
-        'credentials',
+        CREDENTIALS_SERVICE_UUID,
         BACKGROUND_SERVICE_UUID,
-        'GitHub',
+        GITHUB_SERVICE_UUID,
         GITHUB_AUTH_MANAGER,
-        'cloud',
+        CLOUD_SERVICE_UUID,
         'templates',
         TRANSLATE_SERVICE_UUID,
         'flow',
         'ga',
         'labelDialog',
         'modalDialog',
-        'navigation',
+        NAVIGATION_SERVICE_UUID,
         'options',
         'propertiesDialog',
         'stemcArXiv',
@@ -186,18 +186,18 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $location: ILocationService,
         private $timeout: ITimeoutService,
         private $window: IWindowService,
-        private credentials: CredentialsService,
+        private credentialsService: ICredentialsService,
         private backgroundService: IBackgroundService,
-        private github: GitHubService,
+        private githubService: IGitHubService,
         authManager: IGitHubAuthManager,
-        private cloud: CloudService,
+        private cloudService: ICloudService,
         templates: Doodle[],
         translateService: ITranslateService,
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,
         private modalDialog: ModalDialog,
-        private navigation: NavigationService,
+        private navigation: INavigationService,
         private options: IOptionManager,
         private propertiesDialog: PropertiesDialog,
         private stemcArXiv: StemcArXiv,
@@ -337,7 +337,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
                 if (wsModel.isZombie()) {
-                    github.getGistComments(wsModel.gistId).then((httpResponse) => {
+                    githubService.getGistComments(wsModel.gistId).then((httpResponse) => {
                         const comments = httpResponse.data;
                         if (Array.isArray(comments)) {
                             $scope.comments = comments.map(function (comment) {
@@ -407,8 +407,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.flowService,
                 this.modalDialog,
                 this.navigation,
-                this.cloud,
-                this.github,
+                this.cloudService,
+                this.githubService,
                 wsModel);
             uploadFlow.execute();
         };
@@ -423,7 +423,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 owner,
                 this.flowService,
                 this.modalDialog,
-                this.credentials,
+                this.credentialsService,
                 this.stemcArXiv,
                 wsModel);
             publishFlow.execute();

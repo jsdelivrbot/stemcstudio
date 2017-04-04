@@ -11,12 +11,12 @@ var nconf = require("nconf");
 var https = require("https");
 var qs = require("querystring");
 require('express-session');
-var bodyParser = require("body-parser");
+var body_parser_1 = require("body-parser");
 require('multer');
 var errorHandler = require("errorhandler");
-var rooms = require("./server/routes/rooms/index");
-var stemcArXiv = require("./server/routes/stemcArXiv/index");
-var translations = require("./server/routes/translations/index");
+var index_1 = require("./server/routes/rooms/index");
+var index_2 = require("./server/routes/stemcArXiv/index");
+var index_3 = require("./server/routes/translations/index");
 var npm = require('./package.json');
 require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
@@ -33,8 +33,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(body_parser_1.json());
+app.use(body_parser_1.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride());
 var folder = "" + (isProductionMode() ? 'dist' : 'generated');
@@ -93,12 +93,12 @@ app.get("/github_callback", function (req, res, next) {
         npm: npm
     });
 });
-app.post('/rooms', rooms.createRoom);
-app.get('/rooms/:id', rooms.getRoom);
-app.delete('/rooms/:id', rooms.destroyRoom);
-app.post('/search', stemcArXiv.search);
-app.post('/submissions', stemcArXiv.submit);
-app.get('/translations/:input', translations.getTranslation);
+app.post('/rooms', index_1.createRoom);
+app.get('/rooms/:id', index_1.getRoom);
+app.delete('/rooms/:id', index_1.destroyRoom);
+app.post('/search', index_2.search);
+app.post('/submissions', index_2.submit);
+app.get('/translations/:input', index_3.getTranslation);
 app.get("/*", function (req, res, next) {
     res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("index", {

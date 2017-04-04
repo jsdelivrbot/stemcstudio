@@ -1,4 +1,4 @@
-import * as express from 'express';
+import { Request, Response } from 'express';
 import * as redis from 'redis';
 import * as url from 'url';
 import { mustBeTruthy } from '../../synchronization/asserts';
@@ -101,7 +101,7 @@ function createRoomPathRemoteKey(roomId: string, path: string, nodeId: string): 
 /**
  * Creates a room for collaborating.
  */
-export function createRoom(request: express.Request, response: express.Response): void {
+export function createRoom(request: Request, response: Response): void {
 
     const params: RoomParams = request.body;
 
@@ -156,7 +156,7 @@ export function createRoom(request: express.Request, response: express.Response)
     });
 }
 
-export function getRoom(request: express.Request, response: express.Response): void {
+export function getRoom(request: Request, response: Response): void {
     const params: Room = request.params;
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
@@ -667,7 +667,7 @@ export function getEdits(nodeId: string, roomId: string, callback: (err: any, da
 /**
  * Destrot the room by removing the (roomKey, value) pair from Redis.
  */
-export function destroyRoom(request: express.Request, response: express.Response): void {
+export function destroyRoom(request: Request, response: Response): void {
     const params: Room = request.params;
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);

@@ -31,9 +31,7 @@ import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showFindReplace from '../../editor/ext/showFindReplace';
 import showGreekKeyboard from '../../editor/ext/showGreekKeyboard';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
-import ISettingsService from '../../services/settings/ISettingsService';
 import TextChange from '../../editor/workspace/TextChange';
-import ITextService from '../../services/text/ITextService';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
@@ -86,8 +84,6 @@ function isTypeScript(path: string): boolean {
  */
 function factory(
     $timeout: ITimeoutService,
-    settings: ISettingsService,
-    textService: ITextService,
     editorPreferencesService: EditorPreferencesService): IDirective {
 
     /**
@@ -550,6 +546,6 @@ function factory(
     return directive;
 }
 
-factory.$inject = ['$timeout', 'settings', 'textService', EDITOR_PREFERENCES_SERVICE];
+factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];
 
 export default factory;

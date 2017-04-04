@@ -1,11 +1,11 @@
 import FlowService from '../../services/flow/FlowService';
 import UploadFacts from './UploadFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import NavigationService from '../../modules/navigation/NavigationService';
-import CloudService from '../../services/cloud/CloudService';
+import { INavigationService } from '../../modules/navigation/INavigationService';
+import { ICloudService } from '../../services/cloud/ICloudService';
 import Gist from '../../services/github/Gist';
 import GitHubReason from '../../services/github/GitHubReason';
-import GitHubService from '../../services/github/GitHubService';
+import { IGitHubService } from '../../services/github/IGitHubService';
 import PromptOptions from '../../services/modalService/PromptOptions';
 import RepoData from '../../services/github/RepoData';
 import isNumber from '../../utils/isNumber';
@@ -20,9 +20,9 @@ export default class UploadFlow {
         private owner: string | null | undefined,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
-        private navigation: NavigationService,
-        private cloud: CloudService,
-        private github: GitHubService,
+        private navigation: INavigationService,
+        private cloudService: ICloudService,
+        private githubService: IGitHubService,
         private wsModel: WsModel
     ) {
         // Do nothing.
@@ -40,7 +40,7 @@ export default class UploadFlow {
                 return facts.canAskForCommitMessage();
             },
             (facts, session, next) => {
-                this.cloud.commitMessage(`${title}`).then((commitMessage) => {
+                this.cloudService.commitMessage(`${title}`).then((commitMessage) => {
                     facts.commitMessage.resolve(commitMessage);
                     next();
                 }, (reason) => {
@@ -54,7 +54,7 @@ export default class UploadFlow {
                 return facts.canAskToChooseGistOrRepo();
             },
             (facts, session, next) => {
-                this.cloud.chooseGistOrRepo(title).then((storage) => {
+                this.cloudService.chooseGistOrRepo(title).then((storage) => {
                     facts.storage.resolve(storage);
                     next();
                 }, (reason) => {
@@ -68,7 +68,7 @@ export default class UploadFlow {
                 return facts.canCreateGist();
             },
             (facts, session, next) => {
-                this.cloud.createGist(this.wsModel)
+                this.cloudService.createGist(this.wsModel)
                     .then((http) => {
                         const status = http.status;
                         facts.status.resolve(status);
@@ -107,7 +107,7 @@ export default class UploadFlow {
                 return facts.canUpdateGist();
             },
             (facts, session, next) => {
-                this.cloud.updateGist(this.wsModel, this.wsModel.gistId)
+                this.cloudService.updateGist(this.wsModel, this.wsModel.gistId)
                     .then((http) => {
                         const status = http.status;
                         const statusText = http.statusText;
@@ -189,7 +189,7 @@ export default class UploadFlow {
                 return facts.canDetermineRepoExists();
             },
             (facts, session, next) => {
-                this.github.getRepo(facts.userLogin.value, facts.repo.value)
+                this.githubService.getRepo(facts.userLogin.value, facts.repo.value)
                     .then((http) => {
                         const status = http.status;
                         facts.status.resolve(status);
@@ -244,7 +244,7 @@ export default class UploadFlow {
             (facts, session, next) => {
                 const defaults: RepoData = { name: '' };
                 defaults.auto_init = true;
-                this.cloud.repoData(title, defaults)
+                this.cloudService.repoData(title, defaults)
                     .then((repoData) => {
                         facts.repoData.resolve(repoData);
                         next();
@@ -260,7 +260,7 @@ export default class UploadFlow {
                 return facts.canCreateRepo();
             },
             (facts, session, next) => {
-                this.cloud.createRepo(facts.repoData.value)
+                this.cloudService.createRepo(facts.repoData.value)
                     .then((http) => {
                         const status = http.status;
                         facts.status.resolve(status);
@@ -306,7 +306,7 @@ export default class UploadFlow {
                 const repo = facts.repo.value;
                 const ref = facts.ref.value;
                 const commitMessage = facts.commitMessage.value;
-                this.cloud.uploadToRepo(this.wsModel, owner, repo, ref, commitMessage, (err, details) => {
+                this.cloudService.uploadToRepo(this.wsModel, owner, repo, ref, commitMessage, (err, details) => {
                     if (!err) {
                         if (details.refUpdate.isResolved()) {
                             this.wsModel.owner = owner;

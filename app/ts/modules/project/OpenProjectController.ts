@@ -3,7 +3,7 @@ import OpenProjectScope from './OpenProjectScope';
 import OpenProjectSettings from './OpenProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 import Doodle from '../../services/doodles/Doodle';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
+import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
 
 /**
  * The controller for the OpenProjectScope.
@@ -13,19 +13,19 @@ export default class OpenProjectController {
     public static $inject: string[] = [
         '$scope',
         '$uibModalInstance',
-        'doodles',
+        DOODLE_MANAGER_SERVICE_UUID,
         TRANSLATE_SERVICE_UUID,
         'pkgInfo'];
 
     constructor(
         $scope: OpenProjectScope,
         $uibModalInstance: IModalServiceInstance,
-        doodles: IDoodleManager,
+        doodleManager: IDoodleManager,
         translateService: ITranslateService,
         pkgInfo: OpenProjectSettings) {
 
         $scope.doodles = function () {
-            return doodles.filter(function () { return true; });
+            return doodleManager.filter(function () { return true; });
         };
 
         $scope.doOpen = function (doodle: Doodle) {

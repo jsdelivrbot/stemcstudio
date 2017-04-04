@@ -1,9 +1,9 @@
 import app from '../app';
 import BootstrapDialog from 'bootstrap-dialog';
 import DownloadScope from '../scopes/DownloadScope';
-import GitHubService from '../services/github/GitHubService';
+import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import linkToMap from '../utils/linkToMap';
-import NavigationService from '../modules/navigation/NavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 
 // The 'rel' values that we understand for Hypermedia links.
 const PAGE_F = 'first';
@@ -13,12 +13,12 @@ const PAGE_L = 'last';
 
 app.controller('download-controller', [
     '$scope',
-    'GitHub',
-    'navigation',
+    GITHUB_SERVICE_UUID,
+    NAVIGATION_SERVICE_UUID,
     function (
         $scope: DownloadScope,
-        github: GitHubService,
-        navigation: NavigationService
+        githubService: IGitHubService,
+        navigationService: INavigationService
     ) {
 
         function isPage(rel: string): boolean {
@@ -43,7 +43,7 @@ app.controller('download-controller', [
                 return;
             }
             const href = $scope.links[rel];
-            github.getGistsPage(href)
+            githubService.getGistsPage(href)
                 .then(function (promiseValue) {
                     const gists = promiseValue.data;
                     const headers = promiseValue.headers;
@@ -54,7 +54,7 @@ app.controller('download-controller', [
                     else {
                         $scope.links = {};
                     }
-                    navigation.gotoDownload();
+                    navigationService.gotoDownload();
                 })
                 .catch(function (reason: any) {
                     BootstrapDialog.show({
@@ -90,7 +90,7 @@ app.controller('download-controller', [
         };
 
         $scope.doCancel = function () {
-            navigation.gotoDoodle();
+            navigationService.gotoDoodle();
         };
     }
 ]);

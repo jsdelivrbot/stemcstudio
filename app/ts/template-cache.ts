@@ -2,8 +2,7 @@
 // GENERATED FILE
 //
 import { ITemplateCacheService } from 'angular';
-import app from './app';
-app.run(['$templateCache', function ($templateCache: ITemplateCacheService) {
+export function templateCache($templateCache: ITemplateCacheService) {
 
   'use strict';
 
@@ -1346,4 +1345,4 @@ app.run(['$templateCache', function ($templateCache: ITemplateCacheService) {
     "</div>"
   );
 
-}]);
+}

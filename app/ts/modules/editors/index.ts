@@ -12,7 +12,7 @@ import EditorPreferencesService from './services/manager/DefaultEditorPreference
 const m: IModule = module(EDITORS_MODULE, []);
 
 // Use a lower-case-dashed name because the controller will be used from HTML.
-// Beacause this is used from HTML, we don't declare a symbolic constant for it.
+// Because this is used from HTML, we don't declare a symbolic constant for it.
 m.controller('editor-preferences-controller', EditorPreferencesController);
 m.service(EDITOR_PREFERENCES_DIALOG, EditorPreferencesDialogService);
 m.service(EDITOR_PREFERENCES_SERVICE, EditorPreferencesService);

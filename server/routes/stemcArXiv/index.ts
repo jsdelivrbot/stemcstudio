@@ -1,4 +1,4 @@
-import * as express from 'express';
+import { Request, Response } from 'express';
 import * as AWS from 'aws-sdk';
 import ISearchParams from './SearchParams';
 import ISearchResponse from './SearchResponse';
@@ -20,19 +20,19 @@ function mapToString(fields: string[]): string {
 /**
  * 
  */
-export function search(request: express.Request, response: express.Response): void {
+export function search(request: Request, response: Response): void {
     const params: ISearchParams = request.body;
     // console.lg(`search POST ${JSON.stringify(params, null, 2)}`);
     const csd = new AWS.CloudSearchDomain({
         endpoint: 'search-doodle-ref-xieragrgc2gcnrcog3r6bme75u.us-east-1.cloudsearch.amazonaws.com'
     });
-    csd.search({ query: params.query }, function(err, data) {
+    csd.search({ query: params.query }, function (err, data) {
         if (!err) {
             // const timems = data.status.timems;
             const found = data.hits.found;
             // console.lg(`search took ${timems} ms, found ${found} record(s).`)
             const start = data.hits.start;
-            const refs = data.hits.hit.map(function(record) {
+            const refs = data.hits.hit.map(function (record) {
                 const href = record.id;
                 const owner = mapToString(record.fields['ownerkey']);
                 const gistId = mapToString(record.fields['resourcekey']);
@@ -51,7 +51,7 @@ export function search(request: express.Request, response: express.Response): vo
     });
 }
 
-export function submit(request: express.Request, response: express.Response): void {
+export function submit(request: Request, response: Response): void {
     const params: ISubmitParams = request.body;
     // console.lg(`submit POST ${JSON.stringify(params, null, 2)}`);
 

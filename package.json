@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.2",
+  "version": "2.24.3",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -91,7 +91,7 @@
     "systemjs-builder": "0.15.35",
     "tslint": "^4.5.1",
     "two.js": "^0.6.0",
-    "typedoc": "^0.5.9",
+    "typedoc": "^0.5.10",
     "typescript": "^2.2.1",
     "typings": "^2.1.0"
   },

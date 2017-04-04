@@ -2,13 +2,13 @@ import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import Doodle from '../services/doodles/Doodle';
-import IDoodleManager from '../services/doodles/IDoodleManager';
+import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
-import NavigationService from '../modules/navigation/NavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import NewProjectDialog from '../modules/project/NewProjectDialog';
 import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
@@ -21,11 +21,11 @@ export default class HomeController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        'doodles',
+        DOODLE_MANAGER_SERVICE_UUID,
         GITHUB_AUTH_MANAGER,
         'ga',
         'modalDialog',
-        'navigation',
+        NAVIGATION_SERVICE_UUID,
         'newProject',
         'stemcArXiv',
         TRANSLATE_SERVICE_UUID,
@@ -43,11 +43,11 @@ export default class HomeController extends AbstractPageController {
     constructor(
         $scope: HomeScope,
         $window: IWindowService,
-        doodles: IDoodleManager,
+        doodleManager: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
-        navigation: NavigationService,
+        navigation: INavigationService,
         newProjectDialog: NewProjectDialog,
         stemcArXiv: StemcArXiv,
         translateService: ITranslateService,
@@ -89,12 +89,12 @@ export default class HomeController extends AbstractPageController {
         };
 
         $scope.clickCodeNow = (label?: string, value?: number) => {
-            newProjectDialog.open(initNewProjectDefaults(doodles.suggestName()))
+            newProjectDialog.open(initNewProjectDefaults(doodleManager.suggestName()))
                 .then(function (settings) {
-                    const doodle = doodles.createDoodle();
+                    const doodle = doodleManager.createDoodle();
                     copyNewProjectSettingsToDoodle(settings, doodle);
-                    doodles.addHead(doodle);
-                    doodles.updateStorage();
+                    doodleManager.addHead(doodle);
+                    doodleManager.updateStorage();
                     navigation.gotoDoodle();
                 })
                 .catch(function (reason) {
@@ -136,7 +136,7 @@ export default class HomeController extends AbstractPageController {
         //
         $scope.doodleRefs = [];
         $scope.doodles = function () {
-            return doodles.filter(function () { return true; });
+            return doodleManager.filter(function () { return true; });
         };
 
         $scope.params = { query: '' };
@@ -166,7 +166,7 @@ export default class HomeController extends AbstractPageController {
         // Opening a doodle from Local Storage.
         //
         $scope.doOpen = (doodle: Doodle) => {
-            doodles.makeCurrent(doodle);
+            doodleManager.makeCurrent(doodle);
             // We know that the Doodle is in Local Storage, but we can avoid
             // a state change by going to the correct state the first time.
             if (doodle.owner && doodle.repo) {
@@ -183,8 +183,8 @@ export default class HomeController extends AbstractPageController {
         $scope.doDelete = function (doodle: Doodle) {
             // TODO: DRY. This code also exists in the OpenController.
             modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function () {
-                doodles.deleteDoodle(doodle);
-                doodles.updateStorage();
+                doodleManager.deleteDoodle(doodle);
+                doodleManager.updateStorage();
             }).catch(function (reason) {
                 switch (reason) {
                     case 'backdrop click':

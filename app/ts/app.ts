@@ -51,7 +51,8 @@ import { TYPESCRIPT_SERVICES_VERSION } from './constants';
 //
 // Interfaces required for designtime TypeScript compilation.
 //
-import CredentialsService from './services/credentials/CredentialsService';
+import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from './services/credentials/ICredentialsService';
+import { CredentialsService } from './services/credentials/credentials.service';
 import AppScope from './scopes/AppScope';
 import { COOKIE_SERVICE_UUID, ICookieService } from './services/cookie/ICookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
@@ -103,7 +104,7 @@ import { BackgroundService } from './services/background/background.service';
 import { BACKGROUND_SERVICE_UUID } from './services/background/IBackgroundService';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from './services/gham/IGitHubAuthManager';
-import Iso8601 from './services/iso8601/Iso8601';
+import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
 import NavigationService from './modules/navigation/NavigationService';
 import { STATE_ABOUT } from './modules/navigation/NavigationService';
 import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
@@ -156,7 +157,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.2');
+app.constant('version', '2.24.3');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -264,7 +265,7 @@ app.directive('googleSignInButton', googleSignInButton);
 
 app.filter('propsFilter', propsFilter);
 
-app.service('credentials', CredentialsService);
+app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
 
 app.service('labelDialog', LabelDialogService);
 app.service('newProject', NewProjectService);
@@ -275,8 +276,7 @@ app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
-app.service('iso8601', Iso8601);
-app.service('navigation', NavigationService);
+app.service(NAVIGATION_SERVICE_UUID, NavigationService);
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
 
 //
@@ -425,7 +425,7 @@ app.run([
     '$state',
     '$stateParams',
     TRANSLATE_SERVICE_UUID,
-    'credentials',
+    CREDENTIALS_SERVICE_UUID,
     COOKIE_SERVICE_UUID,
     'version',
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
@@ -437,7 +437,7 @@ app.run([
         $state: IStateService,
         $stateParams: IStateParamsService,
         translateService: ITranslateService,
-        credentials: CredentialsService,
+        credentials: ICredentialsService,
         cookieService: ICookieService,
         version: string,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,

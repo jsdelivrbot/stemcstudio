@@ -3,13 +3,13 @@ import AbstractPageController from './AbstractPageController';
 import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import DoodleScope from '../scopes/DoodleScope';
-import IDoodleManager from '../services/doodles/IDoodleManager';
+import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ITemplate from '../services/templates/ITemplate';
 import ModalDialog from '../services/modalService/ModalDialog';
-import NavigationService from '../modules/navigation/NavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import NewProjectDialog from '../modules/project/NewProjectDialog';
 import OpenProjectDialog from '../modules/project/OpenProjectDialog';
 import CopyProjectDialog from '../modules/project/CopyProjectDialog';
@@ -22,12 +22,12 @@ export default class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        'doodles',
+        DOODLE_MANAGER_SERVICE_UUID,
         GITHUB_AUTH_MANAGER,
         'templates',
         'ga',
         'modalDialog',
-        'navigation',
+        NAVIGATION_SERVICE_UUID,
         'newProject',
         'openProject',
         'copyProject',
@@ -35,12 +35,12 @@ export default class DoodleController extends AbstractPageController {
     constructor(
         $scope: DoodleScope,
         $window: IWindowService,
-        doodles: IDoodleManager,
+        doodleManager: IDoodleManager,
         authManager: IGitHubAuthManager,
         templates: ITemplate[],
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
-        navigation: NavigationService,
+        navigation: INavigationService,
         newProjectDialog: NewProjectDialog,
         openProjectDialog: OpenProjectDialog,
         copyProjectDialog: CopyProjectDialog,
@@ -63,13 +63,13 @@ export default class DoodleController extends AbstractPageController {
         $scope.templates = templates;
 
         $scope.doNew = (label?: string, value?: number) => {
-            newProjectDialog.open(initNewProjectDefaults(doodles.suggestName()))
+            newProjectDialog.open(initNewProjectDefaults(doodleManager.suggestName()))
                 .then(function (settings) {
-                    const doodle = doodles.createDoodle();
+                    const doodle = doodleManager.createDoodle();
                     copyNewProjectSettingsToDoodle(settings, doodle);
-                    doodles.addHead(doodle);
-                    doodles.updateStorage();
-                    navigation.gotoDoodle();
+                    doodleManager.addHead(doodle);
+                    doodleManager.updateStorage();
+                    navigation.gotoDoodle(label, value);
                 })
                 .catch(function (reason) {
                     // The user cancelled from the dialog.
@@ -81,16 +81,16 @@ export default class DoodleController extends AbstractPageController {
                 .then(function (settings) {
                     const doodle = settings.doodle;
                     if (doodle) {
-                        doodles.makeCurrent(doodle);
-                        doodles.updateStorage();
+                        doodleManager.makeCurrent(doodle);
+                        doodleManager.updateStorage();
                         if (doodle.owner && doodle.repo) {
-                            navigation.gotoRepo(doodle.owner, doodle.repo);
+                            navigation.gotoRepo(doodle.owner, doodle.repo, label, value);
                         }
                         else if (doodle.gistId) {
                             navigation.gotoGist(doodle.gistId);
                         }
                         else {
-                            navigation.gotoDoodle();
+                            navigation.gotoDoodle(label, value);
                         }
                     }
                 })
@@ -100,14 +100,14 @@ export default class DoodleController extends AbstractPageController {
         };
 
         $scope.doCopy = (label?: string, value?: number) => {
-            const original = doodles.current();
+            const original = doodleManager.current();
             if (original) {
                 const description = <string>original.description;
                 const version = <string>original.version;
                 const defaults: CopyProjectSettings = { description, version };
                 copyProjectDialog.open(defaults)
                     .then(function (settings) {
-                        const doodle = doodles.createDoodle();
+                        const doodle = doodleManager.createDoodle();
 
                         if (original) {
                             copyDoodleToDoodle(original, doodle);
@@ -131,19 +131,19 @@ export default class DoodleController extends AbstractPageController {
                         doodle.description = settings.description;
                         doodle.version = settings.version;
 
-                        doodles.addHead(doodle);
+                        doodleManager.addHead(doodle);
 
                         if (doodle) {
-                            doodles.makeCurrent(doodle);
-                            doodles.updateStorage();
+                            doodleManager.makeCurrent(doodle);
+                            doodleManager.updateStorage();
                             if (doodle.owner && doodle.repo) {
-                                navigation.gotoRepo(doodle.owner, doodle.repo);
+                                navigation.gotoRepo(doodle.owner, doodle.repo, label, value);
                             }
                             else if (doodle.gistId) {
                                 navigation.gotoGist(doodle.gistId);
                             }
                             else {
-                                navigation.gotoDoodle();
+                                navigation.gotoDoodle(label, value);
                             }
                         }
                     })

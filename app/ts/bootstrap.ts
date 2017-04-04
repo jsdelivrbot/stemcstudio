@@ -29,8 +29,13 @@ import app from './app';
 //
 import { BASE64_SERVICE_UUID } from './services/base64/IBase64Service';
 import { Base64Service } from './services/base64/base64.service';
+import { CLOUD_SERVICE_UUID } from './services/cloud/ICloudService';
+import { CloudService } from './services/cloud/cloud.service';
 import { COOKIE_SERVICE_UUID } from './services/cookie/ICookieService';
 import { CookieService } from './services/cookie/cookie.service';
+import { GITHUB_SERVICE_UUID } from './services/github/IGitHubService';
+import { GitHubService } from './services/github/github.service';
+
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
@@ -40,7 +45,6 @@ import DashboardController from './controllers/DashboardController';
 import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
-import GitHubCloudService from './services/cloud/GitHubCloudService';
 import HomeController from './controllers/HomeController';
 import TutorialsController from './controllers/TutorialsController';
 import editor from './directives/editor/editor.component';
@@ -60,8 +64,9 @@ import ReteFlowService from './services/flow/ReteFlowService';
 import RepoController from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
-import TextService from './services/text/TextService';
 import workspace from './directives/workspace/workspace.component';
+
+import { templateCache } from './template-cache';
 
 //
 // We import other Angular services that are needed by the Angular 'app' module.
@@ -114,24 +119,20 @@ app.filter('contiguous', contiguous);
 import './fugly/ga/ga';
 
 // FIXME: Don't like this style of import.
-import './services/doodles/doodles';
-import './services/github/GitHub';
+import './services/doodles/doodleManager.service';
 import './services/options/options';
-import './services/settings/settings';
 import './services/templates/templates';
-// import './services/tw/tw';
 
 app.factory(BASE64_SERVICE_UUID, downgradeInjectable(Base64Service));
 app.factory(COOKIE_SERVICE_UUID, downgradeInjectable(CookieService));
-app.service('cloud', GitHubCloudService);
+app.service(CLOUD_SERVICE_UUID, CloudService);
+app.service(GITHUB_SERVICE_UUID, GitHubService);
 app.service('modalDialog', ModalDialogService);
 
 app.service('flow', ReteFlowService);
 app.service('flowSessionService', NaiveFlowSessionService);
 
-app.service('textService', TextService);
-
-import './template-cache';
+app.run(['$templateCache', templateCache]);
 
 //
 // Hybrid bootstrap running both AngularJS and Angular at the same time.

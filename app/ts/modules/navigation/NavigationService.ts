@@ -92,16 +92,16 @@ export default class NavigationService implements INavigationService {
         return this.navigateTo(STATE_EXAMPLES, void 0, void 0, label, value);
     }
 
-    public gotoGist(gistId: string) {
-        return this.navigateTo(STATE_GIST, { gistId });
+    public gotoGist(gistId: string, label?: string, value?: number) {
+        return this.navigateTo(STATE_GIST, { gistId }, void 0, label, value);
     }
 
     public gotoHome(label?: string, value?: number) {
         return this.navigateTo(STATE_HOME, void 0, void 0, label, value);
     }
 
-    public gotoRepo(owner: string, repo: string) {
-        return this.navigateTo(STATE_REPO, { owner, repo });
+    public gotoRepo(owner: string, repo: string, label?: string, value?: number) {
+        return this.navigateTo(STATE_REPO, { owner, repo }, void 0, label, value);
     }
 
     public gotoRoom(roomId: string) {

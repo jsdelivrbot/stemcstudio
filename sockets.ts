@@ -1,7 +1,7 @@
-import * as http from "http";
-import * as express from 'express';
+import { Server } from "http";
+import { Express } from 'express';
 import * as sio from 'socket.io';
-import * as rooms from './server/routes/rooms/index';
+import { getEdits, setEdits } from './server/routes/rooms/index';
 import MwBroadcast from './server/synchronization/MwBroadcast';
 import MwEdits from './server/synchronization/MwEdits';
 
@@ -14,7 +14,7 @@ const socketByNodeId: { [nodeId: string]: SocketIO.Socket } = {};
  * The initialization code for the sockets part of this application.
  * Just trying to keep stuff out of the top level web.ts file.
  */
-export default function sockets(app: express.Express, server: http.Server) {
+export default function sockets(app: Express, server: Server) {
 
     //
     // The name is arbitrary, the point is that it is a (server) => io
@@ -31,11 +31,11 @@ export default function sockets(app: express.Express, server: http.Server) {
         //
         //
         socket.on('download', function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
-            const {fromId, roomId} = data;
+            const { fromId, roomId } = data;
             // console.lg(`download(${roomId}) request received from ${fromId}.`);
-            rooms.getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
+            getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
-                    const {files} = data;
+                    const { files } = data;
                     ack(err, files);
                 }
                 else {
@@ -48,16 +48,16 @@ export default function sockets(app: express.Express, server: http.Server) {
         // @deprecated
         //
         socket.on('join', function (data: { fromId: string, roomId: string }, ack: () => any) {
-            const {fromId, roomId} = data;
+            const { fromId, roomId } = data;
             // console.lg(`join(${roomId}) request received from ${fromId}.`);
             socketByNodeId[fromId] = socket;
 
             socket.leaveAll();
 
-            socket.join(roomId, function (err) {
+            socket.join(roomId, function (err: any) {
                 ack();
-                rooms.getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
-                    const {fromId, roomId, files} = data;
+                getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
+                    const { fromId, roomId, files } = data;
                     const paths = Object.keys(files);
                     for (let i = 0; i < paths.length; i++) {
                         const path = paths[i];
@@ -69,14 +69,14 @@ export default function sockets(app: express.Express, server: http.Server) {
         });
 
         socket.on('edits', function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
-            const {fromId, roomId, path, edits} = data;
+            const { fromId, roomId, path, edits } = data;
             socketByNodeId[fromId] = socket;
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
-            rooms.setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
+            setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
                 ack();
                 if (!err) {
                     if (data) {
-                        const {roomId, path, broadcast} = data;
+                        const { roomId, path, broadcast } = data;
                         if (broadcast) {
                             const nodeIds = Object.keys(broadcast);
                             for (let i = 0; i < nodeIds.length; i++) {

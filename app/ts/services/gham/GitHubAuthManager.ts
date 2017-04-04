@@ -1,6 +1,6 @@
 import { IHttpService, ILocationService, IWindowService } from 'angular';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
-import GitHubService from '../github/GitHubService';
+import { GITHUB_SERVICE_UUID, IGitHubService } from '../github/IGitHubService';
 import IGitHubAuthManager from './IGitHubAuthManager';
 import IGitHubItem from './IGitHubItem';
 
@@ -16,7 +16,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         '$location',
         '$window',
         COOKIE_SERVICE_UUID,
-        'GitHub',
+        GITHUB_SERVICE_UUID,
         'githubKey',
     ];
     constructor(
@@ -24,7 +24,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         private $location: ILocationService,
         private $window: IWindowService,
         private cookieService: ICookieService,
-        private github: GitHubService,
+        private githubService: IGitHubService,
         private githubKey: string
     ) {
         // Do nothing.
@@ -66,7 +66,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                             const token = data.token;
                             if (token) {
                                 this.cookieService.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
-                                this.github.getUser()
+                                this.githubService.getUser()
                                     .then((response) => {
                                         const user = response.data;
                                         if (user) {

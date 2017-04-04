@@ -1,5 +1,6 @@
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
+import { Request, Response } from 'express';
 import * as path from 'path';
 // Uncomment after placing favicon in /public
 // import favicon = require('serve-favicon');
@@ -12,14 +13,14 @@ import nconf = require('nconf');
 import https = require('https');
 import qs = require('querystring');
 require('express-session');
-import * as bodyParser from 'body-parser';
+import { json, urlencoded } from 'body-parser';
 require('multer');
 import errorHandler = require('errorhandler');
 
 // Temporary disable rooms to prevent Redis from loading.
-import * as rooms from './server/routes/rooms/index';
-import * as stemcArXiv from './server/routes/stemcArXiv/index';
-import * as translations from './server/routes/translations/index';
+import { createRoom, getRoom, destroyRoom } from './server/routes/rooms/index';
+import { search, submit } from './server/routes/stemcArXiv/index';
+import { getTranslation } from './server/routes/translations/index';
 
 const npm = require('./package.json');
 require('./configure');
@@ -47,8 +48,8 @@ app.set('view engine', 'jade');
 // Uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride());
 // TODO session
@@ -62,7 +63,7 @@ app.use(lactate.static(`${__dirname}/${folder}`, { "max age": "one week" }));
 // app.use multer()
 
 // Convenience for allowing CORS on routes - GET only
-app.all('*', (req: express.Request, res: express.Response, next: Function) => {
+app.all('*', (req: Request, res: Response, next: Function) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -103,7 +104,7 @@ const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
-app.get("/*", (req: express.Request, res: express.Response, next: Function) => {
+app.get("/*", (req: Request, res: Response, next: Function) => {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }
@@ -113,7 +114,7 @@ app.get("/*", (req: express.Request, res: express.Response, next: Function) => {
 });
 
 // Exchange the session code for an access token.
-app.get('/authenticate/:code', (req: express.Request, res: express.Response) => {
+app.get('/authenticate/:code', (req: Request, res: Response) => {
     authenticate(req.params.code, (err, token) => {
         if (err) {
             return res.json(err);
@@ -124,7 +125,7 @@ app.get('/authenticate/:code', (req: express.Request, res: express.Response) => 
     });
 });
 
-app.get("/github_callback", (req: express.Request, res: express.Response, next: any) => {
+app.get("/github_callback", (req: Request, res: Response, next: Function) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
     res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("github_callback", {
@@ -133,16 +134,16 @@ app.get("/github_callback", (req: express.Request, res: express.Response, next: 
 });
 
 // Temporary disable rooms to prevent Redis from loading.
-app.post('/rooms', rooms.createRoom);
-app.get('/rooms/:id', rooms.getRoom);
-app.delete('/rooms/:id', rooms.destroyRoom);
+app.post('/rooms', createRoom);
+app.get('/rooms/:id', getRoom);
+app.delete('/rooms/:id', destroyRoom);
 
-app.post('/search', stemcArXiv.search);
-app.post('/submissions', stemcArXiv.submit);
+app.post('/search', search);
+app.post('/submissions', submit);
 
-app.get('/translations/:input', translations.getTranslation);
+app.get('/translations/:input', getTranslation);
 
-app.get("/*", (req: express.Request, res: express.Response, next) => {
+app.get("/*", (req: Request, res: Response, next: Function) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
     res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("index", {
