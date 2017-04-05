@@ -137,8 +137,14 @@ app.run(['$templateCache', templateCache]);
 //
 // Hybrid bootstrap running both AngularJS and Angular at the same time.
 //
-platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {
+const bootstrapPromise = platformBrowserDynamic().bootstrapModule(AppModule);
+
+bootstrapPromise.then(platformRef => {
     const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
     // I'm not sure whether the strictDi option is doing anything here.
     upgrade.bootstrap(document.documentElement, [app.name], { strictDi: true });
+});
+
+bootstrapPromise.catch(function (reason) {
+    console.error(reason);
 });

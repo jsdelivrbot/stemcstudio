@@ -41,7 +41,7 @@ export default class Doodle {
     public created_at: string | undefined;
     public updated_at: string | undefined;
 
-    constructor(private options: IOptionManager) {
+    constructor(private optionManager: IOptionManager) {
         this.isCodeVisible = true;
         this.isViewVisible = false;
         this.lastKnownJs = {};
@@ -276,11 +276,14 @@ export default class Doodle {
         }
     }
 
+    /**
+     * TODO: It would be good to decouple from the option manager.
+     */
     set dependencies(dependencies: string[]) {
         try {
             const file = this.ensurePackageJson();
             const metaInfo: IDoodleConfig = JSON.parse(file.content);
-            metaInfo.dependencies = dependenciesMap(dependencies, this.options);
+            metaInfo.dependencies = dependenciesMap(dependencies, this.optionManager);
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {

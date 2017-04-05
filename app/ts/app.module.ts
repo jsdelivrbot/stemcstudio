@@ -9,14 +9,21 @@ import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
 import { UuidService } from './services/uuid/uuid.service';
 
+import { AppComponent } from './app.component';
 import { BrandComponent } from './directives/brand/brand.component';
 
+//
+// For hybrid bootstrapping, remove the bootstrap property and override ngDoBootstrap.
+// Don't forget to enable hybrid bootstrapping in main.ts
+//
 @NgModule({
+    // imports are module dependencies.
     imports: [
         BrowserModule,
         UpgradeModule,
         EditorModule
     ],
+    // creators of services.
     providers: [
         //         BackgroundService,
         Base64Service,
@@ -24,9 +31,14 @@ import { BrandComponent } from './directives/brand/brand.component';
         CredentialsService,
         UuidService
     ],
+    // the view classes are either component, directive, or pipe dependencies.
     declarations: [
+        AppComponent,
         BrandComponent
     ],
+    // there is no boostrap because we are hybrid bootstrapping.
+    // bootstrap: [AppComponent],
+    // stuff used by AngularJS
     entryComponents: [
         BrandComponent
     ]

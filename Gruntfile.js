@@ -166,7 +166,7 @@ module.exports = function (grunt) {
             lowResSourceMaps: false
         };
 
-        return builder.bundle('js/bootstrap.js', 'dist/js/bootstrap.js', options);
+        return builder.bundle('js/main.js', 'dist/js/main.js', options);
     }
 
     grunt.registerTask('bundle', "Bundle into system modules", function () {

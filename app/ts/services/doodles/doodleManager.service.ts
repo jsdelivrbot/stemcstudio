@@ -1,13 +1,13 @@
 import { IWindowService } from 'angular';
-import app from '../../app';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
-import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from './IDoodleManager';
+import { IDoodleManager } from './IDoodleManager';
 import IDoodleFile from './IDoodleFile';
 import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
 import doodlesToString from './doodlesToString';
+import { Injectable } from '@angular/core';
 
 function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Doodle[] {
     // Version 1.x used a fixed set of four files with properties that were strings.
@@ -82,128 +82,116 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
     return outFiles;
 }
 
-app.factory(DOODLE_MANAGER_SERVICE_UUID, [
-    '$window',
-    'options',
-    'doodlesKey',
-    function (
-        $window: IWindowService,
-        options: IOptionManager,
-        doodlesKey: string
-    ) {
+//
+// TODO: Some more work to make into a bona fide Angular service.
+//
+@Injectable()
+export class DoodleManager implements IDoodleManager {
+    static $inject = ['$window', 'options', 'doodlesKey'];
+    // The doodles from local storage must be converted into classes in order to support the methods.
+    private _doodles: Doodle[];
 
-        // The doodles from local storage must be converted into classes in order to support the methods.
-        let _doodles: Doodle[] = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], options);
+    /**
+     * @param $window Provides access to local storage.
+     * @param optionManager Because the Doodle is too coupled.
+     * @param doodlesKey The key for storing doodles in local storage.
+     */
+    constructor(private $window: IWindowService, private optionManager: IOptionManager, private doodlesKey: string) {
+        this._doodles = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], optionManager);
+    }
+    addHead(doodle: Doodle): number {
+        return this._doodles.unshift(doodle);
+    }
+    addTail(doodle: Doodle): number {
+        return this._doodles.push(doodle);
+    }
+    get length(): number {
+        return this._doodles.length;
+    }
+    filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
+        return this._doodles.filter(callback);
+    }
+    current(): Doodle | undefined {
+        if (this._doodles.length > 0) {
+            return this._doodles[0];
+        }
+        else {
+            return undefined;
+        }
+    }
+    makeCurrent(dude: Doodle): void {
+        const doodles: Doodle[] = [];
 
-        const suggestName = function (): string {
-            const UNTITLED = "Project";
-            // We assume that a doodle with a lower index will have a higher Untitled number.
-            // To reduce sorting, sort as a descending sequence and use the resulting first
-            // element as the highest number used so far. Add one to that.
-            function compareNumbers(a: number, b: number) {
-                return b - a;
+        let i = 0;
+        let found: Doodle | undefined;
+        while (i < this._doodles.length) {
+            if (this._doodles[i] === dude) {
+                found = this._doodles[i];
             }
-            const nums: number[] = _doodles.filter(function (doodle: Doodle): boolean {
-                if (typeof doodle.description === 'string') {
-                    return !!doodle.description.match(new RegExp(UNTITLED));
-                }
-                else {
-                    // If it does not have a description, ignore it.
-                    return false;
-                }
+            else {
+                doodles.push(this._doodles[i]);
+            }
+            i++;
+        }
+        if (!found) return;
+        doodles.unshift(found);
+        this._doodles = doodles;
+    }
+    createDoodle(): Doodle {
+        return new Doodle(this.optionManager);
+    }
+    deleteDoodle(dude: Doodle): void {
+        const doodles: Doodle[] = [];
+
+        let i = 0;
+        let found: Doodle | undefined;
+        while (i < this._doodles.length) {
+            if (this._doodles[i] === dude) {
+                found = this._doodles[i];
+            }
+            else {
+                doodles.push(this._doodles[i]);
+            }
+            i++;
+        }
+
+        if (!found) return;
+
+        this._doodles = doodles;
+    }
+    suggestName(): string {
+        const UNTITLED = "Project";
+        // We assume that a doodle with a lower index will have a higher Untitled number.
+        // To reduce sorting, sort as a descending sequence and use the resulting first
+        // element as the highest number used so far. Add one to that.
+        function compareNumbers(a: number, b: number) {
+            return b - a;
+        }
+        const nums: number[] = this._doodles.filter(function (doodle: Doodle): boolean {
+            if (typeof doodle.description === 'string') {
+                return !!doodle.description.match(new RegExp(UNTITLED));
+            }
+            else {
+                // If it does not have a description, ignore it.
+                return false;
+            }
+        }).
+            map(function (doodle: Doodle) {
+                // We know that the doodle has a description, try removing the word in the prefix
+                // and then parse what's left as an integer. We may get NaN, but that's OK.
+                return parseInt((<string>doodle.description).replace(UNTITLED + ' ', '').trim(), 10);
             }).
-                map(function (doodle: Doodle) {
-                    // We know that the doodle has a description, try removing the word in the prefix
-                    // and then parse what's left as an integer. We may get NaN, but that's OK.
-                    return parseInt((<string>doodle.description).replace(UNTITLED + ' ', '').trim(), 10);
-                }).
-                filter(function (num) {
-                    // Throw away the description that did not parse to numbers.
-                    return !isNaN(num);
-                });
+            filter(function (num) {
+                // Throw away the description that did not parse to numbers.
+                return !isNaN(num);
+            });
 
-            // Sort the numbers so that the highest comes out first.
-            nums.sort(compareNumbers);
+        // Sort the numbers so that the highest comes out first.
+        nums.sort(compareNumbers);
 
-            return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
-        };
-
-        const that: IDoodleManager = {
-
-            addHead: function (doodle: Doodle): number {
-                return _doodles.unshift(doodle);
-            },
-
-            addTail: function (doodle: Doodle): number {
-                return _doodles.push(doodle);
-            },
-
-            get length(): number {
-                return _doodles.length;
-            },
-
-            filter: function (callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
-                return _doodles.filter(callback);
-            },
-
-            createDoodle: function (): Doodle {
-                return new Doodle(options);
-            },
-
-            current: function (): Doodle | undefined {
-                if (_doodles.length > 0) {
-                    return _doodles[0];
-                }
-                else {
-                    return undefined;
-                }
-            },
-
-            makeCurrent: function (dude: Doodle): void {
-                const doodles: Doodle[] = [];
-
-                let i = 0;
-                let found: Doodle | undefined;
-                while (i < _doodles.length) {
-                    if (_doodles[i] === dude) {
-                        found = _doodles[i];
-                    }
-                    else {
-                        doodles.push(_doodles[i]);
-                    }
-                    i++;
-                }
-                if (!found) return;
-                doodles.unshift(found);
-                _doodles = doodles;
-            },
-
-            deleteDoodle: function (dude: Doodle): void {
-                const doodles: Doodle[] = [];
-
-                let i = 0;
-                let found: Doodle | undefined;
-                while (i < _doodles.length) {
-                    if (_doodles[i] === dude) {
-                        found = _doodles[i];
-                    }
-                    else {
-                        doodles.push(_doodles[i]);
-                    }
-                    i++;
-                }
-
-                if (!found) return;
-
-                _doodles = doodles;
-            },
-
-            suggestName: suggestName,
-
-            updateStorage: function (): void {
-                $window.localStorage[doodlesKey] = doodlesToString(_doodles);
-            }
-        };
-
-        return that;
-    }]);
+        return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
+    }
+    updateStorage(): void {
+        this.$window.localStorage[this.doodlesKey] = doodlesToString(this._doodles);
+    }
+}

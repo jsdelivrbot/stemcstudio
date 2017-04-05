@@ -105,6 +105,8 @@ import wsmodel from './modules/wsmodel/index';
 
 import { BackgroundService } from './services/background/background.service';
 import { BACKGROUND_SERVICE_UUID } from './services/background/IBackgroundService';
+import { DoodleManager } from './services/doodles/doodleManager.service';
+import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
 import { GITHUB_AUTH_MANAGER } from './services/gham/IGitHubAuthManager';
 import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
@@ -160,7 +162,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.4');
+app.constant('version', '2.24.5');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -278,6 +280,7 @@ app.service('propertiesDialog', PropertiesDialogService);
 app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
+app.service(DOODLE_MANAGER_SERVICE_UUID, DoodleManager);
 app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
 app.service(NAVIGATION_SERVICE_UUID, NavigationService);
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
