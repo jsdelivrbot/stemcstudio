@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeModule } from '@angular/upgrade/static';
+import { EditorModule } from './editor/editor.module';
 
 // import { BackgroundService } from './services/background/background.service';
 import { Base64Service } from './services/base64/base64.service';
@@ -13,10 +14,8 @@ import { BrandComponent } from './directives/brand/brand.component';
 @NgModule({
     imports: [
         BrowserModule,
-        UpgradeModule
-    ],
-    declarations: [
-        BrandComponent
+        UpgradeModule,
+        EditorModule
     ],
     providers: [
         //         BackgroundService,
@@ -24,6 +23,9 @@ import { BrandComponent } from './directives/brand/brand.component';
         CookieService,
         CredentialsService,
         UuidService
+    ],
+    declarations: [
+        BrandComponent
     ],
     entryComponents: [
         BrandComponent

@@ -93,7 +93,7 @@ function calcSteps(fromValue: number, toValue: number): number[] {
 /**
  * The class that is responsible for drawing everything you see on the screen!
  */
-export default class Renderer implements Disposable, EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
+export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
     /**
      * 
      */
@@ -2023,3 +2023,5 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.content.style.cursor = cursorStyle;
     }
 }
+
+export default Renderer;

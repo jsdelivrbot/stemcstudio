@@ -28,6 +28,7 @@ System.config({
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
+    "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.4",
@@ -300,6 +301,12 @@ System.config({
       "wrap-ansi": "npm:wrap-ansi@2.1.0"
     },
     "npm:constants-browserify@0.0.1": {
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:core-js@2.4.1": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:core-util-is@1.0.2": {

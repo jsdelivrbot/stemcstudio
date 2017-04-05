@@ -47,7 +47,7 @@ import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
 import HomeController from './controllers/HomeController';
 import TutorialsController from './controllers/TutorialsController';
-import editor from './directives/editor/editor.component';
+import editorDirective1x from './directives/editor/editor.directive1x';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
 import problems from './directives/problems/problems.component';
@@ -108,7 +108,7 @@ app.controller('RepoController', RepoController);
 import './controllers/DownloadController';
 
 app.directive('contextMenu', contextMenu);
-app.directive('editor', editor);
+app.directive('editor', editorDirective1x);
 app.directive('explorer', explorer);
 app.directive('problems', problems);
 app.directive('resizable', resizable);
