@@ -1,6 +1,6 @@
 import { IHttpService, ILocationService, IWindowService } from 'angular';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
-import { GITHUB_SERVICE_UUID, IGitHubService } from '../github/IGitHubService';
+import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../github/IGitHubUserService';
 import { IGitHubAuthManager } from './IGitHubAuthManager';
 import IGitHubItem from './IGitHubItem';
 
@@ -16,7 +16,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         '$location',
         '$window',
         COOKIE_SERVICE_UUID,
-        GITHUB_SERVICE_UUID,
+        GITHUB_USER_SERVICE_UUID,
         'githubKey',
     ];
     constructor(
@@ -24,7 +24,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
         private $location: ILocationService,
         private $window: IWindowService,
         private cookieService: ICookieService,
-        private githubService: IGitHubService,
+        private githubService: IGitHubUserService,
         private githubKey: string
     ) {
         // Do nothing.
@@ -67,11 +67,8 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                             if (token) {
                                 this.cookieService.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                                 this.githubService.getUser()
-                                    .then((response) => {
-                                        const user = response.data;
-                                        if (user) {
-                                            this.cookieService.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
-                                        }
+                                    .then((user) => {
+                                        this.cookieService.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                                         done(null, token);
                                     })
                                     .catch((reason) => {

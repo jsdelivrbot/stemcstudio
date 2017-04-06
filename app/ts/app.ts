@@ -1,6 +1,8 @@
 import { downgradeComponent } from '@angular/upgrade/static';
 import { downgradeInjectable } from '@angular/upgrade/static';
 
+import { GITHUB_TOKEN_COOKIE_NAME } from './constants';
+
 //
 // The following imports are to be found in the jspm.config.js file.
 // The module name that we require may be different.
@@ -165,7 +167,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.6');
+app.constant('version', '2.24.7');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -225,9 +227,6 @@ app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
 
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 // app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
-
-// The token that we receive for OAuth.
-app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 
 // Cache the user.login once we have received the token in this cookie.
 app.constant('GITHUB_LOGIN_COOKIE_NAME', 'github-login');
@@ -440,7 +439,6 @@ app.run([
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_LOGIN_ENABLED',
     'GITHUB_LOGIN_COOKIE_NAME',
-    'GITHUB_TOKEN_COOKIE_NAME',
     function (
         $rootScope: AppScope,
         $state: IStateService,
@@ -451,8 +449,7 @@ app.run([
         version: string,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
-        GITHUB_LOGIN_COOKIE_NAME: string,
-        GITHUB_TOKEN_COOKIE_NAME: string
+        GITHUB_LOGIN_COOKIE_NAME: string
     ) {
         // console.lg(`${app.name}.run(...)`);
 

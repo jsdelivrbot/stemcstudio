@@ -26,6 +26,7 @@ import TreeKey from './TreeKey';
 import GitHubUser from './GitHubUser';
 // TODO: Get rid of the underscore dependency.
 import { map } from 'underscore';
+import { GITHUB_TOKEN_COOKIE_NAME } from '../../constants';
 
 /**
  * Explicity request the v3 version of the API
@@ -48,25 +49,25 @@ const HTTP_METHOD_POST = 'POST';
 const HTTP_METHOD_PUT = 'PUT';
 
 export class GitHubService implements IGitHubService {
-    static $inject = ['$http', '$q', COOKIE_SERVICE_UUID, 'GITHUB_TOKEN_COOKIE_NAME'];
-    constructor(private $http: IHttpService, $q: IQService, private cookieService: ICookieService, private GITHUB_TOKEN_COOKIE_NAME: string) {
+    static $inject = ['$http', '$q', COOKIE_SERVICE_UUID];
+    constructor(private $http: IHttpService, $q: IQService, private cookieService: ICookieService) {
         //
     }
 
     /**
      * api.github.com over HTTPS protocol.
      */
-    gitHub(): string {
+    private gitHub(): string {
         return `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}`;
     }
-    gists(): string {
+    private gists(): string {
         return `${this.gitHub()}/gists`;
     }
-    repos(): string {
+    private repos(): string {
         return `${this.gitHub()}/user/repos`;
     }
-    requestHeaders(): { 'Accept': string; 'Authorization'?: string } {
-        const token = this.cookieService.getItem(this.GITHUB_TOKEN_COOKIE_NAME);
+    private requestHeaders(): { 'Accept': string; 'Authorization'?: string } {
+        const token = this.cookieService.getItem(GITHUB_TOKEN_COOKIE_NAME);
         const headers: { 'Accept': string; 'Authorization'?: string; } = {
             Accept: ACCEPT_HEADER
         };
@@ -76,12 +77,21 @@ export class GitHubService implements IGitHubService {
         return headers;
     }
 
-    getUser(): IHttpPromise<GitHubUser> {
+    getUser(): Promise<GitHubUser> {
         const method = HTTP_METHOD_GET;
         const url = `${this.gitHub()}/user`;
         const headers = this.requestHeaders();
-        return this.$http<GitHubUser>({ method, url, headers });
+        return new Promise<GitHubUser>((resolve, reject) => {
+            this.$http<GitHubUser>({ method, url, headers })
+                .then(function (promiseValue) {
+                    resolve(promiseValue.data);
+                })
+                .catch(function (reason) {
+                    reject(reason);
+                });
+        });
     }
+
     getUserRepos(done: (err: any, repo: Repo[]) => any) {
         return this.$http({
             method: HTTP_METHOD_GET,

@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { UpgradeModule } from '@angular/upgrade/static';
 import { EditorModule } from './editor/editor.module';
+import { HttpModule } from '@angular/http';
+import { UpgradeModule } from '@angular/upgrade/static';
 
 // import { BackgroundService } from './services/background/background.service';
 import { Base64Service } from './services/base64/base64.service';
 import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
+// import { GitHubService } from './services/github/github.service';
+import { GitHubUserService } from './services/github/github.user.service';
 import { OptionManager } from './services/options/optionManager.service';
 import { UuidService } from './services/uuid/uuid.service';
 
@@ -21,15 +24,18 @@ import { BrandComponent } from './directives/brand/brand.component';
     // imports are module dependencies.
     imports: [
         BrowserModule,
-        UpgradeModule,
-        EditorModule
+        HttpModule,
+        EditorModule,
+        UpgradeModule
     ],
     // creators of services.
     providers: [
-        //         BackgroundService,
+        // BackgroundService,
         Base64Service,
         CookieService,
         CredentialsService,
+        GitHubUserService,
+        // GitHubService,
         OptionManager,
         UuidService
     ],
@@ -47,7 +53,7 @@ import { BrandComponent } from './directives/brand/brand.component';
 })
 export class AppModule {
     // Prevent Angular from bootstrapping itself using an empty method.
-    // Instead, we hybrid bootstrap in bootstrap.ts
+    // Instead, we hybrid bootstrap in main.ts
     ngDoBootstrap() {
         // Do nothing yet.
     }

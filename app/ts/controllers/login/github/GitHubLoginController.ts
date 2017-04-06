@@ -3,6 +3,7 @@ import { COOKIE_SERVICE_UUID, ICookieService } from '../../../services/cookie/IC
 import GitHubLoginScope from './GitHubLoginScope';
 import IGitHubItem from '../../../services/gham/IGitHubItem';
 import { UUID_SERVICE_UUID, IUuidService } from '../../../services/uuid/IUuidService';
+import { GITHUB_TOKEN_COOKIE_NAME } from '../../../constants';
 
 //
 // TODO: DRY & refactor so that there is a GitHub service.
@@ -27,8 +28,7 @@ export default class GitHubLoginController {
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
         'FEATURE_GITHUB_SIGNIN_ENABLED',
-        'GITHUB_LOGIN_COOKIE_NAME',
-        'GITHUB_TOKEN_COOKIE_NAME'
+        'GITHUB_LOGIN_COOKIE_NAME'
     ];
     /**
      * @param $scope
@@ -46,8 +46,7 @@ export default class GitHubLoginController {
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
         private FEATURE_GITHUB_SIGNIN_ENABLED: boolean,
-        private GITHUB_LOGIN_COOKIE_NAME: string,
-        private GITHUB_TOKEN_COOKIE_NAME: string
+        private GITHUB_LOGIN_COOKIE_NAME: string
     ) {
         // Do nothing.
     }
@@ -119,7 +118,7 @@ export default class GitHubLoginController {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
             ga('send', 'event', 'GitHub', 'logout');
             // FIXME: Would be nice to encapsulate this.
-            this.cookieService.removeItem(this.GITHUB_TOKEN_COOKIE_NAME);
+            this.cookieService.removeItem(GITHUB_TOKEN_COOKIE_NAME);
             this.cookieService.removeItem(this.GITHUB_LOGIN_COOKIE_NAME);
         }
         else {
@@ -132,7 +131,7 @@ export default class GitHubLoginController {
      */
     isLoggedIn(): boolean {
         if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
-            return this.cookieService.hasItem(this.GITHUB_TOKEN_COOKIE_NAME);
+            return this.cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
         }
         else {
             console.warn(`FEATURE_GITHUB_SIGNIN_ENABLED => ${this.FEATURE_GITHUB_SIGNIN_ENABLED}`);

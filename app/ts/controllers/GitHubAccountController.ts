@@ -1,4 +1,5 @@
 import GitHubAccountScope from '../scopes/GitHubAccountScope';
+import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../services/github/IGitHubUserService';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import GitHubUser from '../services/github/GitHubUser';
 import Repo from '../services/github/Repo';
@@ -7,11 +8,11 @@ import Repo from '../services/github/Repo';
  *
  */
 export default class GitHubAccountController {
-    public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID];
+    public static $inject: string[] = ['$scope', GITHUB_USER_SERVICE_UUID, GITHUB_SERVICE_UUID];
     /**
      *
      */
-    constructor(private $scope: GitHubAccountScope, private githubService: IGitHubService) {
+    constructor(private $scope: GitHubAccountScope, private githubUserService: IGitHubUserService, private githubService: IGitHubService) {
         // Do nothing.
     }
 
@@ -20,13 +21,13 @@ export default class GitHubAccountController {
      */
     $onInit(): void {
 
-        this.githubService.getUser().then((promiseValue) => {
-            if (promiseValue.data) {
-                this.$scope.user = promiseValue.data;
-            }
-        }).catch(() => {
-            this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
-        });
+        this.githubUserService.getUser()
+            .then((user) => {
+                this.$scope.user = user;
+            })
+            .catch((reason) => {
+                this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
+            });
 
         this.githubService.getUserRepos((err: any, repos: Repo[]) => {
             if (!err) {
@@ -39,8 +40,7 @@ export default class GitHubAccountController {
     }
 
     /**
-     * @method $onDestroy
-     * @return {void}
+     *
      */
     $onDestroy(): void {
         // Do nothing.

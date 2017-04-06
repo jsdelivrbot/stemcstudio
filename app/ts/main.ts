@@ -35,6 +35,8 @@ import { COOKIE_SERVICE_UUID } from './services/cookie/ICookieService';
 import { CookieService } from './services/cookie/cookie.service';
 import { GITHUB_SERVICE_UUID } from './services/github/IGitHubService';
 import { GitHubService } from './services/github/github.service';
+import { GITHUB_USER_SERVICE_UUID } from './services/github/IGitHubUserService';
+import { GitHubUserService } from './services/github/github.user.service';
 
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
@@ -126,6 +128,7 @@ app.factory(BASE64_SERVICE_UUID, downgradeInjectable(Base64Service));
 app.factory(COOKIE_SERVICE_UUID, downgradeInjectable(CookieService));
 app.service(CLOUD_SERVICE_UUID, CloudService);
 app.service(GITHUB_SERVICE_UUID, GitHubService);
+app.factory(GITHUB_USER_SERVICE_UUID, downgradeInjectable(GitHubUserService));
 app.service('modalDialog', ModalDialogService);
 
 app.service('flow', ReteFlowService);

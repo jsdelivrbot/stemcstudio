@@ -27,14 +27,16 @@ import Tree from './Tree';
 import TreeData from './TreeData';
 import TreeKey from './TreeKey';
 
-import GitHubUser from './GitHubUser';
+// import GitHubUser from './GitHubUser';
+// import { IGitHubUserService } from './IGitHubUserService';
 
 /**
- * The GItHub v3 API.
- * The return type is always (TODO) IHttpPromise because this API runs over HTTPS.
+ * The GitHub v3 API.
+ * The return type is always (TODO) IHttpPromise because this API runs over HTTPS (AnhgularJS).
  * (The IHttpPromise maintains, status, statusText, headers and config in addition to the payload).
+ * This service is the aggregation of smaller services.
  */
-export interface IGitHubService {
+export interface IGitHubService /* extends IGitHubUserService */ {
     deleteFile(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response: any) => any): void;
     deleteRepo(owner: string, repo: string, done: (err: any, response: any) => any): void;
 
@@ -57,7 +59,10 @@ export interface IGitHubService {
      * 
      */
     getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any): void;
-    getUser(): IHttpPromise<GitHubUser>;
+    /**
+     * 
+     */
+    // getUser(): Promise<GitHubUser>;
     getUserGists(user: string, done: (err: any, response: any) => any): void;
     getUserRepos(done: (err: any, repos: Repo[]) => any): void;
 
@@ -127,4 +132,7 @@ export interface IGitHubService {
     updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): IHttpPromise<Reference>;
 }
 
-export const GITHUB_SERVICE_UUID = 'githubService';
+/**
+ * (AngularJS)
+ */
+export const GITHUB_SERVICE_UUID = 'GitHubService';
