@@ -31,6 +31,16 @@ function tabString(editorPreferences: EditorPreferencesStorage): string {
         return "\t";
     }
 }
+export default function dependenciesMap(packageNames: string[]): { [packageName: string]: string } {
+    function version(packageName: string): string {
+        return 'latest';
+    }
+    const obj: { [packageName: string]: string } = {};
+    packageNames.forEach(function (packageName: string) {
+        obj[packageName] = version(packageName);
+    });
+    return obj;
+}
 
 /**
  * The `templates` service provides starting point doodles.
@@ -61,7 +71,7 @@ app.factory('templates', [
             name: "BASIC",
             description: "Minimal Program",
             files: {},
-            dependencies: ['DomReady'],
+            dependencies: dependenciesMap(['DomReady']),
             noLoopCheck: false,
             operatorOverloading: true
         };
@@ -74,7 +84,7 @@ app.factory('templates', [
             name: "EIGHT",
             description: "EIGHT WebGL 3D Graphics",
             files: {},
-            dependencies: ['DomReady', 'jasmine', 'davinci-eight'],
+            dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
             noLoopCheck: false,
             operatorOverloading: true
         };
@@ -90,7 +100,7 @@ app.factory('templates', [
             name: "JASMINE",
             description: "Jasmine Testing Framework",
             files: {},
-            dependencies: ['DomReady', 'jasmine'],
+            dependencies: dependenciesMap(['DomReady', 'jasmine']),
             noLoopCheck: false,
             operatorOverloading: true
         };

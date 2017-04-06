@@ -108,9 +108,12 @@ import { BACKGROUND_SERVICE_UUID } from './services/background/IBackgroundServic
 import { DoodleManager } from './services/doodles/doodleManager.service';
 import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from './services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID } from './services/gham/IGitHubAuthManager';
 import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
 import NavigationService from './modules/navigation/NavigationService';
+import { OptionManager } from './services/options/optionManager.service';
+import { OPTION_MANAGER_SERVICE_UUID } from './services/options/IOptionManager';
+
 import { STATE_ABOUT } from './modules/navigation/NavigationService';
 import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
 import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
@@ -162,7 +165,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.5');
+app.constant('version', '2.24.6');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -270,8 +273,6 @@ app.directive('googleSignInButton', googleSignInButton);
 
 app.filter('propsFilter', propsFilter);
 
-app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
-
 app.service('labelDialog', LabelDialogService);
 app.service('newProject', NewProjectService);
 app.service('openProject', OpenProjectService);
@@ -280,9 +281,11 @@ app.service('propertiesDialog', PropertiesDialogService);
 app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
+app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
 app.service(DOODLE_MANAGER_SERVICE_UUID, DoodleManager);
-app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
+app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
 app.service(NAVIGATION_SERVICE_UUID, NavigationService);
+app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
 
 //

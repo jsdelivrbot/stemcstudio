@@ -59,9 +59,9 @@ interface IDoodle {
     trash: { [name: string]: IDoodleFile };
 
     /**
-     * 
+     * A map from package name to semantic version.
      */
-    dependencies: string[];
+    dependencies: { [packageName: string]: string };
 
     /**
      *

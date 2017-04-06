@@ -1,7 +1,7 @@
 import { IHttpService, ILocationService, IWindowService } from 'angular';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../github/IGitHubService';
-import IGitHubAuthManager from './IGitHubAuthManager';
+import { IGitHubAuthManager } from './IGitHubAuthManager';
 import IGitHubItem from './IGitHubItem';
 
 const GITHUB_TOKEN_COOKIE_NAME = 'github-token';

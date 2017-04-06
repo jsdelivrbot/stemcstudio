@@ -120,7 +120,6 @@ import './fugly/ga/ga';
 
 // FIXME: Don't like this style of import.
 import './services/doodles/doodleManager.service';
-import './services/options/options';
 import './services/templates/templates';
 
 app.factory(BASE64_SERVICE_UUID, downgradeInjectable(Base64Service));

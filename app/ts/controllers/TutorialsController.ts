@@ -2,8 +2,7 @@ import { IHttpService, ISCEService, ITemplateCacheService, IWindowService } from
 import AbstractPageController from './AbstractPageController';
 import Tutorial from '../models/Tutorial';
 import TutorialsScope from '../scopes/TutorialsScope';
-import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
@@ -17,7 +16,7 @@ export default class TutorialsController extends AbstractPageController {
         '$scope',
         '$templateCache',
         '$window',
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         'ga',
         'modalDialog',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',

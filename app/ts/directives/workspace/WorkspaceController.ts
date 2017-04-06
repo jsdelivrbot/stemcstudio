@@ -19,15 +19,14 @@ import LabelFlow from './LabelFlow';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
-import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../../services/gham/IGitHubAuthManager';
-import IOptionManager from '../../services/options/IOptionManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../../services/gham/IGitHubAuthManager';
+import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import {NAVIGATION_SERVICE_UUID,INavigationService} from '../../modules/navigation/INavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../../modules/navigation/INavigationService';
 import RenamedFileHandler from './RenamedFileHandler';
 import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import { STATE_GIST } from '../../modules/navigation/NavigationService';
@@ -149,7 +148,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         CREDENTIALS_SERVICE_UUID,
         BACKGROUND_SERVICE_UUID,
         GITHUB_SERVICE_UUID,
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         CLOUD_SERVICE_UUID,
         'templates',
         TRANSLATE_SERVICE_UUID,
@@ -158,7 +157,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'labelDialog',
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
-        'options',
+        OPTION_MANAGER_SERVICE_UUID,
         'propertiesDialog',
         'stemcArXiv',
         'FEATURE_GIST_ENABLED',
@@ -198,7 +197,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private labelDialog: LabelDialog,
         private modalDialog: ModalDialog,
         private navigation: INavigationService,
-        private options: IOptionManager,
+        private optionManager: IOptionManager,
         private propertiesDialog: PropertiesDialog,
         private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
@@ -223,7 +222,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             rebuildPromise = $timeout(() => {
                 rebuildPreview(
                     this.wsModel,
-                    this.options,
+                    this.optionManager,
                     this.$scope,
                     this.$location,
                     this.$window,
@@ -375,7 +374,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             ga('send', 'event', 'doodle', 'properties', label, value);
             const propertiesFlow = new PropertiesFlow(
-                this.options,
+                this.optionManager,
                 this.olds,
                 this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                 this.$http,
@@ -612,7 +611,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         updateWorkspaceTypings(
             this.wsModel,
-            this.options,
+            this.optionManager,
             this.olds,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
             this.$http,

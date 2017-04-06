@@ -3,13 +3,15 @@ import FlowService from '../../services/flow/FlowService';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
-import IOptionManager from '../../services/options/IOptionManager';
+import { IOptionManager } from '../../services/options/IOptionManager';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import WsModel from '../../modules/wsmodel/services/WsModel';
+import dependenciesMap from './dependenciesMap';
+import dependencyNames from './dependencyNames';
 
 export default class PropertiesFlow {
     constructor(
-        private options: IOptionManager,
+        private optionManager: IOptionManager,
         private olds: string[],
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private $http: IHttpService,
@@ -30,11 +32,11 @@ export default class PropertiesFlow {
             },
             (facts, session, next) => {
                 const defaults: PropertiesSettings = {
-                    name: <string>this.wsModel.name,
-                    version: <string>this.wsModel.version,
+                    name: this.wsModel.name,
+                    version: this.wsModel.version,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.operatorOverloading,
-                    dependencies: this.wsModel.dependencies
+                    dependencies: dependencyNames(this.wsModel.dependencies)
                 };
                 this.propertiesDialog.open(defaults)
                     .then((settings: PropertiesSettings) => {
@@ -59,7 +61,7 @@ export default class PropertiesFlow {
                     this.wsModel.version = value.version;
                     this.wsModel.noLoopCheck = value.noLoopCheck;
                     this.wsModel.operatorOverloading = value.operatorOverloading;
-                    this.wsModel.dependencies = value.dependencies;
+                    this.wsModel.dependencies = dependenciesMap(value.dependencies, this.optionManager);
                 }
                 else {
                     console.warn("Why are settings not defined?");
@@ -67,7 +69,7 @@ export default class PropertiesFlow {
 
                 updateWorkspaceTypings(
                     this.wsModel,
-                    this.options,
+                    this.optionManager,
                     this.olds,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                     this.$http,

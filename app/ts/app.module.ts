@@ -7,6 +7,7 @@ import { EditorModule } from './editor/editor.module';
 import { Base64Service } from './services/base64/base64.service';
 import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
+import { OptionManager } from './services/options/optionManager.service';
 import { UuidService } from './services/uuid/uuid.service';
 
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         Base64Service,
         CookieService,
         CredentialsService,
+        OptionManager,
         UuidService
     ],
     // the view classes are either component, directive, or pipe dependencies.

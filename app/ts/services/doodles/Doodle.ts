@@ -1,9 +1,6 @@
 import DoodleFile from './DoodleFile';
 import IDoodleConfig from './IDoodleConfig';
 import modeFromName from '../../utils/modeFromName';
-import dependencyNames from './dependencyNames';
-import dependenciesMap from './dependenciesMap';
-import IOptionManager from '../options/IOptionManager';
 import setOptionalBooleanProperty from './setOptionalBooleanProperty';
 import setOptionalStringProperty from './setOptionalStringProperty';
 import setOptionalStringArrayProperty from './setOptionalStringArrayProperty';
@@ -41,7 +38,7 @@ export default class Doodle {
     public created_at: string | undefined;
     public updated_at: string | undefined;
 
-    constructor(private optionManager: IOptionManager) {
+    constructor() {
         this.isCodeVisible = true;
         this.isViewVisible = false;
         this.lastKnownJs = {};
@@ -249,41 +246,44 @@ export default class Doodle {
         }
     }
 
-    get dependencies(): string[] {
+    /**
+     * A map from package name to semantic version.
+     */
+    get dependencies(): { [packageName: string]: string } {
         try {
             if (this.existsPackageJson()) {
                 const pkgInfo = this.packageInfo;
                 if (pkgInfo) {
                     const dependencyMap = this.packageInfo.dependencies;
                     if (dependencyMap) {
-                        return dependencyNames(dependencyMap);
+                        return dependencyMap;
                     }
                     else {
-                        return [];
+                        return {};
                     }
                 }
                 else {
-                    return [];
+                    return {};
                 }
             }
             else {
-                return [];
+                return {};
             }
         }
         catch (e) {
             console.warn(e);
-            return [];
+            return {};
         }
     }
 
     /**
-     * TODO: It would be good to decouple from the option manager.
+     * A map from package name to semantic version.
      */
-    set dependencies(dependencies: string[]) {
+    set dependencies(dependencies: { [packageName: string]: string }) {
         try {
             const file = this.ensurePackageJson();
             const metaInfo: IDoodleConfig = JSON.parse(file.content);
-            metaInfo.dependencies = dependenciesMap(dependencies, this.optionManager);
+            metaInfo.dependencies = dependencies;
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {

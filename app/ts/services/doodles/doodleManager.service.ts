@@ -4,12 +4,11 @@ import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
 import { IDoodleManager } from './IDoodleManager';
 import IDoodleFile from './IDoodleFile';
-import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
 import doodlesToString from './doodlesToString';
 import { Injectable } from '@angular/core';
 
-function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Doodle[] {
+function deserializeDoodles(doodles: IDoodleDS[]): Doodle[] {
     // Version 1.x used a fixed set of four files with properties that were strings.
     const FILENAME_HTML = 'index.html';
     const PROPERTY_HTML = 'html';
@@ -27,7 +26,7 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
     const iLen = doodles.length;
     for (let i = 0; i < iLen; i++) {
         const inDoodle = doodles[i];
-        const d = new Doodle(options);
+        const d = new Doodle();
         // The existence of the files property indicates that this is probably a modern version.
         if (inDoodle.files) {
             d.files = copyFiles(inDoodle.files);
@@ -87,7 +86,7 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
 //
 @Injectable()
 export class DoodleManager implements IDoodleManager {
-    static $inject = ['$window', 'options', 'doodlesKey'];
+    static $inject = ['$window', 'doodlesKey'];
     // The doodles from local storage must be converted into classes in order to support the methods.
     private _doodles: Doodle[];
 
@@ -96,8 +95,8 @@ export class DoodleManager implements IDoodleManager {
      * @param optionManager Because the Doodle is too coupled.
      * @param doodlesKey The key for storing doodles in local storage.
      */
-    constructor(private $window: IWindowService, private optionManager: IOptionManager, private doodlesKey: string) {
-        this._doodles = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], optionManager);
+    constructor(private $window: IWindowService, private doodlesKey: string) {
+        this._doodles = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : []);
     }
     addHead(doodle: Doodle): number {
         return this._doodles.unshift(doodle);
@@ -138,7 +137,7 @@ export class DoodleManager implements IDoodleManager {
         this._doodles = doodles;
     }
     createDoodle(): Doodle {
-        return new Doodle(this.optionManager);
+        return new Doodle();
     }
     deleteDoodle(dude: Doodle): void {
         const doodles: Doodle[] = [];

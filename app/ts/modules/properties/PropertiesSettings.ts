@@ -20,7 +20,7 @@ interface PropertiesSettings {
      */
     operatorOverloading: boolean;
     /**
-     * packageName(s).
+     * packageName(s) only, no semantic version.
      */
     dependencies: string[];
 }

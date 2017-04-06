@@ -1,8 +1,7 @@
 import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import ExamplesScope from '../scopes/ExamplesScope';
-import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
@@ -14,7 +13,7 @@ export default class ExamplesController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         TRANSLATE_SERVICE_UUID,
         'ga',
         'modalDialog',

@@ -16,7 +16,6 @@ import GistData from '../github/GistData';
 import GitHubReason from '../github/GitHubReason';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../github/IGitHubService';
 import isString from '../../utils/isString';
-import IOptionManager from '../options/IOptionManager';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
 import PathContents from '../github/PathContents';
@@ -40,8 +39,7 @@ export class CloudService implements ICloudService {
         BASE64_SERVICE_UUID,
         'flow',
         GITHUB_SERVICE_UUID,
-        'FILENAME_META',
-        'options'
+        'FILENAME_META'
     ];
     constructor(
         private $q: IQService,
@@ -49,8 +47,7 @@ export class CloudService implements ICloudService {
         private base64Service: IBase64Service,
         private flowService: FlowService,
         private githubService: IGitHubService,
-        private FILENAME_META: string,
-        private options: IOptionManager) {
+        private FILENAME_META: string) {
         // Do nothing.
     }
 
@@ -59,8 +56,7 @@ export class CloudService implements ICloudService {
             .then((http) => {
                 const gist = http.data;
                 if (gist) {
-                    // console.lg(`gist => ${JSON.stringify(gist, null, 2)}`);
-                    const doodle = new Doodle(this.options);
+                    const doodle = new Doodle();
                     doodle.gistId = gistId;
                     doodle.description = gist.description;
                     doodle.owner = gist.owner.login;
@@ -101,7 +97,7 @@ export class CloudService implements ICloudService {
     downloadRepo(owner: string, repo: string, callback: (reason: any, doodle?: Doodle) => void) {
         this.githubService.getRepoContents(owner, repo, (err: any, contents: RepoElement[]) => {
             if (!err) {
-                const doodle = new Doodle(this.options);
+                const doodle = new Doodle();
                 doodle.owner = owner;
                 doodle.repo = repo;
                 doodle.gistId = void 0;
@@ -165,7 +161,7 @@ export class CloudService implements ICloudService {
                 // Now seems like a good time to start building the Doodle.
                 // If we move this any deeper we may have to deal with commit/branch/tag differences.
                 // And as we go deeper we may use (recursion or) a stack to build our tree.
-                const doodle = new Doodle(this.options);
+                const doodle = new Doodle();
                 doodle.owner = owner;
                 doodle.repo = repo;
                 doodle.gistId = void 0;

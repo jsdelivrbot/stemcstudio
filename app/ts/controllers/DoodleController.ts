@@ -4,8 +4,7 @@ import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import DoodleScope from '../scopes/DoodleScope';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
-import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ITemplate from '../services/templates/ITemplate';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -23,7 +22,7 @@ export default class DoodleController extends AbstractPageController {
         '$scope',
         '$window',
         DOODLE_MANAGER_SERVICE_UUID,
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         'templates',
         'ga',
         'modalDialog',

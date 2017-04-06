@@ -6,7 +6,7 @@ import fileContent from './fileContent';
 import fileExists from './fileExists';
 import isString from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
-import IOptionManager from '../../services/options/IOptionManager';
+import { IOptionManager } from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
 import detectMarker from './detectMarker';
@@ -96,7 +96,7 @@ export default function rebuildPreview(
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return workspace.dependencies.indexOf(option.packageName) > -1;
+                            return workspace.dependencies.hasOwnProperty(option.packageName);
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, options);

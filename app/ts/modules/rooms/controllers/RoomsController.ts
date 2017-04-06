@@ -1,5 +1,4 @@
-import IGitHubAuthManager from '../../../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../../../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../../../services/gham/IGitHubAuthManager';
 import RoomAgent from '../RoomAgent';
 import { IRoomsService, RoomParams, ROOMS_SERVICE_UUID } from '../api';
 import ModalDialog from '../../../services/modalService/ModalDialog';
@@ -12,7 +11,7 @@ import { WORKSPACE_MODEL } from '../../wsmodel/constants';
  */
 export default class RoomsController {
     public static $inject: string[] = [
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
         ROOMS_SERVICE_UUID,

@@ -5,8 +5,8 @@ import { Annotation, AnnotationType } from '../../../editor/Annotation';
 import AutoCompleteCommand from '../../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../../mappings/copyWorkspaceToDoodle';
-import dependenciesMap from '../../../services/doodles/dependenciesMap';
-import dependencyNames from '../../../services/doodles/dependencyNames';
+// import dependenciesMap from '../../../services/doodles/dependenciesMap';
+// import dependencyNames from '../../../services/doodles/dependencyNames';
 import Delta from '../../../editor/Delta';
 import Diagnostic from '../../../editor/workspace/Diagnostic';
 import Disposable from '../../../base/Disposable';
@@ -20,7 +20,6 @@ import getPosition from '../../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../../services/doodles/IDoodleConfig';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../../services/doodles/IDoodleManager';
-import IOptionManager from '../../../services/options/IOptionManager';
 import IWorkspaceModel from '../IWorkspaceModel';
 import javascriptSnippets from '../../../editor/snippets/javascriptSnippets';
 import KeywordCompleter from '../../../editor/autocomplete/KeywordCompleter';
@@ -409,12 +408,12 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     public trace_ = false;
 
-    public static $inject: string[] = ['options', '$q', DOODLE_MANAGER_SERVICE_UUID];
+    public static $inject: string[] = ['$q', DOODLE_MANAGER_SERVICE_UUID];
 
     /**
      * AngularJS service; parameters must match static $inject property.
      */
-    constructor(private options: IOptionManager, private $q: IQService, private doodles: IDoodleManager) {
+    constructor(private $q: IQService, private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }
@@ -1270,34 +1269,33 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * dependencies a list of package names, the unique identifier for libraries.
      */
-    get dependencies(): string[] {
+    get dependencies(): { [packageName: string]: string } {
         try {
             if (this.existsPackageJson()) {
                 const pkgInfo = this.packageInfo;
                 if (pkgInfo) {
-                    const dependencyMap = pkgInfo.dependencies;
-                    return dependencyNames(dependencyMap);
+                    return pkgInfo.dependencies;
                 }
                 else {
-                    return [];
+                    return {};
                 }
             }
             else {
-                return [];
+                return {};
             }
         }
         catch (e) {
             console.warn(e);
-            return [];
+            return {};
         }
     }
 
-    set dependencies(dependencies: string[]) {
+    set dependencies(dependencies: { [packageName: string]: string }) {
         try {
             const file = this.ensurePackageJson();
             try {
                 const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-                metaInfo.dependencies = dependenciesMap(dependencies, this.options);
+                metaInfo.dependencies = dependencies;
                 file.setText(stringifyFileContent(metaInfo));
             }
             finally {

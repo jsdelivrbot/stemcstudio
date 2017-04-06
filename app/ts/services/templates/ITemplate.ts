@@ -4,7 +4,10 @@ interface ITemplate {
     name: string;
     description: string;
     files: { [path: string]: ITemplateFile };
-    dependencies: string[];
+    /**
+     * A map from package name to semantic version.
+     */
+    dependencies: { [packageName: string]: string };
     noLoopCheck: boolean;
     operatorOverloading: boolean;
 }

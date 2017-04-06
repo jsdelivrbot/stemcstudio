@@ -1,6 +1,6 @@
-import app from '../../app';
+import { Injectable } from '@angular/core';
 import { IOption, LibraryKind } from './IOption';
-import IOptionManager from './IOptionManager';
+import { IOptionManager } from './IOptionManager';
 import { validate } from '../../utils/validateNpmPackageName';
 
 const ensurePackageName = function (packageName: string): string {
@@ -30,171 +30,176 @@ const INDEX_DTS = 'index.d.ts';
  */
 const TYPES_FOLDER = '@types/';
 
-app.factory('options', [
-    'VENDOR_FOLDER_MARKER',
-    function (
-        VENDOR_FOLDER_MARKER: string
-    ) {
+const VERSION_ANGULARJS = '1.5.3';
+// const VERSION_ASYNC = '1.4.2';
+const VERSION_BACONJS = '0.7.89';
+const VERSION_BIWASCHEME = '0.6.6';
+const VERSION_CSV = '0.9.2';
+const VERSION_DAT_GUI = '0.5.0';
+const VERSION_DECKJS = '1.1.0';
+const VERSION_DOMREADY = '1.0.0';
+const VERSION_D3_V3 = '3.5.17';
+const VERSION_EIGHT = '6.0.7';
+const VERSION_GEOCAS = '1.13.0';
+const VERSION_GLMATRIX = '2.3.2';
+const VERSION_JASMINE = '2.5.2';
+const VERSION_JQUERY = '2.1.4';
+const VERSION_JSXGRAPH = '0.99.5';
+const VERSION_NEWTON = '0.0.38';
+const VERSION_PLOTLY = '1.24.1';
+const VERSION_REACT = '15.4.2';
+const VERSION_REACT_DOM = '15.4.2';
+const VERSION_SOCKETIO_CLIENT = '1.5.1';
+const VERSION_STATSJS = '0.16.0';
+const VERSION_SYSTEMJS = '0.19.37';
+const VERSION_THREEJS = '0.82.0';
+const RELEASE_THREEJS = 'r82';
+const VERSION_TWO = '0.6.1';
+const VERSION_UNITS = '1.5.5';
+// const VERSION_UNDERSCORE = '1.8.3';
 
-        const VERSION_ANGULARJS = '1.5.3';
-        // const VERSION_ASYNC = '1.4.2';
-        const VERSION_BACONJS = '0.7.89';
-        const VERSION_BIWASCHEME = '0.6.6';
-        const VERSION_CSV = '0.9.2';
-        const VERSION_DAT_GUI = '0.5.0';
-        const VERSION_DECKJS = '1.1.0';
-        const VERSION_DOMREADY = '1.0.0';
-        const VERSION_D3_V3 = '3.5.17';
-        const VERSION_EIGHT = '6.0.7';
-        const VERSION_GEOCAS = '1.13.0';
-        const VERSION_GLMATRIX = '2.3.2';
-        const VERSION_JASMINE = '2.5.2';
-        const VERSION_JQUERY = '2.1.4';
-        const VERSION_JSXGRAPH = '0.99.5';
-        const VERSION_NEWTON = '0.0.38';
-        const VERSION_PLOTLY = '1.24.1';
-        const VERSION_REACT = '15.4.2';
-        const VERSION_REACT_DOM = '15.4.2';
-        const VERSION_SOCKETIO_CLIENT = '1.5.1';
-        const VERSION_STATSJS = '0.16.0';
-        const VERSION_SYSTEMJS = '0.19.37';
-        const VERSION_THREEJS = '0.82.0';
-        const RELEASE_THREEJS = 'r82';
-        const VERSION_TWO = '0.6.1';
-        const VERSION_UNITS = '1.5.5';
-        // const VERSION_UNDERSCORE = '1.8.3';
+// FIXME: DRY This function is defined in constants.ts?
+/**
+ * VENDOR_FOLDER_MARKER '/' packageFolder ['@' version] ['/' subFolder] '/' fileName
+ */
+function vendorFolder(packageFolder: string, version: string | undefined, subFolder: string | undefined, fileName: string): string {
+    /**
+     * How to keep this synchronized?
+     */
+    const VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER';
+    const steps: string[] = [];
+    steps.push(VENDOR_FOLDER_MARKER);
+    steps.push('/');
+    steps.push(packageFolder);
+    if (version) {
+        steps.push('@');
+        steps.push(version);
+    }
+    if (subFolder) {
+        steps.push('/');
+        steps.push(subFolder);
+    }
+    steps.push('/');
+    steps.push(fileName);
+    return steps.join('');
+}
 
-        // FIXME: DRY This function is defined in constants.ts?
-        /**
-         * VENDOR_FOLDER_MARKER '/' packageFolder ['@' version] ['/' subFolder] '/' fileName
-         */
-        function vendorFolder(packageFolder: string, version: string | undefined, subFolder: string | undefined, fileName: string): string {
-            const steps: string[] = [];
-            steps.push(VENDOR_FOLDER_MARKER);
-            steps.push('/');
-            steps.push(packageFolder);
-            if (version) {
-                steps.push('@');
-                steps.push(version);
-            }
-            if (subFolder) {
-                steps.push('/');
-                steps.push(subFolder);
-            }
-            steps.push('/');
-            steps.push(fileName);
-            return steps.join('');
-        }
+// Functions defining the name of the folder and version being used.
+function angular(fileName: string): string {
+    return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
+}
+/*
+function async(fileName: string): string {
+  return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
+}
+*/
+function baconjs(fileName: string): string {
+    return vendorFolder('baconjs', VERSION_BACONJS, void 0, fileName);
+}
+function biwascheme(fileName: string): string {
+    return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
+}
+function csv(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-csv` : 'davinci-csv';
+    const version = isDts ? void 0 : VERSION_CSV;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function datGUI(fileName: string): string {
+    return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
+}
+function deck(fileName: string): string {
+    return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName);
+}
+function domready(fileName: string): string {
+    return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName);
+}
+function d3(fileName: string): string {
+    return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
+}
+function eight(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-eight` : 'davinci-eight';
+    const version = isDts ? void 0 : VERSION_EIGHT;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function geocas(subFolder: string, fileName: string): string {
+    return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
+}
+function glMatrix(fileName: string): string {
+    return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
+}
+function jasmine(fileName: string): string {
+    return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName);
+}
+function jquery(fileName: string): string {
+    return vendorFolder('jquery', VERSION_JQUERY, 'dist', fileName);
+}
+function jsxgraph(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}jsxgraph` : 'jsxgraph';
+    const version = isDts ? void 0 : VERSION_JSXGRAPH;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function newton(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-newton` : 'davinci-newton';
+    const version = isDts ? void 0 : VERSION_NEWTON;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function plotly(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}plotly` : 'plotly';
+    const version = isDts ? void 0 : VERSION_PLOTLY;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function react(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}react` : 'react';
+    const version = isDts ? void 0 : VERSION_REACT;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function reactDOM(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}react-dom` : 'react-dom';
+    const version = isDts ? void 0 : VERSION_REACT_DOM;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
+function socketIoClient(fileName: string): string {
+    return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
+}
+function statsjs(fileName: string): string {
+    return vendorFolder('stats.js', VERSION_STATSJS, void 0, fileName);
+}
+function systemjs(fileName: string): string {
+    return vendorFolder('systemjs', VERSION_SYSTEMJS, void 0, fileName);
+}
+function threejs(fileName: string): string {
+    return vendorFolder('threejs', VERSION_THREEJS, void 0, fileName);
+}
+function two(fileName: string): string {
+    return vendorFolder('two', VERSION_TWO, void 0, fileName);
+}
+/*
+function underscore(fileName: string): string {
+  return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
+}
+*/
+function units(fileName: string): string {
+    const isDts = fileName.endsWith(INDEX_DTS);
+    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-units` : 'davinci-units';
+    const version = isDts ? void 0 : VERSION_UNITS;
+    return vendorFolder(packageFolder, version, void 0, fileName);
+}
 
-        // Functions defining the name of the folder and version being used.
-        function angular(fileName: string): string {
-            return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
-        }
-        /*
-        function async(fileName: string): string {
-          return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
-        }
-        */
-        function baconjs(fileName: string): string {
-            return vendorFolder('baconjs', VERSION_BACONJS, void 0, fileName);
-        }
-        function biwascheme(fileName: string): string {
-            return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
-        }
-        function csv(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-csv` : 'davinci-csv';
-            const version = isDts ? void 0 : VERSION_CSV;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function datGUI(fileName: string): string {
-            return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
-        }
-        function deck(fileName: string): string {
-            return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName);
-        }
-        function domready(fileName: string): string {
-            return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName);
-        }
-        function d3(fileName: string): string {
-            return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
-        }
-        function eight(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-eight` : 'davinci-eight';
-            const version = isDts ? void 0 : VERSION_EIGHT;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function geocas(subFolder: string, fileName: string): string {
-            return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
-        }
-        function glMatrix(fileName: string): string {
-            return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
-        }
-        function jasmine(fileName: string): string {
-            return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName);
-        }
-        function jquery(fileName: string): string {
-            return vendorFolder('jquery', VERSION_JQUERY, 'dist', fileName);
-        }
-        function jsxgraph(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}jsxgraph` : 'jsxgraph';
-            const version = isDts ? void 0 : VERSION_JSXGRAPH;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function newton(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-newton` : 'davinci-newton';
-            const version = isDts ? void 0 : VERSION_NEWTON;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function plotly(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}plotly` : 'plotly';
-            const version = isDts ? void 0 : VERSION_PLOTLY;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function react(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}react` : 'react';
-            const version = isDts ? void 0 : VERSION_REACT;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function reactDOM(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}react-dom` : 'react-dom';
-            const version = isDts ? void 0 : VERSION_REACT_DOM;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        function socketIoClient(fileName: string): string {
-            return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
-        }
-        function statsjs(fileName: string): string {
-            return vendorFolder('stats.js', VERSION_STATSJS, void 0, fileName);
-        }
-        function systemjs(fileName: string): string {
-            return vendorFolder('systemjs', VERSION_SYSTEMJS, void 0, fileName);
-        }
-        function threejs(fileName: string): string {
-            return vendorFolder('threejs', VERSION_THREEJS, void 0, fileName);
-        }
-        function two(fileName: string): string {
-            return vendorFolder('two', VERSION_TWO, void 0, fileName);
-        }
-        /*
-        function underscore(fileName: string): string {
-          return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
-        }
-        */
-        function units(fileName: string): string {
-            const isDts = fileName.endsWith(INDEX_DTS);
-            const packageFolder = isDts ? `${TYPES_FOLDER}davinci-units` : 'davinci-units';
-            const version = isDts ? void 0 : VERSION_UNITS;
-            return vendorFolder(packageFolder, version, void 0, fileName);
-        }
-        // TODO: Make this external.
-        let _options: IOption[] = [
+@Injectable()
+export class OptionManager implements IOptionManager {
+    _options: IOption[] = [];
+    /**
+     *
+     */
+    constructor() {
+        this._options = [
             {
                 packageName: ensurePackageName('angular'),
                 moduleName: 'ng',
@@ -590,41 +595,21 @@ app.factory('options', [
             }
             */
         ];
+    }
 
-        const that: IOptionManager = {
+    /**
+     *
+     */
+    filter(callback: (doodle: IOption, index: number, array: IOption[]) => boolean): IOption[] {
+        return this._options.filter(callback);
+    }
 
-            unshift: function (doodle: IOption) {
-                return _options.unshift(doodle);
-            },
-
-            get length() {
-                return _options.length;
-            },
-
-            filter: function (callback: (doodle: IOption, index: number, array: IOption[]) => boolean) {
-                return _options.filter(callback);
-            },
-
-            deleteOption: function (packageName: string) {
-                const options: IOption[] = [];
-
-                let i = 0;
-                let found: IOption | undefined;
-                while (i < _options.length) {
-                    if (_options[i].packageName === packageName) {
-                        found = _options[i];
-                    }
-                    else {
-                        options.push(_options[i]);
-                    }
-                    i++;
-                }
-
-                if (!found) return;
-
-                _options = options;
-            }
-        };
-
-        return that;
-    }]);
+    /**
+     * 
+     */
+    get(): Promise<IOption[]> {
+        return new Promise<IOption[]>((resolve, reject) => {
+            resolve(this._options);
+        });
+    }
+}

@@ -1,6 +1,6 @@
-export const GITHUB_AUTH_MANAGER = "GitHubAuthManager";
+export const GITHUB_AUTH_MANAGER_UUID = "GitHubAuthManager";
 
-interface IGitHubAuthManager {
+export interface IGitHubAuthManager {
     clientId(): string | null;
     /**
      * Register a handler for the callback from GitHub authentication.
@@ -9,5 +9,3 @@ interface IGitHubAuthManager {
     isSignedIn(): boolean;
     userLogin(): string | undefined | null;
 }
-
-export default IGitHubAuthManager;

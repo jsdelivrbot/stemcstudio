@@ -1,7 +1,7 @@
 import { IHttpService, ILocationService } from 'angular';
 import closure from './closure';
 import IOption from '../../services/options/IOption';
-import IOptionManager from '../../services/options/IOptionManager';
+import { IOptionManager } from '../../services/options/IOptionManager';
 import namesToOptions from './namesToOptions';
 import scriptURL from './scriptURL';
 import WsModel from '../../modules/wsmodel/services/WsModel';
@@ -23,7 +23,7 @@ function optionsToPackageNames(options: IOption[]): string[] {
  */
 export default function updateWorkspaceTypings(
     wsModel: WsModel,
-    options: IOptionManager,
+    optionManager: IOptionManager,
     /**
      * The old dependencies (package names).
      */
@@ -38,7 +38,7 @@ export default function updateWorkspaceTypings(
     /**
      * The new dependencies (package names).
      */
-    const news: string[] = optionsToPackageNames(closure(namesToOptions(wsModel.dependencies, options), options));
+    const news: string[] = optionsToPackageNames(closure(namesToOptions(Object.keys(wsModel.dependencies), optionManager), optionManager));
 
     // Determine what we need to add and remove from the workspace.
     //
@@ -61,11 +61,11 @@ export default function updateWorkspaceTypings(
         rmvs.splice(rmvs.indexOf('lib'), 1);
     }
 
-    const rmvOpts: IOption[] = namesToOptions(rmvs, options);
+    const rmvOpts: IOption[] = namesToOptions(rmvs, optionManager);
 
     const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });
 
-    const addOpts: IOption[] = namesToOptions(adds, options);
+    const addOpts: IOption[] = namesToOptions(adds, optionManager);
 
     // TODO: Optimize so that we don't keep loading `lib`.
     let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });

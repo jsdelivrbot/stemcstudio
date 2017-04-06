@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import { IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 
 /**

@@ -3,8 +3,7 @@ import AbstractPageController from './AbstractPageController';
 import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
 import Doodle from '../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
-import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -22,7 +21,7 @@ export default class HomeController extends AbstractPageController {
         '$scope',
         '$window',
         DOODLE_MANAGER_SERVICE_UUID,
-        GITHUB_AUTH_MANAGER,
+        GITHUB_AUTH_MANAGER_UUID,
         'ga',
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
