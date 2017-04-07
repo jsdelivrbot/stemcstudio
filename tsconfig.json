@@ -48,7 +48,6 @@
         "app/ts/utils/StringSet.spec.ts",
         "app/ts/utils/validateNpmPackageName.spec.ts",
         "app/ts/template-cache.ts",
-        "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
         "node_modules/typescript/lib/lib.dom.d.ts",
         "node_modules/typescript/lib/lib.es2016.d.ts"

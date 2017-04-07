@@ -222,7 +222,7 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
     ensurePathKey(roomId, path, function (err: Error) {
         if (!err) {
             const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
-            client.sismember([remotes, nodeId], function (reason: Error, exists: number) {
+            client.sismember([remotes, nodeId], function (reason: void |Error, exists: number) {
                 if (!reason) {
                     mustBeTruthy(isNumber(exists), `exists must be a number`);
                     if (exists > 0) {
@@ -360,7 +360,7 @@ function createDocument(roomId: string, path: string, text: string, callback: (e
     });
 }
 
-function getDocument(roomId: string, path: string, callback: (err: Error, editor: MwEditor) => any) {
+function getDocument(roomId: string, path: string, callback: (err: void | Error, editor: MwEditor) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.get(contentKey, function (err, reply) {
         const editor = new RedisEditor(roomId, path);
