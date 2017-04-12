@@ -1,11 +1,11 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.8",
+  "version": "2.24.9",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
-    "node": "4.8.0",
-    "npm": "4.4.0"
+    "node": "7.8.0",
+    "npm": "4.2.0"
   },
   "scripts": {
     "start": "NODE_ENV=development node web.js",
@@ -58,6 +58,7 @@
     "zone.js": "^0.8.5"
   },
   "devDependencies": {
+    "@reactivex/rxjs": "^5.3.0",
     "@types/angular": "^1.6.11",
     "@types/angular-animate": "^1.5.6",
     "@types/angular-cookies": "^1.4.3",
@@ -87,14 +88,14 @@
     "lite-server": "^2.3.0",
     "plotly.js": "^1.25.2",
     "protractor": "^3.3.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
     "systemjs-builder": "0.15.35",
     "tslint": "^4.5.1",
     "two.js": "^0.6.0",
     "typedoc": "^0.5.10",
-    "typescript": "^2.2.1",
-    "typings": "^2.1.0"
+    "typescript": "^2.3.0",
+    "typings": "^2.1.1"
   },
   "repository": {
     "type": "git",
@@ -122,7 +123,7 @@
       "clipboard": "npm:clipboard@^1.6.1",
       "core-js": "npm:core-js@^2.4.1",
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
-      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.4",
+      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.6",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",

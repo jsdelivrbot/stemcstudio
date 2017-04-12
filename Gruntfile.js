@@ -222,16 +222,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.4/src/worker.js',
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.6/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.4/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers@2.9.4/ace-workers.js')
+            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.6/dist/ace-workers.js',
+            dest: prepend(target, 'js/ace-workers@2.9.6/ace-workers.js')
         },
         {
             src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, 'js/ace-workers@2.9.4/ace-workers.js')
+            dest: prepend(target, 'js/ace-workers@2.9.6/ace-workers.js')
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
@@ -437,11 +437,11 @@ function copies(target) {
         },
         {
             src: "museum/jsxgraph@0.99.5/index.d.ts",
-            dest: prepend(target, 'vendor/@types/jsxgraph/index.d.ts')
+            dest: prepend(target, 'vendor/jsxgraph@0.99.5/index.d.ts')
         },
         {
             src: "museum/plotly@1.24.1/index.d.ts",
-            dest: prepend(target, 'vendor/@types/plotly/index.d.ts')
+            dest: prepend(target, 'vendor/plotly@1.24.1/index.d.ts')
         },
         {
             src: "museum/plotly@1.24.1/plotly.js",
@@ -459,7 +459,7 @@ function copies(target) {
         },
         {
             src: "museum/react@15.4.2/index.d.ts",
-            dest: prepend(target, 'vendor/@types/react/index.d.ts')
+            dest: prepend(target, 'vendor/react@15.4.2/index.d.ts')
         },
         {
             expand: true,
@@ -469,7 +469,7 @@ function copies(target) {
         },
         {
             src: "museum/react-dom@15.4.2/index.d.ts",
-            dest: prepend(target, 'vendor/@types/react-dom/index.d.ts')
+            dest: prepend(target, 'vendor/react-dom@15.4.2/index.d.ts')
         },
         {
             src: "museum/requirejs@2.1.9/require.d.ts",
@@ -478,6 +478,12 @@ function copies(target) {
         {
             src: "bower_components/requirejs/require.js",
             dest: prepend(target, 'vendor/requirejs@2.1.9/require.js')
+        },
+        {
+            expand: true,
+            cwd: "museum/RxJS@5.3.0",
+            src: ["**"],
+            dest: prepend(target, 'vendor/RxJS@5.3.0')
         },
         {
             expand: true,
@@ -549,7 +555,7 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-csv/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
         },
         {
             src: "../davinci-csv/dist/index.d.ts",
@@ -561,7 +567,7 @@ function copies(target) {
         },
         {
             src: "../davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-csv/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
         },
         {
             expand: true,
@@ -583,7 +589,7 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/index.d.ts')
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
@@ -599,7 +605,7 @@ function copies(target) {
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-eight/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.0.7/index.d.ts')
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -637,7 +643,7 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-newton/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-newton/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.38/index.d.ts')
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.js",
@@ -645,7 +651,7 @@ function copies(target) {
         },
         {
             src: "../davinci-newton/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-newton/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.38/index.d.ts')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.js",
@@ -659,7 +665,7 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-units/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-units/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-units@1.5.5/index.d.ts')
         },
         {
             src: "bower_components/davinci-units/dist/davinci-units.js",
@@ -667,7 +673,7 @@ function copies(target) {
         },
         {
             src: "../davinci-units/dist/index.d.ts",
-            dest: prepend(target, 'vendor/@types/davinci-units/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-units@1.5.5/index.d.ts')
         },
         {
             src: "../davinci-units/dist/davinci-units.js",

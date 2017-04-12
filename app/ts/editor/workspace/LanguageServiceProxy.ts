@@ -14,8 +14,8 @@ import setScriptTargetCallback from './SetScriptTargetCallback';
 import TsLintSettings from '../../modules/tslint/TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
 import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';
+import { EVENT_ENSURE_MODULE_MAPPING } from './LanguageServiceEvents';
 import { EVENT_ENSURE_SCRIPT } from './LanguageServiceEvents';
-import { EVENT_REMOVE_SCRIPT } from './LanguageServiceEvents';
 import { EVENT_GET_LINT_ERRORS } from './LanguageServiceEvents';
 import { EVENT_GET_SYNTAX_ERRORS } from './LanguageServiceEvents';
 import { EVENT_GET_SEMANTIC_ERRORS } from './LanguageServiceEvents';
@@ -23,11 +23,14 @@ import { EVENT_GET_COMPLETIONS_AT_POSITION } from './LanguageServiceEvents';
 import { EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT } from './LanguageServiceEvents';
 import { EVENT_GET_QUICK_INFO_AT_POSITION } from './LanguageServiceEvents';
 import { EVENT_GET_OUTPUT_FILES } from './LanguageServiceEvents';
+import { EVENT_REMOVE_MODULE_MAPPING } from './LanguageServiceEvents';
+import { EVENT_REMOVE_SCRIPT } from './LanguageServiceEvents';
 import { EVENT_SET_MODULE_KIND } from './LanguageServiceEvents';
 import { EVENT_SET_OPERATOR_OVERLOADING } from './LanguageServiceEvents';
 import { EVENT_SET_SCRIPT_TARGET } from './LanguageServiceEvents';
 import { EVENT_SET_TRACE } from './LanguageServiceEvents';
-import { EnsureScriptRequest } from './LanguageServiceEvents';
+import { EnsureModuleMappingRequest, RemoveModuleMappingRequest } from './LanguageServiceEvents';
+import { EnsureScriptRequest, RemoveScriptRequest } from './LanguageServiceEvents';
 import { GetOutputFilesRequest } from './LanguageServiceEvents';
 import { SetModuleKindRequest } from './LanguageServiceEvents';
 import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
@@ -238,28 +241,54 @@ export default class LanguageServiceProxy {
         }
     }
 
-    ensureScript(path: string, content: string, callback: (err: any) => any): void {
-        const callbackId = this.captureCallback(callback);
-        // content = content.replace(/\r\n?/g, '\n');
-        const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
-        this.worker.emit(EVENT_ENSURE_SCRIPT, message);
-    }
-
     applyDelta(path: string, delta: Delta, callback: (err: any) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName: path, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
     }
 
+    ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            const callback = function (err: any) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(true);
+                }
+            };
+            const callbackId = this.captureCallback(callback);
+            const message: { data: EnsureModuleMappingRequest } = { data: { moduleName, fileName, callbackId } };
+            this.worker.emit(EVENT_ENSURE_MODULE_MAPPING, message);
+        });
+    }
+
+    removeModuleMapping(moduleName: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            const callback = function (err: any) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(true);
+                }
+            };
+            const callbackId = this.captureCallback(callback);
+            const message: { data: RemoveModuleMappingRequest } = { data: { moduleName, callbackId } };
+            this.worker.emit(EVENT_REMOVE_MODULE_MAPPING, message);
+        });
+    }
+
+    ensureScript(path: string, content: string, callback: (err: any) => any): void {
+        const callbackId = this.captureCallback(callback);
+        const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
+        this.worker.emit(EVENT_ENSURE_SCRIPT, message);
+    }
+
     removeScript(path: string, callback: (err: any) => any): void {
-        function hook(err: any) {
-            if (err) {
-                console.warn(`LanguageServiceProxy.removeScript(${path}) failed. ${err}`);
-            }
-            callback(err);
-        }
-        const callbackId = this.captureCallback(hook);
-        this.worker.emit(EVENT_REMOVE_SCRIPT, { data: { fileName: path, callbackId } });
+        const callbackId = this.captureCallback(callback);
+        const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
+        this.worker.emit(EVENT_REMOVE_SCRIPT, message);
     }
 
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {

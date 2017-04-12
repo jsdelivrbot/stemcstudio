@@ -1023,6 +1023,14 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
+        return this.languageServiceProxy.ensureModuleMapping(moduleName, fileName);
+    }
+
+    removeModuleMapping(moduleName: string): Promise<boolean> {
+        return this.languageServiceProxy.removeModuleMapping(moduleName);
+    }
+
     /**
      * 
      */

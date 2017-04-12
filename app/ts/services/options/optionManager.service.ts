@@ -25,11 +25,10 @@ const ensurePackageName = function (packageName: string): string {
  * Eventually, all TypeScript definition files will be named this way.
  */
 const INDEX_DTS = 'index.d.ts';
-/**
- * Note that this constant includes a trailing slash.
- */
-const TYPES_FOLDER = '@types/';
 
+// const VERSION_ANGULAR_CORE = '4.0.1';
+// const VERSION_ANGULAR_PLATFORM_BROWSER = '4.0.1';
+// const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.0.1';
 const VERSION_ANGULARJS = '1.5.3';
 // const VERSION_ASYNC = '1.4.2';
 const VERSION_BACONJS = '0.7.89';
@@ -49,6 +48,7 @@ const VERSION_NEWTON = '0.0.38';
 const VERSION_PLOTLY = '1.24.1';
 const VERSION_REACT = '15.4.2';
 const VERSION_REACT_DOM = '15.4.2';
+const VERSION_RxJS = '5.3.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 const VERSION_SYSTEMJS = '0.19.37';
@@ -85,7 +85,7 @@ function vendorFolder(packageFolder: string, version: string | undefined, subFol
 }
 
 // Functions defining the name of the folder and version being used.
-function angular(fileName: string): string {
+function angularJS(fileName: string): string {
     return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
 }
 /*
@@ -100,10 +100,7 @@ function biwascheme(fileName: string): string {
     return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
 }
 function csv(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-csv` : 'davinci-csv';
-    const version = isDts ? void 0 : VERSION_CSV;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('davinci-csv', VERSION_CSV, void 0, fileName);
 }
 function datGUI(fileName: string): string {
     return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
@@ -118,10 +115,7 @@ function d3(fileName: string): string {
     return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
 }
 function eight(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-eight` : 'davinci-eight';
-    const version = isDts ? void 0 : VERSION_EIGHT;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('davinci-eight', VERSION_EIGHT, void 0, fileName);
 }
 function geocas(subFolder: string, fileName: string): string {
     return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
@@ -136,34 +130,22 @@ function jquery(fileName: string): string {
     return vendorFolder('jquery', VERSION_JQUERY, 'dist', fileName);
 }
 function jsxgraph(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}jsxgraph` : 'jsxgraph';
-    const version = isDts ? void 0 : VERSION_JSXGRAPH;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
 }
 function newton(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-newton` : 'davinci-newton';
-    const version = isDts ? void 0 : VERSION_NEWTON;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('davinci-newton', VERSION_NEWTON, void 0, fileName);
 }
 function plotly(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}plotly` : 'plotly';
-    const version = isDts ? void 0 : VERSION_PLOTLY;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
 }
 function react(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}react` : 'react';
-    const version = isDts ? void 0 : VERSION_REACT;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('react', VERSION_REACT, void 0, fileName);
 }
 function reactDOM(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}react-dom` : 'react-dom';
-    const version = isDts ? void 0 : VERSION_REACT_DOM;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('react-dom', VERSION_REACT_DOM, void 0, fileName);
+}
+function RxJS(fileName: string): string {
+    return vendorFolder('RxJS', VERSION_RxJS, void 0, fileName);
 }
 function socketIoClient(fileName: string): string {
     return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
@@ -186,10 +168,7 @@ function underscore(fileName: string): string {
 }
 */
 function units(fileName: string): string {
-    const isDts = fileName.endsWith(INDEX_DTS);
-    const packageFolder = isDts ? `${TYPES_FOLDER}davinci-units` : 'davinci-units';
-    const version = isDts ? void 0 : VERSION_UNITS;
-    return vendorFolder(packageFolder, version, void 0, fileName);
+    return vendorFolder('davinci-units', VERSION_UNITS, void 0, fileName);
 }
 
 @Injectable()
@@ -200,6 +179,53 @@ export class OptionManager implements IOptionManager {
      */
     constructor() {
         this._options = [
+            /*
+            {
+                packageName: '@angular/core',
+                moduleName: '@angular/core',
+                libraryKind: LibraryKind.UMD,
+                globalName: '@angular/core',
+                description: "",
+                homepage: '',
+                version: VERSION_ANGULAR_CORE,
+                visible: true,
+                css: [],
+                dts: `/node_modules/@angular/core/core.d.ts`,
+                js: [`/jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
+                minJs: [`/jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/platform-browser',
+                moduleName: '@angular/platform-browser',
+                libraryKind: LibraryKind.UMD,
+                globalName: '@angular/platform-browser',
+                description: "",
+                homepage: '',
+                version: VERSION_ANGULAR_PLATFORM_BROWSER,
+                visible: true,
+                css: [],
+                dts: `node_modules/@angular/platform-browser/platform-browser.d.ts`,
+                js: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.js`],
+                minJs: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/platform-browser-dynamic',
+                moduleName: '@angular/platform-browser-dynamic',
+                libraryKind: LibraryKind.UMD,
+                globalName: '@angular/platform-browser-dynamic',
+                description: "",
+                homepage: '',
+                version: VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC,
+                visible: true,
+                css: [],
+                dts: `node_modules/@angular/platform-browser/platform-browser-dynamic.d.ts`,
+                js: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.js`],
+                minJs: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.min.js`],
+                dependencies: {}
+            },
+            */
             {
                 packageName: ensurePackageName('angular'),
                 moduleName: 'ng',
@@ -210,9 +236,9 @@ export class OptionManager implements IOptionManager {
                 version: VERSION_ANGULARJS,
                 visible: true,
                 css: [],
-                dts: angular('angular.d.ts'),
-                js: [angular('angular.js')],
-                minJs: [angular('angular.min.js')],
+                dts: angularJS('angular.d.ts'),
+                js: [angularJS('angular.js')],
+                minJs: [angularJS('angular.min.js')],
                 dependencies: {}
             },
             /*
@@ -397,7 +423,7 @@ export class OptionManager implements IOptionManager {
             {
                 packageName: 'jquery',
                 moduleName: 'jquery',
-                libraryKind: LibraryKind.Global,
+                libraryKind: LibraryKind.UMD,
                 globalName: '$',
                 description: "The Write Less, Do More, JavaScript Library.",
                 homepage: 'https://jquery.com',
@@ -503,6 +529,21 @@ export class OptionManager implements IOptionManager {
                 js: [reactDOM('react-dom.js')],
                 minJs: [reactDOM('react-dom.min.js')],
                 dependencies: { 'react': VERSION_REACT }
+            },
+            {
+                packageName: 'rxjs/Rx',
+                moduleName: 'rxjs/Rx',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'Rx',
+                description: "The ReactiveX library for JavaScript.",
+                homepage: 'reactivex.io/rxjs/',
+                version: VERSION_RxJS,
+                visible: true,
+                css: [],
+                dts: RxJS(INDEX_DTS),
+                js: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RxJS}/dist/global/Rx.js`],
+                minJs: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RxJS}/dist/global/Rx.js`],
+                dependencies: {}
             },
             {
                 packageName: ensurePackageName('socket.io-client'),

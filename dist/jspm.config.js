@@ -31,7 +31,7 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.4",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.6",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -374,7 +374,7 @@ System.config({
       "bn.js": "npm:bn.js@4.11.6",
       "brorand": "npm:brorand@1.1.0",
       "hash.js": "npm:hash.js@1.0.3",
-      "hmac-drbg": "npm:hmac-drbg@1.0.0",
+      "hmac-drbg": "npm:hmac-drbg@1.0.1",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
@@ -479,7 +479,7 @@ System.config({
     "npm:hash.js@1.0.3": {
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:hmac-drbg@1.0.0": {
+    "npm:hmac-drbg@1.0.1": {
       "hash.js": "npm:hash.js@1.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",

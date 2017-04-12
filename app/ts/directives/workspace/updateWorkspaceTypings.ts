@@ -7,7 +7,18 @@ import scriptURL from './scriptURL';
 import WsModel from '../../modules/wsmodel/services/WsModel';
 
 interface Unit {
+    /**
+     * The package name is usedfor uniqueness.
+     */
     packageName: string;
+    /**
+     * The module name ties the name used by JSPM to that used by the Language Service.
+     */
+    moduleName: string;
+    /**
+     * The vendor folder path or a full URL.
+     * This is important because we want to fetch the contents.
+     */
     dts: string;
 }
 
@@ -63,16 +74,16 @@ export default function updateWorkspaceTypings(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, optionManager);
 
-    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });
+    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName, dts: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, optionManager);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, dts: option.dts }; });
+    let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName, dts: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {
-        addUnits = addUnits.concat({ packageName: 'lib', dts: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
+        addUnits = addUnits.concat({ packageName: 'lib', moduleName: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, dts: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
     }
 
     /**
@@ -97,7 +108,6 @@ export default function updateWorkspaceTypings(
     };
 
     rmvUnits.forEach((rmvUnit) => {
-        // TODO: We could key by something else here.
         wsModel.removeScript(rmvUnit.dts, (err) => {
             if (!err) {
                 const index = olds.indexOf(rmvUnit.packageName);
@@ -109,6 +119,7 @@ export default function updateWorkspaceTypings(
                 console.warn(`removeScript(${rmvUnit.dts}) failed. ${err}`);
             }
         });
+        wsModel.removeModuleMapping(rmvUnit.moduleName);
     });
 
     // Make sure that the callback gets called, even when adding no files.
@@ -126,7 +137,6 @@ export default function updateWorkspaceTypings(
             inFlightCount++;
             readFile(addUnit.dts, (err, content) => {
                 if (!err) {
-                    // TODO: We could key by something different here.
                     if (content) {
                         wsModel.ensureScript(addUnit.dts, content.replace(/\r\n?/g, '\n'), (err) => {
                             if (!err) {
@@ -136,6 +146,7 @@ export default function updateWorkspaceTypings(
                                 console.warn(`ensureScript(${addUnit.dts}) failed. ${err}`);
                             }
                         });
+                        wsModel.ensureModuleMapping(addUnit.moduleName, addUnit.dts);
                     }
                 }
                 inFlightCount--;
