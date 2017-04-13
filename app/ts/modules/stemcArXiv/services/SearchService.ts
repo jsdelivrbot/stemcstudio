@@ -5,6 +5,9 @@ import IStemcArXiv from '../StemcArXiv';
 import ISubmitParams from '../SubmitParams';
 import ISubmitResponse from '../SubmitResponse';
 
+/**
+ * TODO: Migrate from AngularJS to Angular.
+ */
 export default class SearchService implements IStemcArXiv {
 
     public static $inject: string[] = ['$q', '$http'];

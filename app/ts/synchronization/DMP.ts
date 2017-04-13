@@ -2048,7 +2048,7 @@ export default class DMP {
             const patchCopy = new Patch();
             patchCopy.diffs = [];
             for (let y = 0; y < patch.diffs.length; y++) {
-                patchCopy.diffs[y] = patch.diffs[y].slice();
+                patchCopy.diffs[y] = patch.diffs[y].slice() as [number, string];
             }
             patchCopy.start1 = patch.start1;
             patchCopy.start2 = patch.start2;

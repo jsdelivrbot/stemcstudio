@@ -5,6 +5,6 @@
  * 
  * When a diff is computed, the Diff[] contains sufficient information to compute both the source and resulting document.
  */
-type Diff = (number | string)[];
+type Diff = [number, string];
 
 export default Diff;

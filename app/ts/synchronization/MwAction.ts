@@ -1,8 +1,16 @@
 /**
  * 
  */
-interface MwAction {
-    c: 'R' | 'r' | 'D' | 'd' | 'N' | 'n';
+export type MwActionType = 'R' | 'r' | 'D' | 'd' | 'N' | 'n';
+
+/**
+ * 
+ */
+export interface MwAction {
+    /**
+     * The type indicates how the data should be applied.
+     */
+    c: MwActionType;
 
     /**
      * The local version number that the diff was made from.

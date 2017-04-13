@@ -87,6 +87,14 @@ const workerUrl = '/js/worker.js';
  */
 type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
 
+const LANGUAGE_SERVICE_NOT_AVAILABLE = "Language Service is not available";
+
+function noLanguageServicePromise<T>(): Promise<T> {
+    return new Promise<T>(function (resolve, reject) {
+        reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+    });
+}
+
 /**
  * Syntax and Semantic diagnostics are reported to the user as errors.
  * Lint diagnostics are reported as warning.
@@ -1024,11 +1032,21 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
-        return this.languageServiceProxy.ensureModuleMapping(moduleName, fileName);
+        if (this.languageServiceProxy) {
+            return this.languageServiceProxy.ensureModuleMapping(moduleName, fileName);
+        }
+        else {
+            return noLanguageServicePromise<boolean>();
+        }
     }
 
     removeModuleMapping(moduleName: string): Promise<boolean> {
-        return this.languageServiceProxy.removeModuleMapping(moduleName);
+        if (this.languageServiceProxy) {
+            return this.languageServiceProxy.removeModuleMapping(moduleName);
+        }
+        else {
+            return noLanguageServicePromise<boolean>();
+        }
     }
 
     /**
@@ -2347,14 +2365,18 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     isConnectedToRoom(): boolean {
-        return !!this.room;
+        const isConnected = !!this.room;
+        // console.lg(`WsModel.isConnectedToRoom => ${isConnected}`);
+        return isConnected;
     }
 
     isRoomOwner(owner: string): boolean | undefined {
         if (this.room) {
+            // console.lg(`WsModel.isRoomOwner('${owner}') owned by ${this.room.owner}`);
             return this.room.owner === owner;
         }
         else {
+            // console.lg(`WsModel.isRoomOwner('${owner}') (room is not defined)`);
             // TODO: We probably should throw here.
             return void 0;
         }

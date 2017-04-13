@@ -17,10 +17,10 @@ export default function addLeadingPadding(patches: Patch[], paddingLength: numbe
         patch.length1 += paddingLength;
         patch.length2 += paddingLength;
     }
-    else if (paddingLength > (<string>diffs[0][1]).length) {
+    else if (paddingLength > diffs[0][1].length) {
         // Grow first equality.
-        const extraLength = paddingLength - (<string>diffs[0][1]).length;
-        diffs[0][1] = nullPadding.substring((<string>diffs[0][1]).length) + diffs[0][1];
+        const extraLength = paddingLength - diffs[0][1].length;
+        diffs[0][1] = nullPadding.substring(diffs[0][1].length) + diffs[0][1];
         patch.start1 -= extraLength;
         patch.start2 -= extraLength;
         patch.length1 += extraLength;

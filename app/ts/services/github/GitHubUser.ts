@@ -1,4 +1,4 @@
-interface GitHubUser {
+export interface GitHubUser {
     avatar_url: string | undefined;
     bio: any;
     blog: string;

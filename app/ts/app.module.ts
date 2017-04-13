@@ -11,6 +11,7 @@ import { CredentialsService } from './services/credentials/credentials.service';
 // import { GitHubService } from './services/github/github.service';
 import { GitHubUserService } from './services/github/github.user.service';
 import { OptionManager } from './services/options/optionManager.service';
+import { RoomsService } from './modules/rooms/services/rooms.service';
 import { UuidService } from './services/uuid/uuid.service';
 
 import { AppComponent } from './app.component';
@@ -37,6 +38,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         GitHubUserService,
         // GitHubService,
         OptionManager,
+        RoomsService,
         UuidService
     ],
     // the view classes are either component, directive, or pipe dependencies.

@@ -18,8 +18,6 @@ export interface RoomParams {
     public: boolean;
 }
 
-import { IPromise } from 'angular';
-
 export interface Room {
     id: string;
     owner: string;
@@ -32,19 +30,19 @@ export interface Room {
  */
 export interface IRoomsService {
     /**
-     * 
+     * Creating a room is normally done from a RoomController.
      */
-    createRoom(params: RoomParams): IPromise<RoomAgent>;
+    createRoom(params: RoomParams): Promise<RoomAgent>;
 
     /**
      * 
      */
-    getRoom(roomId: string): IPromise<RoomAgent>;
+    getRoom(roomId: string): Promise<RoomAgent>;
 
     /**
      * 
      */
-    destroyRoom(roomId: string): IPromise<boolean>;
+    destroyRoom(roomId: string): Promise<boolean>;
 }
 
 /**

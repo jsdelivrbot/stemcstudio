@@ -6,6 +6,13 @@ import MwBroadcast from './server/synchronization/MwBroadcast';
 import MwEdits from './server/synchronization/MwEdits';
 
 /**
+ * A summary of the edits, for debugging purposes.
+ */
+function summarize(edits: MwEdits) {
+    return edits.x.map(change => { return { type: change.a.c, local: change.a.n, remote: change.m }; });
+}
+
+/**
  * Keep track of the remote nodeId served by the socket so that we can dispatch broadcast messages.
  */
 const socketByNodeId: { [nodeId: string]: SocketIO.Socket } = {};
@@ -28,11 +35,13 @@ export default function sockets(app: Express, server: Server) {
         console.log('A socket connected.');
 
         //
-        //
+        // A download request is received when a user joins a room.
         //
         socket.on('download', function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
             const { fromId, roomId } = data;
-            // console.lg(`download(${roomId}) request received from ${fromId}.`);
+
+            console.log(`receiving download request from node '${fromId}'.`);
+
             getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
                     const { files } = data;
@@ -49,7 +58,9 @@ export default function sockets(app: Express, server: Server) {
         //
         socket.on('join', function (data: { fromId: string, roomId: string }, ack: () => any) {
             const { fromId, roomId } = data;
-            // console.lg(`join(${roomId}) request received from ${fromId}.`);
+
+            console.log(`join(roomId => ${roomId}) request received from fromId => ${fromId}.`);
+
             socketByNodeId[fromId] = socket;
 
             socket.leaveAll();
@@ -68,8 +79,14 @@ export default function sockets(app: Express, server: Server) {
             });
         });
 
+        //
+        // edits are received when a room is created (by the owner), and whenever changes are made.
+        //
         socket.on('edits', function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
             const { fromId, roomId, path, edits } = data;
+
+            console.log(`node '${fromId}' sending '${path}' edits: ${JSON.stringify(summarize(edits))}`);
+
             socketByNodeId[fromId] = socket;
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
             setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
@@ -82,24 +99,26 @@ export default function sockets(app: Express, server: Server) {
                             for (let i = 0; i < nodeIds.length; i++) {
                                 const nodeId = nodeIds[i];
                                 const edits = broadcast[nodeId];
-                                // console.lg(`edits for ${path} from ${roomId} going to room ${nodeId}`);
-                                // console.lg(JSON.stringify(edits, null, 2));
                                 const target = socketByNodeId[nodeId];
                                 if (target) {
+                                    console.log(`room sending '${path}' edits: ${JSON.stringify(summarize(edits))} to node '${nodeId}'.`);
                                     target.emit('edits', { fromId: roomId, roomId: nodeId, path, edits });
+                                }
+                                else {
+                                    console.log(`No emit in response to setting edits for node '${nodeId}'.`);
                                 }
                             }
                         }
                         else {
-                            // console.lg("No broadcast in response to setting edits.");
+                            console.log("No broadcast in response to setting edits.");
                         }
                     }
                     else {
-                        // console.lg("No data in response to setting edits.");
+                        console.log("No data in response to setting edits.");
                     }
                 }
                 else {
-                    // console.lg(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
+                    console.log(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                 }
             });
         });

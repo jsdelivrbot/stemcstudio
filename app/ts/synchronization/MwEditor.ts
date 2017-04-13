@@ -17,7 +17,7 @@ interface MwEditor {
     setText(text: string): void;
 
     /**
-     * Returns an array of booolean flags indicating whether each patch could be applied.
+     * Returns an array of boolean flags indicating whether each patch could be applied.
      */
     patch(patches: Patch[]): boolean[];
 

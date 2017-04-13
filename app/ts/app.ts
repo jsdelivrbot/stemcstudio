@@ -62,11 +62,15 @@ import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from './services/creden
 import { CredentialsService } from './services/credentials/credentials.service';
 import AppScope from './scopes/AppScope';
 import { COOKIE_SERVICE_UUID, ICookieService } from './services/cookie/ICookieService';
+import { RoomsService } from './modules/rooms/services/rooms.service';
+import { ROOMS_SERVICE_UUID } from './modules/rooms/api';
+
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
+import { RoomsController } from './modules/rooms/controllers/rooms.controller';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
@@ -90,7 +94,6 @@ import propsFilter from './filters/propsFilter';
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
 import preferences from './modules/preferences/index';
-import rooms from './modules/rooms/index';
 /**
  * The module for TypeScript Linting.
  */
@@ -144,7 +147,6 @@ const app = module('app', [
     'ui.router',
     'ui.select',
     preferences.name,
-    rooms.name,
     stemcArXiv.name,
     tslint.name,
     editors.name,
@@ -170,7 +172,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.9');
+app.constant('version', '2.24.10');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -258,6 +260,11 @@ const HOME_CONTROLLER_NAME = 'HomeController';
 app.controller(HOME_CONTROLLER_NAME, HomeController);
 
 /**
+ * 
+ */
+app.controller('rooms-controller', RoomsController);
+
+/**
  * The following controllers will be referenced from a template.
  */
 app.controller('facebook-login-controller', FacebookLoginController);
@@ -288,6 +295,7 @@ app.service(DOODLE_MANAGER_SERVICE_UUID, DoodleManager);
 app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
 app.service(NAVIGATION_SERVICE_UUID, NavigationService);
 app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));
+app.factory(ROOMS_SERVICE_UUID, downgradeInjectable(RoomsService));
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
 
 //

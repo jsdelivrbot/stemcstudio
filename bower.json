@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.9",
+  "version": "2.24.10",
   "description": "Expressing Ideas through Computational Modeling",
   "homepage": "https://github.com/geometryzen/STEMCstudio",
   "authors": [
@@ -31,10 +31,10 @@
     "angular-ui-router": "^0.3.2",
     "angular-uuid4": "^0.3.1",
     "async": "^2.0.1",
-    "aws-sdk-js": "^2.13.0",
+    "aws-sdk-js": "^2.41.0",
     "bootstrap": "^3.3.7",
     "bootstrap3-dialog": "^1.35.3",
-    "dat-gui": "^0.6.2",
+    "dat-gui": "^0.6.4",
     "davinci-eight": "6.0.7",
     "davinci-mathscript": "^1.2.2",
     "davinci-units": "^1.5.5",

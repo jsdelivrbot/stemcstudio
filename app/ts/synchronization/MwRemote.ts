@@ -1,6 +1,7 @@
 import Diff from './Diff';
 import DMP from './DMP';
 import isChanged from './isChanged';
+import { MwActionType } from './MwAction';
 import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
@@ -11,6 +12,9 @@ import FzSerializable from './ds/FzSerializable';
 
 const dmp = new DMP();
 
+/**
+ * Maintains a snapshot of remote documents
+ */
 export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * 
@@ -23,7 +27,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     backup: MwShadow | undefined;
 
     /**
-     * The edits by destination node identifier.
+     * The edits (changes) by destination node identifier.
      */
     private edits: MwBroadcast = {};
 
@@ -34,6 +38,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         // Do nothing.
     }
 
+    /**
+     * Returns the edits for a specified destination node.
+     */
     getEdits(nodeId: string): MwEdits {
         return this.edits[nodeId];
     }
@@ -136,6 +143,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     discardChanges(nodeId: string) {
         delete this.edits[nodeId];
     }
+
     /**
      * Converts the delta to a Diff[] using the shadow text.
      * Increments the remote version number.
@@ -143,13 +151,13 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      *
      * @param nodeId The target node identifier.
      * @param editor
-     * @param code
+     * @param code The action type is expected to be 'D' or 'd'.
      * @param delta The encoded differences.
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(nodeId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number) {
-        const shadow = <MwShadow>this.shadow;
+    patchDelta(nodeId: string, editor: MwEditor, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number) {
+        const shadow = this.shadow as MwShadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
         // Handle the case where one party initiates with a Raw message and other party acknowledges with a Delta.

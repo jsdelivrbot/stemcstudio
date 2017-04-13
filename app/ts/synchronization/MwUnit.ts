@@ -14,7 +14,7 @@ import dehydrateMap from './ds/dehydrateMap';
  * The smallest level of synchronization (a file).
  */
 export default class MwUnit implements FzSerializable<FzUnit> {
-    private editor: MwEditor;
+    private editor: MwEditor | undefined;
     private remotes: { [nodeId: string]: MwRemote } = {};
     constructor(private workspace: MwWorkspace) {
         // Do nothing yet.

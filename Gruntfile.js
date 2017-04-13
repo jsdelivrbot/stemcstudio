@@ -15,6 +15,9 @@ module.exports = function (grunt) {
         // Copying the tsconfig file is for the benefit of the IDE.
         // The build simply uses the appropriate tsconfig.(app/web).json file.
         copy: {
+            rad: {
+
+            },
             dev: {
                 files: copies('generated')
             },
@@ -184,8 +187,9 @@ module.exports = function (grunt) {
     grunt.registerTask('app', "Set up environment for front-end development.", ['copy:app']);
     grunt.registerTask('web', "Set up environment for back-end development. ", ['copy:web']);
 
+    grunt.registerTask('rad', "Build for rapid development. ", ['ts:app', 'ts:web']);
     grunt.registerTask('dev', "Build for development. ", ['clean', 'ngtemplates', 'ts:app', 'copy:dev', 'less:dev', 'ts:web']);
-    grunt.registerTask('dst', "Build for distribution.", ['clean', 'ngtemplates', 'ts:app', 'copy:dev', 'less:dev', 'ts:web', 'tslint', 'less:dst', 'copy:dst', 'bundle']);
+    grunt.registerTask('dst', "Build for production.", ['clean', 'ngtemplates', 'ts:app', 'copy:dev', 'less:dev', 'ts:web', 'tslint', 'less:dst', 'copy:dst', 'bundle']);
 
     grunt.registerTask('default', ['dst']);
 };

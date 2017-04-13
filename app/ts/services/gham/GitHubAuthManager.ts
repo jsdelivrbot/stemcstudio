@@ -1,6 +1,7 @@
 import { IHttpService, ILocationService, IWindowService } from 'angular';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
 import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../github/IGitHubUserService';
+import { GitHubUser } from '../github/GitHubUser';
 import { IGitHubAuthManager } from './IGitHubAuthManager';
 import IGitHubItem from './IGitHubItem';
 
@@ -66,8 +67,9 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                             const token = data.token;
                             if (token) {
                                 this.cookieService.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
+                                // TODO: Why does the user require the interface type annotation?
                                 this.githubService.getUser()
-                                    .then((user) => {
+                                    .then((user: GitHubUser) => {
                                         this.cookieService.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                                         done(null, token);
                                     })

@@ -11,6 +11,10 @@ export default class UnitListener implements RoomListener {
     constructor(private workspace: WsModel) {
         // Do something soon.
     }
+
+    /**
+     *
+     */
     setEdits(nodeId: string, path: string, edits: MwEdits): void {
         const file = this.workspace.getFileWeakRef(path);
         if (file) {
