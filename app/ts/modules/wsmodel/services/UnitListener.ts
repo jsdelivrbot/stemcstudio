@@ -1,4 +1,4 @@
-import RoomListener from '../../rooms/RoomListener';
+import { RoomListener } from '../../rooms/RoomListener';
 import MwEdits from '../../../synchronization/MwEdits';
 import MwEditor from '../../../synchronization/MwEditor';
 import MwUnit from '../../../synchronization/MwUnit';
@@ -13,7 +13,7 @@ export default class UnitListener implements RoomListener {
     }
 
     /**
-     *
+     * Handles 'edits' sent down from the remote server.
      */
     setEdits(nodeId: string, path: string, edits: MwEdits): void {
         const file = this.workspace.getFileWeakRef(path);
@@ -26,7 +26,6 @@ export default class UnitListener implements RoomListener {
                 const editor: MwEditor = this.workspace.createEditor();
                 file.unit.setEditor(editor);
                 file.unit.setEdits(nodeId, edits);
-                // console.warn(`MwUnit not found for path ${path}.`);
             }
         }
         else {

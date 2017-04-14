@@ -10,6 +10,10 @@ import MwWorkspace from './MwWorkspace';
 import FzRemote from './ds/FzRemote';
 import dehydrateMap from './ds/dehydrateMap';
 
+function summarize(edits: MwEdits) {
+    return edits.x.map(change => { return { type: change.a.c, local: change.a.n, remote: change.m }; });
+}
+
 /**
  * The smallest level of synchronization (a file).
  */
@@ -20,11 +24,11 @@ export default class MwUnit implements FzSerializable<FzUnit> {
         // Do nothing yet.
     }
     dehydrate(): FzUnit {
-        const unit: FzUnit = {
+        const unit = {
             e: this.editor ? { t: this.editor.getText() } : void 0,
             k: dehydrateMap<FzRemote>(this.remotes)
         };
-        return unit;
+        return unit as FzUnit;
     }
     rehydrate(value: FzUnit): void {
         const mapLinks = (links: { [nodeId: string]: FzRemote }): { [fileId: string]: MwRemote } => {
@@ -64,17 +68,21 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     getEdits(nodeId: string): MwEdits {
         const remote = this.ensureRemote(nodeId);
         if (this.editor) {
-            const change = this.captureFile(nodeId);
+            const change = this.captureFile(nodeId) as MwChange;
             remote.addChange(nodeId, change);
         }
         return remote.getEdits(nodeId);
     }
     getEditor(): MwEditor {
-        return this.editor;
+        return this.editor as MwEditor;
     }
     setEditor(editor: MwEditor): void {
         this.editor = editor;
     }
+
+    /**
+     * 
+     */
     removeEditor(): void {
         const editor = this.editor;
         if (editor) {
@@ -85,11 +93,15 @@ export default class MwUnit implements FzSerializable<FzUnit> {
             const nodeIds = Object.keys(this.remotes);
             for (let n = 0; n < nodeIds.length; n++) {
                 const nodeId = nodeIds[n];
-                const remote = this.remotes[nodeId];
-                remote.addChange(nodeId, remote.removeFile());
+                const remote = this.remotes[nodeId] as MwRemote;
+                remote.addChange(nodeId, remote.removeFile() as MwChange);
             }
         }
     }
+
+    /**
+     *
+     */
     private addRemote(nodeId: string, remote: MwRemote): void {
         this.remotes[nodeId] = remote;
     }
@@ -97,10 +109,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     /**
      * 
      */
-    private captureFile(nodeId: string): MwChange {
+    private captureFile(nodeId: string): MwChange | undefined {
         const remote = this.ensureRemote(nodeId);
-        const shadow: MwShadow = remote.shadow;
-        const editor: MwEditor = this.editor;
+        const shadow = remote.shadow;
+        const editor = this.editor;
         if (editor) {
             const text = editor.getText();
             if (shadow) {
@@ -130,10 +142,13 @@ export default class MwUnit implements FzSerializable<FzUnit> {
             throw new Error("Must be an editor to capture a file.");
         }
     }
+
+    /**
+     * 
+     */
     ensureRemote(nodeId: string): MwRemote {
         const existing = this.remotes[nodeId];
         if (!existing) {
-            // TODO: We need a MwRemoteFactory!
             const remote = new MwRemote();
             this.addRemote(nodeId, remote);
             return remote;
@@ -144,55 +159,51 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     }
 
     /**
-     * @param nodeId The identifier of the node or room that the edits came from.
-     * @param edits
+     * Handles 'edits' sent from the remote server.
+     * The UnitListener has already dispatched to this MwUnit based upon the file 'path' property.
+     * nodeId is the identifier of the node or room that the edits came from.
+     * edits are the changes.
      */
     public setEdits(nodeId: string, edits: MwEdits): void {
-        /*
-        if (edit.t !== this.id) {
-            throw new Error(`edit ${edit.t} is not for this node ${this.id}`);
-        }
-        */
+        console.log(`MwUnit.setEdits: ${JSON.stringify(summarize(edits))} received from node ${nodeId}`);
         const remote = this.ensureRemote(nodeId);
-        const iLen = edits.x.length;
-        for (let i = 0; i < iLen; i++) {
-            const change = edits.x[i];
+        for (const change of edits.x) {
             const action = change.a;
             if (action) {
                 switch (action.c) {
                     case 'R': {
                         const editor = this.ensureEditor();
-                        const text = decodeURI(<string>action.x);
+                        const text = decodeURI(action.x as string);
                         editor.setText(text);
                         const shadow = remote.ensureShadow();
                         // The action local version becomes our remote version.
-                        shadow.updateRaw(text, action.n);
+                        shadow.updateRaw(text, action.n as number);
                         remote.discardChanges(nodeId);
-                    }
                         break;
+                    }
                     case 'r': {
-                        const text = decodeURI(<string>action.x);
-                        const shadow = remote.shadow;
+                        const text = decodeURI(action.x as string);
+                        const shadow = remote.shadow as MwShadow;
                         // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
                         // The action local version becomes our remote version.
-                        shadow.updateRaw(text, action.n);
+                        shadow.updateRaw(text, action.n as number);
                         remote.discardChanges(nodeId);
-                    }
                         break;
+                    }
                     case 'D':
                     case 'd': {
-                        const editor = this.editor;
-                        const shadow = remote.shadow;
-                        const backup = remote.backup;
+                        const editor = this.editor as MwEditor;
+                        const shadow = remote.shadow as MwShadow;
+                        const backup = remote.backup as MwShadow;
                         // The change remote version becomes our local version.
                         // The action local version becomes our remote version.
-                        remote.patchDelta(nodeId, editor, action.c, <string[]>action.x, change.m, action.n);
+                        remote.patchDelta(nodeId, editor, action.c, action.x as string[], change.m, action.n as number);
                         backup.copy(shadow);
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);
                         }
-                    }
                         break;
+                    }
                     case 'N':
                     case 'n': {
                         this.removeEditor();
@@ -200,10 +211,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                             remote.discardActionsLe(nodeId, change.m);
                         }
                         remote.discardChanges(nodeId);
-                    }
                         break;
+                    }
                     default: {
-                        console.warn(`Unknown code: ${action.c}`);
+                        console.warn(`Unknown action code: ${action.c}`);
                     }
                 }
             }
@@ -214,6 +225,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
             }
         }
     }
+
+    /**
+     * 
+     */
     ensureEditor(): MwEditor {
         if (!this.editor) {
             this.editor = this.workspace.createEditor();

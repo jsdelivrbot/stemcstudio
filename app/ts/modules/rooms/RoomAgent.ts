@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import RoomListener from './RoomListener';
+import { RoomListener } from './RoomListener';
 import Shareable from '../../base/Shareable';
 import { SocketZen } from './SocketZen';
 import MwEdits from '../../synchronization/MwEdits';
@@ -11,11 +11,9 @@ const SOCKET_EVENT_EDITS = 'edits';
 /**
  * A summary of the edits, for debugging purposes.
  */
-/*
 function summarize(edits: MwEdits) {
     return edits.x.map(change => { return { type: change.a.c, local: change.a.n, remote: change.m }; });
 }
-*/
 
 /**
  * A proxy for the room on the remote server.
@@ -60,7 +58,7 @@ export default class RoomAgent implements Shareable {
     constructor(roomId: string, owner: string) {
         this.roomId = roomId;
         this.owner = owner;
-        // console.lg(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
+        console.log(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
 
         // Maybe can't use secure if doing localhost?
         this.socket = new SocketZen(io.connect({ autoConnect: false/*, secure: true*/ }));
@@ -155,12 +153,12 @@ export default class RoomAgent implements Shareable {
     }
 
     /**
-     *
+     * Typesafe method for emitting 'edits' to the remote server.
      */
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        // console.lg(`Sending edits ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}.`);
+        console.log(`Sending edits ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}.`);
         this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
             // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
         });
@@ -174,7 +172,7 @@ export default class RoomAgent implements Shareable {
         // We can use it as either a safety check or to future proof for multiple client rooms per socket.
         const { fromId, roomId, path, edits } = data;
         if (fromId === this.roomId && roomId === this.nodeId) {
-            // console.lg(`${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} received for this node ${this.nodeId}`);
+            console.log(`${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} received for this node ${this.nodeId}`);
             for (const roomListener of this.roomListeners) {
                 roomListener.setEdits(fromId, path, edits);
             }
