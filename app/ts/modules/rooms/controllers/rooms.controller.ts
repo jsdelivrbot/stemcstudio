@@ -116,9 +116,8 @@ export class RoomsController {
         if (this.isJoinRoomEnabled()) {
             this.modalDialog.prompt({ title: TITLE_JOIN_ROOM, message: "Please enter the name of the collaboration room you would like to join.", text: "", placeholder: "r1234567" })
                 .then((roomId) => {
-                    this.roomsService.getRoom(roomId)
-                        .then((room: RoomAgent) => {
-                            room.release();
+                    this.roomsService.existsRoom(roomId)
+                        .then(() => {
                             this.navigation.gotoRoom(roomId);
                         })
                         .catch((reason) => {
@@ -150,8 +149,11 @@ export class RoomsController {
         if (this.isLeaveRoomEnabled()) {
             const room = this.wsModel.disconnectFromRoom();
             if (room) {
-                room.release();
-                this.navigation.gotoDoodle(label, value);
+                room.disconnect()
+                    .then(() => {
+                        room.release();
+                        this.navigation.gotoDoodle(label, value);
+                    });
             }
             else {
                 console.warn("disconnectFromRoom did not return a room.");

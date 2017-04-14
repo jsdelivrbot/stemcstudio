@@ -37,12 +37,17 @@ export interface IRoomsService {
     /**
      * 
      */
+    existsRoom(roomId: string): Promise<void>;
+
+    /**
+     * 
+     */
     getRoom(roomId: string): Promise<RoomAgent>;
 
     /**
      * 
      */
-    destroyRoom(roomId: string): Promise<boolean>;
+    destroyRoom(roomId: string): Promise<void>;
 }
 
 /**

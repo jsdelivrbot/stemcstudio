@@ -1,15 +1,21 @@
 import io from 'socket.io-client';
 import RoomListener from './RoomListener';
 import Shareable from '../../base/Shareable';
+import { SocketZen } from './SocketZen';
 import MwEdits from '../../synchronization/MwEdits';
 import uniqueId from '../../synchronization/uniqueId';
+
+const SOCKET_EVENT_DOWNLOAD = 'download';
+const SOCKET_EVENT_EDITS = 'edits';
 
 /**
  * A summary of the edits, for debugging purposes.
  */
+/*
 function summarize(edits: MwEdits) {
     return edits.x.map(change => { return { type: change.a.c, local: change.a.n, remote: change.m }; });
 }
+*/
 
 /**
  * A proxy for the room on the remote server.
@@ -36,7 +42,7 @@ export default class RoomAgent implements Shareable {
     /**
      * The socket connection to the server.
      */
-    private _socket: SocketIOClient.Socket | undefined;
+    private socket: SocketZen;
 
     /**
      * The reference count is 1 immediately following construction.
@@ -54,68 +60,34 @@ export default class RoomAgent implements Shareable {
     constructor(roomId: string, owner: string) {
         this.roomId = roomId;
         this.owner = owner;
-        console.log(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
+        // console.lg(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
 
-        // If we don't autoConnect, then how do we connect?
         // Maybe can't use secure if doing localhost?
-        this._socket = io.connect({ autoConnect: false/*, secure: true*/ });
-        this._socket.on('message', function message(socket: any) {
-            console.log("RoomAgent socket message");
-        });
-        this._socket.on('disconnect', function disconnect() {
-            // We do get this if the server goes down.
-            console.log("RoomAgent got disconnect");
-        });
-        this._socket.on('connect', function connect() {
-            // This is received when we connect to a server that is already running.
-            // We also get this message as the last message when the server comes back up.
-            console.log("RoomAgent successfully established a working connection.");
-        });
-        this._socket.on('connecting', function () {
-            // I see this message when I don't auto connect.
-            console.log("RoomAgent socket connecting");
-        });
-        this._socket.on('connect_failed', function () {
-            // Haven't seen this.
-            console.log("RoomAgent socket connect_failed");
-        });
-        this._socket.on('error', function error(reason: any) {
-            // Haven't seen this.
-            console.error("Unable to connect Socket.IO", reason);
-        });
-        this._socket.on('reconnect_failed', function () {
-            // Haven't seen this.
-            console.warn("RoomAgent socket reconnect_failed");
-        });
-        this._socket.on('reconnect', function () {
-            // We get this event first when the server goes down.
-            // We also get it as the server comes up before we get another connect message.
-            console.warn("RoomAgent socket reconnect");
-        });
-        this._socket.on('reconnecting', () => {
-            // We get this repeatedly when the server is down.
-            console.log(`Room ${roomId} Agent nodeId => ${this.nodeId} socket reconnecting`);
-        });
-        this._socket.on('edits', (data: { fromId: string, roomId: string; path: string; edits: MwEdits }) => {
-            // Having the roomId sent back seems a bit redundant since this room agent already knows it.
-            // We can use it as either a safety check or to future proof for multiple client rooms per socket.
-            const { fromId, roomId, path, edits } = data;
-            if (fromId === this.roomId && roomId === this.nodeId) {
-                console.log(`edits: ${JSON.stringify(summarize(edits))} received for this node ${this.nodeId}`);
-                for (const roomListener of this.roomListeners) {
-                    roomListener.setEdits(fromId, path, edits);
-                }
-            }
-            else {
-                console.warn(`edits received with fromId ${fromId}`);
-                console.warn(`edits received with roomId ${roomId}`);
-                console.warn(`this.roomId => ${this.roomId}`);
-                console.warn(`this.nodeId => ${this.nodeId}`);
-            }
-        });
+        this.socket = new SocketZen(io.connect({ autoConnect: false/*, secure: true*/ }));
+
         // We'd rather connect outside the constructor, but OK for now.
-        this._socket.connect();
+        this.connect();
     }
+
+    /**
+     * 
+     */
+    connect(): Promise<void> {
+        this.socket.on(SOCKET_EVENT_EDITS, this.editsHandler);
+        return this.socket.connect();
+    }
+
+    /**
+     * 
+     */
+    disconnect(): Promise<void> {
+        this.socket.off(SOCKET_EVENT_EDITS, this.editsHandler);
+        return this.socket.disconnect();
+    }
+
+    /**
+     * 
+     */
     addRef(): number {
         if (this.refCount <= 0) {
             throw new Error(`RoomAgent.addRef when refCount is ${this.refCount}`);
@@ -123,6 +95,10 @@ export default class RoomAgent implements Shareable {
         this.refCount++;
         return this.refCount;
     }
+
+    /**
+     * 
+     */
     release(): number {
         if (this.refCount <= 0) {
             throw new Error(`RoomAgent.release when refCount is ${this.refCount}`);
@@ -133,21 +109,26 @@ export default class RoomAgent implements Shareable {
         }
         return this.refCount;
     }
+
+    /**
+     * 
+     */
     protected destructor(): void {
-        // How does this clean up the room on the server side?
-        // Does it happen through the socket disconnection?
-        // What happens if there are room listeners at this point?
-        if (this._socket) {
-            if (this._socket.connected) {
-                this._socket.disconnect();
-            }
-            this._socket = void 0;
+        if (this.socket.connected) {
+            this.socket.disconnect();
         }
     }
+
+    /**
+     * 
+     */
     addListener(roomListener: RoomListener): void {
-        // TODO: The fact that we can listen suggests an Observable.
         this.roomListeners.push(roomListener);
     }
+
+    /**
+     * 
+     */
     removeListener(roomListener: RoomListener): void {
         const index = this.roomListeners.indexOf(roomListener);
         if (index >= 0) {
@@ -168,11 +149,9 @@ export default class RoomAgent implements Shareable {
      */
     download(callback: (err: any, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
-        if (this._socket) {
-            this._socket.emit('download', params, (err: any, files: { [path: string]: MwEdits }) => {
-                callback(err, files);
-            });
-        }
+        this.socket.emit(SOCKET_EVENT_DOWNLOAD, params, (err: any, files: { [path: string]: MwEdits }) => {
+            callback(err, files);
+        });
     }
 
     /**
@@ -181,11 +160,30 @@ export default class RoomAgent implements Shareable {
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        if (this._socket) {
-            console.log(`Sending edits ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}.`);
-            this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
-                console.log(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
-            });
+        // console.lg(`Sending edits ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}.`);
+        this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
+            // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
+        });
+    }
+
+    /**
+     * 
+     */
+    private editsHandler = (data: { fromId: string, roomId: string; path: string; edits: MwEdits }) => {
+        // Having the roomId sent back seems a bit redundant since this room agent already knows it.
+        // We can use it as either a safety check or to future proof for multiple client rooms per socket.
+        const { fromId, roomId, path, edits } = data;
+        if (fromId === this.roomId && roomId === this.nodeId) {
+            // console.lg(`${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} received for this node ${this.nodeId}`);
+            for (const roomListener of this.roomListeners) {
+                roomListener.setEdits(fromId, path, edits);
+            }
+        }
+        else {
+            console.warn(`edits received with fromId ${fromId}`);
+            console.warn(`edits received with roomId ${roomId}`);
+            console.warn(`this.roomId => ${this.roomId}`);
+            console.warn(`this.nodeId => ${this.nodeId}`);
         }
     }
 }

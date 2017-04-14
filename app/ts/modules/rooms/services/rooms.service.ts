@@ -37,6 +37,19 @@ export class RoomsService implements IRoomsService {
     }
 
     /**
+     * Determines whether the room exists.
+     * If the room exists then the promise resolves (then).
+     * If the room does not exist then the promise rejects (catch).
+     */
+    existsRoom(roomId: string): Promise<void> {
+        const observable: Observable<Response> = this.http.get(`/rooms/${roomId}`);
+        return observable
+            .map(function (response) { return response.json() as Room; })
+            .map(function (room) { return void 0; })
+            .toPromise();
+    }
+
+    /**
      * Gets a room (agent).
      */
     getRoom(roomId: string): Promise<RoomAgent> {
@@ -44,16 +57,16 @@ export class RoomsService implements IRoomsService {
         return observable
             .map(function (response) { return response.json() as Room; })
             .map(function (room) { return new RoomAgent(room.id, room.owner); })
-            .toPromise<RoomAgent>();
+            .toPromise();
     }
 
     /**
      * Destroys a room.
      */
-    destroyRoom(roomId: string): Promise<boolean> {
+    destroyRoom(roomId: string): Promise<void> {
         const observable: Observable<Response> = this.http.delete(`/rooms/${roomId}`);
         return observable
             .map(function (response) { return response.json(); })
-            .toPromise<boolean>();
+            .toPromise();
     }
 }

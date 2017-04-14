@@ -54,7 +54,7 @@ module.exports.fromUrl = function(giturl, opts) {
         if (!matched)
           return;
         if (matched[1] != null)
-          user = decodeURIComponent(matched[1]);
+          user = decodeURIComponent(matched[1].replace(/^:/, ''));
         if (matched[2] != null)
           project = decodeURIComponent(matched[2]);
         defaultRepresentation = protocolToRepresentation(parsed.protocol);

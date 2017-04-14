@@ -6,11 +6,6 @@ Learning STEM through Computational Modeling.
 
 ### Node.js (go to http://node.js.or/)
 
-### Typings
-```
-(sudo) npm install -g typings
-```
-
 ### Karma
 ```
 npm install -g karma-cli
@@ -22,8 +17,9 @@ npm install -g karma-cli
 2. `cd STEMCstudio`
 3. `npm install`
 4. `bower install`
-5. `typings install`
 6. `jspm install`
+7. Manually fix: node_modules/@types/angular-resource/index.d.ts(194,40): error TS2694
+8. `grunt`
 
 ### Peer Projects Required
 
