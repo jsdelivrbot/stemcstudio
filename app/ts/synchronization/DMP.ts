@@ -2068,7 +2068,7 @@ export default class DMP {
      * @param text Old text.
      * @returns Two element Array, containing the new text and an array of boolean values.
      */
-    patch_apply(patches: Patch[], text: string): (string | boolean[])[] {
+    patch_apply(patches: Patch[], text: string): [string, boolean[]] {
         if (patches.length === 0) {
             return [text, []];
         }
@@ -2119,7 +2119,8 @@ export default class DMP {
                 let text2: string;
                 if (end_loc === -1) {
                     text2 = text.substring(start_loc, start_loc + text1.length);
-                } else {
+                }
+                else {
                     text2 = text.substring(start_loc, end_loc + this.Match_MaxBits);
                 }
                 if (text1 === text2) {
@@ -2153,7 +2154,7 @@ export default class DMP {
                                 text = text.substring(0, start_loc + index2) + text.substring(start_loc + this.diff_xIndex(diffs, index1 + (<string>mod[1]).length));
                             }
                             if (mod[0] !== DIFF_DELETE) {
-                                index1 += (<string>mod[1]).length;
+                                index1 += mod[1].length;
                             }
                         }
                     }

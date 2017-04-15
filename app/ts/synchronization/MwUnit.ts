@@ -61,17 +61,28 @@ export default class MwUnit implements FzSerializable<FzUnit> {
         }
         this.remotes = mapLinks(value.k);
     }
-    getBroadcast(): MwBroadcast {
+
+    /**
+     * A broadcast is the collection of edits for all peer nodes.
+     * In the case of the client, there will only be one peer node which is the server.
+     * This is dead code on the client side.
+     */
+    public getBroadcast(): MwBroadcast {
         const broadcast: MwBroadcast = {};
         const nodeIds = Object.keys(this.remotes);
-        for (let i = 0; i < nodeIds.length; i++) {
-            const nodeId = nodeIds[i];
+        for (const nodeId of nodeIds) {
             broadcast[nodeId] = this.getEdits(nodeId);
         }
         return broadcast;
     }
+
     /**
-     * @param nodeId The identifier for where the edits will be going to.
+     * 1. Ensure that there is a remote (shadow) for the specified nodeId.
+     * 2. Perform the diff between the editor and the shadow.
+     * 3. Push the diff onto the outbound stack of edits.
+     * 4. Return ths state of the outbound edits.
+     *
+     * nodeId is the identifier for where the edits will be going to.
      */
     getEdits(nodeId: string): MwEdits {
         const remote = this.ensureRemote(nodeId);
@@ -81,6 +92,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
         }
         return remote.getEdits(nodeId);
     }
+
     getEditor(): MwEditor {
         return this.editor as MwEditor;
     }
@@ -115,7 +127,8 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     }
 
     /**
-     * 
+     * Capturing the file involves creating the diff between the editor and the shadow document.
+     * This method also copies the editor contents to the shadow.
      */
     private captureFile(nodeId: string): MwChange | undefined {
         const remote = this.ensureRemote(nodeId);
@@ -204,7 +217,9 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         const backup = remote.backup as MwShadow;
                         // The change remote version becomes our local version.
                         // The action local version becomes our remote version.
+                        console.log("Applying patch to editor");
                         remote.patchDelta(nodeId, editor, action.c, action.x as string[], change.m, action.n as number);
+                        console.log("Copying shadow to backup");
                         backup.copy(shadow);
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);

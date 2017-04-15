@@ -276,6 +276,9 @@ function debounce(next: () => any, delay: number) {
     };
 }
 
+/**
+ * This function is used as the handler for debounced editor keystrokes.
+ */
 function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
     return function () {
         const edits = unit.getEdits(room.id);

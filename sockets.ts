@@ -50,7 +50,10 @@ export default function sockets(app: Express, server: Server) {
         socket.on(SOCKET_EVENT_DOWNLOAD, function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
             const { fromId, roomId } = data;
 
-            console.log(`receiving '${SOCKET_EVENT_DOWNLOAD}' request from node '${fromId}' for room '${roomId}'.`);
+            console.log(`receiving '${SOCKET_EVENT_DOWNLOAD}' from node '${fromId}'`);
+            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            // socketByNodeId[fromId] = socket;
+            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
 
             getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
@@ -64,40 +67,16 @@ export default function sockets(app: Express, server: Server) {
         });
 
         //
-        // @deprecated
-        //
-        socket.on('join', function (data: { fromId: string, roomId: string }, ack: () => any) {
-            const { fromId, roomId } = data;
-
-            console.log(`join(roomId => ${roomId}) request received from fromId => ${fromId}.`);
-
-            socketByNodeId[fromId] = socket;
-
-            socket.leaveAll();
-
-            socket.join(roomId, function (err: any) {
-                ack();
-                getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
-                    const { fromId, roomId, files } = data;
-                    const paths = Object.keys(files);
-                    for (let i = 0; i < paths.length; i++) {
-                        const path = paths[i];
-                        const edits = files[path];
-                        socket.emit('edits', { fromId, roomId, path, edits });
-                    }
-                });
-            });
-        });
-
-        //
         // edits are received when a room is created (by the owner), and whenever changes are made.
         //
         socket.on(SOCKET_EVENT_EDITS, function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
             const { fromId, roomId, path, edits } = data;
 
-            console.log(`node '${fromId}' sending '${path}' edits: ${JSON.stringify(summarize(edits))}`);
+            console.log(`receiving ${SOCKET_EVENT_EDITS} from node '${fromId}': ${JSON.stringify(summarize(edits))}`);
 
+            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
             socketByNodeId[fromId] = socket;
+            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
 
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
             setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {

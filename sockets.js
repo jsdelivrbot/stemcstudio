@@ -14,7 +14,9 @@ function sockets(app, server) {
         console.log('A socket connected.');
         socket.on(SOCKET_EVENT_DOWNLOAD, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
-            console.log("receiving '" + SOCKET_EVENT_DOWNLOAD + "' request from node '" + fromId + "' for room '" + roomId + "'.");
+            console.log("receiving '" + SOCKET_EVENT_DOWNLOAD + "' from node '" + fromId + "'");
+            console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
+            console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
             index_1.getEdits(fromId, roomId, function (err, data) {
                 if (!err) {
                     var files = data.files;
@@ -25,28 +27,12 @@ function sockets(app, server) {
                 }
             });
         });
-        socket.on('join', function (data, ack) {
-            var fromId = data.fromId, roomId = data.roomId;
-            console.log("join(roomId => " + roomId + ") request received from fromId => " + fromId + ".");
-            socketByNodeId[fromId] = socket;
-            socket.leaveAll();
-            socket.join(roomId, function (err) {
-                ack();
-                index_1.getEdits(fromId, roomId, function (err, data) {
-                    var fromId = data.fromId, roomId = data.roomId, files = data.files;
-                    var paths = Object.keys(files);
-                    for (var i = 0; i < paths.length; i++) {
-                        var path = paths[i];
-                        var edits = files[path];
-                        socket.emit('edits', { fromId: fromId, roomId: roomId, path: path, edits: edits });
-                    }
-                });
-            });
-        });
         socket.on(SOCKET_EVENT_EDITS, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
-            console.log("node '" + fromId + "' sending '" + path + "' edits: " + JSON.stringify(summarize(edits)));
+            console.log("receiving " + SOCKET_EVENT_EDITS + " from node '" + fromId + "': " + JSON.stringify(summarize(edits)));
+            console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
             socketByNodeId[fromId] = socket;
+            console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
             index_1.setEdits(fromId, roomId, path, edits, function (err, data) {
                 ack();
                 if (!err) {

@@ -132,6 +132,8 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     public updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
+            const n = this.n;
+            console.log(`Incrementing shadow local version number (n) from ${n} to ${n + 1}`);
             this.n++;
         }
         else {

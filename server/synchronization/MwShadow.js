@@ -62,6 +62,8 @@ var MwShadow = (function () {
     MwShadow.prototype.updateTextAndIncrementLocalVersion = function (text) {
         this.text = text;
         if (typeof this.n === 'number') {
+            var n = this.n;
+            console.log("Incrementing shadow local version number (n) from " + n + " to " + (n + 1));
             this.n++;
         }
         else {

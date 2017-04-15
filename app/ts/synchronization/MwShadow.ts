@@ -127,14 +127,17 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     }
 
     /**
-     * Updates the text of the shadow and increments the local version number.
+     * Updates the text of the shadow and increments the local version number (n).
      */
     public updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
+            const n = this.n;
+            console.log(`Incrementing shadow local version (n) from ${n} to ${n + 1}`);
             this.n++;
         }
         else {
+            console.log(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
             this.n = INITIAL_VERSION;
         }
     }
@@ -159,7 +162,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
 
     /**
      * A diff is computed between the editor and this shadow to obtain a set of edits made by the user.
-     * These edits are tagged with the local version number of this shadow from which they were created.
+     * These edits are tagged with the local version number (n) of this shadow from which they were created.
      * The shadow text is updated from the editor and the local version is incremented.
      */
     private diffAndTagWithLocalVersion(text: string): MwAction {

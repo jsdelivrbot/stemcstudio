@@ -39,17 +39,17 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     }
 
     /**
-     * Returns the edits for a specified destination node.
+     * Returns the stack of edits for a specified destination node.
+     * This method has no side-effects.
      */
     getEdits(nodeId: string): MwEdits {
         return this.edits[nodeId];
     }
 
     /**
-     * @param nodeId
-     * @param change
+     * Push the change onto the stack of outbound edits corresponding to the specified nodeId.
      */
-    addChange(nodeId: string, change: MwChange) {
+    addChange(nodeId: string, change: MwChange): void {
         const edit = this.edits[nodeId];
         if (!edit) {
             this.edits[nodeId] = { x: [] };
@@ -58,7 +58,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     }
 
     /**
-     * 
+     * Determines whether the outbound stack contains the raw action with the specified text.
      */
     containsRawAction(nodeId: string, text: string): boolean {
         const edits = this.getEdits(nodeId);
@@ -146,7 +146,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
 
     /**
      * Converts the delta to a Diff[] using the shadow text.
-     * Increments the remote version number.
+     * Increments the remote version number (m) on the shadow.
      * Applies the patch to the editor.
      *
      * @param nodeId The target node identifier.
@@ -193,6 +193,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             let diffs: Diff[] | null;
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
+                const m = shadow.m;
+                console.log(`Incrementing shadow version number (m) from ${m} to ${m + 1}`);
                 shadow.m++;
             }
             catch (e) {
@@ -218,8 +220,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         // Merge text.
                         const patches = dmp.computePatches(shadow.text, diffs);
                         // First thisText.  Should be guaranteed to work.
-                        const serverResult: (string | boolean[])[] = dmp.patch_apply(patches, shadow.text);
-                        shadow.text = <string>serverResult[0];
+                        const serverResult = dmp.patch_apply(patches, shadow.text);
+                        // TODO: Why aren't we looking at the boolean[]?
+                        shadow.text = serverResult[0];
                         shadow.happy = true;
                         // Second the user's text.
                         editor.patch(patches);

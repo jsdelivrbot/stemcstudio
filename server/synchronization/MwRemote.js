@@ -104,6 +104,8 @@ var MwRemote = (function () {
             var diffs = void 0;
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
+                var m = shadow.m;
+                console.log("Incrementing shadow version number (m) from " + m + " to " + (m + 1));
                 shadow.m++;
             }
             catch (e) {
