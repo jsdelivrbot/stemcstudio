@@ -13,7 +13,7 @@ export default class UnitListener implements RoomListener {
     }
 
     /**
-     * 
+     * nodeId is the identifier of where the edits will be going to.
      */
     getWorkspaceEdits(nodeId: string): { [path: string]: MwEdits } {
         const map: { [path: string]: MwEdits } = {};
