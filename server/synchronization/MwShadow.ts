@@ -25,7 +25,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     /**
      * The remote version number of the shadow document.
      * The version number from the previously received Delta or Raw command.
-     * This will initially be undefined and that should serialize as an empty string (MobWrite).
+     * This will initially be undefined which should serialize as an empty string (MobWrite).
      */
     public m: number;
 

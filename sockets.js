@@ -85,6 +85,15 @@ function sockets(app, server) {
         });
         socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');
+            console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
+            var nodeIds = Object.keys(socketByNodeId);
+            for (var _i = 0, nodeIds_2 = nodeIds; _i < nodeIds_2.length; _i++) {
+                var nodeId = nodeIds_2[_i];
+                if (socketByNodeId[nodeId] === socket) {
+                    delete socketByNodeId[nodeId];
+                }
+            }
+            console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
         });
     });
 }

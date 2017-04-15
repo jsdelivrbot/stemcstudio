@@ -155,7 +155,7 @@ export default class RoomAgent implements Shareable {
      */
     download(callback: (err: any, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
-        console.log(`emit('${SOCKET_EVENT_DOWNLOAD}') ${JSON.stringify(params)}`);
+        // console.lg(`emit('${SOCKET_EVENT_DOWNLOAD}') ${JSON.stringify(params)}`);
         this.socket.emit(SOCKET_EVENT_DOWNLOAD, params, (err: any, files: { [path: string]: MwEdits }) => {
             callback(err, files);
         });
@@ -167,7 +167,7 @@ export default class RoomAgent implements Shareable {
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        console.log(`emit('${SOCKET_EVENT_EDITS}') ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
+        console.log(`sending '${SOCKET_EVENT_EDITS}' ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
         this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
             // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
         });
@@ -181,7 +181,7 @@ export default class RoomAgent implements Shareable {
         // We can use it as either a safety check or to future proof for multiple client rooms per socket.
         const { fromId, roomId, path, edits } = data;
         if (fromId === this.roomId && roomId === this.nodeId) {
-            console.log(`${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} received for this node ${this.nodeId}`);
+            console.log(`receiving ${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} for this node ${this.nodeId}`);
             for (const roomListener of this.roomListeners) {
                 roomListener.setEdits(fromId, path, edits);
             }

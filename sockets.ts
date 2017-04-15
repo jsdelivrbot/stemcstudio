@@ -145,6 +145,16 @@ export default function sockets(app: Express, server: Server) {
         //
         socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');
+            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+
+            const nodeIds = Object.keys(socketByNodeId);
+            for (const nodeId of nodeIds) {
+                if (socketByNodeId[nodeId] === socket) {
+                    delete socketByNodeId[nodeId];
+                }
+            }
+
+            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
         });
     });
 }

@@ -10,16 +10,24 @@ import MwWorkspace from './MwWorkspace';
 import FzRemote from './ds/FzRemote';
 import dehydrateMap from './ds/dehydrateMap';
 
-function summarize(edits: MwEdits) {
-    return edits.x.map(change => { return { type: change.a.c, local: change.a.n, remote: change.m }; });
-}
-
 /**
  * The smallest level of synchronization (a file).
  */
 export default class MwUnit implements FzSerializable<FzUnit> {
+    /**
+     * 
+     */
     private editor: MwEditor | undefined;
+
+    /**
+     * The server will have multiple remotes corresponsing to each client
+     * whereas a client will have one remote corresponding to the server.
+     */
     private remotes: { [nodeId: string]: MwRemote } = {};
+
+    /**
+     * 
+     */
     constructor(private workspace: MwWorkspace) {
         // Do nothing yet.
     }
@@ -165,7 +173,6 @@ export default class MwUnit implements FzSerializable<FzUnit> {
      * edits are the changes.
      */
     public setEdits(nodeId: string, edits: MwEdits): void {
-        console.log(`MwUnit.setEdits: ${JSON.stringify(summarize(edits))} received from node ${nodeId}`);
         const remote = this.ensureRemote(nodeId);
         for (const change of edits.x) {
             const action = change.a;

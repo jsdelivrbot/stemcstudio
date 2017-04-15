@@ -17,7 +17,7 @@ const dmp = new DMP();
  */
 export default class MwRemote implements FzSerializable<FzRemote> {
     /**
-     * 
+     * Every node (client or server) will have a shadow document.
      */
     shadow: MwShadow | undefined;
 
@@ -156,7 +156,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(nodeId: string, editor: MwEditor, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number) {
+    patchDelta(nodeId: string, editor: MwEditor, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number): void {
         const shadow = this.shadow as MwShadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
