@@ -5,6 +5,11 @@ import MwEdits from '../../synchronization/MwEdits';
  */
 export interface RoomListener {
     /**
+     * 
+     */
+    getWorkspaceEdits(nodeId: string): { [path: string]: MwEdits };
+
+    /**
      * nodeId is where the edits came from.
      * path is the file identifier.
      * edits are the changes to be applied.

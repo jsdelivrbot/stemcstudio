@@ -1986,8 +1986,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     getFileDocumentPaths(): string[] {
         const files = this.files;
         if (files) {
-            const all = files.keys;
-            return all.filter((path) => {
+            const paths = files.keys;
+            return paths.filter((path) => {
                 const file = files.getWeakRef(path);
                 return file.hasDocument();
             });

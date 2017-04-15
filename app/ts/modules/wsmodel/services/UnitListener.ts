@@ -13,6 +13,21 @@ export default class UnitListener implements RoomListener {
     }
 
     /**
+     * 
+     */
+    getWorkspaceEdits(nodeId: string): { [path: string]: MwEdits } {
+        const map: { [path: string]: MwEdits } = {};
+        const paths = this.workspace.getFileDocumentPaths();
+        for (const path of paths) {
+            const file = this.workspace.getFileWeakRef(path);
+            const unit = file.unit;
+            const edits = unit.getEdits(nodeId);
+            map[path] = edits;
+        }
+        return map;
+    }
+
+    /**
      * Handles 'edits' sent down from the remote server.
      */
     setEdits(nodeId: string, path: string, edits: MwEdits): void {

@@ -206,5 +206,13 @@ export default class RoomAgent implements Shareable {
      */
     private reconnectHandler = () => {
         console.log(`reconnect`);
+        for (const roomListener of this.roomListeners) {
+            const editsByPath = roomListener.getWorkspaceEdits(this.nodeId);
+            const paths = Object.keys(editsByPath);
+            for (const path of paths) {
+                const edits = editsByPath[path];
+                this.setEdits(path, edits);
+            }
+        }
     }
 }
