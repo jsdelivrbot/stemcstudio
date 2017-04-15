@@ -162,6 +162,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         // The server offers a compressed delta of changes to be applied.
         // Handle the case where one party initiates with a Raw message and other party acknowledges with a Delta.
         if (typeof shadow.m !== 'number') {
+            console.log(`Setting shadow remote version (m) to server remote version = ${remoteVersion}`);
             shadow.m = remoteVersion;
         }
         if (localVersion !== shadow.n) {
@@ -194,8 +195,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
                 const m = shadow.m;
-                console.log(`Incrementing shadow version number (m) from ${m} to ${m + 1}`);
+                console.log(`Incrementing shadow remote version number (m) from ${m} to ${m + 1}`);
                 shadow.m++;
+                console.log(`(n, m) => (${shadow.n}, ${shadow.m})`);
             }
             catch (e) {
                 // The delta the server supplied does not fit on our copy of thisText.

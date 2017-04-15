@@ -140,6 +140,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
             console.log(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
             this.n = INITIAL_VERSION;
         }
+        console.log(`(n, m) => (${this.n}, ${this.m})`);
     }
 
     /**
