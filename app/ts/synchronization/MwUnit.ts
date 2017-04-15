@@ -168,6 +168,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
      * 
      */
     ensureRemote(nodeId: string): MwRemote {
+        console.log(`MwUnit.ensureRemote(nodeId => ${nodeId}), remotes =>${JSON.stringify(Object.keys(this.remotes))}`);
         const existing = this.remotes[nodeId];
         if (!existing) {
             const remote = new MwRemote();

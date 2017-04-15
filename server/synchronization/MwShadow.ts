@@ -136,7 +136,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     /**
      * Updates the text of the shadow and increments the local version number.
      */
-    public updateTextAndIncrementLocalVersion(text: string): void {
+    private updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
             const n = this.n;
