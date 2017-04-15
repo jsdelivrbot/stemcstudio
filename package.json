@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.12",
+  "version": "2.24.13",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^4.0.2",
     "@angular/router": "^4.0.2",
     "@angular/upgrade": "^4.0.2",
-    "@google-cloud/translate": "^0.8.0",
+    "@google-cloud/translate": "^0.8.1",
     "angular": "1.5.9",
     "angular-material-icons": "^0.7.1",
     "aws-sdk": "2.6.15",

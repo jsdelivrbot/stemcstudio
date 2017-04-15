@@ -6,6 +6,15 @@ import MwBroadcast from './server/synchronization/MwBroadcast';
 import MwEdits from './server/synchronization/MwEdits';
 
 /**
+ * A request from a client to emit 'edits'.
+ */
+const SOCKET_EVENT_DOWNLOAD = 'download';
+/**
+ * A submission of 'edits' from a client to the room and a emission of 'edits' from the room to a client.
+ */
+const SOCKET_EVENT_EDITS = 'edits';
+
+/**
  * A summary of the edits, for debugging purposes.
  */
 function summarize(edits: MwEdits) {
@@ -36,11 +45,12 @@ export default function sockets(app: Express, server: Server) {
 
         //
         // A download request is received when a user joins a room.
+        // TODO: Why don't we use this opportunity to associated the fromId with the socket?
         //
-        socket.on('download', function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
+        socket.on(SOCKET_EVENT_DOWNLOAD, function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
             const { fromId, roomId } = data;
 
-            console.log(`receiving download request from node '${fromId}'.`);
+            console.log(`receiving '${SOCKET_EVENT_DOWNLOAD}' request from node '${fromId}' for room '${roomId}'.`);
 
             getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
@@ -82,12 +92,13 @@ export default function sockets(app: Express, server: Server) {
         //
         // edits are received when a room is created (by the owner), and whenever changes are made.
         //
-        socket.on('edits', function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
+        socket.on(SOCKET_EVENT_EDITS, function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
             const { fromId, roomId, path, edits } = data;
 
             console.log(`node '${fromId}' sending '${path}' edits: ${JSON.stringify(summarize(edits))}`);
 
             socketByNodeId[fromId] = socket;
+
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
             setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
                 ack();
@@ -96,13 +107,12 @@ export default function sockets(app: Express, server: Server) {
                         const { roomId, path, broadcast } = data;
                         if (broadcast) {
                             const nodeIds = Object.keys(broadcast);
-                            for (let i = 0; i < nodeIds.length; i++) {
-                                const nodeId = nodeIds[i];
+                            for (const nodeId of nodeIds) {
                                 const edits = broadcast[nodeId];
                                 const target = socketByNodeId[nodeId];
                                 if (target) {
                                     console.log(`room sending '${path}' edits: ${JSON.stringify(summarize(edits))} to node '${nodeId}'.`);
-                                    target.emit('edits', { fromId: roomId, roomId: nodeId, path, edits });
+                                    target.emit(SOCKET_EVENT_EDITS, { fromId: roomId, roomId: nodeId, path, edits });
                                 }
                                 else {
                                     console.log(`No emit in response to setting edits for node '${nodeId}'.`);
@@ -123,10 +133,16 @@ export default function sockets(app: Express, server: Server) {
             });
         });
 
+        //
+        //
+        //
         socket.on('error', function error(err: any) {
-            console.log(`Something is rotten in Denmark: ${err}`);
+            console.log(`Something is rotten in Denmark. Cause: ${err}`);
         });
 
+        //
+        // TODO: When we get a disconnect event, shouldn't we make sure that the socket is not in the map?
+        //
         socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');
         });

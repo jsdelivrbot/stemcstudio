@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var sio = require("socket.io");
 var index_1 = require("./server/routes/rooms/index");
+var SOCKET_EVENT_DOWNLOAD = 'download';
+var SOCKET_EVENT_EDITS = 'edits';
 function summarize(edits) {
     return edits.x.map(function (change) { return { type: change.a.c, local: change.a.n, remote: change.m }; });
 }
@@ -10,9 +12,9 @@ function sockets(app, server) {
     var io = sio(server, {});
     io.on('connection', function (socket) {
         console.log('A socket connected.');
-        socket.on('download', function (data, ack) {
+        socket.on(SOCKET_EVENT_DOWNLOAD, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
-            console.log("receiving download request from node '" + fromId + "'.");
+            console.log("receiving '" + SOCKET_EVENT_DOWNLOAD + "' request from node '" + fromId + "' for room '" + roomId + "'.");
             index_1.getEdits(fromId, roomId, function (err, data) {
                 if (!err) {
                     var files = data.files;
@@ -41,7 +43,7 @@ function sockets(app, server) {
                 });
             });
         });
-        socket.on('edits', function (data, ack) {
+        socket.on(SOCKET_EVENT_EDITS, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
             console.log("node '" + fromId + "' sending '" + path + "' edits: " + JSON.stringify(summarize(edits)));
             socketByNodeId[fromId] = socket;
@@ -52,13 +54,13 @@ function sockets(app, server) {
                         var roomId_1 = data.roomId, path_1 = data.path, broadcast = data.broadcast;
                         if (broadcast) {
                             var nodeIds = Object.keys(broadcast);
-                            for (var i = 0; i < nodeIds.length; i++) {
-                                var nodeId = nodeIds[i];
+                            for (var _i = 0, nodeIds_1 = nodeIds; _i < nodeIds_1.length; _i++) {
+                                var nodeId = nodeIds_1[_i];
                                 var edits_1 = broadcast[nodeId];
                                 var target = socketByNodeId[nodeId];
                                 if (target) {
                                     console.log("room sending '" + path_1 + "' edits: " + JSON.stringify(summarize(edits_1)) + " to node '" + nodeId + "'.");
-                                    target.emit('edits', { fromId: roomId_1, roomId: nodeId, path: path_1, edits: edits_1 });
+                                    target.emit(SOCKET_EVENT_EDITS, { fromId: roomId_1, roomId: nodeId, path: path_1, edits: edits_1 });
                                 }
                                 else {
                                     console.log("No emit in response to setting edits for node '" + nodeId + "'.");
@@ -79,7 +81,7 @@ function sockets(app, server) {
             });
         });
         socket.on('error', function error(err) {
-            console.log("Something is rotten in Denmark: " + err);
+            console.log("Something is rotten in Denmark. Cause: " + err);
         });
         socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');

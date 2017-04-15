@@ -8,6 +8,10 @@ import uniqueId from '../../synchronization/uniqueId';
 const SOCKET_EVENT_DOWNLOAD = 'download';
 const SOCKET_EVENT_EDITS = 'edits';
 
+const EVENT_SOCKET_IO_RECONNECTING = 'reconnecting';
+const EVENT_SOCKET_IO_RECONNECT = 'reconnect';
+// const EVENT_SOCKET_IO_RECONNECT_FAILED = 'reconnect_failed';
+
 /**
  * A summary of the edits, for debugging purposes.
  */
@@ -72,6 +76,8 @@ export default class RoomAgent implements Shareable {
      */
     connect(): Promise<void> {
         this.socket.on(SOCKET_EVENT_EDITS, this.editsHandler);
+        this.socket.on(EVENT_SOCKET_IO_RECONNECTING, this.reconnectingHandler);
+        this.socket.on(EVENT_SOCKET_IO_RECONNECT, this.reconnectHandler);
         return this.socket.connect();
     }
 
@@ -80,6 +86,8 @@ export default class RoomAgent implements Shareable {
      */
     disconnect(): Promise<void> {
         this.socket.off(SOCKET_EVENT_EDITS, this.editsHandler);
+        this.socket.off(EVENT_SOCKET_IO_RECONNECTING, this.reconnectingHandler);
+        this.socket.off(EVENT_SOCKET_IO_RECONNECT, this.reconnectHandler);
         return this.socket.disconnect();
     }
 
@@ -147,6 +155,7 @@ export default class RoomAgent implements Shareable {
      */
     download(callback: (err: any, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
+        console.log(`emit('${SOCKET_EVENT_DOWNLOAD}') ${JSON.stringify(params)}`);
         this.socket.emit(SOCKET_EVENT_DOWNLOAD, params, (err: any, files: { [path: string]: MwEdits }) => {
             callback(err, files);
         });
@@ -158,7 +167,7 @@ export default class RoomAgent implements Shareable {
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        console.log(`Sending edits ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}.`);
+        console.log(`emit('${SOCKET_EVENT_EDITS}') ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
         this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
             // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
         });
@@ -183,5 +192,19 @@ export default class RoomAgent implements Shareable {
             console.warn(`this.roomId => ${this.roomId}`);
             console.warn(`this.nodeId => ${this.nodeId}`);
         }
+    }
+
+    /**
+     * 
+     */
+    private reconnectingHandler = () => {
+        console.log(`reconnecting`);
+    }
+
+    /**
+     * 
+     */
+    private reconnectHandler = () => {
+        console.log(`reconnect`);
     }
 }

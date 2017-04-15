@@ -52,6 +52,10 @@ export class BackgroundService implements IBackgroundService {
                 return doodle.gistId === gistId;
             }
             else if (isString(roomId)) {
+                // TODO: This line could prevent users from re-joining a room.
+                // By loading the doodle from local storage we bypass the code
+                // that runs the download and then pushes up edits.
+                // A workaround is simply to delete the entry in local storage. 
                 return doodle.roomId === roomId;
             }
             else {
@@ -98,8 +102,7 @@ export class BackgroundService implements IBackgroundService {
                                 const paths = Object.keys(edits);
                                 // We'll first mirror the structure of the workspace in the room.
                                 // We are expecting Raw edits on every file so every edit is a create.
-                                for (let i = 0; i < paths.length; i++) {
-                                    const path = paths[i];
+                                for (const path of paths) {
                                     if (!this.wsModel.existsFile(path)) {
                                         const newFile = this.wsModel.newFile(path);
                                         this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
@@ -107,18 +110,18 @@ export class BackgroundService implements IBackgroundService {
                                                 // Nothing to do.
                                             }
                                             else {
-                                                console.warn(`Unexpected file ${path} in workspace`);
+                                                console.warn(`Unable to begin monitoring the file ${path} in the workspace`);
                                             }
                                         });
                                         newFile.release();
                                     }
                                     else {
-                                        console.warn(`Unexpected file ${path} in workspace`);
+                                        console.warn(`Unexpected file. ${path} is aleady in the workspace`);
                                     }
                                 }
                                 this.wsModel.connectToRoom(room, false);
-                                for (let i = 0; i < paths.length; i++) {
-                                    const path = paths[i];
+                                // Take the edits that have been downloaded and set them onto the synchronization units.
+                                for (const path of paths) {
                                     const file = this.wsModel.findFileByPath(path);
                                     if (file) {
                                         file.unit.setEdits(roomId, edits[path]);
