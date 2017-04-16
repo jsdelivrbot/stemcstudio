@@ -1,6 +1,7 @@
 import Diff from './Diff';
 import DMP from './DMP';
 import Patch from './Patch';
+import { ACTION_RAW_OVERWRITE } from './MwAction';
 import MwEditor from './MwEditor';
 import MwWorkspace from './MwWorkspace';
 import MwUnit from './MwUnit';
@@ -108,9 +109,9 @@ function broadcastFrom(from: MwUnit, fromRoomId: string, targets: { [nodeId: str
 
 }
 
-describe("MwUnit", function() {
-    describe("Alice synchronizes with server one way", function() {
-        it("should add the file to Server room", function() {
+describe("MwUnit", function () {
+    describe("Alice synchronizes with server one way", function () {
+        it("should add the file to Server room", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
@@ -134,8 +135,8 @@ describe("MwUnit", function() {
             expect(sEditor.getText()).toBe(aString);
         });
     });
-    describe("Alice synchronizes with server and gets response", function() {
-        it("should add the file to Server room", function() {
+    describe("Alice synchronizes with server and gets response", function () {
+        it("should add the file to Server room", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
@@ -161,7 +162,7 @@ describe("MwUnit", function() {
             expect(serverFile.getText()).toBe(aString);
         });
     });
-    describe("Bob joins the room", function() {
+    describe("Bob joins the room", function () {
 
         const sNode = new MwUnit(sff);
         const aNode = new MwUnit(eff);
@@ -183,11 +184,11 @@ describe("MwUnit", function() {
 
         const bEditor = bNode.getEditor();
 
-        it("should add the file to Bob's room", function() {
+        it("should add the file to Bob's room", function () {
             expect(bEditor.getText()).toBe(aEditor.getText());
         });
     });
-    describe("Alice makes an update, Bob does nothing", function() {
+    describe("Alice makes an update, Bob does nothing", function () {
         const initialString = "Macs had the original point and click UI.";
         const aString = "Macintoshes had the original point and click UI.";
         const sNode = new MwUnit(sff);
@@ -214,12 +215,12 @@ describe("MwUnit", function() {
 
         bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
 
-        it("should add the file to Bob's room", function() {
+        it("should add the file to Bob's room", function () {
             expect(true).toBeTruthy();
             // expect(bFile.getText()).toBe(aString);
         });
     });
-    describe("Alice makes an update, Bob does nothing II", function() {
+    describe("Alice makes an update, Bob does nothing II", function () {
         const initialString = "Macs had the original point and click UI.";
         const aString = "Macintoshes had the original point and click UI.";
 
@@ -248,12 +249,12 @@ describe("MwUnit", function() {
         sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
         bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
 
-        it("should add the file to Bob's room", function() {
+        it("should add the file to Bob's room", function () {
             expect(true).toBeTruthy();
             // expect(bFile.getText()).toBe(aString);
         });
     });
-    describe("Alice and Bob make updates", function() {
+    describe("Alice and Bob make updates", function () {
         const initialString = "Macs had the original point and click UI.";
         const aString = "Macs had the original point and click interface.";
         const bString = "Smith & Wesson had the original point and click UI.";
@@ -303,15 +304,15 @@ describe("MwUnit", function() {
         const msg08 = sNode.getEdits(aRoomId);
         aNode.setEdits(sRoomId, msg08);
 
-        it("Alice has the combined message", function() {
+        it("Alice has the combined message", function () {
             expect(aFile.getText()).toBe(comboString);
         });
-        it("Bob has the combined message", function() {
+        it("Bob has the combined message", function () {
             expect(bFile.getText()).toBe(comboString);
         });
     });
-    describe("Duplicate packet", function() {
-        it("The server should ignore the edits", function() {
+    describe("Duplicate packet", function () {
+        it("The server should ignore the edits", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
@@ -341,8 +342,8 @@ describe("MwUnit", function() {
             expect(serverFile.getText()).toBe(aString);
         });
     });
-    describe("Lost outbound packet", function() {
-        it("The client should purge edits when it finally gets an ack.", function() {
+    describe("Lost outbound packet", function () {
+        it("The client should purge edits when it finally gets an ack.", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
@@ -374,8 +375,8 @@ describe("MwUnit", function() {
             aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
         });
     });
-    describe("Lost return packet", function() {
-        it("The server should restore the shadow from the backup", function() {
+    describe("Lost return packet", function () {
+        it("The server should restore the shadow from the backup", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macs had the original point and click interface.";
             const bString = "Macs had the original point and click interface!";
@@ -418,8 +419,8 @@ describe("MwUnit", function() {
             expect(aEditor.getText()).toBe(endString);
         });
     });
-    describe("Delete File on Server", function() {
-        it("The server should create appropriate edits for all nodes", function() {
+    describe("Delete File on Server", function () {
+        it("The server should create appropriate edits for all nodes", function () {
             const xString = "The contents of file X";
 
             const sNode = new MwUnit(sff);
@@ -444,8 +445,8 @@ describe("MwUnit", function() {
             expect(bNode.getEditor()).toBeUndefined();
         });
     });
-    describe("Edits for an unknown node", function() {
-        it("nodes should lazily create their internal structures", function() {
+    describe("Edits for an unknown node", function () {
+        it("nodes should lazily create their internal structures", function () {
             const initialString = "Macs had the original point and click UI.";
 
             const sNode = new MwUnit(sff);
@@ -471,7 +472,7 @@ describe("MwUnit", function() {
             expect(change.m).toBeUndefined();
             expect(change.a).toBeDefined();
             const action = change.a;
-            expect(action.c).toBe('R');
+            expect(action.c).toBe(ACTION_RAW_OVERWRITE);
             expect(action.n).toBe(1);
             expect(action.x).toBe(initialString);
 
@@ -480,8 +481,8 @@ describe("MwUnit", function() {
             bNode.setEdits(sRoomId, edits);
         });
     });
-    describe("Serialization", function() {
-        it("should add the file to Bob's room", function() {
+    describe("Serialization", function () {
+        it("should add the file to Bob's room", function () {
             const sNode = new MwUnit(sff);
             const aNode = new MwUnit(eff);
 
@@ -512,8 +513,8 @@ describe("MwUnit", function() {
             expect(bEditor.getText()).toBe(aEditor.getText());
         });
     });
-    describe("Broadcast", function() {
-        it("should add the file to Bob's room", function() {
+    describe("Broadcast", function () {
+        it("should add the file to Bob's room", function () {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 

@@ -1,6 +1,9 @@
 import FzSerializable from './ds/FzSerializable';
 import FzUnit from './ds/FzUnit';
 import MwBroadcast from './MwBroadcast';
+import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
+import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
+import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from './MwAction';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
 import MwEditor from './MwEditor';
@@ -27,9 +30,9 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     private remotes: { [nodeId: string]: MwRemote } = {};
 
     /**
-     * 
+     * A lightweight constructor that initializes the workspace and options properties.
      */
-    constructor(private workspace: MwWorkspace, private options: MwOptions) {
+    constructor(private readonly workspace: MwWorkspace, private readonly options: MwOptions) {
         // Do nothing yet.
     }
     dehydrate(): FzUnit {
@@ -97,6 +100,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     getEditor(): MwEditor {
         return this.editor as MwEditor;
     }
+
+    /**
+     * Let's the unit know which file is will be controlling.
+     */
     setEditor(editor: MwEditor): void {
         this.editor = editor;
     }
@@ -192,7 +199,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
             const action = change.a;
             if (action) {
                 switch (action.c) {
-                    case 'R': {
+                    case ACTION_RAW_OVERWRITE: {
                         const editor = this.ensureEditor();
                         const text = decodeURI(action.x as string);
                         editor.setText(text);
@@ -202,7 +209,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         remote.discardChanges(nodeId);
                         break;
                     }
-                    case 'r': {
+                    case ACTION_RAW_SYNCHONLY: {
                         const text = decodeURI(action.x as string);
                         const shadow = remote.shadow as MwShadow;
                         // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
@@ -211,8 +218,8 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         remote.discardChanges(nodeId);
                         break;
                     }
-                    case 'D':
-                    case 'd': {
+                    case ACTION_DELTA_OVERWRITE:
+                    case ACTION_DELTA_MERGE: {
                         const editor = this.editor as MwEditor;
                         const shadow = remote.shadow as MwShadow;
                         const backup = remote.backup as MwShadow;
@@ -225,8 +232,8 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         }
                         break;
                     }
-                    case 'N':
-                    case 'n': {
+                    case ACTION_NULLIFY_UPPERCASE:
+                    case ACTION_NULLIFY_LOWERCASE: {
                         this.removeEditor();
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);

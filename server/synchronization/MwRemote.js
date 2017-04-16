@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var DMP_1 = require("./DMP");
 var isChanged_1 = require("./isChanged");
+var MwAction_1 = require("./MwAction");
+var MwAction_2 = require("./MwAction");
+var MwAction_3 = require("./MwAction");
 var MwShadow_1 = require("./MwShadow");
 var dmp = new DMP_1.default();
 var MwRemote = (function () {
@@ -24,7 +27,7 @@ var MwRemote = (function () {
         if (changes.length === 1) {
             var change = changes[0];
             var action = change.a;
-            if (action && action.c === 'R' && action.x === text) {
+            if (action && action.c === MwAction_1.ACTION_RAW_OVERWRITE && action.x === text) {
                 return true;
             }
             else {
@@ -113,7 +116,7 @@ var MwRemote = (function () {
             }
             if (diffs) {
                 if (isChanged_1.default(diffs)) {
-                    if (code === 'D') {
+                    if (code === MwAction_2.ACTION_DELTA_OVERWRITE) {
                         shadow.text = dmp.resultText(diffs);
                         editor.setText(shadow.text, function (err) {
                             if (!err) {
@@ -149,7 +152,7 @@ var MwRemote = (function () {
         var change = {
             m: this.shadow.m,
             a: {
-                c: 'N',
+                c: MwAction_3.ACTION_NULLIFY_UPPERCASE,
                 n: void 0,
                 x: void 0
             }

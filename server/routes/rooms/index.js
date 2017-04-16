@@ -8,6 +8,9 @@ var isNumber_1 = require("../../utils/isNumber");
 var isString_1 = require("../../utils/isString");
 var uniqueId_1 = require("./uniqueId");
 var DMP_1 = require("../../synchronization/DMP");
+var MwAction_1 = require("../../synchronization/MwAction");
+var MwAction_2 = require("../../synchronization/MwAction");
+var MwAction_3 = require("../../synchronization/MwAction");
 var MwRemote_1 = require("../../synchronization/MwRemote");
 var EXPIRE_DURATION_IN_SECONDS = 3600;
 var ROOM_PATHS_PROPERTY_NAME = 'paths';
@@ -418,80 +421,77 @@ function setEdits(nodeId, roomId, path, edits, callback) {
                         var action = change.a;
                         if (action) {
                             switch (action.c) {
-                                case 'R':
-                                    {
-                                        outstanding.push(new Promise(function (resolve, reject) {
-                                            var text = decodeURI(action.x);
-                                            createDocument(roomId, path, text, function (err, unused) {
-                                                if (!err) {
-                                                    var shadow = remote.ensureShadow();
-                                                    shadow.updateRaw(text, action.n);
-                                                    remote.discardChanges(nodeId);
-                                                    resolve(action.c);
-                                                }
-                                                else {
-                                                    reject(err);
-                                                }
-                                            });
-                                        }));
-                                    }
-                                    break;
-                                case 'r':
-                                    {
+                                case MwAction_1.ACTION_RAW_OVERWRITE: {
+                                    outstanding.push(new Promise(function (resolve, reject) {
                                         var text = decodeURI(action.x);
-                                        var shadow = remote.shadow;
-                                        shadow.updateRaw(text, action.n);
-                                        remote.discardChanges(nodeId);
-                                    }
+                                        createDocument(roomId, path, text, function (err, unused) {
+                                            if (!err) {
+                                                var shadow = remote.ensureShadow();
+                                                shadow.updateRaw(text, action.n);
+                                                remote.discardChanges(nodeId);
+                                                resolve(action.c);
+                                            }
+                                            else {
+                                                reject(err);
+                                            }
+                                        });
+                                    }));
                                     break;
-                                case 'D':
-                                case 'd':
-                                    {
-                                        outstanding.push(new Promise(function (resolve, reject) {
-                                            getDocument(roomId, path, function (err, doc) {
-                                                if (!err) {
-                                                    var shadow_2 = remote.shadow;
-                                                    var backup_1 = remote.backup;
-                                                    remote.patchDelta(nodeId, doc, action.c, action.x, change.m, action.n, function (err) {
-                                                        if (!err) {
-                                                            backup_1.copy(shadow_2);
-                                                            if (typeof change.m === 'number') {
-                                                                remote.discardActionsLe(nodeId, change.m);
-                                                            }
-                                                            resolve(action.c);
-                                                        }
-                                                        else {
-                                                            reject(err);
-                                                        }
-                                                    });
-                                                }
-                                                else {
-                                                    reject(err);
-                                                }
-                                            });
-                                        }));
-                                    }
+                                }
+                                case MwAction_1.ACTION_RAW_SYNCHONLY: {
+                                    var text = decodeURI(action.x);
+                                    var shadow = remote.shadow;
+                                    shadow.updateRaw(text, action.n);
+                                    remote.discardChanges(nodeId);
                                     break;
-                                case 'N':
-                                case 'n':
-                                    {
-                                        outstanding.push(new Promise(function (resolve, reject) {
-                                            deleteDocument(roomId, path, function (err) {
-                                                if (!err) {
-                                                    if (typeof change.m === 'number') {
-                                                        remote.discardActionsLe(nodeId, change.m);
+                                }
+                                case MwAction_2.ACTION_DELTA_OVERWRITE:
+                                case MwAction_2.ACTION_DELTA_MERGE: {
+                                    outstanding.push(new Promise(function (resolve, reject) {
+                                        getDocument(roomId, path, function (err, doc) {
+                                            if (!err) {
+                                                var shadow_2 = remote.shadow;
+                                                var backup_1 = remote.backup;
+                                                remote.patchDelta(nodeId, doc, action.c, action.x, change.m, action.n, function (err) {
+                                                    if (!err) {
+                                                        backup_1.copy(shadow_2);
+                                                        if (typeof change.m === 'number') {
+                                                            remote.discardActionsLe(nodeId, change.m);
+                                                        }
+                                                        resolve(action.c);
                                                     }
-                                                    remote.discardChanges(nodeId);
-                                                    resolve(action.c);
-                                                }
-                                                else {
-                                                    reject(err);
-                                                }
-                                            });
-                                        }));
-                                    }
+                                                    else {
+                                                        reject(err);
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                reject(err);
+                                            }
+                                        });
+                                    }));
                                     break;
+                                }
+                                case MwAction_3.ACTION_NULLIFY_UPPERCASE:
+                                case MwAction_3.ACTION_NULLIFY_LOWERCASE: {
+                                    outstanding.push(new Promise(function (resolve, reject) {
+                                        deleteDocument(roomId, path, function (err) {
+                                            if (!err) {
+                                                if (typeof change.m === 'number') {
+                                                    remote.discardActionsLe(nodeId, change.m);
+                                                }
+                                                remote.discardChanges(nodeId);
+                                                resolve(action.c);
+                                            }
+                                            else {
+                                                reject(err);
+                                            }
+                                        });
+                                    }));
+                                    break;
+                                }
                                 default: {
+                                    console.warn("action.c => " + action.c);
                                 }
                             }
                         }

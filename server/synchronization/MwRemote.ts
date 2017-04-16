@@ -1,6 +1,9 @@
 import Diff from './Diff';
 import DMP from './DMP';
 import isChanged from './isChanged';
+import { ACTION_RAW_OVERWRITE } from './MwAction';
+import { ACTION_DELTA_OVERWRITE } from './MwAction';
+import { ACTION_NULLIFY_UPPERCASE } from './MwAction';
 import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
@@ -56,7 +59,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         if (changes.length === 1) {
             const change = changes[0];
             const action = change.a;
-            if (action && action.c === 'R' && action.x === text) {
+            if (action && action.c === ACTION_RAW_OVERWRITE && action.x === text) {
                 return true;
             }
             else {
@@ -190,7 +193,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             if (diffs) {
                 if (isChanged(diffs)) {
                     // Compute and apply the patches.
-                    if (code === 'D') {
+                    if (code === ACTION_DELTA_OVERWRITE) {
                         // Overwrite text.
                         shadow.text = dmp.resultText(diffs);
                         editor.setText(shadow.text, function (err: Error) {
@@ -240,7 +243,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         const change: MwChange = {
             m: this.shadow.m,
             a: {
-                c: 'N',
+                c: ACTION_NULLIFY_UPPERCASE,
                 n: void 0,
                 x: void 0
             }

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var DMP_1 = require("./DMP");
+var MwAction_1 = require("./MwAction");
+var MwAction_2 = require("./MwAction");
 var INITIAL_VERSION = 1;
 var dmp = new DMP_1.default();
 var MwShadow = (function () {
@@ -72,7 +74,7 @@ var MwShadow = (function () {
         return { m: this.m, a: action };
     };
     MwShadow.prototype.createRawAction = function (overwrite) {
-        return { c: overwrite ? 'R' : 'r', n: this.n, x: encodeURI(this.text).replace(/%20/g, ' ') };
+        return { c: overwrite ? MwAction_1.ACTION_RAW_OVERWRITE : MwAction_1.ACTION_RAW_SYNCHONLY, n: this.n, x: encodeURI(this.text).replace(/%20/g, ' ') };
     };
     MwShadow.prototype.diffAndTagWithLocalVersion = function (text) {
         if (this.happy) {
@@ -82,7 +84,7 @@ var MwShadow = (function () {
                 dmp.diff_cleanupEfficiency(diffs);
             }
             var action = {
-                c: this.merge ? 'd' : 'D',
+                c: this.merge ? MwAction_2.ACTION_DELTA_MERGE : MwAction_2.ACTION_DELTA_OVERWRITE,
                 n: this.n,
                 x: dmp.diffsToDeltaArray(diffs)
             };

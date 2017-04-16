@@ -5,8 +5,6 @@ import { Annotation, AnnotationType } from '../../../editor/Annotation';
 import AutoCompleteCommand from '../../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../../mappings/copyWorkspaceToDoodle';
-// import dependenciesMap from '../../../services/doodles/dependenciesMap';
-// import dependencyNames from '../../../services/doodles/dependencyNames';
 import Delta from '../../../editor/Delta';
 import Diagnostic from '../../../editor/workspace/Diagnostic';
 import Disposable from '../../../base/Disposable';
@@ -46,7 +44,6 @@ import Shareable from '../../../base/Shareable';
 import SnippetCompleter from '../../../editor/SnippetCompleter';
 import StringShareableMap from '../../../collections/StringShareableMap';
 import TextChange from '../../../editor/workspace/TextChange';
-// import TextCompleter from '../../editor/autocomplete/TextCompleter';
 import { TsLintSettings, RuleArgumentType } from '../../tslint/TsLintSettings';
 import typescriptSnippets from '../../../editor/snippets/typescriptSnippets';
 import WsFile from './WsFile';
@@ -84,7 +81,7 @@ const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).c
 const workerUrl = '/js/worker.js';
 
 /**
- * Classify diagnostics so that they can be reported with differing severity.
+ * Classify diagnostics so that they can be reported with differing severity (error, warning, or info).
  */
 type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
 
@@ -141,12 +138,18 @@ function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic, origin: D
     return { row: pos.row, column: pos.column, text: diagnostic.message, type };
 }
 
+/**
+ * Asserts that the specified path is a string type.
+ */
 function checkPath(path: string): void {
     if (typeof path !== 'string') {
         throw new Error("path must be a string.");
     }
 }
 
+/**
+ * Asserts that the specified editor is an Editor instance.
+ */
 function checkEditor(editor: Editor): void {
     if (!(editor instanceof Editor)) {
         throw new Error("editor must be an Editor.");
@@ -162,12 +165,18 @@ function checkSession(session: EditSession): void {
     }
 }
 
+/**
+ * Asserts that the specified doc is a Document instance.
+ */
 function checkDocument(doc: Document): void {
     if (!(doc instanceof Document)) {
         throw new Error("doc must be a Document.");
     }
 }
 
+/**
+ * Asserts that the specified callback is a function type.
+ */
 function checkCallback(callback: (err: any) => any): void {
     if (typeof callback !== 'function') {
         throw new Error("callback must be a function.");
@@ -377,6 +386,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * The room that this workspace is currently connected to.
      */
     private room: RoomAgent | undefined;
+
+    /**
+     * This workspace is the one which created the room.
+     */
     private roomMaster: boolean;
 
     private roomListener: UnitListener | undefined;
@@ -542,6 +555,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * Notifies the callback when the specified event happens.
      * The function returned may be used to remove the watch.
+     * This is currently used for observing:
+     * 1. Output files being emitted.
+     * 2. File rename.
+     * 3. Change of Operator Overloading property.
      */
     watch<T>(eventName: string, callback: (event: T, source: WsModel) => void): () => any {
         return this.eventBus.watch(eventName, callback);
@@ -554,6 +571,11 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         return this.refCount === 0;
     }
 
+    /**
+     * Returns a map of paths to file.
+     * The map is a copy but the files are by reference.
+     * The files in the map have not been reference counted.
+     */
     get filesByPath(): { [path: string]: WsFile } {
         const files: { [path: string]: WsFile } = {};
         if (this.files) {
@@ -1546,6 +1568,20 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Creates a new file. The file is not monitored.
      */
     newFile(path: string): WsFile {
+        const file = this.createFileOrRestoreFromTrash(path);
+        if (this.room) {
+            file.unit = new MwUnit(this, this.mwOptions);
+            file.unit.setEditor(file);
+            const edits = file.unit.getEdits(this.room.id);
+            this.room.setEdits(path, edits);
+        }
+        return file;
+    }
+
+    /**
+     * Helper function that only provides the file.
+     */
+    private createFileOrRestoreFromTrash(path: string): WsFile {
         const mode = modeFromName(path);
         if (!this.existsFile(path)) {
             const trashedFile = this.trash ? this.trash.get(path) : void 0;
@@ -2170,7 +2206,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     /**
-     *
+     * This method is used for ensuring the existence of the package.json and tslint.json files.
      */
     private ensureFile(path: string, content: string): WsFile {
         if (!this.existsFile(path)) {
@@ -2181,7 +2217,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
         else {
             // We know that the file is defined so the cast is appropriate.
-            return <WsFile>this.findFileByPath(path);
+            return this.findFileByPath(path);
         }
     }
 
@@ -2216,6 +2252,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             placeholder.existsInGitHub = true;
             this.trash.putWeakRef(path, placeholder);
         }
+        else {
+            // TODO: If there is no trash, shouldn't we create a trash bucket?
+            console.warn(`WsModel.trashPut(${path}) but there is no trash bucket.`);
+        }
     }
 
     /**
@@ -2224,21 +2264,31 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     private restoreFileFromTrash(path: string): void {
         const trash = this.trash;
         const files = this.files;
-        if (trash && files) {
-            const wantedFile = trash.getWeakRef(path);
-            if (wantedFile) {
-                const conflictFile = files.getWeakRef(path);
-                if (!conflictFile) {
-                    trash.remove(path);
-                    files.putWeakRef(path, wantedFile);
+        if (trash) {
+            if (files) {
+                const wantedFile = trash.getWeakRef(path);
+                if (wantedFile) {
+                    const conflictFile = files.getWeakRef(path);
+                    if (!conflictFile) {
+                        trash.remove(path);
+                        files.putWeakRef(path, wantedFile);
+                    }
+                    else {
+                        throw new Error(`${path} cannot be restored from trash because of a naming conflict with an existing file.`);
+                    }
                 }
                 else {
-                    throw new Error(`${path} cannot be restored from trash because of a naming conflict with an existing file.`);
+                    throw new Error(`${path} cannot be restored from trash because it does not exist.`);
                 }
             }
             else {
-                throw new Error(`${path} cannot be restored from trash because it does not exist.`);
+                // TODO: If there is no files, shouldn't we create a files bucket?
+                console.warn(`WsModel.restoreFileFromTrash(${path}) but there is no files bucket.`);
             }
+        }
+        else {
+            // We seem to be making an illegal request.
+            throw new Error(`WsModel.restoreFileFromTrash(${path}) but there is no trash bucket.`);
         }
     }
 
@@ -2248,6 +2298,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * 3. Create a listener on the room that can send messages to this workspace.
      * 4. Create listeners on each file that send change events as edits to the room.
      * 5. Maintains a reference to the room until the disconnection happens.
+     * 
+     * The master flag indicates whether the room was created by this workspace.
      * 
      * @param room The room to connect to.
      * @param master <code>true</code> if the room was created with this workspace as the master.
@@ -2353,6 +2405,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     /**
      * For each file, collect the edits and send them to the room.
+     * This is called when a room has just been created and needs to be initialized with a workspace.
+     * TODO: The room parameter does not seem appropriate because the workspace can only be connected
+     * to one room at a time.
      */
     uploadToRoom(room: RoomAgent): void {
         if (room) {
@@ -2373,17 +2428,25 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
+    /**
+     * Determines whether this workspace is currently connected to a room.
+     */
     isConnectedToRoom(): boolean {
         const isConnected = !!this.room;
         return isConnected;
     }
 
+    /**
+     * Determines whether the owner specified is the owner of the currently connected room.
+     * Returns true if there is a room and the owner matches.
+     * Returns false if there is a room and the owner does not match.
+     * Return undefined if there is no currently connected room.
+     */
     isRoomOwner(owner: string): boolean | undefined {
         if (this.room) {
             return this.room.owner === owner;
         }
         else {
-            // TODO: We probably should throw here.
             return void 0;
         }
     }

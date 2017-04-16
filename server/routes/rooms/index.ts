@@ -11,6 +11,9 @@ import uniqueId from './uniqueId';
 import RoomValue from './RoomValue';
 import DMP from '../../synchronization/DMP';
 import Patch from '../../synchronization/Patch';
+import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from '../../synchronization/MwAction';
+import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from '../../synchronization/MwAction';
+import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from '../../synchronization/MwAction';
 import MwBroadcast from '../../synchronization/MwBroadcast';
 import MwEditor from '../../synchronization/MwEditor';
 import MwEdits from '../../synchronization/MwEdits';
@@ -222,7 +225,7 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
     ensurePathKey(roomId, path, function (err: Error) {
         if (!err) {
             const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
-            client.sismember([remotes, nodeId], function (reason: void |Error, exists: number) {
+            client.sismember([remotes, nodeId], function (reason: void | Error, exists: number) {
                 if (!reason) {
                     mustBeTruthy(isNumber(exists), `exists must be a number`);
                     if (exists > 0) {
@@ -501,7 +504,7 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                         const action = change.a;
                         if (action) {
                             switch (action.c) {
-                                case 'R': {
+                                case ACTION_RAW_OVERWRITE: {
                                     outstanding.push(new Promise<string>(function (resolve, reject) {
                                         const text = decodeURI(<string>action.x);
                                         createDocument(roomId, path, text, function (err: Error, unused: MwEditor) {
@@ -518,19 +521,19 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                             }
                                         });
                                     }));
-                                }
                                     break;
-                                case 'r': {
+                                }
+                                case ACTION_RAW_SYNCHONLY: {
                                     const text = decodeURI(<string>action.x);
                                     const shadow = remote.shadow;
                                     // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
                                     // The action local version becomes our remote version.
                                     shadow.updateRaw(text, action.n);
                                     remote.discardChanges(nodeId);
-                                }
                                     break;
-                                case 'D':
-                                case 'd': {
+                                }
+                                case ACTION_DELTA_OVERWRITE:
+                                case ACTION_DELTA_MERGE: {
                                     outstanding.push(new Promise<any>(function (resolve, reject) {
                                         getDocument(roomId, path, function (err: Error, doc: MwEditor) {
                                             if (!err) {
@@ -556,10 +559,10 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                             }
                                         });
                                     }));
-                                }
                                     break;
-                                case 'N':
-                                case 'n': {
+                                }
+                                case ACTION_NULLIFY_UPPERCASE:
+                                case ACTION_NULLIFY_LOWERCASE: {
                                     outstanding.push(new Promise<any>(function (resolve, reject) {
                                         deleteDocument(roomId, path, function (err: Error) {
                                             if (!err) {
@@ -574,10 +577,10 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                             }
                                         });
                                     }));
-                                }
                                     break;
+                                }
                                 default: {
-                                    // console.lg(`action.c => ${action.c}`);
+                                    console.warn(`action.c => ${action.c}`);
                                 }
                             }
                         }

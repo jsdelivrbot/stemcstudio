@@ -1,6 +1,9 @@
 import Diff from './Diff';
 import DMP from './DMP';
 import isChanged from './isChanged';
+import { ACTION_RAW_OVERWRITE } from './MwAction';
+import { ACTION_DELTA_OVERWRITE } from './MwAction';
+import { ACTION_NULLIFY_UPPERCASE } from './MwAction';
 import { MwActionType } from './MwAction';
 import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
@@ -60,6 +63,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
 
     /**
      * Determines whether the outbound stack contains the raw action with the specified text.
+     * TODO: This method currently only checks for the overwrite variant or the raw action.
      */
     containsRawAction(nodeId: string, text: string): boolean {
         const edits = this.getEdits(nodeId);
@@ -71,7 +75,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             // But why does it not fail acessing 'c'?
             // if (action && typeof action === 'undefined') {
             // }
-            if (action && action.c === 'R' && action.x === text) {
+            if (action && action.c === ACTION_RAW_OVERWRITE && action.x === text) {
                 return true;
             }
             else {
@@ -151,7 +155,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      *
      * @param nodeId The target node identifier.
      * @param editor
-     * @param code The action type is expected to be 'D' or 'd'.
+     * @param code The action type is expected to be a delta variant (merge or overwrite).
      * @param delta The encoded differences.
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
@@ -208,14 +212,14 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             if (diffs) {
                 if (isChanged(diffs)) {
                     // Compute and apply the patches.
-                    if (code === 'D') {
-                        // Overwrite text.
+                    if (code === ACTION_DELTA_OVERWRITE) {
+                        // Overwrite (used for numeric/enum content).
                         shadow.text = dmp.resultText(diffs);
                         editor.setText(shadow.text);
                         shadow.happy = true;
                     }
                     else {
-                        // Merge text.
+                        // Merge (used for text content).
                         const patches = dmp.computePatches(shadow.text, diffs);
                         // First thisText.  Should be guaranteed to work.
                         const serverResult = dmp.patch_apply(patches, shadow.text);
@@ -249,7 +253,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             const change: MwChange = {
                 m: this.shadow.m,
                 a: {
-                    c: 'N',
+                    c: ACTION_NULLIFY_UPPERCASE,
                     n: void 0,
                     x: void 0
                 }

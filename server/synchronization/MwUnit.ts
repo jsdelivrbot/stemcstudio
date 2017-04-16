@@ -1,14 +1,12 @@
-// import FzSerializable from './ds/FzSerializable';
-// import FzUnit from './ds/FzUnit';
-// import MwBroadcast from './MwBroadcast';
+import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
+import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
+import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from './MwAction';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
 import MwEditor from './MwEditor';
 import MwRemote from './MwRemote';
 import MwShadow from './MwShadow';
 import MwWorkspace from './MwWorkspace';
-// import FzRemote from './ds/FzRemote';
-// import dehydrateMap from './ds/dehydrateMap';
 
 /**
  * The smallest level of synchronization (a file).
@@ -36,7 +34,7 @@ export default class MwUnit {
     getEdits(nodeId: string, callback: (err: Error, edits: MwEdits) => any): void {
         const remote = this.ensureRemote(nodeId);
         if (this.editor) {
-            this.captureFile(nodeId, function(err: Error, change: MwChange) {
+            this.captureFile(nodeId, function (err: Error, change: MwChange) {
                 if (!err) {
                     remote.addChange(nodeId, change);
                     callback(void 0, remote.getEdits(nodeId));
@@ -79,7 +77,7 @@ export default class MwUnit {
         const shadow: MwShadow = remote.shadow;
         const editor: MwEditor = this.editor;
         if (editor) {
-            editor.getText(function(err: Error, text: string) {
+            editor.getText(function (err: Error, text: string) {
                 if (!err) {
                     if (shadow) {
                         if (shadow.happy) {
@@ -144,10 +142,10 @@ export default class MwUnit {
             const action = change.a;
             if (action) {
                 switch (action.c) {
-                    case 'R': {
+                    case ACTION_RAW_OVERWRITE: {
                         const editor = this.ensureEditor();
                         const text = decodeURI(<string>action.x);
-                        editor.setText(text, function(err: Error) {
+                        editor.setText(text, function (err: Error) {
                             if (!err) {
                                 const shadow = remote.ensureShadow();
                                 // The action local version becomes our remote version.
@@ -158,9 +156,9 @@ export default class MwUnit {
                                 // FIXME TODO!!!
                             }
                         });
-                    }
                         break;
-                    case 'r': {
+                    }
+                    case ACTION_RAW_SYNCHONLY: {
                         const text = decodeURI(<string>action.x);
                         const shadow = remote.shadow;
                         // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
@@ -169,32 +167,32 @@ export default class MwUnit {
                         remote.discardChanges(nodeId);
                     }
                         break;
-                    case 'D':
-                    case 'd': {
+                    case ACTION_DELTA_OVERWRITE:
+                    case ACTION_DELTA_MERGE: {
                         const editor = this.editor;
                         const shadow = remote.shadow;
                         const backup = remote.backup;
                         // The change remote version becomes our local version.
                         // The action local version becomes our remote version.
-                        remote.patchDelta(nodeId, editor, action.c, <string[]>action.x, change.m, action.n, function(err: Error) {
+                        remote.patchDelta(nodeId, editor, action.c, <string[]>action.x, change.m, action.n, function (err: Error) {
                             backup.copy(shadow);
                             if (typeof change.m === 'number') {
                                 remote.discardActionsLe(nodeId, change.m);
                             }
                         });
-                    }
                         break;
-                    case 'N':
-                    case 'n': {
+                    }
+                    case ACTION_NULLIFY_UPPERCASE:
+                    case ACTION_NULLIFY_LOWERCASE: {
                         this.removeEditor();
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);
                         }
                         remote.discardChanges(nodeId);
-                    }
                         break;
+                    }
                     default: {
-                        console.warn(`Unknown code: ${action.c}`);
+                        console.warn(`Unknown action.c: ${action.c}`);
                     }
                 }
             }

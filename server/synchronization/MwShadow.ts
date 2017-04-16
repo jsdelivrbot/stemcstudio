@@ -1,8 +1,7 @@
-// import Diff from './Diff';
 import DMP from './DMP';
-// import isChanged from './isChanged';
+import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
+import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import MwAction from './MwAction';
-// import MwEditor from './MwEditor';
 import MwChange from './MwChange';
 import FzSerializable from './ds/FzSerializable';
 import FzShadow from './ds/FzShadow';
@@ -154,7 +153,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
      */
     private createRawAction(overwrite: boolean): MwAction {
         // It should be clear here that we are sending the state of the shadow.
-        return { c: overwrite ? 'R' : 'r', n: this.n, x: encodeURI(this.text).replace(/%20/g, ' ') };
+        return { c: overwrite ? ACTION_RAW_OVERWRITE : ACTION_RAW_SYNCHONLY, n: this.n, x: encodeURI(this.text).replace(/%20/g, ' ') };
     }
 
     /**
@@ -177,7 +176,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
             //            if (changed /* || !shadow.edits.length */) {
             // Convert the diffs into an action and tag with the local version of the shadow they were created from.
             const action: MwAction = {
-                c: this.merge ? 'd' : 'D',
+                c: this.merge ? ACTION_DELTA_MERGE : ACTION_DELTA_OVERWRITE,
                 n: this.n,
                 x: dmp.diffsToDeltaArray(diffs)
             };
