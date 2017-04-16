@@ -324,6 +324,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * A mapping from the file path to the last JavaScript code emitted by the TypeScript compiler.
      */
     lastKnownJs: { [path: string]: string } = {};
+
     /**
      * Source maps will be used to relate runtime exceptions to the source location.
      */
@@ -349,7 +350,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private trash: StringShareableMap<WsFile> | undefined;
 
-    private readonly mwOptions: MwOptions = { merge: true, verbose: false };
+    private readonly mwOptions: MwOptions = { merge: true, verbose: true };
 
     /**
      * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
@@ -358,17 +359,17 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private inFlight = 0;
 
-    private quickInfo: { [path: string]: QuickInfoTooltip } = {};
-    private annotationHandlers: { [path: string]: (event: { data: Annotation[], type: 'annotation' }) => any } = {};
+    private readonly quickInfo: { [path: string]: QuickInfoTooltip } = {};
+    private readonly annotationHandlers: { [path: string]: (event: { data: Annotation[], type: 'annotation' }) => any } = {};
 
-    private refMarkers: number[] = [];
+    private readonly refMarkers: number[] = [];
 
     /**
      * The diagnostics allow us to place markers in the marker layer.
      * This array keeps track of the marker identifiers so that we can
      * remove the existing ones when the time comes to replace them.
      */
-    private errorMarkerIds: number[] = [];
+    private readonly errorMarkerIds: number[] = [];
 
     private languageServiceProxy: LanguageServiceProxy | undefined;
 
@@ -383,15 +384,15 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * Listeners added to the document for the LanguageService.
      */
-    private langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    private readonly langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
     /**
      * Listeners added to the document for Synchronization.
      */
-    private roomDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    private readonly roomDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
     /**
      * Listeners added to the Document for Local Storage.
      */
-    private saveDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    private readonly saveDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
 
     /**
      * Slightly unusual reference counting because of:
@@ -418,7 +419,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     /**
      * 
      */
-    private eventBus: EventBus<any, WsModel> = new EventBus<any, WsModel>(this);
+    private readonly eventBus: EventBus<any, WsModel> = new EventBus<any, WsModel>(this);
 
     public trace_ = false;
 
@@ -2323,8 +2324,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     const doc = this.getFileDocument(path);
                     if (doc) {
                         try {
-                            this.roomDocumentChangeListenerRemovers[path]();
-                            delete this.roomDocumentChangeListenerRemovers[path];
+                            if (this.roomDocumentChangeListenerRemovers[path]) {
+                                this.roomDocumentChangeListenerRemovers[path]();
+                                delete this.roomDocumentChangeListenerRemovers[path];
+                            }
                         }
                         finally {
                             doc.release();

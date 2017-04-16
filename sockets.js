@@ -8,7 +8,7 @@ function summarize(edits) {
     return edits.x.map(function (change) { return { type: change.a.c, local: change.a.n, remote: change.m }; });
 }
 var socketByNodeId = {};
-var verbose = false;
+var verbose = true;
 function sockets(app, server) {
     var io = sio(server, {});
     io.on('connection', function (socket) {

@@ -29,7 +29,7 @@ const socketByNodeId: { [nodeId: string]: SocketIO.Socket } = {};
 /**
  * Used to control logging.
  */
-const verbose = false;
+const verbose = true;
 
 /**
  * The initialization code for the sockets part of this application.
