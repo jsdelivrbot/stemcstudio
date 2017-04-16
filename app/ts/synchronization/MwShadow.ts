@@ -1,9 +1,7 @@
-// import Diff from './Diff';
 import DMP from './DMP';
-// import isChanged from './isChanged';
 import MwAction from './MwAction';
-// import MwEditor from './MwEditor';
 import MwChange from './MwChange';
+import { MwOptions } from './MwOptions';
 import FzSerializable from './ds/FzSerializable';
 import FzShadow from './ds/FzShadow';
 
@@ -46,7 +44,7 @@ export default class MwShadow implements FzSerializable<FzShadow> {
      */
     private merge: boolean;
 
-    constructor() {
+    constructor(private readonly options: MwOptions) {
         // We'll assume that we are synchronizing text and not numeric/enum content.
         this.merge = true;
     }
@@ -114,16 +112,22 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     }
 
     private logState(): void {
-        console.log(`(n, m) happy => (${this.n}, ${this.m}) ${this.happy}`);
+        if (this.options.verbose) {
+            console.log(`(n, m) happy => (${this.n}, ${this.m}) ${this.happy}`);
+        }
     }
 
     /**
      * Sets the properties specified and deltaOk to true. 
      */
     public updateRaw(text: string, remoteVersion: number): void {
-        console.log(`shadow.updateRaw()`);
+        if (this.options.verbose) {
+            console.log(`shadow.updateRaw()`);
+        }
         this.updateTextAndIncrementLocalVersion(text);
-        console.log(`Setting shadow remote version (m) to remoteVersion = ${remoteVersion}`);
+        if (this.options.verbose) {
+            console.log(`Setting shadow remote version (m) to remoteVersion = ${remoteVersion}`);
+        }
         this.m = remoteVersion;
         // Sending a raw dump will put us back in sync.
         // Set deltaOk to true in case this sync fails to connect, in which case
@@ -139,12 +143,16 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     public updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
-            const n = this.n;
-            console.log(`Incrementing shadow local version (n) from ${n} to ${n + 1}`);
+            if (this.options.verbose) {
+                const n = this.n;
+                console.log(`Incrementing shadow local version (n) from ${n} to ${n + 1}`);
+            }
             this.n++;
         }
         else {
-            console.log(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
+            if (this.options.verbose) {
+                console.log(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
+            }
             this.n = INITIAL_VERSION;
         }
         this.logState();

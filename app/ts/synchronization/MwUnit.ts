@@ -4,6 +4,7 @@ import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
 import MwEditor from './MwEditor';
+import { MwOptions } from './MwOptions';
 import MwRemote from './MwRemote';
 import MwShadow from './MwShadow';
 import MwWorkspace from './MwWorkspace';
@@ -28,7 +29,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     /**
      * 
      */
-    constructor(private workspace: MwWorkspace) {
+    constructor(private workspace: MwWorkspace, private options: MwOptions) {
         // Do nothing yet.
     }
     dehydrate(): FzUnit {
@@ -46,7 +47,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                 const nodeId = nodeIds[i];
                 const value = links[nodeId];
                 // TODO: It's looking like the constructor could take the frozen value?
-                const link = new MwRemote();
+                const link = new MwRemote(this.options);
                 link.rehydrate(value);
                 result[nodeId] = link;
             }
@@ -168,10 +169,12 @@ export default class MwUnit implements FzSerializable<FzUnit> {
      * 
      */
     ensureRemote(nodeId: string): MwRemote {
-        console.log(`MwUnit.ensureRemote(nodeId => ${nodeId}), remotes =>${JSON.stringify(Object.keys(this.remotes))}`);
+        if (this.options.verbose) {
+            console.log(`MwUnit.ensureRemote(nodeId => ${nodeId}), remotes =>${JSON.stringify(Object.keys(this.remotes))}`);
+        }
         const existing = this.remotes[nodeId];
         if (!existing) {
-            const remote = new MwRemote();
+            const remote = new MwRemote(this.options);
             this.addRemote(nodeId, remote);
             return remote;
         }
@@ -218,9 +221,13 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         const backup = remote.backup as MwShadow;
                         // The change remote version becomes our local version.
                         // The action local version becomes our remote version.
-                        console.log("Applying patch to editor");
+                        if (this.options.verbose) {
+                            console.log("Applying patch to editor");
+                        }
                         remote.patchDelta(nodeId, editor, action.c, action.x as string[], change.m, action.n as number);
-                        console.log("Copying shadow to backup");
+                        if (this.options.verbose) {
+                            console.log("Copying shadow to backup");
+                        }
                         backup.copy(shadow);
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);

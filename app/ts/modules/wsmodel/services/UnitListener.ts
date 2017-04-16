@@ -1,6 +1,7 @@
 import { RoomListener } from '../../rooms/RoomListener';
 import MwEdits from '../../../synchronization/MwEdits';
 import MwEditor from '../../../synchronization/MwEditor';
+import { MwOptions } from '../../../synchronization/MwOptions';
 import MwUnit from '../../../synchronization/MwUnit';
 import WsModel from './WsModel';
 
@@ -8,7 +9,7 @@ import WsModel from './WsModel';
  * Adapter that listens to the RoomAgent and sends syncronization messages to the node.
  */
 export default class UnitListener implements RoomListener {
-    constructor(private workspace: WsModel) {
+    constructor(private workspace: WsModel, private options: MwOptions) {
         // Do something soon.
     }
 
@@ -37,7 +38,7 @@ export default class UnitListener implements RoomListener {
                 file.unit.setEdits(nodeId, edits);
             }
             else {
-                file.unit = new MwUnit(this.workspace);
+                file.unit = new MwUnit(this.workspace, this.options);
                 const editor: MwEditor = this.workspace.createEditor();
                 file.unit.setEditor(editor);
                 file.unit.setEdits(nodeId, edits);

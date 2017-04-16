@@ -30,6 +30,7 @@ import { LANGUAGE_HTML } from '../../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../../languages/modes';
 import MwEditor from '../../../synchronization/MwEditor';
 import MwEdits from '../../../synchronization/MwEdits';
+import { MwOptions } from '../../../synchronization/MwOptions';
 import MwUnit from '../../../synchronization/MwUnit';
 import MwWorkspace from '../../../synchronization/MwWorkspace';
 import { OutputFilesMessage, outputFilesTopic } from '../IWorkspaceModel';
@@ -347,6 +348,8 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Files that have been deleted (used to support updating a Gist).
      */
     private trash: StringShareableMap<WsFile> | undefined;
+
+    private readonly mwOptions: MwOptions = { verbose: false };
 
     /**
      * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
@@ -2270,13 +2273,13 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     const file = files.getWeakRef(path);
                     // Create the synchronization node associated with the workspace.
                     // This will enable the node to create and destroy editors.
-                    file.unit = new MwUnit(this);
+                    file.unit = new MwUnit(this, this.mwOptions);
                     file.unit.setEditor(file);
                 }
 
                 // Add a listener to the room agent so that edits broadcast from the room are
                 // received by the appropriate unit, converted to patches and applied.
-                this.roomListener = new UnitListener(this);
+                this.roomListener = new UnitListener(this, this.mwOptions);
                 room.addListener(this.roomListener);
 
                 // Add listeners for document changes. These will begin the flow of diffs to the server.

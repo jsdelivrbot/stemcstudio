@@ -6,6 +6,7 @@ import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
 import MwEdits from './MwEdits';
 import MwEditor from './MwEditor';
+import { MwOptions } from './MwOptions';
 import MwShadow from './MwShadow';
 import FzRemote from './ds/FzRemote';
 import FzSerializable from './ds/FzSerializable';
@@ -34,7 +35,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * 
      */
-    constructor() {
+    constructor(private readonly options: MwOptions) {
         // Do nothing.
     }
 
@@ -92,8 +93,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     }
 
     rehydrate(value: FzRemote): void {
-        this.shadow = value.s ? new MwShadow().rehydrate(value.s) : void 0;
-        this.backup = value.b ? new MwShadow().rehydrate(value.b) : void 0;
+        this.shadow = value.s ? new MwShadow(this.options).rehydrate(value.s) : void 0;
+        this.backup = value.b ? new MwShadow(this.options).rehydrate(value.b) : void 0;
         this.edits = value.e;
     }
 
@@ -102,8 +103,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      */
     ensureShadow(): MwShadow {
         if (!this.shadow) {
-            this.shadow = new MwShadow();
-            this.backup = new MwShadow();
+            this.shadow = new MwShadow(this.options);
+            this.backup = new MwShadow(this.options);
         }
         return this.shadow;
     }
