@@ -55,25 +55,19 @@ var MwShadow = (function () {
         return this.createFileChange(action);
     };
     MwShadow.prototype.updateRaw = function (text, remoteVersion) {
-        console.log("shadow.updateRaw()");
         this.updateTextAndIncrementLocalVersion(text);
-        console.log("Setting shadow remote version (m) to remoteVersion = " + remoteVersion);
         this.m = remoteVersion;
         this.happy = true;
         this.logState();
     };
     MwShadow.prototype.logState = function () {
-        console.log("(n, m) happy => (" + this.n + ", " + this.m + ") " + this.happy);
     };
     MwShadow.prototype.updateTextAndIncrementLocalVersion = function (text) {
         this.text = text;
         if (typeof this.n === 'number') {
-            var n = this.n;
-            console.log("Incrementing shadow local version number (n) from " + n + " to " + (n + 1));
             this.n++;
         }
         else {
-            console.log("Setting shadow local version (n) to INITIAL_VERSION = " + INITIAL_VERSION);
             this.n = INITIAL_VERSION;
         }
         this.logState();

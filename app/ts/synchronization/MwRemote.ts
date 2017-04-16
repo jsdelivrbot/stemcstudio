@@ -163,7 +163,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         // The server offers a compressed delta of changes to be applied.
         // Handle the case where one party initiates with a Raw message and other party acknowledges with a Delta.
         if (typeof shadow.m !== 'number') {
-            console.log(`Setting shadow remote version (m) to server remote version = ${remoteVersion}`);
+            if (this.options.verbose) {
+                console.log(`Setting shadow remote version (m) to server remote version = ${remoteVersion}`);
+            }
             shadow.m = remoteVersion;
         }
         if (localVersion !== shadow.n) {
