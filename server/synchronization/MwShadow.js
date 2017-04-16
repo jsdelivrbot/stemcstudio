@@ -58,9 +58,6 @@ var MwShadow = (function () {
         this.updateTextAndIncrementLocalVersion(text);
         this.m = remoteVersion;
         this.happy = true;
-        this.logState();
-    };
-    MwShadow.prototype.logState = function () {
     };
     MwShadow.prototype.updateTextAndIncrementLocalVersion = function (text) {
         this.text = text;
@@ -70,7 +67,6 @@ var MwShadow = (function () {
         else {
             this.n = INITIAL_VERSION;
         }
-        this.logState();
     };
     MwShadow.prototype.createFileChange = function (action) {
         return { m: this.m, a: action };

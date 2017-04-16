@@ -781,7 +781,6 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createRenamedFileEventHandler(): RenamedFileHandler<WsModel> {
         const handler = (message: RenamedFileMessage, unused: WsModel) => {
-            // console.log(`${renamedFileTopic} => ${JSON.stringify(message)}`);
             // No action is required. We are expecting another event for the output files.
         };
         return handler;

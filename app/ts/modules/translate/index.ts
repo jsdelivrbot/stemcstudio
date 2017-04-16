@@ -22,11 +22,11 @@ translate.provider(TRANSLATE_GATEWAY_UUID, new TranslateGatewayProvider());
 translate.provider(TRANSLATE_SERVICE_UUID, new TranslateServiceProvider());
 
 translate.config([function () {
-    // console.log(`${translate.name}.config(...)`);
+    // Do nothing.
 }]);
 
 translate.run([function () {
-    // console.log(`${translate.name}.run(...)`);
+    // Do nothing.
 }]);
 
 export default translate;

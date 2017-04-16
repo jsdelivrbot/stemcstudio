@@ -95,5 +95,4 @@ snippet expect
 	expect(\${1:expression}).\${2:toBe}(\${3:expression})
 
 `);
-// console.log(JSON.stringify(snippets, null, 2));
 export default snippets;

@@ -55,20 +55,17 @@ export class SocketZen {
 
             return new Promise<void>((resolve, reject) => {
                 const connectingHandler = () => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_CONNECTING);
+                    // Do Nothing.
                 };
                 const connectHandler = () => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_CONNECT);
                     cleanUp();
                     resolve();
                 };
                 const connectFailedHandler = () => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_CONNECT_FAILED);
                     cleanUp();
                     reject(new Error(""));
                 };
                 const errorHandler = (err: any) => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_ERROR);
                     cleanUp();
                     reject(err);
                 };
@@ -104,12 +101,10 @@ export class SocketZen {
 
             return new Promise<void>((resolve, reject) => {
                 const disconnectHandler = () => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_DISCONNECT);
                     cleanUp();
                     resolve();
                 };
                 const errorHandler = (err: any) => {
-                    this.logSocketEvent(EVENT_SOCKET_IO_ERROR);
                     cleanUp();
                     reject(err);
                 };
@@ -137,12 +132,5 @@ export class SocketZen {
      */
     public emit(eventName: string, params: {}, callback: Function) {
         this.socket.emit(eventName, params, callback);
-    }
-
-    /**
-     * 
-     */
-    private logSocketEvent(eventName: string): void {
-        // console.lg(`Socket '${eventName}'`);
     }
 }

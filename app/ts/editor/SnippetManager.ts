@@ -343,8 +343,6 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      */
     public tmStrFormat(snippetText: string, chIn: TmFormat, editor?: Editor): string {
 
-        console.log(`tmStrFormat() snippetText =< ${snippetText} chIn=>${JSON.stringify(chIn, null, 2)}`);
-
         const flag = chIn.flag || "";
         const re = new RegExp(chIn.guard, flag.replace(/[^gi]/, ""));
         const fmtTokens = this.tokenizeTmSnippet(chIn.fmt, "formatString");

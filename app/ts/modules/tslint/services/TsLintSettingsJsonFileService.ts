@@ -8,7 +8,6 @@ export class TsLintSettingsJsonFileService implements TsLintSettingsService {
     ];
     constructor(wsModel: IWorkspaceModel) {
         // Do nothing yet.
-        console.log("TsLintSettingService.constructor()");
     }
 }
 

@@ -107,7 +107,6 @@ export default class WsFile implements MwEditor, Shareable {
      * @param workspace
      */
     constructor(workspace: WsModel) {
-        // console.lg("WsFile.constructor");
         this.workspace = workspace;
     }
 
@@ -115,7 +114,6 @@ export default class WsFile implements MwEditor, Shareable {
      * 
      */
     protected destructor(): void {
-        // console.lg("WsFile.destructor");
         this.setSession(void 0);
         this.setDocument(void 0);
         this.workspace = void 0;
@@ -163,7 +161,6 @@ export default class WsFile implements MwEditor, Shareable {
      */
     addRef(): number {
         this.refCount++;
-        // console.lg(`WsFile.addRef() => ${this.refCount}`);
         return this.refCount;
     }
 
@@ -178,7 +175,6 @@ export default class WsFile implements MwEditor, Shareable {
         else if (this.refCount < 0) {
             throw new Error("refCount has dropped below zero.");
         }
-        // console.lg(`WsFile.release() => ${this.refCount}`);
         return this.refCount;
     }
 

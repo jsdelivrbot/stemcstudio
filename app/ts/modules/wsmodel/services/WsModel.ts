@@ -349,7 +349,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private trash: StringShareableMap<WsFile> | undefined;
 
-    private readonly mwOptions: MwOptions = { verbose: false };
+    private readonly mwOptions: MwOptions = { merge: true, verbose: false };
 
     /**
      * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
@@ -2372,17 +2372,14 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     isConnectedToRoom(): boolean {
         const isConnected = !!this.room;
-        // console.lg(`WsModel.isConnectedToRoom => ${isConnected}`);
         return isConnected;
     }
 
     isRoomOwner(owner: string): boolean | undefined {
         if (this.room) {
-            // console.lg(`WsModel.isRoomOwner('${owner}') owned by ${this.room.owner}`);
             return this.room.owner === owner;
         }
         else {
-            // console.lg(`WsModel.isRoomOwner('${owner}') (room is not defined)`);
             // TODO: We probably should throw here.
             return void 0;
         }

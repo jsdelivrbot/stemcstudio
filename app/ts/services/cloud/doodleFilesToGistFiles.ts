@@ -11,7 +11,6 @@ export default function doodleFilesToGistFiles(files: { [path: string]: WsFile }
     const gFiles: { [path: string]: { content: string } | null } = {};
 
     const filesPaths: string[] = Object.keys(files);
-    // console.lg(`filesPaths => ${filesPaths}`);
     const iLen = filesPaths.length;
     for (let i = 0; i < iLen; i++) {
         const path: string = filesPaths[i];
@@ -21,7 +20,6 @@ export default function doodleFilesToGistFiles(files: { [path: string]: WsFile }
     }
 
     const trashPaths: string[] = Object.keys(trash);
-    // console.lg(`trashPaths => ${trashPaths}`);
     const jLen = trashPaths.length;
     for (let j = 0; j < jLen; j++) {
         // Deletes are performed by including a path key with a null value.

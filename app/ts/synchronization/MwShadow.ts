@@ -44,9 +44,9 @@ export default class MwShadow implements FzSerializable<FzShadow> {
      */
     private merge: boolean;
 
-    constructor(private readonly options: MwOptions) {
+    constructor(options: MwOptions) {
         // We'll assume that we are synchronizing text and not numeric/enum content.
-        this.merge = true;
+        this.merge = options.merge;
     }
 
     /**
@@ -111,30 +111,17 @@ export default class MwShadow implements FzSerializable<FzShadow> {
         return this.createFileChange(action);
     }
 
-    private logState(): void {
-        if (this.options.verbose) {
-            console.log(`(n, m) happy => (${this.n}, ${this.m}) ${this.happy}`);
-        }
-    }
-
     /**
      * Sets the properties specified and deltaOk to true. 
      */
     public updateRaw(text: string, remoteVersion: number): void {
-        if (this.options.verbose) {
-            console.log(`shadow.updateRaw()`);
-        }
         this.updateTextAndIncrementLocalVersion(text);
-        if (this.options.verbose) {
-            console.log(`Setting shadow remote version (m) to remoteVersion = ${remoteVersion}`);
-        }
         this.m = remoteVersion;
         // Sending a raw dump will put us back in sync.
         // Set deltaOk to true in case this sync fails to connect, in which case
         // the following sync(s) should be a delta, not more raw dumps.
         // We received the data. Next time we will only send a delta.
         this.happy = true;
-        this.logState();
     }
 
     /**
@@ -143,19 +130,11 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     public updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
-            if (this.options.verbose) {
-                const n = this.n;
-                console.log(`Incrementing shadow local version (n) from ${n} to ${n + 1}`);
-            }
             this.n++;
         }
         else {
-            if (this.options.verbose) {
-                console.log(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
-            }
             this.n = INITIAL_VERSION;
         }
-        this.logState();
     }
 
     /**

@@ -67,9 +67,6 @@ export default class RoomAgent implements Shareable {
     constructor(roomId: string, owner: string) {
         this.roomId = roomId;
         this.owner = owner;
-        if (this.verbose) {
-            console.log(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
-        }
 
         // Maybe can't use secure if doing localhost?
         this.socket = new SocketZen(io.connect({ autoConnect: false/*, secure: true*/ }));

@@ -9,5 +9,4 @@ const defaultConfig = {
 };
 
 const env = process.env.NODE_ENV || 'development';
-// console.lg(`using NODE_ENV=${env}`);
-nconf.use("memory").argv().env().file({file: `config.${env}.json`}).defaults(defaultConfig);
+nconf.use("memory").argv().env().file({ file: `config.${env}.json` }).defaults(defaultConfig);

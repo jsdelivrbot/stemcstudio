@@ -28,7 +28,6 @@ export default class TranslateServiceProvider implements ITranslateServiceProvid
     }
 
     translations(key: string, translationTable: ITranslationTable): ITranslateServiceProvider {
-        console.log(`translations() ${key} => ${JSON.stringify(translationTable, null, 2)}`);
         return this;
     }
 

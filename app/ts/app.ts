@@ -172,7 +172,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.23');
+app.constant('version', '2.24.24');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -326,8 +326,6 @@ app.config([
         FEATURE_ROOM_ENABLED: boolean,
         FEATURE_TUTORIALS_ENABLED: boolean
     ) {
-        // console.lg(`${app.name}.config(...)`);
-
         // FIXME: Some of the states should be replaced by modal dialogs.
         stateProvider
             .state(STATE_HOME, {

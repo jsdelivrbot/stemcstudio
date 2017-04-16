@@ -116,7 +116,6 @@ export default class UploadFlow {
                         switch (status) {
                             case 200: {
                                 const gist: Gist = http.data;
-                                // console.lg(JSON.stringify(gist, null, 2));
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                 try {
@@ -328,7 +327,6 @@ export default class UploadFlow {
 
         flow.rule("Update Index", {},
             (facts) => {
-                // console.lg(JSON.stringify(facts, null, 2));
                 return false;
             },
             (facts, session, next) => {

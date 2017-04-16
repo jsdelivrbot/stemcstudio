@@ -117,20 +117,13 @@ export default class MwShadow implements FzSerializable<FzShadow> {
      * Sets the properties specified and deltaOk to true. 
      */
     public updateRaw(text: string, remoteVersion: number): void {
-        // console.lg(`shadow.updateRaw()`);
         this.updateTextAndIncrementLocalVersion(text);
-        // console.lg(`Setting shadow remote version (m) to remoteVersion = ${remoteVersion}`);
         this.m = remoteVersion;
         // Sending a raw dump will put us back in sync.
         // Set deltaOk to true in case this sync fails to connect, in which case
         // the following sync(s) should be a delta, not more raw dumps.
         // We received the data. Next time we will only send a delta.
         this.happy = true;
-        this.logState();
-    }
-
-    private logState(): void {
-        // console.lg(`(n, m) happy => (${this.n}, ${this.m}) ${this.happy}`);
     }
 
     /**
@@ -139,15 +132,11 @@ export default class MwShadow implements FzSerializable<FzShadow> {
     private updateTextAndIncrementLocalVersion(text: string): void {
         this.text = text;
         if (typeof this.n === 'number') {
-            // const n = this.n;
-            // console.lg(`Incrementing shadow local version number (n) from ${n} to ${n + 1}`);
             this.n++;
         }
         else {
-            // console.lg(`Setting shadow local version (n) to INITIAL_VERSION = ${INITIAL_VERSION}`);
             this.n = INITIAL_VERSION;
         }
-        this.logState();
     }
 
     /**

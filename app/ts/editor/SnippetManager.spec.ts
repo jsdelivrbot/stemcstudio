@@ -49,7 +49,6 @@ describe("SnippetManager", function () {
         describe("(2)", function () {
             const content = "\\}${var/as\\/d/\\ul\\//g:s}";
             const fmtTokens = snippetManager.tokenizeTmSnippet(content);
-            // console.log(`fmtTokens => ${JSON.stringify(fmtTokens, null, 2)}`);
             it("length", function () {
                 expect(fmtTokens.length).toBe(4);
             });

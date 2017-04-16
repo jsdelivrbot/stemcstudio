@@ -1,23 +1,10 @@
 import Command from '../../commands/Command';
 import Editor from '../../Editor';
-import {KEY_MODS} from '../../lib/keys';
+import { KEY_MODS } from '../../lib/keys';
 /**
  * Gets a map of keyboard shortcuts to command names for the current platform.
  */
 
-/**
- * Gets a map of keyboard shortcuts to command names for the current platform.
- * @param {ace.Editor} editor An editor instance.
- * @returns {Array} Returns an array of objects representing the keyboard
- *  shortcuts for the given editor.
- * @example
- * var getKbShortcuts = require('./get_keyboard_shortcuts');
- * console.lg(getKbShortcuts(editor));
- * // [
- * //     {'command' : aCommand, 'key' : 'Control-d'},
- * //     {'command' : aCommand, 'key' : 'Control-d'}
- * // ]
- */
 export interface KeyboardShortcut {
     command: string;
     key: string;

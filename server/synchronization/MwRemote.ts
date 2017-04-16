@@ -175,8 +175,6 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             let diffs: Diff[];
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
-                const m = shadow.m;
-                console.log(`Incrementing shadow version number (m) from ${m} to ${m + 1}`);
                 shadow.m++;
             }
             catch (e) {

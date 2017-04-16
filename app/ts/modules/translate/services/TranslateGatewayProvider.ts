@@ -27,7 +27,6 @@ export default class TranslateGatewayProvider implements ITranslateGatewayProvid
     }
 
     translations(key: string, translationTable: ITranslationTable): ITranslateGatewayProvider {
-        console.log(`translations() ${key} => ${JSON.stringify(translationTable, null, 2)}`);
         return this;
     }
 

@@ -92,7 +92,4 @@ export default function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle
     doodle.owner = workspace.owner;
     doodle.repo = workspace.repo;
     doodle.updated_at = workspace.updated_at;
-
-    // console.lg(`files => ${JSON.stringify(Object.keys(doodle.files), null, 2)}`);
-    // console.lg(`trash => ${JSON.stringify(Object.keys(doodle.trash), null, 2)}`);
 }

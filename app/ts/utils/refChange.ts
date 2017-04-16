@@ -11,7 +11,7 @@ function prefix(message: string): string {
 
 function log(message: string): void {
     // Find some way to switch for DEV and PROD.
-    // console.log(prefix(message));
+    // console.lg(prefix(message));
 }
 
 function warn(message: string): void {

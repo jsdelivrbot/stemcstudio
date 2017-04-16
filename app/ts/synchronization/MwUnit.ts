@@ -169,9 +169,6 @@ export default class MwUnit implements FzSerializable<FzUnit> {
      * 
      */
     ensureRemote(nodeId: string): MwRemote {
-        if (this.options.verbose) {
-            console.log(`MwUnit.ensureRemote(nodeId => ${nodeId}), remotes =>${JSON.stringify(Object.keys(this.remotes))}`);
-        }
         const existing = this.remotes[nodeId];
         if (!existing) {
             const remote = new MwRemote(this.options);
@@ -221,13 +218,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
                         const backup = remote.backup as MwShadow;
                         // The change remote version becomes our local version.
                         // The action local version becomes our remote version.
-                        if (this.options.verbose) {
-                            console.log("Applying patch to editor");
-                        }
                         remote.patchDelta(nodeId, editor, action.c, action.x as string[], change.m, action.n as number);
-                        if (this.options.verbose) {
-                            console.log("Copying shadow to backup");
-                        }
                         backup.copy(shadow);
                         if (typeof change.m === 'number') {
                             remote.discardActionsLe(nodeId, change.m);
