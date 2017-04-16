@@ -27,6 +27,11 @@ function summarize(edits: MwEdits) {
 const socketByNodeId: { [nodeId: string]: SocketIO.Socket } = {};
 
 /**
+ * Used to control logging.
+ */
+const verbose = false;
+
+/**
  * The initialization code for the sockets part of this application.
  * Just trying to keep stuff out of the top level web.ts file.
  */
@@ -41,7 +46,9 @@ export default function sockets(app: Express, server: Server) {
     });
 
     io.on('connection', function (socket: SocketIO.Socket) {
-        console.log('A socket connected.');
+        if (verbose) {
+            console.log('A socket connected.');
+        }
 
         //
         // A download request is received when a user joins a room.
@@ -50,10 +57,14 @@ export default function sockets(app: Express, server: Server) {
         socket.on(SOCKET_EVENT_DOWNLOAD, function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
             const { fromId, roomId } = data;
 
-            console.log(`receiving '${SOCKET_EVENT_DOWNLOAD}' from node '${fromId}'`);
-            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            if (verbose) {
+                console.log(`receiving '${SOCKET_EVENT_DOWNLOAD}' from node '${fromId}'`);
+                console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
             // socketByNodeId[fromId] = socket;
-            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            if (verbose) {
+                console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
 
             getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
@@ -72,11 +83,14 @@ export default function sockets(app: Express, server: Server) {
         socket.on(SOCKET_EVENT_EDITS, function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
             const { fromId, roomId, path, edits } = data;
 
-            console.log(`receiving ${SOCKET_EVENT_EDITS} from node '${fromId}': ${JSON.stringify(summarize(edits))}`);
-
-            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            if (verbose) {
+                console.log(`receiving ${SOCKET_EVENT_EDITS} from node '${fromId}': ${JSON.stringify(summarize(edits))}`);
+                console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
             socketByNodeId[fromId] = socket;
-            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            if (verbose) {
+                console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
 
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
             setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
@@ -90,7 +104,9 @@ export default function sockets(app: Express, server: Server) {
                                 const edits = broadcast[nodeId];
                                 const target = socketByNodeId[nodeId];
                                 if (target) {
-                                    console.log(`room sending '${path}' edits: ${JSON.stringify(summarize(edits))} to node '${nodeId}'.`);
+                                    if (verbose) {
+                                        console.log(`room sending '${path}' edits: ${JSON.stringify(summarize(edits))} to node '${nodeId}'.`);
+                                    }
                                     target.emit(SOCKET_EVENT_EDITS, { fromId: roomId, roomId: nodeId, path, edits });
                                 }
                                 else {
@@ -123,17 +139,19 @@ export default function sockets(app: Express, server: Server) {
         // TODO: When we get a disconnect event, shouldn't we make sure that the socket is not in the map?
         //
         socket.on('disconnect', function disconnet() {
-            console.log('A socket disconnected.');
-            console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
-
+            if (verbose) {
+                console.log('A socket disconnected.');
+                console.log(`(BEFORE nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
             const nodeIds = Object.keys(socketByNodeId);
             for (const nodeId of nodeIds) {
                 if (socketByNodeId[nodeId] === socket) {
                     delete socketByNodeId[nodeId];
                 }
             }
-
-            console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            if (verbose) {
+                console.log(`(AFTER  nodeIds => ${Object.keys(socketByNodeId)}`);
+            }
         });
     });
 }

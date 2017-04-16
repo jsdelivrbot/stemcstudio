@@ -195,10 +195,14 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             let diffs: Diff[] | null;
             try {
                 diffs = dmp.deltaArrayToDiffs(shadow.text, delta);
-                const m = shadow.m;
-                console.log(`Incrementing shadow remote version number (m) from ${m} to ${m + 1}`);
+                if (this.options.verbose) {
+                    const m = shadow.m;
+                    console.log(`Incrementing shadow remote version number (m) from ${m} to ${m + 1}`);
+                }
                 shadow.m++;
-                console.log(`(n, m) => (${shadow.n}, ${shadow.m})`);
+                if (this.options.verbose) {
+                    console.log(`(n, m) => (${shadow.n}, ${shadow.m})`);
+                }
             }
             catch (e) {
                 // The delta the server supplied does not fit on our copy of thisText.

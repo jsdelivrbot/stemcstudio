@@ -52,6 +52,11 @@ export default class RoomAgent implements Shareable {
     private refCount = 1;
 
     /**
+     * Used to control logging.
+     */
+    private readonly verbose = false;
+
+    /**
      * 
      */
     private roomListeners: RoomListener[] = [];
@@ -62,7 +67,9 @@ export default class RoomAgent implements Shareable {
     constructor(roomId: string, owner: string) {
         this.roomId = roomId;
         this.owner = owner;
-        console.log(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
+        if (this.verbose) {
+            console.log(`Room ${roomId} Agent nodeId => ${this.nodeId}`);
+        }
 
         // Maybe can't use secure if doing localhost?
         this.socket = new SocketZen(io.connect({ autoConnect: false/*, secure: true*/ }));
@@ -167,7 +174,9 @@ export default class RoomAgent implements Shareable {
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
-        console.log(`sending '${SOCKET_EVENT_EDITS}' ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
+        if (this.verbose) {
+            console.log(`sending '${SOCKET_EVENT_EDITS}' ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
+        }
         this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
             // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
         });
@@ -181,7 +190,9 @@ export default class RoomAgent implements Shareable {
         // We can use it as either a safety check or to future proof for multiple client rooms per socket.
         const { fromId, roomId, path, edits } = data;
         if (fromId === this.roomId && roomId === this.nodeId) {
-            console.log(`receiving ${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} for this node ${this.nodeId}`);
+            if (this.verbose) {
+                console.log(`receiving ${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} for this node ${this.nodeId}`);
+            }
             for (const roomListener of this.roomListeners) {
                 roomListener.setEdits(fromId, path, edits);
             }
@@ -198,14 +209,18 @@ export default class RoomAgent implements Shareable {
      * 
      */
     private reconnectingHandler = () => {
-        console.log(`reconnecting`);
+        if (this.verbose) {
+            console.log(`reconnecting`);
+        }
     }
 
     /**
      * 
      */
     private reconnectHandler = () => {
-        console.log(`reconnect`);
+        if (this.verbose) {
+            console.log(`reconnect`);
+        }
         for (const roomListener of this.roomListeners) {
             const editsByPath = roomListener.getWorkspaceEdits(this.roomId);
             const paths = Object.keys(editsByPath);
