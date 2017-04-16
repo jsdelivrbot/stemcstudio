@@ -2089,7 +2089,7 @@ export default class DMP {
      * @param text Old text.
      * @returns Two element Array, containing the new text and an array of boolean values.
      */
-    patch_apply(patches: Patch[], text: string): (string | boolean[])[] {
+    patch_apply(patches: Patch[], text: string): [string, boolean[]] {
         if (patches.length === 0) {
             return [text, []];
         }

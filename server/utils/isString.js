@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function default_1(value) {
+function isString(value) {
     return typeof value === 'string';
 }
-exports.default = default_1;
+exports.default = isString;
 //# sourceMappingURL=isString.js.map

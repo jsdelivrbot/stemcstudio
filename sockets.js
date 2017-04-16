@@ -13,16 +13,12 @@ function sockets(app, server) {
     var io = sio(server, {});
     io.on('connection', function (socket) {
         if (verbose) {
-            console.log('A socket connected.');
+            console.log('Socket connected.');
         }
         socket.on(SOCKET_EVENT_DOWNLOAD, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
             if (verbose) {
-                console.log("receiving '" + SOCKET_EVENT_DOWNLOAD + "' from node '" + fromId + "'");
-                console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
-            }
-            if (verbose) {
-                console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
+                console.log(roomId + " recv " + fromId + " " + SOCKET_EVENT_DOWNLOAD);
             }
             index_1.getEdits(fromId, roomId, function (err, data) {
                 if (!err) {
@@ -30,20 +26,16 @@ function sockets(app, server) {
                     ack(err, files);
                 }
                 else {
-                    ack(err, void 0);
+                    ack(err);
                 }
             });
         });
         socket.on(SOCKET_EVENT_EDITS, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
             if (verbose) {
-                console.log("receiving " + SOCKET_EVENT_EDITS + " from node '" + fromId + "': " + JSON.stringify(summarize(edits)));
-                console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
+                console.log(roomId + " recv " + fromId + " " + path + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits)));
             }
             socketByNodeId[fromId] = socket;
-            if (verbose) {
-                console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
-            }
             index_1.setEdits(fromId, roomId, path, edits, function (err, data) {
                 ack();
                 if (!err) {
@@ -57,7 +49,7 @@ function sockets(app, server) {
                                 var target = socketByNodeId[nodeId];
                                 if (target) {
                                     if (verbose) {
-                                        console.log("room sending '" + path_1 + "' edits: " + JSON.stringify(summarize(edits_1)) + " to node '" + nodeId + "'.");
+                                        console.log(roomId_1 + " send " + nodeId + " " + path_1 + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits_1)));
                                     }
                                     target.emit(SOCKET_EVENT_EDITS, { fromId: roomId_1, roomId: nodeId, path: path_1, edits: edits_1 });
                                 }
@@ -83,19 +75,15 @@ function sockets(app, server) {
             console.log("Something is rotten in Denmark. Cause: " + err);
         });
         socket.on('disconnect', function disconnet() {
-            if (verbose) {
-                console.log('A socket disconnected.');
-                console.log("(BEFORE nodeIds => " + Object.keys(socketByNodeId));
-            }
             var nodeIds = Object.keys(socketByNodeId);
             for (var _i = 0, nodeIds_2 = nodeIds; _i < nodeIds_2.length; _i++) {
                 var nodeId = nodeIds_2[_i];
                 if (socketByNodeId[nodeId] === socket) {
                     delete socketByNodeId[nodeId];
+                    if (verbose) {
+                        console.log("Socket " + nodeId + " disconnected.");
+                    }
                 }
-            }
-            if (verbose) {
-                console.log("(AFTER  nodeIds => " + Object.keys(socketByNodeId));
             }
         });
     });

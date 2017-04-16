@@ -1565,7 +1565,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     /**
-     * Creates a new file. The file is not monitored.
+     * Creates a new file.
+     * The file is not yet monitored for changes (affecting the Language Service).
+     * The file is synchronized with the remote server if the workspace is being shared.
+     * The corresponding document chnages are hooked up to the collaboration room.
      */
     newFile(path: string): WsFile {
         const file = this.createFileOrRestoreFromTrash(path);
@@ -1574,6 +1577,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             file.unit.setEditor(file);
             const edits = file.unit.getEdits(this.room.id);
             this.room.setEdits(path, edits);
+            this.hookUpDocumentChangesToRoom(path);
         }
         return file;
     }
@@ -2302,7 +2306,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * The master flag indicates whether the room was created by this workspace.
      * 
      * @param room The room to connect to.
-     * @param master <code>true</code> if the room was created with this workspace as the master.
+     * @param master true if the room was created with this workspace as the master.
      */
     connectToRoom(room: RoomAgent, master: boolean): void {
 
@@ -2337,28 +2341,36 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
                 // Add listeners for document changes. These will begin the flow of diffs to the server.
                 // We debounce the change events so that the diff is trggered when things go quiet for a second.
-                for (let i = 0; i < paths.length; i++) {
-                    const path = paths[i];
-                    const doc = this.getFileDocument(path);
-                    if (doc) {
-                        try {
-                            const file = files.getWeakRef(path);
-                            const unit = file.unit;
-                            // When the Document emits delta events they gets debounced.
-                            // When things go quiet, the unit diffs the file against the shadow to create edits.
-                            // The edits are sent to the room (server). 
-                            const changeHandler = debounce(uploadFileEditsToRoom(path, unit, room), SYNCH_DELAY_MILLISECONDS);
-                            this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
-                        }
-                        finally {
-                            doc.release();
-                        }
-                    }
+                for (const path of paths) {
+                    this.hookUpDocumentChangesToRoom(path);
                 }
             }
         }
         else {
             throw new TypeError("room must be a RoomAgent.");
+        }
+    }
+
+    /**
+     * Adds a listener to the file document so that changes are sent to the collaboration room.
+     * The removal function for the listener is cached to allow for later cleanup.
+     * @param path The path of the file document.
+     */
+    private hookUpDocumentChangesToRoom(path: string): void {
+        const doc = this.getFileDocument(path);
+        if (doc) {
+            try {
+                const file = this.files.getWeakRef(path);
+                const unit = file.unit;
+                // When the Document emits delta events they get debounced.
+                // When things go quiet, the unit diffs the file against the shadow to create edits.
+                // The edits are sent to the room (server) via the room agent that acts as a proxy. 
+                const changeHandler = debounce(uploadFileEditsToRoom(path, unit, this.room), SYNCH_DELAY_MILLISECONDS);
+                this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+            }
+            finally {
+                doc.release();
+            }
         }
     }
 

@@ -46,8 +46,7 @@ export default class MwUnit implements FzSerializable<FzUnit> {
         const mapLinks = (links: { [nodeId: string]: FzRemote }): { [fileId: string]: MwRemote } => {
             const result: { [fileId: string]: MwRemote } = {};
             const nodeIds = Object.keys(links);
-            for (let i = 0; i < nodeIds.length; i++) {
-                const nodeId = nodeIds[i];
+            for (const nodeId of nodeIds) {
                 const value = links[nodeId];
                 // TODO: It's looking like the constructor could take the frozen value?
                 const link = new MwRemote(this.options);

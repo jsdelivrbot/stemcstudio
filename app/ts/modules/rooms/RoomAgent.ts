@@ -54,7 +54,7 @@ export default class RoomAgent implements Shareable {
     /**
      * Used to control logging.
      */
-    private readonly verbose = false;
+    private readonly verbose = true;
 
     /**
      * 
@@ -172,7 +172,7 @@ export default class RoomAgent implements Shareable {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket?
         if (this.verbose) {
-            console.log(`sending '${SOCKET_EVENT_EDITS}' ${JSON.stringify(summarize(edits))} for path ${path} from this node ${this.nodeId}`);
+            console.log(`${this.nodeId} ${path} send '${SOCKET_EVENT_EDITS}' ${JSON.stringify(summarize(edits))}`);
         }
         this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
             // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
@@ -188,7 +188,7 @@ export default class RoomAgent implements Shareable {
         const { fromId, roomId, path, edits } = data;
         if (fromId === this.roomId && roomId === this.nodeId) {
             if (this.verbose) {
-                console.log(`receiving ${SOCKET_EVENT_EDITS}: ${JSON.stringify(summarize(edits))} for this node ${this.nodeId}`);
+                console.log(`${this.nodeId} ${path} recv ${SOCKET_EVENT_EDITS} ${JSON.stringify(summarize(edits))}`);
             }
             for (const roomListener of this.roomListeners) {
                 roomListener.setEdits(fromId, path, edits);

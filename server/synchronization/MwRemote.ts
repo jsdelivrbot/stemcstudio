@@ -14,6 +14,9 @@ import FzSerializable from './ds/FzSerializable';
 
 const dmp = new DMP();
 
+/**
+ * A remote consists of one shadow and one backup document along with the stack of edits by destination node.
+ */
 export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * 
@@ -27,6 +30,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
 
     /**
      * The edits by destination node identifier.
+     * TODO: I think remotes are per-node and so this does not need to be a map.
      */
     private edits: MwBroadcast = {};
 
@@ -210,8 +214,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         // Merge text.
                         const patches = dmp.computePatches(shadow.text, diffs);
                         // First thisText.  Should be guaranteed to work.
-                        const serverResult: (string | boolean[])[] = dmp.patch_apply(patches, shadow.text);
-                        shadow.text = <string>serverResult[0];
+                        const serverResult = dmp.patch_apply(patches, shadow.text);
+                        shadow.text = serverResult[0];
                         shadow.happy = true;
                         // Second the user's text.
                         editor.patch(patches, function (err: Error, flags: boolean[]) {
