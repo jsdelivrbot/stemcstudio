@@ -1,4 +1,3 @@
-import { IDeferred, IPromise, IQService } from 'angular';
 import { ACE_WORKER_PATH } from '../../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../../constants';
 import { Annotation, AnnotationType } from '../../../editor/Annotation';
@@ -7,7 +6,6 @@ import CompletionEntry from '../../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../../mappings/copyWorkspaceToDoodle';
 import Delta from '../../../editor/Delta';
 import Diagnostic from '../../../editor/workspace/Diagnostic';
-import Disposable from '../../../base/Disposable';
 import Document from '../../../editor/Document';
 import Editor from '../../../editor/Editor';
 import EditSession from '../../../editor/EditSession';
@@ -26,11 +24,11 @@ import Marker from '../../../editor/Marker';
 import modeFromName from '../../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../../languages/modes';
-import MwEditor from '../../../synchronization/MwEditor';
+import MwChange from '../../../synchronization/MwChange';
 import MwEdits from '../../../synchronization/MwEdits';
 import { MwOptions } from '../../../synchronization/MwOptions';
 import MwUnit from '../../../synchronization/MwUnit';
-import MwWorkspace from '../../../synchronization/MwWorkspace';
+import { MwWorkspace } from '../../../synchronization/MwWorkspace';
 import { OutputFilesMessage, outputFilesTopic } from '../IWorkspaceModel';
 import OutputFile from '../../../editor/workspace/OutputFile';
 import QuickInfo from '../../../editor/workspace/QuickInfo';
@@ -40,7 +38,7 @@ import Range from '../../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from '../IWorkspaceModel';
 import { ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../IWorkspaceModel';
 import RoomAgent from '../../rooms/RoomAgent';
-import Shareable from '../../../base/Shareable';
+import { RoomListener } from '../../rooms/RoomListener';
 import SnippetCompleter from '../../../editor/SnippetCompleter';
 import StringShareableMap from '../../../collections/StringShareableMap';
 import TextChange from '../../../editor/workspace/TextChange';
@@ -50,7 +48,7 @@ import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../../services/doodles/setOptionalBooleanProperty';
 import setOptionalStringProperty from '../../../services/doodles/setOptionalStringProperty';
 import setOptionalStringArrayProperty from '../../../services/doodles/setOptionalStringArrayProperty';
-import UnitListener from './UnitListener';
+import { WorkspaceRoomListener } from './WorkspaceRoomListener';
 import WorkspaceCompleter from '../../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../../editor/workspace/WorkspaceCompleterHost';
 
@@ -302,7 +300,7 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
  * for the lifetime of the application. At the same time, the user may serally edit multiple models 
  * and so this instance must have state so that it can manage the associated worker threads.
  */
-export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace, QuickInfoTooltipHost, Shareable, WorkspaceCompleterHost {
+export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
@@ -392,7 +390,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      */
     private roomMaster: boolean;
 
-    private roomListener: UnitListener | undefined;
+    private roomListener: RoomListener | undefined;
 
     /**
      * Listeners added to the document for the LanguageService.
@@ -411,37 +409,55 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Slightly unusual reference counting because of:
      * 1) Operating as a service.
      * 2) Handling lifetimes of Editors.
+     * The reference count is initialized to zero.
+     * It does not control the service lifetime.
+     * It is used to control recycle/dispose of the service.
      */
     private refCount = 0;
 
     /**
      * This promise is defined once the refCount has reached zero.
      * It is resolved when monitoring has ended on all documents.
+     * The initial state is undefined.
      */
-    private windingDown: IPromise<any> | undefined;
+    private waitUntilMonitoringEnded: Promise<void> | undefined;
 
     /**
      * This promise is defined once the reference count goes above zero
      * and is resolved when it becomes zero again.
      * It's a promise that the reference count will fall to zero, eventually.
      * This is used to prevent re-initialization before all references have been dropped.
+     * The initial state is undefined.
      */
-    private zeroRefCount: IPromise<any> | undefined;
-    private zeroRefCountDeferred: IDeferred<any> | undefined;
+    private waitUntilZeroRefCount: Promise<void> | undefined;
+    private zeroRefCountDeferred: (() => void) | undefined;
 
     /**
      * 
      */
     private readonly eventBus: EventBus<any, WsModel> = new EventBus<any, WsModel>(this);
 
-    public trace_ = false;
+    /**
+     * Used to control logging of the Language Service.
+     */
+    public traceLanguageService = false;
 
-    public static $inject: string[] = ['$q', DOODLE_MANAGER_SERVICE_UUID];
+    /**
+     * Used to control logging of the lifecycle of this service (which can be tricky).
+     */
+    private traceLifecycle = false;
+
+    /**
+     * The dependencies that must be injected into this service.
+     * NOTE: We cannot migrate this service to Angular until the doodle manger has been migrated.
+     * (Or at least that avoids more complex issues)
+     */
+    public static $inject: string[] = [DOODLE_MANAGER_SERVICE_UUID];
 
     /**
      * AngularJS service; parameters must match static $inject property.
      */
-    constructor(private $q: IQService, private doodles: IDoodleManager) {
+    constructor(private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }
@@ -450,24 +466,51 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Informs the workspace that we want to reuse it.
      * This method starts the workspace thread.
      * This is the counterpart of the dispose method.
+     * TODO: Refactor to use a Promise.
+     * TODO: Refactor to use an Observable ('waiting','ready')?
      */
-    recycle(callback: (err: any) => any): void {
-        if (this.zeroRefCount) {
-            this.zeroRefCount
+    recycle(): Promise<void> {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.recycle()`);
+        }
+        return new Promise<void>((resolve, reject) => {
+            function callback(reason: Error | null | undefined): void {
+                if (!reason) {
+                    resolve();
+                }
+                else {
+                    reject(reason);
+                }
+            }
+            this.recycleInternal(callback);
+        });
+    }
+
+    /**
+     * The internal recycle implementation that allows for re-entry. 
+     */
+    private recycleInternal(callback: (err: Error | null | undefined) => void): void {
+        if (this.waitUntilZeroRefCount) {
+            if (this.traceLifecycle) {
+                console.log(`WsModel @waitUntilZeroRefCount`);
+            }
+            this.waitUntilZeroRefCount
                 .then(() => {
-                    this.zeroRefCount = void 0;
-                    this.zeroRefCountDeferred = void 0;
-                    this.recycle(callback);
+                    this.waitUntilZeroRefCount = void 0;
+                    this.recycleInternal(callback);
                 })
                 .catch((reason) => {
                     console.warn(`Error while waiting for references to return to zero: ${JSON.stringify(reason)}`);
                 });
         }
-        else if (this.windingDown) {
-            this.windingDown
+        else if (this.waitUntilMonitoringEnded) {
+            if (this.traceLifecycle) {
+                console.log(`WsModel @waitUntilMonitoringEnded`);
+            }
+            this.waitUntilMonitoringEnded
                 .then(() => {
-                    this.windingDown = void 0;
-                    this.recycle(callback);
+                    this.waitUntilMonitoringEnded = void 0;
+                    this.recycleInternal(callback);
                 })
                 .catch((reason) => {
                     console.warn(`Error while waiting for workspace to wind down: ${JSON.stringify(reason)}`);
@@ -475,8 +518,10 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
         else {
             if (this.refCount > 0) {
+                // We should never end up here, but handle defensively.
                 console.warn("recycle happening while refCount non-zero.");
             }
+            // Just as dispose calls release, a successful recycle calls addRef.
             this.addRef();
             if (this.languageServiceProxy) {
                 this.inFlight++;
@@ -484,7 +529,11 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     this.inFlight--;
                     if (!err) {
                         if (this.languageServiceProxy) {
-                            this.languageServiceProxy.setTrace(this.trace_, callback);
+                            this.languageServiceProxy.setTrace(this.traceLanguageService, callback);
+                        }
+                        else {
+                            console.warn("Language Service lost following initialize");
+                            callback(null);
                         }
                     }
                     else {
@@ -497,12 +546,27 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
     /**
      * This is the counterpart of the recycle method.
+     * It is called by the workspace controller when it receives a $onDestroy event.
+     * The method has to be fire-and-forget (no Promise) because the workspace controller cannot block.
+     * It's not actually a dramatic dispose but a reference-counted release.
+     * We have to wait until all the editors have been detached for a complete clean-up.
      */
     dispose(): void {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.dispose()`);
+        }
+        // Just as recycle calls addRef, a dispose calls release.
         this.release();
     }
 
-    addRef(): number {
+    /**
+     * Indicates that someone is holding a new reference to this workspace.
+     * The fact that this method is private reflects the use of recycle/dispose.
+     */
+    private addRef(): void {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.addRef() @refCount = ${this.refCount}`);
+        }
         if (this.refCount === 0) {
             if (this.files || this.trash) {
                 console.warn("Make sure to call dispose() or release()");
@@ -511,45 +575,71 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             this.trash = new StringShareableMap<WsFile>();
             this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
             this.eventBus.reset();
-            this.zeroRefCountDeferred = this.$q.defer();
-            this.zeroRefCount = this.zeroRefCountDeferred.promise;
+            this.waitUntilZeroRefCount = new Promise<void>((resolve, reject) => {
+                // This will be called immediately and so the lifetime of the
+                // variables waitUntilZeroRefCount and zeroRefCountDeferred is the same.
+                // TODO: Does this suggest an abstraction to encapsulate?
+                this.zeroRefCountDeferred = resolve;
+            });
         }
         this.refCount++;
-        return this.refCount;
+        if (this.traceLifecycle) {
+            console.log(`WsModel @refCount = ${this.refCount}`);
+        }
     }
 
-    release(): number {
+    /**
+     * Indicates that someone is dropping a reference to this workspace.
+     * The fact that this method is private reflects the use of recycle/dispose.
+     */
+    private release(): void {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.release() @refCount = ${this.refCount}`);
+        }
         this.refCount--;
         if (this.refCount === 0) {
-            const deferred = this.$q.defer();
-            this.endMonitoring(() => {
-                this.eventBus.reset();
-                if (this.languageServiceProxy) {
-                    this.languageServiceProxy.terminate();
-                    this.languageServiceProxy = void 0;
-                }
-                if (this.files) {
-                    this.files.release();
-                    this.files = void 0;
-                }
-                if (this.trash) {
-                    this.trash.release();
-                    this.trash = void 0;
-                }
-                deferred.resolve();
-                if (this.windingDown) {
-                    this.windingDown = void 0;
-                }
+            // We can't return the Promise and wait so we set a property
+            this.waitUntilMonitoringEnded = new Promise<void>((resolve, reject) => {
+                this.endMonitoring()
+                    .then(() => {
+                        if (this.traceLifecycle) {
+                            console.log(`WsModel Language Service monitoring has ended.`);
+                        }
+                        this.eventBus.reset();
+                        if (this.languageServiceProxy) {
+                            this.languageServiceProxy.terminate();
+                            this.languageServiceProxy = void 0;
+                        }
+                        if (this.files) {
+                            this.files.release();
+                            this.files = void 0;
+                        }
+                        if (this.trash) {
+                            this.trash.release();
+                            this.trash = void 0;
+                        }
+                        // Clear this property, we don't need to wait on it in the recycle method.
+                        this.waitUntilMonitoringEnded = void 0;
+                        resolve();
+                    })
+                    .catch(function (reason) {
+                        reject(reason);
+                    });
             });
-            // The winding down promise should be in place before we resolve the zero refCount promise.
-            this.windingDown = deferred.promise;
-            if (this.zeroRefCountDeferred) {
-                this.zeroRefCountDeferred.resolve();
+            // Having initialized the end of monitoring promise, we can continue execution of recycling.
+            const resolve = this.zeroRefCountDeferred;
+            if (resolve) {
+                // Be careful to cleanup up state variables before resuming execution.
+                this.waitUntilZeroRefCount = void 0;
                 this.zeroRefCountDeferred = void 0;
-                this.zeroRefCount = void 0;
+
+                // Calling this function will resume execution.
+                resolve();
             }
         }
-        return this.refCount;
+        if (this.traceLifecycle) {
+            console.log(`WsModel @refCount = ${this.refCount}`);
+        }
     }
 
     /**
@@ -608,26 +698,32 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Uses the returned contents to set the default library on the language service (proxy).
      * This method is asynchronous. The callback is executed upon completion.
      */
-    setDefaultLibrary(url: string, callback: (err: any) => any): void {
-        checkCallback(callback);
-        this.inFlight++;
-        get(url, (err: Error, sourceCode: string) => {
-            this.inFlight--;
-            if (err) {
-                callback(err);
-            }
-            else {
-                if (this.languageServiceProxy) {
-                    this.inFlight++;
-                    this.languageServiceProxy.setDefaultLibContent(sourceCode, (err: any) => {
-                        this.inFlight--;
-                        callback(err);
-                    });
+    setDefaultLibrary(url: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.inFlight++;
+            get(url, (err: Error, sourceCode: string) => {
+                this.inFlight--;
+                if (err) {
+                    reject(err);
                 }
                 else {
-                    callback(new Error("languageServiceProxy is not defined."));
+                    if (this.languageServiceProxy) {
+                        this.inFlight++;
+                        this.languageServiceProxy.setDefaultLibContent(sourceCode, (err: any) => {
+                            this.inFlight--;
+                            if (!err) {
+                                resolve();
+                            }
+                            else {
+                                reject(err);
+                            }
+                        });
+                    }
+                    else {
+                        reject(new Error("languageServiceProxy is not defined."));
+                    }
                 }
-            }
+            });
         });
     }
 
@@ -719,36 +815,40 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
-    setTrace(trace: boolean, callback: (err: any) => any): void {
-        checkCallback(callback);
-        // We won't bother tracking inFlight for tracing.
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.setTrace(trace, callback);
-        }
-        else {
-            callback(new Error("trace is not available."));
-        }
-    }
-
-    createEditor(): MwEditor {
-        // const editor = this.workspace.getEditor(fileName)
-        throw new Error("TODO: createEditor");
-    }
-
-    deleteEditor(): void {
-        throw new Error("TODO: deleteEditor");
+    setTrace(trace: boolean): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            // We won't bother tracking inFlight for tracing.
+            if (this.languageServiceProxy) {
+                const callback = function (err: any): void {
+                    if (!err) {
+                        resolve();
+                    }
+                    else {
+                        reject(err);
+                    }
+                };
+                this.languageServiceProxy.setTrace(trace, callback);
+            }
+            else {
+                reject(new Error("trace is not available."));
+            }
+        });
     }
 
     /**
      * Attaching the Editor to the workspace enables the IDE features.
      */
     attachEditor(path: string, editor: Editor): void {
-
+        if (this.traceLifecycle) {
+            console.log(`WsModel.attachEditor(path = ${path})`);
+        }
         // The user may elect to open an editor but then leave the workspace as the editor is opening.
         if (this.isZombie()) {
             return;
         }
 
+        // Every time an editor is attached, we increment our self-reference count.
+        // This will be countered by a similar call when the editor is detached.
         this.addRef();
 
         checkPath(path);
@@ -816,7 +916,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Detaching the Editor from the workspace disables the IDE features.
      */
     detachEditor(path: string, editor: Editor): void {
-
+        if (this.traceLifecycle) {
+            console.log(`WsModel.detachEditor(path = ${path})`);
+        }
         if (this.isZombie()) {
             return;
         }
@@ -928,6 +1030,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Begins monitoring the Document at the specified path for changes and adds the script to the LanguageService.
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.beginDocumentMonitoring(path = ${path})`);
+        }
         checkPath(path);
         checkCallback(callback);
 
@@ -987,6 +1092,9 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err: any) => any) {
+        if (this.traceLifecycle) {
+            console.log(`WsModel.endMonitoring(path = ${path})`);
+        }
         try {
             checkPath(path);
             checkCallback(callback);
@@ -1035,29 +1143,36 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
     }
 
-    private endMonitoring(callback: () => any) {
-        const paths = Object.keys(this.langDocumentChangeListenerRemovers);
-        const iLen = paths.length;
-        let outstanding = iLen;
-        if (outstanding > 0) {
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
-                this.endDocumentMonitoring(path, function (err) {
-                    if (!err) {
-                        outstanding--;
-                        if (outstanding === 0) {
-                            callback();
+    /**
+     * Ends Language Service monitoring on all documents.
+     */
+    private endMonitoring(): Promise<void> {
+        if (this.traceLifecycle) {
+            console.log("WsModel.endMonitoring()");
+        }
+        return new Promise<void>((resolve, reject) => {
+            const paths = Object.keys(this.langDocumentChangeListenerRemovers);
+            let outstanding = paths.length;
+            if (outstanding > 0) {
+                for (const path of paths) {
+                    this.endDocumentMonitoring(path, function (err) {
+                        if (!err) {
+                            outstanding--;
+                            if (outstanding === 0) {
+                                resolve();
+                            }
                         }
-                    }
-                    else {
-                        console.warn(`endDocumentMonitoring(${path}) => ${err}`);
-                    }
-                });
+                        else {
+                            console.warn(`endDocumentMonitoring(${path}) => ${err}`);
+                        }
+                    });
+                }
             }
-        }
-        else {
-            setTimeout(callback, 0);
-        }
+            else {
+                // There are no outstanding files to end monitoring on.
+                setTimeout(resolve, 0);
+            }
+        });
     }
 
     ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
@@ -1568,7 +1683,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * Creates a new file.
      * The file is not yet monitored for changes (affecting the Language Service).
      * The file is synchronized with the remote server if the workspace is being shared.
-     * The corresponding document chnages are hooked up to the collaboration room.
+     * The corresponding document changes are hooked up to the collaboration room.
      */
     newFile(path: string): WsFile {
         const file = this.createFileOrRestoreFromTrash(path);
@@ -1583,9 +1698,28 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
     }
 
     /**
-     * Helper function that only provides the file.
+     * Creates a new file in the workspace triggered by a room notification.
+     * The file is reference counted and must be released.
      */
-    private createFileOrRestoreFromTrash(path: string): WsFile {
+    createFile(path: string, roomId: string, change: MwChange): WsFile {
+        const file = this.createFileOrRestoreFromTrash(path);
+        file.unit = new MwUnit(this, this.mwOptions);
+        file.unit.setEditor(file);
+        file.unit.setChange(roomId, path, change);
+        this.hookUpDocumentChangesToRoom(path);
+        // Send the delta edits so that the server has our local version.
+        if (this.room) {
+            const edits = file.unit.getEdits(this.room.id);
+            this.room.setEdits(path, edits);
+        }
+        return file;
+    }
+
+    /**
+     * Helper function that only provides the file.
+     * The file is reference counted and must be released.
+     */
+    public createFileOrRestoreFromTrash(path: string): WsFile {
         const mode = modeFromName(path);
         if (!this.existsFile(path)) {
             const trashedFile = this.trash ? this.trash.get(path) : void 0;
@@ -1596,7 +1730,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                 if (!this.files) {
                     this.files = new StringShareableMap<WsFile>();
                 }
-                // The file is captured by the files collection (incrementing the reference count).
+                // The file is captured by the files collection (incrementing the reference count again).
                 this.files.put(path, file);
                 // We return the other reference.
                 return file;
@@ -1617,34 +1751,46 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * 2. Removes the file from the workspace, placing it in trash if need be for GitHub.
      * 3. Removes the corresponding last known JavaScript.
      * 4. Updates Local Storage.
+     * 
+     * Asychronicity is caused by the document monitoring using a worker thread.
+     * @param path The file identifier.
+     * @param master Indicates the origination for this method invocation.
+     * 
+     * The master flag determines whether nullify edits will be sent to any remotely connected room.
      */
-    deleteFile(path: string, callback: (reason: Error | null) => any): void {
-        const file = this.files ? this.files.getWeakRef(path) : void 0;
-        if (file) {
-            // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
-            // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-            this.endDocumentMonitoring(path, () => {
-                if (file.existsInGitHub) {
-                    // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
-                    this.moveFileToTrash(path);
-                }
-                else {
-                    // It's a file that does NOT exist on GitHub. Remove it completely.
-                    if (this.files) {
-                        this.files.remove(path).release();
+    deleteFile(path: string, master: boolean): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const file = this.files ? this.files.getWeakRef(path) : void 0;
+            if (file) {
+                // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
+                // Use the raw_url as the sentinel. Keep it in trash for later deletion.
+                this.endDocumentMonitoring(path, () => {
+                    if (file.existsInGitHub) {
+                        // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
+                        this.moveFileToTrash(path);
                     }
+                    else {
+                        // It's a file that does NOT exist on GitHub. Remove it completely.
+                        if (this.files) {
+                            this.files.remove(path).release();
+                        }
+                    }
+                    delete this.lastKnownJs[path];
+                    delete this.lastKnownJsMap[path];
+                    this.updateStorage();
+                    resolve();
+                });
+                // Send a message that the file has been deleted.
+                if (this.room && master) {
+                    // Create events
                 }
-                delete this.lastKnownJs[path];
-                delete this.lastKnownJsMap[path];
-                this.updateStorage();
-                callback(null);
-            });
-        }
-        else {
-            setTimeout(() => {
-                callback(new Error(`deleteFile(${path}), ${path} was not found.`));
-            }, 0);
-        }
+            }
+            else {
+                setTimeout(() => {
+                    reject(new Error(`deleteFile(${path}), ${path} was not found.`));
+                }, 0);
+            }
+        });
     }
 
     existsFile(path: string): boolean {
@@ -1710,11 +1856,15 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
                     }
                 }
                 // Delete the file by the old path, remove monitoring etc.
-                this.deleteFile(oldPath, (reason: Error) => {
-                    if (reason) {
+                // We are deleting the file in the role of master.
+                this.deleteFile(oldPath, true)
+                    .then(() => {
+                        // Do nothing
+                    })
+                    .catch((reason) => {
                         console.warn(`renameFile('${oldPath}', '${newPath}') could not delete the oldFile: ${reason.message}`);
-                    }
-                });
+                    });
+
                 this.beginDocumentMonitoring(newPath, (err) => {
                     if (!err) {
                         this.eventBus.emit(renamedFileTopic, new RenamedFileMessage(oldPath, newPath));
@@ -2221,7 +2371,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
         }
         else {
             // We know that the file is defined so the cast is appropriate.
-            return this.findFileByPath(path);
+            return this.findFileByPath(path) as WsFile;
         }
     }
 
@@ -2336,7 +2486,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
 
                 // Add a listener to the room agent so that edits broadcast from the room are
                 // received by the appropriate unit, converted to patches and applied.
-                this.roomListener = new UnitListener(this, this.mwOptions);
+                this.roomListener = new WorkspaceRoomListener(this, this.mwOptions);
                 room.addListener(this.roomListener);
 
                 // Add listeners for document changes. These will begin the flow of diffs to the server.
@@ -2356,17 +2506,21 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
      * The removal function for the listener is cached to allow for later cleanup.
      * @param path The path of the file document.
      */
-    private hookUpDocumentChangesToRoom(path: string): void {
+    public hookUpDocumentChangesToRoom(path: string): void {
         const doc = this.getFileDocument(path);
         if (doc) {
             try {
-                const file = this.files.getWeakRef(path);
-                const unit = file.unit;
-                // When the Document emits delta events they get debounced.
-                // When things go quiet, the unit diffs the file against the shadow to create edits.
-                // The edits are sent to the room (server) via the room agent that acts as a proxy. 
-                const changeHandler = debounce(uploadFileEditsToRoom(path, unit, this.room), SYNCH_DELAY_MILLISECONDS);
-                this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+                if (this.files) {
+                    const file = this.files.getWeakRef(path);
+                    const unit = file.unit;
+                    // When the Document emits delta events they get debounced.
+                    // When things go quiet, the unit diffs the file against the shadow to create edits.
+                    // The edits are sent to the room (server) via the room agent that acts as a proxy.
+                    if (this.room) {
+                        const changeHandler = debounce(uploadFileEditsToRoom(path, unit, this.room), SYNCH_DELAY_MILLISECONDS);
+                        this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+                    }
+                }
             }
             finally {
                 doc.release();
@@ -2426,8 +2580,7 @@ export default class WsModel implements IWorkspaceModel, Disposable, MwWorkspace
             const files = this.files;
             if (files) {
                 const paths = files.keys;
-                for (let i = 0; i < paths.length; i++) {
-                    const path = paths[i];
+                for (const path of paths) {
                     const file = files.getWeakRef(path);
                     const unit = file.unit;
                     const edits: MwEdits = unit.getEdits(room.id);

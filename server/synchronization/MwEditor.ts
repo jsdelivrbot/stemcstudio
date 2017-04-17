@@ -2,6 +2,8 @@ import Patch from './Patch';
 
 /**
  * The adapter on the user's editor.
+ * It may be more appropriate to think of this as the interface to a document.
+ * The access is asynchronous because the data is typically stored in a remote database.
  */
 interface MwEditor {
     /**

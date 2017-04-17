@@ -124,7 +124,7 @@ export class BackgroundService implements IBackgroundService {
                                 for (const path of paths) {
                                     const file = this.wsModel.findFileByPath(path);
                                     if (file) {
-                                        file.unit.setEdits(roomId, edits[path]);
+                                        file.unit.setEdits(roomId, path, edits[path]);
                                     }
                                 }
                                 // Because we are already connected, setting the edits should trigger the acknowledgement.

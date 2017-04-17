@@ -18,7 +18,7 @@ function sockets(app, server) {
         socket.on(SOCKET_EVENT_DOWNLOAD, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
             if (verbose) {
-                console.log(roomId + " recv " + fromId + " " + SOCKET_EVENT_DOWNLOAD);
+                console.log("room " + roomId + " REQUEST node " + fromId + " " + SOCKET_EVENT_DOWNLOAD);
             }
             index_1.getEdits(fromId, roomId, function (err, data) {
                 if (!err) {
@@ -33,7 +33,7 @@ function sockets(app, server) {
         socket.on(SOCKET_EVENT_EDITS, function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
             if (verbose) {
-                console.log(roomId + " recv " + fromId + " " + path + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits)));
+                console.log("room " + roomId + " RECEIVE node " + fromId + " " + path + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits)));
             }
             socketByNodeId[fromId] = socket;
             index_1.setEdits(fromId, roomId, path, edits, function (err, data) {
@@ -49,7 +49,7 @@ function sockets(app, server) {
                                 var target = socketByNodeId[nodeId];
                                 if (target) {
                                     if (verbose) {
-                                        console.log(roomId_1 + " send " + nodeId + " " + path_1 + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits_1)));
+                                        console.log("room " + roomId_1 + " SENDING node " + nodeId + " " + path_1 + " " + SOCKET_EVENT_EDITS + " " + JSON.stringify(summarize(edits_1)));
                                     }
                                     target.emit(SOCKET_EVENT_EDITS, { fromId: roomId_1, roomId: nodeId, path: path_1, edits: edits_1 });
                                 }

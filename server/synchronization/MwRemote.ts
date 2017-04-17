@@ -131,6 +131,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     discardChanges(nodeId: string) {
         delete this.edits[nodeId];
     }
+
     /**
      * Converts the delta to a Diff[] using the shadow text.
      * Increments the remote version number.
@@ -216,6 +217,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         // First thisText.  Should be guaranteed to work.
                         const serverResult = dmp.patch_apply(patches, shadow.text);
                         shadow.text = serverResult[0];
+                        // TODO: Handle serverResult[1] assert all true.
                         shadow.happy = true;
                         // Second the user's text.
                         editor.patch(patches, function (err: Error, flags: boolean[]) {

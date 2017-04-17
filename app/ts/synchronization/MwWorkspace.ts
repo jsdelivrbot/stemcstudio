@@ -1,18 +1,17 @@
-import MwEditor from './MwEditor';
+import MwChange from './MwChange';
+import { MwDocument } from './MwDocument';
 
 /**
  * The adapter on the user's workspace.
  */
-interface MwWorkspace {
+export interface MwWorkspace {
     /**
      *
      */
-    createEditor(): MwEditor;
+    createFile(path: string, roomId: string, change: MwChange): MwDocument;
 
     /**
      * 
      */
-    deleteEditor(editor: MwEditor): void;
+    deleteFile(path: string, master: boolean): Promise<void>;
 }
-
-export default MwWorkspace;

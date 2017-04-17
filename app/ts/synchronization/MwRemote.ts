@@ -7,8 +7,8 @@ import { ACTION_NULLIFY_UPPERCASE } from './MwAction';
 import { MwActionType } from './MwAction';
 import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
+import { MwDocument } from './MwDocument';
 import MwEdits from './MwEdits';
-import MwEditor from './MwEditor';
 import { MwOptions } from './MwOptions';
 import MwShadow from './MwShadow';
 import FzRemote from './ds/FzRemote';
@@ -117,12 +117,12 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * We're looking to purge actions for a specified file based upon the action (local) version.
      * TODO: Rename to reflect the local nature of the version parameter.
      * 
-     * @param The target node identifier.
+     * @param roomId The target node identifier.
      * @param fileId
      * @param version
      */
-    discardActionsLe(nodeId: string, version: number) {
-        const edits = this.edits[nodeId];
+    discardActionsLe(roomId: string, version: number) {
+        const edits = this.edits[roomId];
         if (edits) {
             const changes = edits.x;
             // Care! The length of the changes may change in the body of the loop,
@@ -136,7 +136,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                 }
             }
             if (changes.length === 0) {
-                delete this.edits[nodeId];
+                delete this.edits[roomId];
             }
         }
     }
@@ -144,8 +144,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     /**
      * @param nodeId The target node identifier.
      */
-    discardChanges(nodeId: string) {
-        delete this.edits[nodeId];
+    discardChanges(roomId: string) {
+        delete this.edits[roomId];
     }
 
     /**
@@ -153,14 +153,14 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * Increments the remote version number (m) on the shadow.
      * Applies the patch to the editor.
      *
-     * @param nodeId The target node identifier.
+     * @param roomId The target node identifier.
      * @param editor
      * @param code The action type is expected to be a delta variant (merge or overwrite).
      * @param delta The encoded differences.
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(nodeId: string, editor: MwEditor, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number): void {
+    patchDelta(roomId: string, doc: MwDocument, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number): void {
         const shadow = this.shadow as MwShadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
@@ -171,7 +171,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         if (localVersion !== shadow.n) {
             if (backup && localVersion === backup.n) {
                 // The previous response must have been lost.
-                this.discardChanges(nodeId);
+                this.discardChanges(roomId);
                 shadow.copy(backup);
                 shadow.happy = true;
             }
@@ -215,7 +215,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                     if (code === ACTION_DELTA_OVERWRITE) {
                         // Overwrite (used for numeric/enum content).
                         shadow.text = dmp.resultText(diffs);
-                        editor.setText(shadow.text);
+                        doc.setText(shadow.text);
                         shadow.happy = true;
                     }
                     else {
@@ -227,7 +227,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         shadow.text = serverResult[0];
                         shadow.happy = true;
                         // Second the user's text.
-                        editor.patch(patches);
+                        doc.patch(patches);
                     }
                     // Server-side activity.
                     // this.serverChange_ = true;

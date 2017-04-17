@@ -4,7 +4,7 @@ import EditSession from '../../../editor/EditSession';
 import Editor from '../../../editor/Editor';
 import Shareable from '../../../base/Shareable';
 import MwUnit from '../../../synchronization/MwUnit';
-import MwEditor from '../../../synchronization/MwEditor';
+import { MwDocument } from '../../../synchronization/MwDocument';
 import Patch from '../../../synchronization/Patch';
 import WsModel from './WsModel';
 
@@ -33,7 +33,7 @@ import WsModel from './WsModel';
  * events are forwarded to the workspace, allowing the editor property of this file
  * to reflect the existence of an Editor in the user interface.
  */
-export default class WsFile implements MwEditor, Shareable {
+export default class WsFile implements MwDocument, Shareable {
 
     public editor: Editor | undefined;
 

@@ -6,6 +6,7 @@ const dmp = new DMP();
 
 /**
  * The server does not maintain a real editor.
+ * FIXME: This does not implement the asynchronous contract of MwEditor.
  */
 export default class ServerEditor implements MwEditor {
     private _text = "";
@@ -21,8 +22,8 @@ export default class ServerEditor implements MwEditor {
     patch(patches: Patch[]): boolean[] {
         const oldText = this.getText();
         const result = dmp.patch_apply(patches, oldText);
-        const newText = <string>result[0];
-        const flags = <boolean[]>result[1];
+        const newText = result[0];
+        const flags = result[1];
         // Set the new text only if there is a change to be made.
         if (oldText !== newText) {
             // The following will probably destroy any cursor or selection.

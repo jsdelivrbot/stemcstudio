@@ -1,27 +1,23 @@
-import FzSerializable from './ds/FzSerializable';
-import FzUnit from './ds/FzUnit';
 import MwBroadcast from './MwBroadcast';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from './MwAction';
 import MwChange from './MwChange';
+import { MwDocument } from './MwDocument';
 import MwEdits from './MwEdits';
-import MwEditor from './MwEditor';
 import { MwOptions } from './MwOptions';
 import MwRemote from './MwRemote';
 import MwShadow from './MwShadow';
-import MwWorkspace from './MwWorkspace';
-import FzRemote from './ds/FzRemote';
-import dehydrateMap from './ds/dehydrateMap';
+import { MwWorkspace } from './MwWorkspace';
 
 /**
  * The smallest level of synchronization (a file).
  */
-export default class MwUnit implements FzSerializable<FzUnit> {
+export default class MwUnit {
     /**
      * 
      */
-    private editor: MwEditor | undefined;
+    private doc: MwDocument | undefined;
 
     /**
      * The server will have multiple remotes corresponsing to each client
@@ -34,35 +30,6 @@ export default class MwUnit implements FzSerializable<FzUnit> {
      */
     constructor(private readonly workspace: MwWorkspace, private readonly options: MwOptions) {
         // Do nothing yet.
-    }
-    dehydrate(): FzUnit {
-        const unit = {
-            e: this.editor ? { t: this.editor.getText() } : void 0,
-            k: dehydrateMap<FzRemote>(this.remotes)
-        };
-        return unit as FzUnit;
-    }
-    rehydrate(value: FzUnit): void {
-        const mapLinks = (links: { [nodeId: string]: FzRemote }): { [fileId: string]: MwRemote } => {
-            const result: { [fileId: string]: MwRemote } = {};
-            const nodeIds = Object.keys(links);
-            for (const nodeId of nodeIds) {
-                const value = links[nodeId];
-                // TODO: It's looking like the constructor could take the frozen value?
-                const link = new MwRemote(this.options);
-                link.rehydrate(value);
-                result[nodeId] = link;
-            }
-            return result;
-        };
-        if (value.e) {
-            this.editor = this.workspace.createEditor();
-            this.editor.setText(value.e.t);
-        }
-        else {
-            this.editor = void 0;
-        }
-        this.remotes = mapLinks(value.k);
     }
 
     /**
@@ -80,50 +47,31 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     }
 
     /**
-     * 1. Ensure that there is a remote (shadow) for the specified nodeId.
+     * 1. Ensure that there is a remote (shadow) for the specified room.
      * 2. Perform the diff between the editor and the shadow.
      * 3. Push the diff onto the outbound stack of edits.
      * 4. Return ths state of the outbound edits.
      *
-     * nodeId is the identifier for where the edits will be going to.
+     * roomId is the identifier for where the edits will be going to.
      */
-    getEdits(nodeId: string): MwEdits {
-        const remote = this.ensureRemote(nodeId);
-        if (this.editor) {
-            const change = this.captureFile(nodeId) as MwChange;
-            remote.addChange(nodeId, change);
+    getEdits(roomId: string): MwEdits {
+        const remote = this.ensureRemote(roomId);
+        if (this.doc) {
+            const change = this.captureFile(roomId) as MwChange;
+            remote.addChange(roomId, change);
         }
-        return remote.getEdits(nodeId);
+        return remote.getEdits(roomId);
     }
 
-    getEditor(): MwEditor {
-        return this.editor as MwEditor;
+    getEditor(): MwDocument {
+        return this.doc as MwDocument;
     }
 
     /**
      * Let's the unit know which file is will be controlling.
      */
-    setEditor(editor: MwEditor): void {
-        this.editor = editor;
-    }
-
-    /**
-     * 
-     */
-    removeEditor(): void {
-        const editor = this.editor;
-        if (editor) {
-            this.workspace.deleteEditor(editor);
-            editor.release();
-            this.editor = void 0;
-
-            const nodeIds = Object.keys(this.remotes);
-            for (let n = 0; n < nodeIds.length; n++) {
-                const nodeId = nodeIds[n];
-                const remote = this.remotes[nodeId] as MwRemote;
-                remote.addChange(nodeId, remote.removeFile() as MwChange);
-            }
-        }
+    setEditor(doc: MwDocument): void {
+        this.doc = doc;
     }
 
     /**
@@ -140,9 +88,9 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     private captureFile(nodeId: string): MwChange | undefined {
         const remote = this.ensureRemote(nodeId);
         const shadow = remote.shadow;
-        const editor = this.editor;
-        if (editor) {
-            const text = editor.getText();
+        const doc = this.doc;
+        if (doc) {
+            const text = doc.getText();
             if (shadow) {
                 if (shadow.happy) {
                     return shadow.createDiffTextChange(text);
@@ -174,11 +122,11 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     /**
      * 
      */
-    ensureRemote(nodeId: string): MwRemote {
-        const existing = this.remotes[nodeId];
+    ensureRemote(roomId: string): MwRemote {
+        const existing = this.remotes[roomId];
         if (!existing) {
             const remote = new MwRemote(this.options);
-            this.addRemote(nodeId, remote);
+            this.addRemote(roomId, remote);
             return remote;
         }
         else {
@@ -189,66 +137,76 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     /**
      * Handles 'edits' sent from the remote server.
      * The UnitListener has already dispatched to this MwUnit based upon the file 'path' property.
-     * nodeId is the identifier of the node or room that the edits came from.
+     * roomId is the identifier of the node or room that the edits came from.
+     * path appears here because MwUnit and WsFile don't know the file path
      * edits are the changes.
      */
-    public setEdits(nodeId: string, edits: MwEdits): void {
-        const remote = this.ensureRemote(nodeId);
+    public setEdits(roomId: string, path: string, edits: MwEdits): void {
         for (const change of edits.x) {
-            const action = change.a;
-            if (action) {
-                switch (action.c) {
-                    case ACTION_RAW_OVERWRITE: {
-                        const editor = this.ensureEditor();
-                        const text = decodeURI(action.x as string);
-                        editor.setText(text);
-                        const shadow = remote.ensureShadow();
-                        // The action local version becomes our remote version.
-                        shadow.updateRaw(text, action.n as number);
-                        remote.discardChanges(nodeId);
-                        break;
+            this.setChange(roomId, path, change);
+        }
+    }
+
+    /**
+     * Handles 'edits' sent from the remote server.
+     */
+    public setChange(roomId: string, path: string, change: MwChange): void {
+        const remote = this.ensureRemote(roomId);
+        const action = change.a;
+        if (action) {
+            switch (action.c) {
+                case ACTION_RAW_OVERWRITE: {
+                    const doc = this.ensureDocument(path, roomId, change);
+                    const text = decodeURI(action.x as string);
+                    doc.setText(text);
+                    const shadow = remote.ensureShadow();
+                    // The action local version becomes our remote version.
+                    shadow.updateRaw(text, action.n as number);
+                    remote.discardChanges(roomId);
+                    break;
+                }
+                case ACTION_RAW_SYNCHONLY: {
+                    const text = decodeURI(action.x as string);
+                    const shadow = remote.shadow as MwShadow;
+                    // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
+                    // The action local version becomes our remote version.
+                    shadow.updateRaw(text, action.n as number);
+                    remote.discardChanges(roomId);
+                    break;
+                }
+                case ACTION_DELTA_OVERWRITE:
+                case ACTION_DELTA_MERGE: {
+                    const doc = this.doc as MwDocument;
+                    const shadow = remote.shadow as MwShadow;
+                    const backup = remote.backup as MwShadow;
+                    // The change remote version becomes our local version.
+                    // The action local version becomes our remote version.
+                    remote.patchDelta(roomId, doc, action.c, action.x as string[], change.m, action.n as number);
+                    backup.copy(shadow);
+                    if (typeof change.m === 'number') {
+                        remote.discardActionsLe(roomId, change.m);
                     }
-                    case ACTION_RAW_SYNCHONLY: {
-                        const text = decodeURI(action.x as string);
-                        const shadow = remote.shadow as MwShadow;
-                        // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
-                        // The action local version becomes our remote version.
-                        shadow.updateRaw(text, action.n as number);
-                        remote.discardChanges(nodeId);
-                        break;
+                    break;
+                }
+                case ACTION_NULLIFY_UPPERCASE:
+                case ACTION_NULLIFY_LOWERCASE: {
+                    // We are deleting the file in response to a master delete elsewhere.
+                    // Thus we are acting in the slave role.
+                    this.workspace.deleteFile(path, false);
+                    if (typeof change.m === 'number') {
+                        remote.discardActionsLe(roomId, change.m);
                     }
-                    case ACTION_DELTA_OVERWRITE:
-                    case ACTION_DELTA_MERGE: {
-                        const editor = this.editor as MwEditor;
-                        const shadow = remote.shadow as MwShadow;
-                        const backup = remote.backup as MwShadow;
-                        // The change remote version becomes our local version.
-                        // The action local version becomes our remote version.
-                        remote.patchDelta(nodeId, editor, action.c, action.x as string[], change.m, action.n as number);
-                        backup.copy(shadow);
-                        if (typeof change.m === 'number') {
-                            remote.discardActionsLe(nodeId, change.m);
-                        }
-                        break;
-                    }
-                    case ACTION_NULLIFY_UPPERCASE:
-                    case ACTION_NULLIFY_LOWERCASE: {
-                        this.removeEditor();
-                        if (typeof change.m === 'number') {
-                            remote.discardActionsLe(nodeId, change.m);
-                        }
-                        remote.discardChanges(nodeId);
-                        break;
-                    }
-                    default: {
-                        console.warn(`Unknown action code: ${action.c}`);
-                    }
+                    remote.discardChanges(roomId);
+                    break;
+                }
+                default: {
+                    console.warn(`Unknown action code: ${action.c}`);
                 }
             }
-            else {
-                if (typeof change.m === 'number') {
-                    remote.discardActionsLe(nodeId, change.m);
-                }
+        }
+        else {
+            if (typeof change.m === 'number') {
+                remote.discardActionsLe(roomId, change.m);
             }
         }
     }
@@ -256,10 +214,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     /**
      * 
      */
-    ensureEditor(): MwEditor {
-        if (!this.editor) {
-            this.editor = this.workspace.createEditor();
+    private ensureDocument(path: string, roomId: string, change: MwChange): MwDocument {
+        if (!this.doc) {
+            this.doc = this.workspace.createFile(path, roomId, change);
         }
-        return this.editor;
+        return this.doc;
     }
 }

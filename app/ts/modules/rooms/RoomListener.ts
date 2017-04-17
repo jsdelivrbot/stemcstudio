@@ -7,12 +7,12 @@ export interface RoomListener {
     /**
      * 
      */
-    getWorkspaceEdits(nodeId: string): { [path: string]: MwEdits };
+    getWorkspaceEdits(roomId: string): { [path: string]: MwEdits };
 
     /**
-     * nodeId is where the edits came from.
+     * roomId is where the edits came from.
      * path is the file identifier.
      * edits are the changes to be applied.
      */
-    setEdits(nodeId: string, path: string, edits: MwEdits): void;
+    setDocumentEdits(roomId: string, path: string, edits: MwEdits): void;
 }

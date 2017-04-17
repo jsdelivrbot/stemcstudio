@@ -58,7 +58,7 @@ export default function sockets(app: Express, server: Server) {
             const { fromId, roomId } = data;
 
             if (verbose) {
-                console.log(`${roomId} recv ${fromId} ${SOCKET_EVENT_DOWNLOAD}`);
+                console.log(`room ${roomId} REQUEST node ${fromId} ${SOCKET_EVENT_DOWNLOAD}`);
             }
 
             getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
@@ -80,7 +80,7 @@ export default function sockets(app: Express, server: Server) {
             const { fromId, roomId, path, edits } = data;
 
             if (verbose) {
-                console.log(`${roomId} recv ${fromId} ${path} ${SOCKET_EVENT_EDITS} ${JSON.stringify(summarize(edits))}`);
+                console.log(`room ${roomId} RECEIVE node ${fromId} ${path} ${SOCKET_EVENT_EDITS} ${JSON.stringify(summarize(edits))}`);
             }
             socketByNodeId[fromId] = socket;
 
@@ -97,7 +97,7 @@ export default function sockets(app: Express, server: Server) {
                                 const target = socketByNodeId[nodeId];
                                 if (target) {
                                     if (verbose) {
-                                        console.log(`${roomId} send ${nodeId} ${path} ${SOCKET_EVENT_EDITS} ${JSON.stringify(summarize(edits))}`);
+                                        console.log(`room ${roomId} SENDING node ${nodeId} ${path} ${SOCKET_EVENT_EDITS} ${JSON.stringify(summarize(edits))}`);
                                     }
                                     target.emit(SOCKET_EVENT_EDITS, { fromId: roomId, roomId: nodeId, path, edits });
                                 }

@@ -444,14 +444,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         // This flag prevents the editors from being being...?
         this.$scope.doodleLoaded = false;
 
-        // Example of how to enable tracing in the main and worker thread.
-        // TODO: Will this do any good if we haven't recycled?
-        this.wsModel.setTrace(this.trace, (err) => {
-            // Do nothing.
-        });
-
-        this.wsModel.recycle((err) => {
-            if (!err) {
+        this.wsModel.recycle()
+            .then(() => {
+                return this.wsModel.setTrace(this.trace);
+            })
+            .then(() => {
                 this.backgroundService.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
                     if (!err) {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
@@ -469,14 +466,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                             // We are in the correct state.
                             this.$scope.doodleLoaded = true;
                             const defaultLibURL = '/typings/lib.es6.d.ts';
-                            this.wsModel.setDefaultLibrary(defaultLibURL, (err) => {
-                                if (!err) {
+                            this.wsModel.setDefaultLibrary(defaultLibURL)
+                                .then(() => {
                                     this.afterWorkspaceLoaded();
-                                }
-                                else {
+                                })
+                                .catch((err) => {
                                     this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
-                                }
-                            });
+                                });
                         }
                     }
                     else {
@@ -487,11 +483,11 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.outputFilesWatchRemover = this.wsModel.watch(outputFilesTopic, this.createOutputFilesEventHandler());
                 this.renamedFileWatchRemover = this.wsModel.watch(renamedFileTopic, this.createRenamedFileEventHandler());
                 this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloadingTopic, this.createChangedOperatorOverloadingEventHandler());
-            }
-            else {
-                this.modalDialog.alert({ title: "Start Workspace Error", message: `${err}` });
-            }
-        });
+
+            })
+            .catch((err) => {
+                this.modalDialog.alert({ title: "Recycle Workspace Error", message: `${err}` });
+            });
     }
 
     /**

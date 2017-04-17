@@ -132,10 +132,15 @@ export default class ExplorerFilesController {
         };
         this.modalService.confirm(options)
             .then((result) => {
-                this.wsModel.deleteFile(path, (reason: Error) => {
-                    // This has already been done.
-                    // this.wsModel.updateStorage();
-                });
+                this.wsModel.deleteFile(path, true)
+                    .then(() => {
+                        // Do nothing.
+                        // This has already been done.
+                        // this.wsModel.updateStorage();
+                    })
+                    .catch((reason) => {
+                        console.warn(`Unable to delete file ${path}. Cause: ${reason}`);
+                    });
             })
             .catch(function (reason) {
                 // Do nothing.

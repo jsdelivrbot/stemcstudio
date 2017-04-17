@@ -2,9 +2,12 @@ import Diff from './Diff';
 import Patch from './Patch';
 
 /**
- * The adapter on the user's editor.
+ * The adapter on the user's document (editor).
+ * The central idea to this interface is that it permits:
+ * 1. raw overwrite using setText
+ * 2. delta merge using patch
  */
-interface MwEditor {
+export interface MwDocument {
 
     /**
      * 
@@ -31,5 +34,3 @@ interface MwEditor {
      */
     release(): number;
 }
-
-export default MwEditor;
