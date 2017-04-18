@@ -1,9 +1,9 @@
-import Document from '../../../editor/Document';
-import Patch from '../../../synchronization/Patch';
-import DIFF_DELETE from '../../../synchronization/DIFF_DELETE';
-import DIFF_EQUAL from '../../../synchronization/DIFF_EQUAL';
-import DIFF_INSERT from '../../../synchronization/DIFF_INSERT';
-import Range from '../../../editor/Range';
+import Document from '../../editor/Document';
+import Patch from '../../synchronization/Patch';
+import DIFF_DELETE from '../../synchronization/DIFF_DELETE';
+import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
+import DIFF_INSERT from '../../synchronization/DIFF_INSERT';
+import Range from '../../editor/Range';
 
 /**
  * Applies a patch to a document.
@@ -16,7 +16,7 @@ import Range from '../../../editor/Range';
  */
 export default function applyPatchToDocument(patch: Patch, doc: Document): { start: number; length: number; applied: boolean[] } {
     const start = patch.start1;
-    if (start >= 0) {
+    if ((typeof start === 'number') && start >= 0) {
         let offset = start;
         const diffs = patch.diffs;
         const dLen = diffs.length;
@@ -60,6 +60,6 @@ export default function applyPatchToDocument(patch: Patch, doc: Document): { sta
     }
     else {
         const patchString = patch.toString();
-        throw new Error(`patch ${patchString} must have a valid start1 = ${start}.`);
+        throw new Error(`patch ${patchString} must have a valid start1 = ${start}: ${typeof start}.`);
     }
 }

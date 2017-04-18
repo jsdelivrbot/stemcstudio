@@ -7,10 +7,12 @@ import Gist from '../../services/github/Gist';
 import GitHubReason from '../../services/github/GitHubReason';
 import { IGitHubService } from '../../services/github/IGitHubService';
 import PromptOptions from '../../services/modalService/PromptOptions';
+import Repo from '../../services/github/Repo';
 import RepoData from '../../services/github/RepoData';
+import RepoKey from '../../services/github/RepoKey';
 import isNumber from '../../utils/isNumber';
 import Method from './Method';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 const FEATURE_GIST_ENABLED = true;
 const FEATURE_REPO_ENABLED = false;
@@ -70,12 +72,12 @@ export default class UploadFlow {
             (facts, session, next) => {
                 this.cloudService.createGist(this.wsModel)
                     .then((http) => {
-                        const status = http.status;
+                        const status = http.status as number;
                         facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText);
+                        facts.statusText.resolve(http.statusText as string);
                         switch (status) {
                             case 201: {
-                                const gist = http.data;
+                                const gist = http.data as Gist;
                                 facts.gistId.resolve(gist.id);
                                 facts.uploadedAt.resolve(gist.created_at);
                                 facts.redirect.resolve(true);
@@ -107,15 +109,15 @@ export default class UploadFlow {
                 return facts.canUpdateGist();
             },
             (facts, session, next) => {
-                this.cloudService.updateGist(this.wsModel, this.wsModel.gistId)
+                this.cloudService.updateGist(this.wsModel, this.wsModel.gistId as string)
                     .then((http) => {
-                        const status = http.status;
+                        const status = http.status as number;
                         const statusText = http.statusText;
                         facts.status.resolve(status);
-                        facts.statusText.resolve(statusText);
+                        facts.statusText.resolve(statusText as string);
                         switch (status) {
                             case 200: {
-                                const gist: Gist = http.data;
+                                const gist = http.data as Gist;
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                 try {
@@ -188,11 +190,11 @@ export default class UploadFlow {
                 return facts.canDetermineRepoExists();
             },
             (facts, session, next) => {
-                this.githubService.getRepo(facts.userLogin.value, facts.repo.value)
+                this.githubService.getRepo(facts.userLogin.value as string, facts.repo.value as string)
                     .then((http) => {
-                        const status = http.status;
+                        const status = http.status as number;
                         facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText);
+                        facts.statusText.resolve(http.statusText as string);
                         switch (status) {
                             case 404: {
                                 facts.repoExists.resolve(false);
@@ -201,7 +203,7 @@ export default class UploadFlow {
                             }
                             case 200: {
                                 facts.repoExists.resolve(true);
-                                const repo = http.data;
+                                const repo = http.data as Repo;
                                 facts.repoId.resolve(repo.id);
                                 next();
                                 break;
@@ -259,12 +261,12 @@ export default class UploadFlow {
                 return facts.canCreateRepo();
             },
             (facts, session, next) => {
-                this.cloudService.createRepo(facts.repoData.value)
+                this.cloudService.createRepo(facts.repoData.value as RepoData)
                     .then((http) => {
-                        const status = http.status;
+                        const status = http.status as number;
                         facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText);
-                        const repository = http.data;
+                        facts.statusText.resolve(http.statusText as string);
+                        const repository = http.data as RepoKey;
                         facts.repoId.resolve(repository.id);
                         facts.repo.resolve(repository.name);
                         facts.repoExists.resolve(true);
@@ -281,10 +283,11 @@ export default class UploadFlow {
                                 // other than that it exists.
                                 facts.repoExists.resolve(true);
                                 // FIXME: There's some duplication here in the repo name.
-                                facts.repo.resolve(facts.repoData.value.name);
+                                const repoData = facts.repoData.value as RepoData;
+                                facts.repo.resolve(repoData.name);
                                 // Change our strategy to perform an update.
                                 facts.method.resolve(Method.Update);
-                                facts.owner.resolve(facts.userLogin.value);
+                                facts.owner.resolve(facts.userLogin.value as string);
                                 facts.ref.resolve('heads/master');
                                 next();
                                 break;
@@ -301,10 +304,10 @@ export default class UploadFlow {
                 return facts.canUploadToRepo();
             },
             (facts, session, next) => {
-                const owner = facts.owner.value;
-                const repo = facts.repo.value;
-                const ref = facts.ref.value;
-                const commitMessage = facts.commitMessage.value;
+                const owner = facts.owner.value as string;
+                const repo = facts.repo.value as string;
+                const ref = facts.ref.value as string;
+                const commitMessage = facts.commitMessage.value as string;
                 this.cloudService.uploadToRepo(this.wsModel, owner, repo, ref, commitMessage, (err, details) => {
                     if (!err) {
                         if (details.refUpdate.isResolved()) {
@@ -335,10 +338,10 @@ export default class UploadFlow {
 
         const facts = new UploadFacts();
 
-        facts.gistId.resolve(this.wsModel.gistId);
-        facts.repo.resolve(this.wsModel.repo);
-        facts.owner.resolve(this.wsModel.owner);
-        facts.userLogin.resolve(this.owner);
+        facts.gistId.resolve(this.wsModel.gistId as string);
+        facts.repo.resolve(this.wsModel.repo as string);
+        facts.owner.resolve(this.wsModel.owner as string);
+        facts.userLogin.resolve(this.owner as string);
         if (FEATURE_GIST_ENABLED) {
             if (FEATURE_REPO_ENABLED) {
                 if (facts.gistId.isResolved()) {
@@ -377,13 +380,13 @@ export default class UploadFlow {
             }
             else {
                 if (facts.uploadMessage.isResolved()) {
-                    this.modalDialog.alert({ title, message: facts.uploadMessage.value });
+                    this.modalDialog.alert({ title, message: facts.uploadMessage.value as string });
                     if (facts.redirect.isResolved()) {
                         if (facts.gistId.isResolved()) {
-                            this.navigation.gotoGist(this.wsModel.gistId);
+                            this.navigation.gotoGist(this.wsModel.gistId as string);
                         }
                         else if (facts.owner.isResolved() && facts.repo.isResolved()) {
-                            this.navigation.gotoRepo(this.wsModel.owner, this.wsModel.repo);
+                            this.navigation.gotoRepo(this.wsModel.owner as string, this.wsModel.repo as string);
                         }
                         else {
                             // FIXME: redirect should contain it's own instructions.

@@ -109,19 +109,51 @@ import { ITranslateGatewayProvider, TRANSLATE_GATEWAY_PROVIDER_UUID } from './mo
 import { ITranslateServiceProvider, TRANSLATE_SERVICE_PROVIDER_UUID } from './modules/translate/api';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from './modules/translate/api';
 
-import wsmodel from './modules/wsmodel/index';
-
+//
+//
+//
 import { BackgroundService } from './services/background/background.service';
 import { BACKGROUND_SERVICE_UUID } from './services/background/IBackgroundService';
+
+//
+//
+//
 import { DoodleManager } from './services/doodles/doodleManager.service';
 import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
+
+//
+//
+//
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
 import { GITHUB_AUTH_MANAGER_UUID } from './services/gham/IGitHubAuthManager';
-import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
+
+//
+//
+//
 import NavigationService from './modules/navigation/NavigationService';
+import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
+
+//
+//
+//
 import { OptionManager } from './services/options/optionManager.service';
 import { OPTION_MANAGER_SERVICE_UUID } from './services/options/IOptionManager';
 
+//
+//
+//
+import { UuidService } from './services/uuid/uuid.service';
+import { UUID_SERVICE_UUID } from './services/uuid/IUuidService';
+
+//
+//
+//
+import WsModel from './modules/wsmodel/WsModel';
+import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
+
+//
+//
+//
 import { STATE_ABOUT } from './modules/navigation/NavigationService';
 import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
 import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
@@ -133,8 +165,6 @@ import { STATE_HOME } from './modules/navigation/NavigationService';
 import { STATE_REPO } from './modules/navigation/NavigationService';
 import { STATE_ROOM } from './modules/navigation/NavigationService';
 import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
-import { UuidService } from './services/uuid/uuid.service';
-import { UUID_SERVICE_UUID } from './services/uuid/IUuidService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -150,8 +180,7 @@ const app = module('app', [
     stemcArXiv.name,
     tslint.name,
     editors.name,
-    translate.name,
-    wsmodel.name
+    translate.name
 ]);
 
 /**
@@ -172,7 +201,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.27');
+app.constant('version', '2.24.28');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -288,12 +317,13 @@ app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
-app.service(DOODLE_MANAGER_SERVICE_UUID, DoodleManager);
+app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
 app.service(NAVIGATION_SERVICE_UUID, NavigationService);
 app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));
 app.factory(ROOMS_SERVICE_UUID, downgradeInjectable(RoomsService));
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
+app.factory(WORKSPACE_MODEL_UUID, downgradeInjectable(WsModel));
 
 //
 // Register work which needs to be performed on module loading.

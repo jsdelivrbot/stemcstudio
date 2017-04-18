@@ -11,7 +11,7 @@ function forceTokenize(session: EditSession, startLine = 0): void {
 
 function testStates(session: EditSession, states: (string | null | undefined)[]) {
     for (let i = 0, l = session.getLength(); i < l; i++) {
-        expect(session.bgTokenizer.states[i]).toBe(states[i]);
+        expect(session.bgTokenizer.states[i]).toBe(states[i] as string);
     }
     // expect(states.length).toBe(1)
     // assert.ok(l == states.length);

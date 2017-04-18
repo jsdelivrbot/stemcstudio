@@ -1,5 +1,5 @@
 import { IScope } from 'angular';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 /**
  * This interface documents part of the contract between the directive code and the presentation logic.

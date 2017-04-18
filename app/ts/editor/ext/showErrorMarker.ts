@@ -95,8 +95,13 @@ function findAnnotations(session: EditSession, row: number, direction: number): 
  * @param direction +1 for the next error, -1 for the previous error.
  */
 export default function showErrorMarker(editor: Editor, direction: number): void {
-    const session = editor.session;
-    if (!session.widgetManager) {
+
+    if (!editor.session) {
+        return;
+    }
+    const session = editor.session as EditSession;
+
+    if (session && !session.widgetManager) {
         session.widgetManager = new LineWidgetManager(session);
         session.widgetManager.attach(editor);
     }
@@ -125,7 +130,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
     else {
         gutterAnno = { text: ["Looks good! Press Esc key to cancel."], className: "ace_ok" };
     }
-    editor.session.unfold(pos.row);
+    session.unfold(pos.row);
     editor.selection.moveToPosition(pos);
 
     const w: LineWidget = {

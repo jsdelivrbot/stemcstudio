@@ -5,6 +5,8 @@ export interface IWorkspaceModel {
 
 }
 
+export const WORKSPACE_MODEL_UUID = 'workspaceModel';
+
 export default IWorkspaceModel;
 
 export const changedOperatorOverloadingTopic = 'changedOperatorOverloading';

@@ -1,11 +1,11 @@
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
-import WsModel from '../modules/wsmodel/services/WsModel';
+import WsModel from '../modules/wsmodel/WsModel';
 
 /**
  * 
  */
-function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel, callback: (reason: Error) => any): void {
+function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel, callback: (reason: Error | null | undefined) => any): void {
     if (dudeFiles) {
         const paths = Object.keys(dudeFiles);
         const iLen = paths.length;
@@ -43,6 +43,7 @@ function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
             }
         }
         else {
+            // We can only callback if we treat zero paths as a special case.
             window.setTimeout(function () {
                 callback(void 0);
             });
@@ -52,8 +53,7 @@ function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
 
 function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel): void {
     const paths = Object.keys(dudeFiles);
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
+    for (const path of paths) {
         workspace.trashPut(path);
     }
 }
@@ -72,13 +72,13 @@ export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel
 
     // Ignore properties which are maintained in package.json and so do not need to be copied.
     // This includes 'author', 'dependencies', 'description', 'keywords', 'name', 'noLoopCheck', 'operatorOverloading', and 'version'.
-    workspace.created_at = doodle.created_at;
-    workspace.gistId = doodle.gistId;
+    workspace.created_at = doodle.created_at as string;
+    workspace.gistId = doodle.gistId as string;
     workspace.isCodeVisible = doodle.isCodeVisible;
     workspace.isViewVisible = doodle.isViewVisible;
     workspace.lastKnownJs = doodle.lastKnownJs;
     workspace.lastKnownJsMap = doodle.lastKnownJsMap;
-    workspace.owner = doodle.owner;
-    workspace.repo = doodle.repo;
-    workspace.updated_at = doodle.updated_at;
+    workspace.owner = doodle.owner as string;
+    workspace.repo = doodle.repo as string;
+    workspace.updated_at = doodle.updated_at as string;
 }

@@ -18,7 +18,7 @@ import scriptURL from './scriptURL';
 import schemeTypeFromContent from './schemeTypeFromContent';
 import shaderTypeFromContent from './shaderTypeFromContent';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
 import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
 

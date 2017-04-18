@@ -1,6 +1,6 @@
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
-import WsModel from '../modules/wsmodel/services/WsModel';
+import WsModel from '../modules/wsmodel/WsModel';
 
 function ensureDoodleFile(doodle: Doodle, path: string): DoodleFile {
     const doodleFile = doodle.findFileByName(path);

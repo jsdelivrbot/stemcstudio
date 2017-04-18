@@ -4,14 +4,12 @@ import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import MwAction from './MwAction';
 import MwChange from './MwChange';
 import { MwOptions } from './MwOptions';
-import FzSerializable from './ds/FzSerializable';
-import FzShadow from './ds/FzShadow';
 
 const INITIAL_VERSION = 1;
 
 const dmp = new DMP();
 
-export default class MwShadow implements FzSerializable<FzShadow> {
+export default class MwShadow {
 
     /**
      * The local version number of the shadow document.
@@ -61,31 +59,6 @@ export default class MwShadow implements FzSerializable<FzShadow> {
         this.text = other.text;
         this.happy = other.happy;
         this.merge = other.merge;
-    }
-
-    rehydrate(value: FzShadow): MwShadow {
-        this.n = value.n;
-        this.m = value.m;
-        this.text = value.t;
-        this.happy = value.h;
-        this.merge = value.g;
-        return this;
-    }
-
-    dehydrate(): FzShadow {
-        const value: FzShadow = {
-            n: this.n,
-            m: this.m,
-            t: this.text,
-            h: this.happy,
-            g: this.merge
-        };
-        this.n = void 0;
-        this.m = void 0;
-        this.text = void 0;
-        this.happy = void 0;
-        this.merge = void 0;
-        return value;
     }
 
     /**

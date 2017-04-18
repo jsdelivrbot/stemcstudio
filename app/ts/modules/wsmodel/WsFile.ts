@@ -1,11 +1,11 @@
 import applyPatchToDocument from './applyPatchToDocument';
-import Document from '../../../editor/Document';
-import EditSession from '../../../editor/EditSession';
-import Editor from '../../../editor/Editor';
-import Shareable from '../../../base/Shareable';
-import MwUnit from '../../../synchronization/MwUnit';
-import { MwDocument } from '../../../synchronization/MwDocument';
-import Patch from '../../../synchronization/Patch';
+import Document from '../../editor/Document';
+import EditSession from '../../editor/EditSession';
+import Editor from '../../editor/Editor';
+import Shareable from '../../base/Shareable';
+import MwUnit from '../../synchronization/MwUnit';
+import { MwDocument } from '../../synchronization/MwDocument';
+import Patch from '../../synchronization/Patch';
 import WsModel from './WsModel';
 
 /**

@@ -926,7 +926,7 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
     /**
      *
      */
-    getPixelPosition(position?: Position, onScreen?: boolean): PixelPosition {
+    getPixelPosition(position?: Position | null, onScreen?: boolean): PixelPosition {
         return this.cursorLayer.getPixelPosition(position, onScreen);
     }
 
@@ -1551,7 +1551,7 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
     /**
      * Scrolls the cursor into the first visibile area of the editor.
      */
-    scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void {
+    scrollCursorIntoView(cursor?: Position | null, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void {
         // the editor is not visible
         if (this.$size.scrollerHeight === 0) {
             return;

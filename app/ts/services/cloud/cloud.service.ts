@@ -28,7 +28,7 @@ import RepoElement from '../github/RepoElement';
 import TreeData from '../github/TreeData';
 import TreeKey from '../github/TreeKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 const LEGACY_META = 'doodle.json';
 
@@ -268,8 +268,7 @@ export class CloudService implements ICloudService {
 
     createBlobsInRepo(workspace: WsModel, owner: string, repo: string, paths: string[]): IHttpPromise<BlobKey>[] {
         const blobs: IHttpPromise<BlobKey>[] = [];
-        for (let p = 0; p < paths.length; p++) {
-            const path = paths[p];
+        for (const path of paths) {
             const file = workspace.getFileWeakRef(path);
             if (file) {
                 const content = this.base64Service.encode(file.getText());

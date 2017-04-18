@@ -25,7 +25,7 @@ interface LineWidget {
     _inDocument?: boolean;
     $oldWidget?: LineWidget;
     $fold?: Fold;
-    destroy: () => any;
+    destroy?: () => any;
 }
 
 export default LineWidget;

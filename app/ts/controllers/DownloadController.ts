@@ -45,16 +45,22 @@ app.controller('download-controller', [
             const href = $scope.links[rel];
             githubService.getGistsPage(href)
                 .then(function (promiseValue) {
-                    const gists = promiseValue.data;
-                    const headers = promiseValue.headers;
-                    $scope.gists = gists;
-                    if (headers('link')) {
-                        $scope.links = linkToMap(headers('link'));
+                    if (promiseValue.data) {
+                        const gists = promiseValue.data;
+                        const headers = promiseValue.headers;
+                        $scope.gists = gists;
+                        if (headers && headers('link')) {
+                            $scope.links = linkToMap(headers('link'));
+                        }
+                        else {
+                            $scope.links = {};
+                        }
+                        navigationService.gotoDownload();
                     }
                     else {
-                        $scope.links = {};
+                        // Why do we get undefined as a possibility?
+                        console.warn(`typeof promiseValue.data => ${typeof promiseValue.data}`);
                     }
-                    navigationService.gotoDownload();
                 })
                 .catch(function (reason: any) {
                     BootstrapDialog.show({

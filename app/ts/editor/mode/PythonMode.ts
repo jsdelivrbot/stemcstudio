@@ -106,8 +106,14 @@ export default class PythonMode extends TextMode {
         try {
             worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'PythonWorker', function (err: any) {
                 if (!err) {
-                    worker.attachToDocument(session.getDocument());
-                    callback(void 0, worker);
+                    const doc = session.getDocument();
+                    if (doc) {
+                        worker.attachToDocument(doc);
+                        callback(void 0, worker);
+                    }
+                    else {
+                        callback(new Error("session does not have an associated document."));
+                    }
                 }
                 else {
                     console.warn(`PythonWorker init fail: ${err}`);

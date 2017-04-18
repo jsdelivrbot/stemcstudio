@@ -2,7 +2,7 @@ import FlowService from '../../services/flow/FlowService';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFacts from './LabelFacts';
 import LabelSettings from '../../modules/publish/LabelSettings';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 export default class LabelFlow {
     constructor(
@@ -19,7 +19,11 @@ export default class LabelFlow {
                 return facts.settings.isUndefined();
             },
             (facts, session, next) => {
-                const defaults: LabelSettings = { title: this.wsModel.description, author: this.wsModel.author, keywords: this.wsModel.keywords };
+                const defaults: LabelSettings = {
+                    title: this.wsModel.description as string,
+                    author: this.wsModel.author as string,
+                    keywords: this.wsModel.keywords
+                };
                 this.labelDialog.open(defaults)
                     .then((settings: LabelSettings) => {
                         facts.settings.resolve(settings);
@@ -37,9 +41,12 @@ export default class LabelFlow {
 
         session.execute((err: any, facts: LabelFacts) => {
             if (!err) {
-                this.wsModel.description = facts.settings.value.title;
-                this.wsModel.author = facts.settings.value.author;
-                this.wsModel.keywords = facts.settings.value.keywords;
+                const settings = facts.settings.value;
+                if (settings) {
+                    this.wsModel.description = settings.title;
+                    this.wsModel.author = settings.author;
+                    this.wsModel.keywords = settings.keywords;
+                }
             }
             else {
                 switch (err) {

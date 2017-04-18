@@ -1,6 +1,6 @@
 import GistData from '../github/GistData';
 import doodleFilesToGistFiles from './doodleFilesToGistFiles';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 export default function (workspace: WsModel): GistData {
     const gist: GistData = {

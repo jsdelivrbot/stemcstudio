@@ -1,10 +1,10 @@
 import IExplorer from './IExplorer';
-import WsModel from '../../modules/wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
+import WsModel from '../../modules/wsmodel/WsModel';
+import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
 export default class ExplorerController implements IExplorer {
 
-    public static $inject: string[] = [WORKSPACE_MODEL];
+    public static $inject: string[] = [WORKSPACE_MODEL_UUID];
 
     constructor(private wsModel: WsModel) {
         // Do nothing

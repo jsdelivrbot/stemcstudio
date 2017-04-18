@@ -1,5 +1,5 @@
 import ensureFileContent from './ensureFileContent';
-import WsFile from '../../modules/wsmodel/services/WsFile';
+import WsFile from '../../modules/wsmodel/WsFile';
 
 /**
  * Converts the workspace files into the files required for the Gist.

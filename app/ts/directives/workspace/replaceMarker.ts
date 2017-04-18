@@ -3,7 +3,7 @@ import fileContent from './fileContent';
 import modeFromName from '../../utils/modeFromName';
 import prefixFromPath from '../../utils/prefixFromPath';
 
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 /**
  * @param marker e.g. SHADERS_MARKER

@@ -40,8 +40,8 @@ import WorkspaceMixin from '../editor/WorkspaceMixin';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
-import WsFile from '../../modules/wsmodel/services/WsFile';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsFile from '../../modules/wsmodel/WsFile';
+import WsModel from '../../modules/wsmodel/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -62,7 +62,7 @@ import { LANGUAGE_YAML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
-import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
+import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
 /**
  * A delay of 0 (zero) second.
@@ -171,7 +171,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'STYLES_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        WORKSPACE_MODEL
+        WORKSPACE_MODEL_UUID
     ];
 
     /**

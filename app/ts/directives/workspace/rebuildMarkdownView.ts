@@ -5,7 +5,7 @@ import { IWindowService } from 'angular';
 import readMeHTML from './readMeHTML';
 import sd from 'showdown';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 const FSLASH_STAR = '/*';
 const STAR_FSLASH = '*/';

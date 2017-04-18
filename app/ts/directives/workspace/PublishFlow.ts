@@ -4,7 +4,7 @@ import PublishFacts from './PublishFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 
 /**
  *
@@ -27,7 +27,7 @@ export default class PublishFlow {
          */
         const title = "Publish";
 
-        this.wsModel.owner = this.owner;
+        this.wsModel.owner = this.owner as string;
         const flow = this.flowService.createFlow<PublishFacts>("Publish");
 
         flow.rule("Google Sign-In", {},
@@ -63,8 +63,8 @@ export default class PublishFlow {
                     owner: this.wsModel.owner,
                     gistId: this.wsModel.gistId,
                     repo: this.wsModel.repo,
-                    title: this.wsModel.description,
-                    author: this.wsModel.author,
+                    title: this.wsModel.description as string,
+                    author: this.wsModel.author as string,
                     keywords: this.wsModel.keywords,
                     credentials: this.credentialsService.credentials
                 };
@@ -84,7 +84,7 @@ export default class PublishFlow {
         // If we can find an id_token that we can use for the AWS credentials then
         // we can get the rule engine to skip the Sign-In step.
         const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-        facts.owner.resolve(this.owner);
+        facts.owner.resolve(this.owner as string);
         if (googleUser) {
             const response = googleUser.getAuthResponse();
             if (response) {
@@ -106,7 +106,7 @@ export default class PublishFlow {
         session.execute((err: { data: AWS.Reason }, data: PublishFacts) => {
             if (!err) {
                 if (facts.completionMessage.isResolved()) {
-                    this.modalDialog.alert({ title, message: facts.completionMessage.value });
+                    this.modalDialog.alert({ title, message: facts.completionMessage.value as string });
                 }
                 else {
                     this.modalDialog.alert({ title, message: `Apologies, the publish was not completed because of a system error.` });

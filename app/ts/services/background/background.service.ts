@@ -8,8 +8,8 @@ import isString from '../../utils/isString';
 import MwEdits from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/RoomAgent';
 import { IRoomsService, ROOMS_SERVICE_UUID } from '../../modules/rooms/api';
-import WsModel from '../../modules/wsmodel/services/WsModel';
-import { WORKSPACE_MODEL } from '../../modules/wsmodel/constants';
+import WsModel from '../../modules/wsmodel/WsModel';
+import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
 /**
  * If the workspace is in the foreground, then the background is everything else that the
@@ -22,7 +22,7 @@ export class BackgroundService implements IBackgroundService {
         CLOUD_SERVICE_UUID,
         DOODLE_MANAGER_SERVICE_UUID,
         ROOMS_SERVICE_UUID,
-        WORKSPACE_MODEL
+        WORKSPACE_MODEL_UUID
     ];
     constructor(
         private cloudService: ICloudService,

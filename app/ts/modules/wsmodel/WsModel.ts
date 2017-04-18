@@ -1,56 +1,58 @@
-import { ACE_WORKER_PATH } from '../../../constants';
-import { TYPESCRIPT_SERVICES_PATH } from '../../../constants';
-import { Annotation, AnnotationType } from '../../../editor/Annotation';
-import AutoCompleteCommand from '../../../editor/autocomplete/AutoCompleteCommand';
-import CompletionEntry from '../../../editor/workspace/CompletionEntry';
-import copyWorkspaceToDoodle from '../../../mappings/copyWorkspaceToDoodle';
-import Delta from '../../../editor/Delta';
-import Diagnostic from '../../../editor/workspace/Diagnostic';
-import Document from '../../../editor/Document';
-import Editor from '../../../editor/Editor';
-import EditSession from '../../../editor/EditSession';
+import { Injectable } from '@angular/core';
+import { ACE_WORKER_PATH } from '../../constants';
+import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
+import { Annotation, AnnotationType } from '../../editor/Annotation';
+import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
+import CompletionEntry from '../../editor/workspace/CompletionEntry';
+import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
+import Delta from '../../editor/Delta';
+import Diagnostic from '../../editor/workspace/Diagnostic';
+import Document from '../../editor/Document';
+import Editor from '../../editor/Editor';
+import EditSession from '../../editor/EditSession';
 import EventBus from './EventBus';
-import FormatCodeSettings from '../../../editor/workspace/FormatCodeSettings';
-import { get } from '../../../editor/lib/net';
-import getPosition from '../../../editor/workspace/getPosition';
-import LanguageServiceProxy from '../../../editor/workspace/LanguageServiceProxy';
-import IDoodleConfig from '../../../services/doodles/IDoodleConfig';
-import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../../services/doodles/IDoodleManager';
-import IWorkspaceModel from '../IWorkspaceModel';
-import javascriptSnippets from '../../../editor/snippets/javascriptSnippets';
-import KeywordCompleter from '../../../editor/autocomplete/KeywordCompleter';
-import Position from '../../../editor/Position';
-import Marker from '../../../editor/Marker';
-import modeFromName from '../../../utils/modeFromName';
-import { LANGUAGE_HTML } from '../../../languages/modes';
-import { LANGUAGE_MARKDOWN } from '../../../languages/modes';
-import MwChange from '../../../synchronization/MwChange';
-import MwEdits from '../../../synchronization/MwEdits';
-import { MwOptions } from '../../../synchronization/MwOptions';
-import MwUnit from '../../../synchronization/MwUnit';
-import { MwWorkspace } from '../../../synchronization/MwWorkspace';
-import { OutputFilesMessage, outputFilesTopic } from '../IWorkspaceModel';
-import OutputFile from '../../../editor/workspace/OutputFile';
-import QuickInfo from '../../../editor/workspace/QuickInfo';
-import QuickInfoTooltip from '../../../editor/workspace/QuickInfoTooltip';
-import QuickInfoTooltipHost from '../../../editor/workspace/QuickInfoTooltipHost';
-import Range from '../../../editor/Range';
-import { RenamedFileMessage, renamedFileTopic } from '../IWorkspaceModel';
-import { ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../IWorkspaceModel';
-import RoomAgent from '../../rooms/RoomAgent';
-import { RoomListener } from '../../rooms/RoomListener';
-import SnippetCompleter from '../../../editor/SnippetCompleter';
-import StringShareableMap from '../../../collections/StringShareableMap';
-import TextChange from '../../../editor/workspace/TextChange';
-import { TsLintSettings, RuleArgumentType } from '../../tslint/TsLintSettings';
-import typescriptSnippets from '../../../editor/snippets/typescriptSnippets';
+import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import { get } from '../../editor/lib/net';
+import getPosition from '../../editor/workspace/getPosition';
+import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
+import IDoodleConfig from '../../services/doodles/IDoodleConfig';
+// import { DOODLE_MANAGER_SERVICE_UUID } from '../../services/doodles/IDoodleManager';
+import { DoodleManager } from '../../services/doodles/doodleManager.service';
+import IWorkspaceModel from './IWorkspaceModel';
+import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
+import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
+import Position from '../../editor/Position';
+import Marker from '../../editor/Marker';
+import modeFromName from '../../utils/modeFromName';
+import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../../languages/modes';
+import MwChange from '../../synchronization/MwChange';
+import MwEdits from '../../synchronization/MwEdits';
+import { MwOptions } from '../../synchronization/MwOptions';
+import MwUnit from '../../synchronization/MwUnit';
+import { MwWorkspace } from '../../synchronization/MwWorkspace';
+import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
+import OutputFile from '../../editor/workspace/OutputFile';
+import QuickInfo from '../../editor/workspace/QuickInfo';
+import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
+import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
+import Range from '../../editor/Range';
+import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
+import { ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from './IWorkspaceModel';
+import RoomAgent from '../rooms/RoomAgent';
+import { RoomListener } from '../rooms/RoomListener';
+import SnippetCompleter from '../../editor/SnippetCompleter';
+import StringShareableMap from '../../collections/StringShareableMap';
+import TextChange from '../../editor/workspace/TextChange';
+import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
+import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import WsFile from './WsFile';
-import setOptionalBooleanProperty from '../../../services/doodles/setOptionalBooleanProperty';
-import setOptionalStringProperty from '../../../services/doodles/setOptionalStringProperty';
-import setOptionalStringArrayProperty from '../../../services/doodles/setOptionalStringArrayProperty';
+import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
+import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
+import setOptionalStringArrayProperty from '../../services/doodles/setOptionalStringArrayProperty';
 import { WorkspaceRoomListener } from './WorkspaceRoomListener';
-import WorkspaceCompleter from '../../../editor/workspace/WorkspaceCompleter';
-import WorkspaceCompleterHost from '../../../editor/workspace/WorkspaceCompleterHost';
+import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
+import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
 
 const NEWLINE = '\n';
 
@@ -300,32 +302,33 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
  * for the lifetime of the application. At the same time, the user may serally edit multiple models 
  * and so this instance must have state so that it can manage the associated worker threads.
  */
+@Injectable()
 export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
      */
-    owner: string;
+    owner?: string;
 
     /**
      * 
      */
-    gistId: string;
+    gistId?: string;
 
     /**
      * The repository identifier property.
      */
-    repo: string;
+    repo?: string;
 
     /**
      * 
      */
-    created_at: string;
+    created_at?: string;
 
     /**
      * 
      */
-    updated_at: string;
+    updated_at?: string;
 
     /**
      * A mapping from the file path to the last JavaScript code emitted by the TypeScript compiler.
@@ -457,12 +460,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * NOTE: We cannot migrate this service to Angular until the doodle manger has been migrated.
      * (Or at least that avoids more complex issues)
      */
-    public static $inject: string[] = [DOODLE_MANAGER_SERVICE_UUID];
+    // public static $inject: string[] = [DOODLE_MANAGER_SERVICE_UUID];
 
     /**
      * AngularJS service; parameters must match static $inject property.
      */
-    constructor(private doodles: IDoodleManager) {
+    constructor(private doodles: DoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }

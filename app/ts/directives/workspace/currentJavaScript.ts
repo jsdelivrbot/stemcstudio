@@ -1,5 +1,5 @@
 import mathscript from 'davinci-mathscript';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 /**
  * Returns the JavaScript to be inserted into the HTML script element.
  * This may involve further modifying the JavaScript emitted by the

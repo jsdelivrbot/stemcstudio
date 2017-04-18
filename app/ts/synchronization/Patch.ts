@@ -4,6 +4,12 @@ import DIFF_EQUAL from './DIFF_EQUAL';
 import Diff from './Diff';
 
 /**
+ * Sentinel value for an undefined start property.
+ * We avoid using null or undefined in order to simplify the typing.
+ */
+export const UNDEFINED_START = Math.random();
+
+/**
  * Class representing one patch operation.
  */
 export default class Patch {
@@ -17,12 +23,12 @@ export default class Patch {
     /**
      * Start position in the original file.
      */
-    start1: number | null;
+    start1: number;
 
     /**
      * Start position in the new file.
      */
-    start2: number | null;
+    start2: number;
 
     /**
      * Length in the original file.
@@ -36,8 +42,8 @@ export default class Patch {
 
     constructor() {
         this.diffs = [];
-        this.start1 = null;
-        this.start2 = null;
+        this.start1 = UNDEFINED_START;
+        this.start2 = UNDEFINED_START;
         this.length1 = 0;
         this.length2 = 0;
     }
@@ -56,17 +62,17 @@ export default class Patch {
             coords1 = this.start1 + ',0';
         }
         else if (this.length1 === 1) {
-            coords1 = (<number>this.start1 + 1).toString();
+            coords1 = (this.start1 + 1).toString();
         }
         else {
-            coords1 = (<number>this.start1 + 1) + ',' + this.length1;
+            coords1 = (this.start1 + 1) + ',' + this.length1;
         }
         if (this.length2 === 0) {
             coords2 = this.start2 + ',0';
         } else if (this.length2 === 1) {
-            coords2 = (<number>this.start2 + 1).toString();
+            coords2 = (this.start2 + 1).toString();
         } else {
-            coords2 = (<number>this.start2 + 1) + ',' + this.length2;
+            coords2 = (this.start2 + 1) + ',' + this.length2;
         }
         const text = ['@@ -' + coords1 + ' +' + coords2 + ' @@\n'];
         let op = 'undefined';
@@ -87,7 +93,7 @@ export default class Patch {
                 }
             }
             // The cast is required because of the way diiffs is declared.
-            text[x + 1] = op + encodeURI(<string>this.diffs[x][1]) + '\n';
+            text[x + 1] = op + encodeURI(this.diffs[x][1]) + '\n';
         }
         // Opera doesn't know how to encode char 0.
         return text.join('').replace(/\x00/g, '%00').replace(/%20/g, ' ');

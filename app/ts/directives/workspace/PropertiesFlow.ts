@@ -5,7 +5,7 @@ import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
-import WsModel from '../../modules/wsmodel/services/WsModel';
+import WsModel from '../../modules/wsmodel/WsModel';
 import dependenciesMap from './dependenciesMap';
 import dependencyNames from './dependencyNames';
 
@@ -32,8 +32,8 @@ export default class PropertiesFlow {
             },
             (facts, session, next) => {
                 const defaults: PropertiesSettings = {
-                    name: this.wsModel.name,
-                    version: this.wsModel.version,
+                    name: this.wsModel.name as string,
+                    version: this.wsModel.version as string,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.operatorOverloading,
                     dependencies: dependencyNames(this.wsModel.dependencies)

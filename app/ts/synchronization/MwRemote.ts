@@ -11,15 +11,13 @@ import { MwDocument } from './MwDocument';
 import MwEdits from './MwEdits';
 import { MwOptions } from './MwOptions';
 import MwShadow from './MwShadow';
-import FzRemote from './ds/FzRemote';
-import FzSerializable from './ds/FzSerializable';
 
 const dmp = new DMP();
 
 /**
  * Maintains a snapshot of remote documents
  */
-export default class MwRemote implements FzSerializable<FzRemote> {
+export default class MwRemote {
     /**
      * Every node (client or server) will have a shadow document.
      */
@@ -87,21 +85,6 @@ export default class MwRemote implements FzSerializable<FzRemote> {
         }
     }
 
-    dehydrate(): FzRemote {
-        const value: FzRemote = {
-            s: this.shadow ? this.shadow.dehydrate() : void 0,
-            b: this.backup ? this.backup.dehydrate() : void 0,
-            e: this.edits
-        };
-        return value;
-    }
-
-    rehydrate(value: FzRemote): void {
-        this.shadow = value.s ? new MwShadow(this.options).rehydrate(value.s) : void 0;
-        this.backup = value.b ? new MwShadow(this.options).rehydrate(value.b) : void 0;
-        this.edits = value.e;
-    }
-
     /**
      * 
      */
@@ -160,7 +143,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(roomId: string, doc: MwDocument, code: MwActionType, delta: string[], localVersion: number, remoteVersion: number): void {
+    patchDelta(roomId: string, doc: MwDocument, code: MwActionType, delta: string[], localVersion: number | undefined, remoteVersion: number): void {
         const shadow = this.shadow as MwShadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
