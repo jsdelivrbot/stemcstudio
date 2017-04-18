@@ -8,7 +8,7 @@ interface MwChange {
     /**
      * remote version, if we know it from last receive.
      */
-    m: number;
+    m?: number;
 
     /**
      * TODO: This should probably be actions.

@@ -31,6 +31,25 @@ function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: numbe
 }
 
 /**
+ * Determines (with a guard) whether the target is an HTMLDivElement.
+ */
+function isHTMLDivElement(target: EventTarget): target is HTMLDivElement {
+    return target instanceof HTMLDivElement;
+}
+
+/**
+ * Determines whether the target is the editor content.
+ */
+function isEditorContent(target: EventTarget): boolean {
+    if (isHTMLDivElement(target)) {
+        return target.className === 'ace_content';
+    }
+    else {
+        return false;
+    }
+}
+
+/**
  *
  */
 export default class QuickInfoTooltip extends Tooltip {
@@ -57,7 +76,7 @@ export default class QuickInfoTooltip extends Tooltip {
 
             clearTimeout(this.mouseMoveTimer);
 
-            if (event.srcElement['className'] === 'ace_content') {
+            if (isEditorContent(event.target)) {
 
                 this.mouseMoveTimer = window.setTimeout(() => {
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);

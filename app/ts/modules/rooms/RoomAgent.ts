@@ -2,6 +2,9 @@ import io from 'socket.io-client';
 import { RoomListener } from './RoomListener';
 import Shareable from '../../base/Shareable';
 import { SocketZen } from './SocketZen';
+import { MwAction } from '../../synchronization/MwAction';
+import { ACTION_NULLIFY_UPPERCASE } from '../../synchronization/MwAction';
+import MwChange from '../../synchronization/MwChange';
 import MwEdits from '../../synchronization/MwEdits';
 import uniqueId from '../../synchronization/uniqueId';
 
@@ -54,7 +57,7 @@ export default class RoomAgent implements Shareable {
     /**
      * Used to control logging.
      */
-    private readonly verbose = true;
+    private readonly verbose = false;
 
     /**
      * 
@@ -152,6 +155,15 @@ export default class RoomAgent implements Shareable {
      */
     get id(): string {
         return this.roomId;
+    }
+
+    deleteFile(path: string): void {
+        const action: MwAction = { c: ACTION_NULLIFY_UPPERCASE };
+        const changes: MwChange[] = [{ a: action }];
+        const edits: MwEdits = { x: changes };
+        this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
+            // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
+        });
     }
 
     /**

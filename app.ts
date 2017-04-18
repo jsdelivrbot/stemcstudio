@@ -4,8 +4,7 @@ import { Request, Response } from 'express';
 import * as path from 'path';
 // Uncomment after placing favicon in /public
 // import favicon = require('serve-favicon');
-// Do we need to require jade for a side-effect?
-require('jade');
+// require('pug');
 const lactate = require('lactate');
 import logger = require('morgan');
 import methodOverride = require('method-override');
@@ -27,6 +26,7 @@ require('./configure');
 
 const GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 const clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
+const STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 // console.lg(`${GITHUB_APPLICATION_CLIENT_ID_KEY} is '${clientId}'.`);
 
 const isProductionMode = () => {
@@ -42,7 +42,7 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 // app.set("view options", {layout: false});
 
 // Uncomment after placing your favicon in /public
@@ -127,7 +127,7 @@ app.get('/authenticate/:code', (req: Request, res: Response) => {
 
 app.get("/github_callback", (req: Request, res: Response, next: Function) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
-    res.cookie('stemcstudio-github-application-client-id', clientId);
+    res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("github_callback", {
         npm: npm
     });
@@ -145,7 +145,7 @@ app.get('/translations/:input', getTranslation);
 
 app.get("/*", (req: Request, res: Response, next: Function) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
-    res.cookie('stemcstudio-github-application-client-id', clientId);
+    res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("index", {
         css: `/css/app.css?version=${npm.version}`,
         js: `/js/app.js?version=${npm.version}`,
@@ -154,7 +154,8 @@ app.get("/*", (req: Request, res: Response, next: Function) => {
         jspmCoreJs: `jspm_packages/npm/core-js@2.4.1/client/shim.min.js`,
         jspmZoneJs: `jspm_packages/npm/zone.js@0.8.5/dist/zone.js`,
         jspmReflectJs: `jspm_packages/npm/reflect-metadata@0.1.10/Reflect.js`,
-        npm: npm
+        npm: npm,
+        version: npm.version
     });
 });
 

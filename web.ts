@@ -9,7 +9,6 @@ app.set('port', port);
 //
 // This is how the server is created at https://github.com/socketio/socket.io
 //
-// TODO: Review importing https for 
 const server = http.createServer(app);
 
 //

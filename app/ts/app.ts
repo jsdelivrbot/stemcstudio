@@ -193,11 +193,8 @@ app.constant('FEATURE_TWITTER_SIGNIN_ENABLED', false);
 app.constant('FEATURE_FACEBOOK_SIGNIN_ENABLED', false);
 
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
-// Remark: This value is duplicated in views/github_callback.jade
+// Remark: This value is duplicated in views/github_callback.pug
 app.constant('githubKey', makeKey('github'));
-
-// com.stemcstudio.doodles is the local storage key for doodles.
-app.constant('doodlesKey', makeKey('doodles'));
 
 // com.stemcstudio.config is the local storage key for configuration.
 app.constant('configKey', makeKey('config'));

@@ -44,12 +44,12 @@ export interface MwAction {
     /**
      * The local version number that the diff was made from.
      */
-    n: number | undefined;
+    n?: number;
 
     /**
      * string is for Raw, string[] is for Delta
      */
-    x: string | string[] | undefined;
+    x?: string | string[];
 }
 
 export default MwAction;

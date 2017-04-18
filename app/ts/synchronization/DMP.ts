@@ -32,11 +32,14 @@ import addTrailingPadding from './dmp/addTrailingPadding';
  * which means: delete 'Hello', add 'Goodbye' and keep ' world.'
  */
 import Diff from './Diff';
+import { DiffOperation } from './Diff';
 import LinesToCharsResult from './LinesToCharsResult';
 import Patch from './Patch';
 import DIFF_DELETE from './DIFF_DELETE';
-import DIFF_INSERT from './DIFF_INSERT';
+// import DIFF_INSERT from './DIFF_INSERT';
 import DIFF_EQUAL from './DIFF_EQUAL';
+
+const DIFF_INSERT = DiffOperation.DIFF_INSERT;
 
 // Define some regex patterns for matching boundaries.
 const nonAlphaNumericRegex_ = /[^a-zA-Z0-9]/;

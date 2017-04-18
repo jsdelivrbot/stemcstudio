@@ -76,6 +76,26 @@ function createRoomPathPropertyKey(roomId, path, name) {
 function createRemoteKey(roomId, path, nodeId) {
     return createRoomPathKey(roomId, path) + ", node:" + nodeId;
 }
+function existsKey(key) {
+    return new Promise(function (resolve, reject) {
+        client.exists(key, function (reason, value) {
+            if (!reason) {
+                if (value === 1) {
+                    resolve(true);
+                }
+                else if (value === 0) {
+                    resolve(false);
+                }
+                else {
+                    reject(new Error("Unexpected value " + value + " for exists."));
+                }
+            }
+            else {
+                reject(reason);
+            }
+        });
+    });
+}
 function createRoom(request, response) {
     var params = request.body;
     params.description = isString_1.default(params.description) ? params.description : "";
@@ -225,42 +245,41 @@ function setRemote(roomId, path, nodeId, remote, callback) {
         });
     });
 }
-function ensureRemoteForNodeForFileInRoom(nodeId, path, roomId) {
+function ensureRemote(nodeId, path, roomId) {
     return new Promise(function (resolve, reject) {
         var remoteKey = createRemoteKey(roomId, path, nodeId);
-        client.exists(remoteKey, function (err, exists) {
-            if (!err) {
-                asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
-                if (exists > 0) {
-                    getRemote(roomId, path, nodeId)
-                        .then(function (remote) {
-                        resolve(remote);
-                    })
-                        .catch(function (reason) {
-                        reject(reason);
-                    });
-                }
-                else {
-                    var remote = new MwRemote_1.default();
-                    setRemote(roomId, path, nodeId, remote, function (err) {
-                        if (!err) {
-                            getRemote(roomId, path, nodeId)
-                                .then(function (remote) {
-                                resolve(remote);
-                            })
-                                .catch(function (reason) {
-                                reject(reason);
-                            });
-                        }
-                        else {
-                            reject(err);
-                        }
-                    });
-                }
+        existsKey(remoteKey)
+            .then(function (exists) {
+            asserts_1.mustBeTruthy(isBoolean_1.default(exists), "exists must be a boolean");
+            if (exists) {
+                getRemote(roomId, path, nodeId)
+                    .then(function (remote) {
+                    resolve(remote);
+                })
+                    .catch(function (reason) {
+                    reject(reason);
+                });
             }
             else {
-                reject(err);
+                var remote = new MwRemote_1.default();
+                setRemote(roomId, path, nodeId, remote, function (err) {
+                    if (!err) {
+                        getRemote(roomId, path, nodeId)
+                            .then(function (remote) {
+                            resolve(remote);
+                        })
+                            .catch(function (reason) {
+                            reject(reason);
+                        });
+                    }
+                    else {
+                        reject(err);
+                    }
+                });
             }
+        })
+            .catch(function (reason) {
+            reject(reason);
         });
     });
 }
@@ -343,10 +362,17 @@ function getNodes(roomId) {
         });
     });
 }
-function getPaths(roomId, callback) {
-    var roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
-    client.smembers(roomPathsKey, function (err, paths) {
-        callback(err, paths);
+function getPaths(roomId) {
+    return new Promise(function (resolve, reject) {
+        var roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        client.smembers(roomPathsKey, function (err, paths) {
+            if (!err) {
+                resolve(paths);
+            }
+            else {
+                reject(err);
+            }
+        });
     });
 }
 function captureFile(roomId, path, nodeId, remote) {
@@ -387,7 +413,7 @@ function captureFile(roomId, path, nodeId, remote) {
 }
 function captureFileEditsForNode(nodeId, path, roomId) {
     return new Promise(function (resolve, reject) {
-        ensureRemoteForNodeForFileInRoom(nodeId, path, roomId)
+        ensureRemote(nodeId, path, roomId)
             .then(function (remote) {
             captureFile(roomId, path, nodeId, remote)
                 .then(function (change) {
@@ -534,7 +560,7 @@ function applyEditsFromNodeForFileToRoom(edits, fromId, path, remote, roomId) {
 function setEdits(fromId, roomId, fileId, edits, callback) {
     Promise.all([ensureNodeIdInRoom(fromId, roomId), ensureFileIdInRoom(fileId, roomId)])
         .then(function () {
-        ensureRemoteForNodeForFileInRoom(fromId, fileId, roomId)
+        ensureRemote(fromId, fileId, roomId)
             .then(function (remote) {
             applyEditsFromNodeForFileToRoom(edits, fromId, fileId, remote, roomId)
                 .then(function () {
@@ -570,12 +596,9 @@ exports.setEdits = setEdits;
 function getEdits(nodeId, roomId, callback) {
     ensureNodeIdInRoom(nodeId, roomId)
         .then(function () {
-        getPaths(roomId, function (err, paths) {
-            var outstanding = [];
-            for (var _i = 0, paths_1 = paths; _i < paths_1.length; _i++) {
-                var path = paths_1[_i];
-                outstanding.push(captureFileEditsForNode(nodeId, path, roomId));
-            }
+        getPaths(roomId)
+            .then(function (paths) {
+            var outstanding = paths.map(function (path) { return captureFileEditsForNode(nodeId, path, roomId); });
             Promise.all(outstanding)
                 .then(function (pathEdits) {
                 var files = {};
@@ -588,6 +611,9 @@ function getEdits(nodeId, roomId, callback) {
                 .catch(function (err) {
                 callback(err, void 0);
             });
+        })
+            .catch(function (reason) {
+            callback(reason);
         });
     })
         .catch(function (reason) {

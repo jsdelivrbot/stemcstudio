@@ -10,7 +10,7 @@ export default class Patch {
 
     /**
      * The first element of Diff is a number indicating DELETE, INSERT, EQUAL.
-     * The second element of Diff is a string, the test.
+     * The second element of Diff is a string, the text.
      */
     diffs: Diff[];
 

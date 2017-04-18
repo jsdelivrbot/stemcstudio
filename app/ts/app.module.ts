@@ -8,6 +8,7 @@ import { UpgradeModule } from '@angular/upgrade/static';
 import { Base64Service } from './services/base64/base64.service';
 import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
+import { DoodleManager } from './services/doodles/doodleManager.service';
 // import { GitHubService } from './services/github/github.service';
 import { GitHubUserService } from './services/github/github.user.service';
 import { OptionManager } from './services/options/optionManager.service';
@@ -35,6 +36,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         Base64Service,
         CookieService,
         CredentialsService,
+        DoodleManager,
         GitHubUserService,
         // GitHubService,
         OptionManager,

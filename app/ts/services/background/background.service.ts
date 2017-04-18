@@ -95,60 +95,62 @@ export class BackgroundService implements IBackgroundService {
                 });
             }
             else if (roomId) {
-                this.roomsService.getRoom(roomId).then((room: RoomAgent) => {
-                    room.download((err, edits: { [path: string]: MwEdits }) => {
-                        if (!err) {
-                            try {
-                                const paths = Object.keys(edits);
-                                // We'll first mirror the structure of the workspace in the room.
-                                // We are expecting Raw edits on every file so every edit is a create.
-                                for (const path of paths) {
-                                    if (!this.wsModel.existsFile(path)) {
-                                        const newFile = this.wsModel.newFile(path);
-                                        this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
-                                            if (!monitoringError) {
-                                                // Nothing to do.
-                                            }
-                                            else {
-                                                console.warn(`Unable to begin monitoring the file ${path} in the workspace`);
-                                            }
-                                        });
-                                        newFile.release();
+                this.roomsService.getRoom(roomId)
+                    .then((room: RoomAgent) => {
+                        room.download((err, edits: { [path: string]: MwEdits }) => {
+                            if (!err) {
+                                try {
+                                    const paths = Object.keys(edits);
+                                    // We'll first mirror the structure of the workspace in the room.
+                                    // We are expecting Raw edits on every file so every edit is a create.
+                                    for (const path of paths) {
+                                        if (!this.wsModel.existsFile(path)) {
+                                            const newFile = this.wsModel.newFile(path);
+                                            this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
+                                                if (!monitoringError) {
+                                                    // Nothing to do.
+                                                }
+                                                else {
+                                                    console.warn(`Unable to begin monitoring the file ${path} in the workspace`);
+                                                }
+                                            });
+                                            newFile.release();
+                                        }
+                                        else {
+                                            console.warn(`Unexpected file. ${path} is aleady in the workspace`);
+                                        }
                                     }
-                                    else {
-                                        console.warn(`Unexpected file. ${path} is aleady in the workspace`);
+                                    this.wsModel.connectToRoom(room, false);
+                                    // Take the edits that have been downloaded and set them onto the synchronization units.
+                                    for (const path of paths) {
+                                        const file = this.wsModel.findFileByPath(path);
+                                        if (file) {
+                                            file.unit.setEdits(roomId, path, edits[path]);
+                                        }
                                     }
+                                    // Because we are already connected, setting the edits should trigger the acknowledgement.
+                                    // this.wsModel.uploadToRoom(room);
+                                    const doodle = this.doodleManager.createDoodle();
+                                    // Tag the Doodle with the roomId so that we can serialize to it without making it the
+                                    // current doodle. Add it to the tail of the list and maybe remove it later?
+                                    doodle.roomId = roomId;
+                                    this.doodleManager.addTail(doodle);
+                                    this.wsModel.updateStorage();
+                                    callback(void 0);
                                 }
-                                this.wsModel.connectToRoom(room, false);
-                                // Take the edits that have been downloaded and set them onto the synchronization units.
-                                for (const path of paths) {
-                                    const file = this.wsModel.findFileByPath(path);
-                                    if (file) {
-                                        file.unit.setEdits(roomId, path, edits[path]);
-                                    }
+                                finally {
+                                    room.release();
                                 }
-                                // Because we are already connected, setting the edits should trigger the acknowledgement.
-                                // this.wsModel.uploadToRoom(room);
-                                const doodle = this.doodleManager.createDoodle();
-                                // Tag the Doodle with the roomId so that we can serialize to it without making it the
-                                // current doodle. Add it to the tail of the list and maybe remove it later?
-                                doodle.roomId = roomId;
-                                this.doodleManager.addTail(doodle);
-                                this.wsModel.updateStorage();
-                                callback(void 0);
                             }
-                            finally {
+                            else {
                                 room.release();
+                                callback(new Error(`Unable to download workspace from room: ${err}`));
                             }
-                        }
-                        else {
-                            room.release();
-                            callback(new Error(`Unable to download workspace from room: ${err}`));
-                        }
+                        });
+                    })
+                    .catch((reason: Error) => {
+                        callback(new Error(`Error attempting to connect to room '${roomId}':  ${reason.message}`));
                     });
-                }).catch((reason: Error) => {
-                    callback(new Error(`Error attempting to connect to room '${roomId}':  ${reason.message}`));
-                });
             }
             else {
                 if (this.doodleManager.length > 0) {

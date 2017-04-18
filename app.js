@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var cookieParser = require("cookie-parser");
 var express = require("express");
 var path = require("path");
-require('jade');
 var lactate = require('lactate');
 var logger = require("morgan");
 var methodOverride = require("method-override");
@@ -21,6 +20,7 @@ var npm = require('./package.json');
 require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 var clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
+var STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 var isProductionMode = function () {
     switch (process.env.NODE_ENV || 'development') {
         case 'development':
@@ -31,7 +31,7 @@ var isProductionMode = function () {
 };
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
@@ -88,7 +88,7 @@ app.get('/authenticate/:code', function (req, res) {
     });
 });
 app.get("/github_callback", function (req, res, next) {
-    res.cookie('stemcstudio-github-application-client-id', clientId);
+    res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("github_callback", {
         npm: npm
     });
@@ -100,7 +100,7 @@ app.post('/search', index_2.search);
 app.post('/submissions', index_2.submit);
 app.get('/translations/:input', index_3.getTranslation);
 app.get("/*", function (req, res, next) {
-    res.cookie('stemcstudio-github-application-client-id', clientId);
+    res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("index", {
         css: "/css/app.css?version=" + npm.version,
         js: "/js/app.js?version=" + npm.version,
@@ -109,7 +109,8 @@ app.get("/*", function (req, res, next) {
         jspmCoreJs: "jspm_packages/npm/core-js@2.4.1/client/shim.min.js",
         jspmZoneJs: "jspm_packages/npm/zone.js@0.8.5/dist/zone.js",
         jspmReflectJs: "jspm_packages/npm/reflect-metadata@0.1.10/Reflect.js",
-        npm: npm
+        npm: npm,
+        version: npm.version
     });
 });
 app.use(errorHandler());

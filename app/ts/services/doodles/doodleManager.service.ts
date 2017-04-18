@@ -1,4 +1,3 @@
-import { IWindowService } from 'angular';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
@@ -7,6 +6,11 @@ import IDoodleFile from './IDoodleFile';
 import modeFromName from '../../utils/modeFromName';
 import doodlesToString from './doodlesToString';
 import { Injectable } from '@angular/core';
+
+/**
+ * The key in local storage for doodles.
+ */
+const doodlesKey = 'com.stemcstudio.doodles';
 
 function deserializeDoodles(doodles: IDoodleDS[]): Doodle[] {
     // Version 1.x used a fixed set of four files with properties that were strings.
@@ -86,30 +90,31 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
 //
 @Injectable()
 export class DoodleManager implements IDoodleManager {
-    static $inject = ['$window', 'doodlesKey'];
-    // The doodles from local storage must be converted into classes in order to support the methods.
+    /**
+     * The doodles from local storage must be converted into classes in order to support the methods.
+     */
     private _doodles: Doodle[];
 
-    /**
-     * @param $window Provides access to local storage.
-     * @param optionManager Because the Doodle is too coupled.
-     * @param doodlesKey The key for storing doodles in local storage.
-     */
-    constructor(private $window: IWindowService, private doodlesKey: string) {
-        this._doodles = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : []);
+    constructor() {
+        this._doodles = deserializeDoodles(window.localStorage[doodlesKey] !== undefined ? JSON.parse(window.localStorage[doodlesKey]) : []);
     }
+
     addHead(doodle: Doodle): number {
         return this._doodles.unshift(doodle);
     }
+
     addTail(doodle: Doodle): number {
         return this._doodles.push(doodle);
     }
+
     get length(): number {
         return this._doodles.length;
     }
+
     filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
         return this._doodles.filter(callback);
     }
+
     current(): Doodle | undefined {
         if (this._doodles.length > 0) {
             return this._doodles[0];
@@ -118,6 +123,7 @@ export class DoodleManager implements IDoodleManager {
             return undefined;
         }
     }
+
     makeCurrent(dude: Doodle): void {
         const doodles: Doodle[] = [];
 
@@ -136,9 +142,11 @@ export class DoodleManager implements IDoodleManager {
         doodles.unshift(found);
         this._doodles = doodles;
     }
+
     createDoodle(): Doodle {
         return new Doodle();
     }
+
     deleteDoodle(dude: Doodle): void {
         const doodles: Doodle[] = [];
 
@@ -191,6 +199,6 @@ export class DoodleManager implements IDoodleManager {
         return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
     }
     updateStorage(): void {
-        this.$window.localStorage[this.doodlesKey] = doodlesToString(this._doodles);
+        window.localStorage[doodlesKey] = doodlesToString(this._doodles);
     }
 }

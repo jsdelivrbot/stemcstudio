@@ -108,6 +108,30 @@ function createRemoteKey(roomId: string, path: string, nodeId: string): string {
 }
 
 /**
+ * Wrapper function around RedisClient exists method returning a Promise.
+ */
+function existsKey(key: string): Promise<boolean> {
+    return new Promise<boolean>(function (resolve, reject) {
+        client.exists(key, function (reason: Error, value: number) {
+            if (!reason) {
+                if (value === 1) {
+                    resolve(true);
+                }
+                else if (value === 0) {
+                    resolve(false);
+                }
+                else {
+                    reject(new Error(`Unexpected value ${value} for exists.`));
+                }
+            }
+            else {
+                reject(reason);
+            }
+        });
+    });
+}
+
+/**
  * Creates a room for collaborating.
  * TODO: Refactor to split redis from Express.
  */
@@ -270,6 +294,62 @@ function ensureFileIdInRoom(fileId: string, roomId: string): Promise<void> {
         });
     });
 }
+/*
+function existsFileIdInRoom(fileId: string, roomId: string): Promise<boolean> {
+    return new Promise<boolean>(function (resolve, reject) {
+        const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        client.sismember([roomPathsKey, fileId], function (reason: Error, exists: number) {
+            if (!reason) {
+                mustBeTruthy(isNumber(exists), `exists must be a number`);
+                if (exists > 0) {
+                    resolve(true);
+                }
+                else {
+                    resolve(false);
+                }
+            }
+            else {
+                reject(new Error(`Unable to determine whether file ${fileId} exists. Cause: ${reason}`));
+            }
+        });
+    });
+}
+*/
+/*
+function removeFileIdFromRoom(fileId: string, roomId: string): Promise<void> {
+    return new Promise<void>(function (resolve, reject) {
+        const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        client.sismember([roomPathsKey, fileId], function (reason: Error, exists: number) {
+            if (!reason) {
+                mustBeTruthy(isNumber(exists), `exists must be a number`);
+                if (exists > 0) {
+                    resolve();
+                }
+                else {
+                    client.srem([roomPathsKey, fileId], function (reason: Error, reply: any) {
+                        if (!reason) {
+                            client.expire(roomPathsKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
+                                if (!err) {
+                                    resolve();
+                                }
+                                else {
+                                    reject(new Error(`Unable to set expiration of file ${fileId} with room ${roomId}. Cause: ${reason}`));
+                                }
+                            });
+                        }
+                        else {
+                            reject(new Error(`Unable to add file ${fileId} to room ${roomId}. Cause: ${reason}`));
+                        }
+                    });
+                }
+            }
+            else {
+                reject(new Error(`Unable to determine whether file ${fileId} exists. Cause: ${reason}`));
+            }
+        });
+    });
+}
+*/
 
 /**
  * Ensures that the remote is being tracked at the unit level.
@@ -346,13 +426,13 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
 /**
  * Ensures that we have an object representing the remote.
  */
-function ensureRemoteForNodeForFileInRoom(nodeId: string, path: string, roomId: string): Promise<MwRemote> {
+function ensureRemote(nodeId: string, path: string, roomId: string): Promise<MwRemote> {
     return new Promise<MwRemote>(function (resolve, reject) {
         const remoteKey = createRemoteKey(roomId, path, nodeId);
-        client.exists(remoteKey, function (err: Error, exists: number) {
-            if (!err) {
-                mustBeTruthy(isNumber(exists), `exists must be a number`);
-                if (exists > 0) {
+        existsKey(remoteKey)
+            .then(function (exists) {
+                mustBeTruthy(isBoolean(exists), `exists must be a boolean`);
+                if (exists) {
                     getRemote(roomId, path, nodeId)
                         .then(function (remote) {
                             resolve(remote);
@@ -378,12 +458,10 @@ function ensureRemoteForNodeForFileInRoom(nodeId: string, path: string, roomId: 
                         }
                     });
                 }
-            }
-            else {
-                reject(err);
-            }
-        });
-
+            })
+            .catch(function (reason) {
+                reject(reason);
+            });
     });
 }
 
@@ -477,10 +555,17 @@ function getNodes(roomId: string): Promise<string[]> {
 /**
  * Returns the file paths for this room (the files that are in the workspace).
  */
-function getPaths(roomId: string, callback: (err: Error, paths: string[]) => void): void {
-    const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
-    client.smembers(roomPathsKey, function (err: Error, paths: string[]) {
-        callback(err, paths);
+function getPaths(roomId: string): Promise<string[]> {
+    return new Promise<string[]>(function (resolve, reject) {
+        const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        client.smembers(roomPathsKey, function (err: Error, paths: string[]) {
+            if (!err) {
+                resolve(paths);
+            }
+            else {
+                reject(err);
+            }
+        });
     });
 }
 
@@ -540,7 +625,7 @@ function captureFile(roomId: string, path: string, nodeId: string, remote: MwRem
 
 function captureFileEditsForNode(nodeId: string, path: string, roomId: string): Promise<{ nodeId: string; path: string; edits: MwEdits }> {
     return new Promise<{ nodeId: string; path: string; edits: MwEdits }>(function (resolve, reject) {
-        ensureRemoteForNodeForFileInRoom(nodeId, path, roomId)
+        ensureRemote(nodeId, path, roomId)
             .then(function (remote) {
                 captureFile(roomId, path, nodeId, remote)
                     .then(function (change) {
@@ -707,7 +792,7 @@ export function setEdits(fromId: string, roomId: string, fileId: string, edits: 
 
     Promise.all([ensureNodeIdInRoom(fromId, roomId), ensureFileIdInRoom(fileId, roomId)])
         .then(function () {
-            ensureRemoteForNodeForFileInRoom(fromId, fileId, roomId)
+            ensureRemote(fromId, fileId, roomId)
                 .then(function (remote) {
                     applyEditsFromNodeForFileToRoom(edits, fromId, fileId, remote, roomId)
                         .then(function () {
@@ -748,24 +833,25 @@ export function getEdits(nodeId: string, roomId: string, callback: (err: any, da
     // The node has asked for edits from this room.
     ensureNodeIdInRoom(nodeId, roomId)
         .then(function () {
-            getPaths(roomId, function (err: Error, paths: string[]) {
-                const outstanding: Promise<{ path: string, edits: MwEdits }>[] = [];
-                for (const path of paths) {
-                    outstanding.push(captureFileEditsForNode(nodeId, path, roomId));
-                }
-                Promise.all(outstanding)
-                    .then(function (pathEdits: { path: string; edits: MwEdits }[]) {
-                        const files: { [path: string]: MwEdits } = {};
-                        for (const pathEdit of pathEdits) {
-                            files[pathEdit.path] = pathEdit.edits;
-                        }
-                        // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
-                        callback(void 0, { fromId: roomId, roomId: nodeId, files });
-                    })
-                    .catch(function (err) {
-                        callback(err, void 0);
-                    });
-            });
+            getPaths(roomId)
+                .then(function (paths) {
+                    const outstanding = paths.map(function (path) { return captureFileEditsForNode(nodeId, path, roomId); });
+                    Promise.all(outstanding)
+                        .then(function (pathEdits: { path: string; edits: MwEdits }[]) {
+                            const files: { [path: string]: MwEdits } = {};
+                            for (const pathEdit of pathEdits) {
+                                files[pathEdit.path] = pathEdit.edits;
+                            }
+                            // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
+                            callback(void 0, { fromId: roomId, roomId: nodeId, files });
+                        })
+                        .catch(function (err) {
+                            callback(err, void 0);
+                        });
+                })
+                .catch(function (reason) {
+                    callback(reason);
+                });
         })
         .catch(function (reason) {
             callback(reason);

@@ -33,6 +33,10 @@ import { CLOUD_SERVICE_UUID } from './services/cloud/ICloudService';
 import { CloudService } from './services/cloud/cloud.service';
 import { COOKIE_SERVICE_UUID } from './services/cookie/ICookieService';
 import { CookieService } from './services/cookie/cookie.service';
+
+import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
+import { DoodleManager } from './services/doodles/doodleManager.service';
+
 import { GITHUB_SERVICE_UUID } from './services/github/IGitHubService';
 import { GitHubService } from './services/github/github.service';
 import { GITHUB_USER_SERVICE_UUID } from './services/github/IGitHubUserService';
@@ -121,12 +125,12 @@ app.filter('contiguous', contiguous);
 import './fugly/ga/ga';
 
 // FIXME: Don't like this style of import.
-import './services/doodles/doodleManager.service';
 import './services/templates/templates';
 
 app.factory(BASE64_SERVICE_UUID, downgradeInjectable(Base64Service));
 app.factory(COOKIE_SERVICE_UUID, downgradeInjectable(CookieService));
 app.service(CLOUD_SERVICE_UUID, CloudService);
+app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_SERVICE_UUID, GitHubService);
 app.factory(GITHUB_USER_SERVICE_UUID, downgradeInjectable(GitHubUserService));
 app.service('modalDialog', ModalDialogService);

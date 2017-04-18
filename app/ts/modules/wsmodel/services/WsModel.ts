@@ -448,6 +448,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private traceLifecycle = false;
 
     /**
+     * Used to control logging of file operations.
+     */
+    private traceFileOperations = false;
+
+    /**
      * The dependencies that must be injected into this service.
      * NOTE: We cannot migrate this service to Angular until the doodle manger has been migrated.
      * (Or at least that avoids more complex issues)
@@ -1692,7 +1697,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             file.unit.setEditor(file);
             const edits = file.unit.getEdits(this.room.id);
             this.room.setEdits(path, edits);
-            this.hookUpDocumentChangesToRoom(path);
+            this.subscribeRoomToDocumentChanges(path);
         }
         return file;
     }
@@ -1706,7 +1711,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         file.unit = new MwUnit(this, this.mwOptions);
         file.unit.setEditor(file);
         file.unit.setChange(roomId, path, change);
-        this.hookUpDocumentChangesToRoom(path);
+        this.subscribeRoomToDocumentChanges(path);
         // Send the delta edits so that the server has our local version.
         if (this.room) {
             const edits = file.unit.getEdits(this.room.id);
@@ -1759,6 +1764,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The master flag determines whether nullify edits will be sent to any remotely connected room.
      */
     deleteFile(path: string, master: boolean): Promise<void> {
+        if (this.traceFileOperations) {
+            console.log(`WsModel.deleteFile(path = ${path}, master = ${master})`);
+        }
         return new Promise<void>((resolve, reject) => {
             const file = this.files ? this.files.getWeakRef(path) : void 0;
             if (file) {
@@ -1782,7 +1790,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 });
                 // Send a message that the file has been deleted.
                 if (this.room && master) {
-                    // Create events
+                    this.unsubscribeRoomFromDocumentChanges(path);
+                    this.room.deleteFile(path);
                 }
             }
             else {
@@ -2492,7 +2501,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 // Add listeners for document changes. These will begin the flow of diffs to the server.
                 // We debounce the change events so that the diff is trggered when things go quiet for a second.
                 for (const path of paths) {
-                    this.hookUpDocumentChangesToRoom(path);
+                    this.subscribeRoomToDocumentChanges(path);
                 }
             }
         }
@@ -2506,7 +2515,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The removal function for the listener is cached to allow for later cleanup.
      * @param path The path of the file document.
      */
-    public hookUpDocumentChangesToRoom(path: string): void {
+    public subscribeRoomToDocumentChanges(path: string): void {
+        // We need the document in order to add the change listener.
         const doc = this.getFileDocument(path);
         if (doc) {
             try {
@@ -2529,6 +2539,18 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
+     * Stop listening to document changes that gives rise to delta edits for the room.
+     */
+    unsubscribeRoomFromDocumentChanges(path: string): void {
+        // We don't need the document because the remover performs the removal.
+        if (this.roomDocumentChangeListenerRemovers[path]) {
+            // Calling the remover function removes the change listener from the document.
+            this.roomDocumentChangeListenerRemovers[path]();
+            delete this.roomDocumentChangeListenerRemovers[path];
+        }
+    }
+
+    /**
      * Performs the contra-operations to the connectToRoom method.
      */
     disconnectFromRoom(): RoomAgent | undefined {
@@ -2537,20 +2559,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             const files = this.files;
             if (files) {
                 const paths = files.keys;
-                for (let i = 0; i < paths.length; i++) {
-                    const path = paths[i];
-                    const doc = this.getFileDocument(path);
-                    if (doc) {
-                        try {
-                            if (this.roomDocumentChangeListenerRemovers[path]) {
-                                this.roomDocumentChangeListenerRemovers[path]();
-                                delete this.roomDocumentChangeListenerRemovers[path];
-                            }
-                        }
-                        finally {
-                            doc.release();
-                        }
-                    }
+                for (const path of paths) {
+                    this.unsubscribeRoomFromDocumentChanges(path);
                 }
             }
             // Remove the listener on the room agent.
