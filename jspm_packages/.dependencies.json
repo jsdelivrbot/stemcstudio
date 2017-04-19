@@ -506,7 +506,6 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:tiny-emitter@1.1.0": {},
   "npm:angular-material-icons@0.7.1": {
     "angular": "npm:angular"
   },
@@ -849,7 +848,6 @@
     "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@^1.0.1",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.6": {},
   "github:jspm/nodelibs-buffer@0.1.1": {
     "buffer": "npm:buffer@^5.0.6"
   },
@@ -909,5 +907,7 @@
   "npm:hosted-git-info@2.4.2": {
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "url": "github:jspm/nodelibs-url@^0.1.0"
-  }
+  },
+  "npm:tiny-emitter@1.2.0": {},
+  "github:geometryzen/ace-workers@2.9.7": {}
 }

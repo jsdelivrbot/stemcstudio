@@ -15,6 +15,10 @@ interface PropertiesModalScope {
          */
         v: string;
         /**
+         * enable linting.
+         */
+        linting: boolean;
+        /**
          * disable infinite loop detection.
          */
         loopCheck: boolean;

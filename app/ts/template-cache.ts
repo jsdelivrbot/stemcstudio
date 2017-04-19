@@ -1141,6 +1141,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <label class='checkbox-inline'>\n" +
     "                <input type='checkbox' ng-model='f.o'>Operator Overloading</input>\n" +
     "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline'>\n" +
+    "                <input type='checkbox' ng-model='f.linting'>Linting</input>\n" +
+    "            </label>\n" +
     "            <h4>Dependencies</h4>\n" +
     "            <table>\n" +
     "                <thead>\n" +

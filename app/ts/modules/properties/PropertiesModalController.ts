@@ -24,6 +24,7 @@ export default class PropertiesModalController {
         $scope.f = {
             n: isString(pkgInfo.name) ? pkgInfo.name : "",
             v: isString(pkgInfo.version) ? pkgInfo.version : "",
+            linting: isBoolean(pkgInfo.linting) ? pkgInfo.linting : false,
             loopCheck: isBoolean(pkgInfo.noLoopCheck) ? !pkgInfo.noLoopCheck : true,
             o: isBoolean(pkgInfo.operatorOverloading) ? pkgInfo.operatorOverloading : false,
             dependencies: pkgInfo.dependencies
@@ -49,6 +50,7 @@ export default class PropertiesModalController {
         $scope.ok = function () {
             pkgInfo.name = $scope.f.n;
             pkgInfo.version = $scope.f.v;
+            pkgInfo.linting = $scope.f.linting;
             pkgInfo.noLoopCheck = !$scope.f.loopCheck;
             pkgInfo.operatorOverloading = $scope.f.o;
             pkgInfo.dependencies = $scope.f.dependencies.filter(function (packageName) { return options.filter(function (option) { return option.visible && option.packageName === packageName; }).length > 0; });

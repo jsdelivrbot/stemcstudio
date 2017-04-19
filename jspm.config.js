@@ -31,7 +31,7 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.6",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.7",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -290,7 +290,7 @@ System.config({
     "npm:clipboard@1.6.1": {
       "good-listener": "npm:good-listener@1.2.2",
       "select": "npm:select@1.1.2",
-      "tiny-emitter": "npm:tiny-emitter@1.1.0"
+      "tiny-emitter": "npm:tiny-emitter@1.2.0"
     },
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.2",

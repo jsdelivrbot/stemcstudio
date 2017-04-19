@@ -9,9 +9,25 @@ export const WORKSPACE_MODEL_UUID = 'workspaceModel';
 
 export default IWorkspaceModel;
 
-export const changedOperatorOverloadingTopic = 'changedOperatorOverloading';
+export const changedLinting = 'changedLinting';
+export const changedOperatorOverloading = 'changedOperatorOverloading';
 export const outputFilesTopic = 'outputFiles';
 export const renamedFileTopic = 'renamedFile';
+
+/**
+ * 
+ */
+export class ChangedLintingMessage {
+    constructor(public oldValue: boolean, public newValue: boolean) {
+    }
+}
+
+/**
+ *
+ */
+export interface ChangedLintingHandler<T> {
+    (message: ChangedLintingMessage, source: T): any;
+}
 
 /**
  * 

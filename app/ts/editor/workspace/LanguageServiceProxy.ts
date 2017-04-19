@@ -9,7 +9,7 @@ import RuleFailure from './RuleFailure';
 import QuickInfo from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
 import setModuleKindCallback from './SetModuleKindCallback';
-import setOperatorOverloadingCallback from './SetOperatorOverloadingCallback';
+import StandardErrorCallback from './StandardErrorCallback';
 import setScriptTargetCallback from './SetScriptTargetCallback';
 import TsLintSettings from '../../modules/tslint/TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
@@ -25,6 +25,7 @@ import { EVENT_GET_QUICK_INFO_AT_POSITION } from './LanguageServiceEvents';
 import { EVENT_GET_OUTPUT_FILES } from './LanguageServiceEvents';
 import { EVENT_REMOVE_MODULE_MAPPING } from './LanguageServiceEvents';
 import { EVENT_REMOVE_SCRIPT } from './LanguageServiceEvents';
+// import { EVENT_SET_LINTING } from './LanguageServiceEvents';
 import { EVENT_SET_MODULE_KIND } from './LanguageServiceEvents';
 import { EVENT_SET_OPERATOR_OVERLOADING } from './LanguageServiceEvents';
 import { EVENT_SET_SCRIPT_TARGET } from './LanguageServiceEvents';
@@ -32,6 +33,7 @@ import { EVENT_SET_TRACE } from './LanguageServiceEvents';
 import { EnsureModuleMappingRequest, RemoveModuleMappingRequest } from './LanguageServiceEvents';
 import { EnsureScriptRequest, RemoveScriptRequest } from './LanguageServiceEvents';
 import { GetOutputFilesRequest } from './LanguageServiceEvents';
+// import { SetLintingRequest } from './LanguageServiceEvents';
 import { SetModuleKindRequest } from './LanguageServiceEvents';
 import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
 import { SetTraceRequest } from './LanguageServiceEvents';
@@ -44,9 +46,14 @@ interface WorkerClientData<T> {
 }
 
 /**
+ * Lowercase string constants corresponding to the Language Service ScriptTarget enumeration.
+ */
+export type ScriptTarget = 'es2015' | 'es2016' | 'es2017' | 'es3' | 'es5' | 'esnext' | 'latest';
+
+/**
  * This class is consumed by the WsModel.
  */
-export default class LanguageServiceProxy {
+export class LanguageServiceProxy {
 
     /**
      *
@@ -290,20 +297,26 @@ export default class LanguageServiceProxy {
         const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
         this.worker.emit(EVENT_REMOVE_SCRIPT, message);
     }
-
+    /*
+    public setLinting(linting: boolean, callback: StandardErrorCallback): void {
+        const callbackId = this.captureCallback(callback);
+        const message: { data: SetLintingRequest } = { data: { linting, callbackId } };
+        this.worker.emit(EVENT_SET_LINTING, message);
+    }
+    */
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {
         const callbackId = this.captureCallback(callback);
         const message: { data: SetModuleKindRequest } = { data: { moduleKind, callbackId } };
         this.worker.emit(EVENT_SET_MODULE_KIND, message);
     }
 
-    public setOperatorOverloading(operatorOverloading: boolean, callback: setOperatorOverloadingCallback): void {
+    public setOperatorOverloading(operatorOverloading: boolean, callback: StandardErrorCallback): void {
         const callbackId = this.captureCallback(callback);
         const message: { data: SetOperatorOverloadingRequest } = { data: { operatorOverloading, callbackId } };
         this.worker.emit(EVENT_SET_OPERATOR_OVERLOADING, message);
     }
 
-    public setScriptTarget(scriptTarget: string, callback: setScriptTargetCallback): void {
+    public setScriptTarget(scriptTarget: ScriptTarget, callback: setScriptTargetCallback): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { scriptTarget, callbackId } };
         this.worker.emit(EVENT_SET_SCRIPT_TARGET, message);

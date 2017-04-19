@@ -10,6 +10,7 @@ interface IDoodleConfig {
     dependencies: { [key: string]: string };
     noLoopCheck: boolean;
     operatorOverloading: boolean;
+    linting: boolean;
     keywords: string[];
 }
 

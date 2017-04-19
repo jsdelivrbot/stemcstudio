@@ -20,6 +20,10 @@ interface PropertiesSettings {
      */
     operatorOverloading: boolean;
     /**
+     * linting enabled.
+     */
+    linting: boolean;
+    /**
      * packageName(s) only, no semantic version.
      */
     dependencies: string[];

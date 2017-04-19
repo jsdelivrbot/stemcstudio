@@ -20,6 +20,7 @@ export default function copyTemplateToDoodle(template: ITemplate, doodle: Doodle
 
     doodle.description = template.description;
     doodle.dependencies = template.dependencies;
+    doodle.linting = template.linting;
     doodle.noLoopCheck = template.noLoopCheck;
     doodle.operatorOverloading = template.operatorOverloading;
 }

@@ -14,7 +14,8 @@ import EventBus from './EventBus';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
-import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
+import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
+import { ScriptTarget } from '../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 // import { DOODLE_MANAGER_SERVICE_UUID } from '../../services/doodles/IDoodleManager';
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
@@ -38,7 +39,8 @@ import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
 import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
-import { ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from './IWorkspaceModel';
+import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
+import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
 import SnippetCompleter from '../../editor/SnippetCompleter';
@@ -796,7 +798,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    synchScriptTarget(scriptTarget: string): Promise<string> {
+    synchScriptTarget(scriptTarget: ScriptTarget): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.setScriptTarget(scriptTarget, function (reason) {
                 if (!reason) {
@@ -809,7 +811,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         });
     }
 
-    private setScriptTarget(scriptTarget: string, callback: (err: any) => any): void {
+    private setScriptTarget(scriptTarget: ScriptTarget, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
@@ -1339,22 +1341,30 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                 else {
                                     this.updateSession(path, semanticErrors, session, 'semantic');
                                     if (semanticErrors.length === 0) {
-                                        if (this.languageServiceProxy) {
-                                            const configuration = this.tslintConfiguration;
-                                            if (configuration) {
-                                                this.inFlight++;
-                                                this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
-                                                    this.inFlight--;
-                                                    if (err) {
-                                                        console.warn(`getLintErrors(${path}) => ${err}`);
-                                                        callback(err);
-                                                    }
-                                                    else {
-                                                        this.updateSession(path, lintErrors, session, 'lint');
-                                                        callback(void 0);
-                                                    }
-                                                });
+                                        if (this.linting) {
+                                            if (this.languageServiceProxy) {
+                                                const configuration = this.tslintConfiguration;
+                                                if (configuration) {
+                                                    this.inFlight++;
+                                                    this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
+                                                        this.inFlight--;
+                                                        if (err) {
+                                                            console.warn(`getLintErrors(${path}) => ${err}`);
+                                                            callback(err);
+                                                        }
+                                                        else {
+                                                            this.updateSession(path, lintErrors, session, 'lint');
+                                                            callback(void 0);
+                                                        }
+                                                    });
+                                                }
                                             }
+                                            else {
+                                                callback(void 0);
+                                            }
+                                        }
+                                        else {
+                                            callback(void 0);
                                         }
                                     }
                                     else {
@@ -1642,13 +1652,49 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                             console.warn(`Unable to set operator overloading on language service. Cause: ${reason}`);
                         }
                         else {
-                            this.eventBus.emit(changedOperatorOverloadingTopic, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
+                            this.eventBus.emit(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
                         }
                     });
                 }
             }
             catch (e) {
                 console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'. Cause: ${e}`);
+            }
+            finally {
+                file.release();
+            }
+        }
+    }
+
+    get linting(): boolean {
+        if (this.existsPackageJson()) {
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.linting ? true : false;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    set linting(linting: boolean) {
+        const oldValue = this.linting;
+        if (linting !== oldValue) {
+            const file = this.ensurePackageJson();
+            try {
+                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+                setOptionalBooleanProperty('linting', linting, metaInfo);
+                file.setText(stringifyFileContent(metaInfo));
+                window.setTimeout(() => {
+                    this.eventBus.emit(changedLinting, new ChangedLintingMessage(oldValue, linting));
+                }, 0);
+            }
+            catch (e) {
+                console.warn(`Unable to set linting property in file '${FILENAME_META}'. Cause: ${e}`);
             }
             finally {
                 file.release();

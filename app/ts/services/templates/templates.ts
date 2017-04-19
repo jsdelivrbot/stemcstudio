@@ -72,6 +72,7 @@ app.factory('templates', [
             description: "Minimal Program",
             files: {},
             dependencies: dependenciesMap(['DomReady']),
+            linting: true,
             noLoopCheck: false,
             operatorOverloading: true
         };
@@ -85,6 +86,7 @@ app.factory('templates', [
             description: "EIGHT WebGL 3D Graphics",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
+            linting: true,
             noLoopCheck: false,
             operatorOverloading: true
         };
@@ -101,6 +103,7 @@ app.factory('templates', [
             description: "Jasmine Testing Framework",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine']),
+            linting: true,
             noLoopCheck: false,
             operatorOverloading: true
         };

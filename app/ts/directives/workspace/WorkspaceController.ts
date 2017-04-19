@@ -9,7 +9,8 @@ import EditSession from '../../editor/EditSession';
 import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
-import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloadingTopic } from '../../modules/wsmodel/IWorkspaceModel';
+import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
+import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
@@ -87,6 +88,8 @@ const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
 const MODULE_KIND_NONE = 'none';
 const MODULE_KIND_SYSTEM = 'system';
 const SCRIPT_TARGET_ES5 = 'es5';
+// Upgrading to later versions of ECMAScript requires upgrading davinci-mathscript.
+// const SCRIPT_TARGET_LATEST = 'latest';
 const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
 function endsWith(str: string, suffix: string): boolean {
@@ -110,6 +113,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
+    private changedLintingRemover: (() => void) | undefined;
     private changedOperatorOverloadingRemover: (() => void) | undefined;
     private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
@@ -336,7 +340,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
                 if (wsModel.isZombie()) {
-                    githubService.getGistComments(wsModel.gistId).then((httpResponse) => {
+                    githubService.getGistComments(wsModel.gistId as string).then((httpResponse) => {
                         const comments = httpResponse.data;
                         if (Array.isArray(comments)) {
                             $scope.comments = comments.map(function (comment) {
@@ -482,7 +486,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                 this.outputFilesWatchRemover = this.wsModel.watch(outputFilesTopic, this.createOutputFilesEventHandler());
                 this.renamedFileWatchRemover = this.wsModel.watch(renamedFileTopic, this.createRenamedFileEventHandler());
-                this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloadingTopic, this.createChangedOperatorOverloadingEventHandler());
+                this.changedLintingRemover = this.wsModel.watch(changedLinting, this.createChangedLintingEventHandler());
+                this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloading, this.createChangedOperatorOverloadingEventHandler());
 
             })
             .catch((err) => {
@@ -625,7 +630,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                         this.$scope.workspaceLoaded = true;
                         // The following line may be redundant because we handle the files elsewhare.
                         this.$scope.updatePreview(WAIT_NO_MORE);
-                    }).catch((reason) => {
+                    })
+                    .catch((reason) => {
+                        console.warn(`setOperatorOverloading(${this.wsModel.operatorOverloading}) failed ${reason}`);
                         console.warn(`setModuleKind(${moduleKind}) failed ${reason}`);
                         console.warn(`setScriptTarget(${scriptTarget}) failed ${reason}`);
                     });
@@ -753,6 +760,20 @@ export default class WorkspaceController implements WorkspaceMixin {
                     console.warn(`Unexpected outputFile => ${outputFile.name}`);
                 }
             });
+        };
+        return handler;
+    }
+
+    private createChangedLintingEventHandler(): ChangedLintingHandler<WsModel> {
+        const handler = (message: ChangedLintingMessage, unused: WsModel) => {
+            const { oldValue, newValue } = message;
+            if (oldValue !== newValue) {
+                this.compile();
+            }
+            else {
+                // Not expecting to get an event when there is no difference.
+                console.warn(`linting ${oldValue} => ${newValue}`);
+            }
         };
         return handler;
     }

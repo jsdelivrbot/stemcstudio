@@ -34,6 +34,7 @@ export default class PropertiesFlow {
                 const defaults: PropertiesSettings = {
                     name: this.wsModel.name as string,
                     version: this.wsModel.version as string,
+                    linting: this.wsModel.linting,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.operatorOverloading,
                     dependencies: dependencyNames(this.wsModel.dependencies)
@@ -59,6 +60,7 @@ export default class PropertiesFlow {
                 if (value) {
                     this.wsModel.name = value.name;
                     this.wsModel.version = value.version;
+                    this.wsModel.linting = value.linting;
                     this.wsModel.noLoopCheck = value.noLoopCheck;
                     this.wsModel.operatorOverloading = value.operatorOverloading;
                     this.wsModel.dependencies = dependenciesMap(value.dependencies, this.optionManager);
@@ -75,8 +77,8 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
-                        // TODO: 
-                        this.wsModel.synchOperatorOverloading()
+                        const promise1 = this.wsModel.synchOperatorOverloading();
+                        Promise.all([promise1])
                             .then(() => {
                                 this.wsModel.refreshDiagnostics(function (err) {
                                     callback(err);

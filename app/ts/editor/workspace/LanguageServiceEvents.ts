@@ -14,6 +14,7 @@ export const EVENT_GET_LINT_ERRORS = 'getLintErrors';
 export const EVENT_GET_QUICK_INFO_AT_POSITION = 'getQuickInfoAtPosition';
 export const EVENT_REMOVE_MODULE_MAPPING = 'removeModuleMapping';
 export const EVENT_REMOVE_SCRIPT = 'removeScript';
+export const EVENT_SET_LINTING = 'setLinting';
 export const EVENT_SET_MODULE_KIND = 'setModuleKind';
 export const EVENT_SET_OPERATOR_OVERLOADING = 'setOperatorOverloading';
 export const EVENT_SET_SCRIPT_TARGET = 'setScriptTarget';
@@ -43,6 +44,11 @@ export interface RemoveModuleMappingRequest {
 
 export interface GetOutputFilesRequest {
     fileName: string;
+    callbackId: number;
+}
+
+export interface SetLintingRequest {
+    linting: boolean;
     callbackId: number;
 }
 
