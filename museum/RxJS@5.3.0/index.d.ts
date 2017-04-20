@@ -62,11 +62,40 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
  * Represents a push-style collection.
  */
 export interface IObservable<T> { }
+export interface NextObserver<T> {
+    closed?: boolean;
+    next: (value: T) => void;
+    error?: (err: any) => void;
+    complete?: () => void;
+}
 
+export interface ErrorObserver<T> {
+    closed?: boolean;
+    next?: (value: T) => void;
+    error: (err: any) => void;
+    complete?: () => void;
+}
+
+export interface CompletionObserver<T> {
+    closed?: boolean;
+    next?: (value: T) => void;
+    error?: (err: any) => void;
+    complete: () => void;
+}
+
+export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
+
+export interface Subscribable<T> {
+    subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+        error?: (error: any) => void,
+        complete?: () => void): AnonymousSubscription;
+}
 /**
  * Type alias for observables and promises
  */
 export type ObservableOrPromise<T> = IObservable<T> | Observable<T> | Promise<T>;
+export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
 /**
  * 
@@ -99,9 +128,9 @@ export interface IScheduler {
     scheduleFuture<S>(state: S, dueTime: number | Date, action: (scheduler: IScheduler, state: S) => IDisposable): IDisposable;
 }
 
-export type _Selector<T, RESULT> = (value: T, index: number, observable: Observable<T>) => RESULT;
-export type _Predicate<T> = _Selector<T, boolean>;
-export type _Accumulator<T, TAcc> = (acc: TAcc, value: T) => TAcc;
+// export type _Selector<T, R> = (value: T, index: number, observable: Observable<T>) => R;
+// export type _Predicate<T> = _Selector<T, boolean>;
+// export type _Accumulator<T, A> = (acc: A, value: T) => A;
 
 /**
  * A representation of any set of values over any amount of time.
@@ -123,26 +152,39 @@ export class Observable<T> {
     */
     catch(handler: (exception: any) => ObservableOrPromise<T>): Observable<T>;
 
+    combineLatest<RHS, RESULT>(rhs: ObservableOrPromise<RHS>, resultSelector: (v1: T, v2: RHS) => RESULT): Observable<RESULT>;
+
     /**
      * Concatenates all the observable sequences.  This takes in either an array or variable arguments to concatenate.
      */
     concat(...sources: ObservableOrPromise<T>[]): Observable<T>;
 
     /**
+     *
+     */
+    distinctUntilChanged<KEY>(keySelector?: (value: T) => KEY, comparer?: (value1: KEY, value2: KEY) => boolean): Observable<T>;
+
+    /**
      * Filters the elements of an observable sequence based on a predicate by incorporating the element's index.
      */
-    filter(predicate: _Predicate<T>, thisArg?: any): Observable<T>;
+    filter(predicate: (value: T, index: number) => boolean): Observable<T>;
 
     /**
      * Projects each element of an observable sequence into a new form by incorporating the element's index.
      */
-    map<RESULT>(selector: _Selector<T, RESULT>, thisArg?: any): Observable<RESULT>;
+    map<R>(selector: (value: T, index: number) => R): Observable<R>;
 
+    // mergeMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable
     /**
      *  Applies an accumulator function over an observable sequence and returns each intermediate result. The optional seed value is used as the initial accumulator value.
      *  For aggregation behavior with no intermediate results, see Observable.aggregate.
      */
-    scan<TAcc>(accumulator: _Accumulator<T, TAcc>, seed?: TAcc): Observable<TAcc>;
+    scan<A>(accumulator: (acc: A, value: T) => A, seed?: A): Observable<A>;
+
+    /**
+     *
+     */
+    subscribe(observer: Observer<T>): Subscription;
 
     /**
      * Registers handlers for handling emitted values, error and completions from the observable, and
@@ -161,9 +203,19 @@ export class Observable<T> {
     switchLatest(): T;
 
     /**
+     *
+     */
+    switchMap<I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<I | R>;
+
+    /**
      * Returns a specified number of contiguous elements from the start of an observable sequence, using the specified scheduler for the edge case of take(0).
      */
     take(count: number, scheduler?: IScheduler): Observable<T>;
+
+    /**
+    * Returns the values from the source observable sequence until the other observable sequence produces a value.
+    */
+    takeUntil(notifier: Observable<any>): Observable<T>;
 
     /**
      * Creates a new Observable sequence from an array-like or iterable object.
