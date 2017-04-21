@@ -1,9 +1,9 @@
 import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import { arrayToMap } from "../lib/lang";
-import Annotation from "../Annotation";
 import Completion from "../Completion";
 import Position from "../Position";
 import TextMode from "./TextMode";
+import { hookAnnotations, hookTerminate } from './TextMode';
 import JavaScriptMode from "./JavaScriptMode";
 import CssMode from "./CssMode";
 import HtmlHighlightRules from "./HtmlHighlightRules";
@@ -58,29 +58,12 @@ export default class HtmlMode extends TextMode {
 
     createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient | undefined) => any): void {
 
-        const workerUrl = this.workerUrl;
-        const scriptImports = this.scriptImports;
-
-        const worker = new WorkerClient(workerUrl);
-
-        worker.on('annotations', function (event: { data: Annotation[] }) {
-            const annotations: Annotation[] = event.data;
-            if (annotations.length > 0) {
-                session.setAnnotations(annotations);
-            }
-            else {
-                session.clearAnnotations();
-            }
-            session._emit("annotations", { data: annotations });
-        });
-
-        worker.on("terminate", function () {
-            worker.detachFromDocument();
-            session.clearAnnotations();
-        });
-
+        const worker = new WorkerClient(this.workerUrl);
+        const tearDown = hookAnnotations(worker, session, true);
+        hookTerminate(worker, session, tearDown);
+        // We have a slight exception here die to the setOptions call.
         try {
-            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'HtmlWorker', (err: any) => {
+            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'HtmlWorker', (err: any) => {
                 if (!err) {
                     const doc = session.getDocument();
                     if (doc) {

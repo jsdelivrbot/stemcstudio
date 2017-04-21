@@ -18,10 +18,12 @@ const EOL_CHAR_CRLF = "\xa4";
 const TAB_CHAR = "\u2192"; // "\u21E5";
 const SPACE_CHAR = "\xB7";
 
+export type TextLayerEventName = 'changeCharacterSize';
+
 /**
  *
  */
-export default class TextLayer extends AbstractLayer implements Disposable, EventBus<any, TextLayer> {
+export default class TextLayer extends AbstractLayer implements Disposable, EventBus<TextLayerEventName, any, TextLayer> {
     public allowBoldFonts = false;
     private $padding = 0;
     private EOL_CHAR: string;
@@ -51,13 +53,13 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     /**
      * 
      */
-    private readonly eventBus: EventEmitterClass<any, TextLayer>;
+    private readonly eventBus: EventEmitterClass<TextLayerEventName, any, TextLayer>;
     public selectedNode: HTMLElement;
 
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_text-layer");
         refChange(this.uuid, 'TextLayer', +1);
-        this.eventBus = new EventEmitterClass<any, TextLayer>(this);
+        this.eventBus = new EventEmitterClass<TextLayerEventName, any, TextLayer>(this);
         this.EOL_CHAR = EOL_CHAR_LF;
     }
 
@@ -206,14 +208,14 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     /**
      * Returns a function that when called will remove the callback for the specified event.
      */
-    on(eventName: string, callback: (event: any, source: TextLayer) => any): () => void {
+    on(eventName: TextLayerEventName, callback: (event: any, source: TextLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
         };
     }
 
-    off(eventName: string, callback: (event: any, source: TextLayer) => any): void {
+    off(eventName: TextLayerEventName, callback: (event: any, source: TextLayer) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
@@ -310,9 +312,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         // TODO: strictNullChecks says foldLine may be null
         while (true) {
             if (row > foldStart) {
-                row = foldLine.end.row + 1;
-                foldLine = this.session.getNextFoldLine(row, foldLine);
-                foldStart = foldLine ? foldLine.start.row : Infinity;
+                if (foldLine) {
+                    row = foldLine.end.row + 1;
+                    foldLine = this.session.getNextFoldLine(row, foldLine);
+                    foldStart = foldLine ? foldLine.start.row : Infinity;
+                }
             }
             if (row > last)
                 break;
@@ -382,9 +386,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
         while (true) {
             if (row > foldStart) {
-                row = foldLine.end.row + 1;
-                foldLine = this.session.getNextFoldLine(row, foldLine);
-                foldStart = foldLine ? foldLine.start.row : Infinity;
+                if (foldLine) {
+                    row = foldLine.end.row + 1;
+                    foldLine = this.session.getNextFoldLine(row, foldLine);
+                    foldStart = foldLine ? foldLine.start.row : Infinity;
+                }
             }
             if (row > lastRow)
                 break;
@@ -431,9 +437,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
         while (true) {
             if (row > foldStart) {
-                row = foldLine.end.row + 1;
-                foldLine = this.session.getNextFoldLine(row, foldLine);
-                foldStart = foldLine ? foldLine.start.row : Infinity;
+                if (foldLine) {
+                    row = foldLine.end.row + 1;
+                    foldLine = this.session.getNextFoldLine(row, foldLine);
+                    foldStart = foldLine ? foldLine.start.row : Infinity;
+                }
             }
             if (row > lastRow) {
                 break;
@@ -512,8 +520,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     // FIXME; How can max be optional if it is always used?
     private renderIndentGuide(stringBuilder: (number | string)[], value: string, max?: number): string {
         let cols = value.search(this.$indentGuideRe);
-        if (cols <= 0 || cols >= max)
+        if (cols <= 0 || cols >= max) {
             return value;
+        }
         if (value[0] === " ") {
             cols -= cols % this.tabSize;
             stringBuilder.push(stringRepeat(this.$tabStrings[" "], cols / this.tabSize));
@@ -579,10 +588,12 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         let screenColumn = 0;
         let token = tokens[0];
         let value = token.value;
-        if (this.displayIndentGuides)
+        if (this.displayIndentGuides) {
             value = this.renderIndentGuide(stringBuilder, value);
-        if (value)
+        }
+        if (value) {
             screenColumn = this.$renderToken(stringBuilder, screenColumn, token, value);
+        }
         for (let i = 1; i < tokens.length; i++) {
             token = tokens[i];
             value = token.value;
@@ -591,7 +602,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     // row is either first row of foldline or not in fold
-    private $renderLine(stringBuilder: (number | string)[], row: number, onlyContents: boolean, foldLine: FoldLine | boolean) {
+    private $renderLine(stringBuilder: (number | string)[], row: number, onlyContents: boolean, foldLine: FoldLine | boolean | null) {
         if (!foldLine && foldLine !== false) {
             foldLine = this.session.getFoldLine(row);
         }

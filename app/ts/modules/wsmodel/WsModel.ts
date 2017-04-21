@@ -10,6 +10,7 @@ import Diagnostic from '../../editor/workspace/Diagnostic';
 import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
+import { workerCompleted } from '../../editor/EditSession';
 import EventBus from './EventBus';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
@@ -372,6 +373,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private inFlight = 0;
 
     private readonly quickInfo: { [path: string]: QuickInfoTooltip } = {};
+
+    /**
+     * Used only by TypeScript editors
+     */
     private readonly annotationHandlers: { [path: string]: (event: { data: Annotation[], type: 'annotation' }) => any } = {};
 
     private readonly refMarkers: number[] = [];
@@ -966,6 +971,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * 
+     */
     private attachSession(path: string, session: EditSession | undefined): void {
         checkPath(path);
 
@@ -1004,7 +1012,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                         refreshDiagnosticsCleanup();
                     }
                 };
-                session.on('annotations', annotationsHandler);
+                session.on(workerCompleted, annotationsHandler);
                 this.annotationHandlers[path] = annotationsHandler;
             }
             else {
@@ -1027,7 +1035,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             // Remove Annotation Handlers.
             if (this.annotationHandlers[path]) {
                 const annotationHandler = this.annotationHandlers[path];
-                session.off('annotations', annotationHandler);
+                session.off(workerCompleted, annotationHandler);
                 delete this.annotationHandlers[path];
             }
             else {

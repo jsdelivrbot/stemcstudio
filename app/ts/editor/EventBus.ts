@@ -1,6 +1,6 @@
-interface EventBus<E, T> {
-    on(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): void;
-    off(eventName: string, callback: (event: E, source: T) => any): void;
+interface EventBus<NAME, E, SOURCE> {
+    on(eventName: NAME, callback: (event: E, source: SOURCE) => any, capturing?: boolean): void;
+    off(eventName: NAME, callback: (event: E, source: SOURCE) => any): void;
 }
 
 export default EventBus;

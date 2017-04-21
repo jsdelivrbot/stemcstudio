@@ -18,10 +18,12 @@ export const COEFF_DEFAULT = 1;
  */
 export const MAX_SCROLL_H = 0x8000;
 
+export type ScrollBarEventName = 'scroll';
+
 /**
  * An abstract class representing a native scrollbar control.
  */
-export class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar>, Disposable {
+export class ScrollBar implements EventBus<ScrollBarEventName, ScrollBarEvent, ScrollBar>, Disposable {
     /**
      * 
      */
@@ -50,11 +52,11 @@ export class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar>, Disposabl
      */
     protected coeff = COEFF_DEFAULT;
 
-    protected readonly eventBus: EventEmitterClass<ScrollBarEvent, ScrollBar>;
+    protected readonly eventBus: EventEmitterClass<ScrollBarEventName, ScrollBarEvent, ScrollBar>;
 
     constructor(private readonly parent: HTMLElement, classSuffix: string) {
         refChange(this.uuid, 'ScrollBar', +1);
-        this.eventBus = new EventEmitterClass<ScrollBarEvent, ScrollBar>(this);
+        this.eventBus = new EventEmitterClass<ScrollBarEventName, ScrollBarEvent, ScrollBar>(this);
         this.element = <HTMLDivElement>createElement("div");
         this.element.className = `ace_scrollbar ace_scrollbar${classSuffix}`;
         parent.appendChild(this.element);
@@ -78,11 +80,11 @@ export class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar>, Disposabl
         refChange(this.uuid, 'ScrollBar', -1);
     }
 
-    on(eventName: string, callback: (event: ScrollBarEvent, source: ScrollBar) => any): () => void {
+    on(eventName: ScrollBarEventName, callback: (event: ScrollBarEvent, source: ScrollBar) => any): () => void {
         return this.eventBus.on(eventName, callback, false);
     }
 
-    off(eventName: string, callback: (event: ScrollBarEvent, source: ScrollBar) => any): void {
+    off(eventName: ScrollBarEventName, callback: (event: ScrollBarEvent, source: ScrollBar) => any): void {
         this.eventBus.off(eventName, callback);
     }
 

@@ -35,7 +35,7 @@ import { COMMAND_NAME_DEL } from './editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from './editor_protocol';
 import Renderer from './Renderer';
 import Completer from "./autocomplete/Completer";
-import CompletionManager from "./autocomplete/CompletionManager";
+import { CompletionManager } from "./autocomplete/CompletionManager";
 import refChange from '../utils/refChange';
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
@@ -70,12 +70,46 @@ function find(session: EditSession, needle: string | RegExp, direction: Directio
     return search.find(session);
 }
 
+export type EditorEventName = 'blur'
+    | 'change'
+    | 'changeAnnotation'
+    | 'changeBreakpoint'
+    | 'changeHoverMarker'
+    | 'changeMode'
+    | 'changeOverwrite'
+    | 'changeSelection'
+    | 'changeSelectionStyle'
+    | 'changeSession'
+    | 'changeStatus'
+    | 'click'
+    | 'cut'
+    | 'dblclick'
+    | 'destroy'
+    | 'findSearchBox'
+    | 'focus'
+    | 'gutterclick'
+    | 'gutterdblclick'
+    | 'guttermousedown'
+    | 'guttermousemove'
+    | 'hide'
+    | 'input'
+    | 'mousedown'
+    | 'mousemove'
+    | 'mouseup'
+    | 'mousewheel'
+    | 'nativecontextmenu'
+    | 'paste'
+    | 'quadclick'
+    | 'select'
+    | 'show'
+    | 'tripleclick';
+
 // const DragdropHandler = require("./mouse/dragdrop_handler").DragdropHandler;
 
 /**
  * The `Editor` acts as a controller, mediating between the session and renderer.
  */
-export class Editor implements Disposable, EventBus<any, Editor> {
+export class Editor implements Disposable, EventBus<EditorEventName, any, Editor> {
 
     /**
      *
@@ -87,7 +121,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      */
     public session: EditSession | undefined;
 
-    private eventBus: EventEmitterClass<any, Editor>;
+    private eventBus: EventEmitterClass<EditorEventName, any, Editor>;
 
     /**
      * Have to make this public to support error marker extension.
@@ -114,7 +148,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      */
     public completionManager: CompletionManager;
 
-    public widgetManager: LineWidgetManager;
+    public widgetManager: LineWidgetManager | null;
 
     /**
      * The renderer container element.
@@ -230,7 +264,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     constructor(renderer: Renderer | undefined, session: EditSession | undefined) {
         refChange('start');
         refChange(this.uuid, 'Editor', +1);
-        this.eventBus = new EventEmitterClass<any, Editor>(this);
+        this.eventBus = new EventEmitterClass<EditorEventName, any, Editor>(this);
         this.curOp = null;
         this.prevOp = {};
         this.$mergeableCommands = [COMMAND_NAME_BACKSPACE, COMMAND_NAME_DEL, COMMAND_NAME_INSERT_STRING];
@@ -1373,7 +1407,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
      *
      * @param fontSize A font size, e.g. "12px")
      */
-    setFontSize(fontSize: string): void {
+    setFontSize(fontSize: string | null): void {
         this.renderer.setFontSize(fontSize);
     }
 
@@ -2010,7 +2044,7 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     /**
      *
      */
-    on(eventName: string, callback: (data: any, editor: Editor) => any, capturing?: boolean) {
+    on(eventName: EditorEventName, callback: (data: any, editor: Editor) => any, capturing?: boolean) {
         this.eventBus.on(eventName, callback, capturing);
         return () => {
             this.off(eventName, callback, capturing);
@@ -2020,23 +2054,23 @@ export class Editor implements Disposable, EventBus<any, Editor> {
     /**
      *
      */
-    off(eventName: string, callback: (data: any, source: Editor) => any, capturing?: boolean): void {
+    off(eventName: EditorEventName, callback: (data: any, source: Editor) => any, capturing?: boolean): void {
         this.eventBus.off(eventName, callback/*, capturing*/);
     }
 
-    setDefaultHandler(eventName: string, callback: (data: any, source: Editor) => any) {
+    setDefaultHandler(eventName: EditorEventName, callback: (data: any, source: Editor) => any) {
         this.eventBus.setDefaultHandler(eventName, callback);
     }
 
-    _emit(eventName: string, event?: any): void {
+    _emit(eventName: EditorEventName, event?: any): void {
         this.eventBus._emit(eventName, event);
     }
 
-    _signal(eventName: string, event?: any): void {
+    _signal(eventName: EditorEventName, event?: any): void {
         this.eventBus._signal(eventName, event);
     }
 
-    hasListeners(eventName: string): boolean {
+    hasListeners(eventName: EditorEventName): boolean {
         return this.eventBus.hasListeners(eventName);
     }
 
@@ -3222,11 +3256,16 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                     depth[token.value] = 0;
                 }
 
-                if (prevToken.value === '<') {
-                    depth[token.value]++;
+                if (prevToken) {
+                    if (prevToken.value === '<') {
+                        depth[token.value]++;
+                    }
+                    else if (prevToken.value === '</') {
+                        depth[token.value]--;
+                    }
                 }
-                else if (prevToken.value === '</') {
-                    depth[token.value]--;
+                else {
+                    console.warn(`typeof prevToken => ${typeof prevToken}`);
                 }
 
                 if (depth[token.value] === -1) {
@@ -3294,15 +3333,22 @@ export class Editor implements Disposable, EventBus<any, Editor> {
                             range.setEnd(iterator.getCurrentTokenRow(), iterator.getCurrentTokenColumn() + 1);
                         }
 
-                        if (token.value === tag && token.type.indexOf('tag-name') !== -1) {
-                            if (prevToken.value === '<') {
-                                depth[tag]++;
-                            } else if (prevToken.value === '</') {
-                                depth[tag]--;
-                            }
+                        if (token) {
+                            if (token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                                if (prevToken.value === '<') {
+                                    depth[tag]++;
+                                }
+                                else if (prevToken.value === '</') {
+                                    depth[tag]--;
+                                }
 
-                            if (depth[tag] === 0)
-                                found = true;
+                                if (depth[tag] === 0) {
+                                    found = true;
+                                }
+                            }
+                        }
+                        else {
+                            console.warn(`typeof token => ${typeof token}`);
                         }
                     }
                 } while (prevToken && !found);
@@ -4077,11 +4123,11 @@ class MouseHandler implements IGestureHandler {
         }
     }
 
-    onMouseEvent(name: string, e: MouseEvent) {
+    onMouseEvent(name: EditorEventName, e: MouseEvent) {
         this.editor._emit(name, new EditorMouseEvent(e, this.editor));
     }
 
-    onMouseMove(name: string, e: MouseEvent) {
+    onMouseMove(name: EditorEventName, e: MouseEvent) {
         // If nobody is listening, avoid the creation of the temporary wrapper.
         // optimization, because mousemove doesn't have a default handler.
         if (this.editor.hasListeners('mousemove')) {
@@ -4089,7 +4135,7 @@ class MouseHandler implements IGestureHandler {
         }
     }
 
-    emitEditorMouseWheelEvent(name: string, e: MouseWheelEvent) {
+    emitEditorMouseWheelEvent(name: EditorEventName, e: MouseWheelEvent) {
         const mouseEvent = new EditorMouseEvent(e, this.editor);
         mouseEvent.speed = this.$scrollSpeed * 2;
         mouseEvent.wheelX = e['wheelX'];

@@ -160,6 +160,16 @@ export class Observable<T> {
     concat(...sources: ObservableOrPromise<T>[]): Observable<T>;
 
     /**
+     * 
+     */
+    debounce(durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T>;
+
+    /**
+     *  
+     */
+    debounceTime(dueTime: number, scheduler?: IScheduler): Observable<T>;
+
+    /**
      *
      */
     distinctUntilChanged<KEY>(keySelector?: (value: T) => KEY, comparer?: (value1: KEY, value2: KEY) => boolean): Observable<T>;

@@ -527,7 +527,7 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:normalize-package-data@2.3.6": {
+    "npm:normalize-package-data@2.3.8": {
       "hosted-git-info": "npm:hosted-git-info@2.4.2",
       "is-builtin-module": "npm:is-builtin-module@1.0.0",
       "semver": "npm:semver@5.3.0",
@@ -633,7 +633,7 @@ System.config({
     },
     "npm:read-pkg@1.1.0": {
       "load-json-file": "npm:load-json-file@1.1.0",
-      "normalize-package-data": "npm:normalize-package-data@2.3.6",
+      "normalize-package-data": "npm:normalize-package-data@2.3.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "path-type": "npm:path-type@1.1.0"
     },

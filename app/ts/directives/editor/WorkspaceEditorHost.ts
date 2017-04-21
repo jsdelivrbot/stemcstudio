@@ -2,7 +2,13 @@ import Editor from '../../editor/Editor';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
 
-interface WorkspaceMixin {
+/**
+ * The means by which an `Editor` connects-to and interacts-with a workspace.
+ * 
+ * This interface is intended to be implemented by controllers.
+ * This is expected because Editor is a "micro" controller.
+ */
+export interface WorkspaceEditorHost {
     /**
      * Notifies the workspace of the existence of an Editor for the specified path.
      * We attach the Editor so that it can receive semantic annotations which are
@@ -10,15 +16,13 @@ interface WorkspaceMixin {
      * 
      * There is no explicit detachEditor because we use the returned detaching
      * function instead for that purpose.
-     * 
-     * @returns A function that may be used to detach the Editor.
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void;
 
     /**
-     * TODO: Replace with Promise<TextChange[]>
+     * Used to obtain formatting edits for an editor.
+     * The function is asynchronous because a Language Service will typically run
+     * in a thread or be located on a remote network endpoint.
      */
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void;
+    requestFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]>;
 }
-
-export default WorkspaceMixin;

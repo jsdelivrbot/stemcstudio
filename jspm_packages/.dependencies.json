@@ -780,15 +780,6 @@
     "is-arrayish": "npm:is-arrayish@^0.2.1",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:normalize-package-data@2.3.6": {
-    "hosted-git-info": "npm:hosted-git-info@^2.1.4",
-    "is-builtin-module": "npm:is-builtin-module@^1.0.0",
-    "semver": "npm:semver@^5.0.0",
-    "validate-npm-package-license": "npm:validate-npm-package-license@^3.0.1",
-    "url": "github:jspm/nodelibs-url@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0"
-  },
   "github:geometryzen/davinci-mathscript@1.2.2": {
     "ts": "github:frankwallis/plugin-typescript@^2.6.0"
   },
@@ -909,5 +900,14 @@
     "url": "github:jspm/nodelibs-url@^0.1.0"
   },
   "npm:tiny-emitter@1.2.0": {},
-  "github:geometryzen/ace-workers@2.9.7": {}
+  "github:geometryzen/ace-workers@2.9.7": {},
+  "npm:normalize-package-data@2.3.8": {
+    "hosted-git-info": "npm:hosted-git-info@^2.1.4",
+    "is-builtin-module": "npm:is-builtin-module@^1.0.0",
+    "semver": "npm:semver@^5.0.0",
+    "validate-npm-package-license": "npm:validate-npm-package-license@^3.0.1",
+    "url": "github:jspm/nodelibs-url@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  }
 }

@@ -90,10 +90,17 @@ function calcSteps(fromValue: number, toValue: number): number[] {
     return steps;
 }
 
+export type RendererEventName = 'afterRender'
+    | 'beforeRender'
+    | 'changeCharacterSize'
+    | 'resize'
+    | 'scrollbarVisibilityChanged'
+    | 'themeLoaded';
+
 /**
  * The class that is responsible for drawing everything you see on the screen!
  */
-export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
+export class Renderer implements Disposable, EventBus<RendererEventName, any, Renderer>, EditorRenderer, OptionsProvider {
     /**
      * 
      */
@@ -196,7 +203,7 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
 
     public $scrollbarWidth: number;
     private session: EditSession | undefined;
-    private eventBus: EventEmitterClass<any, Renderer>;
+    private eventBus: EventEmitterClass<RendererEventName, any, Renderer>;
 
     private scrollMargin = {
         left: 0,
@@ -269,7 +276,7 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
     constructor(container: HTMLElement) {
         refChange('start');
         refChange(this.uuid, 'Renderer', +1);
-        this.eventBus = new EventEmitterClass<any, Renderer>(this);
+        this.eventBus = new EventEmitterClass<RendererEventName, any, Renderer>(this);
 
         this.container = container || <HTMLDivElement>createElement("div");
         this.container.dir = 'ltr';
@@ -397,14 +404,14 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
     /**
      * Returns a function that may be used to remove the callback.
      */
-    on(eventName: string, callback: (event: any, source: Renderer) => any): () => void {
+    on(eventName: RendererEventName, callback: (event: any, source: Renderer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
         };
     }
 
-    off(eventName: string, callback: (event: any, source: Renderer) => any): void {
+    off(eventName: RendererEventName, callback: (event: any, source: Renderer) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
@@ -895,10 +902,7 @@ export class Renderer implements Disposable, EventBus<any, Renderer>, EditorRend
         return this.container.style.fontSize;
     }
 
-    /**
-     *
-     */
-    setFontSize(fontSize: string) {
+    setFontSize(fontSize: string | null): void {
         this.container.style.fontSize = fontSize;
         this.updateFontSize();
     }

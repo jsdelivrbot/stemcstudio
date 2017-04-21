@@ -1,7 +1,6 @@
-import Annotation from "../Annotation";
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import EditSession from "../EditSession";
 import TextMode from "./TextMode";
+import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import ClojureHighlightRules from "./ClojureHighlightRules";
 import MatchingParensOutdent from "./MatchingParensOutdent";
 import WorkerClient from "../worker/WorkerClient";
@@ -31,7 +30,7 @@ export default class ClojureMode extends TextMode {
     private $calculateIndent(line: string, tab: string): string {
         let baseIndent = this.$getIndent(line);
         let delta = 0;
-        let isParen: boolean;
+        let isParen = false;
         let ch: string;
         // Walk back from end of line, find matching braces
         let i: number;
@@ -99,40 +98,10 @@ export default class ClojureMode extends TextMode {
         outdent.autoOutdent(session, row);
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
-
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
         const worker = new WorkerClient(this.workerUrl);
-
-        worker.on('annotations', function (event: { data: Annotation[] }) {
-            const annotations: Annotation[] = event.data;
-            if (annotations.length > 0) {
-                session.setAnnotations(annotations);
-            }
-            else {
-                session.clearAnnotations();
-            }
-            session._emit("annotations", { data: annotations });
-        });
-
-        worker.on("terminate", function () {
-            worker.detachFromDocument();
-            session.clearAnnotations();
-        });
-
-        try {
-            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'ClojureWorker', function (err: any) {
-                if (!err) {
-                    worker.attachToDocument(session.getDocument());
-                    callback(void 0, worker);
-                }
-                else {
-                    console.warn(`ClojureWorker init fail: ${err}`);
-                    callback(err, void 0);
-                }
-            });
-        }
-        catch (e) {
-            callback(e, void 0);
-        }
+        const tearDown = hookAnnotations(worker, session, true);
+        hookTerminate(worker, session, tearDown);
+        initWorker(worker, 'ClojureWorker', this.scriptImports, session, callback);
     }
 }

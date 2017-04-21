@@ -10,12 +10,15 @@ let CHAR_COUNT = 0;
 
 export const changeCharacterSize = 'changeCharacterSize';
 
+// TODO: Can the constants be combined with this type?
+export type FontMetricsEventName = 'changeCharacterSize';
+
 /**
  * FontMetrics sets up a timer that repeatedly checks for changes in font sizes.
  * It raises the event 'changeCharacterSize'.
  * It is used by the Renderer and the TextLayer.
  */
-export default class FontMetrics implements EventBus<any, FontMetrics>, Shareable {
+export default class FontMetrics implements EventBus<FontMetricsEventName, any, FontMetrics>, Shareable {
     private el: HTMLDivElement;
     private $main: HTMLDivElement;
     private $measureNode: HTMLDivElement;
@@ -23,7 +26,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     private charSizes: { [ch: string]: number };
     private allowBoldFonts: boolean;
     private $pollSizeChangesTimer: number;
-    private eventBus: EventEmitterClass<any, FontMetrics>;
+    private eventBus: EventEmitterClass<FontMetricsEventName, any, FontMetrics>;
     private refCount = 1;
     /**
      * 
@@ -37,7 +40,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     // FIXME: The interval should be being used to configure the polling interval (normally 500ms)
     constructor(parent: HTMLElement, pollingInterval: number) {
         refChange(this.uuid, 'FontMetrics', +1);
-        this.eventBus = new EventEmitterClass<any, FontMetrics>(this);
+        this.eventBus = new EventEmitterClass<FontMetricsEventName, any, FontMetrics>(this);
 
         this.el = <HTMLDivElement>createElement("div");
         this.$setMeasureNodeStyles(this.el.style, true);
@@ -86,14 +89,14 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     /**
      * Returns a function that will remove the event handler.
      */
-    on(eventName: string, callback: (event: any, source: FontMetrics) => any): () => void {
+    on(eventName: FontMetricsEventName, callback: (event: any, source: FontMetrics) => any): () => void {
         return this.eventBus.on(eventName, callback, false);
     }
 
     /**
      * 
      */
-    off(eventName: string, callback: (event: any, source: FontMetrics) => any): void {
+    off(eventName: FontMetricsEventName, callback: (event: any, source: FontMetrics) => any): void {
         this.eventBus.off(eventName, callback);
     }
 

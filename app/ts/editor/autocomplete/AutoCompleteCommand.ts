@@ -1,8 +1,22 @@
 import Command from '../commands/Command';
 import Editor from '../Editor';
 import EditorAction from '../keyboard/EditorAction';
-import CompletionManager from './CompletionManager';
-import {COMMAND_NAME_AUTO_COMPLETE} from '../editor_protocol';
+import { CompletionManager } from './CompletionManager';
+import { COMMAND_NAME_AUTO_COMPLETE } from '../editor_protocol';
+
+/**
+ * Returns a completion manager and caches it as an editor property.
+ */
+function ensureCompletionManager(editor: Editor): CompletionManager {
+    if (editor.completionManager) {
+        return editor.completionManager;
+    }
+    else {
+        const completionManager = new CompletionManager();
+        editor.completionManager = completionManager;
+        return completionManager;
+    }
+}
 
 /**
  *
@@ -19,11 +33,7 @@ export default class AutoCompleteCommand implements Command {
         this.name = name;
         this.bindKey = 'Ctrl-Space|Ctrl-Shift-Space|Alt-Space';
         this.exec = function (editor: Editor) {
-            let manager: CompletionManager = editor.completionManager;
-            if (!manager) {
-                manager = new CompletionManager();
-                editor.completionManager = manager;
-            }
+            const manager = ensureCompletionManager(editor);
             manager.autoInsert = true;
             manager.autoSelect = true;
             // Attaching to the editor triggers the autocompletion behaviour.

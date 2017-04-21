@@ -37,13 +37,15 @@ function getTransformedPoint(this: void, delta: Delta, point: Position, moveIfEq
     return { column: deltaStart.column, row: deltaStart.row };
 }
 
+export type AnchorEventName = 'change';
+
 /**
  * Defines a floating pointer in the document.
  * An anchor adjusts its position as text is changed around it.
  * Whenever text is inserted or deleted before the cursor,
  * the position of the anchor is updated.
  */
-export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Position {
+export default class Anchor implements EventBus<AnchorEventName, AnchorChangeEvent, Anchor>, Position {
 
     /**
      *
@@ -74,7 +76,7 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
     /**
      *
      */
-    private readonly eventBus: EventEmitterClass<AnchorChangeEvent, Anchor>;
+    private readonly eventBus: EventEmitterClass<AnchorEventName, AnchorChangeEvent, Anchor>;
 
     /**
      * <p>
@@ -91,7 +93,7 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      */
     constructor(doc: Document, row: number, column: number) {
 
-        this.eventBus = new EventEmitterClass<AnchorChangeEvent, Anchor>(this);
+        this.eventBus = new EventEmitterClass<AnchorEventName, AnchorChangeEvent, Anchor>(this);
 
         this.documentChangeHandler = (delta: Delta, doc: Document): void => {
             if (delta.start.row === delta.end.row && delta.start.row !== this.row) {
@@ -178,7 +180,7 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      * @param eventName
      * @param callback
      */
-    public on(eventName: 'change', callback: (event: AnchorChangeEvent, source: Anchor) => any): () => void {
+    public on(eventName: AnchorEventName, callback: (event: AnchorChangeEvent, source: Anchor) => any): () => void {
         return this.eventBus.on(eventName, callback, false);
     }
 
@@ -186,7 +188,7 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      * @param eventName
      * @param callback
      */
-    public off(eventName: 'change', callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
+    public off(eventName: AnchorEventName, callback: (event: AnchorChangeEvent, source: Anchor) => any): void {
         this.eventBus.off(eventName, callback, false);
     }
 

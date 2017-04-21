@@ -10,18 +10,18 @@ export class EditorMouseEvent {
     /**
      * The original DOM mouse event.
      */
-    public domEvent: MouseEvent;
-    private editor: Editor;
+    public readonly domEvent: MouseEvent;
+    private readonly editor: Editor;
 
     /**
      *
      */
-    public clientX: number;
+    public readonly clientX: number;
 
     /**
      *
      */
-    public clientY: number;
+    public readonly clientY: number;
 
     /**
      * Cached text coordinates following getDocumentPosition()

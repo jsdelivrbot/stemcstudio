@@ -14,10 +14,13 @@ import GutterRenderer from './GutterRenderer';
 import GutterCell from './GutterCell';
 import refChange from '../../utils/refChange';
 
+export const changeGutterWidth = 'changeGutterWidth';
+export type GutterLayerEventName = 'changeGutterWidth';
+
 /**
  *
  */
-export default class GutterLayer extends AbstractLayer implements EventBus<number, GutterLayer> {
+export default class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEventName, number, GutterLayer> {
 
     /**
      *
@@ -42,7 +45,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     private session: EditSession;
     private $showFoldWidgets: boolean;
     public $padding: Padding | null;
-    private readonly eventBus: EventEmitterClass<any, GutterLayer> = new EventEmitterClass<any, GutterLayer>(this);
+    private readonly eventBus = new EventEmitterClass<GutterLayerEventName, any, GutterLayer>(this);
 
     /**
      *
@@ -61,7 +64,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     /**
      * Returns a function for removing the callback, or you can call the `off` method.
      */
-    on(eventName: string, callback: (event: any, source: GutterLayer) => any): () => void {
+    on(eventName: GutterLayerEventName, callback: (event: any, source: GutterLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
@@ -71,7 +74,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     /**
      *
      */
-    off(eventName: string, callback: (event: any, source: GutterLayer) => any): void {
+    off(eventName: GutterLayerEventName, callback: (event: any, source: GutterLayer) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
@@ -262,10 +265,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         if (gutterWidth !== this.gutterWidth && !isNaN(gutterWidth)) {
             this.gutterWidth = gutterWidth;
             this.element.style.width = Math.ceil(this.gutterWidth) + "px";
-            /**
-             * @event changeGutterWidth
-             */
-            this.eventBus._emit("changeGutterWidth", gutterWidth);
+            this.eventBus._emit(changeGutterWidth, gutterWidth);
         }
     }
 

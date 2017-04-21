@@ -31,12 +31,11 @@ import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showFindReplace from '../../editor/ext/showFindReplace';
 import showGreekKeyboard from '../../editor/ext/showGreekKeyboard';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
-import TextChange from '../../editor/workspace/TextChange';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
-import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
+import { WorkspaceEditorHost } from '../../directives/editor/WorkspaceEditorHost';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -104,7 +103,7 @@ function factory(
         /**
          * The controller that is a proxy for the workspace.
          */
-        const wsController: WorkspaceMixin = controllers[1];
+        const wsController: WorkspaceEditorHost = controllers[1];
 
         const container: HTMLElement = element[0];
         refChange('start');
@@ -274,14 +273,14 @@ function factory(
                                     settings.insertSpaceBeforeAndAfterBinaryOperators = true;
                                     settings.insertSpaceBeforeFunctionParenthesis = false;
                                     settings.newLineCharacter = '\n';
-                                    wsController.getFormattingEditsForDocument($scope.path, settings, function (err: any, textChanges: TextChange[]) {
-                                        if (!err) {
+                                    wsController.requestFormattingEditsForDocument($scope.path, settings)
+                                        .then(function (textChanges) {
                                             applyTextChanges(textChanges, session);
-                                        }
-                                        else {
-                                            console.warn(`${err}`);
-                                        }
-                                    });
+                                        })
+                                        .catch(function (reason) {
+                                            // This is rather unlikely, given that our service is running in a thread.
+                                            console.warn(`${reason}`);
+                                        });
                                 }
                             },
                             scrollIntoView: 'animate',

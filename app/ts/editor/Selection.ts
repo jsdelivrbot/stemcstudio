@@ -5,7 +5,6 @@ import Position from "./Position";
 import Range from "./Range";
 import RangeList from "./RangeList";
 import EditSession from "./EditSession";
-import Fold from "./Fold";
 import Anchor from "./Anchor";
 import AnchorChangeEvent from "./events/AnchorChangeEvent";
 import EventBus from "./EventBus";
@@ -17,13 +16,20 @@ import SelectionRemoveRangeEvent from "./events/SelectionRemoveRangeEvent";
  */
 const NOTHING: undefined = void 0;
 
+export type SelectionEventName = 'addRange'
+    | 'changeCursor'
+    | 'changeSelection'
+    | 'removeRange'
+    | 'multiSelect'
+    | 'singleSelect';
+
 /**
  * Contains the cursor position and the text selection of an edit session.
  *
  * The row/columns used in the selection are in document coordinates representing
  * the coordinates as they appear in the document before applying soft wrap and folding.
  */
-export default class Selection implements EventBus<any, Selection> {
+export default class Selection implements EventBus<SelectionEventName, any, Selection> {
     private session: EditSession | null;
     private doc: Document | null | undefined;
 
@@ -82,10 +88,10 @@ export default class Selection implements EventBus<any, Selection> {
      */
     public inVirtualMode: boolean;
 
-    private eventBus: EventEmitterClass<any, Selection>;
+    private eventBus: EventEmitterClass<SelectionEventName, any, Selection>;
 
     constructor(session: EditSession) {
-        this.eventBus = new EventEmitterClass<any, Selection>(this);
+        this.eventBus = new EventEmitterClass<SelectionEventName, any, Selection>(this);
         this.session = session;
         this.doc = session.getDocument();
 
@@ -615,9 +621,9 @@ export default class Selection implements EventBus<any, Selection> {
     moveCursorLeft(): void {
         const session = this.sessionOrThrow();
         const cursor = this.lead.getPosition();
-        let fold: Fold;
 
-        if (fold = session.getFoldAt(cursor.row, cursor.column, -1)) {
+        const fold = session.getFoldAt(cursor.row, cursor.column, -1);
+        if (fold) {
             this.moveCursorTo(fold.start.row, fold.start.column);
         }
         else if (cursor.column === 0) {
@@ -679,10 +685,7 @@ export default class Selection implements EventBus<any, Selection> {
 
         // Determine the line
         // How does getDisplayLine get from folding onto session?
-        const beforeCursor = session.getDisplayLine(
-            row, null, firstColumnPosition.row,
-            firstColumnPosition.column
-        );
+        const beforeCursor = session.getDisplayLine(row, void 0, firstColumnPosition.row, firstColumnPosition.column);
 
         const leadingSpace = beforeCursor.match(/^\s*/);
         if (leadingSpace) {
@@ -788,9 +791,9 @@ export default class Selection implements EventBus<any, Selection> {
             const row = this.lead.row;
             let column = this.lead.column;
 
-            // skip folds
-            let fold: Fold;
-            if (fold = session.getFoldAt(row, column, -1)) {
+            // Skip folds.
+            const fold = session.getFoldAt(row, column, -1);
+            if (fold) {
                 this.moveCursorTo(fold.start.row, fold.start.column);
                 return;
             }
@@ -911,9 +914,10 @@ export default class Selection implements EventBus<any, Selection> {
             let row = this.lead.row;
             let column = this.lead.column;
 
-            let fold: Fold;
-            if (fold = session.getFoldAt(row, column, -1))
+            const fold = session.getFoldAt(row, column, -1);
+            if (fold) {
                 return this.moveCursorTo(fold.start.row, fold.start.column);
+            }
 
             let line = session.getLine(row).substring(0, column);
             if (column === 0) {
@@ -1020,7 +1024,7 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      *
      */
-    on(eventName: string, callback: (event: any, source: Selection) => any): () => void {
+    on(eventName: SelectionEventName, callback: (event: any, source: Selection) => any): () => void {
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.off(eventName, callback);
@@ -1030,7 +1034,7 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      *
      */
-    off(eventName: string, callback: (event: any, source: Selection) => any): void {
+    off(eventName: SelectionEventName, callback: (event: any, source: Selection) => any): void {
         this.eventBus.off(eventName, callback);
     }
 

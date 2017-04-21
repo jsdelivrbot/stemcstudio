@@ -1,9 +1,9 @@
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';
 import Editor from '../Editor';
-import {setCssClass} from '../lib/dom';
-import {keyCodeToString} from '../lib/keys';
-import {addListener, addCommandKeyListener, stopEvent, stopPropagation} from '../lib/event';
+import { setCssClass } from '../lib/dom';
+import { keyCodeToString } from '../lib/keys';
+import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
 import Range from '../Range';
 
@@ -172,7 +172,7 @@ class SearchBox {
             if (action && this[action]) {
                 this[action]();
             }
-            else if (this.$searchBarKb.commands[action]) {
+            else if (action && this.$searchBarKb.commands[action]) {
                 this.$searchBarKb.commands[action].exec(this);
             }
             stopPropagation(e);
@@ -218,11 +218,13 @@ class SearchBox {
     };
 
     highlight(re?: RegExp): void {
-        if (re) {
-            this.editor.session.highlight(re);
-        }
-        else {
-            this.editor.session.highlight(<RegExp>this.editor.$search.$options.re);
+        if (this.editor.session) {
+            if (re) {
+                this.editor.session.highlight(re);
+            }
+            else {
+                this.editor.session.highlight(this.editor.$search.$options.re as RegExp);
+            }
         }
         this.editor.renderer.updateBackMarkers();
     }
@@ -286,7 +288,7 @@ class SearchBox {
         this.editor.keyBinding.removeKeyboardHandler(this.$closeSearchBarKb);
         this.editor.focus();
     }
-    show(value?: string, isReplace?: boolean) {
+    show(value?: string, isReplace = false) {
         this.element.style.display = "";
         this.replaceForm.style.display = isReplace ? "" : "none";
 
@@ -310,7 +312,7 @@ class SearchBox {
  * 
  */
 export default function showFindReplace(editor: Editor, isReplace?: boolean): void {
-    const searchBox = <SearchBox>editor[SEARCH_EXTENSION];
+    const searchBox = editor[SEARCH_EXTENSION] as SearchBox;
     const sb = searchBox || new SearchBox(editor);
-    sb.show(editor.session.getTextRange(), isReplace);
+    sb.show(editor.sessionOrThrow().getTextRange(), isReplace);
 };

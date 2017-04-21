@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { equalPositions } from './Position';
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
@@ -97,10 +98,32 @@ const defaultModeCallback = function (err: any) {
     }
 };
 
+// TODO: EditSession could now support a workerCompletedEvents Observable.
+export const workerCompleted = 'workerCompleted';
+
+export type EditSessionEventName =
+    'workerCompleted'   // Does not originate from the EditSession, forwarded as an emit from the TypeScript worker.
+    | 'change'
+    | 'changeAnnotation'    // Almost all workers emitting annotations emit this event. TypeScript worker does not.
+    | 'changeBackMarker'
+    | 'changeBreakpoint'
+    | 'changeEditor'
+    | 'changeFold'
+    | 'changeFrontMarker'
+    | 'changeMode'
+    | 'changeOverwrite'
+    | 'changeScrollLeft'
+    | 'changeScrollTop'
+    | 'changeTabSize'
+    | 'changeWrapLimit'
+    | 'changeWrapMode'
+    | 'session' // When the EditSession constructor completes. Who cares?
+    | 'tokenizerUpdate';
+
 /**
  *
  */
-export default class EditSession implements EventBus<any, EditSession>, Shareable {
+export default class EditSession implements EventBus<EditSessionEventName, any, EditSession>, Shareable {
     public $firstLineNumber = 1;
     public gutterRenderer: GutterRenderer;
     public $breakpoints: string[] = [];
@@ -198,7 +221,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      *
      */
-    private eventBus: EventEmitterClass<any, EditSession>;
+    private eventBus: EventEmitterClass<EditSessionEventName, any, EditSession>;
 
     /**
      * Determines whether the worker will be started.
@@ -220,6 +243,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     private $worker: WorkerClient | null;
 
+    /**
+     * 
+     */
+    public workerCompleted: Observable<void>;
+
     public tokenRe: RegExp;
     public nonTokenRe: RegExp;
     public $scrollTop = 0;
@@ -240,7 +268,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $useSoftTabs = true;
     private $tabSize = 4;
     private screenWidth: number;
-    public lineWidgets: LineWidget[] | null = null;
+    public lineWidgets: (LineWidget | undefined)[] | null = null;
     private lineWidgetsWidth: number;
     public lineWidgetWidth: number;
     public $getWidgetScreenLength: () => number;
@@ -269,7 +297,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             throw new TypeError('doc must be an Document');
         }
         this.$breakpoints = [];
-        this.eventBus = new EventEmitterClass<any, EditSession>(this);
+        this.eventBus = new EventEmitterClass<EditSessionEventName, any, EditSession>(this);
 
         // FIXME: What is this used for?
         // this.id = "session" + (++EditSession.$uid);
@@ -314,25 +342,27 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return this.refCount;
     }
 
+    // TODO: Provide an Observable for each type of change.
+
     /**
-     * @param callback
+     * 
      */
-    on(eventName: string, callback: (event: any, session: EditSession) => any): void {
+    on(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @param callback
+     *
      */
-    off(eventName: string, callback: (event: any, session: EditSession) => any): void {
+    off(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
-    _emit(eventName: string, event?: any) {
+    _emit(eventName: EditSessionEventName, event?: any) {
         this.eventBus._emit(eventName, event);
     }
 
-    _signal(eventName: string, event?: any) {
+    _signal(eventName: EditSessionEventName, event?: any) {
         this.eventBus._signal(eventName, event);
     }
 
@@ -2323,11 +2353,32 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return [screenColumn, column];
     }
 
+    private getLineWidgetRowCount(row: number): number {
+        if (this.lineWidgets) {
+            const lineWidget = this.lineWidgets[row];
+            if (lineWidget) {
+                const rowCount = lineWidget.rowCount;
+                if (typeof rowCount === 'number') {
+                    return rowCount;
+                }
+                else {
+                    return 0;
+                }
+            }
+            else {
+                return 0;
+            }
+        }
+        else {
+            return 0;
+        }
+    }
+
     /**
      * Returns number of screen rows in a wrapped line.
      */
     public getRowLength(row: number): number {
-        const h = this.lineWidgets ? (this.lineWidgets[row] && this.lineWidgets[row].rowCount || 0) : 0;
+        const h = this.getLineWidgetRowCount(row);
         if (!this.$useWrapMode || !this.$wrapData[row]) {
             return 1 + h;
         }

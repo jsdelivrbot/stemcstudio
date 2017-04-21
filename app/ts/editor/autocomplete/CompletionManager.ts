@@ -6,9 +6,10 @@ import CompletionList from '../CompletionList';
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';
 import Editor from '../Editor';
+import EditorMouseEvent from '../EditorMouseEvent';
 import getCompletionPrefix from './getCompletionPrefix';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
-import ListViewPopup from './ListViewPopup';
+import { ListViewPopup } from './ListViewPopup';
 import PixelPosition from '../PixelPosition';
 import Position from '../Position';
 import Range from '../Range';
@@ -30,15 +31,31 @@ const completionCompareFn = function (a: Completion, b: Completion) {
 /**
  *
  */
-export default class CompletionManager {
+export class CompletionManager {
 
     /**
      *
      */
     public popup: ListViewPopup;
+    /**
+     * The tear-down function for the 'click' event on the popup.
+     */
+    private popupClickRemover: (() => void) | undefined;
+    /**
+     * The tear-down function for the 'show' event on the popup.
+     */
+    private popupShowRemover: (() => void) | undefined;
+    /**
+     * The tear-down function for the 'select' event on the popup.
+     */
+    private popupSelectRemover: (() => void) | undefined;
+    /**
+     * The tear-down function for the 'changeHoverMarker' event on the popup.
+     */
+    private popupHoverRemover: (() => void) | undefined;
 
     /**
-     * The editor with which the completion manager is interacting.
+     * The editor with which this completion manager is interacting.
      */
     private editor: Editor;
 
@@ -50,8 +67,10 @@ export default class CompletionManager {
     /**
      * The completion manager is activated when the attach(editor) method is invoked and remains
      * so until the completion manager is detached from the editor.
+     * TODO: This seems redundant. It is synonymous with being attached which should be indicated by the editor.
      */
-    public activated: boolean;
+    private activated: boolean;
+
     private changeTimer: DelayedCall;
     private gatherCompletionsId = 0;
     private base: Anchor | null;
@@ -61,34 +80,37 @@ export default class CompletionManager {
     /**
      * Determines what happens when the autocomplete list is presented.
      */
-    public autoSelect: boolean;
+    public autoSelect = true;
 
     /**
      * Determines what happens when there is only one completion.
      */
-    public autoInsert: boolean;
+    public autoInsert = false;
 
     /**
      *
      */
-    private exactMatch: boolean;
+    // private exactMatch = false;
 
-    private tooltipNode: HTMLDivElement;
+    private tooltipNode: HTMLDivElement | null;
     private tooltipTimer: DelayedCall;
 
     /**
      *
      */
     constructor() {
-        this.autoInsert = false;
-        this.autoSelect = true;
-        this.exactMatch = false;
-
         /**
          *
          */
-        const DETACH: EditorAction = (editor: Editor) => { this.detach(); };
-        const DOWN: EditorAction = (editor: Editor) => { this.down(); };
+        const detachAction: EditorAction = (editor: Editor) => {
+            this.detach();
+        };
+        /**
+         *
+         */
+        const downAction: EditorAction = (editor: Editor) => {
+            this.down();
+        };
 
         this.commands = {
             "Up": (editor: Editor) => { this.goTo("up"); },
@@ -114,20 +136,10 @@ export default class CompletionManager {
             "PageDown": (editor: Editor) => { this.goTo('pageDown'); }
         };
 
-        this.keyboardHandler.bindKey("Down", DOWN);
-        this.keyboardHandler.bindKey("Esc", DETACH);
+        this.keyboardHandler.bindKey("Down", downAction);
+        this.keyboardHandler.bindKey("Esc", detachAction);
 
         this.keyboardHandler.bindKeys(this.commands);
-
-        // FIXME: This binding to methods is a bit klunky by ES6 standards.
-        // We should be able to say...
-        this.blurListener = () => {
-            // Do something.
-        };
-        this.blurListener = this.blurListener.bind(this);
-        this.editorChangeSelectionListener = this.editorChangeSelectionListener.bind(this);
-        this.mousedownListener = this.mousedownListener.bind(this);
-        this.mousewheelListener = this.mousewheelListener.bind(this);
 
         // By not specifying a timeout value, the callback will be called ASAP.
         this.changeTimer = createDelayedCall(() => {
@@ -187,9 +199,7 @@ export default class CompletionManager {
         this.hideDocTooltip();
 
         this.gatherCompletionsId += 1;
-        if (this.popup && this.popup.isOpen) {
-            this.popup.hide();
-        }
+        this.closePopup();
 
         if (this.base) {
             this.base.detach();
@@ -197,8 +207,6 @@ export default class CompletionManager {
         }
         this.activated = false;
         this.completions = null;
-
-        // TODO: Shouldn't we set the editor property to undefined?
     }
 
     /**
@@ -207,7 +215,7 @@ export default class CompletionManager {
     private insertMatch(data?: Completion | null, options?: { deleteSuffix: boolean }): void {
         if (!data) {
             if (this.popup) {
-                data = this.popup.getData(this.popup.getRow());
+                data = this.popup.getCompletionAtRow(this.popup.getRow());
             }
             else {
                 return;
@@ -274,8 +282,8 @@ export default class CompletionManager {
     private down(): void {
         if (this.popup) {
             let row = this.popup.getRow();
-            const max = this.popup.getLength() - 1;
-            row = row >= max ? -1 : row + 1;
+            const maxRow = this.popup.getLength() - 1;
+            row = (row >= maxRow) ? -1 : row + 1;
             this.popup.setRow(row);
         }
     }
@@ -283,7 +291,7 @@ export default class CompletionManager {
     /**
      * 
      */
-    private gatherCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
+    private gatherCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => void): boolean {
         const session = editor.sessionOrThrow();
 
         this.base = new Anchor(session.docOrThrow(), position.row, position.column - prefix.length);
@@ -403,22 +411,21 @@ export default class CompletionManager {
 
         if (!this.popup) {
             this.popup = new ListViewPopup(document.body || document.documentElement);
-            // FIXME: TypeSafety on e.
-            this.popup.on("click", (e: any) => {
+            this.popupClickRemover = this.popup.on("click", (e: EditorMouseEvent) => {
                 this.insertMatch();
                 e.stop();
             });
             this.popup.focus = this.editor.focus.bind(this.editor);
-            this.popup.on('show', this.tooltipTimer.bind(null, null));
-            this.popup.on('select', this.tooltipTimer.bind(null, null));
-            this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
+            this.popupShowRemover = this.popup.on('show', this.tooltipTimer.bind(null, null));
+            this.popupSelectRemover = this.popup.on('select', this.tooltipTimer.bind(null, null));
+            this.popupHoverRemover = this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
         }
 
         if (this.completions) {
-            this.popup.setData(this.completions.filtered.sort(completionCompareFn));
+            this.popup.setCompletions(this.completions.filtered.sort(completionCompareFn));
         }
         else {
-            this.popup.setData([]);
+            this.popup.setCompletions([]);
         }
 
         // We've already done this when we attached to the editor.
@@ -449,11 +456,47 @@ export default class CompletionManager {
         }
     }
 
-    private editorChangeSelectionListener(e: any) {
+    /**
+     * 
+     */
+    private closePopup(): void {
+        if (this.popup && this.popup.isOpen) {
+            this.popup.hide();
+        }
+        if (this.popupClickRemover) {
+            this.popupClickRemover();
+            this.popupClickRemover = void 0;
+        }
+        if (this.popupShowRemover) {
+            this.popupShowRemover();
+            this.popupShowRemover = void 0;
+        }
+        if (this.popupSelectRemover) {
+            this.popupSelectRemover();
+            this.popupSelectRemover = void 0;
+        }
+        if (this.popupHoverRemover) {
+            this.popupHoverRemover();
+            this.popupHoverRemover = void 0;
+        }
+    }
 
-        const cursor = this.editor.selection.lead;
-        if (cursor.row !== this.base.row || cursor.column < this.base.column) {
-            this.detach();
+    /**
+     * To make this fire, enter a period '.' when there is already a property.
+     * Then use the right and left arrow keys.
+     * As the number of characters selected increases, the items in the list are filtered.
+     * 
+     * We use the fat arrow to bind the method correctly so that we can used it directly as a handler. 
+     */
+    private editorChangeSelectionListener = () => {
+
+        if (this.editor.selection) {
+            const cursor = this.editor.selection.lead;
+            if (this.base) {
+                if (cursor.row !== this.base.row || cursor.column < this.base.column) {
+                    this.detach();
+                }
+            }
         }
 
         if (this.activated) {
@@ -464,28 +507,35 @@ export default class CompletionManager {
         }
     }
 
-    private blurListener(e: MouseEvent) {
-        // If the user clicked on an anchor in the tooltip, open that before
-        // we close the tooltip
-        if (e.relatedTarget && e.relatedTarget['nodeName'] === "A" && e.relatedTarget['href']) {
-            window.open(e.relatedTarget['href'], "_blank");
-        }
-        // we have to check if activeElement is a child of popup because
+    /**
+     * Clicking your mouse anywhere outside of the editor with which we are interacting will fire this listener.
+     * 
+     * We use the fat arrow to bind the method correctly so that we can used it directly as a handler. 
+     */
+    private blurListener = (e: FocusEvent) => {
+        // We have to check if activeElement is a child of popup because
         // on IE preventDefault doesn't stop scrollbar from being focussed
         const el = document.activeElement;
         const textArea = this.editor.textInput.getElement();
-        const fromTooltip = e.relatedTarget && e.relatedTarget === this.tooltipNode;
+        const fromTooltip = e.relatedTarget && this.tooltipNode && this.tooltipNode.contains(e.relatedTarget as Node);
+        // const fromTooltip = e.relatedTarget && e.relatedTarget === this.tooltipNode;
         const container = this.popup && this.popup.container;
         if (el !== textArea && el.parentNode !== container && !fromTooltip && el !== this.tooltipNode && e.relatedTarget !== textArea) {
             this.detach();
         }
     }
 
-    private mousedownListener(e: any) {
+    /**
+     * Fires when the user clicks outside of the completions list.
+     */
+    private mousedownListener = (e: EditorMouseEvent) => {
         this.detach();
     }
 
-    private mousewheelListener(e: any) {
+    /**
+     * Fires when the user scrolls the mouse outside of the completions list.
+     */
+    private mousewheelListener = (e: EditorMouseEvent) => {
         this.detach();
     }
 
@@ -502,7 +552,7 @@ export default class CompletionManager {
     private updateDocTooltip(): void {
         if (this.popup) {
             const popup = this.popup;
-            const all = popup.data;
+            const all = popup.getCompletions();
             const selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
             let doc: any = null;
             if (!selected || !this.editor || !this.popup.isOpen)
@@ -527,7 +577,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @param item
+     *
      */
     private showDocTooltip(item: { docHTML?: string; docText?: string }): void {
         if (!this.tooltipNode) {
@@ -536,7 +586,7 @@ export default class CompletionManager {
             this.tooltipNode.style.margin = '0';
             this.tooltipNode.style.pointerEvents = "auto";
             this.tooltipNode.tabIndex = -1;
-            this.tooltipNode.onblur = this.blurListener.bind(this);
+            this.tooltipNode.onblur = this.blurListener;
         }
 
         const tooltipNode = this.tooltipNode;

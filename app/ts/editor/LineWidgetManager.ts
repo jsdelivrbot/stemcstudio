@@ -11,7 +11,7 @@ import Change from './Change';
  */
 export default class LineWidgetManager {
     session: EditSession;
-    editor: Editor;
+    editor: Editor | null;
     firstRow: number;
     lastRow: number;
     lineWidgets: LineWidget[];
@@ -135,9 +135,11 @@ export default class LineWidgetManager {
                     lineWidgets[start] = lineWidgets[end];
                 else
                     lineWidgets[end].hidden = hide;
-            } else {
-                if (lineWidgets[start] === lineWidgets[end])
+            }
+            else {
+                if (lineWidgets[start] === lineWidgets[end]) {
                     lineWidgets[start] = undefined;
+                }
                 lineWidgets[end].hidden = hide;
             }
         }

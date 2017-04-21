@@ -1,11 +1,11 @@
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
-import Annotation from "../Annotation";
+import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import JavaScriptMode from "./JavaScriptMode";
 import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
 import WorkerClient from "../worker/WorkerClient";
 import EditSession from "../EditSession";
+import { EditSessionEventName } from "../EditSession";
 
 export default class TypeScriptMode extends JavaScriptMode {
 
@@ -20,45 +20,21 @@ export default class TypeScriptMode extends JavaScriptMode {
 
     createWorker(session: EditSession, callback: (err: any | null, worker?: WorkerClient) => any): void {
 
-        const workerUrl = this.workerUrl;
-        const scriptImports = this.scriptImports;
+        const worker = new WorkerClient(this.workerUrl);
+        // TypeScript is unusual in the it does not use the event to update the session.
+        // This is because annotations come from the Language Service.
+        // Instead, the session update is bypassed and the session forwards the event.
+        const tearDown = hookAnnotations(worker, session, false);
+        hookTerminate(worker, session, tearDown);
 
-        const worker = new WorkerClient(workerUrl);
-
-        worker.on("terminate", function () {
-            worker.detachFromDocument();
-            session.clearAnnotations();
-        });
-
-        worker.on('annotations', function (event: { data: Annotation[] }) {
-            const annotations: Annotation[] = event.data;
-            if (annotations.length > 0) {
-                // session.setAnnotations(annotations);
-            }
-            else {
-                // session.clearAnnotations();
-            }
-            session._emit("annotations", { data: annotations });
-        });
-
+        //
+        // FIXME: Does the TypeScript worker thread really emit this event?
+        //
         worker.on("getFileNames", function (event) {
-            session._emit("getFileNames", { data: event.data });
+            // Dangerous but casting away the problem fo now.
+            session._emit("getFileNames" as EditSessionEventName, { data: event.data });
         });
 
-        try {
-            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'TypeScriptWorker', function (err: any) {
-                if (!err) {
-                    worker.attachToDocument(session.docOrThrow());
-                    callback(void 0, worker);
-                }
-                else {
-                    console.warn(`TypeScriptWorker init failed. Cause: ${err}.`);
-                    callback(err);
-                }
-            });
-        }
-        catch (e) {
-            callback(e);
-        }
+        initWorker(worker, 'TypeScriptWorker', this.scriptImports, session, callback);
     };
 }

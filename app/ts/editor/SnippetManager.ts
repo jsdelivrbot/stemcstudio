@@ -215,11 +215,12 @@ const formatStringRules: TabstopRule[] = [
     }
 ];
 
+export type SnippetManagerEventName = 'registerSnippets';
 
 /**
  *
  */
-export default class SnippetManager implements EventBus<any, SnippetManager> {
+export default class SnippetManager implements EventBus<SnippetManagerEventName, any, SnippetManager> {
 
     /**
      * A map from scope to an array of Snippet.
@@ -242,13 +243,13 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     /**
      *
      */
-    private readonly eventBus: EventEmitterClass<any, SnippetManager>;
+    private readonly eventBus: EventEmitterClass<SnippetManagerEventName, any, SnippetManager>;
 
     /**
      *
      */
     constructor() {
-        this.eventBus = new EventEmitterClass<any, SnippetManager>(this);
+        this.eventBus = new EventEmitterClass<SnippetManagerEventName, any, SnippetManager>(this);
     }
 
     private static $tokenizer = new Tokenizer<TabstopToken, TabstopStackElement, TabstopStack>({
@@ -733,14 +734,14 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     /**
      *
      */
-    on(eventName: string, callback: (event: any, source: SnippetManager) => any): void {
+    on(eventName: SnippetManagerEventName, callback: (event: any, source: SnippetManager) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
      *
      */
-    off(eventName: string, callback: (event: any, source: SnippetManager) => any): void {
+    off(eventName: SnippetManagerEventName, callback: (event: any, source: SnippetManager) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
@@ -801,11 +802,15 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 s.trigger = escapeRegExp(s.tabTrigger);
             }
 
-            s.startRe = guardedRegexp(<string>s.trigger, s.guard, true);
-            s.triggerRe = new RegExp(s.trigger, "");
+            if (s.trigger && s.guard) {
+                s.startRe = guardedRegexp(<string>s.trigger, s.guard, true);
+                s.triggerRe = new RegExp(s.trigger, "");
+            }
 
-            s.endRe = guardedRegexp(s.endTrigger, s.endGuard, true);
-            s.endTriggerRe = new RegExp(s.endTrigger, "");
+            if (s.endTrigger && s.endGuard) {
+                s.endRe = guardedRegexp(s.endTrigger, s.endGuard, true);
+                s.endTriggerRe = new RegExp(s.endTrigger, "");
+            }
         }
 
         if (Array.isArray(snippets)) {

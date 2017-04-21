@@ -67,9 +67,15 @@ export default class KeywordCompleter implements Completer {
         const session = editor.getSession();
 
         return new Promise<Completion[]>(function (resolve, reject) {
-            const state = session.getState(position.row);
-            const completions = session.modeOrThrow().getCompletions(state, session, position, prefix);
-            resolve(completions);
+            if (session) {
+                const state = session.getState(position.row);
+                const completions = session.modeOrThrow().getCompletions(state, session, position, prefix);
+                resolve(completions);
+            }
+            else {
+                console.warn("editor session is not available.");
+                resolve([]);
+            }
         });
     }
 

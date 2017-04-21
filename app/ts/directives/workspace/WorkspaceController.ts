@@ -37,7 +37,7 @@ import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
-import WorkspaceMixin from '../editor/WorkspaceMixin';
+import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
@@ -104,7 +104,7 @@ function fileExtensionIs(path: string, extension: string): boolean {
 /**
  *
  */
-export default class WorkspaceController implements WorkspaceMixin {
+export default class WorkspaceController implements WorkspaceEditorHost {
 
     /**
      * Keep track of the dependencies that are loaded in the workspace.
@@ -115,7 +115,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     private renamedFileWatchRemover: (() => void) | undefined;
     private changedLintingRemover: (() => void) | undefined;
     private changedOperatorOverloadingRemover: (() => void) | undefined;
-    private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
+    private readonly liveCodeChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
@@ -672,7 +672,8 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * 
+     * Attaches the Editor to the workspace model, enabling the IDE features.
+     * Connects a Preview change handler to all appropriate editors so that
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
@@ -703,7 +704,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
-                editor.sessionOrThrow().on('change', this.createPreviewChangeHandler(path));
+                // This listener will be removed in the detachEditor method, assuming that
+                // the 
+                editor.sessionOrThrow().on('change', this.createLiveCodeChangeHandler(path));
                 break;
             }
             case LANGUAGE_MARKDOWN: {
@@ -717,13 +720,28 @@ export default class WorkspaceController implements WorkspaceMixin {
         // The editors are attached after $onInit and so we miss the initial resize.
         editor.resize(true);
 
+        // Return a tear down function that detaches the editor.
         return () => {
             this.detachEditor(path, mode, editor);
         };
     }
 
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
-        this.wsModel.getFormattingEditsForDocument(path, settings, callback);
+    /**
+     * Requests the formatting edit text changes for a document specified by its path.
+     */
+    requestFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
+        return new Promise<TextChange[]>((resolve, reject) => {
+            function callback(err: any, textChanges: TextChange[]) {
+                if (!err) {
+                    resolve(textChanges);
+                }
+                else {
+                    reject(err);
+                }
+            };
+            // TODO: Promisify this function on the workspace model too.
+            this.wsModel.getFormattingEditsForDocument(path, settings, callback);
+        });
     }
 
     /**
@@ -803,14 +821,18 @@ export default class WorkspaceController implements WorkspaceMixin {
         return handler;
     }
 
-    private createPreviewChangeHandler(path: string): EditSessionChangeHandler {
-        const handler = (delta: Delta, session: EditSession) => {
+    /**
+     * Creates a handler for prevew changes and caches it for later removal.
+     */
+    private createLiveCodeChangeHandler(path: string): EditSessionChangeHandler {
+        const liveCodeChangeHandler = (delta: Delta, session: EditSession) => {
             if (this.wsModel && !this.wsModel.isZombie()) {
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
-        this.previewChangeHandlers[path] = handler;
-        return handler;
+        // Cache it for later removal.
+        this.liveCodeChangeHandlers[path] = liveCodeChangeHandler;
+        return liveCodeChangeHandler;
     }
 
     private createMarkdownChangeHandler(path: string): DocumentChangeHandler {
@@ -834,10 +856,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             );
             this.readmePromise = undefined;
         }, delay);
-    }
-
-    private deletePreviewChangeHandler(path: string): void {
-        delete this.previewChangeHandlers[path];
     }
 
     /**
@@ -913,13 +931,9 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * 
+     * Removes the change handler responsible for Live Coding from the Editor.
      */
-    detachEditor(path: string, mode: string, editor: Editor): void {
-        if (this.wsModel.isZombie()) {
-            return;
-        }
-
+    private removeLiveCodeChangeHandler(path: string, mode: string, editor: Editor): void {
         switch (mode) {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
@@ -940,18 +954,40 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
-                const handler = this.previewChangeHandlers[path];
-                editor.sessionOrThrow().off('change', handler);
-                this.deletePreviewChangeHandler(path);
+                // TODO: It would be better to refactor this into a single method
+                // that accesses the cache, removes the listener and clears the cache entry.
+                const liveCodeChangeHandler = this.liveCodeChangeHandlers[path];
+                if (liveCodeChangeHandler) {
+                    // TODO: We could be more defensive here and check the session.
+                    editor.sessionOrThrow().off('change', liveCodeChangeHandler);
+                    delete this.liveCodeChangeHandlers[path];
+                }
+                else {
+                    console.warn(`removeLiveCodeChangeHandler(path => ${path}, mode => ${mode}) is redundant.`);
+                }
                 break;
             }
             case LANGUAGE_MARKDOWN: {
                 break;
             }
             default: {
-                console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
+                console.warn(`removeLiveCodeChangeHandler(path => ${path}, mode => ${mode}) is being ignored.`);
             }
         }
+    }
+
+    /**
+     * 1. Removes the Live Code change handler from the Editor.
+     * 2. Detaches the editor from the workspace model, disabling IDE features.
+     */
+    detachEditor(path: string, mode: string, editor: Editor): void {
+
+        // Guard against race conditions.
+        if (this.wsModel.isZombie()) {
+            return;
+        }
+
+        this.removeLiveCodeChangeHandler(path, mode, editor);
 
         this.wsModel.detachEditor(path, editor);
     }

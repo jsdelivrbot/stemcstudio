@@ -43,7 +43,7 @@ interface InitRequestMessage {
  * </li>
  * </ul>
  */
-export default class WorkerClient implements EventBus<MessageEvent, WorkerClient>, Disposable {
+export default class WorkerClient implements EventBus<string, MessageEvent, WorkerClient>, Disposable {
 
     /**
      * The underlying Web Worker.
@@ -66,13 +66,13 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      *
      */
-    private eventBus: EventEmitterClass<MessageEvent, WorkerClient>;
+    private eventBus: EventEmitterClass<string, MessageEvent, WorkerClient>;
 
     /**
      *
      */
     constructor(private workerUrl: string) {
-        this.eventBus = new EventEmitterClass<MessageEvent, WorkerClient>(this);
+        this.eventBus = new EventEmitterClass<string, MessageEvent, WorkerClient>(this);
         this.sendDeltaQueue = this.sendDeltaQueue.bind(this);
         this.changeListener = this.changeListener.bind(this);
         this.onMessage = this.onMessage.bind(this);
@@ -80,6 +80,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * Posts a message to the worker thread causing the thread to be started.
+     * TODO: Promisify this method.
      */
     init(scriptImports: string[], moduleName: string, className: string, callback: (err: any) => any): void {
 
@@ -232,7 +233,8 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     *
+     * Attaching to the document adds a listener for change deltas.
+     * This method calls addRef on the document.
      */
     public attachToDocument(doc: Document): void {
 
@@ -258,7 +260,8 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     *
+     * Detaching from the document removes the listener for change deltas.
+     * This method calls release on the document.
      */
     public detachFromDocument(): void {
         if (this.$doc) {

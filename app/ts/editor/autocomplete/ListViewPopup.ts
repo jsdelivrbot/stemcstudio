@@ -4,6 +4,7 @@ import EditSession from '../EditSession';
 import Document from "../Document";
 import Renderer from "../Renderer";
 import Editor from "../Editor";
+import { EditorEventName } from "../Editor";
 import PixelPosition from "../PixelPosition";
 import Range from "../Range";
 import Token from "../Token";
@@ -30,7 +31,7 @@ const noop = function () { /* Do nothing. */ };
  * With an appropriate type parameter and a conversio function, this could be generalized.
  * Generalizing by simply allowing strings is not recommended.
  */
-export default class ListViewPopup implements ListView {
+export class ListViewPopup implements ListView {
 
     /**
      *
@@ -60,7 +61,7 @@ export default class ListViewPopup implements ListView {
     /**
      *
      */
-    public data: Completion[] = [];
+    private data: Completion[] = [];
 
     private screenWidth: number;
 
@@ -187,7 +188,7 @@ export default class ListViewPopup implements ListView {
             if (!data)
                 return tokens;
             if (!data.caption) {
-                data.caption = data.value || data.name;
+                data.caption = data.value || data.name || "";
             }
 
             let last = -1;
@@ -195,7 +196,7 @@ export default class ListViewPopup implements ListView {
             let c: string;
             for (let cIndex = 0, length = data.caption.length; cIndex < length; cIndex++) {
                 c = data.caption[cIndex];
-                flag = data.matchMask & (1 << cIndex) ? 1 : 0;
+                flag = (data.matchMask as number) & (1 << cIndex) ? 1 : 0;
                 if (last !== flag) {
                     tokens.push({ type: data.className || "" + (flag ? "completion-highlight" : ""), value: c });
                     last = flag;
@@ -220,11 +221,13 @@ export default class ListViewPopup implements ListView {
             return this.screenWidth = 0;
         };
 
-        // FIXME: Typing.
-        this.editor.on("changeSelection", function (this: any) {
+        this.editor.on("changeSelection", () => {
             if (this.isOpen) {
-                this.setRow(this.popup.selection.lead.row);
+                if (this.editor.selection) {
+                    this.setRow(this.editor.selection.lead.row);
+                }
             }
+            this.editor.renderer.scrollCursorIntoView();
         });
     }
 
@@ -277,28 +280,32 @@ export default class ListViewPopup implements ListView {
         this.isOpen = false;
     }
 
+    getCompletions(): Completion[] {
+        return this.data;
+    }
+
     /**
-     * @param items
+     *
      */
-    setData(items: Completion[]): void {
-        this.editor.setValue(stringRepeat("\n", items.length), -1);
-        this.data = items || [];
+    setCompletions(completions: Completion[]): void {
+        this.editor.setValue(stringRepeat("\n", completions.length), -1);
+        this.data = completions || [];
         this.setRow(0);
     }
 
     /**
-     * @param row
+     * Returns the Completion at the specified zero-based row.
      */
-    getData(row: number): Completion {
+    getCompletionAtRow(row: number): Completion {
         return this.data[row];
     }
 
-    on(eventName: string, callback: (event: any, ee: Editor) => any, capturing?: boolean): () => void {
+    on(eventName: EditorEventName, callback: (event: any, ee: Editor) => any, capturing?: boolean): () => void {
         return this.editor.on(eventName, callback, capturing);
     }
 
-    off(eventName: string, callback: (event: any, ee: Editor) => any): void {
-        return this.editor.off(eventName, callback);
+    off(eventName: EditorEventName, callback: (event: any, ee: Editor) => any, capturing?: boolean): void {
+        return this.editor.off(eventName, callback, capturing);
     }
 
     /**
@@ -362,7 +369,7 @@ export default class ListViewPopup implements ListView {
         this.editor.renderer.setThemeDark(isDark);
     }
 
-    setFontSize(fontSize: string): void {
+    setFontSize(fontSize: string | null): void {
         this.editor.setFontSize(fontSize);
     }
 

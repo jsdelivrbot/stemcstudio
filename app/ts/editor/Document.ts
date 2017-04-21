@@ -59,7 +59,7 @@ function clipPosition(doc: Document, position: Position): Position {
 
 const CHANGE = 'change';
 const CHANGE_NEW_LINE_MODE = 'changeNewLineMode';
-export type EVENT_NAME_TYPE = 'change' | 'changeNewLineMode';
+export type DocumentEventName = 'change' | 'changeNewLineMode';
 export type NewLineMode = 'auto' | 'unix' | 'windows';
 
 /**
@@ -86,7 +86,7 @@ export class Document implements Shareable {
     /**
      *
      */
-    private _eventBus: EventEmitterClass<any, Document> | undefined;
+    private _eventBus: EventEmitterClass<DocumentEventName, any, Document> | undefined;
 
     /**
      * Maintains a count of the number of references to this instance of Document.
@@ -101,7 +101,7 @@ export class Document implements Shareable {
     constructor(textOrLines: string | Array<string>) {
         this._lines = [""];
 
-        this._eventBus = new EventEmitterClass<any, Document>(this);
+        this._eventBus = new EventEmitterClass<DocumentEventName, any, Document>(this);
 
         // There has to be one line at least in the document. If you pass an empty
         // string to the insert function, nothing will happen. Workaround.
@@ -343,11 +343,11 @@ export class Document implements Shareable {
         return { row: row, column: column };
     }
 
-    on(eventName: EVENT_NAME_TYPE, callback: (event: any, source: Document) => any, capturing?: boolean): () => void {
+    on(eventName: DocumentEventName, callback: (event: any, source: Document) => any, capturing?: boolean): () => void {
         return this.eventBusOrThrow().on(eventName, callback, capturing);
     }
 
-    off(eventName: EVENT_NAME_TYPE, callback: (event: any, source: Document) => any, capturing?: boolean): void {
+    off(eventName: DocumentEventName, callback: (event: any, source: Document) => any, capturing?: boolean): void {
         return this.eventBusOrThrow().off(eventName, callback, capturing);
     }
 

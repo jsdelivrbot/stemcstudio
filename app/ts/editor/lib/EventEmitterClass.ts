@@ -8,37 +8,31 @@ const preventDefault = function (this: { defaultPrevented: boolean }) { this.def
  * N.B. The original implementation was an object, the TypeScript way is
  * designed to satisfy the compiler.
  */
-export default class EventEmitterClass<E, T> implements EventBus<E, T> {
+export default class EventEmitterClass<NAME extends string, E, T> implements EventBus<NAME, E, T> {
 
     /**
      * Each event name has multiple callbacks.
      */
-    public _eventRegistry: { [name: string]: ((event: E, source: T) => any)[] };
+    public _eventRegistry: { [name: string]: ((event: E | undefined, source: T) => void)[] };
 
     /**
      * There may be one default handler for an event too.
      */
-    private _defaultHandlers: { [name: string]: (event: E, source: T) => any };
+    private _defaultHandlers: { [name: string]: (event: E, source: T) => void };
 
     private owner: T;
 
     /**
-     * @class EventEmitterClass
-     * @constructor
-     * @param owner
+     *
      */
     constructor(owner: T) {
         this.owner = owner;
     }
 
     /**
-     * @method _dispatchEvent
-     * @param eventName {string}
-     * @param event {any}
-     * @return {any}
-     * @private
+     *
      */
-    private _dispatchEvent(eventName: string, event: E): any {
+    private _dispatchEvent(eventName: NAME, event?: E): any {
 
         if (!this._eventRegistry) {
             this._eventRegistry = {};
@@ -87,34 +81,25 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     }
 
     /**
-     * @method hasListeners
-     * @param eventName {string}
-     * @return {boolean}
+     *
      */
-    hasListeners(eventName: string): boolean {
+    hasListeners(eventName: NAME): boolean {
         const registry = this._eventRegistry;
         const listeners = registry && registry[eventName];
         return listeners && listeners.length > 0;
     }
 
     /**
-     * @method _emit
-     * @param eventName {string}
-     * @param event {E}
-     * @return {any}
+     *
      */
-    _emit(eventName: string, event?: E): any {
+    _emit(eventName: NAME, event?: E): any {
         return this._dispatchEvent(eventName, event);
     }
 
     /**
-     * @method _signal
-     * @param eventName {string}
-     * @param event {E}
-     * @return {void}
+     *
      */
-    _signal(eventName: string, event?: E) {
-
+    _signal(eventName: NAME, event?: E) {
         let listeners = (this._eventRegistry || {})[eventName];
 
         if (!listeners) {
@@ -124,13 +109,12 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         // slice just makes a copy so that we don't mess up on array bounds.
         // It's a bit expensive though?
         listeners = listeners.slice();
-        for (let i = 0, iLength = listeners.length; i < iLength; i++) {
-            // FIXME: When used standalone, EventEmitter is not the source.
-            listeners[i](event, this.owner);
+        for (const listener of listeners) {
+            listener(event, this.owner);
         }
     }
 
-    once(eventName: string, callback: (event: E, source: T) => any) {
+    once(eventName: NAME, callback: (event: E, source: T) => any) {
         const _self = this;
         if (callback) {
             this.addEventListener(eventName, function newCallback() {
@@ -140,7 +124,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         }
     }
 
-    setDefaultHandler(eventName: string, callback: (event: E, source: T) => any) {
+    setDefaultHandler(eventName: NAME, callback: (event: E, source: T) => any) {
         // FIXME: All this casting is creepy.
         let handlers: any = this._defaultHandlers;
         if (!handlers) {
@@ -161,7 +145,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         handlers[eventName] = callback;
     }
 
-    removeDefaultHandler(eventName: string, callback: (event: E, source: T) => any) {
+    removeDefaultHandler(eventName: NAME, callback: (event: E, source: T) => any) {
         // FIXME: All this casting is creepy.
         const handlers: any = this._defaultHandlers;
         if (!handlers) {
@@ -185,7 +169,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     }
 
     // Discourage usage.
-    private addEventListener(eventName: string, callback: (event: E, source: T) => void, capturing?: boolean) {
+    private addEventListener(eventName: NAME, callback: (event: E, source: T) => void, capturing?: boolean) {
         this._eventRegistry = this._eventRegistry || {};
 
         let listeners = this._eventRegistry[eventName];
@@ -207,16 +191,14 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     }
 
     /**
-     * @param eventName
-     * @param callback
-     * @param capturing
+     *
      */
-    on(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): () => void {
+    on(eventName: NAME, callback: (event: E, source: T) => any, capturing?: boolean): () => void {
         return this.addEventListener(eventName, callback, capturing);
     }
 
     // Discourage usage.
-    private removeEventListener(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean) {
+    private removeEventListener(eventName: NAME, callback: (event: E, source: T) => any, capturing?: boolean) {
         this._eventRegistry = this._eventRegistry || {};
 
         const listeners = this._eventRegistry[eventName];
@@ -229,25 +211,17 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         }
     }
 
-    // Discourage usage.
-    /*
-    private removeListener(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean) {
+    /**
+     *
+     */
+    public off(eventName: NAME, callback: (event: E, source: T) => any, capturing?: boolean): void {
         return this.removeEventListener(eventName, callback, capturing);
     }
-    */
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event: E, source: T) => any}
-     * @param [capturing] {boolean}
-     * @return {void}
+     *
      */
-    public off(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): void {
-        return this.removeEventListener(eventName, callback, capturing);
-    }
-
-    removeAllListeners(eventName: string) {
+    removeAllListeners(eventName: NAME) {
         if (this._eventRegistry) this._eventRegistry[eventName] = [];
     }
 }

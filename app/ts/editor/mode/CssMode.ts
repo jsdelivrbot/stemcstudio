@@ -1,12 +1,11 @@
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import TextMode from "./TextMode";
+import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import CssCompletions from './CssCompletions';
 import CssHighlightRules from "./CssHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import CssBehaviour from "./behaviour/CssBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import Annotation from "../Annotation";
 import EditSession from "../EditSession";
 import Position from '../Position';
 
@@ -54,43 +53,10 @@ export default class CssMode extends TextMode {
         return this.$completer.getCompletions(state, session, pos, prefix);
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
-
-        const workerUrl = this.workerUrl;
-        const scriptImports = this.scriptImports;
-
-        const worker = new WorkerClient(workerUrl);
-
-        worker.on('annotations', function (event: { data: Annotation[] }) {
-            const annotations: Annotation[] = event.data;
-            if (annotations.length > 0) {
-                session.setAnnotations(annotations);
-            }
-            else {
-                session.clearAnnotations();
-            }
-            session._emit("annotations", { data: annotations });
-        });
-
-        worker.on("terminate", function () {
-            worker.detachFromDocument();
-            session.clearAnnotations();
-        });
-
-        try {
-            worker.init(scriptImports, ACE_WORKER_MODULE_NAME, 'CssWorker', function (err: any) {
-                if (!err) {
-                    worker.attachToDocument(session.getDocument());
-                    callback(void 0, worker);
-                }
-                else {
-                    console.warn(`CssWorker $err => ${err}`);
-                    callback(err, void 0);
-                }
-            });
-        }
-        catch (e) {
-            callback(e, void 0);
-        }
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
+        const worker = new WorkerClient(this.workerUrl);
+        const tearDown = hookAnnotations(worker, session, true);
+        hookTerminate(worker, session, tearDown);
+        initWorker(worker, 'CssWorker', this.scriptImports, session, callback);
     }
 }

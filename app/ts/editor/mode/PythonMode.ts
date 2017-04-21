@@ -1,6 +1,5 @@
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
-import Annotation from "../Annotation";
 import TextMode from "./TextMode";
+import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import PythonHighlightRules from "./PythonHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
@@ -20,11 +19,11 @@ const outdents = {
 export default class PythonMode extends TextMode {
     $outdent: MatchingBraceOutdent;
     blockComment: { start: string; end: string };
-    lineCommentStart = "#";
-    $id = "ace/mode/python";
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "ace/mode/python";
+        this.lineCommentStart = "#";
         this.HighlightRules = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");
         this.$behaviour = this.$defaultBehaviour;
@@ -84,45 +83,12 @@ export default class PythonMode extends TextMode {
         }
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
+
         const worker = new WorkerClient(this.workerUrl);
+        const tearDown = hookAnnotations(worker, session, true);
+        hookTerminate(worker, session, tearDown);
 
-        worker.on('annotations', function (event: { data: Annotation[] }) {
-            const annotations: Annotation[] = event.data;
-            if (annotations.length > 0) {
-                session.setAnnotations(annotations);
-            }
-            else {
-                session.clearAnnotations();
-            }
-            session._emit("annotations", { data: annotations });
-        });
-
-        worker.on("terminate", function () {
-            worker.detachFromDocument();
-            session.clearAnnotations();
-        });
-
-        try {
-            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'PythonWorker', function (err: any) {
-                if (!err) {
-                    const doc = session.getDocument();
-                    if (doc) {
-                        worker.attachToDocument(doc);
-                        callback(void 0, worker);
-                    }
-                    else {
-                        callback(new Error("session does not have an associated document."));
-                    }
-                }
-                else {
-                    console.warn(`PythonWorker init fail: ${err}`);
-                    callback(err);
-                }
-            });
-        }
-        catch (e) {
-            callback(e);
-        }
+        initWorker(worker, 'PythonWorker', this.scriptImports, session, callback);
     }
 }

@@ -15,10 +15,12 @@ interface CommandAndArgs {
 
 type Macro = CommandAndArgs[];
 
+export type CommandManagerEventName = 'afterExec' | 'exec';
+
 /**
  *
  */
-export default class CommandManager implements EventBus<any, CommandManager> {
+export default class CommandManager implements EventBus<CommandManagerEventName, any, CommandManager> {
     /**
      *
      */
@@ -37,7 +39,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     private macros: Macro[];
     private oldMacros: Macro[];
     private $addCommandToMacro: (event: any, cm: CommandManager) => any;
-    private readonly eventBus: EventEmitterClass<any, CommandManager>;
+    private readonly eventBus: EventEmitterClass<CommandManagerEventName, any, CommandManager>;
 
     _buildKeyHash: any;
 
@@ -46,18 +48,20 @@ export default class CommandManager implements EventBus<any, CommandManager> {
      * @param commands A list of commands
      */
     constructor(platform: string, commands: Command[]) {
-        this.eventBus = new EventEmitterClass<any, CommandManager>(this);
+        this.eventBus = new EventEmitterClass<CommandManagerEventName, any, CommandManager>(this);
         this.hashHandler = new KeyboardHandler(commands, platform);
         this.eventBus.setDefaultHandler("exec", function (e: { command: Command; editor: Editor; args: any }) {
-            return e.command.exec(e.editor, e.args || {});
+            if (e.command.exec) {
+                return e.command.exec(e.editor, e.args || {});
+            }
         });
     }
 
-    setDefaultHandler(eventName: string, callback: (event: any, source: CommandManager) => any): void {
+    setDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
         this.eventBus.setDefaultHandler(eventName, callback);
     }
 
-    removeDefaultHandler(eventName: string, callback: (event: any, source: CommandManager) => any): void {
+    removeDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
         this.eventBus.removeDefaultHandler(eventName, callback);
     }
 
@@ -136,7 +140,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
             return false;
         }
 
-        if (command.isAvailable && !command.isAvailable(editor)) {
+        if (editor && command.isAvailable && !command.isAvailable(editor)) {
             return false;
         }
 
@@ -153,9 +157,10 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         return retvalue === false ? false : true;
     }
 
-    toggleRecording(editor: Editor): boolean {
-        if (this.$inReplay)
+    toggleRecording(editor: Editor): boolean | undefined {
+        if (this.$inReplay) {
             return void 0;
+        }
 
         if (editor) {
             editor._emit("changeStatus");
@@ -186,7 +191,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         return this.recording = true;
     }
 
-    replay(editor: Editor): boolean {
+    replay(editor: Editor): boolean | undefined {
         if (this.$inReplay || !this.macros)
             return void 0;
 
@@ -222,7 +227,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
      * @param eventName
      * @param callback
      */
-    on(eventName: string, callback: (event: any, source: CommandManager) => any, capturing?: boolean): void {
+    on(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any, capturing?: boolean): void {
         this.eventBus.on(eventName, callback, capturing);
     }
 
@@ -230,7 +235,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
      * @param eventName
      * @param callback
      */
-    off(eventName: string, callback: (event: any, source: CommandManager) => any): void {
+    off(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
         this.eventBus.off(eventName, callback);
     }
 }

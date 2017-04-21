@@ -76,11 +76,11 @@ export default class KeyboardHandler {
      *
      */
     addCommand(command: Command): void {
-        if (this.commands[command.name]) {
+        if (this.commands[command.name as string]) {
             this.removeCommand(command);
         }
 
-        this.commands[command.name] = command;
+        this.commands[command.name as string] = command;
 
         if (command.bindKey) {
             this._buildKeyHash(command);
@@ -91,7 +91,7 @@ export default class KeyboardHandler {
      *
      */
     removeCommand(command: string | Command /* | { [name: string]: Command }*/, keepCommand = false): void {
-        const name = (typeof command === 'string' ? command : command.name);
+        const name = (typeof command === 'string' ? command : command.name) as string;
         command = this.commands[name];
         if (!keepCommand) {
             delete this.commands[name];
@@ -121,7 +121,8 @@ export default class KeyboardHandler {
 
     /**
      * Binds key alternatives to an action.
-     * This is a convenience function for adding a command.
+     * This is a convenience function for adding a command, where
+     * exec is the action, bindKey and name are the key.
      * The name of the command is derived from the key alternatives string.
      */
     bindKey(key: string, action: EditorAction/*, position*/): void {
@@ -204,8 +205,9 @@ export default class KeyboardHandler {
      */
     public _buildKeyHash(command: Command): void {
         const binding = command.bindKey;
-        if (!binding)
+        if (!binding) {
             return;
+        }
 
         const key = typeof binding === "string" ? binding : binding[this.platform];
         this.bindCommand(key, command);
@@ -217,19 +219,23 @@ export default class KeyboardHandler {
      */
     parseKeys(keys: string): KeyHash {
         // todo support keychains 
-        if (keys.indexOf(" ") !== -1)
-            keys = keys.split(/\s+/).pop();
+        if (keys.indexOf(" ") !== -1) {
+            keys = keys.split(/\s+/).pop() as string;
+        }
 
         const parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function (x: any) { return x; });
-        let key = parts.pop();
+        let key = parts.pop() as string;
 
         const keyCode = keyCodes[key];
-        if (FUNCTION_KEYS[keyCode])
+        if (FUNCTION_KEYS[keyCode]) {
             key = FUNCTION_KEYS[keyCode].toLowerCase();
-        else if (!parts.length)
+        }
+        else if (!parts.length) {
             return { key: key, hashId: -1 };
-        else if (parts.length === 1 && parts[0] === "shift")
+        }
+        else if (parts.length === 1 && parts[0] === "shift") {
             return { key: key.toUpperCase(), hashId: -1 };
+        }
 
         let hashId = 0;
         for (let i = parts.length; i--;) {

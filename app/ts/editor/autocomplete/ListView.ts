@@ -6,8 +6,9 @@ interface ListView {
     container: HTMLElement;
     on(eventName: string, callback: Function, capturing?: boolean): void;
     focus(): void;
-    getData(row: number): Completion;
-    setData(data: Completion[]): void;
+    getCompletionAtRow(row: number): Completion;
+    getCompletions(): Completion[];
+    setCompletions(completions: Completion[]): void;
     getRow(): number;
     setRow(row: number): void;
     getTextLeftOffset(): number;

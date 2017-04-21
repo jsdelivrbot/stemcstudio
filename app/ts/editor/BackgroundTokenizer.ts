@@ -12,12 +12,14 @@ import { HighlighterStackElement, HighlighterStack, HighlighterToken } from './m
  */
 const NOT_RUNNING = 0;
 
+export type BackgroundTokenizerEventName = 'update';
+
 /**
  * Tokenizes an Document in the background, and caches the tokenized rows for future use. 
  * 
  * If a certain row is changed, everything below that row is re-tokenized.
  */
-export default class BackgroundTokenizer implements EventBus<any, BackgroundTokenizer> {
+export default class BackgroundTokenizer implements EventBus<BackgroundTokenizerEventName, any, BackgroundTokenizer> {
     /**
      * This is the value returned by setTimeout, so it's really a timer handle.
      * There are some conditionals looking for a falsey value, so we use zero where needed.
@@ -44,13 +46,14 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      */
     private $worker: () => void;
 
-    private eventBus: EventEmitterClass<any, BackgroundTokenizer>;
+    // TODO: We would like type safety in the event name.
+    private eventBus: EventEmitterClass<BackgroundTokenizerEventName, any, BackgroundTokenizer>;
 
     /**
      * Creates a new background tokenizer object using a tokenizer supplied by the language mode.
      */
     constructor(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>, unused?: EditSession) {
-        this.eventBus = new EventEmitterClass<any, BackgroundTokenizer>(this);
+        this.eventBus = new EventEmitterClass<BackgroundTokenizerEventName, any, BackgroundTokenizer>(this);
         this.tokenizer = tokenizer;
 
         /**
@@ -115,14 +118,14 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      *
      */
-    on(eventName: string, callback: (event: any, source: BackgroundTokenizer) => any): void {
+    on(eventName: BackgroundTokenizerEventName, callback: (event: any, source: BackgroundTokenizer) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
      *
      */
-    off(eventName: string, callback: (event: any, source: BackgroundTokenizer) => any): void {
+    off(eventName: BackgroundTokenizerEventName, callback: (event: any, source: BackgroundTokenizer) => any): void {
         this.eventBus.off(eventName, callback);
     }
 

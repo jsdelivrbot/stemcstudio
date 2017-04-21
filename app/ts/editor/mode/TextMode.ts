@@ -1,10 +1,11 @@
+import { ACE_WORKER_MODULE_NAME } from '../../constants';
+import Annotation from "../Annotation";
 import BlockComment from './BlockComment';
 import Completion from "../Completion";
 import Position from "../Position";
 import Tokenizer from "../Tokenizer";
 import TextHighlightRules from "./TextHighlightRules";
 import Behaviour from "./Behaviour";
-// import BehaviourCallback from "../BehaviourCallback";
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import FoldMode from './folding/FoldMode';
 import { packages } from "../unicode";
@@ -16,12 +17,92 @@ import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
 import EditSession from '../EditSession';
+import { workerCompleted } from '../EditSession';
 import Editor from '../Editor';
 import WorkerClient from "../worker/WorkerClient";
 import LanguageMode from '../LanguageMode';
-// import Rule from '../Rule';
 
-// type HighlighterRule = Rule<HighlighterStackElement, HighlighterStack>
+/**
+ * Standard hook of 'annotations' event.
+ * When the event fires...
+ * 1. Relay annotations to the session, causing a 'changeAnnotation' event (when update is true).
+ * 2. Tell the session to emit an 'workerCompleted' event.
+ * The tear-down function is returned, usually consumed by the hookTerminate function.
+ */
+export function hookAnnotations(worker: WorkerClient, session: EditSession, updateSessionAnnotations: boolean): () => void {
+    return worker.on('annotations', function (event: { data: Annotation[] }) {
+        const annotations: Annotation[] = event.data;
+        if (updateSessionAnnotations) {
+            if (annotations.length > 0) {
+                session.setAnnotations(annotations);
+            }
+            else {
+                session.clearAnnotations();
+            }
+        }
+        session._emit(workerCompleted, { data: annotations });
+    });
+}
+
+/**
+ * Standard hook of 'terminate' event.
+ * When the event fires...
+ * 1. Removes its own 'terminate' handler, since we don't need it anymore.
+ * 2. Runs the tearDown function (which should remove the 'annotations' handler.
+ * 3. Detaches the worker from the document.
+ * 4. Clears the annotations in the session.
+ * No tear-down function is returned because we reflexively clean up.
+ */
+export function hookTerminate(worker: WorkerClient, session: EditSession, tearDown: () => void): void {
+    const terminate = 'terminate';
+    /**
+     * This is the function that is run when the event is received.
+     * We give it a name so that we can remove the event handler.
+     */
+    function termHandler() {
+        worker.off(terminate, termHandler);
+        tearDown();
+        worker.detachFromDocument();
+        session.clearAnnotations();
+    }
+    // Wire up the event to the handler.
+    worker.on(terminate, termHandler);
+}
+
+/**
+ * Standard implementation for initializing an editor worker thread.
+ * @param worker 
+ * @param moduleName 
+ * @param scriptImports 
+ * @param session 
+ * @param callback 
+ */
+export function initWorker(worker: WorkerClient, moduleName: string, scriptImports: string[], session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
+    try {
+        worker.init(scriptImports, ACE_WORKER_MODULE_NAME, moduleName, function (err: any) {
+            if (!err) {
+                const doc = session.getDocument();
+                if (doc) {
+                    worker.attachToDocument(doc);
+                    callback(void 0, worker);
+                }
+                else {
+                    const msg = `${moduleName} init fail. Cause: session does not have an associated document.`;
+                    console.warn(msg);
+                    callback(new Error(msg));
+                }
+            }
+            else {
+                const msg = `${moduleName} init fail. Cause: ${err}`;
+                console.warn(msg);
+                callback(new Error(msg));
+            }
+        });
+    }
+    catch (e) {
+        callback(e);
+    }
+}
 
 /**
  *
@@ -372,7 +453,8 @@ export default class TextMode implements LanguageMode {
      *
      */
     createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
-        callback(void 0, void 0);
+        // TextMode does not create a worker.
+        callback(void 0);
     }
 
     createModeDelegates(mapping: { [prefix: string]: LanguageModeFactory }) {
