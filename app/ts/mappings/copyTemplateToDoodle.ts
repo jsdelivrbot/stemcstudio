@@ -1,7 +1,7 @@
-import ITemplate from '../services/templates/ITemplate';
+import { ITemplate } from '../services/templates/template';
 import Doodle from '../services/doodles/Doodle';
 
-export default function copyTemplateToDoodle(template: ITemplate, doodle: Doodle): void {
+export function copyTemplateToDoodle(template: ITemplate, doodle: Doodle): void {
 
     // Copy the files first so that the setting properties side-effect of creating files
     // does not cause duplicated files.

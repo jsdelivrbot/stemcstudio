@@ -1,4 +1,22 @@
-import ITemplateFile from './ITemplateFile';
+/**
+ * 
+ */
+export interface ITemplateFile {
+    content: string;
+    language: string;
+}
+/**
+ * 
+ */
+export interface TemplateOptions {
+    mainJs: string;
+    mainTs: string;
+    tab: string;
+}
+
+export interface ITemplateFileBuilder {
+    (options: TemplateOptions): ITemplateFile;
+}
 
 export interface ITemplate {
     name: string;
@@ -15,5 +33,3 @@ export interface ITemplate {
     noLoopCheck: boolean;
     operatorOverloading: boolean;
 }
-
-export default ITemplate;

@@ -1,12 +1,12 @@
 import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
-import copyNewProjectSettingsToDoodle from '../mappings/copyNewProjectSettingsToDoodle';
+import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
 import DoodleScope from '../scopes/DoodleScope';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
-import ITemplate from '../services/templates/ITemplate';
+import { ITemplate } from '../services/templates/template';
 import ModalDialog from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import NewProjectDialog from '../modules/project/NewProjectDialog';

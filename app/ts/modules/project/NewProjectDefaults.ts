@@ -1,4 +1,4 @@
-import ITemplate from '../../services/templates/ITemplate';
+import { ITemplate } from '../../services/templates/template';
 
 /**
  * The defaults for creating a new project.

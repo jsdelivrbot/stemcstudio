@@ -1,9 +1,12 @@
-import copyTemplateToDoodle from './copyTemplateToDoodle';
+import { copyTemplateToDoodle } from './copyTemplateToDoodle';
 import Doodle from '../services/doodles/Doodle';
 import hyphenate from '../utils/hyphenate';
-import NewProjectSettings from '../modules/project/NewProjectSettings';
+import { NewProjectSettings } from '../modules/project/NewProjectSettings';
 
-export default function copyNewProjectSettingsToDoodle(settings: NewProjectSettings, doodle: Doodle): void {
+export function copyNewProjectSettingsToDoodle(settings: NewProjectSettings, doodle: Doodle): void {
+    //
+    //
+    //
     copyTemplateToDoodle(settings.template, doodle);
     doodle.name = hyphenate(settings.description);
     doodle.description = settings.description;

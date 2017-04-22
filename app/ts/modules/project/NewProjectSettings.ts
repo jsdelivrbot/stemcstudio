@@ -1,4 +1,4 @@
-import ITemplate from '../../services/templates/ITemplate';
+import { ITemplate } from '../../services/templates/template';
 
 /**
  * The chosen values for creating a new project.
@@ -18,4 +18,3 @@ export interface NewProjectSettings {
     version: string;
 }
 
-export default NewProjectSettings;

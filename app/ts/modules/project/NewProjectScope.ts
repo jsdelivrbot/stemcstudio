@@ -1,5 +1,5 @@
 import { IFormController, IRootScopeService } from 'angular';
-import ITemplate from '../../services/templates/ITemplate';
+import { ITemplate } from '../../services/templates/template';
 
 /**
  * 

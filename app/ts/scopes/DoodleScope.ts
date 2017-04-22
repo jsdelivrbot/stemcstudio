@@ -1,6 +1,6 @@
 import BodyScope from './BodyScope';
 import ExplorerMixin from './ExplorerMixin';
-import ITemplate from '../services/templates/ITemplate';
+import { ITemplate } from '../services/templates/template';
 import ProblemsMixin from './ProblemsMixin';
 
 interface DoodleScope extends BodyScope, ExplorerMixin, ProblemsMixin {

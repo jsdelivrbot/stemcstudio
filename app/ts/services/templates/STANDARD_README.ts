@@ -1,7 +1,9 @@
+import { TemplateOptions } from './template';
+
 const NEWLINE = '\n';
 
-export default function MINIMAL_README(): string {
-    // const _ = tabString;
+export function STANDARD_README(options: TemplateOptions): string {
+    // const _ = options.tab;
     const lines: string[] = [];
     lines.push("# Getting Started with STEMCstudio");
     lines.push("");
@@ -47,17 +49,17 @@ export default function MINIMAL_README(): string {
     lines.push("");
     lines.push("Your ES6 modules are inserted at the ```// CODE-MARKER```.");
     lines.push("");
-    lines.push("Importing your top-level module, e.g. index.js using");
+    lines.push(`Importing your top-level module, e.g. ${options.mainJs} using`);
     lines.push("");
     lines.push("```javascript");
-    lines.push("System.import('./index.js')");
+    lines.push(`System.import('./${options.mainJs}').catch((e) => {console.error(e)})`);
     lines.push("```");
     lines.push("");
     lines.push("will begin the execution of your program.");
     lines.push("");
     lines.push("The System module loader will manage dependencies for you through `import` and `export` statements.");
     lines.push("");
-    lines.push("## index.ts");
+    lines.push(`## ${options.mainTs}`);
     lines.push("");
     lines.push("Notice how it `import`s its dependencies and how they are `export`ed from other files.");
     lines.push("");
