@@ -581,35 +581,35 @@ function copies(target) {
         },
         {
             src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
         },
         {
             src: "node_modules/davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.js')
         },
         {
             src: "node_modules/davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.css')
         },
         {
             src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.js')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.css')
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.0.9/index.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -646,11 +646,11 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-newton')
         },
         {
-            src: "bower_components/davinci-newton/dist/index.d.ts",
+            src: "node_modules/davinci-newton/dist/index.d.ts",
             dest: prepend(target, 'vendor/davinci-newton@0.0.38/index.d.ts')
         },
         {
-            src: "bower_components/davinci-newton/dist/davinci-newton.js",
+            src: "node_modules/davinci-newton/dist/davinci-newton.js",
             dest: prepend(target, 'vendor/davinci-newton@0.0.38/davinci-newton.js')
         },
         {

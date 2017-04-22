@@ -1,0 +1,1 @@
+module.exports = require("npm:@angular/router@4.0.3/bundles/router.umd.js");

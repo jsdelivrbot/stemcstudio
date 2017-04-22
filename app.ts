@@ -152,7 +152,7 @@ app.get("/*", (req: Request, res: Response, next: Function) => {
         jspmSystemJs: `jspm_packages/system.js?version=${npm.version}`,
         jspmConfigJs: `jspm.config.js?version=${npm.version}`,
         jspmCoreJs: `jspm_packages/npm/core-js@2.4.1/client/shim.min.js`,
-        jspmZoneJs: `jspm_packages/npm/zone.js@0.8.5/dist/zone.js`,
+        jspmZoneJs: `jspm_packages/npm/zone.js@0.8.8/dist/zone.js`,
         jspmReflectJs: `jspm_packages/npm/reflect-metadata@0.1.10/Reflect.js`,
         npm: npm,
         version: npm.version

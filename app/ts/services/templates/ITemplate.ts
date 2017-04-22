@@ -1,6 +1,6 @@
 import ITemplateFile from './ITemplateFile';
 
-interface ITemplate {
+export interface ITemplate {
     name: string;
     description: string;
     files: { [path: string]: ITemplateFile };
