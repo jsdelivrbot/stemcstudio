@@ -1134,7 +1134,11 @@ declare namespace NEWTON {
     /**
      * 
      */
-    class RigidBody3 implements SimObject {
+    class RigidBody3 implements ForceBody3, SimObject {
+        /**
+         * The application defined unique identifier.
+         */
+        uuid: string
         /**
          * The center of mass position vector in local coordinates.
          */
