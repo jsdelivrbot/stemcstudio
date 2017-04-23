@@ -49,6 +49,7 @@ const VERSION_NEWTON = '0.0.38';
 const VERSION_PLOTLY = '1.24.1';
 const VERSION_REACT = '15.4.2';
 const VERSION_REACT_DOM = '15.4.2';
+const VERSION_REDUX = '3.6.0';
 const VERSION_RxJS = '5.3.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
@@ -147,6 +148,9 @@ function react(fileName: string): string {
 }
 function reactDOM(fileName: string): string {
     return vendorFolder('react-dom', VERSION_REACT_DOM, void 0, fileName);
+}
+function redux(fileName: string): string {
+    return vendorFolder('redux', VERSION_REDUX, void 0, fileName);
 }
 function RxJS(fileName: string): string {
     return vendorFolder('RxJS', VERSION_RxJS, void 0, fileName);
@@ -548,6 +552,21 @@ export class OptionManager implements IOptionManager {
                 js: [reactDOM('react-dom.js')],
                 minJs: [reactDOM('react-dom.min.js')],
                 dependencies: { 'react': VERSION_REACT }
+            },
+            {
+                packageName: 'redux',
+                moduleName: 'redux',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
+                description: "Predictable state container.",
+                homepage: 'redux.js.org',
+                version: VERSION_REDUX,
+                visible: true,
+                css: [],
+                dts: redux(INDEX_DTS),
+                js: [redux('redux.js')],
+                minJs: [redux('redux.min.js')],
+                dependencies: {}
             },
             {
                 packageName: 'rxjs/Rx',

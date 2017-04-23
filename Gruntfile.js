@@ -708,6 +708,18 @@ function copies(target) {
         {
             src: "node_modules/immutable/dist/immutable.min.js",
             dest: prepend(target, 'vendor/immutable@3.8.1/immutable.min.js')
+        },
+        {
+            src: "node_modules/redux/index.d.ts",
+            dest: prepend(target, 'vendor/redux@3.6.0/index.d.ts')
+        },
+        {
+            src: "node_modules/redux/dist/redux.js",
+            dest: prepend(target, 'vendor/redux@3.6.0/redux.js')
+        },
+        {
+            src: "node_modules/redux/dist/redux.min.js",
+            dest: prepend(target, 'vendor/redux@3.6.0/redux.min.js')
         }
     ]
 }

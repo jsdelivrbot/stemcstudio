@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.34",
+  "version": "2.24.35",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -93,6 +93,7 @@
     "protractor": "^3.3.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "redux": "^3.6.0",
     "systemjs-builder": "0.15.35",
     "tslint": "^4.5.1",
     "two.js": "^0.6.0",
