@@ -41,6 +41,7 @@ const VERSION_D3_V3 = '3.5.17';
 const VERSION_EIGHT = '6.1.0';
 const VERSION_GEOCAS = '1.13.0';
 const VERSION_GLMATRIX = '2.3.2';
+const VERSION_IMMUTABLE = '3.8.1';
 const VERSION_JASMINE = '2.5.2';
 const VERSION_JQUERY = '2.1.4';
 const VERSION_JSXGRAPH = '0.99.5';
@@ -122,6 +123,9 @@ function geocas(subFolder: string, fileName: string): string {
 }
 function glMatrix(fileName: string): string {
     return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
+}
+function immutable(fileName: string): string {
+    return vendorFolder('immutable', VERSION_IMMUTABLE, void 0, fileName);
 }
 function jasmine(fileName: string): string {
     return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName);
@@ -313,6 +317,21 @@ export class OptionManager implements IOptionManager {
                 dts: glMatrix('gl-matrix.d.ts'),
                 js: [glMatrix('gl-matrix-min.js')],
                 minJs: [glMatrix('gl-matrix-min.js')],
+                dependencies: {}
+            },
+            {
+                packageName: 'immutable',
+                moduleName: 'immutable',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'Immutable',
+                description: "Immutable Data Collections.",
+                homepage: 'https://facebook.github.io/immutable-js/',
+                version: VERSION_IMMUTABLE,
+                visible: true,
+                css: [],
+                dts: immutable(INDEX_DTS),
+                js: [immutable('immutable.js')],
+                minJs: [immutable('immutable.min.js')],
                 dependencies: {}
             },
             {

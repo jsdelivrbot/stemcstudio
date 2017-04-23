@@ -696,6 +696,18 @@ function copies(target) {
         {
             src: "../GeoCAS/dist/geocas.js",
             dest: prepend(target, 'vendor/GeoCAS@1.13.0/dist/geocas.js')
+        },
+        {
+            src: "node_modules/immutable/dist/immutable-nonambient.d.ts",
+            dest: prepend(target, 'vendor/immutable@3.8.1/index.d.ts')
+        },
+        {
+            src: "node_modules/immutable/dist/immutable.js",
+            dest: prepend(target, 'vendor/immutable@3.8.1/immutable.js')
+        },
+        {
+            src: "node_modules/immutable/dist/immutable.min.js",
+            dest: prepend(target, 'vendor/immutable@3.8.1/immutable.min.js')
         }
     ]
 }
