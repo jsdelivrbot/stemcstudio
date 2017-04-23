@@ -36,5 +36,5 @@ export default class TypeScriptMode extends JavaScriptMode {
         });
 
         initWorker(worker, 'TypeScriptWorker', this.scriptImports, session, callback);
-    };
+    }
 }

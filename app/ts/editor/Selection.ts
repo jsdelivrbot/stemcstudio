@@ -155,7 +155,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
             return removed[0];
         }
         return NOTHING;
-    };
+    }
 
     /**
      * Returns a concatenation of all the ranges.
@@ -213,7 +213,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
 
             rectSel.forEach((range: Range) => { this.addRange(range); });
         }
-    };
+    }
 
     /**
      * Returns `true` if the selection is empty.
@@ -599,7 +599,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
         else if (this.ranges[0]) {
             this.fromOrientedRange(this.ranges[0]);
         }
-    };
+    }
 
     /**
      * Moves the cursor up one row.
@@ -1160,7 +1160,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
         this.ranges.unshift(range);
         const event: SelectionAddRangeEvent = { range: range };
         this.eventBus._signal("addRange", event);
-    };
+    }
 
     /**
      *
@@ -1196,7 +1196,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
         if (lastRange && !lastRange.isEqual(this.getRange())) {
             this.fromOrientedRange(lastRange);
         }
-    };
+    }
 
     /**
      * Used by the Editor

@@ -151,5 +151,5 @@ export default class TokenTooltip extends Tooltip {
         removeListener(this.editor.renderer.scroller, "mousemove", this.onMouseMove);
         removeListener(this.editor.renderer.content, "mouseout", this.onMouseOut);
         delete this.editor['tokenTooltip'];
-    };
+    }
 }

@@ -148,7 +148,7 @@ class SearchBox {
     $initElements(sb: HTMLDivElement) {
         this.searchForm = <HTMLDivElement>sb.querySelector(".ace_search_form");
         this.replaceForm = <HTMLDivElement>sb.querySelector(".ace_replace_form");
-        this.searchOptions = sb.querySelector(".ace_search_options");
+        this.searchOptions = sb.querySelector(".ace_search_options") as Element;
         this.regExpOption = <HTMLInputElement>sb.querySelector("[action=toggleRegexpMode]");
         this.caseSensitiveOption = <HTMLInputElement>sb.querySelector("[action=toggleCaseSensitive]");
         this.wholeWordOption = <HTMLInputElement>sb.querySelector("[action=toggleWholeWords]");
@@ -168,12 +168,17 @@ class SearchBox {
         });
         addListener(sb, "click", (e: MouseEvent) => {
             const t = e.srcElement;
-            const action = t.getAttribute("action");
-            if (action && this[action]) {
-                this[action]();
-            }
-            else if (action && this.$searchBarKb.commands[action]) {
-                this.$searchBarKb.commands[action].exec(this);
+            if (t) {
+                const action = t.getAttribute("action");
+                if (action && this[action]) {
+                    this[action]();
+                }
+                else if (action && this.$searchBarKb.commands[action]) {
+                    const command = this.$searchBarKb.commands[action];
+                    if (command.exec) {
+                        command.exec(this);
+                    }
+                }
             }
             stopPropagation(e);
         });
@@ -208,14 +213,14 @@ class SearchBox {
                 this.highlight();
             }
         });
-    };
+    }
 
     $syncOptions() {
         setCssClass(this.regExpOption, "checked", this.regExpOption.checked);
         setCssClass(this.wholeWordOption, "checked", this.wholeWordOption.checked);
         setCssClass(this.caseSensitiveOption, "checked", this.caseSensitiveOption.checked);
         this.find(false, false);
-    };
+    }
 
     highlight(re?: RegExp): void {
         if (this.editor.session) {
@@ -315,4 +320,4 @@ export default function showFindReplace(editor: Editor, isReplace?: boolean): vo
     const searchBox = editor[SEARCH_EXTENSION] as SearchBox;
     const sb = searchBox || new SearchBox(editor);
     sb.show(editor.sessionOrThrow().getTextRange(), isReplace);
-};
+}

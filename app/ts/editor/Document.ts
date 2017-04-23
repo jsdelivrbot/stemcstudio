@@ -636,7 +636,7 @@ export class Document implements Shareable {
             action: (delta.action === "insert" ? "remove" : "insert"),
             lines: delta.lines.slice()
         });
-    };
+    }
 
     /**
      * Converts an index position in a document to a `{row, column}` object.

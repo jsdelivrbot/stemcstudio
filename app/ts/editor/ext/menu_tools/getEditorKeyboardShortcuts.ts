@@ -38,12 +38,12 @@ export default function getEditorKeyboardShortcuts(editor: Editor): KeyboardShor
                 for (let key in commands) {
                     if (commands.hasOwnProperty(key)) {
                         const command: Command = commands[key];
-                        if (commandMap[command.name]) {
-                            commandMap[command.name].key += "|" + modString + key;
+                        if (commandMap[command.name as string]) {
+                            commandMap[command.name as string].key += "|" + modString + key;
                         }
                         else {
-                            commandMap[command.name] = { key: modString + key, command: command.name };
-                            keybindings.push(commandMap[command.name]);
+                            commandMap[command.name as string] = { key: modString + key, command: command.name as string };
+                            keybindings.push(commandMap[command.name as string]);
                         }
                     }
                 }
@@ -51,4 +51,4 @@ export default function getEditorKeyboardShortcuts(editor: Editor): KeyboardShor
         }
     });
     return keybindings;
-};
+}

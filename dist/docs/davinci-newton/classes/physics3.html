@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Physics3 | NEWTON 0.0.38</title>
+	<title>Physics3 | NEWTON 0.0.39</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.38</a>
+					<a href="../index.html" class="title">NEWTON 0.0.39</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -137,6 +137,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="physics3.html#bodies" class="tsd-kind-icon">bodies</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="physics3.html#showforces" class="tsd-kind-icon">show<wbr>Forces</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="physics3.html#simlist" class="tsd-kind-icon">sim<wbr>List</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="physics3.html#time" class="tsd-kind-icon">time</a></li>
@@ -444,6 +445,28 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+					<a name="bodies" class="tsd-anchor"></a>
+					<h3>bodies</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> bodies<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/forcebody3.html" class="tsd-signature-type">ForceBody3</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L516">davinci-newton/engine3D/Physics3.ts:516</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Provides a reference to the bodies in the simulation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/forcebody3.html" class="tsd-signature-type">ForceBody3</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 					<a name="showforces" class="tsd-anchor"></a>
 					<h3>show<wbr>Forces</h3>
@@ -496,7 +519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L516">davinci-newton/engine3D/Physics3.ts:516</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L523">davinci-newton/engine3D/Physics3.ts:523</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="simlist.html" class="tsd-signature-type">SimList</a></h4>
@@ -530,7 +553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L523">davinci-newton/engine3D/Physics3.ts:523</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L530">davinci-newton/engine3D/Physics3.ts:530</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="varslist.html" class="tsd-signature-type">VarsList</a></h4>
@@ -1078,13 +1101,13 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/energysystem.html">EnergySystem</a>.<a href="../interfaces/energysystem.html#totalenergy">totalEnergy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L531">davinci-newton/engine3D/Physics3.ts:531</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/8db0240/src/davinci-newton/engine3D/Physics3.ts#L538">davinci-newton/engine3D/Physics3.ts:538</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Computes the sum of the translational and rotational kinetic energy of all bodies,
-									and the potential energy due to body interactions.</p>
+									and the potential energy due to body interactions for the force laws.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
@@ -1199,6 +1222,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="physics3.html#offset_position_z" class="tsd-kind-icon">OFFSET_<wbr>POSITION_<wbr>Z</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+								<a href="physics3.html#bodies" class="tsd-kind-icon">bodies</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="physics3.html#showforces" class="tsd-kind-icon">show<wbr>Forces</a>

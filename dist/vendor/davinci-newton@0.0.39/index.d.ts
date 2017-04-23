@@ -1334,47 +1334,63 @@ declare namespace NEWTON {
         static OFFSET_ANGULAR_MOMENTUM_YZ: number;
         static OFFSET_ANGULAR_MOMENTUM_ZX: number;
         static OFFSET_ANGULAR_MOMENTUM_XY: number;
+
+        /**
+         * 
+         */
+        bodies: ForceBody3[];
+
         /**
          * Determines whether calculated forces will be added to the simulation list.
          */
         showForces: boolean;
+
         /**
          * 
          */
         simList: SimList;
+
         /**
          * 
          */
         time: number;
+
         /**
          * 
          */
         varsList: VarsList;
+
         /**
          * Constructs a Physics engine for 3D simulations.
          */
         constructor();
+
         /**
          * 
          */
         addBody(body: ForceBody3): void;
+
         /**
          * 
          */
         addForceLaw(forceLaw: ForceLaw3): void;
+
         /**
          * Handler for actions to be performed after the evaluate calls and setState.
          * Computes the system energy, linear momentum and angular momentum.
          */
         epilog(): void;
+
         /**
          * 
          */
         evaluate(state: number[], rateOfChange: number[], Δt: number, uomTime?: Unit): void;
+
         /**
          * 
          */
         getState(): number[];
+
         /**
          * 
          */
@@ -1525,45 +1541,60 @@ declare namespace NEWTON {
      */
     interface ForceBody3 {
         /**
+         * A placeholder for applications to define a unique identifier. 
+         */
+        uuid: string;
+
+        /**
          * 
          */
         L: BivectorE3;
+
         /**
          * 
          */
         M: GeometricE3;
+
         /**
          * 
          */
         P: VectorE3;
+
         /**
          * 
          */
         R: SpinorE3;
+
         /**
          * 
          */
         X: VectorE3;
+
         /**
          * 
          */
         expireTime: number;
+
         /**
          * 
          */
         varsIndex: number;
+
         /**
          * 
          */
         Ω: BivectorE3;
+
         /**
          * 
          */
         rotationalEnergy(): Geometric3;
+
         /**
          * 
          */
         translationalEnergy(): Geometric3;
+
         /**
          * 
          */

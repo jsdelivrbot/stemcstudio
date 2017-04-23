@@ -398,5 +398,5 @@ export default class UploadFlow {
                 }
             }
         });
-    };
+    }
 }

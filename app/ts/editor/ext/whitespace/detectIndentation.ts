@@ -67,7 +67,7 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
 
     if (spaceIndents > tabIndents + 1)
         return { ch: " ", length: tabLength };
-};
+}
 
 export default function detectIndentation(session: EditSession) {
     const lines: string[] = session.getLines(0, 1000);

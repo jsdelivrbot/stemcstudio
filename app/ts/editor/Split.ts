@@ -93,7 +93,7 @@ export default class Split {
             }
         }
         this.resize();
-    };
+    }
 
     /**
      * Returns the number of splits.
@@ -122,7 +122,7 @@ export default class Split {
      */
     focus(): void {
         this.$cEditor.focus();
-    };
+    }
 
     /** 
      * Blurs the current editor.
@@ -139,7 +139,7 @@ export default class Split {
         this.$editors.forEach(function (editor) {
             editor.setThemeCss(themeId, href);
         });
-    };
+    }
 
     /** 
      * Sets the keyboard handler for the editor.
@@ -159,7 +159,7 @@ export default class Split {
      */
     forEach(callback, scope?) {
         this.$editors.forEach(callback, scope);
-    };
+    }
 
 
     /** 
@@ -286,7 +286,7 @@ export default class Split {
                 editor.resize();
             }
         }
-    };
+    }
 }
 
 class UndoManagerProxy {
@@ -321,7 +321,7 @@ class UndoManagerProxy {
 
     hasUndo() {
         return this.$u.hasUndo();
-    };
+    }
 
     hasRedo() {
         return this.$u.hasRedo();

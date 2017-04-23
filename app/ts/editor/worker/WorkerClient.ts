@@ -18,7 +18,7 @@ interface InitRequestMessage {
     moduleName: string;
     className: string;
     callbackId: number;
-};
+}
 
 /**
  * <p>

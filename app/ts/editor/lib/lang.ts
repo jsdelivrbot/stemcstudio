@@ -31,7 +31,7 @@ const trimEndRegexp = /\s\s*$/;
 
 export function stringTrimLeft(s: string): string {
     return s.replace(trimBeginRegexp, '');
-};
+}
 
 export function stringTrimRight(s: string): string {
     return s.replace(trimEndRegexp, '');
@@ -78,8 +78,8 @@ export function deepCopy<T>(obj: T): T {
     return copy;
 }
 
-export function arrayToMap<T>(xs: string[], value?: T): { [name: string]: T } {
-    const map: { [name: string]: T } = {};
+export function arrayToMap<T>(xs: string[], value?: T): { [name: string]: T | undefined } {
+    const map: { [name: string]: T | undefined } = {};
     for (let i = 0, iLength = xs.length; i < iLength; i++) {
         map[xs[i]] = value;
     }
@@ -128,12 +128,12 @@ export function getMatchOffsets(s: string, searchValue: RegExp): MatchOffset[] {
     });
 
     return matches;
-};
+}
 
 /* deprecated */
 export function deferredCall(fcn: Function) {
 
-    let timer: number = null;
+    let timer: number | null = null;
     const callback = function () {
         timer = null;
         fcn();
@@ -154,8 +154,10 @@ export function deferredCall(fcn: Function) {
     };
 
     deferred.cancel = function () {
-        clearTimeout(timer);
-        timer = null;
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
         return deferred;
     };
 
@@ -164,4 +166,4 @@ export function deferredCall(fcn: Function) {
     };
 
     return deferred;
-};
+}

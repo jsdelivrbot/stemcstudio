@@ -738,7 +738,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                 else {
                     reject(err);
                 }
-            };
+            }
             // TODO: Promisify this function on the workspace model too.
             this.wsModel.getFormattingEditsForDocument(path, settings, callback);
         });

@@ -280,6 +280,7 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
 
         this.$mouseHandler = new MouseHandler(this);
 
+        // tslint:disable-next-line:no-unused-expression
         new FoldHandler(this);
 
         this.$blockScrolling = 0;
@@ -3706,7 +3707,7 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
         }
 
         return ranges.length;
-    };
+    }
 
     /**
      * Attempts to find `needle` within the document.
@@ -4052,6 +4053,7 @@ class MouseHandler implements IGestureHandler {
         this.selectByLines = makeExtendSelectionBy(editor, this, "getLineRange");
         this.selectByWords = makeExtendSelectionBy(editor, this, "getWordRange");
 
+        // tslint:disable-next-line:no-unused-expression
         new GutterHandler(this);
         //      FIXME: new DragdropHandler(this);
 

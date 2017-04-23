@@ -33,4 +33,4 @@ export function assert(condition, message?, args?) {
         doAssertFailure('', null, message, Array.prototype.slice.call(arguments, 2));
     }
     return condition;
-};
+}

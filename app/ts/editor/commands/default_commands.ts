@@ -656,7 +656,7 @@ const commands: Command[] = [
                             curLine = " " + curLine;
                         }
                         insertLine += curLine;
-                    };
+                    }
 
                     if (selectionEnd.row + 1 < (editor.session.doc.getLength() - 1)) {
                         // Don't insert a newline at the end of the document
