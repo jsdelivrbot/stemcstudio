@@ -9,7 +9,7 @@ block content
       navigator.serviceWorker
         .register('/sw.js')
         .then(function() {
-          /* console.log("STEMCstudio service worker registered."); */
+          /* console.log("tsCodeHub service worker registered."); */
         });
     }
   script.
@@ -22,4 +22,4 @@ block content
     };
     System.cacheBust = '?bust=' + Date.now();
     System.import('js/main.js');
-  div(data-ui-view) Please standby while we download STEMCstudio #{version}
+  div(data-ui-view) Please standby while we download tsCodeHub #{version}

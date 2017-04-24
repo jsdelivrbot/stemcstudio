@@ -12,15 +12,15 @@
                     <brand />
                 </div>
                 <button type="button" class="btn btn-primary navbar-btn" ng-click='clickCodeNow()'>Code Now!</button>
-                <button ng-if='FEATURE_COOKBOOK_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goCookbook()'>Cookbook</button>
-                <button ng-if='FEATURE_TUTORIALS_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goTutorials()'>Tutorials</button>
-                <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button>
-                <!--button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button-->
-                <a role="button" class="btn btn-secondary navbar-btn" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a>
+                <!-- button ng-if='FEATURE_COOKBOOK_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goCookbook()'>Cookbook</button -->
+                <!-- button ng-if='FEATURE_TUTORIALS_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goTutorials()'>Tutorials</button -->
+                <!-- button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button -->
+                <!-- button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button -->
+                <!-- a role="button" class="btn btn-secondary navbar-btn" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>
                 <form class="navbar-search pull-right" ng-submit='doSearch()'>
-                    <input type="text" ng-model='params.query' class="search-query" placeholder="Search STEMC arXiv">
+                    <input type="text" ng-model='params.query' class="search-query" placeholder="Search tsCodeHub arXiv">
                 </form>
             </div>
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
@@ -42,7 +42,7 @@
             <h1>
                 <logo-text version='{{version}}' />
             </h1>
-            <p>Expressing Ideas through Computational Modeling</p>
+            <p>Seriously fun Live Coding!</p>
         </div>
     </div>
     <div class='container md-docs-container'>
@@ -50,7 +50,7 @@
             <div class='col-md-9' role='main'>
                 <div class='md-docs-section' ng-if='params.query'>
                     <!-- Search -->
-                    <h1 id='overview' class='page-header'>STEMC arXiv</h1>
+                    <h1 id='overview' class='page-header'>tsCodeHub arXiv</h1>
                     <div class="thumbnails">
                         <article class="thumbnail" ng-repeat='doodle in doodleRefs'>
                             <header>
@@ -97,9 +97,9 @@
                         <p><span>Suggestions</span>:</p>
                         <ul>
                             <li>Code Now!</li>
-                            <li>Learn using the Tutorials.</li>
-                            <li>Take a look at some of the Examples.</li>
-                            <li>Search the STEMC arXiv.</li>
+                            <!-- li>Learn using the Tutorials.</li -->
+                            <!-- li>Take a look at some of the Examples.</li -->
+                            <li>Search the tsCodeHub arXiv.</li>
                         </ul>
                     </div>
                 </div>

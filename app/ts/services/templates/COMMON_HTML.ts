@@ -14,7 +14,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<!--");
-    lines.push(_ + "STEMCstudio HTML file template.");
+    lines.push(_ + "tsCodeHub HTML file template.");
     lines.push(_ + "The marker below comments define the locations for CSS, CSV, GLSL,");
     lines.push(_ + "JavaScript and transpiled TypeScript insertion.");
     lines.push(_ + "You may make changes to this file, but these markers should be preseved.");

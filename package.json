@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.37",
+  "version": "2.24.38",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -15,7 +15,7 @@
     "serve-web": "NODE_ENV=development node web.js",
     "typings": "typings"
   },
-  "author": "David Holmes",
+  "author": "David Geo Holmes",
   "license": "MIT",
   "dependencies": {
     "@angular/common": "^4.0.3",

@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 @Component({
     selector: 'brand',
     // Place the template on one line in order to avoid spaces between the parts of the brand name.
-    template: "<span class='md-logo-text-stem'>STEM</span><span class='md-logo-text-math'>C</span><span class='md-logo-text-studio'>studio</span>"
+    template: "<span class='md-logo-text-stem'>ts</span><span class='md-logo-text-math'>Code</span><span class='md-logo-text-studio'>Hub</span>"
 })
 export class BrandComponent implements OnInit, OnDestroy {
 

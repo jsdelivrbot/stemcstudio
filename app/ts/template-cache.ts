@@ -473,7 +473,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "								<a ng-click='doUpload()' role='button'>Upload to GitHub</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a ng-click='doPublish()' role='button'>Publish to STEMC arXiv</a>\n" +
+    "								<a ng-click='doPublish()' role='button'>Publish to tsCodeHub arXiv</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
     "								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
@@ -800,15 +800,15 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                    <brand />\n" +
     "                </div>\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
-    "                <button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button>\n" +
-    "                <button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button>\n" +
-    "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
-    "                <!--button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button-->\n" +
-    "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a>\n" +
+    "                <!-- button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button -->\n" +
+    "                <!-- button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button -->\n" +
+    "                <!-- button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button -->\n" +
+    "                <!-- button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button -->\n" +
+    "                <!-- a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
-    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search STEMC arXiv\">\n" +
+    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search tsCodeHub arXiv\">\n" +
     "                </form>\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
@@ -830,7 +830,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <h1>\n" +
     "                <logo-text version='{{version}}' />\n" +
     "            </h1>\n" +
-    "            <p>Expressing Ideas through Computational Modeling</p>\n" +
+    "            <p>Seriously fun Live Coding!</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +
@@ -838,7 +838,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <div class='col-md-9' role='main'>\n" +
     "                <div class='md-docs-section' ng-if='params.query'>\n" +
     "                    <!-- Search -->\n" +
-    "                    <h1 id='overview' class='page-header'>STEMC arXiv</h1>\n" +
+    "                    <h1 id='overview' class='page-header'>tsCodeHub arXiv</h1>\n" +
     "                    <div class=\"thumbnails\">\n" +
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
@@ -885,9 +885,9 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                        <p><span>Suggestions</span>:</p>\n" +
     "                        <ul>\n" +
     "                            <li>Code Now!</li>\n" +
-    "                            <li>Learn using the Tutorials.</li>\n" +
-    "                            <li>Take a look at some of the Examples.</li>\n" +
-    "                            <li>Search the STEMC arXiv.</li>\n" +
+    "                            <!-- li>Learn using the Tutorials.</li -->\n" +
+    "                            <!-- li>Take a look at some of the Examples.</li -->\n" +
+    "                            <li>Search the tsCodeHub arXiv.</li>\n" +
     "                        </ul>\n" +
     "                    </div>\n" +
     "                </div>\n" +

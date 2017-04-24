@@ -5,7 +5,7 @@ const NEWLINE = '\n';
 export function STANDARD_README(options: TemplateOptions): string {
     // const _ = options.tab;
     const lines: string[] = [];
-    lines.push("# Getting Started with STEMCstudio");
+    lines.push("# Getting Started with tsCodeHub");
     lines.push("");
     lines.push("## Overview");
     lines.push("");
@@ -17,7 +17,7 @@ export function STANDARD_README(options: TemplateOptions): string {
     lines.push("");
     lines.push("It also explains how the various files work together.");
     lines.push("");
-    lines.push("*For information on specific libraries, e.g. WebGL Graphics and Geometric Algebra, please see the examples and consult the links in the Properties menu.*");
+    lines.push("*For information on specific libraries, e.g. WebGL Graphics and Geometric Algebra, please see the User Guide and consult the links in the Properties menu.*");
     lines.push("");
     lines.push("## Modularity");
     lines.push("");
@@ -32,7 +32,7 @@ export function STANDARD_README(options: TemplateOptions): string {
     lines.push("## Documentation");
     lines.push("");
     lines.push([
-        "Documentation of your software can take many forms. STEMCstudio supports the *Markdown* format ",
+        "Documentation of your software can take many forms. tsCodeHub supports the *Markdown* format ",
         "making it easy to create application- or library-level documentation. ",
         "The contents of the `README.md` file, transpiled to HTML, are displayed while ",
         "your application is *not* running. The `README.md` file is also a prominent artifact in GitHub."].join(''));
@@ -94,7 +94,7 @@ export function STANDARD_README(options: TemplateOptions): string {
     lines.push("");
     lines.push("MathJax: \\\\[\\nabla M \\ne 0\\\\]");
     lines.push("");
-    lines.push("Copyright (c) 2016 David Geo Holmes.");
+    lines.push("Copyright (c) 2015-2017 David Geo Holmes.");
     lines.push("");
     return lines.join(NEWLINE).concat(NEWLINE);
 }
