@@ -9,7 +9,7 @@ import QuickInfoTooltipHost from './QuickInfoTooltipHost';
  * Returns the document position based upon the MouseEvent offset.
  * If the Editor no longer has an EditSession, it returns undefined.
  */
-function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: number): Position {
+function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: number): Position | undefined {
 
     const renderer = editor.renderer;
     // var offset = (x + r.scrollLeft - r.$padding) / r.characterWidth;
@@ -81,24 +81,29 @@ export default class QuickInfoTooltip extends Tooltip {
                 this.mouseMoveTimer = window.setTimeout(() => {
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);
                     if (documentPosition) {
-                        const document = this.editor.getSession().getDocument();
-                        this.host.getQuickInfoAtPosition(this.path, document.positionToIndex(documentPosition), (err: any, quickInfo: QuickInfo) => {
-                            if (!err) {
-                                if (quickInfo) {
-                                    // The displayParts and documentation are tokenized according to TypeScript conventions.
-                                    // TODO: This information could be used to popup a syntax highlighted editor.
-                                    let tip = `<b>${displayPartsToHtml(quickInfo.displayParts)}</b>`;
-                                    if (quickInfo.documentation) {
-                                        tip += `<br/><i>${displayPartsToHtml(quickInfo.documentation)}</i>`;
+                        const session = this.editor.getSession();
+                        if (session) {
+                            const document = session.getDocument();
+                            if (document) {
+                                this.host.getQuickInfoAtPosition(this.path, document.positionToIndex(documentPosition), (err: any, quickInfo: QuickInfo) => {
+                                    if (!err) {
+                                        if (quickInfo) {
+                                            // The displayParts and documentation are tokenized according to TypeScript conventions.
+                                            // TODO: This information could be used to popup a syntax highlighted editor.
+                                            let tip = `<b>${displayPartsToHtml(quickInfo.displayParts)}</b>`;
+                                            if (quickInfo.documentation) {
+                                                tip += `<br/><i>${displayPartsToHtml(quickInfo.documentation)}</i>`;
+                                            }
+                                            if (tip.length > 0) {
+                                                this.setHtml(tip);
+                                                this.setPosition(event.x, event.y + 10);
+                                                this.show();
+                                            }
+                                        }
                                     }
-                                    if (tip.length > 0) {
-                                        this.setHtml(tip);
-                                        this.setPosition(event.x, event.y + 10);
-                                        this.show();
-                                    }
-                                }
+                                });
                             }
-                        });
+                        }
                     }
                 }, 800);
             }

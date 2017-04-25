@@ -23,6 +23,14 @@ export default function scriptURL(domain: string, fileName: string, VENDOR_FOLDE
         if (startsWith(fileName, 'https://')) {
             return fileName;
         }
+        /*
+        else if (startsWith(fileName, '/node_modules')) {
+            return fileName;
+        }
+        else if (startsWith(fileName, '/jspm_packages')) {
+            return fileName;
+        }
+        */
         else {
             // TODO: While we migrate options, everything is still local.
             return domain + '/js/' + fileName;

@@ -47,6 +47,7 @@ import { RoomListener } from '../rooms/RoomListener';
 import SnippetCompleter from '../../editor/SnippetCompleter';
 import StringShareableMap from '../../collections/StringShareableMap';
 import TextChange from '../../editor/workspace/TextChange';
+import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
 import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
 import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import WsFile from './WsFile';
@@ -57,17 +58,30 @@ import { WorkspaceRoomListener } from './WorkspaceRoomListener';
 import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
 
+//
+// RxJS imports
+//
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/debounceTime';
+
 const NEWLINE = '\n';
 
 /**
  * Symbolic constant for the package.json file.
  */
-const FILENAME_META = 'package.json';
+const PACKAGE_DOT_JSON = 'package.json';
+
+/**
+ * Symbolic constant for the tsconfig.json file.
+ */
+const TSCONFIG_DOT_JSON = 'tsconfig.json';
 
 /**
  * Symbolic constant for the tslint.json file.
  */
-const FILENAME_TSLINT_JSON = 'tslint.json';
+const TSLINT_DOT_JSON = 'tslint.json';
 
 // The order of importing is important.
 // Loading of scripts is synchronous.
@@ -250,6 +264,7 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
+const TSCONFIG_SYNCH_DELAY_MILLISECONDS = 250;
 /**
  * Synchronize after 0.75 seconds of inactivity.
  */
@@ -298,6 +313,17 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
         room.setEdits(path, edits);
     };
 }
+
+/**
+ * We don't need to export this symbolic constant because we have an Observable of the same name.
+ */
+const changedCompilerSettingsEventName = 'changedCompilerSettings';
+
+export type WsModelEventName = 'changedCompilerSettings'
+    | 'changedLinting'
+    | 'changedOperatorOverloading'
+    | 'outputFiles'
+    | 'renamedFile';
 
 /**
  * The workspace data model.
@@ -416,6 +442,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private readonly saveDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
 
     /**
+     * A subscription to the tsconfig.json file `change` events in order to keep the
+     * Language Service up-to-date with TypeScript compiler settings.
+     */
+    private tsconfigSubscription: Subscription | undefined;
+
+    /**
      * Slightly unusual reference counting because of:
      * 1) Operating as a service.
      * 2) Handling lifetimes of Editors.
@@ -445,7 +477,13 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * 
      */
-    private readonly eventBus: EventBus<any, WsModel> = new EventBus<any, WsModel>(this);
+    private readonly eventBus = new EventBus<WsModelEventName, any, WsModel>(this);
+
+    /**
+     * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
+     */
+    private readonly changedCompilerSettingsEventBus = new EventBus<WsModelEventName, { err: any; settings: TsConfigSettings }, WsModel>(this);
+    public readonly changedCompilerSettings: Observable<TsConfigSettings>;
 
     /**
      * Used to control logging of the Language Service.
@@ -475,6 +513,16 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     constructor(private doodles: DoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
+        this.changedCompilerSettings = new Observable<TsConfigSettings>((observer: Observer<TsConfigSettings>) => {
+            return this.changedCompilerSettingsEventBus.watch(changedCompilerSettingsEventName, ({ err, settings }) => {
+                if (!err) {
+                    observer.next(settings);
+                }
+                else {
+                    observer.error(err);
+                }
+            });
+        });
     }
 
     /**
@@ -664,8 +712,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * 1. Output files being emitted.
      * 2. File rename.
      * 3. Change of Operator Overloading property.
+     * 
+     * TODO: Replace this with type-safe Observable(s).
      */
-    watch<T>(eventName: string, callback: (event: T, source: WsModel) => void): () => any {
+    watch<T>(eventName: WsModelEventName, callback: (event: T, source: WsModel) => void): () => any {
         return this.eventBus.watch(eventName, callback);
     }
 
@@ -803,7 +853,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    synchScriptTarget(scriptTarget: ScriptTarget): Promise<string> {
+    synchScriptTarget(scriptTarget: ScriptTarget): Promise<ScriptTarget> {
         return new Promise<string>((resolve, reject) => {
             this.setScriptTarget(scriptTarget, function (reason) {
                 if (!reason) {
@@ -830,6 +880,36 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    synchTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
+        return new Promise<TsConfigSettings>((resolve, reject) => {
+            this.setTsConfig(settings, function (reason) {
+                if (!reason) {
+                    resolve(settings);
+                }
+                else {
+                    reject(reason);
+                }
+            });
+        });
+    }
+
+    /**
+     *
+     */
+    private setTsConfig(settings: TsConfigSettings, callback: (err: any) => any): void {
+        checkCallback(callback);
+        if (this.languageServiceProxy) {
+            this.inFlight++;
+            this.languageServiceProxy.setTsConfig(settings, (err: any) => {
+                this.inFlight--;
+                callback(err);
+            });
+        }
+        else {
+            callback(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+        }
+    }
+
     setTrace(trace: boolean): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             // We won't bother tracking inFlight for tracing.
@@ -845,7 +925,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 this.languageServiceProxy.setTrace(trace, callback);
             }
             else {
-                reject(new Error("trace is not available."));
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
             }
         });
     }
@@ -1045,7 +1125,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * Begins monitoring the Document at the specified path for changes and adds the script to the LanguageService.
+     * Begins monitoring the Document at the specified path for changes.
+     * TypeScript and JavaScript files are monitored and added to the Language Service.
+     * All files are monitored so that changes trigger an update to local storage.
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
         if (this.traceLifecycle) {
@@ -1073,7 +1155,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                         this.outputFilesForPath(path);
                                     }
                                     else {
-                                        console.warn(`applyDelta ${JSON.stringify(delta, null, 2)} to '${path}' failed: ${err}`);
+                                        console.warn(LANGUAGE_SERVICE_NOT_AVAILABLE);
                                     }
                                 });
                             }
@@ -1091,6 +1173,38 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     this.ensureScript(path, doc.getValue(), hook);
                 }
                 else {
+                    switch (path) {
+                        case TSCONFIG_DOT_JSON: {
+                            this.tsconfigSubscription = doc.changeEvents
+                                .debounceTime(TSCONFIG_SYNCH_DELAY_MILLISECONDS)
+                                .subscribe((delta) => {
+                                    const tsconfig = this.tsconfigSettings;
+                                    if (tsconfig) {
+                                        if (tsconfig && this.languageServiceProxy) {
+                                            this.inFlight++;
+                                            this.languageServiceProxy.setTsConfig(tsconfig, (err, settings) => {
+                                                this.inFlight--;
+                                                this.changedCompilerSettingsEventBus.emit(changedCompilerSettingsEventName, { err, settings });
+                                            });
+                                        }
+                                        else {
+                                            console.warn(`Unable to process ${JSON.stringify(delta, null, 2)} from ${TSCONFIG_DOT_JSON}`);
+                                        }
+                                    }
+                                    else {
+                                        // There is an error in the tsconfig.json file.
+                                    }
+                                });
+                            break;
+                        }
+                        case TSLINT_DOT_JSON: {
+                            break;
+                        }
+                        default: {
+                            // console.warn(`No Language Service monitoring for ${path}`);
+                        }
+                    }
+                    // Fire back the completion asynchronously.
                     window.setTimeout(function () {
                         callback(void 0);
                     }, 0);
@@ -1143,6 +1257,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     }
                     else {
                         setTimeout(callback, 0);
+                    }
+
+                    if (this.tsconfigSubscription) {
+                        this.tsconfigSubscription.unsubscribe();
+                        this.tsconfigSubscription = void 0;
                     }
 
                     // Monitoring for Local Storage.
@@ -1499,7 +1618,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             }
         }
         catch (e) {
-            console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set dependencies property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
@@ -1592,7 +1711,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             file.setText(stringifyFileContent(metaInfo));
         }
         catch (e) {
-            console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set name property in file '${PACKAGE_DOT_JSON}'.`);
         }
         finally {
             file.release();
@@ -1622,7 +1741,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             file.setText(stringifyFileContent(metaInfo));
         }
         catch (e) {
-            console.warn(`Unable to set noLoopCheck property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set noLoopCheck property in file '${PACKAGE_DOT_JSON}'.`);
         }
         finally {
             file.release();
@@ -1666,7 +1785,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 }
             }
             catch (e) {
-                console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'. Cause: ${e}`);
+                console.warn(`Unable to set operatorOverloading property in file '${PACKAGE_DOT_JSON}'. Cause: ${e}`);
             }
             finally {
                 file.release();
@@ -1702,7 +1821,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 }, 0);
             }
             catch (e) {
-                console.warn(`Unable to set linting property in file '${FILENAME_META}'. Cause: ${e}`);
+                console.warn(`Unable to set linting property in file '${PACKAGE_DOT_JSON}'. Cause: ${e}`);
             }
             finally {
                 file.release();
@@ -2130,6 +2249,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     /**
      * Returns the file at the specified path.
+     * The caller must release the file when the reference is no longer needed.
      */
     findFileByPath(path: string): WsFile | undefined {
         if (this.files) {
@@ -2343,7 +2463,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * Determines whether this workspace has a package.json file.
      */
     private existsPackageJson(): boolean {
-        return this.existsFile(FILENAME_META);
+        return this.existsFile(PACKAGE_DOT_JSON);
     }
 
     /**
@@ -2363,8 +2483,43 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * The caller must release the file when the reference is no longer needed.
+     */
+    private ensureTsConfigJson(): WsFile {
+        const existingFile = this.findFileByPath(TSCONFIG_DOT_JSON);
+        if (!existingFile) {
+            const configuration: TsConfigSettings = {
+                allowJs: true,
+                declaration: true,
+                emitDecoratorMetadata: true,
+                experimentalDecorators: true,
+                // TODO jsx => React?
+                module: 'system',
+                noImplicitAny: true,
+                noImplicitReturns: true,
+                noImplicitThis: true,
+                noUnusedLocals: true,
+                noUnusedParameters: true,
+                operatorOverloading: true,
+                preserveConstEnums: true,
+                removeComments: false,
+                sourceMap: true,
+                strictNullChecks: true,
+                suppressImplicitAnyIndexErrors: true,
+                target: 'es5',
+                traceResolution: true
+            };
+            const content = stringifyFileContent(configuration);
+            return this.ensureFile(TSCONFIG_DOT_JSON, content);
+        }
+        else {
+            return existingFile;
+        }
+    }
+
     private ensureTsLintJson(): WsFile {
-        const existingFile = this.findFileByPath(FILENAME_TSLINT_JSON);
+        const existingFile = this.findFileByPath(TSLINT_DOT_JSON);
         if (!existingFile) {
             const configuration: TsLintSettings = {};
             const rules: { [name: string]: boolean | RuleArgumentType[] } = {};
@@ -2397,10 +2552,32 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             rules['use-isnan'] = true;
             configuration.rules = rules;
             const content = stringifyFileContent(configuration);
-            return this.ensureFile(FILENAME_TSLINT_JSON, content);
+            return this.ensureFile(TSLINT_DOT_JSON, content);
         }
         else {
             return existingFile;
+        }
+    }
+
+    /**
+     * Returns the parsed tsconfig.json settings.
+     * Returns undefined if there is a problem. 
+     */
+    get tsconfigSettings(): TsConfigSettings | undefined {
+        try {
+            // Beware: We could have a tsconfig.json that doesn't parse.
+            // We must ensure that the user can recover the situation.
+            const file = this.ensureTsConfigJson();
+            const text = file.getText();
+            file.release();
+            return JSON.parse(text);
+        }
+        catch (reason) {
+            // TODO: Unfortunately, the JSON parser reports the position as a character offset,
+            // but at least the JSON worker puts the error marker in the right place.
+            // TODO: The explorer file does not get appropriate highlighting.
+            // console.warn(`Unable to parse the ${TSCONFIG_DOT_JSON} file. Reason: ${reason}`);
+            return void 0;
         }
     }
 
@@ -2416,17 +2593,26 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             file.release();
             return JSON.parse(text);
         }
-        catch (e) {
+        catch (reason) {
+            // console.warn(`Unable to parse the ${TSLINT_DOT_JSON} file. Reason: ${reason}`);
             return void 0;
         }
     }
 
+    /**
+     * Ensures the existence of a package.json file.
+     * If the file does not exist, it will be created with a single empty object content.
+     * The caller must release the returned file when the reference is no longer needed.
+     */
     private ensurePackageJson(): WsFile {
-        return this.ensureFile(FILENAME_META, '{}');
+        return this.ensureFile(PACKAGE_DOT_JSON, '{}');
     }
 
     /**
+     * Ensures that a file exists at the specified path, and provides default content.
      * This method is used for ensuring the existence of the package.json and tslint.json files.
+     * The caller must release the returned file when the reference is no longer needed.
+     * TODO: It would be more efficient for the content to be provided by a function.
      */
     private ensureFile(path: string, content: string): WsFile {
         if (!this.existsFile(path)) {

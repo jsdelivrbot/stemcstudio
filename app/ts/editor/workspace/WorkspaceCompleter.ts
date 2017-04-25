@@ -23,23 +23,34 @@ export default class WorkspaceCompleter implements Completer {
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
-        const document = editor.getSession().getDocument();
 
         return new Promise<Completion[]>((resolve: (completions: Completion[]) => any, reject: (err: any) => any) => {
-            this.workspace.getCompletionsAtPosition(this.fileName, document.positionToIndex(position), prefix)
-                .then(function (entries: CompletionEntry[]) {
-                    resolve(entries.map(function (entry) {
-                        return {
-                            caption: entry.name,
-                            value: entry.name,
-                            score: 0,
-                            meta: entry.kind
-                        };
-                    }));
-                })
-                .catch(function (err) {
-                    reject(err);
-                });
+            const session = editor.getSession();
+            if (session) {
+                const document = session.getDocument();
+                if (document) {
+                    this.workspace.getCompletionsAtPosition(this.fileName, document.positionToIndex(position), prefix)
+                        .then(function (entries: CompletionEntry[]) {
+                            resolve(entries.map(function (entry) {
+                                return {
+                                    caption: entry.name,
+                                    value: entry.name,
+                                    score: 0,
+                                    meta: entry.kind
+                                };
+                            }));
+                        })
+                        .catch(function (err) {
+                            reject(err);
+                        });
+                }
+                else {
+                    reject(new Error("document is missing"));
+                }
+            }
+            else {
+                reject(new Error("session is missing"));
+            }
         });
     }
 

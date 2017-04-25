@@ -60,9 +60,9 @@ export default class PublishFlow {
             },
             (facts, session, next) => {
                 const params: SubmitParams = {
-                    owner: this.wsModel.owner,
-                    gistId: this.wsModel.gistId,
-                    repo: this.wsModel.repo,
+                    owner: this.wsModel.owner as string,
+                    gistId: this.wsModel.gistId as string,
+                    repo: this.wsModel.repo as string,
                     title: this.wsModel.description as string,
                     author: this.wsModel.author as string,
                     keywords: this.wsModel.keywords,

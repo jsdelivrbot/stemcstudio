@@ -52,7 +52,8 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     }
 
     /**
-     *
+     * Returns the element at the specified key.
+     * The caller must release the element when the element reference is no longer needed.
      */
     public get(key: string): V {
         const element = this.elements[key];

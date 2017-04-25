@@ -77,8 +77,16 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
-                        const promise1 = this.wsModel.synchOperatorOverloading();
-                        Promise.all([promise1])
+                        const promises: Promise<any>[] = [];
+                        promises.push(this.wsModel.synchOperatorOverloading());
+                        const tsconfig = this.wsModel.tsconfigSettings;
+                        if (tsconfig) {
+                            promises.push(this.wsModel.synchTsConfig(tsconfig));
+                        }
+                        else {
+                            console.warn("tsconfig will not be used");
+                        }
+                        Promise.all(promises)
                             .then(() => {
                                 this.wsModel.refreshDiagnostics(function (err) {
                                     callback(err);

@@ -74,12 +74,12 @@ export default function updateWorkspaceTypings(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, optionManager);
 
-    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName, dts: option.dts }; });
+    const rmvUnits: Unit[] = rmvOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName as string, dts: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, optionManager);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName, dts: option.dts }; });
+    let addUnits: Unit[] = addOpts.map(function (option) { return { packageName: option.packageName, moduleName: option.moduleName as string, dts: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {

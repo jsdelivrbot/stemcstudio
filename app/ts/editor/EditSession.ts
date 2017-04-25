@@ -270,7 +270,7 @@ export default class EditSession implements EventBus<EditSessionEventName, any, 
     private screenWidth: number;
     public lineWidgets: (LineWidget | undefined)[] | null = null;
     private lineWidgetsWidth: number;
-    public lineWidgetWidth: number;
+    public lineWidgetWidth: number | null;
     public $getWidgetScreenLength: () => number;
     /**
      * This is a marker identifier for which XML or HTML tag to highlight.

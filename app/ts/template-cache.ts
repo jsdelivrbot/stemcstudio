@@ -802,9 +802,9 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
     "                <!-- button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button -->\n" +
     "                <!-- button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button -->\n" +
-    "                <!-- button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button -->\n" +
+    "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <!-- button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button -->\n" +
-    "                <!-- a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->\n" +
+    "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
@@ -830,7 +830,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <h1>\n" +
     "                <logo-text version='{{version}}' />\n" +
     "            </h1>\n" +
-    "            <p>Seriously fun Live Coding!</p>\n" +
+    "            <p>Live Collaborative Coding in a Gist</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +

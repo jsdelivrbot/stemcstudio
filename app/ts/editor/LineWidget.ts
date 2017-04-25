@@ -11,7 +11,7 @@ interface LineWidget {
     rowCount?: number;
     coverLine?: boolean;
     coverGutter: boolean;
-    session?: EditSession;
+    session?: EditSession | null;
     editor?: Editor;
     h?: number;
     w?: number;
@@ -24,7 +24,7 @@ interface LineWidget {
     hidden?: boolean;
     _inDocument?: boolean;
     $oldWidget?: LineWidget;
-    $fold?: Fold;
+    $fold?: Fold | null;
     destroy?: () => any;
 }
 

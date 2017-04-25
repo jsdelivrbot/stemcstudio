@@ -25,10 +25,12 @@ const ensurePackageName = function (packageName: string): string {
  * Eventually, all TypeScript definition files will be named this way.
  */
 const INDEX_DTS = 'index.d.ts';
-
-// const VERSION_ANGULAR_CORE = '4.0.1';
-// const VERSION_ANGULAR_PLATFORM_BROWSER = '4.0.1';
-// const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.0.1';
+//
+// TODO: Getting Angular to work in the browser may require hand-coding the d.ts files?
+//
+const VERSION_ANGULAR_CORE = '4.0.3';
+const VERSION_ANGULAR_PLATFORM_BROWSER = '4.0.3';
+const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.0.3';
 const VERSION_ANGULARJS = '1.5.3';
 // const VERSION_ASYNC = '1.4.2';
 const VERSION_BACONJS = '0.7.89';
@@ -89,6 +91,15 @@ function vendorFolder(packageFolder: string, version: string | undefined, subFol
 // Functions defining the name of the folder and version being used.
 function angularJS(fileName: string): string {
     return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
+}
+function angularCore(fileName: string): string {
+    return vendorFolder('@angular/core', VERSION_ANGULAR_CORE, void 0, fileName);
+}
+function angularPlatformBrowser(fileName: string): string {
+    return vendorFolder('@angular/platform-browser', VERSION_ANGULAR_PLATFORM_BROWSER, void 0, fileName);
+}
+function angularPlatformBrowserDynamic(fileName: string): string {
+    return vendorFolder('@angular/platform-browser-dynamic', VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC, void 0, fileName);
 }
 /*
 function async(fileName: string): string {
@@ -187,33 +198,32 @@ export class OptionManager implements IOptionManager {
      */
     constructor() {
         this._options = [
-            /*
             {
                 packageName: '@angular/core',
                 moduleName: '@angular/core',
-                libraryKind: LibraryKind.UMD,
-                globalName: '@angular/core',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
                 description: "",
                 homepage: '',
                 version: VERSION_ANGULAR_CORE,
                 visible: true,
                 css: [],
-                dts: `/node_modules/@angular/core/core.d.ts`,
-                js: [`/jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
-                minJs: [`/jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
+                dts: angularCore(INDEX_DTS),
+                js: [`jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
+                minJs: [`jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
                 dependencies: {}
             },
             {
                 packageName: '@angular/platform-browser',
                 moduleName: '@angular/platform-browser',
-                libraryKind: LibraryKind.UMD,
-                globalName: '@angular/platform-browser',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
                 description: "",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER,
                 visible: true,
                 css: [],
-                dts: `node_modules/@angular/platform-browser/platform-browser.d.ts`,
+                dts: angularPlatformBrowser(INDEX_DTS),
                 js: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.js`],
                 minJs: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.min.js`],
                 dependencies: {}
@@ -221,19 +231,18 @@ export class OptionManager implements IOptionManager {
             {
                 packageName: '@angular/platform-browser-dynamic',
                 moduleName: '@angular/platform-browser-dynamic',
-                libraryKind: LibraryKind.UMD,
-                globalName: '@angular/platform-browser-dynamic',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
                 description: "",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC,
                 visible: true,
                 css: [],
-                dts: `node_modules/@angular/platform-browser/platform-browser-dynamic.d.ts`,
+                dts: angularPlatformBrowserDynamic(INDEX_DTS),
                 js: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.js`],
                 minJs: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.min.js`],
                 dependencies: {}
             },
-            */
             {
                 packageName: ensurePackageName('angular'),
                 moduleName: 'ng',

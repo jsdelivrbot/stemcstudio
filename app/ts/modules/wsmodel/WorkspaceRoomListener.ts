@@ -27,9 +27,11 @@ export class WorkspaceRoomListener implements RoomListener {
         const paths = this.workspace.getFileDocumentPaths();
         for (const path of paths) {
             const file = this.workspace.getFileWeakRef(path);
-            const unit = file.unit;
-            const edits = unit.getEdits(roomId);
-            map[path] = edits;
+            if (file) {
+                const unit = file.unit;
+                const edits = unit.getEdits(roomId);
+                map[path] = edits;
+            }
         }
         return map;
     }

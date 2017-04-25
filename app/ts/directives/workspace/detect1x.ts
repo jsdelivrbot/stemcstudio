@@ -24,7 +24,7 @@ export default function detect1x(workspace: WsModel): boolean {
     if (exists('index.html', workspace) && exists('script.ts', workspace) && exists('extras.ts', workspace) && exists('style.less', workspace)) {
         // It MAY be a 1.x project, but 2.x migrated projects may use the same file names as 1.x.
         // Look for the LIBS-MARKER (which exists in 1.x and is removed for 2.x and above).
-        const indexFile: WsFile = workspace.getFileWeakRef('index.html');
+        const indexFile = workspace.getFileWeakRef('index.html') as WsFile;
         return indexFile.getText().indexOf("// LIBS-MARKER") >= 0;
     }
     else {

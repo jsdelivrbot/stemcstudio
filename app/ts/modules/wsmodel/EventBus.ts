@@ -1,9 +1,12 @@
-export default class EventBus<E, T> {
+/**
+ * 
+ */
+export default class EventBus<NAME extends string, E, T> {
 
     /**
      * Each event name has multiple callbacks.
      */
-    public _eventRegistry: { [name: string]: ((event: E, source: T) => any)[] };
+    public _eventRegistry: { [name: string]: ((event: E | undefined, source: T) => any)[] };
 
     private owner: T;
 
@@ -16,11 +19,11 @@ export default class EventBus<E, T> {
         this._eventRegistry = {};
     }
 
-    removeAllListeners(eventName: string) {
+    removeAllListeners(eventName: NAME) {
         this._eventRegistry[eventName] = [];
     }
 
-    watch(eventName: string, callback: (event: E, source: T) => any): () => void {
+    watch(eventName: NAME, callback: (event: E, source: T) => any): () => void {
         this._eventRegistry = this._eventRegistry || {};
 
         let listeners = this._eventRegistry[eventName];
@@ -36,13 +39,13 @@ export default class EventBus<E, T> {
         };
     }
 
-    hasListeners(eventName: string): boolean {
+    hasListeners(eventName: NAME): boolean {
         const registry = this._eventRegistry;
         const listeners = registry && registry[eventName];
         return listeners && listeners.length > 0;
     }
 
-    emit(eventName: string, event?: E): any {
+    emit(eventName: NAME, event?: E): any {
         let listeners = this._eventRegistry[eventName] || [];
 
         if (!listeners.length) {
@@ -56,7 +59,7 @@ export default class EventBus<E, T> {
         }
     }
 
-    private removeEventListener(eventName: string, callback: (event: E, source: T) => any) {
+    private removeEventListener(eventName: NAME, callback: (event: E, source: T) => any) {
         const listeners = this._eventRegistry[eventName];
         if (!listeners)
             return;

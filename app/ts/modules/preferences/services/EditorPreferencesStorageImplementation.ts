@@ -148,7 +148,7 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get showLineNumbers(): boolean {
-        return this.cache.showLineNumbers;
+        return this.cache.showLineNumbers as boolean;
     }
     set showLineNumbers(value: boolean) {
         this.cache.showLineNumbers = value;
@@ -156,7 +156,7 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get showPrintMargin(): boolean {
-        return this.cache.showPrintMargin;
+        return this.cache.showPrintMargin as boolean;
     }
     set showPrintMargin(value: boolean) {
         this.cache.showPrintMargin = value;
@@ -164,7 +164,7 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get tabSize(): number {
-        return this.cache.tabSize;
+        return this.cache.tabSize as number;
     }
     set tabSize(value: number) {
         this.cache.tabSize = value;
@@ -172,7 +172,7 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get theme(): string {
-        return this.cache.theme;
+        return this.cache.theme as string;
     }
     set theme(value: string) {
         this.cache.theme = value;
@@ -180,7 +180,7 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
 
     get useSoftTabs(): boolean {
-        return this.cache.useSoftTabs;
+        return this.cache.useSoftTabs as boolean;
     }
     set useSoftTabs(value: boolean) {
         this.cache.useSoftTabs = value;

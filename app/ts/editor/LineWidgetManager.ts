@@ -119,28 +119,39 @@ export default class LineWidgetManager {
      */
     updateOnFold(e: Change, session: EditSession): void {
         const lineWidgets = session.lineWidgets;
-        if (!lineWidgets || !e.action)
+        if (!lineWidgets || !e.action) {
             return;
+        }
         const fold = e.data;
         const start = fold.start.row;
         const end = fold.end.row;
         const hide = e.action === "add";
         for (let i = start + 1; i < end; i++) {
-            if (lineWidgets[i])
-                lineWidgets[i].hidden = hide;
+            const lineWidget = lineWidgets[i];
+            if (lineWidget) {
+                lineWidget.hidden = hide;
+            }
         }
         if (lineWidgets[end]) {
             if (hide) {
-                if (!lineWidgets[start])
+                if (!lineWidgets[start]) {
                     lineWidgets[start] = lineWidgets[end];
-                else
-                    lineWidgets[end].hidden = hide;
+                }
+                else {
+                    const lineWidget = lineWidgets[end];
+                    if (lineWidget) {
+                        lineWidget.hidden = hide;
+                    }
+                }
             }
             else {
                 if (lineWidgets[start] === lineWidgets[end]) {
                     lineWidgets[start] = undefined;
                 }
-                lineWidgets[end].hidden = hide;
+                const lineWidget = lineWidgets[end];
+                if (lineWidget) {
+                    lineWidget.hidden = hide;
+                }
             }
         }
     }
@@ -199,7 +210,7 @@ export default class LineWidgetManager {
             this.session.lineWidgets = new Array<LineWidget>(this.session.getLength());
         }
 
-        const rowWidget: LineWidget = this.session.lineWidgets[w.row];
+        const rowWidget = this.session.lineWidgets[w.row];
         if (rowWidget) {
             w.$oldWidget = rowWidget;
             if (rowWidget.el && rowWidget.el.parentNode) {
@@ -212,7 +223,8 @@ export default class LineWidgetManager {
 
         w.session = this.session;
 
-        const renderer = this.editor.renderer;
+        const editor = this.editor as Editor;
+        const renderer = editor.renderer;
         if (w.html && !w.el) {
             w.el = createHTMLDivElement();
             w.el.innerHTML = w.html;
@@ -232,7 +244,7 @@ export default class LineWidgetManager {
             w.pixelHeight = w.el.offsetHeight;
         }
         if (w.rowCount == null) {
-            w.rowCount = w.pixelHeight / renderer.layerConfig.lineHeight;
+            w.rowCount = w.pixelHeight as number / renderer.layerConfig.lineHeight;
         }
 
         const fold = this.session.getFoldAt(w.row, 0);
@@ -318,8 +330,9 @@ export default class LineWidgetManager {
             if (!w || !w.el) continue;
             if (w.session !== this.session) continue;
             if (!w._inDocument) {
-                if (this.session.lineWidgets[w.row] !== w)
+                if (this.session.lineWidgets && this.session.lineWidgets[w.row] !== w) {
                     continue;
+                }
                 w._inDocument = true;
                 renderer.container.appendChild(w.el);
             }

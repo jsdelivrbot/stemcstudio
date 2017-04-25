@@ -14,9 +14,9 @@
                 <button type="button" class="btn btn-primary navbar-btn" ng-click='clickCodeNow()'>Code Now!</button>
                 <!-- button ng-if='FEATURE_COOKBOOK_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goCookbook()'>Cookbook</button -->
                 <!-- button ng-if='FEATURE_TUTORIALS_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goTutorials()'>Tutorials</button -->
-                <!-- button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button -->
+                <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button>
                 <!-- button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button -->
-                <!-- a role="button" class="btn btn-secondary navbar-btn" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->
+                <a role="button" class="btn btn-secondary navbar-btn" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a>
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>
                 <form class="navbar-search pull-right" ng-submit='doSearch()'>
@@ -42,7 +42,7 @@
             <h1>
                 <logo-text version='{{version}}' />
             </h1>
-            <p>Seriously fun Live Coding!</p>
+            <p>Live Collaborative Coding in a Gist</p>
         </div>
     </div>
     <div class='container md-docs-container'>

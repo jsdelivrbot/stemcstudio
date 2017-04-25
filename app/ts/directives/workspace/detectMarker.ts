@@ -7,7 +7,7 @@ import fileExists from './fileExists';
  */
 export default function detectMarker(marker: string, workspace: WsModel, path: string): boolean {
     if (fileExists(path, workspace)) {
-        const indexFile: WsFile = workspace.getFileWeakRef(path);
+        const indexFile = workspace.getFileWeakRef(path) as WsFile;
         return indexFile.getText().indexOf(marker) >= 0;
     }
     else {

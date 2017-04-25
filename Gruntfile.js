@@ -340,6 +340,18 @@ function copies(target) {
             dest: prepend(target, 'vendor/angular@1.5.3')
         },
         {
+            src: 'museum/@angular/core@4.0.3/index.d.ts',
+            dest: prepend(target, 'vendor/@angular/core@4.0.3/index.d.ts')
+        },
+        {
+            src: 'museum/@angular/platform-browser@4.0.3/index.d.ts',
+            dest: prepend(target, 'vendor/@angular/platform-browser@4.0.3/index.d.ts')
+        },
+        {
+            src: 'museum/@angular/platform-browser-dynamic@4.0.3/index.d.ts',
+            dest: prepend(target, 'vendor/@angular/platform-browser-dynamic@4.0.3/index.d.ts')
+        },
+        {
             expand: true,
             cwd: "museum/async@1.4.2",
             src: ["**"],

@@ -65,6 +65,11 @@ import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
+//
+// RxJS
+//
+import { Subscription } from 'rxjs/Subscription';
+
 /**
  * A delay of 0 (zero) second.
  */
@@ -113,7 +118,14 @@ export default class WorkspaceController implements WorkspaceEditorHost {
 
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
+
+    /**
+     * A subscription to compiler settings events that have already been recorded by the Language Service.
+     */
+    private changedCompilerSettingsSubscription: Subscription | undefined;
+
     private changedLintingRemover: (() => void) | undefined;
+
     private changedOperatorOverloadingRemover: (() => void) | undefined;
     private readonly liveCodeChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
@@ -487,7 +499,17 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                 this.outputFilesWatchRemover = this.wsModel.watch(outputFilesTopic, this.createOutputFilesEventHandler());
                 this.renamedFileWatchRemover = this.wsModel.watch(renamedFileTopic, this.createRenamedFileEventHandler());
                 this.changedLintingRemover = this.wsModel.watch(changedLinting, this.createChangedLintingEventHandler());
+
                 this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloading, this.createChangedOperatorOverloadingEventHandler());
+
+
+                this.changedCompilerSettingsSubscription = this.wsModel.changedCompilerSettings
+                    .debounceTime(500)
+                    .subscribe((settings) => {
+                        this.compile();
+                    }, (reason) => {
+                        console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
+                    });
 
             })
             .catch((err) => {
@@ -517,6 +539,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         if (this.renamedFileWatchRemover) {
             this.renamedFileWatchRemover();
             this.renamedFileWatchRemover = void 0;
+        }
+
+        if (this.changedCompilerSettingsSubscription) {
+            this.changedCompilerSettingsSubscription.unsubscribe();
+            this.changedCompilerSettingsSubscription = void 0;
         }
 
         if (this.changedOperatorOverloadingRemover) {
@@ -619,12 +646,22 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             this.$location,
             this.VENDOR_FOLDER_MARKER, () => {
                 // Set the module kind for transpilation consistent with the version.
+                // TODO: Clean this up
+                const promises: Promise<any>[] = [];
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
                 const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
-                const promise1: Promise<any> = this.wsModel.synchOperatorOverloading();
-                const promise2: Promise<any> = this.wsModel.synchModuleKind(moduleKind);
-                const promise3: Promise<any> = this.wsModel.synchScriptTarget(scriptTarget);
-                Promise.all([promise1, promise2, promise3])
+                // promises.push(this.wsModel.setTrace(false));
+                promises.push(this.wsModel.synchOperatorOverloading());
+                promises.push(this.wsModel.synchModuleKind(moduleKind));
+                promises.push(this.wsModel.synchScriptTarget(scriptTarget));
+                const tsconfig = this.wsModel.tsconfigSettings;
+                if (tsconfig) {
+                    promises.push(this.wsModel.synchTsConfig(tsconfig));
+                }
+                else {
+                    console.warn("tsconfig will not be used");
+                }
+                Promise.all(promises)
                     .then(() => {
                         this.compile();
                         this.$scope.workspaceLoaded = true;
@@ -673,7 +710,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
 
     /**
      * Attaches the Editor to the workspace model, enabling the IDE features.
-     * Connects a Preview change handler to all appropriate editors so that
+     * Connects a Preview change handler to all appropriate editors so for Live Coding.
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
@@ -704,8 +741,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
-                // This listener will be removed in the detachEditor method, assuming that
-                // the 
+                // This listener will be removed in the detachEditor method.
                 editor.sessionOrThrow().on('change', this.createLiveCodeChangeHandler(path));
                 break;
             }

@@ -30,6 +30,7 @@ import { EVENT_SET_MODULE_KIND } from './LanguageServiceEvents';
 import { EVENT_SET_OPERATOR_OVERLOADING } from './LanguageServiceEvents';
 import { EVENT_SET_SCRIPT_TARGET } from './LanguageServiceEvents';
 import { EVENT_SET_TRACE } from './LanguageServiceEvents';
+import { EVENT_SET_TS_CONFIG } from './LanguageServiceEvents';
 import { EnsureModuleMappingRequest, RemoveModuleMappingRequest } from './LanguageServiceEvents';
 import { EnsureScriptRequest, RemoveScriptRequest } from './LanguageServiceEvents';
 import { GetOutputFilesRequest } from './LanguageServiceEvents';
@@ -37,7 +38,8 @@ import { GetOutputFilesRequest } from './LanguageServiceEvents';
 import { SetModuleKindRequest } from './LanguageServiceEvents';
 import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
 import { SetTraceRequest } from './LanguageServiceEvents';
-
+import { SetTsConfigRequest, TsConfigSettings } from './LanguageServiceEvents';
+import { ModuleKind } from './LanguageServiceEvents';
 
 interface WorkerClientData<T> {
     err?: any;
@@ -168,35 +170,43 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_SET_MODULE_KIND, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+        this.worker.on(EVENT_SET_MODULE_KIND, (response: { data: WorkerClientData<ModuleKind> }) => {
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
-        this.worker.on(EVENT_SET_OPERATOR_OVERLOADING, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+        this.worker.on(EVENT_SET_OPERATOR_OVERLOADING, (response: { data: WorkerClientData<boolean> }) => {
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
-        this.worker.on(EVENT_SET_SCRIPT_TARGET, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+        this.worker.on(EVENT_SET_SCRIPT_TARGET, (response: { data: WorkerClientData<ScriptTarget> }) => {
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
-        this.worker.on(EVENT_SET_TRACE, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+        this.worker.on(EVENT_SET_TRACE, (response: { data: WorkerClientData<boolean> }) => {
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
+            }
+        });
+
+        this.worker.on(EVENT_SET_TS_CONFIG, (response: { data: WorkerClientData<TsConfigSettings> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
             }
         });
     }
@@ -326,6 +336,12 @@ export class LanguageServiceProxy {
         const callbackId = this.captureCallback(callback);
         const message: { data: SetTraceRequest } = { data: { trace, callbackId } };
         this.worker.emit(EVENT_SET_TRACE, message);
+    }
+
+    public setTsConfig(settings: TsConfigSettings, callback: (err: any, settings: TsConfigSettings) => void): void {
+        const callbackId = this.captureCallback(callback);
+        const message: { data: SetTsConfigRequest } = { data: { settings, callbackId } };
+        this.worker.emit(EVENT_SET_TS_CONFIG, message);
     }
 
     public getLintErrors(fileName: string, configuration: TsLintSettings, callback: (err: any, results: Diagnostic[]) => void): void {

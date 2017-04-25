@@ -18559,21 +18559,25 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                     this.compilerOptions = {};
                     this.scripts = {};
                     this.moduleNameToFileName = {};
-                    this.compilerOptions.module = ts.ModuleKind.System;
-                    this.compilerOptions.target = ts.ScriptTarget.ES5;
                     this.compilerOptions.allowJs = true;
                     this.compilerOptions.declaration = true;
+                    this.compilerOptions.emitDecoratorMetadata = true;
+                    this.compilerOptions.experimentalDecorators = true;
                     this.compilerOptions.jsx = ts.JsxEmit.React;
+                    this.compilerOptions.module = ts.ModuleKind.System;
                     this.compilerOptions.noImplicitAny = true;
                     this.compilerOptions.noImplicitReturns = true;
                     this.compilerOptions.noImplicitThis = true;
                     this.compilerOptions.noUnusedLocals = true;
                     this.compilerOptions.noUnusedParameters = true;
                     this.compilerOptions.operatorOverloading = true;
+                    this.compilerOptions.preserveConstEnums = true;
+                    this.compilerOptions.removeComments = false;
+                    this.compilerOptions.sourceMap = true;
                     this.compilerOptions.strictNullChecks = true;
                     this.compilerOptions.suppressImplicitAnyIndexErrors = true;
+                    this.compilerOptions.target = ts.ScriptTarget.ES5;
                     this.compilerOptions.traceResolution = true;
-                    this.compilerOptions.sourceMap = true;
                 }
                 Object.defineProperty(DefaultLanguageServiceHost.prototype, "moduleKind", {
                     get: function () {
@@ -18850,6 +18854,7 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                             };
                             return m;
                         } else {
+                            console.warn("Unable to resolve module '" + moduleName + "'");
                             return undefined;
                         }
                     });
@@ -25802,7 +25807,7 @@ System.register("src/mode/LanguageServiceEvents.js", [], function (exports_1, co
     "use strict";
 
     var __moduleName = context_1 && context_1.id;
-    var EVENT_APPLY_DELTA, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_MODULE_MAPPING, EVENT_ENSURE_SCRIPT, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, EVENT_GET_OUTPUT_FILES, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_LINT_ERRORS, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_REMOVE_MODULE_MAPPING, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_OPERATOR_OVERLOADING, EVENT_SET_SCRIPT_TARGET, EVENT_SET_TRACE;
+    var EVENT_APPLY_DELTA, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_MODULE_MAPPING, EVENT_ENSURE_SCRIPT, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, EVENT_GET_OUTPUT_FILES, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_LINT_ERRORS, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_REMOVE_MODULE_MAPPING, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_OPERATOR_OVERLOADING, EVENT_SET_SCRIPT_TARGET, EVENT_SET_TRACE, EVENT_SET_TS_CONFIG;
     return {
         setters: [],
         execute: function () {
@@ -25823,10 +25828,309 @@ System.register("src/mode/LanguageServiceEvents.js", [], function (exports_1, co
             exports_1("EVENT_SET_OPERATOR_OVERLOADING", EVENT_SET_OPERATOR_OVERLOADING = 'setOperatorOverloading');
             exports_1("EVENT_SET_SCRIPT_TARGET", EVENT_SET_SCRIPT_TARGET = 'setScriptTarget');
             exports_1("EVENT_SET_TRACE", EVENT_SET_TRACE = 'setTrace');
+            exports_1("EVENT_SET_TS_CONFIG", EVENT_SET_TS_CONFIG = 'setTsConfig');
         }
     };
 });
-System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLanguageServiceHost", "./typescript/DocumentRegistryInspector", "./typescript/tslint/linter", "./transpileModule", "./LanguageServiceEvents"], function (exports_1, context_1) {
+System.register("src/mode/LanguageServiceHelpers.js", [], function (exports_1, context_1) {
+    "use strict";
+
+    var __moduleName = context_1 && context_1.id;
+    function changedCompilerSettings(oldSettings, newSettings) {
+        if (oldSettings.allowJs !== newSettings.allowJs) {
+            return true;
+        }
+        if (oldSettings.allowSyntheticDefaultImports !== newSettings.allowSyntheticDefaultImports) {
+            return true;
+        }
+        if (oldSettings.allowUnreachableCode !== newSettings.allowUnreachableCode) {
+            return true;
+        }
+        if (oldSettings.allowUnusedLabels !== newSettings.allowUnusedLabels) {
+            return true;
+        }
+        if (oldSettings.alwaysStrict !== newSettings.alwaysStrict) {
+            return true;
+        }
+        if (oldSettings.baseUrl !== newSettings.baseUrl) {
+            return true;
+        }
+        if (oldSettings.charset !== newSettings.charset) {
+            return true;
+        }
+        if (oldSettings.declaration !== newSettings.declaration) {
+            return true;
+        }
+        if (oldSettings.declarationDir !== newSettings.declarationDir) {
+            return true;
+        }
+        if (oldSettings.disableSizeLimit !== newSettings.disableSizeLimit) {
+            return true;
+        }
+        if (oldSettings.downlevelIteration !== newSettings.downlevelIteration) {
+            return true;
+        }
+        if (oldSettings.emitBOM !== newSettings.emitBOM) {
+            return true;
+        }
+        if (oldSettings.emitDecoratorMetadata !== newSettings.emitDecoratorMetadata) {
+            return true;
+        }
+        if (oldSettings.experimentalDecorators !== newSettings.experimentalDecorators) {
+            return true;
+        }
+        if (oldSettings.forceConsistentCasingInFileNames !== newSettings.forceConsistentCasingInFileNames) {
+            return true;
+        }
+        if (oldSettings.importHelpers !== newSettings.importHelpers) {
+            return true;
+        }
+        if (oldSettings.inlineSourceMap !== newSettings.inlineSourceMap) {
+            return true;
+        }
+        if (oldSettings.inlineSources !== newSettings.inlineSources) {
+            return true;
+        }
+        if (oldSettings.isolatedModules !== newSettings.isolatedModules) {
+            return true;
+        }
+        if (oldSettings.jsx !== newSettings.jsx) {
+            return true;
+        }
+        if (oldSettings.jsxFactory !== newSettings.jsxFactory) {
+            return true;
+        }
+        if (oldSettings.lib !== newSettings.lib) {
+            return true;
+        }
+        if (oldSettings.locale !== newSettings.locale) {
+            return true;
+        }
+        if (oldSettings.mapRoot !== newSettings.mapRoot) {
+            return true;
+        }
+        if (oldSettings.maxNodeModuleJsDepth !== newSettings.maxNodeModuleJsDepth) {
+            return true;
+        }
+        if (oldSettings.module !== newSettings.module) {
+            return true;
+        }
+        if (oldSettings.moduleResolution !== newSettings.moduleResolution) {
+            return true;
+        }
+        if (oldSettings.newLine !== newSettings.newLine) {
+            return true;
+        }
+        if (oldSettings.noEmit !== newSettings.noEmit) {
+            return true;
+        }
+        if (oldSettings.noEmitHelpers !== newSettings.noEmitHelpers) {
+            return true;
+        }
+        if (oldSettings.noEmitOnError !== newSettings.noEmitOnError) {
+            return true;
+        }
+        if (oldSettings.noErrorTruncation !== newSettings.noErrorTruncation) {
+            return true;
+        }
+        if (oldSettings.noFallthroughCasesInSwitch !== newSettings.noFallthroughCasesInSwitch) {
+            return true;
+        }
+        if (oldSettings.noImplicitAny !== newSettings.noImplicitAny) {
+            return true;
+        }
+        if (oldSettings.noImplicitReturns !== newSettings.noImplicitReturns) {
+            return true;
+        }
+        if (oldSettings.noImplicitThis !== newSettings.noImplicitThis) {
+            return true;
+        }
+        if (oldSettings.noImplicitUseStrict !== newSettings.noImplicitUseStrict) {
+            return true;
+        }
+        if (oldSettings.noLib !== newSettings.noLib) {
+            return true;
+        }
+        if (oldSettings.noResolve !== newSettings.noResolve) {
+            return true;
+        }
+        if (oldSettings.noUnusedLocals !== newSettings.noUnusedLocals) {
+            return true;
+        }
+        if (oldSettings.noUnusedParameters !== newSettings.noUnusedParameters) {
+            return true;
+        }
+        if (oldSettings.operatorOverloading !== newSettings.operatorOverloading) {
+            return true;
+        }
+        if (oldSettings.out !== newSettings.out) {
+            return true;
+        }
+        if (oldSettings.outDir !== newSettings.outDir) {
+            return true;
+        }
+        if (oldSettings.outFile !== newSettings.outFile) {
+            return true;
+        }
+        if (oldSettings.paths !== newSettings.paths) {
+            return true;
+        }
+        if (oldSettings.preserveConstEnums !== newSettings.preserveConstEnums) {
+            return true;
+        }
+        if (oldSettings.project !== newSettings.project) {
+            return true;
+        }
+        if (oldSettings.reactNamespace !== newSettings.reactNamespace) {
+            return true;
+        }
+        if (oldSettings.removeComments !== newSettings.removeComments) {
+            return true;
+        }
+        if (oldSettings.rootDir !== newSettings.rootDir) {
+            return true;
+        }
+        if (oldSettings.rootDirs !== newSettings.rootDirs) {
+            return true;
+        }
+        if (oldSettings.skipDefaultLibCheck !== newSettings.skipDefaultLibCheck) {
+            return true;
+        }
+        if (oldSettings.skipLibCheck !== newSettings.skipLibCheck) {
+            return true;
+        }
+        if (oldSettings.sourceMap !== newSettings.souceMap) {
+            return true;
+        }
+        if (oldSettings.sourceRoot !== newSettings.sourceRoot) {
+            return true;
+        }
+        if (oldSettings.strict !== newSettings.strict) {
+            return true;
+        }
+        if (oldSettings.strictNullChecks !== newSettings.strictNullChecks) {
+            return true;
+        }
+        if (oldSettings.suppressExcessPropertyErrors !== newSettings.suppressExcessPropertyErrors) {
+            return true;
+        }
+        if (oldSettings.suppressImplicitAnyIndexErrors !== newSettings.suppressImplicitAnyIndexErrors) {
+            return true;
+        }
+        if (oldSettings.target !== newSettings.target) {
+            return true;
+        }
+        if (oldSettings.traceResolution !== newSettings.traceResolution) {
+            return true;
+        }
+        if (oldSettings.typeRoots !== newSettings.typeRoots) {
+            return true;
+        }
+        return false;
+    }
+    exports_1("changedCompilerSettings", changedCompilerSettings);
+    function compilerModuleKindFromTsConfig(moduleKind) {
+        moduleKind = moduleKind.toLowerCase();
+        switch (moduleKind) {
+            case 'amd':
+                {
+                    return ts.ModuleKind.AMD;
+                }
+            case 'commonjs':
+                {
+                    return ts.ModuleKind.CommonJS;
+                }
+            case 'es2015':
+                {
+                    return ts.ModuleKind.ES2015;
+                }
+            case 'none':
+                {
+                    return ts.ModuleKind.None;
+                }
+            case 'system':
+                {
+                    return ts.ModuleKind.System;
+                }
+            case 'umd':
+                {
+                    return ts.ModuleKind.UMD;
+                }
+            default:
+                {
+                    throw new Error("Unrecognized module kind: " + moduleKind);
+                }
+        }
+    }
+    exports_1("compilerModuleKindFromTsConfig", compilerModuleKindFromTsConfig);
+    function compilerScriptTargetFromTsConfig(scriptTarget) {
+        scriptTarget = scriptTarget.toLowerCase();
+        switch (scriptTarget) {
+            case 'es2015':
+                {
+                    return ts.ScriptTarget.ES2015;
+                }
+            case 'es2016':
+                {
+                    return ts.ScriptTarget.ES2016;
+                }
+            case 'es2017':
+                {
+                    return ts.ScriptTarget.ES2017;
+                }
+            case 'es3':
+                {
+                    return ts.ScriptTarget.ES3;
+                }
+            case 'es5':
+                {
+                    return ts.ScriptTarget.ES5;
+                }
+            case 'esnext':
+                {
+                    return ts.ScriptTarget.ESNext;
+                }
+            case 'latest':
+                {
+                    return ts.ScriptTarget.Latest;
+                }
+            default:
+                {
+                    throw new Error("Unrecognized script target: " + scriptTarget);
+                }
+        }
+    }
+    exports_1("compilerScriptTargetFromTsConfig", compilerScriptTargetFromTsConfig);
+    function compilerOptionsFromTsConfig(settings) {
+        var compilerOptions = {};
+        compilerOptions.allowJs = settings.allowJs;
+        compilerOptions.declaration = settings.declaration;
+        compilerOptions.emitDecoratorMetadata = settings.emitDecoratorMetadata;
+        compilerOptions.experimentalDecorators = settings.experimentalDecorators;
+        compilerOptions.jsx = ts.JsxEmit.React;
+        compilerOptions.module = compilerModuleKindFromTsConfig(settings.module);
+        compilerOptions.noImplicitAny = settings.noImplicitAny;
+        compilerOptions.noImplicitReturns = settings.noImplicitReturns;
+        compilerOptions.noImplicitThis = settings.noImplicitThis;
+        compilerOptions.noUnusedLocals = settings.noUnusedLocals;
+        compilerOptions.noUnusedParameters = settings.noUnusedParameters;
+        compilerOptions.operatorOverloading = settings.operatorOverloading;
+        compilerOptions.preserveConstEnums = settings.preserveConstEnums;
+        compilerOptions.removeComments = settings.removeComments;
+        compilerOptions.sourceMap = settings.sourceMap;
+        compilerOptions.strictNullChecks = settings.strictNullChecks;
+        compilerOptions.suppressImplicitAnyIndexErrors = settings.suppressImplicitAnyIndexErrors;
+        compilerOptions.target = compilerScriptTargetFromTsConfig(settings.target);
+        compilerOptions.traceResolution = settings.traceResolution;
+        return compilerOptions;
+    }
+    exports_1("compilerOptionsFromTsConfig", compilerOptionsFromTsConfig);
+    return {
+        setters: [],
+        execute: function () {}
+    };
+});
+System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLanguageServiceHost", "./typescript/DocumentRegistryInspector", "./typescript/tslint/linter", "./transpileModule", "./LanguageServiceEvents", "./LanguageServiceHelpers"], function (exports_1, context_1) {
     "use strict";
 
     var __moduleName = context_1 && context_1.id;
@@ -25869,7 +26173,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
             code: ruleName
         };
     }
-    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, linter_1, transpileModule_1, LanguageServiceEvents_1, LanguageServiceEvents_2, LanguageServiceEvents_3, LanguageServiceEvents_4, LanguageServiceEvents_5, LanguageServiceEvents_6, LanguageServiceEvents_7, LanguageServiceEvents_8, LanguageServiceEvents_9, LanguageServiceEvents_10, LanguageServiceEvents_11, LanguageServiceEvents_12, LanguageServiceEvents_13, LanguageServiceEvents_14, LanguageServiceEvents_15, LanguageServiceEvents_16, LanguageServiceEvents_17, useCaseSensitiveFileNames, DiagnosticCategory, LanguageServiceWorker;
+    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, linter_1, transpileModule_1, LanguageServiceEvents_1, LanguageServiceEvents_2, LanguageServiceEvents_3, LanguageServiceEvents_4, LanguageServiceEvents_5, LanguageServiceEvents_6, LanguageServiceEvents_7, LanguageServiceEvents_8, LanguageServiceEvents_9, LanguageServiceEvents_10, LanguageServiceEvents_11, LanguageServiceEvents_12, LanguageServiceEvents_13, LanguageServiceEvents_14, LanguageServiceEvents_15, LanguageServiceEvents_16, LanguageServiceEvents_17, LanguageServiceEvents_18, LanguageServiceHelpers_1, useCaseSensitiveFileNames, DiagnosticCategory, LanguageServiceWorker;
     return {
         setters: [function (DefaultLanguageServiceHost_1_1) {
             DefaultLanguageServiceHost_1 = DefaultLanguageServiceHost_1_1;
@@ -25897,6 +26201,9 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
             LanguageServiceEvents_15 = LanguageServiceEvents_1_1;
             LanguageServiceEvents_16 = LanguageServiceEvents_1_1;
             LanguageServiceEvents_17 = LanguageServiceEvents_1_1;
+            LanguageServiceEvents_18 = LanguageServiceEvents_1_1;
+        }, function (LanguageServiceHelpers_1_1) {
+            LanguageServiceHelpers_1 = LanguageServiceHelpers_1_1;
         }],
         execute: function () {
             useCaseSensitiveFileNames = true;
@@ -25922,7 +26229,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_17.EVENT_SET_TRACE + "(" + trace + ")");
                             }
-                            _this.resolve(LanguageServiceEvents_17.EVENT_SET_TRACE, void 0, callbackId);
+                            _this.resolve(LanguageServiceEvents_17.EVENT_SET_TRACE, _this.trace, callbackId);
                         } catch (err) {
                             _this.reject(LanguageServiceEvents_17.EVENT_SET_TRACE, err, callbackId);
                         }
@@ -26023,7 +26330,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                                 console.log(LanguageServiceEvents_14.EVENT_SET_MODULE_KIND + "(" + moduleKind + ")");
                             }
                             _this.lsHost.moduleKind = moduleKind;
-                            _this.resolve(LanguageServiceEvents_14.EVENT_SET_MODULE_KIND, void 0, callbackId);
+                            _this.resolve(LanguageServiceEvents_14.EVENT_SET_MODULE_KIND, _this.lsHost.moduleKind, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_14.EVENT_SET_MODULE_KIND, reason, callbackId);
                         }
@@ -26036,8 +26343,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_15.EVENT_SET_OPERATOR_OVERLOADING + "(" + operatorOverloading + ")");
                             }
-                            _this.operatorOverloading = operatorOverloading;
-                            _this.resolve(LanguageServiceEvents_15.EVENT_SET_OPERATOR_OVERLOADING, void 0, callbackId);
+                            _this.setOperatorOverloading(operatorOverloading);
+                            _this.resolve(LanguageServiceEvents_15.EVENT_SET_OPERATOR_OVERLOADING, _this.lsHost.operatorOverloading, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_15.EVENT_SET_OPERATOR_OVERLOADING, reason, callbackId);
                         }
@@ -26051,9 +26358,28 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                                 console.log(LanguageServiceEvents_16.EVENT_SET_SCRIPT_TARGET + "(" + scriptTarget + ")");
                             }
                             _this.lsHost.scriptTarget = scriptTarget;
-                            _this.resolve(LanguageServiceEvents_16.EVENT_SET_SCRIPT_TARGET, void 0, callbackId);
+                            _this.resolve(LanguageServiceEvents_16.EVENT_SET_SCRIPT_TARGET, _this.lsHost.scriptTarget, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_16.EVENT_SET_SCRIPT_TARGET, reason, callbackId);
+                        }
+                    });
+                    sender.on(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG, function (message) {
+                        var _a = message.data,
+                            settings = _a.settings,
+                            callbackId = _a.callbackId;
+                        try {
+                            if (_this.trace) {
+                                console.log(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG + "(" + JSON.stringify(settings, null, 2) + ")");
+                            }
+                            try {
+                                var compilerOptions = LanguageServiceHelpers_1.compilerOptionsFromTsConfig(settings);
+                                _this.setCompilationSettings(compilerOptions);
+                                _this.resolve(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG, _this.lsHost.getCompilationSettings(), callbackId);
+                            } catch (e) {
+                                _this.reject(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG, e, callbackId);
+                            }
+                        } catch (reason) {
+                            _this.reject(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG, reason, callbackId);
                         }
                     });
                     sender.on(LanguageServiceEvents_11.EVENT_GET_SYNTAX_ERRORS, function (message) {
@@ -26191,21 +26517,27 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                         }
                     });
                 }
-                Object.defineProperty(LanguageServiceWorker.prototype, "operatorOverloading", {
-                    get: function () {
-                        return this.lsHost.operatorOverloading;
-                    },
-                    set: function (operatorOverloading) {
-                        if (this.lsHost.operatorOverloading !== operatorOverloading) {
-                            if (this.languageService) {
-                                this.languageService.cleanupSemanticCache();
-                            }
-                            this.lsHost.operatorOverloading = operatorOverloading;
+                LanguageServiceWorker.prototype.getOperatorOverloading = function () {
+                    return !!this.lsHost.operatorOverloading;
+                };
+                LanguageServiceWorker.prototype.setOperatorOverloading = function (operatorOverloading) {
+                    if (this.lsHost.operatorOverloading !== operatorOverloading) {
+                        if (this.languageService) {
+                            this.languageService.cleanupSemanticCache();
                         }
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+                        this.lsHost.operatorOverloading = operatorOverloading;
+                    }
+                };
+                LanguageServiceWorker.prototype.setCompilationSettings = function (settings) {
+                    var oldSettings = this.lsHost.getCompilationSettings();
+                    this.lsHost.setCompilationSettings(settings);
+                    var newSettings = this.lsHost.getCompilationSettings();
+                    if (LanguageServiceHelpers_1.changedCompilerSettings(oldSettings, newSettings)) {
+                        if (this.languageService) {
+                            this.languageService.cleanupSemanticCache();
+                        }
+                    }
+                };
                 LanguageServiceWorker.prototype.ensureLS = function () {
                     if (!this.languageService) {
                         if (this.trace) {

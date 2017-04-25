@@ -2,6 +2,8 @@ import applyDelta from './applyDelta';
 import { equalPositions } from './Position';
 import Delta from './Delta';
 import EventEmitterClass from './lib/EventEmitterClass';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import Position from './Position';
 import Range from './Range';
 import RangeBasic from './RangeBasic';
@@ -84,6 +86,11 @@ export class Document implements Shareable {
     private _newLineMode: NewLineMode = "auto";
 
     /**
+     * A source of 'change' events that is observable.
+     */
+    public readonly changeEvents: Observable<Delta>;
+
+    /**
      *
      */
     private _eventBus: EventEmitterClass<DocumentEventName, any, Document> | undefined;
@@ -102,6 +109,16 @@ export class Document implements Shareable {
         this._lines = [""];
 
         this._eventBus = new EventEmitterClass<DocumentEventName, any, Document>(this);
+
+        this.changeEvents = new Observable<Delta>((observer: Observer<Delta>) => {
+            function changeListener(value: Delta, source: Document) {
+                observer.next(value);
+            }
+            this.addChangeListener(changeListener);
+            return () => {
+                this.removeChangeListener(changeListener);
+            };
+        });
 
         // There has to be one line at least in the document. If you pass an empty
         // string to the insert function, nothing will happen. Workaround.
@@ -354,7 +371,7 @@ export class Document implements Shareable {
     /**
      *
      */
-    addChangeListener(callback: (event: Delta, source: Document) => any): () => void {
+    addChangeListener(callback: (event: Delta, source: Document) => void): () => void {
         return this.on(CHANGE, callback, false);
     }
 
