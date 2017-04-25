@@ -102,6 +102,7 @@ export class Document implements Shareable {
 
     /**
      * If text is included, the Document contains those strings; otherwise, it's empty.
+     * A `change` event will be emitted. But does anyone see it?
      *
      * @param textOrLines
      */
@@ -156,6 +157,7 @@ export class Document implements Shareable {
 
     /**
      * Replaces all the lines in the current `Document` with the value of `text`.
+     * A `change` event will be emitted.
      */
     setValue(text: string): void {
         const row = this.getLength() - 1;

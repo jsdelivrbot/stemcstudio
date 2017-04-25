@@ -92,7 +92,7 @@ export default function rebuildPreview(
                     /**
                      * The string that becomes the content of the IFrame's HTML file.
                      */
-                    let html: string = fileContent(bestFile, workspace);
+                    let html = fileContent(bestFile, workspace);
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
@@ -122,7 +122,7 @@ export default function rebuildPreview(
                         const globalJsFileNames: string[] = closureOpts.filter(isGlobalOrUMDLibrary).map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
 
-                        const scriptFileNames: string[] = workspace.operatorOverloading ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
+                        const scriptFileNames: string[] = workspace.isOperatorOverloadingEnabled() ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
                             return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>${NEWLINE}`;
@@ -178,7 +178,7 @@ export default function rebuildPreview(
                                     const options: mathscript.TranspileOptions = {
                                         timeout: 1000,
                                         noLoopCheck: workspace.noLoopCheck,
-                                        operatorOverloading: workspace.operatorOverloading
+                                        operatorOverloading: workspace.isOperatorOverloadingEnabled()
                                     };
                                     /**
                                      * The JavaScript code with operators replaced by function calls and infinite loop detection.

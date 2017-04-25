@@ -202,6 +202,9 @@ function prepend(target, filePath) {
  * Files that are copied to the target folder ('generated' for dev, 'dist' for production)
  */
 function copies(target) {
+
+    const VERSION_ACE_WORKERS = '2.9.13';
+
     return [
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
         { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
@@ -226,16 +229,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.9/src/worker.js',
+            src: `jspm_packages/github/geometryzen/ace-workers@${VERSION_ACE_WORKERS}/src/worker.js`,
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/geometryzen/ace-workers@2.9.9/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers@2.9.9/ace-workers.js')
+            src: `jspm_packages/github/geometryzen/ace-workers@${VERSION_ACE_WORKERS}/dist/ace-workers.js`,
+            dest: prepend(target, `js/ace-workers@${VERSION_ACE_WORKERS}/ace-workers.js`)
         },
         {
             src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, 'js/ace-workers@2.9.9/ace-workers.js')
+            dest: prepend(target, `js/ace-workers@${VERSION_ACE_WORKERS}/ace-workers.js`)
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',

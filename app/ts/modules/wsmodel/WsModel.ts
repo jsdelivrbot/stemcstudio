@@ -16,9 +16,6 @@ import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
 import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
-import { ScriptTarget } from '../../editor/workspace/LanguageServiceProxy';
-import IDoodleConfig from '../../services/doodles/IDoodleConfig';
-// import { DOODLE_MANAGER_SERVICE_UUID } from '../../services/doodles/IDoodleManager';
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import IWorkspaceModel from './IWorkspaceModel';
 import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
@@ -74,6 +71,24 @@ const NEWLINE = '\n';
 const PACKAGE_DOT_JSON = 'package.json';
 
 /**
+ * This is the schema for the package.json file.
+ */
+export interface PackageSettings {
+    name: string | undefined;
+    version: string | undefined;
+    description?: string;
+    author?: string;
+    dependencies: { [key: string]: string };
+    noLoopCheck: boolean;
+    /**
+     * operatorOverloading is a custom property in the package.json.
+     */
+    operatorOverloading?: boolean;
+    linting: boolean;
+    keywords: string[];
+}
+
+/**
  * Symbolic constant for the tsconfig.json file.
  */
 const TSCONFIG_DOT_JSON = 'tsconfig.json';
@@ -104,6 +119,10 @@ type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
 
 const LANGUAGE_SERVICE_NOT_AVAILABLE = "Language Service is not available";
 
+/**
+ * Returns a promise that will always report an error indicating that
+ * the Language Service is not available.
+ */
 function noLanguageServicePromise<T>(): Promise<T> {
     return new Promise<T>(function (resolve, reject) {
         reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
@@ -264,8 +283,9 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
-const TSCONFIG_SYNCH_DELAY_MILLISECONDS = 250;
-const TSLINT_SYNCH_DELAY_MILLISECONDS = 250;
+const TSC_SYNCH_DELAY_MILLISECONDS = 250;
+const TSL_SYNCH_DELAY_MILLISECONDS = 250;
+const PKG_SYNCH_DELAY_MILLISECONDS = 250;
 
 /**
  * Synchronize after 0.75 seconds of inactivity.
@@ -319,6 +339,7 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
 // We don't need to export these symbolic constants because we have Observable(s) of the same name.
 const changedCompilerSettingsEventName = 'changedCompilerSettings';
 const changedLintSettingsEventName = 'changedLintSettings';
+const changedPackageSettingsEventName = 'changedPackageSettings';
 
 export type WsModelEventName = 'changedLinting'
     | 'changedOperatorOverloading'
@@ -391,13 +412,6 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     private readonly mwOptions: MwOptions = { merge: true, verbose: true };
 
-    /**
-     * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
-     * Increment before an asynchronous call is made.
-     * Decrement when the response is received.
-     */
-    private inFlight = 0;
-
     private readonly quickInfo: { [path: string]: QuickInfoTooltip } = {};
 
     /**
@@ -445,8 +459,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * A subscription to the tsconfig.json file `change` events in order to keep the
      * Language Service up-to-date with TypeScript compiler settings.
      */
-    private tsconfigSubscription: Subscription | undefined;
-    private tslintSubscription: Subscription | undefined;
+    private tscMonitoring: Subscription | undefined;
+    private tslMonitoring: Subscription | undefined;
+    private pkgMonitoring: Subscription | undefined;
 
     /**
      * Slightly unusual reference counting because of:
@@ -489,6 +504,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private readonly changedLintSettingsEventBus = new EventBus<'changedLintSettings', TsLintSettings, WsModel>(this);
     public readonly changedLintSettings: Observable<TsLintSettings>;
 
+    private readonly changedPackageSettingsEventBus = new EventBus<'changedPackageSettings', PackageSettings, WsModel>(this);
+    public readonly changedPackageSettings: Observable<PackageSettings>;
+
     /**
      * Used to control logging of the Language Service.
      */
@@ -526,6 +544,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
         this.changedLintSettings = new Observable<TsLintSettings>((observer: Observer<TsLintSettings>) => {
             return this.changedLintSettingsEventBus.watch(changedLintSettingsEventName, (settings) => {
+                observer.next(settings);
+            });
+        });
+
+        this.changedPackageSettings = new Observable<PackageSettings>((observer: Observer<PackageSettings>) => {
+            return this.changedPackageSettingsEventBus.watch(changedPackageSettingsEventName, (settings) => {
                 observer.next(settings);
             });
         });
@@ -593,9 +617,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             // Just as dispose calls release, a successful recycle calls addRef.
             this.addRef();
             if (this.languageServiceProxy) {
-                this.inFlight++;
                 this.languageServiceProxy.initialize(scriptImports, (err: any) => {
-                    this.inFlight--;
                     if (!err) {
                         if (this.languageServiceProxy) {
                             this.languageServiceProxy.setTrace(this.traceLanguageService, callback);
@@ -773,17 +795,13 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      */
     setDefaultLibrary(url: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            this.inFlight++;
             get(url, (err: Error, sourceCode: string) => {
-                this.inFlight--;
                 if (err) {
                     reject(err);
                 }
                 else {
                     if (this.languageServiceProxy) {
-                        this.inFlight++;
                         this.languageServiceProxy.setDefaultLibContent(sourceCode, (err: any) => {
-                            this.inFlight--;
                             if (!err) {
                                 resolve();
                             }
@@ -800,91 +818,17 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         });
     }
 
-    synchModuleKind(moduleKind: string): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            this.setModuleKind(moduleKind, function (reason) {
-                if (!reason) {
-                    resolve(moduleKind);
-                }
-                else {
-                    reject(reason);
-                }
-            });
-        });
-    }
-
-    private setModuleKind(moduleKind: string, callback: (err: any) => any): void {
-        checkCallback(callback);
-        if (this.languageServiceProxy) {
-            this.inFlight++;
-            this.languageServiceProxy.setModuleKind(moduleKind, (err: any) => {
-                this.inFlight--;
-                callback(err);
-            });
-        }
-        else {
-            callback(new Error("moduleKind is not available."));
-        }
-    }
-
     /**
      * Synchronizes the local operatorOverloading with the language service.
+     * The previous operator overloading value is returned.
      */
     synchOperatorOverloading(): Promise<boolean> {
-        const operatorOverloading = this.operatorOverloading;
-        return new Promise<boolean>((resolve, reject) => {
-            this.setOperatorOverloading(operatorOverloading, function (reason) {
-                if (!reason) {
-                    resolve(operatorOverloading);
-                }
-                else {
-                    reject(reason);
-                }
-            });
-        });
-    }
-
-    /**
-     * Helper method for updating the operatorOverloading setting in the language service.
-     */
-    private setOperatorOverloading(operatorOverloading: boolean, callback: (err: any) => any): void {
-        checkCallback(callback);
         if (this.languageServiceProxy) {
-            this.inFlight++;
-            this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (err: any) => {
-                this.inFlight--;
-                callback(err);
-            });
+            const operatorOverloading = this.isOperatorOverloadingEnabled();
+            return this.languageServiceProxy.setOperatorOverloading(operatorOverloading);
         }
         else {
-            callback(new Error("operatorOverloading is not available."));
-        }
-    }
-
-    synchScriptTarget(scriptTarget: ScriptTarget): Promise<ScriptTarget> {
-        return new Promise<string>((resolve, reject) => {
-            this.setScriptTarget(scriptTarget, function (reason) {
-                if (!reason) {
-                    resolve(scriptTarget);
-                }
-                else {
-                    reject(reason);
-                }
-            });
-        });
-    }
-
-    private setScriptTarget(scriptTarget: ScriptTarget, callback: (err: any) => any): void {
-        checkCallback(callback);
-        if (this.languageServiceProxy) {
-            this.inFlight++;
-            this.languageServiceProxy.setScriptTarget(scriptTarget, (err: any) => {
-                this.inFlight--;
-                callback(err);
-            });
-        }
-        else {
-            callback(new Error("scriptTarget is not available."));
+            return noLanguageServicePromise<boolean>();
         }
     }
 
@@ -907,9 +851,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private setTsConfig(settings: TsConfigSettings, callback: (err: any, updatedSettings?: TsConfigSettings) => void): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.setTsConfig(settings, (err: any, updatedSettings: TsConfigSettings) => {
-                this.inFlight--;
                 callback(err, updatedSettings);
             });
         }
@@ -973,7 +915,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             // Enable auto completion using the workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
-            // FIXME: How do we remove these later?
+            // TODO: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
@@ -989,7 +931,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             // Enable auto completion using the workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
-            // FIXME: How do we remove these later?
+            // TODO: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
@@ -1154,9 +1096,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     if (!this.langDocumentChangeListenerRemovers[path]) {
                         const changeHandler = (delta: Delta) => {
                             if (this.languageServiceProxy) {
-                                this.inFlight++;
                                 this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
-                                    this.inFlight--;
                                     if (!err) {
                                         this.updateFileSessionMarkerModels(path, delta);
                                         this.updateFileEditorFrontMarkers(path);
@@ -1183,15 +1123,13 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 else {
                     switch (path) {
                         case TSCONFIG_DOT_JSON: {
-                            this.tsconfigSubscription = doc.changeEvents
-                                .debounceTime(TSCONFIG_SYNCH_DELAY_MILLISECONDS)
+                            this.tscMonitoring = doc.changeEvents
+                                .debounceTime(TSC_SYNCH_DELAY_MILLISECONDS)
                                 .subscribe((delta) => {
-                                    const tsconfig = this.tsconfigSettings;
-                                    if (tsconfig) {
-                                        if (tsconfig && this.languageServiceProxy) {
-                                            this.inFlight++;
-                                            this.languageServiceProxy.setTsConfig(tsconfig, (err, settings) => {
-                                                this.inFlight--;
+                                    const tsc = this.tsconfigSettings;
+                                    if (tsc) {
+                                        if (tsc && this.languageServiceProxy) {
+                                            this.languageServiceProxy.setTsConfig(tsc, (err, settings) => {
                                                 if (!err) {
                                                     this.changedCompilerSettingsEventBus.emitAsync(changedCompilerSettingsEventName, settings);
                                                 }
@@ -1203,20 +1141,48 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                     }
                                     else {
                                         // There is an error in the tsconfig.json file.
+                                        // This will happen frequently during editing and should be ignored.
                                     }
                                 });
                             break;
                         }
                         case TSLINT_DOT_JSON: {
-                            this.tslintSubscription = doc.changeEvents
-                                .debounceTime(TSLINT_SYNCH_DELAY_MILLISECONDS)
+                            this.tslMonitoring = doc.changeEvents
+                                .debounceTime(TSL_SYNCH_DELAY_MILLISECONDS)
                                 .subscribe((delta) => {
-                                    const tslint = this.tslintSettings;
-                                    if (tslint) {
-                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, tslint);
+                                    const tsl = this.tslintSettings;
+                                    if (tsl) {
+                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, tsl);
                                     }
                                     else {
                                         // There is an error in the tsconfig.json file.
+                                        // This will happen frequently during editing and should be ignored.
+                                    }
+                                });
+                            break;
+                        }
+                        case PACKAGE_DOT_JSON: {
+                            this.pkgMonitoring = doc.changeEvents
+                                .debounceTime(PKG_SYNCH_DELAY_MILLISECONDS)
+                                .subscribe((delta) => {
+                                    const pkg = this.getPackageSettings();
+                                    if (pkg) {
+                                        // Emit an specific event if the operator overloading option changes.
+                                        if (this.languageServiceProxy) {
+                                            const newValue = this.isOperatorOverloadingEnabled();
+                                            this.languageServiceProxy.setOperatorOverloading(newValue)
+                                                .then((oldValue) => {
+                                                    if (newValue !== oldValue) {
+                                                        this.eventBus.emitAsync(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, newValue));
+                                                    }
+                                                });
+                                        }
+                                        // Emit a general event for the change.
+                                        this.changedPackageSettingsEventBus.emitAsync(changedPackageSettingsEventName, pkg);
+                                    }
+                                    else {
+                                        // There is an error in the tsconfig.json file.
+                                        // This will happen frequently during editing and should be ignored.
                                     }
                                 });
                             break;
@@ -1280,14 +1246,17 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                         setTimeout(callback, 0);
                     }
 
-                    if (this.tsconfigSubscription) {
-                        this.tsconfigSubscription.unsubscribe();
-                        this.tsconfigSubscription = void 0;
+                    if (this.tscMonitoring) {
+                        this.tscMonitoring.unsubscribe();
+                        this.tscMonitoring = void 0;
                     }
-
-                    if (this.tslintSubscription) {
-                        this.tslintSubscription.unsubscribe();
-                        this.tslintSubscription = void 0;
+                    if (this.tslMonitoring) {
+                        this.tslMonitoring.unsubscribe();
+                        this.tslMonitoring = void 0;
+                    }
+                    if (this.pkgMonitoring) {
+                        this.pkgMonitoring.unsubscribe();
+                        this.pkgMonitoring = void 0;
                     }
 
                     // Monitoring for Local Storage.
@@ -1363,9 +1332,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         checkPath(path);
         checkCallback(callback);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.ensureScript(path, content, (err: any) => {
-                this.inFlight--;
                 if (!err) {
                     callback(void 0);
                 }
@@ -1383,9 +1350,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         checkPath(path);
         checkCallback(callback);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.removeScript(path, (err: any) => {
-                this.inFlight--;
                 if (err) {
                     window.console.warn(`WsModel.removeScript(${path}) failed ${err}`);
                 }
@@ -1472,9 +1437,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private diagnosticsForSession(path: string, session: EditSession, callback: (err: any) => any): void {
         checkPath(path);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
-                this.inFlight--;
                 if (err) {
                     console.warn(`getSyntaxErrors(${path}) => ${err}`);
                     callback(err);
@@ -1483,9 +1446,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     this.updateSession(path, syntaxErrors, session, 'syntax');
                     if (syntaxErrors.length === 0) {
                         if (this.languageServiceProxy) {
-                            this.inFlight++;
                             this.languageServiceProxy.getSemanticErrors(path, (err: any, semanticErrors: Diagnostic[]) => {
-                                this.inFlight--;
                                 if (err) {
                                     console.warn(`getSemanticErrors(${path}) => ${err}`);
                                     callback(err);
@@ -1497,9 +1458,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                             if (this.languageServiceProxy) {
                                                 const configuration = this.tslintSettings;
                                                 if (configuration) {
-                                                    this.inFlight++;
                                                     this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
-                                                        this.inFlight--;
                                                         if (err) {
                                                             console.warn(`getLintErrors(${path}) => ${err}`);
                                                             callback(err);
@@ -1555,9 +1514,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         if (isTypeScript(path) || isJavaScript(path)) {
             checkPath(path);
             if (this.languageServiceProxy) {
-                this.inFlight++;
                 this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
-                    this.inFlight--;
                     if (!err) {
                         this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
                     }
@@ -1573,22 +1530,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get author(): string | undefined {
-        try {
-            if (this.existsPackageJson()) {
-                const pkgInfo = this.packageInfo;
-                if (pkgInfo) {
-                    return pkgInfo.author;
-                }
-                else {
-                    return void 0;
-                }
-            }
-            else {
-                return void 0;
-            }
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.author;
         }
-        catch (e) {
-            console.warn(e);
+        else {
             return void 0;
         }
     }
@@ -1596,7 +1542,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set author(author: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            const metaInfo: PackageSettings = JSON.parse(file.getText());
             setOptionalStringProperty('author', author, metaInfo);
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -1609,22 +1555,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * dependencies a list of package names, the unique identifier for libraries.
      */
     get dependencies(): { [packageName: string]: string } {
-        try {
-            if (this.existsPackageJson()) {
-                const pkgInfo = this.packageInfo;
-                if (pkgInfo) {
-                    return pkgInfo.dependencies;
-                }
-                else {
-                    return {};
-                }
-            }
-            else {
-                return {};
-            }
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.dependencies;
         }
-        catch (e) {
-            console.warn(e);
+        else {
             return {};
         }
     }
@@ -1633,7 +1568,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         try {
             const file = this.ensurePackageJson();
             try {
-                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+                const metaInfo: PackageSettings = JSON.parse(file.getText());
                 metaInfo.dependencies = dependencies;
                 file.setText(stringifyFileContent(metaInfo));
             }
@@ -1647,22 +1582,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get description(): string | undefined {
-        try {
-            if (this.existsPackageJson()) {
-                const pkgInfo = this.packageInfo;
-                if (pkgInfo) {
-                    return pkgInfo.description;
-                }
-                else {
-                    return void 0;
-                }
-            }
-            else {
-                return void 0;
-            }
+        const pkgInfo = this.getPackageSettings();
+        if (pkgInfo) {
+            return pkgInfo.description;
         }
-        catch (e) {
-            console.warn(e);
+        else {
             return void 0;
         }
     }
@@ -1670,9 +1594,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set description(description: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-            setOptionalStringProperty('description', description, metaInfo);
-            file.setText(stringifyFileContent(metaInfo));
+            const pkg = this.ensurePackageSettings();
+            if (pkg) {
+                setOptionalStringProperty('description', description, pkg);
+                file.setText(stringifyFileContent(pkg));
+            }
         }
         finally {
             file.release();
@@ -1680,22 +1606,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get keywords(): string[] {
-        try {
-            if (this.existsPackageJson()) {
-                const pkgInfo = this.packageInfo;
-                if (pkgInfo) {
-                    return pkgInfo.keywords;
-                }
-                else {
-                    return [];
-                }
-            }
-            else {
-                return [];
-            }
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.keywords;
         }
-        catch (e) {
-            console.warn(e);
+        else {
             return [];
         }
     }
@@ -1703,7 +1618,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            const metaInfo: PackageSettings = JSON.parse(file.getText());
             setOptionalStringArrayProperty('keywords', keywords, metaInfo);
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -1713,14 +1628,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get name(): string | undefined {
-        if (this.existsPackageJson()) {
-            const pkgInfo = this.packageInfo;
-            if (pkgInfo) {
-                return pkgInfo.name;
-            }
-            else {
-                return void 0;
-            }
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.name;
         }
         else {
             return void 0;
@@ -1730,7 +1640,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set name(name: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo = JSON.parse(file.getText()) as IDoodleConfig;
+            const metaInfo = JSON.parse(file.getText()) as PackageSettings;
             metaInfo.name = name;
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -1743,14 +1653,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get noLoopCheck(): boolean {
-        if (this.existsPackageJson()) {
-            const pkgInfo = this.packageInfo;
-            if (pkgInfo) {
-                return pkgInfo.noLoopCheck ? true : false;
-            }
-            else {
-                return false;
-            }
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.noLoopCheck ? true : false;
         }
         else {
             return false;
@@ -1760,7 +1665,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set noLoopCheck(noLoopCheck: boolean) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            const metaInfo: PackageSettings = JSON.parse(file.getText());
             setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -1772,40 +1677,32 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    get operatorOverloading(): boolean {
-        if (this.existsPackageJson()) {
-            const pkgInfo = this.packageInfo;
-            if (pkgInfo) {
-                return pkgInfo.operatorOverloading ? true : false;
-            }
-            else {
-                return false;
-            }
+    /**
+     * Returns the operator overloading setting.
+     * Defaults to false if the setting is not defined or cannot be determined.
+     */
+    isOperatorOverloadingEnabled(): boolean {
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.operatorOverloading ? true : false;
         }
         else {
             return false;
         }
     }
 
-    set operatorOverloading(operatorOverloading: boolean) {
-        const oldValue = this.operatorOverloading;
+    setOperatorOverloading(operatorOverloading: boolean | undefined) {
+        const oldValue = this.isOperatorOverloadingEnabled();
         if (operatorOverloading !== oldValue) {
             const file = this.ensurePackageJson();
             try {
-                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-                setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-                file.setText(stringifyFileContent(metaInfo));
-                if (this.languageServiceProxy) {
-                    this.inFlight++;
-                    this.languageServiceProxy.setOperatorOverloading(operatorOverloading, (reason) => {
-                        this.inFlight--;
-                        if (reason) {
-                            console.warn(`Unable to set operator overloading on language service. Cause: ${reason}`);
-                        }
-                        else {
-                            this.eventBus.emitAsync(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
-                        }
-                    });
+                const pkg = this.ensurePackageSettings();
+                if (pkg) {
+                    setOptionalBooleanProperty('operatorOverloading', operatorOverloading, pkg);
+                    file.setText(stringifyFileContent(pkg));
+                }
+                else {
+                    // The option cannot be applied because the package.json file could not be parsed.
                 }
             }
             catch (e) {
@@ -1819,9 +1716,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     get linting(): boolean {
         if (this.existsPackageJson()) {
-            const pkgInfo = this.packageInfo;
-            if (pkgInfo) {
-                return pkgInfo.linting ? true : false;
+            const pkg = this.getPackageSettings();
+            if (pkg) {
+                return pkg.linting ? true : false;
             }
             else {
                 return false;
@@ -1837,7 +1734,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         if (linting !== oldValue) {
             const file = this.ensurePackageJson();
             try {
-                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+                const metaInfo: PackageSettings = JSON.parse(file.getText());
                 setOptionalBooleanProperty('linting', linting, metaInfo);
                 file.setText(stringifyFileContent(metaInfo));
                 this.eventBus.emitAsync(changedLinting, new ChangedLintingMessage(oldValue, linting));
@@ -1852,8 +1749,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     get version(): string | undefined {
+        // 
         if (this.existsPackageJson()) {
-            const pkgInfo = this.packageInfo;
+            const pkgInfo = this.getPackageSettings();
             if (pkgInfo) {
                 return pkgInfo.version;
             }
@@ -1869,7 +1767,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set version(version: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            const metaInfo: PackageSettings = JSON.parse(file.getText());
             metaInfo.version = version;
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -2277,6 +2175,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * Returns a weak reference to the Editor corresponding to the specified path.
+     * Returns undefined if there is no editor of there is no such file.
+     */
     getFileEditor(path: string): Editor | undefined {
         if (this.files) {
             const file = this.files.getWeakRef(path);
@@ -2478,9 +2380,13 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
+     * Ensures that the package.json file exists.
+     * Returns the parsed contents.
+     * Returns undefined if the contents cannot be parsed as JSON.
      * 
+     * TODO: Schema Validation?
      */
-    get packageInfo(): IDoodleConfig | undefined {
+    ensurePackageSettings(): PackageSettings | undefined {
         try {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
@@ -2490,6 +2396,20 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             return JSON.parse(text);
         }
         catch (e) {
+            return void 0;
+        }
+    }
+
+    /**
+     * Returns the PackageSettings provided:
+     * 1. The package.json file exists.
+     * 2. The package.json file can be parsed.
+     */
+    getPackageSettings(): PackageSettings | undefined {
+        if (this.existsPackageJson()) {
+            return this.ensurePackageSettings();
+        }
+        else {
             return void 0;
         }
     }
@@ -2512,7 +2432,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 noImplicitThis: true,
                 noUnusedLocals: true,
                 noUnusedParameters: true,
-                operatorOverloading: true,
+                // operatorOverloading: true,
                 preserveConstEnums: true,
                 removeComments: false,
                 sourceMap: true,
@@ -2938,7 +2858,6 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      */
     getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]> {
         checkPath(path);
-        // FIXME: Promises make it messy to hook for inFlight.
         if (this.languageServiceProxy) {
             return this.languageServiceProxy.getCompletionsAtPosition(path, position, prefix);
         }
@@ -2953,9 +2872,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
         checkPath(path);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange[]) => {
-                this.inFlight--;
                 callback(err, textChanges);
             });
         }
@@ -2967,9 +2884,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
         checkPath(path);
         if (this.languageServiceProxy) {
-            this.inFlight++;
             this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {
-                this.inFlight--;
                 callback(err, quickInfo);
             });
         }

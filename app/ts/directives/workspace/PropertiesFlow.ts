@@ -36,7 +36,7 @@ export default class PropertiesFlow {
                     version: this.wsModel.version as string,
                     linting: this.wsModel.linting,
                     noLoopCheck: this.wsModel.noLoopCheck,
-                    operatorOverloading: this.wsModel.operatorOverloading,
+                    operatorOverloading: this.wsModel.isOperatorOverloadingEnabled(),
                     dependencies: dependencyNames(this.wsModel.dependencies)
                 };
                 this.propertiesDialog.open(defaults)
@@ -62,7 +62,7 @@ export default class PropertiesFlow {
                     this.wsModel.version = value.version;
                     this.wsModel.linting = value.linting;
                     this.wsModel.noLoopCheck = value.noLoopCheck;
-                    this.wsModel.operatorOverloading = value.operatorOverloading;
+                    this.wsModel.setOperatorOverloading(value.operatorOverloading);
                     this.wsModel.dependencies = dependenciesMap(value.dependencies, this.optionManager);
                 }
                 else {

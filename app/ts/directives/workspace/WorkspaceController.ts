@@ -13,7 +13,6 @@ import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/back
 import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
-import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../../services/github/IGitHubService';
 import LabelDialog from '../../modules/publish/LabelDialog';
@@ -90,13 +89,6 @@ const WAIT_FOR_MORE_OTHER_KEYSTROKES = 350;
  * A delay of 1 second.
  */
 const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
-
-const MODULE_KIND_NONE = 'none';
-const MODULE_KIND_SYSTEM = 'system';
-const SCRIPT_TARGET_ES5 = 'es5';
-// Upgrading to later versions of ECMAScript requires upgrading davinci-mathscript.
-// const SCRIPT_TARGET_LATEST = 'latest';
-const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
 function endsWith(str: string, suffix: string): boolean {
     const expectedPos = str.length - suffix.length;
@@ -664,15 +656,8 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             this.$http,
             this.$location,
             this.VENDOR_FOLDER_MARKER, () => {
-                // Set the module kind for transpilation consistent with the version.
-                // TODO: Clean this up
                 const promises: Promise<any>[] = [];
-                const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
-                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
-                // promises.push(this.wsModel.setTrace(false));
                 promises.push(this.wsModel.synchOperatorOverloading());
-                promises.push(this.wsModel.synchModuleKind(moduleKind));
-                promises.push(this.wsModel.synchScriptTarget(scriptTarget));
                 const tsconfig = this.wsModel.tsconfigSettings;
                 if (tsconfig) {
                     promises.push(this.wsModel.synchTsConfig(tsconfig));
@@ -684,13 +669,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                     .then(() => {
                         this.compile();
                         this.$scope.workspaceLoaded = true;
-                        // The following line may be redundant because we handle the files elsewhare.
+                        // The following line may be redundant because we handle the files elsewhere.
                         this.$scope.updatePreview(WAIT_NO_MORE);
                     })
                     .catch((reason) => {
-                        console.warn(`setOperatorOverloading(${this.wsModel.operatorOverloading}) failed ${reason}`);
-                        console.warn(`setModuleKind(${moduleKind}) failed ${reason}`);
-                        console.warn(`setScriptTarget(${scriptTarget}) failed ${reason}`);
+                        console.warn(`Synchronization failed. Cause: ${reason}`);
                     });
             });
     }
@@ -716,9 +699,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
     private resize(): void {
         if (!this.wsModel.isZombie()) {
             const paths = this.wsModel.getFileEditorPaths();
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 const editor = this.wsModel.getFileEditor(path);
                 if (editor) {
                     editor.resize(true);

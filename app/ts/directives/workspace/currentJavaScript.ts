@@ -14,7 +14,7 @@ export default function currentJavaScript(path: string, workspace: WsModel): str
             const options: mathscript.TranspileOptions = {
                 timeout: 1000,
                 noLoopCheck: workspace.noLoopCheck,
-                operatorOverloading: workspace.operatorOverloading
+                operatorOverloading: workspace.isOperatorOverloadingEnabled()
             };
             /**
              * The JavaScript code with operators replaced by function calls and infinite loop detection.

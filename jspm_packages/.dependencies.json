@@ -871,13 +871,6 @@
     "@angular/platform-browser": "npm:@angular/platform-browser@4.0.3",
     "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.0.3"
   },
-  "npm:zone.js@0.8.8": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:@angular/forms@4.0.3": {
     "@angular/core": "npm:@angular/core@4.0.3",
     "@angular/common": "npm:@angular/common@4.0.3",
@@ -909,5 +902,12 @@
     "@angular/core": "npm:@angular/core@4.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.9": {}
+  "github:geometryzen/ace-workers@2.9.13": {},
+  "npm:zone.js@0.8.9": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  }
 }

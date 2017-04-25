@@ -1,12 +1,15 @@
 import DoodleFile from './DoodleFile';
-import IDoodleConfig from './IDoodleConfig';
+import { PackageSettings } from '../../modules/wsmodel/WsModel';
 import modeFromName from '../../utils/modeFromName';
 import setOptionalBooleanProperty from './setOptionalBooleanProperty';
 import setOptionalStringProperty from './setOptionalStringProperty';
 import setOptionalStringArrayProperty from './setOptionalStringArrayProperty';
 
-const FILENAME_META = 'package.json';
+const PACKAGE_DOT_JSON = 'package.json';
 
+/**
+ * TODO: Eliminate DEAD CODE.
+ */
 export default class Doodle {
 
     /**
@@ -45,7 +48,7 @@ export default class Doodle {
         this.lastKnownJsMap = {};
     }
 
-    get packageInfo(): Partial<IDoodleConfig> {
+    get packageInfo(): Partial<PackageSettings> {
         try {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
@@ -53,7 +56,7 @@ export default class Doodle {
             return JSON.parse(file.content);
         }
         catch (e) {
-            console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
+            console.warn(`Unable to parse file '${PACKAGE_DOT_JSON}' as JSON.`);
             const file = this.ensurePackageJson();
             console.warn(file.content);
             throw new Error();
@@ -78,12 +81,12 @@ export default class Doodle {
     set name(name: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: Partial<IDoodleConfig> = JSON.parse(file.content);
+            const metaInfo: Partial<PackageSettings> = JSON.parse(file.content);
             metaInfo.name = name;
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
-            console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set name property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
@@ -98,7 +101,7 @@ export default class Doodle {
 
     set version(version: string | undefined) {
         const file = this.ensurePackageJson();
-        const metaInfo: Partial<IDoodleConfig> = JSON.parse(file.content);
+        const metaInfo: Partial<PackageSettings> = JSON.parse(file.content);
         metaInfo.version = version;
         file.content = JSON.stringify(metaInfo, null, 2);
     }
@@ -126,7 +129,7 @@ export default class Doodle {
 
     set author(author: string | undefined) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        const metaInfo: PackageSettings = JSON.parse(file.content);
         setOptionalStringProperty('author', author, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
@@ -154,7 +157,7 @@ export default class Doodle {
 
     set description(description: string | undefined) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        const metaInfo: PackageSettings = JSON.parse(file.content);
         setOptionalStringProperty('description', description, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
@@ -187,7 +190,7 @@ export default class Doodle {
 
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        const metaInfo: PackageSettings = JSON.parse(file.content);
         setOptionalStringArrayProperty('keywords', keywords, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
@@ -210,12 +213,12 @@ export default class Doodle {
     set linting(linting: boolean) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            const metaInfo: PackageSettings = JSON.parse(file.content);
             setOptionalBooleanProperty('linting', linting, metaInfo);
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
-            console.warn(`Unable to set linting property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set linting property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
@@ -237,12 +240,12 @@ export default class Doodle {
     set noLoopCheck(noLoopCheck: boolean) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            const metaInfo: PackageSettings = JSON.parse(file.content);
             setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
-            console.warn(`Unable to set noLoopCheck property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set noLoopCheck property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
@@ -264,12 +267,12 @@ export default class Doodle {
     set operatorOverloading(operatorOverloading: boolean) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            const metaInfo: PackageSettings = JSON.parse(file.content);
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
-            console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set operatorOverloading property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
@@ -309,21 +312,21 @@ export default class Doodle {
     set dependencies(dependencies: { [packageName: string]: string }) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            const metaInfo: PackageSettings = JSON.parse(file.content);
             metaInfo.dependencies = dependencies;
             file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
-            console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
+            console.warn(`Unable to set dependencies property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
 
     private existsPackageJson(): boolean {
-        return this.existsFile(FILENAME_META);
+        return this.existsFile(PACKAGE_DOT_JSON);
     }
 
     private ensurePackageJson(): DoodleFile {
-        return this.ensureFile(FILENAME_META, '{}');
+        return this.ensureFile(PACKAGE_DOT_JSON, '{}');
     }
 
     private ensureFile(path: string, content: string): DoodleFile {

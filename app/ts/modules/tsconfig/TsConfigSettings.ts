@@ -17,7 +17,6 @@ export interface TsConfigSettings {
     noImplicitThis: boolean;
     noUnusedLocals: boolean;
     noUnusedParameters: boolean;
-    operatorOverloading: boolean;
     preserveConstEnums: boolean;
     removeComments: false;
     sourceMap: boolean;

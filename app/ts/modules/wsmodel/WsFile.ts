@@ -28,7 +28,7 @@ import WsModel from './WsModel';
  * The Editor has a session property.
  * 
  * We lazily create the least costly representation required. However, the
- * Editor is created in the user interface layer as part of an Angular directive.
+ * Editor is created in the user interface layer as part of an AngularJS directive.
  * This directive informs its controller of the lifecycle of the editor and these
  * events are forwarded to the workspace, allowing the editor property of this file
  * to reflect the existence of an Editor in the user interface.
@@ -179,7 +179,7 @@ export default class WsFile implements MwDocument, Shareable {
     }
 
     /**
-     *
+     * Returns a weak reference to the Editor.
      */
     getEditor(): Editor | undefined {
         if (this.editor) {
@@ -253,6 +253,7 @@ export default class WsFile implements MwDocument, Shareable {
 
     /**
      * Sets the text on the Document level.
+     * A `change` event will be emitted on the document.
      */
     setText(text: string): void {
         if (typeof text === 'string') {

@@ -31,7 +31,7 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.9",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.13",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -41,7 +41,7 @@ System.config({
     "socket.io-client": "npm:socket.io-client@1.7.3",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
-    "zone.js": "npm:zone.js@0.8.8",
+    "zone.js": "npm:zone.js@0.8.9",
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
@@ -127,7 +127,7 @@ System.config({
     "npm:@angular/core@4.0.3": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.3.0",
-      "zone.js": "npm:zone.js@0.8.8"
+      "zone.js": "npm:zone.js@0.8.9"
     },
     "npm:@angular/forms@4.0.3": {
       "@angular/common": "npm:@angular/common@4.0.3",
@@ -883,7 +883,7 @@ System.config({
       "y18n": "npm:y18n@3.2.1",
       "yargs-parser": "npm:yargs-parser@4.2.1"
     },
-    "npm:zone.js@0.8.8": {
+    "npm:zone.js@0.8.9": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
