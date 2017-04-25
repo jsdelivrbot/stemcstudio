@@ -483,10 +483,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
      */
-    private readonly changedCompilerSettingsEventBus = new EventBus<'changedCompilerSettings', { err: any; settings: TsConfigSettings }, WsModel>(this);
+    private readonly changedCompilerSettingsEventBus = new EventBus<'changedCompilerSettings', TsConfigSettings, WsModel>(this);
     public readonly changedCompilerSettings: Observable<TsConfigSettings>;
 
-    private readonly changedLintSettingsEventBus = new EventBus<'changedLintSettings', { err: any; settings: TsLintSettings }, WsModel>(this);
+    private readonly changedLintSettingsEventBus = new EventBus<'changedLintSettings', TsLintSettings, WsModel>(this);
     public readonly changedLintSettings: Observable<TsLintSettings>;
 
     /**
@@ -519,24 +519,14 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         // We do nothing. There is no destructor; it would never be called.
 
         this.changedCompilerSettings = new Observable<TsConfigSettings>((observer: Observer<TsConfigSettings>) => {
-            return this.changedCompilerSettingsEventBus.watch(changedCompilerSettingsEventName, ({ err, settings }) => {
-                if (!err) {
-                    observer.next(settings);
-                }
-                else {
-                    observer.error(err);
-                }
+            return this.changedCompilerSettingsEventBus.watch(changedCompilerSettingsEventName, (settings) => {
+                observer.next(settings);
             });
         });
 
         this.changedLintSettings = new Observable<TsLintSettings>((observer: Observer<TsLintSettings>) => {
-            return this.changedLintSettingsEventBus.watch(changedLintSettingsEventName, ({ err, settings }) => {
-                if (!err) {
-                    observer.next(settings);
-                }
-                else {
-                    observer.error(err);
-                }
+            return this.changedLintSettingsEventBus.watch(changedLintSettingsEventName, (settings) => {
+                observer.next(settings);
             });
         });
     }
@@ -1202,7 +1192,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                             this.inFlight++;
                                             this.languageServiceProxy.setTsConfig(tsconfig, (err, settings) => {
                                                 this.inFlight--;
-                                                this.changedCompilerSettingsEventBus.emitAsync(changedCompilerSettingsEventName, { err, settings });
+                                                if (!err) {
+                                                    this.changedCompilerSettingsEventBus.emitAsync(changedCompilerSettingsEventName, settings);
+                                                }
                                             });
                                         }
                                         else {
@@ -1221,7 +1213,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                 .subscribe((delta) => {
                                     const tslint = this.tslintSettings;
                                     if (tslint) {
-                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, { err: void 0, settings: tslint });
+                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, tslint);
                                     }
                                     else {
                                         // There is an error in the tsconfig.json file.
