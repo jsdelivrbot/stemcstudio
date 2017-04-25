@@ -1,5 +1,6 @@
 import { IAngularEvent, IHttpService, ILocationService, IPromise, IScope, ITimeoutService, IWindowService } from 'angular';
 import { IStateParamsService, IStateService } from 'angular-ui-router';
+import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationService';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import Delta from '../../editor/Delta';
 import Document from '../../editor/Document';
@@ -259,8 +260,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             const fs: { [path: string]: WsFile } = {};
             if (!wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
-                for (let i = 0; i < paths.length; i++) {
-                    const path = paths[i];
+                for (const path of paths) {
                     const file = wsModel.getFileWeakRef(path);
                     if (file) {
                         fs[path] = file;
@@ -323,7 +323,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
 
         $scope.toggleMode = function (label?: string, value?: number) {
             // Is this dead code?
-            ga('send', 'event', 'doodle', 'toggleMode', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'toggleMode', label, value);
             $scope.isEditMode = !$scope.isEditMode;
             // Ensure the preview is running when going away from editing.
             if (!$scope.isEditMode) {
@@ -338,7 +338,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         };
 
         $scope.toggleView = function (label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'toggleView', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'toggleView', label, value);
             $scope.isViewVisible = !$scope.isViewVisible;
             $scope.updatePreview(WAIT_NO_MORE);
         };
@@ -346,28 +346,30 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         $scope.comments = [];
 
         $scope.toggleCommentsVisible = (label?: string, value?: number) => {
-            ga('send', 'event', 'doodle', 'toggleCommentsVisible', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'toggleCommentsVisible', label, value);
             $scope.isCommentsVisible = !$scope.isCommentsVisible;
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
                 if (wsModel.isZombie()) {
-                    githubService.getGistComments(wsModel.gistId as string).then((httpResponse) => {
-                        const comments = httpResponse.data;
-                        if (Array.isArray(comments)) {
-                            $scope.comments = comments.map(function (comment) {
-                                return { type: 'info', msg: comment.body };
-                            });
-                        }
-                    }).catch((reason) => {
-                        console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
-                    });
+                    githubService.getGistComments(wsModel.gistId as string)
+                        .then((httpResponse) => {
+                            const comments = httpResponse.data;
+                            if (Array.isArray(comments)) {
+                                $scope.comments = comments.map(function (comment) {
+                                    return { type: 'info', msg: comment.body };
+                                });
+                            }
+                        })
+                        .catch((reason) => {
+                            console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
+                        });
                 }
             }
         };
 
         $scope.toggleMarkdownVisible = (label?: string, value?: number) => {
-            ga('send', 'event', 'doodle', 'toggleMarkdownVisible', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'toggleMarkdownVisible', label, value);
             $scope.isMarkdownVisible = !$scope.isMarkdownVisible;
             if ($scope.isMarkdownVisible) {
                 $scope.isCommentsVisible = false;
@@ -379,7 +381,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             if (wsModel.isZombie()) {
                 return;
             }
-            ga('send', 'event', 'doodle', 'label', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'label', label, value);
             const labelFlow = new LabelFlow(this.flowService, this.labelDialog, wsModel);
             labelFlow.execute();
         };
@@ -388,7 +390,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             if (wsModel.isZombie()) {
                 return;
             }
-            ga('send', 'event', 'doodle', 'properties', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'properties', label, value);
             const propertiesFlow = new PropertiesFlow(
                 this.optionManager,
                 this.olds,
@@ -415,7 +417,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             if (wsModel.isZombie()) {
                 return;
             }
-            ga('send', 'event', 'doodle', 'upload', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'upload', label, value);
             const owner = $scope.userLogin();
             const uploadFlow = new UploadFlow(
                 owner,
@@ -432,7 +434,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             if (wsModel.isZombie()) {
                 return;
             }
-            ga('send', 'event', 'doodle', 'publish', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'publish', label, value);
             const owner = $scope.userLogin();
             const publishFlow = new PublishFlow(
                 owner,

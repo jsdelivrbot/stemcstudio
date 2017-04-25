@@ -845,7 +845,6 @@
     "url": "github:jspm/nodelibs-url@^0.1.0"
   },
   "npm:tiny-emitter@1.2.0": {},
-  "github:geometryzen/ace-workers@2.9.7": {},
   "npm:normalize-package-data@2.3.8": {
     "hosted-git-info": "npm:hosted-git-info@^2.1.4",
     "is-builtin-module": "npm:is-builtin-module@^1.0.0",
@@ -909,5 +908,6 @@
   "npm:@angular/compiler@4.0.3": {
     "@angular/core": "npm:@angular/core@4.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "github:geometryzen/ace-workers@2.9.8": {}
 }

@@ -2,7 +2,8 @@ import BodyScope from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import linkToMap from '../utils/linkToMap';
-import {NAVIGATION_SERVICE_UUID,INavigationService} from '../modules/navigation/INavigationService';
+import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
+import { CATEGORY_WORKSPACE } from '../modules/navigation/NavigationService';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
@@ -24,7 +25,7 @@ export default class BodyController {
         };
 
         $scope.clickDownload = function (label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'download', label, value);
+            ga('send', 'event', CATEGORY_WORKSPACE, 'download', label, value);
             githubService.getGists()
                 .then(function (promiseValue) {
                     if (promiseValue.data) {

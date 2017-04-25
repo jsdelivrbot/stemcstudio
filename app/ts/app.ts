@@ -157,7 +157,7 @@ import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
 import { STATE_ABOUT } from './modules/navigation/NavigationService';
 import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
 import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
-import { STATE_DOODLE } from './modules/navigation/NavigationService';
+import { STATE_WORKSPACE } from './modules/navigation/NavigationService';
 import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
 import { STATE_EXAMPLES } from './modules/navigation/NavigationService';
 import { STATE_GIST } from './modules/navigation/NavigationService';
@@ -201,7 +201,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.39');
+app.constant('version', '2.24.40');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -360,8 +360,8 @@ app.config([
                 templateUrl: 'home.html',
                 controller: HOME_CONTROLLER_NAME
             })
-            .state(STATE_DOODLE, {
-                url: '/doodle',
+            .state(STATE_WORKSPACE, {
+                url: '/workspace',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })

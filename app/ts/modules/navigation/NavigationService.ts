@@ -5,6 +5,11 @@ import INavigationService from './INavigationService';
 // WARNING: Changing state names can break ui-sref directives.
 
 /**
+ * Used for Google Analytics.
+ */
+export const CATEGORY_WORKSPACE = 'workspace';
+
+/**
  * 
  */
 export const STATE_ABOUT = 'about';
@@ -22,7 +27,7 @@ export const STATE_DASHBOARD = 'dashboard';
 /**
  * 
  */
-export const STATE_DOODLE = 'doodle';
+export const STATE_WORKSPACE = 'workspace';
 
 /**
  * 
@@ -81,7 +86,7 @@ export default class NavigationService implements INavigationService {
     }
 
     public gotoDoodle(label?: string, value?: number) {
-        return this.navigateTo(STATE_DOODLE, void 0, void 0, label, value);
+        return this.navigateTo(STATE_WORKSPACE, void 0, void 0, label, value);
     }
 
     public gotoDownload(label?: string, value?: number) {
