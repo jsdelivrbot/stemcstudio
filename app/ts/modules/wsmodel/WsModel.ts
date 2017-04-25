@@ -265,6 +265,8 @@ function isTypeScript(path: string): boolean {
 }
 
 const TSCONFIG_SYNCH_DELAY_MILLISECONDS = 250;
+const TSLINT_SYNCH_DELAY_MILLISECONDS = 250;
+
 /**
  * Synchronize after 0.75 seconds of inactivity.
  */
@@ -314,13 +316,11 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
     };
 }
 
-/**
- * We don't need to export this symbolic constant because we have an Observable of the same name.
- */
+// We don't need to export these symbolic constants because we have Observable(s) of the same name.
 const changedCompilerSettingsEventName = 'changedCompilerSettings';
+const changedLintSettingsEventName = 'changedLintSettings';
 
-export type WsModelEventName = 'changedCompilerSettings'
-    | 'changedLinting'
+export type WsModelEventName = 'changedLinting'
     | 'changedOperatorOverloading'
     | 'outputFiles'
     | 'renamedFile';
@@ -446,6 +446,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * Language Service up-to-date with TypeScript compiler settings.
      */
     private tsconfigSubscription: Subscription | undefined;
+    private tslintSubscription: Subscription | undefined;
 
     /**
      * Slightly unusual reference counting because of:
@@ -482,8 +483,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
      */
-    private readonly changedCompilerSettingsEventBus = new EventBus<WsModelEventName, { err: any; settings: TsConfigSettings }, WsModel>(this);
+    private readonly changedCompilerSettingsEventBus = new EventBus<'changedCompilerSettings', { err: any; settings: TsConfigSettings }, WsModel>(this);
     public readonly changedCompilerSettings: Observable<TsConfigSettings>;
+
+    private readonly changedLintSettingsEventBus = new EventBus<'changedLintSettings', { err: any; settings: TsLintSettings }, WsModel>(this);
+    public readonly changedLintSettings: Observable<TsLintSettings>;
 
     /**
      * Used to control logging of the Language Service.
@@ -513,8 +517,20 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     constructor(private doodles: DoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
+
         this.changedCompilerSettings = new Observable<TsConfigSettings>((observer: Observer<TsConfigSettings>) => {
             return this.changedCompilerSettingsEventBus.watch(changedCompilerSettingsEventName, ({ err, settings }) => {
+                if (!err) {
+                    observer.next(settings);
+                }
+                else {
+                    observer.error(err);
+                }
+            });
+        });
+
+        this.changedLintSettings = new Observable<TsLintSettings>((observer: Observer<TsLintSettings>) => {
+            return this.changedLintSettingsEventBus.watch(changedLintSettingsEventName, ({ err, settings }) => {
                 if (!err) {
                     observer.next(settings);
                 }
@@ -609,10 +625,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     /**
      * This is the counterpart of the recycle method.
-     * It is called by the workspace controller when it receives a $onDestroy event.
+     * It is called by the workspace controller when it receives an $onDestroy event.
      * The method has to be fire-and-forget (no Promise) because the workspace controller cannot block.
-     * It's not actually a dramatic dispose but a reference-counted release.
-     * We have to wait until all the editors have been detached for a complete clean-up.
+     * It's not actually a dramatic dispose, but instead a reference-counted release because
+     * we have to wait until all the editors have been detached for a complete clean-up.
+     * In summary, the controller gets $onInit after its view has been created and it gets $onDestroy
+     * before its view is destroyed.
      */
     dispose(): void {
         if (this.traceLifecycle) {
@@ -715,7 +733,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * 
      * TODO: Replace this with type-safe Observable(s).
      */
-    watch<T>(eventName: WsModelEventName, callback: (event: T, source: WsModel) => void): () => any {
+    watch<T>(eventName: WsModelEventName, callback: (event: T, source: WsModel) => void): () => void {
         return this.eventBus.watch(eventName, callback);
     }
 
@@ -735,8 +753,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         const files: { [path: string]: WsFile } = {};
         if (this.files) {
             const paths = this.files.keys;
-            for (let i = 0; i < paths.length; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 files[path] = this.files.getWeakRef(path);
             }
         }
@@ -744,14 +761,15 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * A map of path to WsFile that is not reference counted.
+     * Returns a map of path to WsFile for files in trash.
+     * The map is a copy but the files are by reference.
+     * The files in the map have not been reference counted.
      */
     get trashByPath(): { [path: string]: WsFile } {
         const trash: { [path: string]: WsFile } = {};
         if (this.trash) {
             const paths = this.trash.keys;
-            for (let i = 0; i < paths.length; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 trash[path] = this.trash.getWeakRef(path);
             }
         }
@@ -785,7 +803,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                         });
                     }
                     else {
-                        reject(new Error("languageServiceProxy is not defined."));
+                        reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
                     }
                 }
             });
@@ -882,9 +900,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     synchTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
         return new Promise<TsConfigSettings>((resolve, reject) => {
-            this.setTsConfig(settings, function (reason) {
+            this.setTsConfig(settings, function (reason, updatedSettings) {
                 if (!reason) {
-                    resolve(settings);
+                    resolve(updatedSettings);
                 }
                 else {
                     reject(reason);
@@ -896,13 +914,13 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      *
      */
-    private setTsConfig(settings: TsConfigSettings, callback: (err: any) => any): void {
+    private setTsConfig(settings: TsConfigSettings, callback: (err: any, updatedSettings?: TsConfigSettings) => void): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
-            this.languageServiceProxy.setTsConfig(settings, (err: any) => {
+            this.languageServiceProxy.setTsConfig(settings, (err: any, updatedSettings: TsConfigSettings) => {
                 this.inFlight--;
-                callback(err);
+                callback(err, updatedSettings);
             });
         }
         else {
@@ -1184,7 +1202,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                             this.inFlight++;
                                             this.languageServiceProxy.setTsConfig(tsconfig, (err, settings) => {
                                                 this.inFlight--;
-                                                this.changedCompilerSettingsEventBus.emit(changedCompilerSettingsEventName, { err, settings });
+                                                this.changedCompilerSettingsEventBus.emitAsync(changedCompilerSettingsEventName, { err, settings });
                                             });
                                         }
                                         else {
@@ -1198,6 +1216,17 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                             break;
                         }
                         case TSLINT_DOT_JSON: {
+                            this.tslintSubscription = doc.changeEvents
+                                .debounceTime(TSLINT_SYNCH_DELAY_MILLISECONDS)
+                                .subscribe((delta) => {
+                                    const tslint = this.tslintSettings;
+                                    if (tslint) {
+                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, { err: void 0, settings: tslint });
+                                    }
+                                    else {
+                                        // There is an error in the tsconfig.json file.
+                                    }
+                                });
                             break;
                         }
                         default: {
@@ -1262,6 +1291,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     if (this.tsconfigSubscription) {
                         this.tsconfigSubscription.unsubscribe();
                         this.tsconfigSubscription = void 0;
+                    }
+
+                    if (this.tslintSubscription) {
+                        this.tslintSubscription.unsubscribe();
+                        this.tslintSubscription = void 0;
                     }
 
                     // Monitoring for Local Storage.
@@ -1373,15 +1407,14 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The results are used to update the corresponding edit session objects.
      */
     public refreshDiagnostics(callback: (err: any) => any): void {
-        const tsPaths = this.getFileSessionPaths().filter(isTypeScript);
-        const tsLength = tsPaths.length;
+        const paths = this.getFileSessionPaths().filter(isTypeScript);
+        const tsLength = paths.length;
         let tsRemaining = tsLength;
-        for (let i = 0; i < tsLength; i++) {
-            const tsPath = tsPaths[i];
-            const session = this.getFileSession(tsPath);
+        for (const path of paths) {
+            const session = this.getFileSession(path);
             if (session) {
                 try {
-                    this.diagnosticsForSession(tsPath, session, function () {
+                    this.diagnosticsForSession(path, session, function () {
                         tsRemaining--;
                         if (tsRemaining === 0) {
                             callback(void 0);
@@ -1470,7 +1503,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                     if (semanticErrors.length === 0) {
                                         if (this.linting) {
                                             if (this.languageServiceProxy) {
-                                                const configuration = this.tslintConfiguration;
+                                                const configuration = this.tslintSettings;
                                                 if (configuration) {
                                                     this.inFlight++;
                                                     this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
@@ -1515,8 +1548,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      */
     public outputFiles(): void {
         const paths = this.getFileDocumentPaths();
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
+        for (const path of paths) {
             if (isTypeScript(path) || isJavaScript(path)) {
                 this.outputFilesForPath(path);
             }
@@ -1535,7 +1567,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
                     this.inFlight--;
                     if (!err) {
-                        this.eventBus.emit(outputFilesTopic, new OutputFilesMessage(outputFiles));
+                        this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
                     }
                     else {
                         console.warn(`getOutputFilesForPath(${path}) => ${err}`);
@@ -1706,7 +1738,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     set name(name: string | undefined) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            const metaInfo = JSON.parse(file.getText()) as IDoodleConfig;
             metaInfo.name = name;
             file.setText(stringifyFileContent(metaInfo));
         }
@@ -1779,7 +1811,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                             console.warn(`Unable to set operator overloading on language service. Cause: ${reason}`);
                         }
                         else {
-                            this.eventBus.emit(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
+                            this.eventBus.emitAsync(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, operatorOverloading));
                         }
                     });
                 }
@@ -1816,9 +1848,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 const metaInfo: IDoodleConfig = JSON.parse(file.getText());
                 setOptionalBooleanProperty('linting', linting, metaInfo);
                 file.setText(stringifyFileContent(metaInfo));
-                window.setTimeout(() => {
-                    this.eventBus.emit(changedLinting, new ChangedLintingMessage(oldValue, linting));
-                }, 0);
+                this.eventBus.emitAsync(changedLinting, new ChangedLintingMessage(oldValue, linting));
             }
             catch (e) {
                 console.warn(`Unable to set linting property in file '${PACKAGE_DOT_JSON}'. Cause: ${e}`);
@@ -1900,10 +1930,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * Helper function that only provides the file.
      * The file is reference counted and must be released.
      */
-    public createFileOrRestoreFromTrash(path: string): WsFile {
-        const mode = modeFromName(path);
-        if (!this.existsFile(path)) {
-            const trashedFile = this.trash ? this.trash.get(path) : void 0;
+    public createFileOrRestoreFromTrash(pathToCreate: string): WsFile {
+        const mode = modeFromName(pathToCreate);
+        if (!this.existsFile(pathToCreate)) {
+            const trashedFile = this.trash ? this.trash.get(pathToCreate) : void 0;
             if (!trashedFile) {
                 const file = new WsFile(this);
                 file.setText("");
@@ -1912,18 +1942,18 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     this.files = new StringShareableMap<WsFile>();
                 }
                 // The file is captured by the files collection (incrementing the reference count again).
-                this.files.put(path, file);
+                this.files.put(pathToCreate, file);
                 // We return the other reference.
                 return file;
             }
             else {
-                this.restoreFileFromTrash(path);
+                this.restoreFileFromTrash(pathToCreate);
                 trashedFile.mode = mode;
                 return trashedFile;
             }
         }
         else {
-            throw new Error(`${path} already exists. The path must be unique.`);
+            throw new Error(`${pathToCreate} already exists. The path must be unique.`);
         }
     }
 
@@ -1939,40 +1969,40 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * 
      * The master flag determines whether nullify edits will be sent to any remotely connected room.
      */
-    deleteFile(path: string, master: boolean): Promise<void> {
+    deleteFile(pathToDelete: string, master: boolean): Promise<void> {
         if (this.traceFileOperations) {
-            console.log(`WsModel.deleteFile(path = ${path}, master = ${master})`);
+            console.log(`WsModel.deleteFile(path = ${pathToDelete}, master = ${master})`);
         }
         return new Promise<void>((resolve, reject) => {
-            const file = this.files ? this.files.getWeakRef(path) : void 0;
+            const file = this.files ? this.files.getWeakRef(pathToDelete) : void 0;
             if (file) {
                 // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
                 // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-                this.endDocumentMonitoring(path, () => {
+                this.endDocumentMonitoring(pathToDelete, () => {
                     if (file.existsInGitHub) {
                         // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
-                        this.moveFileToTrash(path);
+                        this.moveFileToTrash(pathToDelete);
                     }
                     else {
                         // It's a file that does NOT exist on GitHub. Remove it completely.
                         if (this.files) {
-                            this.files.remove(path).release();
+                            this.files.remove(pathToDelete).release();
                         }
                     }
-                    delete this.lastKnownJs[path];
-                    delete this.lastKnownJsMap[path];
+                    delete this.lastKnownJs[pathToDelete];
+                    delete this.lastKnownJsMap[pathToDelete];
                     this.updateStorage();
                     resolve();
                 });
                 // Send a message that the file has been deleted.
                 if (this.room && master) {
-                    this.unsubscribeRoomFromDocumentChanges(path);
-                    this.room.deleteFile(path);
+                    this.unsubscribeRoomFromDocumentChanges(pathToDelete);
+                    this.room.deleteFile(pathToDelete);
                 }
             }
             else {
                 setTimeout(() => {
-                    reject(new Error(`deleteFile(${path}), ${path} was not found.`));
+                    reject(new Error(`deleteFile(${pathToDelete}), ${pathToDelete} was not found.`));
                 }, 0);
             }
         });
@@ -2070,17 +2100,16 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * Sets the `selected` property of the file specified by the `path` parameter to `true`.
      * Only one file can be selected at any one time.
      */
-    selectFile(path: string): void {
+    selectFile(pathToSelect: string): void {
         if (this.files) {
-            const file = this.files.getWeakRef(path);
+            const file = this.files.getWeakRef(pathToSelect);
             if (file) {
                 if (file.isOpen) {
                     const paths = this.files.keys;
-                    const iLen = paths.length;
-                    for (let i = 0; i < iLen; i++) {
-                        const file = this.files.getWeakRef(paths[i]);
+                    for (const path of paths) {
+                        const file = this.files.getWeakRef(path);
                         if (file.isOpen) {
-                            file.selected = paths[i] === path;
+                            file.selected = path === pathToSelect;
                         }
                     }
                 }
@@ -2089,9 +2118,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    closeFile(path: string): void {
+    closeFile(pathToClose: string): void {
         if (this.files) {
-            const file = this.files.getWeakRef(path);
+            const file = this.files.getWeakRef(pathToClose);
             if (file) {
                 // The user interface responds to the isOpen flag.
                 file.isOpen = false;
@@ -2102,9 +2131,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
                     // Select the first open file that we find.
                     const paths = this.files.keys;
-                    const iLen = paths.length;
-                    for (let i = 0; i < iLen; i++) {
-                        const file = this.files.getWeakRef(paths[i]);
+                    for (const path of paths) {
+                        const file = this.files.getWeakRef(path);
                         if (file.isOpen) {
                             file.selected = true;
                             return;
@@ -2119,9 +2147,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     markAllFilesAsInGitHub(): void {
         if (this.files) {
             const paths = this.files.keys;
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 const file = this.files.getWeakRef(path);
                 file.existsInGitHub = true;
             }
@@ -2131,9 +2157,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     emptyTrash(): void {
         if (this.trash) {
             const paths = this.trash.keys;
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 const file = this.trash.remove(path);
                 file.release();
             }
@@ -2150,9 +2174,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     getHtmlFileChoice(): string | undefined {
         if (this.files) {
             const paths = this.files.keys;
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 if (this.files.getWeakRef(path).htmlChoice) {
                     return path;
                 }
@@ -2170,9 +2192,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             let bestFile: string | undefined;
             if (this.files) {
                 const paths = this.files.keys;
-                const iLen = paths.length;
-                for (let i = 0; i < iLen; i++) {
-                    const path = paths[i];
+                for (const path of paths) {
                     const mode = modeFromName(path);
                     if (mode === LANGUAGE_HTML) {
                         if (path === 'index.html') {
@@ -2203,9 +2223,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     getMarkdownFileChoice(): string | undefined {
         if (this.files) {
             const paths = this.files.keys;
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const path = paths[i];
+            for (const path of paths) {
                 if (this.files.getWeakRef(path).markdownChoice) {
                     return path;
                 }
@@ -2223,9 +2241,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             let bestFile: string | undefined;
             if (this.files) {
                 const paths = this.files.keys;
-                const iLen = paths.length;
-                for (let i = 0; i < iLen; i++) {
-                    const path = paths[i];
+                for (const path of paths) {
                     const mode = modeFromName(path);
                     if (mode === LANGUAGE_MARKDOWN) {
                         if (path.toLowerCase() === 'readme.md') {
@@ -2307,7 +2323,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    getFileSession(path: string): EditSession | undefined {
+    /**
+     * Returns the edit session corresponding to the specified path.
+     * May return undefined if the file does not exist.
+     * The caller must release the session when no longer needed.
+     */
+    private getFileSession(path: string): EditSession | undefined {
         if (this.files) {
             const file = this.files.getWeakRef(path);
             if (file) {
@@ -2395,9 +2416,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             const file = files.getWeakRef(path);
             if (file) {
                 const paths = files.keys;
-                const iLen = paths.length;
-                for (let i = 0; i < iLen; i++) {
-                    files.getWeakRef(paths[i]).htmlChoice = false;
+                for (const path of paths) {
+                    files.getWeakRef(path).htmlChoice = false;
                 }
                 file.htmlChoice = true;
             }
@@ -2413,9 +2433,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             const file = files.getWeakRef(path);
             if (file) {
                 const paths = files.keys;
-                const iLen = paths.length;
-                for (let i = 0; i < iLen; i++) {
-                    files.getWeakRef(paths[i]).markdownChoice = false;
+                for (const path of paths) {
+                    files.getWeakRef(path).markdownChoice = false;
                 }
                 file.markdownChoice = true;
             }
@@ -2494,7 +2513,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 declaration: true,
                 emitDecoratorMetadata: true,
                 experimentalDecorators: true,
-                // TODO jsx => React?
+                jsx: 'react',
                 module: 'system',
                 noImplicitAny: true,
                 noImplicitReturns: true,
@@ -2584,7 +2603,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * 
      */
-    get tslintConfiguration(): TsLintSettings | undefined {
+    get tslintSettings(): TsLintSettings | undefined {
         try {
             // Beware: We could have a tslint.json that doesn't parse.
             // We must ensure that the user can recover the situation.

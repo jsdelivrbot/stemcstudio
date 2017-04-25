@@ -59,6 +59,12 @@ export default class EventBus<NAME extends string, E, T> {
         }
     }
 
+    emitAsync(eventName: NAME, event?: E, timeout = 0): void {
+        window.setTimeout(() => {
+            this.emit(eventName, event);
+        }, timeout);
+    }
+
     private removeEventListener(eventName: NAME, callback: (event: E, source: T) => any) {
         const listeners = this._eventRegistry[eventName];
         if (!listeners)

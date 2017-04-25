@@ -124,6 +124,10 @@ export default class WorkspaceController implements WorkspaceEditorHost {
      * A subscription to compiler settings events that have already been recorded by the Language Service.
      */
     private changedCompilerSettingsSubscription: Subscription | undefined;
+    /**
+     * A subscription to lint settings chnage events.
+     */
+    private changedLintSettingsSubscription: Subscription | undefined;
 
     private changedLintingRemover: (() => void) | undefined;
 
@@ -513,6 +517,14 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
                     });
 
+                this.changedLintSettingsSubscription = this.wsModel.changedLintSettings
+                    .debounceTime(500)
+                    .subscribe((settings) => {
+                        this.compile();
+                    }, (reason) => {
+                        console.warn(`Unable to recompile following change in tslint settings. Cause: ${reason}`);
+                    });
+
             })
             .catch((err) => {
                 this.modalDialog.alert({ title: "Recycle Workspace Error", message: `${err}` });
@@ -546,6 +558,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         if (this.changedCompilerSettingsSubscription) {
             this.changedCompilerSettingsSubscription.unsubscribe();
             this.changedCompilerSettingsSubscription = void 0;
+        }
+
+        if (this.changedLintSettingsSubscription) {
+            this.changedLintSettingsSubscription.unsubscribe();
+            this.changedLintSettingsSubscription = void 0;
         }
 
         if (this.changedOperatorOverloadingRemover) {

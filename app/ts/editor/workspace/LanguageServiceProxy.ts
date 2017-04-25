@@ -338,7 +338,7 @@ export class LanguageServiceProxy {
         this.worker.emit(EVENT_SET_TRACE, message);
     }
 
-    public setTsConfig(settings: TsConfigSettings, callback: (err: any, settings: TsConfigSettings) => void): void {
+    public setTsConfig(settings: TsConfigSettings, callback: (err: any, settingsOut: TsConfigSettings) => void): void {
         const callbackId = this.captureCallback(callback);
         const message: { data: SetTsConfigRequest } = { data: { settings, callbackId } };
         this.worker.emit(EVENT_SET_TS_CONFIG, message);

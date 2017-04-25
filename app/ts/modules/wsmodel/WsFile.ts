@@ -200,6 +200,7 @@ export default class WsFile implements MwDocument, Shareable {
 
     /**
      * FIXME: Really ensureSession
+     * The caller must release the session reference when no longer needed.
      */
     getSession(): EditSession | undefined {
         if (this.session) {
@@ -213,8 +214,7 @@ export default class WsFile implements MwDocument, Shareable {
             return session;
         }
         else {
-            // May be better to throw an exception here.
-            //
+            // May be better to throw an exception here?
             return void 0;
         }
     }
@@ -224,7 +224,8 @@ export default class WsFile implements MwDocument, Shareable {
     }
 
     /**
-     * @returns The underlying document. This must be released when no longer required.
+     * @returns The underlying document.
+     * This must be released when no longer required.
      */
     getDocument(): Document {
         if (this.doc) {
