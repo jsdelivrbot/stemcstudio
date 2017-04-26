@@ -66,6 +66,18 @@ import 'rxjs/add/operator/debounceTime';
 const NEWLINE = '\n';
 
 /**
+ * Symbolic constant for the tsconfig.json file.
+ */
+const JSPM_DOT_CONFIG_DOT_JS = 'jspm.config.js';
+const JSPM_DOT_CONFIG_DOT_JSON = 'jspm.config.json';
+
+export interface JspmSettings {
+    warnings?: boolean;
+    paths?: { [prefix: string]: string };
+    map?: { [moduleName: string]: string };
+}
+
+/**
  * Symbolic constant for the package.json file.
  */
 const PACKAGE_DOT_JSON = 'package.json';
@@ -338,6 +350,7 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
 
 // We don't need to export these symbolic constants because we have Observable(s) of the same name.
 const changedCompilerSettingsEventName = 'changedCompilerSettings';
+const changedJspmSettingsEventName = 'changedJspmSettings';
 const changedLintSettingsEventName = 'changedLintSettings';
 const changedPackageSettingsEventName = 'changedPackageSettings';
 
@@ -345,6 +358,31 @@ export type WsModelEventName = 'changedLinting'
     | 'changedOperatorOverloading'
     | 'outputFiles'
     | 'renamedFile';
+
+/**
+ * TODO: Rename the concept?
+ */
+class JsonFileWatcher<NAME extends string, EVENT, SOURCE> {
+    private readonly eventBus: EventBus<NAME, EVENT, SOURCE>;
+    public readonly events: Observable<EVENT>;
+    /**
+     * 
+     */
+    constructor(private eventName: NAME, source: SOURCE) {
+        this.eventBus = new EventBus<NAME, EVENT, SOURCE>(source);
+        this.events = new Observable<EVENT>((observer: Observer<EVENT>) => {
+            return this.eventBus.watch(eventName, (settings) => {
+                observer.next(settings);
+            });
+        });
+    }
+    /**
+     *
+     */
+    emitAsync(event?: EVENT): void {
+        return this.eventBus.emitAsync(this.eventName, event);
+    }
+}
 
 /**
  * The workspace data model.
@@ -462,6 +500,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private tscMonitoring: Subscription | undefined;
     private tslMonitoring: Subscription | undefined;
     private pkgMonitoring: Subscription | undefined;
+    private rpmMonitoring: Subscription | undefined;
 
     /**
      * Slightly unusual reference counting because of:
@@ -498,14 +537,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
      */
-    private readonly changedCompilerSettingsEventBus = new EventBus<'changedCompilerSettings', TsConfigSettings, WsModel>(this);
-    public readonly changedCompilerSettings: Observable<TsConfigSettings>;
-
-    private readonly changedLintSettingsEventBus = new EventBus<'changedLintSettings', TsLintSettings, WsModel>(this);
-    public readonly changedLintSettings: Observable<TsLintSettings>;
-
-    private readonly changedPackageSettingsEventBus = new EventBus<'changedPackageSettings', PackageSettings, WsModel>(this);
-    public readonly changedPackageSettings: Observable<PackageSettings>;
+    public readonly changedCompilerSettings = new JsonFileWatcher<'changedCompilerSettings', TsConfigSettings, WsModel>(changedCompilerSettingsEventName, this);
+    public readonly changedJspmSettings = new JsonFileWatcher<'changedJspmSettings', JspmSettings, WsModel>(changedJspmSettingsEventName, this);
+    public readonly changedLintSettings = new JsonFileWatcher<'changedLintSettings', TsLintSettings, WsModel>(changedLintSettingsEventName, this);
+    public readonly changedPackageSettings = new JsonFileWatcher<'changedPackageSettings', PackageSettings, WsModel>(changedPackageSettingsEventName, this);
 
     /**
      * Used to control logging of the Language Service.
@@ -535,24 +570,6 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     constructor(private doodles: DoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
-
-        this.changedCompilerSettings = new Observable<TsConfigSettings>((observer: Observer<TsConfigSettings>) => {
-            return this.changedCompilerSettingsEventBus.watch(changedCompilerSettingsEventName, (settings) => {
-                observer.next(settings);
-            });
-        });
-
-        this.changedLintSettings = new Observable<TsLintSettings>((observer: Observer<TsLintSettings>) => {
-            return this.changedLintSettingsEventBus.watch(changedLintSettingsEventName, (settings) => {
-                observer.next(settings);
-            });
-        });
-
-        this.changedPackageSettings = new Observable<PackageSettings>((observer: Observer<PackageSettings>) => {
-            return this.changedPackageSettingsEventBus.watch(changedPackageSettingsEventName, (settings) => {
-                observer.next(settings);
-            });
-        });
     }
 
     /**
@@ -1122,6 +1139,17 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 }
                 else {
                     switch (path) {
+                        // I'm assuming that there will not be both kinds of files.
+                        case JSPM_DOT_CONFIG_DOT_JS:
+                        case JSPM_DOT_CONFIG_DOT_JSON: {
+                            this.rpmMonitoring = doc.changeEvents
+                                .debounceTime(PKG_SYNCH_DELAY_MILLISECONDS)
+                                .subscribe((delta) => {
+                                    console.log(`The ${path} file was changed.`);
+                                    this.changedJspmSettings.emitAsync();
+                                });
+                            break;
+                        }
                         case TSCONFIG_DOT_JSON: {
                             this.tscMonitoring = doc.changeEvents
                                 .debounceTime(TSC_SYNCH_DELAY_MILLISECONDS)
@@ -1131,7 +1159,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                         if (tsc && this.languageServiceProxy) {
                                             this.languageServiceProxy.setTsConfig(tsc, (err, settings) => {
                                                 if (!err) {
-                                                    this.changedCompilerSettingsEventBus.emitAsync(changedCompilerSettingsEventName, settings);
+                                                    this.changedCompilerSettings.emitAsync(settings);
                                                 }
                                             });
                                         }
@@ -1152,7 +1180,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                 .subscribe((delta) => {
                                     const tsl = this.tslintSettings;
                                     if (tsl) {
-                                        this.changedLintSettingsEventBus.emitAsync(changedLintSettingsEventName, tsl);
+                                        this.changedLintSettings.emitAsync(tsl);
                                     }
                                     else {
                                         // There is an error in the tsconfig.json file.
@@ -1178,7 +1206,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                                 });
                                         }
                                         // Emit a general event for the change.
-                                        this.changedPackageSettingsEventBus.emitAsync(changedPackageSettingsEventName, pkg);
+                                        this.changedPackageSettings.emitAsync(pkg);
                                     }
                                     else {
                                         // There is an error in the tsconfig.json file.
@@ -1257,6 +1285,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     if (this.pkgMonitoring) {
                         this.pkgMonitoring.unsubscribe();
                         this.pkgMonitoring = void 0;
+                    }
+                    if (this.rpmMonitoring) {
+                        this.rpmMonitoring.unsubscribe();
+                        this.rpmMonitoring = void 0;
                     }
 
                     // Monitoring for Local Storage.

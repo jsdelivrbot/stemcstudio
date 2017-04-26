@@ -25,6 +25,7 @@ import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_
 const NEWLINE = '\n';
 
 const JSPM_CONFIG_JS = 'jspm.config.js';
+const JSPM_CONFIG_JSON = 'jspm.config.json';
 
 /**
  * Synthesize the argument object to System.config for libraries that should be loaded as modules.
@@ -228,7 +229,9 @@ export default function rebuildPreview(
                              */
                             const systemJsConfig = fileExists(JSPM_CONFIG_JS, workspace) ?
                                 fileContent(JSPM_CONFIG_JS, workspace) as string :
-                                `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
+                                fileExists(JSPM_CONFIG_JSON, workspace) ?
+                                    `System.config(${fileContent(JSPM_CONFIG_JSON, workspace) as string});${NEWLINE}` :
+                                    `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
 
                             html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));
                         }

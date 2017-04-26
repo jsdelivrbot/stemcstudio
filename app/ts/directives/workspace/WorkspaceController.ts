@@ -112,12 +112,20 @@ export default class WorkspaceController implements WorkspaceEditorHost {
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
 
+    //
+    // TODO: Subscription(s) with the same lifecycle should be managed together.
+    //
+
     /**
      * A subscription to compiler settings events that have already been recorded by the Language Service.
      */
     private changedCompilerSettingsSubscription: Subscription | undefined;
     /**
-     * A subscription to lint settings chnage events.
+     * A subscription to jspm settings change events.
+     */
+    private changedJspmSettingsSubscription: Subscription | undefined;
+    /**
+     * A subscription to lint settings change events.
      */
     private changedLintSettingsSubscription: Subscription | undefined;
 
@@ -500,8 +508,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
 
                 this.changedOperatorOverloadingRemover = this.wsModel.watch(changedOperatorOverloading, this.createChangedOperatorOverloadingEventHandler());
 
-
-                this.changedCompilerSettingsSubscription = this.wsModel.changedCompilerSettings
+                this.changedCompilerSettingsSubscription = this.wsModel.changedCompilerSettings.events
                     .debounceTime(500)
                     .subscribe((settings) => {
                         this.compile();
@@ -509,7 +516,15 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
                     });
 
-                this.changedLintSettingsSubscription = this.wsModel.changedLintSettings
+                this.changedJspmSettingsSubscription = this.wsModel.changedJspmSettings.events
+                    .debounceTime(500)
+                    .subscribe((settings) => {
+                        this.updatePreview();
+                    }, (reason) => {
+                        console.warn(`Unable to recompile following change in jspm settings. Cause: ${reason}`);
+                    });
+
+                this.changedLintSettingsSubscription = this.wsModel.changedLintSettings.events
                     .debounceTime(500)
                     .subscribe((settings) => {
                         this.compile();
@@ -555,6 +570,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         if (this.changedLintSettingsSubscription) {
             this.changedLintSettingsSubscription.unsubscribe();
             this.changedLintSettingsSubscription = void 0;
+        }
+
+        if (this.changedJspmSettingsSubscription) {
+            this.changedJspmSettingsSubscription.unsubscribe();
+            this.changedJspmSettingsSubscription = void 0;
         }
 
         if (this.changedOperatorOverloadingRemover) {
@@ -862,13 +882,17 @@ export default class WorkspaceController implements WorkspaceEditorHost {
      */
     private createLiveCodeChangeHandler(path: string): EditSessionChangeHandler {
         const liveCodeChangeHandler = (delta: Delta, session: EditSession) => {
-            if (this.wsModel && !this.wsModel.isZombie()) {
-                this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
-            }
+            this.updatePreview();
         };
         // Cache it for later removal.
         this.liveCodeChangeHandlers[path] = liveCodeChangeHandler;
         return liveCodeChangeHandler;
+    }
+
+    private updatePreview(): void {
+        if (this.wsModel && !this.wsModel.isZombie()) {
+            this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
+        }
     }
 
     private createMarkdownChangeHandler(path: string): DocumentChangeHandler {
