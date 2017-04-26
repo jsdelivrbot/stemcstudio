@@ -933,7 +933,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             // TODO: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
-            editor.completers.push(new WorkspaceCompleter(path, this));
+            // editor.completers.push(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
             // editor.completers.push(new SnippetCompleter());
             editor.snippetManager.register(javascriptSnippets);
@@ -1014,7 +1014,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             return;
         }
 
-        if (isTypeScript(path) || isJavaScript(path)) {
+        if (isTypeScript(path)) {
             if (!this.annotationHandlers[path]) {
 
                 /**
@@ -1061,7 +1061,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             return;
         }
 
-        if (isTypeScript(path) || isJavaScript(path)) {
+        if (isTypeScript(path)) {
             // Remove Annotation Handlers.
             if (this.annotationHandlers[path]) {
                 const annotationHandler = this.annotationHandlers[path];
@@ -1092,7 +1092,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 checkDocument(doc);
 
                 // Monitoring for Language Analysis.
-                if (isTypeScript(path) || isJavaScript(path)) {
+                if (isTypeScript(path)) {
                     if (!this.langDocumentChangeListenerRemovers[path]) {
                         const changeHandler = (delta: Delta) => {
                             if (this.languageServiceProxy) {
@@ -1224,7 +1224,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     checkDocument(doc);
 
                     // Monitoring for Language Analysis.
-                    if (isTypeScript(path) || isJavaScript(path)) {
+                    if (isTypeScript(path)) {
                         if (this.langDocumentChangeListenerRemovers[path]) {
                             this.langDocumentChangeListenerRemovers[path]();
                             delete this.langDocumentChangeListenerRemovers[path];
@@ -1500,7 +1500,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     public outputFiles(): void {
         const paths = this.getFileDocumentPaths();
         for (const path of paths) {
-            if (isTypeScript(path) || isJavaScript(path)) {
+            if (isTypeScript(path)) {
                 this.outputFilesForPath(path);
             }
         }
@@ -1511,7 +1511,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The response is published on the outputFilesTopic.
      */
     private outputFilesForPath(path: string): void {
-        if (isTypeScript(path) || isJavaScript(path)) {
+        if (isTypeScript(path)) {
             checkPath(path);
             if (this.languageServiceProxy) {
                 this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
@@ -2421,7 +2421,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         const existingFile = this.findFileByPath(TSCONFIG_DOT_JSON);
         if (!existingFile) {
             const configuration: TsConfigSettings = {
-                allowJs: true,
+                /**
+                 * Encourage use of TypeScript.
+                 */
+                allowJs: false,
                 declaration: true,
                 emitDecoratorMetadata: true,
                 experimentalDecorators: true,

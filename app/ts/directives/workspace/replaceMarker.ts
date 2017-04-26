@@ -16,8 +16,13 @@ export default function replaceMarker(marker: string, language: string, scriptTy
     });
     const fileTags = filePaths.map((path: string) => {
         const content = fileContent(path, workspace);
-        const type = scriptType(content);
-        return `<script id='${prefixFromPath(path)}' type='${type}'>${content}</script>\n`;
+        if (typeof content === 'string') {
+            const type = scriptType(content);
+            return `<script id='${prefixFromPath(path)}' type='${type}'>${content}</script>\n`;
+        }
+        else {
+            return `<script id='${prefixFromPath(path)}'></script>\n`;
+        }
     });
 
     if (detectMarker(marker, workspace, inFilePath)) {

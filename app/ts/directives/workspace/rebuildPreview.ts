@@ -24,8 +24,37 @@ import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_
 
 const NEWLINE = '\n';
 
+const JSPM_CONFIG_JS = 'jspm.config.js';
+
 /**
- * The argument to a SystemJS.config() call.
+ * Synthesize the argument object to System.config for libraries that should be loaded as modules.
+ * Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
+ *
+ * @param closureOpts 
+ * @param vendorFolderMarker 
+ */
+function systemConfigArg(closureOpts: IOption[], vendorFolderMarker: string): SystemJsConfigArg {
+    // Build the System.config for libraries that should be loaded as modules.
+    // Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
+    const config: SystemJsConfigArg = { warnings: false };
+    const importModules = closureOpts.filter(isModularOrUMDLibrary);
+    config.map = {};
+    for (const importModule of importModules) {
+        const moduleName = importModule.moduleName;
+        if (typeof moduleName === 'string') {
+            // Using the un-minified version because of issue with react.
+            const fileNames = importModule.js;
+            for (const fileName of fileNames) {
+                // Be sure to use moduleName, not packageName here.
+                config.map[moduleName] = fileName.replace(vendorFolderMarker, './vendor');
+            }
+        }
+    }
+    return config;
+}
+
+/**
+ * The argument to a System.config() call.
  */
 interface SystemJsConfigArg {
     /**
@@ -117,7 +146,7 @@ export default function rebuildPreview(
 
                         /**
                          * Libraries that are Global must be included using <script> tags.
-                         * TODO: While transitioning to UMD and Modular from Global we load UMD both ways (<script> and SystemJS).
+                         * TODO: While transitioning to UMD and Modular from Global we load UMD both ways (<script> and System).
                          */
                         const globalJsFileNames: string[] = closureOpts.filter(isGlobalOrUMDLibrary).map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
@@ -191,24 +220,15 @@ export default function rebuildPreview(
                                 }
                             }
 
-                            // Build the SystemJS.config for libraries that should be loaded as modules.
-                            // Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
-                            const config: SystemJsConfigArg = { warnings: false };
-                            const importModules = closureOpts.filter(isModularOrUMDLibrary);
-                            config.map = {};
-                            for (const importModule of importModules) {
-                                const moduleName = importModule.moduleName;
-                                if (typeof moduleName === 'string') {
-                                    // Using the un-minified version because of issue with react.
-                                    const fileNames = importModule.js;
-                                    for (const fileName of fileNames) {
-                                        // Be sure to use moduleName, not packageName here.
-                                        config.map[moduleName] = fileName.replace(VENDOR_FOLDER_MARKER, './vendor');
-                                    }
-                                }
-                            }
-
-                            const systemJsConfig = `SystemJS.config(${JSON.stringify(config, null, 2)});${NEWLINE}`;
+                            /**
+                             * The "System.config({...})" string.
+                             * The presence of a jspm.config.js file overrides the synthesis of the argument object.
+                             * In time we will deprecate the sythesis approach in favor of explicit specification
+                             * through the jspm.config.js file as this opens up the use of external modules.
+                             */
+                            const systemJsConfig = fileExists(JSPM_CONFIG_JS, workspace) ?
+                                fileContent(JSPM_CONFIG_JS, workspace) as string :
+                                `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
 
                             html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));
                         }

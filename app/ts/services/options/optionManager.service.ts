@@ -26,13 +26,13 @@ const ensurePackageName = function (packageName: string): string {
  */
 const INDEX_DTS = 'index.d.ts';
 //
-// TODO: Getting Angular to work in the browser may require hand-coding the d.ts files?
+// Getting Angular to work in the browser currently requires hand-coding (flattening) the d.ts files.
 //
-const VERSION_ANGULAR_CORE = '4.0.3';
-const VERSION_ANGULAR_COMMON = '4.0.3';
-const VERSION_ANGULAR_COMPILER = '4.0.3';
-const VERSION_ANGULAR_PLATFORM_BROWSER = '4.0.3';
-const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.0.3';
+const VERSION_ANGULAR_CORE = '4.1.0';
+const VERSION_ANGULAR_COMMON = '4.1.0';
+const VERSION_ANGULAR_COMPILER = '4.1.0';
+const VERSION_ANGULAR_PLATFORM_BROWSER = '4.1.0';
+const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
 const VERSION_ANGULARJS = '1.5.3';
 // const VERSION_ASYNC = '1.4.2';
 const VERSION_BACONJS = '0.7.89';
@@ -64,7 +64,7 @@ const VERSION_RXJS = '5.0.1';
 const VERSION_RXJS_RX = '5.3.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
-const VERSION_SYSTEMJS = '0.19.37';
+// const VERSION_SYSTEMJS = '0.19.37';
 const VERSION_THREEJS = '0.82.0';
 const RELEASE_THREEJS = 'r82';
 const VERSION_TWO = '0.6.1';
@@ -187,9 +187,11 @@ function socketIoClient(fileName: string): string {
 function statsjs(fileName: string): string {
     return vendorFolder('stats.js', VERSION_STATSJS, void 0, fileName);
 }
+/*
 function systemjs(fileName: string): string {
     return vendorFolder('systemjs', VERSION_SYSTEMJS, void 0, fileName);
 }
+*/
 function threejs(fileName: string): string {
     return vendorFolder('threejs', VERSION_THREEJS, void 0, fileName);
 }
@@ -217,7 +219,7 @@ export class OptionManager implements IOptionManager {
                 packageName: '@angular/core',
                 moduleName: '@angular/core',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'N/A',
+                globalName: undefined,
                 description: "Angular Core",
                 homepage: '',
                 version: VERSION_ANGULAR_CORE,
@@ -232,7 +234,7 @@ export class OptionManager implements IOptionManager {
                 packageName: '@angular/common',
                 moduleName: '@angular/common',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'N/A',
+                globalName: undefined,
                 description: "Angular Common",
                 homepage: '',
                 version: VERSION_ANGULAR_COMMON,
@@ -247,7 +249,7 @@ export class OptionManager implements IOptionManager {
                 packageName: '@angular/compiler',
                 moduleName: '@angular/compiler',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'N/A',
+                globalName: undefined,
                 description: "Angular Compiler",
                 homepage: '',
                 version: VERSION_ANGULAR_COMPILER,
@@ -262,7 +264,7 @@ export class OptionManager implements IOptionManager {
                 packageName: '@angular/platform-browser',
                 moduleName: '@angular/platform-browser',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'N/A',
+                globalName: undefined,
                 description: "Angular Platform Browser",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER,
@@ -277,7 +279,7 @@ export class OptionManager implements IOptionManager {
                 packageName: '@angular/platform-browser-dynamic',
                 moduleName: '@angular/platform-browser-dynamic',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'N/A',
+                globalName: undefined,
                 description: "Angular Platform Browser Dynamic",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC,
@@ -683,21 +685,25 @@ export class OptionManager implements IOptionManager {
                 minJs: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js'],
                 dependencies: {}
             },
+            /*
             {
                 packageName: 'systemjs',
                 moduleName: 'systemjs',
                 libraryKind: LibraryKind.Global,
-                globalName: 'SystemJS',
+                // System and SystemJS empirically seem to be aliases.
+                // However, TypeScript with tsconfig.json property module='system' emits `System.register(...`
+                globalName: 'System',
                 description: "Universal dynamic module loader.",
                 homepage: 'https://jspm.io',
                 version: VERSION_SYSTEMJS,
-                visible: false,
+                visible: true,
                 css: [],
                 dts: systemjs('system.d.ts'),
                 js: [systemjs('system.js')],
                 minJs: [systemjs('system.js')],
                 dependencies: {}
             },
+            */
             {
                 packageName: 'three.js',
                 moduleName: 'three.js',

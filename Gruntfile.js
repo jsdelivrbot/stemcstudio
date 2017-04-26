@@ -204,6 +204,7 @@ function prepend(target, filePath) {
 function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.13';
+    const VERSION_ANGULAR = '4.1.0';
 
     return [
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
@@ -336,20 +337,17 @@ function copies(target) {
             src: "bower_components/angular/angular.js",
             dest: prepend(target, 'js/angular.js')
         },
-        //
-        //
-        //
         {
-            src: 'museum/@angular/core@4.0.3/index.d.ts',
-            dest: prepend(target, 'vendor/@angular/core@4.0.3/index.d.ts')
+            src: `museum/@angular/core@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
-            src: 'museum/@angular/platform-browser@4.0.3/index.d.ts',
-            dest: prepend(target, 'vendor/@angular/platform-browser@4.0.3/index.d.ts')
+            src: `museum/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
-            src: 'museum/@angular/platform-browser-dynamic@4.0.3/index.d.ts',
-            dest: prepend(target, 'vendor/@angular/platform-browser-dynamic@4.0.3/index.d.ts')
+            src: `museum/@angular/platform-browser-dynamic@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/platform-browser-dynamic@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
             expand: true,

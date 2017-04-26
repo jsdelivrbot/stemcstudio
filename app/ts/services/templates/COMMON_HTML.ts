@@ -98,7 +98,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + _ + "// CODE-MARKER");
     lines.push(_ + _ + "</script>");
     lines.push(_ + _ + "<script>");
-    lines.push(_ + _ + `SystemJS.import('${bootstrap}').catch((e) => {console.error(e)})`);
+    lines.push(_ + _ + `System.import('${bootstrap}').catch((e) => {console.error(e)})`);
     lines.push(_ + _ + "</script>");
     lines.push(_ + "</body>");
     lines.push("</html>");
