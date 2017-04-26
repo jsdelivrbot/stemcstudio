@@ -1,6 +1,6 @@
 {
   "name": "tscodehub",
-  "version": "2.24.43",
+  "version": "2.24.44",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {

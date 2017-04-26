@@ -336,12 +336,9 @@ function copies(target) {
             src: "bower_components/angular/angular.js",
             dest: prepend(target, 'js/angular.js')
         },
-        {
-            expand: true,
-            cwd: "museum/angular@1.5.3",
-            src: ["**"],
-            dest: prepend(target, 'vendor/angular@1.5.3')
-        },
+        //
+        //
+        //
         {
             src: 'museum/@angular/core@4.0.3/index.d.ts',
             dest: prepend(target, 'vendor/@angular/core@4.0.3/index.d.ts')

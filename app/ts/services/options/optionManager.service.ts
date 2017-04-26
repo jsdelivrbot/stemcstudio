@@ -29,6 +29,8 @@ const INDEX_DTS = 'index.d.ts';
 // TODO: Getting Angular to work in the browser may require hand-coding the d.ts files?
 //
 const VERSION_ANGULAR_CORE = '4.0.3';
+const VERSION_ANGULAR_COMMON = '4.0.3';
+const VERSION_ANGULAR_COMPILER = '4.0.3';
 const VERSION_ANGULAR_PLATFORM_BROWSER = '4.0.3';
 const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.0.3';
 const VERSION_ANGULARJS = '1.5.3';
@@ -94,6 +96,12 @@ function angularJS(fileName: string): string {
 }
 function angularCore(fileName: string): string {
     return vendorFolder('@angular/core', VERSION_ANGULAR_CORE, void 0, fileName);
+}
+function angularCommon(fileName: string): string {
+    return vendorFolder('@angular/common', VERSION_ANGULAR_COMMON, void 0, fileName);
+}
+function angularCompiler(fileName: string): string {
+    return vendorFolder('@angular/compiler', VERSION_ANGULAR_COMPILER, void 0, fileName);
 }
 function angularPlatformBrowser(fileName: string): string {
     return vendorFolder('@angular/platform-browser', VERSION_ANGULAR_PLATFORM_BROWSER, void 0, fileName);
@@ -203,14 +211,44 @@ export class OptionManager implements IOptionManager {
                 moduleName: '@angular/core',
                 libraryKind: LibraryKind.Modular,
                 globalName: 'N/A',
-                description: "",
+                description: "Angular Core",
                 homepage: '',
                 version: VERSION_ANGULAR_CORE,
                 visible: true,
                 css: [],
                 dts: angularCore(INDEX_DTS),
-                js: [`jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
-                minJs: [`jspm_packages/npm/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
+                js: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
+                minJs: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/common',
+                moduleName: '@angular/common',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
+                description: "Angular Common",
+                homepage: '',
+                version: VERSION_ANGULAR_COMMON,
+                visible: true,
+                css: [],
+                dts: angularCommon(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/common@${VERSION_ANGULAR_COMMON}/bundles/common.umd.js`],
+                minJs: [`https://unpkg.com/@angular/common@${VERSION_ANGULAR_COMMON}/bundles/common.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/compiler',
+                moduleName: '@angular/compiler',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
+                description: "Angular Compiler",
+                homepage: '',
+                version: VERSION_ANGULAR_COMPILER,
+                visible: true,
+                css: [],
+                dts: angularCompiler(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/compiler@${VERSION_ANGULAR_COMPILER}/bundles/compiler.umd.js`],
+                minJs: [`https://unpkg.com/@angular/compiler@${VERSION_ANGULAR_COMPILER}/bundles/compiler.umd.min.js`],
                 dependencies: {}
             },
             {
@@ -218,14 +256,14 @@ export class OptionManager implements IOptionManager {
                 moduleName: '@angular/platform-browser',
                 libraryKind: LibraryKind.Modular,
                 globalName: 'N/A',
-                description: "",
+                description: "Angular Platform Browser",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER,
                 visible: true,
                 css: [],
                 dts: angularPlatformBrowser(INDEX_DTS),
-                js: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.js`],
-                minJs: [`jspm_packages/npm/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.min.js`],
+                js: [`https://unpkg.com/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.js`],
+                minJs: [`https://unpkg.com/@angular/platform-browser@${VERSION_ANGULAR_PLATFORM_BROWSER}/bundles/platform-browser.umd.min.js`],
                 dependencies: {}
             },
             {
@@ -233,14 +271,14 @@ export class OptionManager implements IOptionManager {
                 moduleName: '@angular/platform-browser-dynamic',
                 libraryKind: LibraryKind.Modular,
                 globalName: 'N/A',
-                description: "",
+                description: "Angular Platform Browser Dynamic",
                 homepage: '',
                 version: VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC,
                 visible: true,
                 css: [],
                 dts: angularPlatformBrowserDynamic(INDEX_DTS),
-                js: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.js`],
-                minJs: [`jspm_packages/npm/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.min.js`],
+                js: [`https://unpkg.com/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.js`],
+                minJs: [`https://unpkg.com/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.min.js`],
                 dependencies: {}
             },
             {
@@ -578,6 +616,22 @@ export class OptionManager implements IOptionManager {
                 dependencies: {}
             },
             {
+                packageName: 'rxjs',
+                moduleName: 'rxjs',
+                libraryKind: LibraryKind.Modular,
+                globalName: 'N/A',
+                description: "The ReactiveX library for JavaScript.",
+                homepage: 'reactivex.io/rxjs/',
+                version: VERSION_RxJS,
+                visible: true,
+                css: [],
+                dts: RxJS(INDEX_DTS),
+                js: [`https://unpkg.com/rxjs@5.0.1`],
+                minJs: [`https://unpkg.com/rxjs@5.0.1`],
+                dependencies: {}
+            },
+            /*
+            {
                 packageName: 'rxjs/Rx',
                 moduleName: 'rxjs/Rx',
                 libraryKind: LibraryKind.Modular,
@@ -592,6 +646,7 @@ export class OptionManager implements IOptionManager {
                 minJs: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RxJS}/dist/global/Rx.js`],
                 dependencies: {}
             },
+            */
             {
                 packageName: ensurePackageName('socket.io-client'),
                 moduleName: 'socket.io-client',
