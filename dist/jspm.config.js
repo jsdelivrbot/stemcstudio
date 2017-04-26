@@ -87,7 +87,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.9"
+      "process": "npm:process@0.11.10"
     },
     "github:jspm/nodelibs-querystring@0.1.0": {
       "querystring": "npm:querystring@0.2.0"
@@ -605,7 +605,7 @@ System.config({
     "npm:process-nextick-args@1.0.7": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:process@0.11.9": {
+    "npm:process@0.11.10": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
@@ -796,7 +796,7 @@ System.config({
       "is-utf8": "npm:is-utf8@0.2.1"
     },
     "npm:timers-browserify@1.4.2": {
-      "process": "npm:process@0.11.9"
+      "process": "npm:process@0.11.10"
     },
     "npm:ui-select@0.17.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

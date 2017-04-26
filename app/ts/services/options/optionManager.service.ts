@@ -54,7 +54,14 @@ const VERSION_PLOTLY = '1.24.1';
 const VERSION_REACT = '15.4.2';
 const VERSION_REACT_DOM = '15.4.2';
 const VERSION_REDUX = '3.6.0';
-const VERSION_RxJS = '5.3.0';
+/**
+ * Works with Angular.
+ */
+const VERSION_RXJS = '5.0.1';
+/**
+ * Works for standalone RxJS.
+ */
+const VERSION_RXJS_RX = '5.3.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 const VERSION_SYSTEMJS = '0.19.37';
@@ -171,8 +178,8 @@ function reactDOM(fileName: string): string {
 function redux(fileName: string): string {
     return vendorFolder('redux', VERSION_REDUX, void 0, fileName);
 }
-function RxJS(fileName: string): string {
-    return vendorFolder('RxJS', VERSION_RxJS, void 0, fileName);
+function rxjsRx(fileName: string): string {
+    return vendorFolder('RxJS', VERSION_RXJS_RX, void 0, fileName);
 }
 function socketIoClient(fileName: string): string {
     return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
@@ -622,31 +629,30 @@ export class OptionManager implements IOptionManager {
                 globalName: 'N/A',
                 description: "The ReactiveX library for JavaScript.",
                 homepage: 'reactivex.io/rxjs/',
-                version: VERSION_RxJS,
+                version: VERSION_RXJS,
                 visible: true,
                 css: [],
-                dts: RxJS(INDEX_DTS),
-                js: [`https://unpkg.com/rxjs@5.0.1`],
-                minJs: [`https://unpkg.com/rxjs@5.0.1`],
+                // Notice that we are using the d.ts from rxjs/Rx
+                dts: rxjsRx(INDEX_DTS),
+                js: [`https://unpkg.com/rxjs@${VERSION_RXJS}`],
+                minJs: [`https://unpkg.com/rxjs@${VERSION_RXJS}`],
                 dependencies: {}
             },
-            /*
             {
                 packageName: 'rxjs/Rx',
                 moduleName: 'rxjs/Rx',
                 libraryKind: LibraryKind.Modular,
-                globalName: 'Rx',
+                globalName: 'N/A',
                 description: "The ReactiveX library for JavaScript.",
                 homepage: 'reactivex.io/rxjs/',
-                version: VERSION_RxJS,
+                version: VERSION_RXJS_RX,
                 visible: true,
                 css: [],
-                dts: RxJS(INDEX_DTS),
-                js: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RxJS}/dist/global/Rx.js`],
-                minJs: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RxJS}/dist/global/Rx.js`],
+                dts: rxjsRx(INDEX_DTS),
+                js: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RXJS_RX}/dist/global/Rx.js`],
+                minJs: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RXJS_RX}/dist/global/Rx.js`],
                 dependencies: {}
             },
-            */
             {
                 packageName: ensurePackageName('socket.io-client'),
                 moduleName: 'socket.io-client',
