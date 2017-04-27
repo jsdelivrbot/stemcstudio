@@ -1,0 +1,170 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "davinci-eight@6.1.0",
+        "scope": null,
+        "escapedName": "davinci-eight",
+        "name": "davinci-eight",
+        "rawSpec": "6.1.0",
+        "spec": "6.1.0",
+        "type": "version"
+      },
+      "/home/david/dev/geometryzen/stemcstudio"
+    ]
+  ],
+  "_from": "davinci-eight@6.1.0",
+  "_id": "davinci-eight@6.1.0",
+  "_inCache": true,
+  "_location": "/davinci-eight",
+  "_nodeVersion": "7.8.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/davinci-eight-6.1.0.tgz_1492814932550_0.8634277016390115"
+  },
+  "_npmUser": {
+    "name": "geometryzen",
+    "email": "david.geo.holmes@gmail.com"
+  },
+  "_npmVersion": "4.2.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "davinci-eight@6.1.0",
+    "scope": null,
+    "escapedName": "davinci-eight",
+    "name": "davinci-eight",
+    "rawSpec": "6.1.0",
+    "spec": "6.1.0",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/davinci-eight/-/davinci-eight-6.1.0.tgz",
+  "_shasum": "2d7c41f9ff591578cb5dbae272d601de41025e36",
+  "_shrinkwrap": null,
+  "_spec": "davinci-eight@6.1.0",
+  "_where": "/home/david/dev/geometryzen/stemcstudio",
+  "author": {
+    "name": "David Geo Holmes",
+    "email": "david.geo.holmes@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/geometryzen/davinci-eight/issues"
+  },
+  "dependencies": {},
+  "description": "WebGL library for mathematical physics using Geometric Algebra",
+  "devDependencies": {
+    "es6-module-loader": "^0.17.11",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jasmine": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-requirejs": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.2",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-exec": "^2.0.0",
+    "grunt-jasmine-task": "0.2.3",
+    "grunt-karma": "^2.0.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "grunt-ts": "^6.0.0-beta.15",
+    "grunt-tslint": "^4.0.1",
+    "grunt-typedoc": "^0.2.4",
+    "jasmine-core": "^2.5.2",
+    "jspm": "0.16.47",
+    "karma": "0.13.22",
+    "karma-chrome-launcher": "0.1.12",
+    "karma-jasmine": "0.3.8",
+    "karma-jspm": "2.2.0",
+    "karma-phantomjs-launcher": "0.2.3",
+    "karma-systemjs": "0.8.2",
+    "phantomjs": "1.9.20",
+    "phantomjs-polyfill": "0.0.1",
+    "q": "1.4.1",
+    "requirejs": "~2.3.3",
+    "servedir": "^1.0.0",
+    "systemjs": "0.19.40",
+    "systemjs-builder": "0.15.33",
+    "tslint": "^4.0.0",
+    "typedoc": "^0.5.10",
+    "typescript": "^2.3.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "2d7c41f9ff591578cb5dbae272d601de41025e36",
+    "tarball": "https://registry.npmjs.org/davinci-eight/-/davinci-eight-6.1.0.tgz"
+  },
+  "engines": {
+    "node": "4.8.2",
+    "npm": "2.15.11"
+  },
+  "gitHead": "b5c4d5c4d9cebba85255da4369de84207d59ea74",
+  "homepage": "https://github.com/geometryzen/davinci-eight#readme",
+  "jspm": {
+    "dependencies": {
+      "ts": "github:frankwallis/plugin-typescript@^2.6.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.38",
+      "babel-runtime": "npm:babel-runtime@^5.8.38",
+      "core-js": "npm:core-js@^1.2.7",
+      "typescript": "npm:typescript@^2.2.1"
+    }
+  },
+  "keywords": [
+    "WebGL",
+    "STEMCstudio",
+    "Geometric",
+    "Algebra",
+    "Physics",
+    "Mathematics"
+  ],
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/geometryzen/davinci-eight/blob/master/LICENSE"
+    }
+  ],
+  "main": "./dist/davinci-eight.js",
+  "maintainers": [
+    {
+      "name": "geometryzen",
+      "email": "david.geo.holmes@gmail.com"
+    }
+  ],
+  "name": "davinci-eight",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/geometryzen/davinci-eight.git"
+  },
+  "scripts": {
+    "test": "grunt; grunt test"
+  },
+  "types": "./dist/index.d.ts",
+  "version": "6.1.0",
+  "warnings": [
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": "4.8.2",
+        "npm": "2.15.11"
+      },
+      "pkgid": "davinci-eight@6.1.0"
+    },
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": "4.8.2",
+        "npm": "2.15.11"
+      },
+      "pkgid": "davinci-eight@6.1.0"
+    }
+  ]
+}

@@ -849,7 +849,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.13": {},
   "npm:zone.js@0.8.9": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -909,5 +908,6 @@
   "npm:@angular/compiler@4.1.0": {
     "@angular/core": "npm:@angular/core@4.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "github:geometryzen/ace-workers@2.9.14": {}
 }

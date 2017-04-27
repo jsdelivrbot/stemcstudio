@@ -3,15 +3,18 @@ import { ACE_WORKER_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
+import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
 import Delta from '../../editor/Delta';
 import Diagnostic from '../../editor/workspace/Diagnostic';
 import Document from '../../editor/Document';
+import { DocumentMonitor } from './monitoring.service';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import { workerCompleted } from '../../editor/EditSession';
 import EventBus from './EventBus';
+import { EventHub } from './EventHub';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
@@ -19,6 +22,7 @@ import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProx
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import IWorkspaceModel from './IWorkspaceModel';
 import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
+import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
@@ -30,23 +34,30 @@ import MwEdits from '../../synchronization/MwEdits';
 import { MwOptions } from '../../synchronization/MwOptions';
 import MwUnit from '../../synchronization/MwUnit';
 import { MwWorkspace } from '../../synchronization/MwWorkspace';
+import { IOption, LibraryKind } from '../../services/options/IOption';
+import { IOptionManager } from '../../services/options/IOptionManager';
+import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
 import OutputFile from '../../editor/workspace/OutputFile';
+import { PackageJsonMonitor } from './monitors/PackageJsonMonitor';
 import QuickInfo from '../../editor/workspace/QuickInfo';
 import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
 import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
 import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
-import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
 import SnippetCompleter from '../../editor/SnippetCompleter';
 import StringShareableMap from '../../collections/StringShareableMap';
 import TextChange from '../../editor/workspace/TextChange';
 import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
+import { TsConfigJsonMonitor } from './monitors/TsConfigJsonMonitor';
 import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
+import { TsLintJsonMonitor } from './monitors/TsLintJsonMonitor';
 import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
+import { TypesConfigJsonMonitor } from './monitors/TypesConfigJsonMonitor';
+import { TypeScriptMonitor } from './monitors/TypeScriptMonitor';
 import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
 import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
@@ -55,31 +66,41 @@ import { WorkspaceRoomListener } from './WorkspaceRoomListener';
 import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
 
-//
-// RxJS imports
-//
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/debounceTime';
-
 const NEWLINE = '\n';
 
+const TYPES_DOT_CONFIG_DOT_JSON = 'types.config.json';
+
 /**
- * Symbolic constant for the tsconfig.json file.
+ * A mapping from module name to URL.
  */
+export interface ModuleResolutions {
+    [moduleName: string]: string;
+}
+/**
+ * A mapping from global name to URL.
+ */
+export interface AmbientResolutions {
+    [globalName: string]: string;
+}
+
+export interface TypesConfigSettings {
+    warnings?: boolean;
+    /**
+     * Not yet supported.
+     */
+    paths?: { [prefix: string]: string };
+    map?: ModuleResolutions;
+}
+
 const JSPM_DOT_CONFIG_DOT_JS = 'jspm.config.js';
 const JSPM_DOT_CONFIG_DOT_JSON = 'jspm.config.json';
 
 export interface JspmSettings {
     warnings?: boolean;
     paths?: { [prefix: string]: string };
-    map?: { [moduleName: string]: string };
+    map?: ModuleResolutions;
 }
 
-/**
- * Symbolic constant for the package.json file.
- */
 const PACKAGE_DOT_JSON = 'package.json';
 
 /**
@@ -231,6 +252,10 @@ function checkCallback(callback: (err: any) => any): void {
     }
 }
 
+export function packageNamesToOptions(packageNames: string[], optionManager: IOptionManager): IOption[] {
+    return optionManager.filter(function (option) { return packageNames.indexOf(option.packageName) >= 0; });
+}
+
 /**
  * Converts the value to a string and append a newline character.
  */
@@ -295,10 +320,6 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
-const TSC_SYNCH_DELAY_MILLISECONDS = 250;
-const TSL_SYNCH_DELAY_MILLISECONDS = 250;
-const PKG_SYNCH_DELAY_MILLISECONDS = 250;
-
 /**
  * Synchronize after 0.75 seconds of inactivity.
  */
@@ -353,36 +374,12 @@ const changedCompilerSettingsEventName = 'changedCompilerSettings';
 const changedJspmSettingsEventName = 'changedJspmSettings';
 const changedLintSettingsEventName = 'changedLintSettings';
 const changedPackageSettingsEventName = 'changedPackageSettings';
+const changedTypesSettingsEventName = 'changedTypesSettings';
 
 export type WsModelEventName = 'changedLinting'
     | 'changedOperatorOverloading'
     | 'outputFiles'
     | 'renamedFile';
-
-/**
- * TODO: Rename the concept?
- */
-class JsonFileWatcher<NAME extends string, EVENT, SOURCE> {
-    private readonly eventBus: EventBus<NAME, EVENT, SOURCE>;
-    public readonly events: Observable<EVENT>;
-    /**
-     * 
-     */
-    constructor(private eventName: NAME, source: SOURCE) {
-        this.eventBus = new EventBus<NAME, EVENT, SOURCE>(source);
-        this.events = new Observable<EVENT>((observer: Observer<EVENT>) => {
-            return this.eventBus.watch(eventName, (settings) => {
-                observer.next(settings);
-            });
-        });
-    }
-    /**
-     *
-     */
-    emitAsync(event?: EVENT): void {
-        return this.eventBus.emitAsync(this.eventName, event);
-    }
-}
 
 /**
  * The workspace data model.
@@ -466,6 +463,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      */
     private readonly errorMarkerIds: number[] = [];
 
+    /**
+     * Proxy to TypeScript Language Service in a worker thread.
+     */
     private languageServiceProxy: LanguageServiceProxy | undefined;
 
     /**
@@ -483,7 +483,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * Listeners added to the document for the LanguageService.
      */
-    private readonly langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    public readonly langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
     /**
      * Listeners added to the document for Synchronization.
      */
@@ -497,10 +497,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * A subscription to the tsconfig.json file `change` events in order to keep the
      * Language Service up-to-date with TypeScript compiler settings.
      */
-    private tscMonitoring: Subscription | undefined;
-    private tslMonitoring: Subscription | undefined;
-    private pkgMonitoring: Subscription | undefined;
-    private rpmMonitoring: Subscription | undefined;
+    public readonly docMonitors: { [path: string]: DocumentMonitor } = {};
 
     /**
      * Slightly unusual reference counting because of:
@@ -537,10 +534,26 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
      */
-    public readonly changedCompilerSettings = new JsonFileWatcher<'changedCompilerSettings', TsConfigSettings, WsModel>(changedCompilerSettingsEventName, this);
-    public readonly changedJspmSettings = new JsonFileWatcher<'changedJspmSettings', JspmSettings, WsModel>(changedJspmSettingsEventName, this);
-    public readonly changedLintSettings = new JsonFileWatcher<'changedLintSettings', TsLintSettings, WsModel>(changedLintSettingsEventName, this);
-    public readonly changedPackageSettings = new JsonFileWatcher<'changedPackageSettings', PackageSettings, WsModel>(changedPackageSettingsEventName, this);
+    public readonly changedCompilerSettings = new EventHub<'changedCompilerSettings', TsConfigSettings, WsModel>(changedCompilerSettingsEventName, this);
+    public readonly changedJspmSettings = new EventHub<'changedJspmSettings', JspmSettings, WsModel>(changedJspmSettingsEventName, this);
+
+    /**
+     * A coarse event stream for changes to the tslint.json file because we don't need to differentiate changes to parts. 
+     */
+    public readonly changedTsLintSettings = new EventHub<'changedLintSettings', TsLintSettings, WsModel>(changedLintSettingsEventName, this);
+
+    /**
+     * Events are triggered by the package.json DocumentMonitor.
+     * Nobody is currently listening.
+     */
+    public readonly changedPackageSettings = new EventHub<'changedPackageSettings', PackageSettings, WsModel>(changedPackageSettingsEventName, this);
+
+    /**
+     * Events are triggered by the types.config.json DocumentMonitor.
+     * The workspace controller responds by updating the Language Service.
+     * TODO: Move workspace controller functionality into some sort of pipeline or transformer.
+     */
+    public readonly changedTypesSettings = new EventHub<'changedTypesSettings', TypesConfigSettings, WsModel>(changedTypesSettingsEventName, this);
 
     /**
      * Used to control logging of the Language Service.
@@ -558,16 +571,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     private traceFileOperations = false;
 
     /**
-     * The dependencies that must be injected into this service.
-     * NOTE: We cannot migrate this service to Angular until the doodle manger has been migrated.
-     * (Or at least that avoids more complex issues)
+     *
      */
-    // public static $inject: string[] = [DOODLE_MANAGER_SERVICE_UUID];
-
-    /**
-     * AngularJS service; parameters must match static $inject property.
-     */
-    constructor(private doodles: DoodleManager) {
+    constructor(private doodles: DoodleManager, private optionManager: OptionManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }
@@ -840,13 +846,24 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The previous operator overloading value is returned.
      */
     synchOperatorOverloading(): Promise<boolean> {
-        if (this.languageServiceProxy) {
-            const operatorOverloading = this.isOperatorOverloadingEnabled();
-            return this.languageServiceProxy.setOperatorOverloading(operatorOverloading);
-        }
-        else {
-            return noLanguageServicePromise<boolean>();
-        }
+        return new Promise<boolean>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                const newValue = this.isOperatorOverloadingEnabled();
+                this.languageServiceProxy.setOperatorOverloading(newValue)
+                    .then((oldValue) => {
+                        if (newValue !== oldValue) {
+                            this.eventBus.emitAsync(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, newValue));
+                        }
+                        resolve(oldValue);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            }
+            else {
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+            }
+        });
     }
 
     synchTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
@@ -1110,119 +1127,52 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
                 // Monitoring for Language Analysis.
                 if (isTypeScript(path)) {
-                    if (!this.langDocumentChangeListenerRemovers[path]) {
-                        const changeHandler = (delta: Delta) => {
-                            if (this.languageServiceProxy) {
-                                this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
-                                    if (!err) {
-                                        this.updateFileSessionMarkerModels(path, delta);
-                                        this.updateFileEditorFrontMarkers(path);
-                                        this.outputFilesForPath(path);
-                                    }
-                                    else {
-                                        console.warn(LANGUAGE_SERVICE_NOT_AVAILABLE);
-                                    }
-                                });
-                            }
-                        };
-                        this.langDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
-                    }
-
-                    // Ensure the script in the language service.
-                    const hook = function (err: any) {
-                        if (err) {
-                            console.warn(`WsModel.beginDocumentMonitoring(${path}) failed ${err}`);
-                        }
-                        callback(err);
-                    };
-                    this.ensureScript(path, doc.getValue(), hook);
+                    const monitor = new TypeScriptMonitor(path, doc, this);
+                    this.docMonitors[path] = monitor;
+                    monitor.beginMonitoring(callback);
                 }
                 else {
                     switch (path) {
                         // I'm assuming that there will not be both kinds of files.
                         case JSPM_DOT_CONFIG_DOT_JS:
                         case JSPM_DOT_CONFIG_DOT_JSON: {
-                            this.rpmMonitoring = doc.changeEvents
-                                .debounceTime(PKG_SYNCH_DELAY_MILLISECONDS)
-                                .subscribe((delta) => {
-                                    console.log(`The ${path} file was changed.`);
-                                    this.changedJspmSettings.emitAsync();
-                                });
+                            const monitor = new JspmConfigJsonMonitor(doc, this);
+                            this.docMonitors[path] = monitor;
+                            monitor.beginMonitoring(callback);
                             break;
                         }
                         case TSCONFIG_DOT_JSON: {
-                            this.tscMonitoring = doc.changeEvents
-                                .debounceTime(TSC_SYNCH_DELAY_MILLISECONDS)
-                                .subscribe((delta) => {
-                                    const tsc = this.tsconfigSettings;
-                                    if (tsc) {
-                                        if (tsc && this.languageServiceProxy) {
-                                            this.languageServiceProxy.setTsConfig(tsc, (err, settings) => {
-                                                if (!err) {
-                                                    this.changedCompilerSettings.emitAsync(settings);
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            console.warn(`Unable to process ${JSON.stringify(delta, null, 2)} from ${TSCONFIG_DOT_JSON}`);
-                                        }
-                                    }
-                                    else {
-                                        // There is an error in the tsconfig.json file.
-                                        // This will happen frequently during editing and should be ignored.
-                                    }
-                                });
+                            const monitor = new TsConfigJsonMonitor(doc, this);
+                            this.docMonitors[path] = monitor;
+                            monitor.beginMonitoring(callback);
                             break;
                         }
                         case TSLINT_DOT_JSON: {
-                            this.tslMonitoring = doc.changeEvents
-                                .debounceTime(TSL_SYNCH_DELAY_MILLISECONDS)
-                                .subscribe((delta) => {
-                                    const tsl = this.tslintSettings;
-                                    if (tsl) {
-                                        this.changedLintSettings.emitAsync(tsl);
-                                    }
-                                    else {
-                                        // There is an error in the tsconfig.json file.
-                                        // This will happen frequently during editing and should be ignored.
-                                    }
-                                });
+                            const monitor = new TsLintJsonMonitor(doc, this);
+                            this.docMonitors[path] = monitor;
+                            monitor.beginMonitoring(callback);
                             break;
                         }
                         case PACKAGE_DOT_JSON: {
-                            this.pkgMonitoring = doc.changeEvents
-                                .debounceTime(PKG_SYNCH_DELAY_MILLISECONDS)
-                                .subscribe((delta) => {
-                                    const pkg = this.getPackageSettings();
-                                    if (pkg) {
-                                        // Emit an specific event if the operator overloading option changes.
-                                        if (this.languageServiceProxy) {
-                                            const newValue = this.isOperatorOverloadingEnabled();
-                                            this.languageServiceProxy.setOperatorOverloading(newValue)
-                                                .then((oldValue) => {
-                                                    if (newValue !== oldValue) {
-                                                        this.eventBus.emitAsync(changedOperatorOverloading, new ChangedOperatorOverloadingMessage(oldValue, newValue));
-                                                    }
-                                                });
-                                        }
-                                        // Emit a general event for the change.
-                                        this.changedPackageSettings.emitAsync(pkg);
-                                    }
-                                    else {
-                                        // There is an error in the tsconfig.json file.
-                                        // This will happen frequently during editing and should be ignored.
-                                    }
-                                });
+                            const monitor = new PackageJsonMonitor(doc, this);
+                            this.docMonitors[path] = monitor;
+                            monitor.beginMonitoring(callback);
+                            break;
+                        }
+                        case TYPES_DOT_CONFIG_DOT_JSON: {
+                            const monitor = new TypesConfigJsonMonitor(path, doc, this);
+                            this.docMonitors[path] = monitor;
+                            monitor.beginMonitoring(callback);
                             break;
                         }
                         default: {
                             // console.warn(`No Language Service monitoring for ${path}`);
+                            // Fire back the completion asynchronously.
+                            window.setTimeout(function () {
+                                callback(void 0);
+                            }, 0);
                         }
                     }
-                    // Fire back the completion asynchronously.
-                    window.setTimeout(function () {
-                        callback(void 0);
-                    }, 0);
                 }
 
                 // Monitoring for Local Storage.
@@ -1233,12 +1183,17 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 doc.release();
             }
         }
+        else {
+            setTimeout(function () {
+                callback(new Error(`Document is missing for path '${path}'`));
+            }, 0);
+        }
     }
 
     /**
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
-    endDocumentMonitoring(path: string, callback: (err: any) => any) {
+    endDocumentMonitoring(path: string, callback: (err: any) => void) {
         if (this.traceLifecycle) {
             console.log(`WsModel.endMonitoring(path = ${path})`);
         }
@@ -1251,44 +1206,14 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 try {
                     checkDocument(doc);
 
-                    // Monitoring for Language Analysis.
-                    if (isTypeScript(path)) {
-                        if (this.langDocumentChangeListenerRemovers[path]) {
-                            this.langDocumentChangeListenerRemovers[path]();
-                            delete this.langDocumentChangeListenerRemovers[path];
-
-                            // Remove the script from the language service.
-                            const hook = function (err: any) {
-                                if (err) {
-                                    console.warn(`WsModel.endDocumentMonitoring(${path}) failed ${err}`);
-                                }
-                                callback(err);
-                            };
-                            this.removeScript(path, hook);
-                        }
-                        else {
-                            setTimeout(callback, 0);
-                        }
+                    if (this.docMonitors[path]) {
+                        const monitor = this.docMonitors[path];
+                        delete this.docMonitors[path];
+                        monitor.endMonitoring(callback);
                     }
                     else {
+                        // There is no monitor.
                         setTimeout(callback, 0);
-                    }
-
-                    if (this.tscMonitoring) {
-                        this.tscMonitoring.unsubscribe();
-                        this.tscMonitoring = void 0;
-                    }
-                    if (this.tslMonitoring) {
-                        this.tslMonitoring.unsubscribe();
-                        this.tslMonitoring = void 0;
-                    }
-                    if (this.pkgMonitoring) {
-                        this.pkgMonitoring.unsubscribe();
-                        this.pkgMonitoring = void 0;
-                    }
-                    if (this.rpmMonitoring) {
-                        this.rpmMonitoring.unsubscribe();
-                        this.rpmMonitoring = void 0;
                     }
 
                     // Monitoring for Local Storage.
@@ -1300,6 +1225,11 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 finally {
                     doc.release();
                 }
+            }
+            else {
+                setTimeout(function () {
+                    callback(new Error(`Document is missing for path '${path}'`));
+                }, 0);
             }
         }
         catch (e) {
@@ -1339,21 +1269,29 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         });
     }
 
-    ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
+    /**
+     * Ensures a mapping, in the Language Service, from a module name to a URL.
+     * The promise returns the previously mapped-to URL which is expected to be undefined. 
+     */
+    ensureModuleMapping(moduleName: string, path: string): Promise<string | undefined> {
         if (this.languageServiceProxy) {
-            return this.languageServiceProxy.ensureModuleMapping(moduleName, fileName);
+            return this.languageServiceProxy.ensureModuleMapping(moduleName, path);
         }
         else {
-            return noLanguageServicePromise<boolean>();
+            return noLanguageServicePromise<string | undefined>();
         }
     }
 
-    removeModuleMapping(moduleName: string): Promise<boolean> {
+    /**
+     * Removes a mapping, in the Language Service, from a module name to a URL.
+     * The promise returns the previously mapped-to URL allowing subsequent script removal. 
+     */
+    removeModuleMapping(moduleName: string): Promise<string | undefined> {
         if (this.languageServiceProxy) {
             return this.languageServiceProxy.removeModuleMapping(moduleName);
         }
         else {
-            return noLanguageServicePromise<boolean>();
+            return noLanguageServicePromise<string | undefined>();
         }
     }
 
@@ -1488,9 +1426,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                                     if (semanticErrors.length === 0) {
                                         if (this.linting) {
                                             if (this.languageServiceProxy) {
-                                                const configuration = this.tslintSettings;
-                                                if (configuration) {
-                                                    this.languageServiceProxy.getLintErrors(path, configuration, (err: any, lintErrors: Diagnostic[]) => {
+                                                // TODO
+                                                const tslConfig = this.getTsLintSettings();
+                                                if (tslConfig) {
+                                                    this.languageServiceProxy.getLintErrors(path, tslConfig, (err: any, lintErrors: Diagnostic[]) => {
                                                         if (err) {
                                                             console.warn(`getLintErrors(${path}) => ${err}`);
                                                             callback(err);
@@ -1584,9 +1523,52 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * dependencies a list of package names, the unique identifier for libraries.
+     * Returns a map from module name to URL.
      */
-    get dependencies(): { [packageName: string]: string } {
+    getModuleResolutions(): ModuleResolutions {
+        // However, if the types.config.json file is present we defer.
+        if (this.existsTypesConfigJson()) {
+            const settings = this.getTypesConfigSettings();
+            if (settings) {
+                const map = settings.map;
+                if (map) {
+                    return map;
+                }
+                else {
+                    return {};
+                }
+            }
+            else {
+                throw new Error(`${TYPES_DOT_CONFIG_DOT_JSON}`);
+            }
+        }
+        else {
+            return this.moduleResolutionsFromPackageDependencies();
+            // this.ensureTypesConfigJson().release();
+            // The recursive call will now pull the resolutions from the new file.
+            // return this.getModuleResolutions();
+        }
+    }
+
+    /**
+     * Returns a map from module name to URL.
+     */
+    getAmbientResolutions(): AmbientResolutions {
+        // However, if the types.config.json file is present we defer.
+        if (this.existsTypesConfigJson()) {
+            // This file does not currently provide ambient resolutions.
+            // We must rely on the workspace dependencies for now.
+            return this.ambientResolutionsFromPackageDependencies();
+        }
+        else {
+            return this.ambientResolutionsFromPackageDependencies();
+        }
+    }
+
+    /**
+     * dependencies is a list of package names, the unique identifier for libraries.
+     */
+    getPackageDependencies(): { [packageName: string]: string } {
         const pkg = this.getPackageSettings();
         if (pkg) {
             return pkg.dependencies;
@@ -1596,7 +1578,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
-    set dependencies(dependencies: { [packageName: string]: string }) {
+    setPackageDependencies(dependencies: { [packageName: string]: string }) {
         try {
             const file = this.ensurePackageJson();
             try {
@@ -2550,7 +2532,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * 
      */
-    get tslintSettings(): TsLintSettings | undefined {
+    getTsLintSettings(): TsLintSettings | undefined {
         try {
             // Beware: We could have a tslint.json that doesn't parse.
             // We must ensure that the user can recover the situation.
@@ -2572,6 +2554,88 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      */
     private ensurePackageJson(): WsFile {
         return this.ensureFile(PACKAGE_DOT_JSON, '{}');
+    }
+
+    private existsTypesConfigJson(): boolean {
+        return this.existsFile(TYPES_DOT_CONFIG_DOT_JSON);
+    }
+
+    /**
+     * This will become a legacy function as we increasingly support external modules.
+     * This only returns resolutions for Modular and UMD libraries.
+     */
+    private moduleResolutionsFromPackageDependencies(): ModuleResolutions {
+        const dependencies = this.getPackageDependencies();
+        const packageNames = Object.keys(dependencies);
+        const options = packageNamesToOptions(packageNames, this.optionManager);
+        const resolutions: ModuleResolutions = {};
+        for (const option of options) {
+            if (option.libraryKind === LibraryKind.Modular || option.libraryKind === LibraryKind.UMD) {
+                if (typeof option.moduleName === 'string') {
+                    resolutions[option.moduleName] = option.dts;
+                }
+                else {
+                    console.warn(`package '${option.packageName}' is missing a module name.`);
+                }
+            }
+        }
+        return resolutions;
+    }
+
+    /**
+     * This will become a legacy function as we increasingly support external modules.
+     * This only returns resolutions for Global libraries.
+     */
+    private ambientResolutionsFromPackageDependencies(): AmbientResolutions {
+        const dependencies = this.getPackageDependencies();
+        const packageNames = Object.keys(dependencies);
+        const options = packageNamesToOptions(packageNames, this.optionManager);
+        const resolutions: AmbientResolutions = {};
+        for (const option of options) {
+            if (option.libraryKind === LibraryKind.Global) {
+                if (typeof option.globalName === 'string') {
+                    resolutions[option.globalName] = option.dts;
+                }
+                else {
+                    console.warn(`package '${option.packageName}' is missing a global name.`);
+                }
+            }
+        }
+        return resolutions;
+    }
+
+    /**
+     * The caller must release the file when no longer needed.
+     */
+    private ensureTypesConfigJson(): WsFile {
+        if (!this.existsTypesConfigJson()) {
+            const settings: TypesConfigSettings = {
+                warnings: true,
+                map: this.moduleResolutionsFromPackageDependencies()
+            };
+            return this.ensureFile(TYPES_DOT_CONFIG_DOT_JSON, JSON.stringify(settings, null, 4));
+        }
+        else {
+            return this.findFileByPath(TYPES_DOT_CONFIG_DOT_JSON) as WsFile;
+        }
+    }
+
+    getTypesConfigSettings(): TypesConfigSettings | undefined {
+        try {
+            // Beware: We could have a tsconfig.json that doesn't parse.
+            // We must ensure that the user can recover the situation.
+            const file = this.ensureTypesConfigJson();
+            const text = file.getText();
+            file.release();
+            return JSON.parse(text);
+        }
+        catch (reason) {
+            // TODO: Unfortunately, the JSON parser reports the position as a character offset,
+            // but at least the JSON worker puts the error marker in the right place.
+            // TODO: The explorer file does not get appropriate highlighting.
+            // console.warn(`Unable to parse the ${TSCONFIG_DOT_JSON} file. Reason: ${reason}`);
+            return void 0;
+        }
     }
 
     /**
@@ -2832,6 +2896,20 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
         else {
             return void 0;
+        }
+    }
+    public applyDelta(path: string, delta: Delta) {
+        if (this.languageServiceProxy) {
+            this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
+                if (!err) {
+                    this.updateFileSessionMarkerModels(path, delta);
+                    this.updateFileEditorFrontMarkers(path);
+                    this.outputFilesForPath(path);
+                }
+                else {
+                    console.warn(LANGUAGE_SERVICE_NOT_AVAILABLE);
+                }
+            });
         }
     }
 

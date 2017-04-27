@@ -203,7 +203,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_ACE_WORKERS = '2.9.13';
+    const VERSION_ACE_WORKERS = '2.9.14';
     const VERSION_ANGULAR = '4.1.0';
 
     return [
@@ -590,6 +590,10 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-eight')
         },
         {
+            src: "node_modules/davinci-eight/package.json",
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/package.json')
+        },
+        {
             src: "node_modules/davinci-eight/dist/index.d.ts",
             dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
         },
@@ -604,6 +608,10 @@ function copies(target) {
         {
             src: "node_modules/davinci-eight/dist/index.d.ts",
             dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
+        },
+        {
+            src: "../davinci-eight/dist/package.json",
+            dest: prepend(target, 'vendor/davinci-eight@6.1.0/package.json')
         },
         {
             src: "../davinci-eight/dist/index.d.ts",

@@ -43,6 +43,7 @@ import TextChange from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
 import WsFile from '../../modules/wsmodel/WsFile';
 import WsModel from '../../modules/wsmodel/WsModel';
+import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -60,7 +61,7 @@ import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import { LANGUAGE_YAML } from '../../languages/modes';
-import updateWorkspaceTypings from './updateWorkspaceTypings';
+import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
@@ -105,9 +106,10 @@ function fileExtensionIs(path: string, extension: string): boolean {
 export default class WorkspaceController implements WorkspaceEditorHost {
 
     /**
-     * Keep track of the dependencies that are loaded in the workspace.
+     * Keep track of the dependencies (module names) that are loaded in the workspace.
      */
-    private readonly olds: string[] = [];
+    private readonly ambients: AmbientResolutions = {};
+    private readonly modulars: ModuleResolutions = {};
 
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
@@ -127,7 +129,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
     /**
      * A subscription to lint settings change events.
      */
-    private changedLintSettingsSubscription: Subscription | undefined;
+    private changedTsLintSettingsSubscription: Subscription | undefined;
+    /**
+     * A subscription to lint settings change events.
+     */
+    private changedTypesSettingsSubscription: Subscription | undefined;
 
     private changedLintingRemover: (() => void) | undefined;
 
@@ -397,7 +403,8 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             ga('send', 'event', CATEGORY_WORKSPACE, 'properties', label, value);
             const propertiesFlow = new PropertiesFlow(
                 this.optionManager,
-                this.olds,
+                this.ambients,
+                this.modulars,
                 this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                 this.$http,
                 this.$location,
@@ -524,12 +531,33 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in jspm settings. Cause: ${reason}`);
                     });
 
-                this.changedLintSettingsSubscription = this.wsModel.changedLintSettings.events
+                this.changedTsLintSettingsSubscription = this.wsModel.changedTsLintSettings.events
                     .debounceTime(500)
                     .subscribe((settings) => {
+                        // We must recompile because linting is currently downstream of syntax and semantic checking.
                         this.compile();
                     }, (reason) => {
                         console.warn(`Unable to recompile following change in tslint settings. Cause: ${reason}`);
+                    });
+
+                this.changedTypesSettingsSubscription = this.wsModel.changedTypesSettings.events
+                    .debounceTime(500)
+                    .subscribe((settings) => {
+                        updateWorkspaceTypes(
+                            this.wsModel,
+                            this.optionManager,
+                            this.ambients,
+                            this.modulars,
+                            this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
+                            this.$http,
+                            this.$location,
+                            this.VENDOR_FOLDER_MARKER,
+                            () => {
+                                this.compile();
+                            }
+                        );
+                    }, (reason) => {
+                        console.warn(`Unable to recompile following change in jspm settings. Cause: ${reason}`);
                     });
 
             })
@@ -567,14 +595,19 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             this.changedCompilerSettingsSubscription = void 0;
         }
 
-        if (this.changedLintSettingsSubscription) {
-            this.changedLintSettingsSubscription.unsubscribe();
-            this.changedLintSettingsSubscription = void 0;
+        if (this.changedTsLintSettingsSubscription) {
+            this.changedTsLintSettingsSubscription.unsubscribe();
+            this.changedTsLintSettingsSubscription = void 0;
         }
 
         if (this.changedJspmSettingsSubscription) {
             this.changedJspmSettingsSubscription.unsubscribe();
             this.changedJspmSettingsSubscription = void 0;
+        }
+
+        if (this.changedTypesSettingsSubscription) {
+            this.changedTypesSettingsSubscription.unsubscribe();
+            this.changedTypesSettingsSubscription = void 0;
         }
 
         if (this.changedOperatorOverloadingRemover) {
@@ -668,10 +701,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             }
         }));
 
-        updateWorkspaceTypings(
+        updateWorkspaceTypes(
             this.wsModel,
             this.optionManager,
-            this.olds,
+            this.ambients,
+            this.modulars,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
             this.$http,
             this.$location,

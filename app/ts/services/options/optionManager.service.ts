@@ -142,9 +142,6 @@ function domready(fileName: string): string {
 function d3(fileName: string): string {
     return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
 }
-function eight(fileName: string): string {
-    return vendorFolder('davinci-eight', VERSION_EIGHT, void 0, fileName);
-}
 function geocas(subFolder: string, fileName: string): string {
     return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
 }
@@ -418,10 +415,10 @@ export class OptionManager implements IOptionManager {
                 homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
-                css: [eight('davinci-eight.css')],
-                dts: eight(INDEX_DTS),
-                js: [eight('davinci-eight.js')],
-                minJs: [eight('davinci-eight.js')],
+                css: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.css`],
+                dts: `https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/${INDEX_DTS}`,
+                js: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.js`],
+                minJs: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.min.js`],
                 dependencies: {}
             },
             {

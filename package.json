@@ -1,6 +1,6 @@
 {
   "name": "tscodehub",
-  "version": "2.24.46",
+  "version": "2.24.47",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@reactivex/rxjs": "^5.3.0",
-    "@types/angular": "^1.6.15",
+    "@types/angular": "^1.6.16",
     "@types/angular-animate": "^1.5.6",
     "@types/angular-cookies": "^1.4.3",
     "@types/angular-mocks": "1.5.9",
@@ -127,7 +127,7 @@
       "clipboard": "npm:clipboard@^1.6.1",
       "core-js": "npm:core-js@^2.4.1",
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
-      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.13",
+      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.14",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",

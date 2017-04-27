@@ -4,15 +4,20 @@ import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import { IOptionManager } from '../../services/options/IOptionManager';
-import updateWorkspaceTypings from './updateWorkspaceTypings';
+import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import WsModel from '../../modules/wsmodel/WsModel';
+import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import dependenciesMap from './dependenciesMap';
 import dependencyNames from './dependencyNames';
 
+/**
+ * 
+ */
 export default class PropertiesFlow {
     constructor(
         private optionManager: IOptionManager,
-        private olds: string[],
+        private ambients: AmbientResolutions,
+        private modulars: ModuleResolutions,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private $http: IHttpService,
         private $location: ILocationService,
@@ -37,7 +42,7 @@ export default class PropertiesFlow {
                     linting: this.wsModel.linting,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.isOperatorOverloadingEnabled(),
-                    dependencies: dependencyNames(this.wsModel.dependencies)
+                    dependencies: dependencyNames(this.wsModel.getPackageDependencies())
                 };
                 this.propertiesDialog.open(defaults)
                     .then((settings: PropertiesSettings) => {
@@ -63,16 +68,20 @@ export default class PropertiesFlow {
                     this.wsModel.linting = value.linting;
                     this.wsModel.noLoopCheck = value.noLoopCheck;
                     this.wsModel.setOperatorOverloading(value.operatorOverloading);
-                    this.wsModel.dependencies = dependenciesMap(value.dependencies, this.optionManager);
+                    this.wsModel.setPackageDependencies(dependenciesMap(value.dependencies, this.optionManager));
                 }
                 else {
                     console.warn("Why are settings not defined?");
                 }
 
-                updateWorkspaceTypings(
+                //
+                // TODO: Is this really required now that we have events when the model changes?
+                //
+                updateWorkspaceTypes(
                     this.wsModel,
                     this.optionManager,
-                    this.olds,
+                    this.ambients,
+                    this.modulars,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                     this.$http,
                     this.$location,

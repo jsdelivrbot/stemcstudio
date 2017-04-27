@@ -1,6 +1,6 @@
 import { ILocationService, IWindowService } from 'angular';
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
-import closure from './closure';
+import { closure } from './closure';
 import csvTypeFromContent from './csvTypeFromContent';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
@@ -126,7 +126,7 @@ export default function rebuildPreview(
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return workspace.dependencies.hasOwnProperty(option.packageName);
+                            return workspace.getPackageDependencies().hasOwnProperty(option.packageName);
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, options);

@@ -74,34 +74,50 @@ export class LanguageServiceProxy {
         this.worker = new WorkerClient(workerUrl);
 
         this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
         this.worker.on(EVENT_DEFAULT_LIB_CONTENT, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
         this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
+            }
+        });
+
+        this.worker.on(EVENT_ENSURE_MODULE_MAPPING, (response: { data: WorkerClientData<string | undefined> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
+        });
+
+        this.worker.on(EVENT_REMOVE_MODULE_MAPPING, (response: { data: WorkerClientData<string | undefined> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
             }
         });
 
         this.worker.on(EVENT_REMOVE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
-            const { err, callbackId } = response.data;
+            const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err);
+                callback(err, value);
             }
         });
 
@@ -239,14 +255,19 @@ export class LanguageServiceProxy {
         this.worker.emit(EVENT_APPLY_DELTA, message);
     }
 
-    ensureModuleMapping(moduleName: string, fileName: string): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            const callback = function (err: any) {
-                if (err) {
-                    reject(err);
+    /**
+     * Ensures that a mapping exists from moduleName to fileName.
+     * The promise returns any previous mapping value.
+     * This may be a fileName but normally will be undefined.
+     */
+    ensureModuleMapping(moduleName: string, fileName: string): Promise<string | undefined> {
+        return new Promise<string | undefined>((resolve, reject) => {
+            const callback = function (err: any, previousFileName: string | undefined) {
+                if (!err) {
+                    resolve(previousFileName);
                 }
                 else {
-                    resolve(true);
+                    reject(err);
                 }
             };
             const callbackId = this.captureCallback(callback);
@@ -255,14 +276,19 @@ export class LanguageServiceProxy {
         });
     }
 
-    removeModuleMapping(moduleName: string): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            const callback = function (err: any) {
-                if (err) {
-                    reject(err);
+    /**
+     * Removes a mapping from moduleName.
+     * The promise returns any previous mapped value.
+     * This will normally be a fileName but may be undefined.
+     */
+    removeModuleMapping(moduleName: string): Promise<string | undefined> {
+        return new Promise<string | undefined>((resolve, reject) => {
+            const callback = function (err: any, previousFileName: string | undefined) {
+                if (!err) {
+                    resolve(previousFileName);
                 }
                 else {
-                    resolve(true);
+                    reject(err);
                 }
             };
             const callbackId = this.captureCallback(callback);
