@@ -1314,19 +1314,34 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * 
+     * Synchronization method to remove a script from the Language Service.
+     * This is called in two different contexts:
+     * When a user has finished with a code script and monitoring ends.
+     * When the ambient or module type information changes.
+     * The main difference between these two is that user code is monitored for document changes.
+     * The promise returns the following:
+     * true if the script exists and was successfully removed.
+     * false if the script does not exist (idempotency).
+     * error if something goes wrong.
      */
-    removeScript(path: string, callback: (err: any) => any) {
+    removeScript(path: string): Promise<boolean> {
         checkPath(path);
-        checkCallback(callback);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.removeScript(path, (err: any) => {
-                if (err) {
-                    window.console.warn(`WsModel.removeScript(${path}) failed ${err}`);
-                }
-                callback(err);
-            });
-        }
+        return new Promise<boolean>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.removeScript(path, (err: any, removed?: boolean) => {
+                    if (!err) {
+                        resolve(removed);
+                    }
+                    else {
+                        reject(new Error(`WsModel.removeScript(${path}) failed ${err}`));
+                    }
+                });
+
+            }
+            else {
+                throw new Error(LANGUAGE_SERVICE_NOT_AVAILABLE);
+            }
+        });
     }
 
     /**

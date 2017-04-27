@@ -96,20 +96,29 @@ function updateModules(
             wsModel.removeModuleMapping(moduleName)
                 .then(function (moduleURL) {
                     if (typeof moduleURL === 'string') {
-                        wsModel.removeScript(moduleURL, (err) => {
-                            if (!err) {
-                                const index = olds.indexOf(moduleName);
-                                if (index >= 0) {
-                                    delete modulars[moduleName];
+                        wsModel.removeScript(moduleURL)
+                            .then(function (value) {
+                                if (typeof value === 'boolean') {
+                                    if (value) {
+                                        const index = olds.indexOf(moduleName);
+                                        if (index >= 0) {
+                                            delete modulars[moduleName];
+                                        }
+                                        else {
+                                            console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
+                                        }
+                                    }
+                                    else {
+                                        console.warn(`removeScript(${moduleURL}) => ${value}`);
+                                    }
                                 }
                                 else {
-                                    console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
+                                    console.warn(`removeScript(${moduleURL}) => ${value}`);
                                 }
-                            }
-                            else {
+                            })
+                            .catch(function (err) {
                                 console.warn(`removeScript(${moduleURL}) failed. ${err}`);
-                            }
-                        });
+                            });
                     }
                     else {
                         console.warn(`removeModuleMapping(${moduleName}) did not return a mapped URL.`);
@@ -254,8 +263,8 @@ function updateAmbients(
         rmvs.forEach((globalName) => {
             const ambientURL = ambients[globalName];
             if (typeof ambientURL === 'string') {
-                wsModel.removeScript(ambientURL, (err) => {
-                    if (!err) {
+                wsModel.removeScript(ambientURL)
+                    .then(function (value) {
                         const index = olds.indexOf(ambientURL);
                         if (index >= 0) {
                             delete ambients[globalName];
@@ -263,11 +272,10 @@ function updateAmbients(
                         else {
                             console.warn(`olds.indexOf(${ambientURL}) returned ${index}`);
                         }
-                    }
-                    else {
-                        console.warn(`removeScript(${ambientURL}) failed. ${err}`);
-                    }
-                });
+                    })
+                    .catch(function (reason) {
+                        console.warn(`removeScript(${ambientURL}) failed. Reason ${reason}`);
+                    });
             }
             else {
                 console.warn(`ambients['${globalName}'] did not return a mapped URL.`);

@@ -89,7 +89,7 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
+        this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<boolean> }) => {
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
@@ -113,11 +113,23 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_REMOVE_SCRIPT, (response: { data: WorkerClientData<any> }) => {
+        this.worker.on(EVENT_REMOVE_SCRIPT, (response: { data: WorkerClientData<boolean> }) => {
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
-                callback(err, value);
+                if (!err) {
+                    if (typeof value === 'boolean') {
+                        callback(err, value);
+                    }
+                    else {
+                        // Worker thread not abiding by contract.
+                        console.warn(`${EVENT_REMOVE_SCRIPT} returned ${value} with type ${typeof value}.`);
+                        callback(err, true);
+                    }
+                }
+                else {
+                    callback(err);
+                }
             }
         });
 
@@ -297,13 +309,13 @@ export class LanguageServiceProxy {
         });
     }
 
-    ensureScript(path: string, content: string, callback: (err: any) => any): void {
+    ensureScript(path: string, content: string, callback: (err: any, added?: boolean) => void): void {
         const callbackId = this.captureCallback(callback);
         const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
         this.worker.emit(EVENT_ENSURE_SCRIPT, message);
     }
 
-    removeScript(path: string, callback: (err: any) => any): void {
+    removeScript(path: string, callback: (err: any, removed?: boolean) => void): void {
         const callbackId = this.captureCallback(callback);
         const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
         this.worker.emit(EVENT_REMOVE_SCRIPT, message);

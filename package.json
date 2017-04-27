@@ -36,7 +36,7 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
-    "debug": "^2.6.4",
+    "debug": "^2.6.5",
     "errorhandler": "^1.5.0",
     "es6-promise": "^3.3.1",
     "es6-shim": "^0.35.3",
@@ -98,7 +98,7 @@
     "tslint": "^5.1.0",
     "two.js": "^0.6.0",
     "typedoc": "^0.5.10",
-    "typescript": "^2.3.0",
+    "typescript": "^2.3.1",
     "typings": "^2.1.1"
   },
   "repository": {
@@ -127,7 +127,7 @@
       "clipboard": "npm:clipboard@^1.6.1",
       "core-js": "npm:core-js@^2.4.1",
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
-      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.14",
+      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.9.15",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",
