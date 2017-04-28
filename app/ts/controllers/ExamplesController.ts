@@ -5,6 +5,39 @@ import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/I
 import ModalDialog from '../services/modalService/ModalDialog';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
+//
+// The following example shows how to use the ISCEService.
+//
+/*
+    constructor(
+        $http: IHttpService,
+        $sce: ISCEService,
+        $scope: TutorialsScope,
+        $templateCache: ITemplateCacheService,
+        $window: IWindowService,
+        authManager: IGitHubAuthManager,
+        ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        super($window, authManager, modalDialog, 'auto');
+
+        $scope.tutorials = [];
+        const url = `data/cookbook.json?bust=${Date.now()}`;
+        $http.get<Tutorial[]>(url, { cache: $templateCache })
+            .then(function (promiseValue) {
+                if (Array.isArray(promiseValue.data)) {
+                    $scope.tutorials = promiseValue.data.map(function (tutorial) {
+                        tutorial.gistUrl = $sce.trustAsResourceUrl(`/#/gists/${tutorial.gistId}?output=embed`);
+                        tutorial.showEmbedded = false;
+                        return tutorial;
+                    });
+                }
+            })
+            .catch(function (err) {
+                console.warn(`Unable to get ${url}. Cause: ${err}`);
+            });
+*/
+
 /**
  * The examples are currently not data-driven and not very pretty!
  */

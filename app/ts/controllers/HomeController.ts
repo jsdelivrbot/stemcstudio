@@ -28,11 +28,9 @@ export default class HomeController extends AbstractPageController {
         'newProject',
         'stemcArXiv',
         TRANSLATE_SERVICE_UUID,
-        'FEATURE_COOKBOOK_ENABLED',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED',
-        'FEATURE_TUTORIALS_ENABLED',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
 
@@ -50,33 +48,16 @@ export default class HomeController extends AbstractPageController {
         newProjectDialog: NewProjectDialog,
         stemcArXiv: StemcArXiv,
         translateService: ITranslateService,
-        FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
-        FEATURE_TUTORIALS_ENABLED: boolean,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         super($window, authManager, modalDialog, 'auto');
 
-        $scope.FEATURE_COOKBOOK_ENABLED = FEATURE_COOKBOOK_ENABLED;
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
         $scope.FEATURE_GOOGLE_SIGNIN_ENABLED = FEATURE_GOOGLE_SIGNIN_ENABLED;
-        $scope.FEATURE_TUTORIALS_ENABLED = FEATURE_TUTORIALS_ENABLED;
-
-        $scope.goCookbook = () => {
-            if (FEATURE_COOKBOOK_ENABLED) {
-                navigation.gotoCookbook().then(function () {
-                    // Nothing to do.
-                }).catch(function (reason: any) {
-                    console.warn(`gotoCookbook() failed: ${JSON.stringify(reason, null, 2)}`);
-                });
-            }
-            else {
-                console.warn(`FEATURE_COOKBOOK_ENABLED => ${FEATURE_COOKBOOK_ENABLED}`);
-            }
-        };
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {
@@ -113,19 +94,6 @@ export default class HomeController extends AbstractPageController {
             }
             else {
                 console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`);
-            }
-        };
-
-        $scope.goTutorials = () => {
-            if (FEATURE_TUTORIALS_ENABLED) {
-                navigation.gotoTutorials().then(function () {
-                    // Nothing to do.
-                }).catch(function (reason: any) {
-                    console.warn(`gotoTutorials() failed: ${JSON.stringify(reason, null, 2)}`);
-                });
-            }
-            else {
-                console.warn(`FEATURE_TUTORIALS_ENABLED => ${FEATURE_TUTORIALS_ENABLED}`);
             }
         };
 

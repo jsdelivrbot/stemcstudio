@@ -305,41 +305,6 @@ export function templateCache($templateCache: ITemplateCacheService) {
   );
 
 
-  $templateCache.put('cookbook.html',
-    "<div id='tutorials-page'>\n" +
-    "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
-    "        <div class='navbar-header'>\n" +
-    "            <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
-    "                <brand />\n" +
-    "            </a>\n" +
-    "        </div>\n" +
-    "        <div class='navbar-header'>\n" +
-    "            <span class='md-logo-text-math navbar-brand'>Cookbook</span>\n" +
-    "        </div>\n" +
-    "    </nav>\n" +
-    "    <div class='container md-docs-container'>\n" +
-    "        <div class='row'>\n" +
-    "            <!-- EIGHT -->\n" +
-    "            <div class='md-docs-section'>\n" +
-    "                <h1 class='page-header'>EIGHT</h1>\n" +
-    "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
-    "                    <p class='lead'>\n" +
-    "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
-    "                    </p>\n" +
-    "                    <p>\n" +
-    "                        <a href='/#/gists/{{tutorial.gistId}}'>\n" +
-    "                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                        </a>\n" +
-    "                    </p>\n" +
-    "                    <p>{{tutorial.description}}</p>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>"
-  );
-
-
   $templateCache.put('dashboard.html',
     "<div id='dashboard-page'>\n" +
     "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
@@ -800,8 +765,6 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                    <brand />\n" +
     "                </div>\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
-    "                <!-- button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button -->\n" +
-    "                <!-- button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button -->\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <!-- button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button -->\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a>\n" +
@@ -1312,40 +1275,6 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
     "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"close()\">{{options.closeButtonText}}</button>\n" +
-    "</div>"
-  );
-
-
-  $templateCache.put('tutorials.html',
-    "<div id='tutorials-page'>\n" +
-    "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
-    "        <div class='navbar-header'>\n" +
-    "            <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
-    "                <brand />\n" +
-    "            </a>\n" +
-    "        </div>\n" +
-    "        <div class='navbar-header'>\n" +
-    "            <span class='md-logo-text-math navbar-brand'>Tutorials</span>\n" +
-    "        </div>\n" +
-    "    </nav>\n" +
-    "    <div class='container md-docs-container'>\n" +
-    "        <div class='row'>\n" +
-    "            <!-- EIGHT -->\n" +
-    "            <div class='md-docs-section'>\n" +
-    "                <h1 class='page-header'>EIGHT</h1>\n" +
-    "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
-    "                    <div class='lead'>\n" +
-    "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
-    "                    </div>\n" +
-    "                    <div>{{tutorial.description}}</div>\n" +
-    "                    <a href='/#/gists/{{tutorial.gistId}}'>\n" +
-    "                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                    </a>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
     "</div>"
   );
 

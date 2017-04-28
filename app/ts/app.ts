@@ -155,7 +155,6 @@ import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
 //
 //
 import { STATE_ABOUT } from './modules/navigation/NavigationService';
-import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
 import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
 import { STATE_WORKSPACE } from './modules/navigation/NavigationService';
 import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
@@ -164,7 +163,6 @@ import { STATE_GIST } from './modules/navigation/NavigationService';
 import { STATE_HOME } from './modules/navigation/NavigationService';
 import { STATE_REPO } from './modules/navigation/NavigationService';
 import { STATE_ROOM } from './modules/navigation/NavigationService';
-import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -201,11 +199,10 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.47');
+app.constant('version', '2.24.48');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
-app.constant('FEATURE_COOKBOOK_ENABLED', true);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
@@ -213,7 +210,6 @@ app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
 app.constant('FEATURE_ROOM_ENABLED', true);
-app.constant('FEATURE_TUTORIALS_ENABLED', false);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
@@ -333,25 +329,21 @@ app.config([
     TRANSLATE_SERVICE_PROVIDER_UUID,
     TRANSLATE_GATEWAY_PROVIDER_UUID,
     '$urlRouterProvider',
-    'FEATURE_COOKBOOK_ENABLED',
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
     'FEATURE_REPO_ENABLED',
     'FEATURE_ROOM_ENABLED',
-    'FEATURE_TUTORIALS_ENABLED',
     function (
         stateProvider: IStateProvider,
         translateServiceProvider: ITranslateServiceProvider,
         translateGatewayProvider: ITranslateGatewayProvider,
         urlRouterProvider: IUrlRouterProvider,
-        FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
-        FEATURE_ROOM_ENABLED: boolean,
-        FEATURE_TUTORIALS_ENABLED: boolean
+        FEATURE_ROOM_ENABLED: boolean
     ) {
         // FIXME: Some of the states should be replaced by modal dialogs.
         stateProvider
@@ -375,17 +367,6 @@ app.config([
                 templateUrl: 'about.html',
                 controller: ABOUT_CONTROLLER_NAME
             });
-
-        if (FEATURE_COOKBOOK_ENABLED) {
-            stateProvider.state(STATE_COOKBOOK, {
-                url: '/cookbook',
-                templateUrl: 'cookbook.html',
-                controller: 'cookbook-controller'
-            });
-        }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
 
         if (FEATURE_DASHBOARD_ENABLED) {
             stateProvider.state(STATE_DASHBOARD, {
@@ -436,17 +417,6 @@ app.config([
                 url: '/rooms/{roomId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
-            });
-        }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
-
-        if (FEATURE_TUTORIALS_ENABLED) {
-            stateProvider.state(STATE_TUTORIALS, {
-                url: '/tutorials',
-                templateUrl: 'tutorials.html',
-                controller: 'tutorials-controller'
             });
         }
         else {
