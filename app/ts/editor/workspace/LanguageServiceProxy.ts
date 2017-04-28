@@ -261,7 +261,10 @@ export class LanguageServiceProxy {
         }
     }
 
-    applyDelta(path: string, delta: Delta, callback: (err: any) => any): void {
+    /**
+     * Applies a Delta to the specified file.
+     */
+    applyDelta(path: string, delta: Delta, callback: (err: any) => void): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName: path, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);

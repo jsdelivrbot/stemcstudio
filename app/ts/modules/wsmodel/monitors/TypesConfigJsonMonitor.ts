@@ -25,7 +25,7 @@ export class TypesConfigJsonMonitor implements DocumentMonitor {
             .subscribe((delta) => {
                 const types = workspace.getTypesConfigSettings();
                 if (types) {
-                    workspace.changedTypesSettings.emitAsync(types);
+                    workspace.changedTypesSettings.emitAsync('changedTypesSettings', types);
                 }
                 else {
                     console.warn(`${path} could not be parsed.`);

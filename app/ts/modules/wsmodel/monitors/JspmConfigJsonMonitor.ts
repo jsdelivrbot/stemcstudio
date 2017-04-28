@@ -21,7 +21,7 @@ export class JspmConfigJsonMonitor implements DocumentMonitor {
         this.changeEventsSubscription = doc.changeEvents
             .debounceTime(JSON_EDIT_SYNCH_DELAY_MILLIS)
             .subscribe((delta) => {
-                workspace.changedJspmSettings.emitAsync();
+                workspace.changedJspmSettings.emitAsync('changedJspmSettings', void 0);
             });
         window.setTimeout(callback, 0);
     }

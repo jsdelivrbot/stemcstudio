@@ -68,6 +68,13 @@ import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHos
 
 const NEWLINE = '\n';
 
+/**
+ * Used to explore race conditions.
+ * Set it to a large value such as 5000 for development.
+ * Set it to zero for production.
+ */
+const SLOW_MOTION_DELAY_MILLIS = 0;
+
 const TYPES_DOT_CONFIG_DOT_JSON = 'types.config.json';
 
 /**
@@ -149,6 +156,12 @@ const workerUrl = '/js/worker.js';
  * Classify diagnostics so that they can be reported with differing severity (error, warning, or info).
  */
 type DiagnosticOrigin = 'syntax' | 'semantic' | 'lint';
+
+export type FileMonitoringEventType = 'addedToLanguageService' | 'removedFromLanguageService';
+
+export interface FileMonitoringData {
+    path: string;
+}
 
 const LANGUAGE_SERVICE_NOT_AVAILABLE = "Language Service is not available";
 
@@ -500,6 +513,12 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     public readonly docMonitors: { [path: string]: DocumentMonitor } = {};
 
     /**
+     * Keep track of files that are in the process of being deleted to thwart race conditions.
+     * We might want to eveolve this to some sort of state tracking.
+     */
+    private readonly deletePending: { [path: string]: boolean } = {};
+
+    /**
      * Slightly unusual reference counting because of:
      * 1) Operating as a service.
      * 2) Handling lifetimes of Editors.
@@ -534,26 +553,36 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * TODO: RxJS probably has something for this. Subject or BehaviorSubject?
      */
-    public readonly changedCompilerSettings = new EventHub<'changedCompilerSettings', TsConfigSettings, WsModel>(changedCompilerSettingsEventName, this);
-    public readonly changedJspmSettings = new EventHub<'changedJspmSettings', JspmSettings, WsModel>(changedJspmSettingsEventName, this);
+    public readonly changedCompilerSettings = new EventHub<'changedCompilerSettings', TsConfigSettings, WsModel>([changedCompilerSettingsEventName], this);
+
+    /**
+     * 
+     */
+    public readonly changedJspmSettings = new EventHub<'changedJspmSettings', JspmSettings, WsModel>([changedJspmSettingsEventName], this);
 
     /**
      * A coarse event stream for changes to the tslint.json file because we don't need to differentiate changes to parts. 
      */
-    public readonly changedTsLintSettings = new EventHub<'changedLintSettings', TsLintSettings, WsModel>(changedLintSettingsEventName, this);
+    public readonly changedTsLintSettings = new EventHub<'changedLintSettings', TsLintSettings, WsModel>([changedLintSettingsEventName], this);
 
     /**
      * Events are triggered by the package.json DocumentMonitor.
      * Nobody is currently listening.
      */
-    public readonly changedPackageSettings = new EventHub<'changedPackageSettings', PackageSettings, WsModel>(changedPackageSettingsEventName, this);
+    public readonly changedPackageSettings = new EventHub<'changedPackageSettings', PackageSettings, WsModel>([changedPackageSettingsEventName], this);
 
     /**
      * Events are triggered by the types.config.json DocumentMonitor.
      * The workspace controller responds by updating the Language Service.
      * TODO: Move workspace controller functionality into some sort of pipeline or transformer.
      */
-    public readonly changedTypesSettings = new EventHub<'changedTypesSettings', TypesConfigSettings, WsModel>(changedTypesSettingsEventName, this);
+    public readonly changedTypesSettings = new EventHub<'changedTypesSettings', TypesConfigSettings, WsModel>([changedTypesSettingsEventName], this);
+
+    /**
+     * 'added' means that the file has been added to the language service and is being monitored.
+     * 'removed' means that monitoring has ended and the file has been removed from the language service.
+     */
+    public readonly filesEventHub = new EventHub<FileMonitoringEventType, FileMonitoringData, WsModel>(['addedToLanguageService', 'removedFromLanguageService'], this);
 
     /**
      * Used to control logging of the Language Service.
@@ -1036,7 +1065,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * 
+     * If the path corresponds to a TypeScript file, we wire up the completion
+     * of the editor worker to refresh the diagnostices.
      */
     private attachSession(path: string, session: EditSession | undefined): void {
         checkPath(path);
@@ -1054,11 +1084,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 /**
                  * Wrapper to throttle requests for semantic errors.
                  */
-                const refreshDiagnosticsCleanup = debounce(() => {
-                    this.refreshDiagnostics(function (err) {
-                        if (err) {
-                            console.warn(`Error returned from request for semantic diagnostics for path => ${path}: ${err}`);
-                        }
+                const refreshDiagnosticsDebounced = debounce(() => {
+                    this.refreshDiagnostics().catch(function (err) {
+                        console.warn(`Error returned from request for diagnostics for path => ${path}: ${err}`);
                     });
                 }, SEMANTIC_DELAY_MILLISECONDS);
 
@@ -1066,6 +1094,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                 // This is our cue to begin semantic analysis and make use of transpiled files.
                 /**
                  * Handler for annotations received from the language worker thread.
+                 * Since this is TypeScript, the annotations will always have zero length
+                 * because the editor worker does not do anything (the syntactic and semantic
+                 * work is done by the workspace worker).
                  */
                 const annotationsHandler = (event: { data: Annotation[], type: 'annotation' }) => {
                     // Only make the request for semantic errors if there are no syntactic errors.
@@ -1073,7 +1104,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     const annotations = event.data;
                     if (annotations.length === 0) {
                         // A change in a single file triggers analysis of all files.
-                        refreshDiagnosticsCleanup();
+                        refreshDiagnosticsDebounced();
                     }
                 };
                 session.on(workerCompleted, annotationsHandler);
@@ -1085,6 +1116,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * If the path corresponds to a TypeScript file, we unhook the link that caused
+     * a worker completion event to trigger a refresh of the diagnostics.
+     */
     private detachSession(path: string, session: EditSession | undefined) {
         checkPath(path);
 
@@ -1296,21 +1331,32 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     }
 
     /**
-     * 
+     * Synchronization method to add a script to the Language Service.
      */
-    ensureScript(path: string, content: string, callback: (err: any) => any): void {
-        checkPath(path);
-        checkCallback(callback);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.ensureScript(path, content, (err: any) => {
-                if (!err) {
-                    callback(void 0);
-                }
-                else {
-                    callback(err);
-                }
-            });
-        }
+    addScript(path: string, content: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.ensureScript(path, content, (err: any, added?: boolean) => {
+                    if (!err) {
+                        if (added) {
+                            this.filesEventHub.emitAsync('addedToLanguageService', { path });
+                            resolve(added);
+                        }
+                        else {
+                            // Attempting to add a script which is already there.
+                            console.warn(`WsModel.ensureScript(${path}) returned ${added}`);
+                            resolve(added);
+                        }
+                    }
+                    else {
+                        reject(new Error(`WsModel.ensureScript(${path}) failed. Cause: ${err}`));
+                    }
+                });
+            }
+            else {
+                throw new Error(LANGUAGE_SERVICE_NOT_AVAILABLE);
+            }
+        });
     }
 
     /**
@@ -1321,19 +1367,26 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The main difference between these two is that user code is monitored for document changes.
      * The promise returns the following:
      * true if the script exists and was successfully removed.
-     * false if the script does not exist (idempotency).
+     * false if the script does not exist (idempotency). A warning is logged.
      * error if something goes wrong.
      */
     removeScript(path: string): Promise<boolean> {
-        checkPath(path);
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
                 this.languageServiceProxy.removeScript(path, (err: any, removed?: boolean) => {
                     if (!err) {
-                        resolve(removed);
+                        if (removed) {
+                            this.filesEventHub.emitAsync('removedFromLanguageService', { path });
+                            resolve(removed);
+                        }
+                        else {
+                            // Attempting to remove a script which is not there.
+                            console.warn(`WsModel.removeScript(${path}) returned ${removed}`);
+                            resolve(removed);
+                        }
                     }
                     else {
-                        reject(new Error(`WsModel.removeScript(${path}) failed ${err}`));
+                        reject(new Error(`WsModel.removeScript(${path}) failed. Cause: ${err}`));
                     }
                 });
 
@@ -1347,27 +1400,35 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
     /**
      * Requests the diagnostics for all edit sessions.
      * The results are used to update the corresponding edit session objects.
+     * This is called when...
+     * 1. The user has updated the workspace type information (Settings).
+     * 2. The workspace controller does a compile.
+     * 3. When a TypeScript editor's worker has completed.
+     * 
+     * TODO: The returned promise is not very useful unless the dianostics can be mapped to each path.
      */
-    public refreshDiagnostics(callback: (err: any) => any): void {
+    public refreshDiagnostics(): Promise<Diagnostic[][]> {
         const paths = this.getFileSessionPaths().filter(isTypeScript);
-        const tsLength = paths.length;
-        let tsRemaining = tsLength;
+        const diagnosticPromises: Promise<Diagnostic[]>[] = [];
         for (const path of paths) {
-            const session = this.getFileSession(path);
-            if (session) {
-                try {
-                    this.diagnosticsForSession(path, session, function () {
-                        tsRemaining--;
-                        if (tsRemaining === 0) {
-                            callback(void 0);
-                        }
-                    });
-                }
-                finally {
-                    session.release();
+            if (this.deletePending[path]) {
+                // This is a race condition.
+                // We simply ignore the request for this path because the diagnostics would have no use.
+                // But let's make sure that the callback gets made.
+            }
+            else {
+                const session = this.getFileSession(path);
+                if (session) {
+                    try {
+                        diagnosticPromises.push(this.diagnosticsForSession(path, session));
+                    }
+                    finally {
+                        session.release();
+                    }
                 }
             }
         }
+        return Promise.all(diagnosticPromises);
     }
 
     /**
@@ -1419,64 +1480,73 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * Requests the disgnostics for the specified file.
      * The results are used to update the appropriate edit session.
      */
-    private diagnosticsForSession(path: string, session: EditSession, callback: (err: any) => any): void {
-        checkPath(path);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
-                if (err) {
-                    console.warn(`getSyntaxErrors(${path}) => ${err}`);
-                    callback(err);
-                }
-                else {
-                    this.updateSession(path, syntaxErrors, session, 'syntax');
-                    if (syntaxErrors.length === 0) {
-                        if (this.languageServiceProxy) {
-                            this.languageServiceProxy.getSemanticErrors(path, (err: any, semanticErrors: Diagnostic[]) => {
-                                if (err) {
-                                    console.warn(`getSemanticErrors(${path}) => ${err}`);
-                                    callback(err);
-                                }
-                                else {
-                                    this.updateSession(path, semanticErrors, session, 'semantic');
-                                    if (semanticErrors.length === 0) {
-                                        if (this.linting) {
-                                            if (this.languageServiceProxy) {
-                                                // TODO
-                                                const tslConfig = this.getTsLintSettings();
-                                                if (tslConfig) {
-                                                    this.languageServiceProxy.getLintErrors(path, tslConfig, (err: any, lintErrors: Diagnostic[]) => {
-                                                        if (err) {
-                                                            console.warn(`getLintErrors(${path}) => ${err}`);
-                                                            callback(err);
-                                                        }
-                                                        else {
-                                                            this.updateSession(path, lintErrors, session, 'lint');
-                                                            callback(void 0);
-                                                        }
-                                                    });
+    private diagnosticsForSession(path: string, session: EditSession): Promise<Diagnostic[]> {
+        return new Promise<Diagnostic[]>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
+                    if (err) {
+                        reject(new Error(`getSyntaxErrors(${path}) failed. Cause: ${err}`));
+                    }
+                    else {
+                        this.updateSession(path, syntaxErrors, session, 'syntax');
+                        if (syntaxErrors.length === 0) {
+                            if (this.languageServiceProxy) {
+                                this.languageServiceProxy.getSemanticErrors(path, (err: any, semanticErrors: Diagnostic[]) => {
+                                    if (err) {
+                                        reject(new Error(`getSemanticErrors(${path}) failed. Cause: ${err}`));
+                                    }
+                                    else {
+                                        this.updateSession(path, semanticErrors, session, 'semantic');
+                                        if (semanticErrors.length === 0) {
+                                            if (this.linting) {
+                                                if (this.languageServiceProxy) {
+                                                    // TODO
+                                                    const tslConfig = this.getTsLintSettings();
+                                                    if (tslConfig) {
+                                                        this.languageServiceProxy.getLintErrors(path, tslConfig, (err: any, lintErrors: Diagnostic[]) => {
+                                                            if (err) {
+                                                                reject(new Error(`getLintErrors(${path}) failed. Cause: ${err}`));
+                                                            }
+                                                            else {
+                                                                this.updateSession(path, lintErrors, session, 'lint');
+                                                                resolve(lintErrors);
+                                                            }
+                                                        });
+                                                    }
+                                                    else {
+                                                        // The lint settings are not available, maybe a parse error in tslint.json.
+                                                        resolve([]);
+                                                    }
+                                                }
+                                                else {
+                                                    reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
                                                 }
                                             }
                                             else {
-                                                callback(void 0);
+                                                // The linting flag is off so there are no lint errors.
+                                                resolve([]);
                                             }
                                         }
                                         else {
-                                            callback(void 0);
+                                            resolve(semanticErrors);
                                         }
                                     }
-                                    else {
-                                        callback(void 0);
-                                    }
-                                }
-                            });
+                                });
+                            }
+                            else {
+                                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+                            }
+                        }
+                        else {
+                            resolve(syntaxErrors);
                         }
                     }
-                    else {
-                        callback(void 0);
-                    }
-                }
-            });
-        }
+                });
+            }
+            else {
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+            }
+        });
     }
 
     /**
@@ -1497,21 +1567,36 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * The response is published on the outputFilesTopic.
      */
     private outputFilesForPath(path: string): void {
-        if (isTypeScript(path)) {
-            checkPath(path);
-            if (this.languageServiceProxy) {
-                this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
-                    if (!err) {
-                        this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
-                    }
-                    else {
-                        console.warn(`getOutputFilesForPath(${path}) => ${err}`);
-                    }
-                });
-            }
+        if (this.deletePending[path]) {
+            // This is a race condition.
+            // TODO: By ignoring it, we are assuming that there is at least one TypeScript file
+            // in the workspace that will cause output files to be created. We should make sure
+            // that when there are zero files in the project, an event is emitted that says there
+            // are no output files. Test this by deleting the main.ts file.
         }
         else {
-            console.warn(`getOutputFilesForPath(${path}) ignored.`);
+            if (isTypeScript(path)) {
+                checkPath(path);
+                if (this.languageServiceProxy) {
+                    this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
+                        if (!err) {
+                            this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
+                        }
+                        else {
+                            // TODO: Why do we get...
+                            // TypeError: Cannot read property 'text' of undefined
+                            // This happens while typing "import {"
+                            // See EVENT_GET_OUTPUT_FILES (no surprise)
+                            // I think it is because we are trying to get output files
+                            // while there is a syntax error.
+                            console.warn(`getOutputFilesForPath(${path}) => ${err}`);
+                        }
+                    });
+                }
+            }
+            else {
+                console.warn(`getOutputFilesForPath(${path}) ignored.`);
+            }
         }
     }
 
@@ -1888,43 +1973,67 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
      * 
      * The master flag determines whether nullify edits will be sent to any remotely connected room.
      */
-    deleteFile(pathToDelete: string, master: boolean): Promise<void> {
+    deleteFile(path: string, master: boolean): Promise<void> {
         if (this.traceFileOperations) {
-            console.log(`WsModel.deleteFile(path = ${pathToDelete}, master = ${master})`);
+            console.log(`WsModel.deleteFile(path = ${path}, master = ${master})`);
         }
         return new Promise<void>((resolve, reject) => {
-            const file = this.files ? this.files.getWeakRef(pathToDelete) : void 0;
+            const file = this.files ? this.files.getWeakRef(path) : void 0;
             if (file) {
+                this.deletePending[path] = true;
                 // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
                 // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-                this.endDocumentMonitoring(pathToDelete, () => {
-                    if (file.existsInGitHub) {
-                        // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
-                        this.moveFileToTrash(pathToDelete);
-                    }
-                    else {
-                        // It's a file that does NOT exist on GitHub. Remove it completely.
-                        if (this.files) {
-                            this.files.remove(pathToDelete).release();
-                        }
-                    }
-                    delete this.lastKnownJs[pathToDelete];
-                    delete this.lastKnownJsMap[pathToDelete];
-                    this.updateStorage();
-                    resolve();
+                this.endDocumentMonitoring(path, (err) => {
+                    // We intentionally magnify a race condition here.
+                    // When some listeners receive the event that the file has been removed
+                    // from the Language Service, they will initiate a compile.
+                    // What happens if we try to get diagnostics on a file in the workspace
+                    // that no longer exists in the Language Service?
+                    window.setTimeout(() => {
+                        // The fact that the following method call is synchronous ensures
+                        // that the clearing of the delete pending tally happens in synch.
+                        this.expungeFile(file, path);
+                        delete this.deletePending[path];
+                        resolve();
+                    }, SLOW_MOTION_DELAY_MILLIS);
                 });
                 // Send a message that the file has been deleted.
                 if (this.room && master) {
-                    this.unsubscribeRoomFromDocumentChanges(pathToDelete);
-                    this.room.deleteFile(pathToDelete);
+                    this.unsubscribeRoomFromDocumentChanges(path);
+                    this.room.deleteFile(path);
                 }
             }
             else {
                 setTimeout(() => {
-                    reject(new Error(`deleteFile(${pathToDelete}), ${pathToDelete} was not found.`));
+                    reject(new Error(`deleteFile(${path}), ${path} was not found.`));
                 }, 0);
             }
         });
+    }
+
+    /**
+     * 1. Moves the file to trash (if it was originally from GitHub), or removes it from the list of files.
+     * 2. Updates Local Storage.
+     * 
+     * This method is synchronous.
+     * 
+     * TODO: Update to Local Storage should be decoupled.
+     */
+    private expungeFile(file: WsFile, pathToDelete: string): void {
+        if (file.existsInGitHub) {
+            // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
+            this.moveFileToTrash(pathToDelete);
+        }
+        else {
+            // It's a file that does NOT exist on GitHub. Remove it completely.
+            if (this.files) {
+                this.files.remove(pathToDelete).release();
+            }
+        }
+        delete this.lastKnownJs[pathToDelete];
+        delete this.lastKnownJsMap[pathToDelete];
+        this.updateStorage();
+
     }
 
     existsFile(path: string): boolean {
@@ -1999,6 +2108,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                         console.warn(`renameFile('${oldPath}', '${newPath}') could not delete the oldFile: ${reason.message}`);
                     });
 
+                // TODO: This could be decoupled by using an EventHub.
+                // {begin, path} triggers wsModel.outputFilesForPath()
                 this.beginDocumentMonitoring(newPath, (err) => {
                     if (!err) {
                         this.eventBus.emit(renamedFileTopic, new RenamedFileMessage(oldPath, newPath));
@@ -2672,6 +2783,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * Moving a file to trash is synchronous.
+     */
     private moveFileToTrash(path: string): void {
         const files = this.files;
         if (files) {
@@ -2913,12 +3027,27 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
             return void 0;
         }
     }
-    public applyDelta(path: string, delta: Delta) {
+
+    /**
+     * Pushes the delta down to the Language Service then cascades to...
+     * 1. Update file session marker models.
+     * 2. Update file editor front markers.
+     * 3. Requests output files for the specified file.
+     * 
+     * This is called by the TypeScriptMonitor in response to Document 'change' events.
+     */
+    public applyDelta(path: string, delta: Delta): void {
         if (this.languageServiceProxy) {
             this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
                 if (!err) {
+                    // Update the model.
                     this.updateFileSessionMarkerModels(path, delta);
+                    // Update the view.
                     this.updateFileEditorFrontMarkers(path);
+
+                    // TODO: We request output files
+                    // 1. How is a compile initiated?
+                    // 2. Do we need the output files anyway?
                     this.outputFilesForPath(path);
                 }
                 else {
@@ -2930,7 +3059,7 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     /**
      * This appears to be the only function that requires full access to the Editor
-     * because it need to call the updateFrontMarkers method or the Renderer.
+     * because it needs to call the updateFrontMarkers method or the Renderer.
      */
     private updateFileSessionMarkerModels(path: string, delta: Delta): void {
         checkPath(path);
@@ -2947,7 +3076,8 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                     lineCount = -delta.lines.length;
                 }
                 else {
-                    throw new Error(`updateMarkerModels(${path}, ${JSON.stringify(delta)})`);
+                    // Unexpected action.
+                    throw new Error(`updateMarkerModels(${path}, action => ${action} ${JSON.stringify(delta)})`);
                 }
                 if (lineCount !== 0) {
                     const markerUpdate = function (markerId: number) {
@@ -2974,6 +3104,10 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
         }
     }
 
+    /**
+     * Schedules an update to all the front markers in the editor renderer.
+     * This is like notifying a view that it needs to update itself because a model has changed.
+     */
     updateFileEditorFrontMarkers(path: string): void {
         const editor = this.getFileEditor(path);
         if (editor) {

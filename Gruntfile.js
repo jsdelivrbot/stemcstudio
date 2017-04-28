@@ -203,7 +203,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_ACE_WORKERS = '2.9.15';
+    const VERSION_ACE_WORKERS = '2.9.16';
     const VERSION_ANGULAR = '4.1.0';
 
     return [

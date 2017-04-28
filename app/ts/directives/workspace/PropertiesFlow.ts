@@ -97,9 +97,13 @@ export default class PropertiesFlow {
                         }
                         Promise.all(promises)
                             .then(() => {
-                                this.wsModel.refreshDiagnostics(function (err) {
-                                    callback(err);
-                                });
+                                this.wsModel.refreshDiagnostics()
+                                    .then(function () {
+                                        callback(void 0);
+                                    })
+                                    .catch(function (err) {
+                                        callback(err);
+                                    });
                             })
                             .catch((reason: any) => {
                                 console.warn(JSON.stringify(reason, null, 2));

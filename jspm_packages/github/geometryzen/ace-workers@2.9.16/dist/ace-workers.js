@@ -18722,7 +18722,6 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                             };
                             return m;
                         } else {
-                            console.warn("Unable to resolve module '" + moduleName + "'");
                             return undefined;
                         }
                     });

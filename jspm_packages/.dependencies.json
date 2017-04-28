@@ -909,5 +909,5 @@
     "@angular/core": "npm:@angular/core@4.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.15": {}
+  "github:geometryzen/ace-workers@2.9.16": {}
 }

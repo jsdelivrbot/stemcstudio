@@ -97,23 +97,15 @@ function updateModules(
                 .then(function (moduleURL) {
                     if (typeof moduleURL === 'string') {
                         wsModel.removeScript(moduleURL)
-                            .then(function (value) {
-                                if (typeof value === 'boolean') {
-                                    if (value) {
-                                        const index = olds.indexOf(moduleName);
-                                        if (index >= 0) {
-                                            delete modulars[moduleName];
-                                        }
-                                        else {
-                                            console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
-                                        }
+                            .then(function (removed) {
+                                if (removed) {
+                                    const index = olds.indexOf(moduleName);
+                                    if (index >= 0) {
+                                        delete modulars[moduleName];
                                     }
                                     else {
-                                        console.warn(`removeScript(${moduleURL}) => ${value}`);
+                                        console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
                                     }
-                                }
-                                else {
-                                    console.warn(`removeScript(${moduleURL}) => ${value}`);
                                 }
                             })
                             .catch(function (err) {
@@ -145,26 +137,27 @@ function updateModules(
                             //
                             // d.ts file content is provided to the workspace with the path being the URL.
                             //
-                            wsModel.ensureScript(addUnit.URL, content.replace(/\r\n?/g, '\n'), (err) => {
-                                if (!err) {
-                                    modulars[addUnit.moduleName] = addUnit.URL;
-                                    //
-                                    // This crucial step provides the mapping from the module name to the URL.
-                                    //
-                                    wsModel.ensureModuleMapping(addUnit.moduleName, addUnit.URL)
-                                        .then(function (previousURL) {
-                                            if (typeof previousURL === 'string') {
-                                                console.warn(`ensureModuleMapping(${addUnit.moduleName},${addUnit.URL}) when ${addUnit.moduleName}is already mapped to ${previousURL}.`);
-                                            }
-                                        })
-                                        .catch(function (err) {
-                                            console.warn(`ensureModuleMapping(${addUnit.moduleName}) failed. ${err}`);
-                                        });
-                                }
-                                else {
+                            wsModel.addScript(addUnit.URL, content.replace(/\r\n?/g, '\n'))
+                                .then((added) => {
+                                    if (added) {
+                                        modulars[addUnit.moduleName] = addUnit.URL;
+                                        //
+                                        // This crucial step provides the mapping from the module name to the URL.
+                                        //
+                                        wsModel.ensureModuleMapping(addUnit.moduleName, addUnit.URL)
+                                            .then(function (previousURL) {
+                                                if (typeof previousURL === 'string') {
+                                                    console.warn(`ensureModuleMapping(${addUnit.moduleName},${addUnit.URL}) when ${addUnit.moduleName}is already mapped to ${previousURL}.`);
+                                                }
+                                            })
+                                            .catch(function (err) {
+                                                console.warn(`ensureModuleMapping(${addUnit.moduleName}) failed. ${err}`);
+                                            });
+                                    }
+                                })
+                                .catch((err) => {
                                     console.warn(`ensureScript(${addUnit.URL}) failed. ${err}`);
-                                }
-                            });
+                                });
                         }
                     }
                     if (0 === inFlightCount) {
@@ -264,13 +257,15 @@ function updateAmbients(
             const ambientURL = ambients[globalName];
             if (typeof ambientURL === 'string') {
                 wsModel.removeScript(ambientURL)
-                    .then(function (value) {
-                        const index = olds.indexOf(ambientURL);
-                        if (index >= 0) {
-                            delete ambients[globalName];
-                        }
-                        else {
-                            console.warn(`olds.indexOf(${ambientURL}) returned ${index}`);
+                    .then(function (removed) {
+                        if (removed) {
+                            const index = olds.indexOf(ambientURL);
+                            if (index >= 0) {
+                                delete ambients[globalName];
+                            }
+                            else {
+                                console.warn(`olds.indexOf(${ambientURL}) returned ${index}`);
+                            }
                         }
                     })
                     .catch(function (reason) {
@@ -298,14 +293,15 @@ function updateAmbients(
                             //
                             // d.ts file content is provided to the workspace with the path being the URL.
                             //
-                            wsModel.ensureScript(addUnit.URL, content.replace(/\r\n?/g, '\n'), (err) => {
-                                if (!err) {
-                                    ambients[addUnit.globalName] = addUnit.URL;
-                                }
-                                else {
+                            wsModel.addScript(addUnit.URL, content.replace(/\r\n?/g, '\n'))
+                                .then((added) => {
+                                    if (added) {
+                                        ambients[addUnit.globalName] = addUnit.URL;
+                                    }
+                                })
+                                .catch((err) => {
                                     console.warn(`ensureScript(${addUnit.URL}) failed. ${err}`);
-                                }
-                            });
+                                });
                         }
                     }
                     if (0 === inFlightCount) {

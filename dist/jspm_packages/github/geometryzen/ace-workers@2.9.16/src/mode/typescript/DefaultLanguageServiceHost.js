@@ -209,7 +209,6 @@ System.register(["./ScriptInfo", "../LanguageServiceHelpers"], function (exports
                             return m;
                         }
                         else {
-                            console.warn("Unable to resolve module '" + moduleName + "'");
                             return undefined;
                         }
                     });

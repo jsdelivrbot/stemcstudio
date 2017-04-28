@@ -27,7 +27,7 @@ export class PackageJsonMonitor implements DocumentMonitor {
                     // TODO; Should we be initiating this here?
                     this.workspace.synchOperatorOverloading();
                     // Emit a general event for the change.
-                    workspace.changedPackageSettings.emitAsync(pkg);
+                    workspace.changedPackageSettings.emitAsync('changedPackageSettings', pkg);
                 }
                 else {
                     // There is an error in the tsconfig.json file.

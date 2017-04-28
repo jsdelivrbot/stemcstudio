@@ -31,7 +31,7 @@ export class TsConfigJsonMonitor implements DocumentMonitor {
                         this.workspace.synchTsConfig(newSettings)
                             .then((oldSettings) => {
                                 // TODO: We now have the potential to emit oldSettings and newSettings.
-                                this.workspace.changedCompilerSettings.emitAsync(newSettings);
+                                this.workspace.changedCompilerSettings.emitAsync('changedCompilerSettings', newSettings);
                             })
                             .catch((reason) => {
                                 // TODO: Report this back to the workspace.

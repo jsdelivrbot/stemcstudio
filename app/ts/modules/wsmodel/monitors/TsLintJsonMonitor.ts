@@ -28,7 +28,7 @@ export class TsLintJsonMonitor implements DocumentMonitor {
             .subscribe((delta) => {
                 const tsl = workspace.getTsLintSettings();
                 if (tsl) {
-                    workspace.changedTsLintSettings.emitAsync(tsl);
+                    workspace.changedTsLintSettings.emitAsync('changedLintSettings', tsl);
                 }
                 else {
                     // There is an error in the tsconfig.json file.

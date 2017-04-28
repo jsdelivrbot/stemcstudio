@@ -308,7 +308,7 @@ export class DefaultLanguageServiceHost implements ts.LanguageServiceHost {
                 return m;
             }
             else {
-                console.warn(`Unable to resolve module '${moduleName}'`);
+                // This happens if the user is tring to use a module that we don't have.
                 return undefined;
             }
         });

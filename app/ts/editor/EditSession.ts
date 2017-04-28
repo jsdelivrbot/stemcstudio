@@ -99,6 +99,12 @@ const defaultModeCallback = function (err: any) {
 };
 
 // TODO: EditSession could now support a workerCompletedEvents Observable.
+/**
+ * The name of an event that is emitted by the EditSession when an editor worker has done its
+ * thing and has produced its annotations. We will only be interested in this event for TypeScript
+ * files (where, ironically, the editor worker does no real work). So essentially, this event says that
+ * changes have been applied to the edit session.
+ */
 export const workerCompleted = 'workerCompleted';
 
 export type EditSessionEventName =

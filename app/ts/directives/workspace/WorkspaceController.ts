@@ -70,6 +70,8 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 // RxJS
 //
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/filter';
 
 /**
  * A delay of 0 (zero) second.
@@ -134,6 +136,11 @@ export default class WorkspaceController implements WorkspaceEditorHost {
      * A subscription to lint settings change events.
      */
     private changedTypesSettingsSubscription: Subscription | undefined;
+
+    /**
+     * 
+     */
+    private monitoringSubscription: Subscription | undefined;
 
     private changedLintingRemover: (() => void) | undefined;
 
@@ -523,6 +530,15 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
                     });
 
+                this.monitoringSubscription = this.wsModel.filesEventHub.events
+                    .debounceTime(500)
+                    .filter((event) => { return event.type === 'addedToLanguageService' || event.type === 'removedFromLanguageService'; })
+                    .subscribe((event) => {
+                        this.compile();
+                    }, (error) => {
+                        console.warn(`Unable to recompile following change in compiler settings. Cause: ${error}`);
+                    });
+
                 this.changedJspmSettingsSubscription = this.wsModel.changedJspmSettings.events
                     .debounceTime(500)
                     .subscribe((settings) => {
@@ -610,6 +626,15 @@ export default class WorkspaceController implements WorkspaceEditorHost {
             this.changedTypesSettingsSubscription = void 0;
         }
 
+        if (this.monitoringSubscription) {
+            this.monitoringSubscription.unsubscribe();
+            this.monitoringSubscription = void 0;
+        }
+
+        if (this.changedOperatorOverloadingRemover) {
+            this.changedOperatorOverloadingRemover();
+            this.changedOperatorOverloadingRemover = void 0;
+        }
         if (this.changedOperatorOverloadingRemover) {
             this.changedOperatorOverloadingRemover();
             this.changedOperatorOverloadingRemover = void 0;
@@ -734,16 +759,26 @@ export default class WorkspaceController implements WorkspaceEditorHost {
 
     /**
      * Refreshes the diagnostics and output files.
+     * 
+     * TODO: The completion of a compile should probably be an event which
+     * is decoupled from the action of emitting output files.
+     * 
+     * This is called...
+     * 1. When compiler settings change (tsconfig.json).
+     * 2. When lint settings change (tslint.json).
+     * 3. When types settings change (types.config.json).
+     * 4. After types have been loaded in the initial workspace load.
+     * 5. When the 'linting' property changes (package.json).
+     * 6. When the 'operatorOverloading' property changes (package.json).
      */
     private compile(): void {
-        this.wsModel.refreshDiagnostics((diagnosticsError) => {
-            if (!diagnosticsError) {
+        this.wsModel.refreshDiagnostics()
+            .then(() => {
                 this.$scope.$applyAsync();
-            }
-            else {
-                console.warn(`refreshDiagnostics() failed ${diagnosticsError}`);
-            }
-        });
+            })
+            .catch(function (err) {
+                console.warn(`refreshDiagnostics() failed. Cause: ${err}`);
+            });
         this.wsModel.outputFiles();
     }
 
