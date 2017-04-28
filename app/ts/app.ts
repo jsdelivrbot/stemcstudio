@@ -199,7 +199,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.49');
+app.constant('version', '2.24.50');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

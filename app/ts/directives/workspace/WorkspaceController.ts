@@ -530,9 +530,14 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
                     });
 
+                //
+                // Only trigger a compile when files are removed from the Language Service.
+                // Triggering on additions to the Language Service causes too much flicker.
+                // TODO: Need to get cancellation tokens working?
+                //
                 this.monitoringSubscription = this.wsModel.filesEventHub.events
                     .debounceTime(500)
-                    .filter((event) => { return event.type === 'addedToLanguageService' || event.type === 'removedFromLanguageService'; })
+                    .filter((event) => { return event.type === 'removedFromLanguageService'; })
                     .subscribe((event) => {
                         this.compile();
                     }, (error) => {
