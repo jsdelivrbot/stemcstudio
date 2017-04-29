@@ -1,7 +1,10 @@
-import AppScope from './AppScope';
+import { AppScope } from './AppScope';
 import Gist from '../services/github/Gist';
 
-interface BodyScope extends AppScope {
+/**
+ * 
+ */
+export interface BodyScope extends AppScope {
     /**
      * A page of Gist.
      */
@@ -10,7 +13,8 @@ interface BodyScope extends AppScope {
      * Hypermedia Links for pagination.
      */
     links: { [rel: string]: string };
+    /**
+     * 
+     */
     clickDownload(): void;
 }
-
-export default BodyScope;

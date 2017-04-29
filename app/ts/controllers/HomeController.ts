@@ -4,6 +4,7 @@ import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettin
 import Doodle from '../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
+import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import HomeScope from '../scopes/HomeScope';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -22,7 +23,7 @@ export default class HomeController extends AbstractPageController {
         '$window',
         DOODLE_MANAGER_SERVICE_UUID,
         GITHUB_AUTH_MANAGER_UUID,
-        'ga',
+        GOOGLE_ANALYTICS_UUID,
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
         'newProject',
@@ -30,8 +31,7 @@ export default class HomeController extends AbstractPageController {
         TRANSLATE_SERVICE_UUID,
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
-        'FEATURE_GOOGLE_SIGNIN_ENABLED',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID'
+        'FEATURE_GOOGLE_SIGNIN_ENABLED'
     ];
 
     /**
@@ -50,8 +50,7 @@ export default class HomeController extends AbstractPageController {
         translateService: ITranslateService,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
-        FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string
+        FEATURE_GOOGLE_SIGNIN_ENABLED: boolean
     ) {
         super($window, authManager, modalDialog, 'auto');
 
@@ -61,7 +60,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {
-                navigation.gotoDashboard();
+                navigation.gotoDash();
             }
             else {
                 console.warn(`FEATURE_DASHBOARD_ENABLED => ${FEATURE_DASHBOARD_ENABLED}`);
@@ -75,7 +74,7 @@ export default class HomeController extends AbstractPageController {
                     copyNewProjectSettingsToDoodle(settings, doodle);
                     doodleManager.addHead(doodle);
                     doodleManager.updateStorage();
-                    navigation.gotoDoodle();
+                    navigation.gotoWork();
                 })
                 .catch(function (reason) {
                     // The user cancelled from the dialog.
@@ -143,7 +142,7 @@ export default class HomeController extends AbstractPageController {
                 navigation.gotoGist(doodle.gistId);
             }
             else {
-                navigation.gotoDoodle();
+                navigation.gotoWork();
             }
         };
 

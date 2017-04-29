@@ -1,7 +1,8 @@
 import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
-import ExamplesScope from '../scopes/ExamplesScope';
+import { ExamplesScope } from '../scopes/ExamplesScope';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
+import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import ModalDialog from '../services/modalService/ModalDialog';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
@@ -17,8 +18,7 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
         $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        modalDialog: ModalDialog,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        modalDialog: ModalDialog) {
         super($window, authManager, modalDialog, 'auto');
 
         $scope.tutorials = [];
@@ -48,9 +48,8 @@ export default class ExamplesController extends AbstractPageController {
         '$window',
         GITHUB_AUTH_MANAGER_UUID,
         TRANSLATE_SERVICE_UUID,
-        'ga',
-        'modalDialog',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID',
+        GOOGLE_ANALYTICS_UUID,
+        'modalDialog'
     ];
 
     constructor(
@@ -59,8 +58,7 @@ export default class ExamplesController extends AbstractPageController {
         authManager: IGitHubAuthManager,
         translateService: ITranslateService,
         ga: UniversalAnalytics.ga,
-        modalDialog: ModalDialog,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        modalDialog: ModalDialog) {
         super($window, authManager, modalDialog, 'auto');
 
         $scope.examples = [

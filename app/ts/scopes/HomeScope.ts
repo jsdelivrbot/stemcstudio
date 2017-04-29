@@ -1,7 +1,7 @@
-import BodyScope from './BodyScope';
+import { BodyScope } from './BodyScope';
 import Doodle from '../services/doodles/Doodle';
-import SearchScope from './SearchScope';
-import ThumbnailsScope from './ThumbnailsScope';
+import { SearchScope } from './SearchScope';
+import { ThumbnailsScope } from './ThumbnailsScope';
 
 export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
     /**
@@ -23,7 +23,7 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
     /**
      * Navigate to the Doodle page.
      */
-    clickCodeNow(label?: string, value?: number): void;
+    clickCodeNow(): void;
 
     /**
      * Navigate to the Examples page.
@@ -34,7 +34,15 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
      *
      */
     doodles(): Doodle[];
+
+    /**
+     * 
+     */
     doOpen(doodle: Doodle): void;
+
+    /**
+     * 
+     */
     doDelete(doodle: Doodle): void;
 
     /**

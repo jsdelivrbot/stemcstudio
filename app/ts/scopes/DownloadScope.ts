@@ -1,6 +1,6 @@
-import BodyScope from './BodyScope';
+import { BodyScope } from './BodyScope';
 
-interface DownloadScope extends BodyScope {
+export interface DownloadScope extends BodyScope {
     isPageF: () => boolean;
     isPageP: () => boolean;
     isPageN: () => boolean;
@@ -11,5 +11,3 @@ interface DownloadScope extends BodyScope {
     doPageL: () => void;
     doCancel: () => void;
 }
-
-export default DownloadScope;

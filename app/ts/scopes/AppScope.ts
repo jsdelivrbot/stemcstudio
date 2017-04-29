@@ -4,8 +4,14 @@ import { IStateService, IStateParamsService } from 'angular-ui-router';
 /**
  * The Application Root Scope.
  */
-interface AppScope extends IRootScopeService {
+export interface AppScope extends IRootScopeService {
+    /**
+     * 
+     */
     $state: IStateService;
+    /**
+     * 
+     */
     $stateParams: IStateParamsService;
 
     /**
@@ -47,11 +53,6 @@ interface AppScope extends IRootScopeService {
     /**
      * 
      */
-    FEATURE_LOGIN_ENABLED: boolean;
-
-    /**
-     * 
-     */
     FEATURE_I18N_ENABLED: boolean;
 
     /**
@@ -59,5 +60,3 @@ interface AppScope extends IRootScopeService {
      */
     goHome(): void;
 }
-
-export default AppScope;

@@ -1,9 +1,8 @@
-import BodyScope from '../scopes/BodyScope';
+import { BodyScope } from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import linkToMap from '../utils/linkToMap';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
-import { CATEGORY_WORKSPACE } from '../modules/navigation/NavigationService';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
@@ -14,8 +13,8 @@ export default class BodyController {
     public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
     constructor($scope: BodyScope, githubService: IGitHubService, navigation: INavigationService, translateService: ITranslateService) {
 
-        $scope.goHome = (label?: string, value?: number) => {
-            navigation.gotoHome(label, value)
+        $scope.goHome = () => {
+            navigation.gotoHome()
                 .then(function () {
                     // console.lg(`gotoHome() completed.`);
                 })
@@ -24,8 +23,7 @@ export default class BodyController {
                 });
         };
 
-        $scope.clickDownload = function (label?: string, value?: number) {
-            ga('send', 'event', CATEGORY_WORKSPACE, 'download', label, value);
+        $scope.clickDownload = function () {
             githubService.getGists()
                 .then(function (promiseValue) {
                     if (promiseValue.data) {
@@ -33,7 +31,7 @@ export default class BodyController {
                         if (promiseValue.headers) {
                             $scope.links = linkToMap(promiseValue.headers('link'));
                         }
-                        navigation.gotoDownload(label, value);
+                        navigation.gotoDownload();
                     }
                 })
                 .catch(function (reason) {

@@ -1,8 +1,5 @@
-import AppScope from '../../../scopes/AppScope';
+import { AppScope } from '../../../scopes/AppScope';
 
-/**
- * @class GitHubLoginScope
- */
 interface GitHubLoginScope extends AppScope {
 
 }

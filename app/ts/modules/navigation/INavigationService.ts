@@ -1,13 +1,13 @@
 import { IPromise } from 'angular';
 
 export interface INavigationService {
-    gotoDashboard(label?: string, value?: number): IPromise<any>;
-    gotoDownload(label?: string, value?: number): IPromise<any>;
-    gotoExamples(label?: string, value?: number): IPromise<any>;
-    gotoHome(label?: string, value?: number): IPromise<any>;
-    gotoDoodle(label?: string, value?: number): IPromise<any>;
-    gotoGist(gistId: string, label?: string, value?: number): IPromise<any>;
-    gotoRepo(owner: string, repo: string, label?: string, value?: number): IPromise<any>;
+    gotoDash(): IPromise<any>;
+    gotoDownload(): IPromise<any>;
+    gotoExamples(): IPromise<any>;
+    gotoHome(): IPromise<any>;
+    gotoWork(): IPromise<any>;
+    gotoGist(gistId: string): IPromise<any>;
+    gotoRepo(owner: string, repo: string): IPromise<any>;
     gotoRoom(roomId: string): IPromise<any>;
 }
 

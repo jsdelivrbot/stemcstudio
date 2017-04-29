@@ -1,8 +1,9 @@
 import { IWindowService } from 'angular';
-import BodyScope from '../scopes/BodyScope';
+import { BodyScope } from '../scopes/BodyScope';
 import AbstractPageController from './AbstractPageController';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
+import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 
 /**
  * Controller when the project is based upon a GitHub repository.
@@ -12,17 +13,15 @@ export default class RepoController extends AbstractPageController {
         '$scope',
         '$window',
         GITHUB_AUTH_MANAGER_UUID,
-        'ga',
-        'modalDialog',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID'
+        GOOGLE_ANALYTICS_UUID,
+        'modalDialog'
     ];
     constructor(
         $scope: BodyScope,
         $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        modalDialog: ModalDialog,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        modalDialog: ModalDialog) {
         super($window, authManager, modalDialog, 'hidden');
     }
     $onInit(): void {

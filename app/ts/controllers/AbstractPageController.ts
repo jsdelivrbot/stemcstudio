@@ -18,7 +18,7 @@ export default class AbstractPageController {
         $window: IWindowService,
         authManager: IGitHubAuthManager,
         modalDialog: ModalDialog,
-        overflow: string) {
+        overflow: 'auto' | 'hidden') {
 
         // Our main reponsibility is handling the GitHub OAuth callback.
         authManager.onLoginCallback(function (err: Error | null) {

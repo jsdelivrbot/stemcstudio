@@ -17,9 +17,26 @@ html(lang='en')
     link(rel="stylesheet", href=css, media="all")
     <!-- Google Analytics -->
     script.
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        // Instructs analytics.js to use the name `ga`.
+        window.GoogleAnalyticsObject = 'ga';
+
+        // Creates an initial ga() function.
+        // The queued commands will be executed once analytics.js loads.
+        window.ga = window.ga || function() {
+          (ga.q = ga.q || []).push(arguments)
+        };
+
+        // Sets the time (as an integer) this tag was executed.
+        // Used for timing hits.
+        ga.l = +new Date;
+
+        // Creates a tracker with automatic cookie domain configuration.
         ga('create', 'UA-41504069-5', 'auto');
+
+        // Sends a pageview hit from the tracker just created.
         ga('send', 'pageview');
+
+    <!-- Set the `async` attribute to load the script asynchronously -->
     script(async src='https://www.google-analytics.com/analytics.js')
     <!-- End Google Analytics -->
     <!-- Google Sign-In -->

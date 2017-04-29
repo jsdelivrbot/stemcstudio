@@ -1,13 +1,8 @@
-import DoodleScope from './DoodleScope';
+import { DoodleScope } from './DoodleScope';
 import WsModel from '../modules/wsmodel/WsModel';
 import WsFile from '../modules/wsmodel/WsFile';
 
-interface WorkspaceScope extends DoodleScope {
-
-    /**
-     * 
-     */
-    FEATURE_ROOM_ENABLED: boolean;
+export interface WorkspaceScope extends DoodleScope {
 
     /**
      * 
@@ -88,9 +83,12 @@ interface WorkspaceScope extends DoodleScope {
      */
     doChooseMarkdown(name: string): void;
 
-    // We can probably kill these in refactoring cleanup.
+    // We can probably kill this in refactoring cleanup.
     updatePreview(delay: number): void;
+
+    /**
+     * 
+     */
+    // We can probably kill this in refactoring cleanup.
     previewIFrame: HTMLIFrameElement | undefined;
 }
-
-export default WorkspaceScope;

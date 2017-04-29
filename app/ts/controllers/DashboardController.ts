@@ -1,7 +1,8 @@
 import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
-import DashboardScope from '../scopes/DashboardScope';
+import { DashboardScope } from '../scopes/DashboardScope';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
+import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import ModalDialog from '../services/modalService/ModalDialog';
 
 export default class DashboardController extends AbstractPageController {
@@ -10,9 +11,8 @@ export default class DashboardController extends AbstractPageController {
         '$scope',
         '$window',
         GITHUB_AUTH_MANAGER_UUID,
-        'ga',
-        'modalDialog',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID',
+        GOOGLE_ANALYTICS_UUID,
+        'modalDialog'
     ];
 
     constructor(
@@ -20,8 +20,7 @@ export default class DashboardController extends AbstractPageController {
         $window: IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        modalDialog: ModalDialog,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        modalDialog: ModalDialog) {
         super($window, authManager, modalDialog, 'auto');
     }
 }

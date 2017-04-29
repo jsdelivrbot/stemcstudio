@@ -34,7 +34,6 @@ const VERSION_ANGULAR_COMPILER = '4.1.0';
 const VERSION_ANGULAR_PLATFORM_BROWSER = '4.1.0';
 const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
 const VERSION_ANGULARJS = '1.5.3';
-// const VERSION_ASYNC = '1.4.2';
 const VERSION_BACONJS = '0.7.89';
 const VERSION_BIWASCHEME = '0.6.6';
 const VERSION_CSV = '0.9.2';
@@ -116,11 +115,6 @@ function angularPlatformBrowser(fileName: string): string {
 function angularPlatformBrowserDynamic(fileName: string): string {
     return vendorFolder('@angular/platform-browser-dynamic', VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC, void 0, fileName);
 }
-/*
-function async(fileName: string): string {
-  return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
-}
-*/
 function baconjs(fileName: string): string {
     return vendorFolder('baconjs', VERSION_BACONJS, void 0, fileName);
 }
@@ -159,9 +153,6 @@ function jquery(fileName: string): string {
 }
 function jsxgraph(fileName: string): string {
     return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
-}
-function newton(fileName: string): string {
-    return vendorFolder('davinci-newton', VERSION_NEWTON, void 0, fileName);
 }
 function plotly(fileName: string): string {
     return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
@@ -302,20 +293,6 @@ export class OptionManager implements IOptionManager {
                 minJs: [angularJS('angular.min.js')],
                 dependencies: {}
             },
-            /*
-            {
-                name: 'async',
-                globalName: 'async',
-                description: "Async utilities for node and the browser.",
-                homepage: 'https://github.com/caolan/async',
-                version: VERSION_ASYNC,
-                visible: true,
-                dts: async('async.ts'),
-                js: async('async.js'),
-                minJs: async('async.js'),
-                dependencies: {}
-            },
-            */
             {
                 packageName: 'biwascheme',
                 moduleName: 'biwascheme',
@@ -431,9 +408,9 @@ export class OptionManager implements IOptionManager {
                 version: VERSION_NEWTON,
                 visible: true,
                 css: [],
-                dts: newton(INDEX_DTS),
-                js: [newton('davinci-newton.js')],
-                minJs: [newton('davinci-newton.js')],
+                dts: `https://unpkg.com/davinci-newton@${VERSION_NEWTON}/dist/${INDEX_DTS}`,
+                js: [`https://unpkg.com/davinci-newton@${VERSION_NEWTON}/dist/davinci-newton.js`],
+                minJs: [`https://unpkg.com/davinci-newton@${VERSION_NEWTON}/dist/davinci-newton.min.js`],
                 dependencies: {}
             },
             {

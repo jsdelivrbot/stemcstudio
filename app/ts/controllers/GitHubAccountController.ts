@@ -1,4 +1,4 @@
-import GitHubAccountScope from '../scopes/GitHubAccountScope';
+import { GitHubAccountScope } from '../scopes/GitHubAccountScope';
 import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../services/github/IGitHubUserService';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import GitHubUser from '../services/github/GitHubUser';

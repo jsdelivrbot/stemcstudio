@@ -1,6 +1,4 @@
-import BodyScope from './BodyScope';
+import { BodyScope } from './BodyScope';
 
 export interface DashboardScope extends BodyScope {
 }
-
-export default DashboardScope;

@@ -145,14 +145,14 @@ export class RoomsController {
     /**
      * 
      */
-    leaveRoom(label?: string, value?: number): void {
+    leaveRoom(): void {
         if (this.isLeaveRoomEnabled()) {
             const room = this.wsModel.disconnectFromRoom();
             if (room) {
                 room.disconnect()
                     .then(() => {
                         room.release();
-                        this.navigation.gotoDoodle(label, value);
+                        this.navigation.gotoWork();
                     });
             }
             else {

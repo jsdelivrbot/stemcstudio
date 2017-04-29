@@ -37,6 +37,8 @@ import { CookieService } from './services/cookie/cookie.service';
 import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
 import { DoodleManager } from './services/doodles/doodleManager.service';
 
+import { GOOGLE_ANALYTICS_UUID, googleUniversalAnalyticsFactory } from './fugly/ga/ga';
+
 import { GITHUB_SERVICE_UUID } from './services/github/IGitHubService';
 import { GitHubService } from './services/github/github.service';
 import { GITHUB_USER_SERVICE_UUID } from './services/github/IGitHubUserService';
@@ -118,8 +120,6 @@ app.directive('workspace', workspace);
 
 app.filter('contiguous', contiguous);
 
-import './fugly/ga/ga';
-
 // FIXME: Don't like this style of import.
 import './services/templates/templates';
 
@@ -129,6 +129,8 @@ app.service(CLOUD_SERVICE_UUID, CloudService);
 app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_SERVICE_UUID, GitHubService);
 app.factory(GITHUB_USER_SERVICE_UUID, downgradeInjectable(GitHubUserService));
+// Google Universal Analytics
+app.factory(GOOGLE_ANALYTICS_UUID, googleUniversalAnalyticsFactory);
 app.service('modalDialog', ModalDialogService);
 
 app.service('flow', ReteFlowService);

@@ -1,6 +1,6 @@
 import { IAngularEvent, IHttpService, ILocationService, IPromise, IScope, ITimeoutService, IWindowService } from 'angular';
 import { IStateParamsService, IStateService } from 'angular-ui-router';
-import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationService';
+import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationServiceJS';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import Delta from '../../editor/Delta';
 import Document from '../../editor/Document';
@@ -15,6 +15,7 @@ import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, c
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import Doodle from '../../services/doodles/Doodle';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../../services/github/IGitHubService';
+import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFlow from './LabelFlow';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
@@ -27,16 +28,17 @@ import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import { NAVIGATION_SERVICE_UUID, INavigationService } from '../../modules/navigation/INavigationService';
+import { NAVIGATION_SERVICE_UUID } from '../../modules/navigation/INavigationService';
+import { NavigationServiceJS } from '../../modules/navigation/NavigationServiceJS';
 import RenamedFileHandler from './RenamedFileHandler';
 import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWorkspaceModel';
-import { STATE_GIST } from '../../modules/navigation/NavigationService';
-import { STATE_REPO } from '../../modules/navigation/NavigationService';
-import { STATE_ROOM } from '../../modules/navigation/NavigationService';
+import { STATE_GIST } from '../../modules/navigation/NavigationServiceJS';
+import { STATE_REPO } from '../../modules/navigation/NavigationServiceJS';
+import { STATE_ROOM } from '../../modules/navigation/NavigationServiceJS';
 import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
-import WorkspaceScope from '../../scopes/WorkspaceScope';
+import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
@@ -187,7 +189,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         'templates',
         TRANSLATE_SERVICE_UUID,
         'flow',
-        'ga',
+        GOOGLE_ANALYTICS_UUID,
         'labelDialog',
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
@@ -196,7 +198,6 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         'stemcArXiv',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
-        'FEATURE_ROOM_ENABLED',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
@@ -230,13 +231,12 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,
         private modalDialog: ModalDialog,
-        private navigation: INavigationService,
+        private navigation: NavigationServiceJS,
         private optionManager: IOptionManager,
         private propertiesDialog: PropertiesDialog,
         private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
-        private FEATURE_ROOM_ENABLED: boolean,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
@@ -246,9 +246,6 @@ export default class WorkspaceController implements WorkspaceEditorHost {
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
         private wsModel: WsModel) {
-
-        // const startTime = performance.now();
-        $scope.FEATURE_ROOM_ENABLED = FEATURE_ROOM_ENABLED;
 
         let rebuildPromise: IPromise<void> | undefined;
         $scope.updatePreview = (delay: number) => {
@@ -495,7 +492,7 @@ export default class WorkspaceController implements WorkspaceEditorHost {
                         else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(STATE_REPO, { owner, repo })) {
                             this.navigation.gotoRepo(owner, repo);
                         }
-                        else if (roomId && this.FEATURE_ROOM_ENABLED && !this.$state.is(STATE_ROOM, { roomId })) {
+                        else if (roomId && !this.$state.is(STATE_ROOM, { roomId })) {
                             this.navigation.gotoRoom(roomId);
                         }
                         else {

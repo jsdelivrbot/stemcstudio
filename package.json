@@ -1,6 +1,6 @@
 {
   "name": "tscodehub",
-  "version": "2.24.50",
+  "version": "2.24.51",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -98,7 +98,7 @@
     "tslint": "^5.1.0",
     "two.js": "^0.6.0",
     "typedoc": "^0.5.10",
-    "typescript": "^2.3.1",
+    "typescript": "^2.3.2",
     "typings": "^2.1.1"
   },
   "repository": {

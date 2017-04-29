@@ -1,6 +1,6 @@
 import app from '../app';
 import BootstrapDialog from 'bootstrap-dialog';
-import DownloadScope from '../scopes/DownloadScope';
+import { DownloadScope } from '../scopes/DownloadScope';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
 import linkToMap from '../utils/linkToMap';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
@@ -96,7 +96,7 @@ app.controller('download-controller', [
         };
 
         $scope.doCancel = function () {
-            navigationService.gotoDoodle();
+            navigationService.gotoWork();
         };
     }
 ]);

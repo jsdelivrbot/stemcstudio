@@ -60,7 +60,7 @@ import { TYPESCRIPT_SERVICES_VERSION } from './constants';
 //
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from './services/credentials/ICredentialsService';
 import { CredentialsService } from './services/credentials/credentials.service';
-import AppScope from './scopes/AppScope';
+import { AppScope } from './scopes/AppScope';
 import { COOKIE_SERVICE_UUID, ICookieService } from './services/cookie/ICookieService';
 import { RoomsService } from './modules/rooms/services/rooms.service';
 import { ROOMS_SERVICE_UUID } from './modules/rooms/api';
@@ -68,7 +68,6 @@ import { ROOMS_SERVICE_UUID } from './modules/rooms/api';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import BodyController from './controllers/BodyController';
-import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
 import { RoomsController } from './modules/rooms/controllers/rooms.controller';
 
@@ -130,7 +129,7 @@ import { GITHUB_AUTH_MANAGER_UUID } from './services/gham/IGitHubAuthManager';
 //
 //
 //
-import NavigationService from './modules/navigation/NavigationService';
+import { NavigationServiceJS } from './modules/navigation/NavigationServiceJS';
 import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService';
 
 //
@@ -154,15 +153,14 @@ import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
 //
 //
 //
-import { STATE_ABOUT } from './modules/navigation/NavigationService';
-import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
-import { STATE_WORKSPACE } from './modules/navigation/NavigationService';
-import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
-import { STATE_EXAMPLES } from './modules/navigation/NavigationService';
-import { STATE_GIST } from './modules/navigation/NavigationService';
-import { STATE_HOME } from './modules/navigation/NavigationService';
-import { STATE_REPO } from './modules/navigation/NavigationService';
-import { STATE_ROOM } from './modules/navigation/NavigationService';
+import { STATE_DASHBOARD } from './modules/navigation/NavigationServiceJS';
+import { STATE_WORKSPACE } from './modules/navigation/NavigationServiceJS';
+import { STATE_DOWNLOAD } from './modules/navigation/NavigationServiceJS';
+import { STATE_EXAMPLES } from './modules/navigation/NavigationServiceJS';
+import { STATE_GIST } from './modules/navigation/NavigationServiceJS';
+import { STATE_HOME } from './modules/navigation/NavigationServiceJS';
+import { STATE_REPO } from './modules/navigation/NavigationServiceJS';
+import { STATE_ROOM } from './modules/navigation/NavigationServiceJS';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -199,17 +197,15 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.50');
+app.constant('version', '2.24.51');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
-app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
-app.constant('FEATURE_ROOM_ENABLED', true);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
@@ -246,12 +242,6 @@ app.constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 app.constant('STYLES_MARKER', '<!-- STYLES-MARKER -->');
 app.constant('LIBS_MARKER', '// LIBS-MARKER');
 
-// We can change the global namespace used by Google's Universal Analytics.
-// All access should be through the service wrapper.
-// We won't be fancy here, leave it as 'ga' as in views/layout.jade
-app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'ga');
-app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
-
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 // app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 
@@ -275,9 +265,6 @@ app.controller('body-controller', BodyController);
 /**
  * Page controllers.
  */
-const ABOUT_CONTROLLER_NAME = 'AboutController';
-app.controller(ABOUT_CONTROLLER_NAME, AboutController);
-
 const HOME_CONTROLLER_NAME = 'HomeController';
 app.controller(HOME_CONTROLLER_NAME, HomeController);
 
@@ -315,7 +302,7 @@ app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
 app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
-app.service(NAVIGATION_SERVICE_UUID, NavigationService);
+app.service(NAVIGATION_SERVICE_UUID, NavigationServiceJS);
 app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));
 app.factory(ROOMS_SERVICE_UUID, downgradeInjectable(RoomsService));
 app.factory(UUID_SERVICE_UUID, downgradeInjectable(UuidService));
@@ -333,7 +320,6 @@ app.config([
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
     'FEATURE_REPO_ENABLED',
-    'FEATURE_ROOM_ENABLED',
     function (
         stateProvider: IStateProvider,
         translateServiceProvider: ITranslateServiceProvider,
@@ -342,8 +328,7 @@ app.config([
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
-        FEATURE_REPO_ENABLED: boolean,
-        FEATURE_ROOM_ENABLED: boolean
+        FEATURE_REPO_ENABLED: boolean
     ) {
         // FIXME: Some of the states should be replaced by modal dialogs.
         stateProvider
@@ -361,11 +346,6 @@ app.config([
                 url: '/download',
                 templateUrl: 'download.html',
                 controller: 'download-controller'
-            })
-            .state(STATE_ABOUT, {
-                url: '/about',
-                templateUrl: 'about.html',
-                controller: ABOUT_CONTROLLER_NAME
             });
 
         if (FEATURE_DASHBOARD_ENABLED) {
@@ -412,16 +392,11 @@ app.config([
             // TODO: Recognize the url but go to a no droids here.
         }
 
-        if (FEATURE_ROOM_ENABLED) {
-            stateProvider.state(STATE_ROOM, {
-                url: '/rooms/{roomId}',
-                templateUrl: 'doodle.html',
-                controller: 'DoodleController'
-            });
-        }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
+        stateProvider.state(STATE_ROOM, {
+            url: '/rooms/{roomId}',
+            templateUrl: 'doodle.html',
+            controller: 'DoodleController'
+        });
 
         urlRouterProvider.otherwise('/');
 
@@ -443,7 +418,6 @@ app.run([
     COOKIE_SERVICE_UUID,
     'version',
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
-    'FEATURE_LOGIN_ENABLED',
     'GITHUB_LOGIN_COOKIE_NAME',
     function (
         $rootScope: AppScope,
@@ -454,7 +428,6 @@ app.run([
         cookieService: ICookieService,
         version: string,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
-        FEATURE_LOGIN_ENABLED: boolean,
         GITHUB_LOGIN_COOKIE_NAME: string
     ) {
         // console.lg(`${app.name}.run(...)`);
@@ -470,36 +443,18 @@ app.run([
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.version = version;
-        $rootScope.FEATURE_LOGIN_ENABLED = FEATURE_LOGIN_ENABLED;
 
         // The server drops this cookie so that we can make the GitHub autorization request.
         $rootScope.clientId = function () {
-            if (FEATURE_LOGIN_ENABLED) {
-                return cookieService.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
-            }
-            else {
-                return void 0;
-            }
+            return cookieService.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
         };
 
         $rootScope.isGitHubSignedIn = function () {
-            if (FEATURE_LOGIN_ENABLED) {
-                return cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
-            }
-            else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
-                return false;
-            }
+            return cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
         };
 
         $rootScope.userLogin = function () {
-            if (FEATURE_LOGIN_ENABLED) {
-                return cookieService.getItem(GITHUB_LOGIN_COOKIE_NAME);
-            }
-            else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
-                return void 0;
-            }
+            return cookieService.getItem(GITHUB_LOGIN_COOKIE_NAME);
         };
 
         if (FEATURE_GOOGLE_SIGNIN_ENABLED) {

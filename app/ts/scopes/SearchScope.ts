@@ -1,4 +1,4 @@
-import BodyScope from './BodyScope';
+import { BodyScope } from './BodyScope';
 import DoodleRef from '../controllers/search/DoodleRef';
 
 export interface SearchScope extends BodyScope {
@@ -14,5 +14,3 @@ export interface SearchScope extends BodyScope {
     query: string;
     doodleRefs: DoodleRef[];
 }
-
-export default SearchScope;

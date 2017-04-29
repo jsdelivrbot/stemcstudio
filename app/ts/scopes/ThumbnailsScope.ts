@@ -1,4 +1,4 @@
-import BodyScope from './BodyScope';
+import { BodyScope } from './BodyScope';
 import DoodleRef from '../controllers/search/DoodleRef';
 
 /**
@@ -7,5 +7,3 @@ import DoodleRef from '../controllers/search/DoodleRef';
 export interface ThumbnailsScope extends BodyScope {
     doodleRefs: DoodleRef[];
 }
-
-export default ThumbnailsScope;

@@ -2,9 +2,10 @@ import { IWindowService } from 'angular';
 import AbstractPageController from './AbstractPageController';
 import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
 import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
-import DoodleScope from '../scopes/DoodleScope';
+import { DoodleScope } from '../scopes/DoodleScope';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
+import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import { ITemplate } from '../services/templates/template';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -24,13 +25,12 @@ export default class DoodleController extends AbstractPageController {
         DOODLE_MANAGER_SERVICE_UUID,
         GITHUB_AUTH_MANAGER_UUID,
         'templates',
-        'ga',
+        GOOGLE_ANALYTICS_UUID,
         'modalDialog',
         NAVIGATION_SERVICE_UUID,
         'newProject',
         'openProject',
-        'copyProject',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID'];
+        'copyProject'];
     constructor(
         $scope: DoodleScope,
         $window: IWindowService,
@@ -42,8 +42,7 @@ export default class DoodleController extends AbstractPageController {
         navigation: INavigationService,
         newProjectDialog: NewProjectDialog,
         openProjectDialog: OpenProjectDialog,
-        copyProjectDialog: CopyProjectDialog,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        copyProjectDialog: CopyProjectDialog) {
 
         super($window, authManager, modalDialog, 'hidden');
 
@@ -61,21 +60,21 @@ export default class DoodleController extends AbstractPageController {
 
         $scope.templates = templates;
 
-        $scope.doNew = (label?: string, value?: number) => {
+        $scope.doNew = () => {
             newProjectDialog.open(initNewProjectDefaults(doodleManager.suggestName()))
                 .then(function (settings) {
                     const doodle = doodleManager.createDoodle();
                     copyNewProjectSettingsToDoodle(settings, doodle);
                     doodleManager.addHead(doodle);
                     doodleManager.updateStorage();
-                    navigation.gotoDoodle(label, value);
+                    navigation.gotoWork();
                 })
                 .catch(function (reason) {
                     // The user cancelled from the dialog.
                 });
         };
 
-        $scope.doOpen = (label?: string, value?: number) => {
+        $scope.doOpen = () => {
             openProjectDialog.open({})
                 .then(function (settings) {
                     const doodle = settings.doodle;
@@ -83,13 +82,13 @@ export default class DoodleController extends AbstractPageController {
                         doodleManager.makeCurrent(doodle);
                         doodleManager.updateStorage();
                         if (doodle.owner && doodle.repo) {
-                            navigation.gotoRepo(doodle.owner, doodle.repo, label, value);
+                            navigation.gotoRepo(doodle.owner, doodle.repo);
                         }
                         else if (doodle.gistId) {
                             navigation.gotoGist(doodle.gistId);
                         }
                         else {
-                            navigation.gotoDoodle(label, value);
+                            navigation.gotoWork();
                         }
                     }
                 })
@@ -98,7 +97,7 @@ export default class DoodleController extends AbstractPageController {
                 });
         };
 
-        $scope.doCopy = (label?: string, value?: number) => {
+        $scope.doCopy = () => {
             const original = doodleManager.current();
             if (original) {
                 const description = <string>original.description;
@@ -136,13 +135,13 @@ export default class DoodleController extends AbstractPageController {
                             doodleManager.makeCurrent(doodle);
                             doodleManager.updateStorage();
                             if (doodle.owner && doodle.repo) {
-                                navigation.gotoRepo(doodle.owner, doodle.repo, label, value);
+                                navigation.gotoRepo(doodle.owner, doodle.repo);
                             }
                             else if (doodle.gistId) {
                                 navigation.gotoGist(doodle.gistId);
                             }
                             else {
-                                navigation.gotoDoodle(label, value);
+                                navigation.gotoWork();
                             }
                         }
                     })
