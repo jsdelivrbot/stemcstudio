@@ -1589,13 +1589,9 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
                             // See EVENT_GET_OUTPUT_FILES (no surprise)
                             // I think it is because we are trying to get output files
                             // while there is a syntax error.
-                            console.warn(`getOutputFilesForPath(${path}) => ${err}`);
                         }
                     });
                 }
-            }
-            else {
-                console.warn(`getOutputFilesForPath(${path}) ignored.`);
             }
         }
     }

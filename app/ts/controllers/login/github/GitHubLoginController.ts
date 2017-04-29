@@ -79,7 +79,7 @@ export default class GitHubLoginController {
              * The scopes that we will need from GitHub.
              * TODO: Can we do more incremental authorization?
              */
-            const scopes: string[] = [];
+            const scopes: ('gist' | 'repo' | 'user')[] = [];
             scopes.push('user');
             if (this.FEATURE_GIST_ENABLED) {
                 scopes.push('gist');

@@ -198,7 +198,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.52');
+app.constant('version', '2.24.53');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -345,6 +345,7 @@ app.config([
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
+            // This should be replaced by a modal dialog.
             .state(STATE_DOWNLOAD, {
                 url: '/download',
                 templateUrl: 'download.html',

@@ -22,6 +22,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push("-->");
     lines.push("<html>");
     lines.push(_ + "<head>");
+    lines.push(_ + _ + "<base href='/'>");
     lines.push(_ + _ + "<!-- STYLES-MARKER -->");
     lines.push(_ + _ + "<style>");
     lines.push(_ + _ + "/* STYLE-MARKER */");
