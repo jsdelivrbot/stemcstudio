@@ -18,6 +18,7 @@ import { GITHUB_TOKEN_COOKIE_NAME } from './constants';
 //
 import { module } from 'angular';
 import { IDirectiveFactory } from 'angular';
+import { ILocationProvider } from 'angular';
 
 // 
 // Module that provides the 'ngMdIcons' module.
@@ -197,7 +198,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.51');
+app.constant('version', '2.24.52');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -312,6 +313,7 @@ app.factory(WORKSPACE_MODEL_UUID, downgradeInjectable(WsModel));
 // Register work which needs to be performed on module loading.
 //
 app.config([
+    '$locationProvider',
     '$stateProvider',
     TRANSLATE_SERVICE_PROVIDER_UUID,
     TRANSLATE_GATEWAY_PROVIDER_UUID,
@@ -321,17 +323,18 @@ app.config([
     'FEATURE_GIST_ENABLED',
     'FEATURE_REPO_ENABLED',
     function (
-        stateProvider: IStateProvider,
+        $locationProvider: ILocationProvider,
+        $stateProvider: IStateProvider,
         translateServiceProvider: ITranslateServiceProvider,
         translateGatewayProvider: ITranslateGatewayProvider,
-        urlRouterProvider: IUrlRouterProvider,
+        $urlRouterProvider: IUrlRouterProvider,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean
     ) {
         // FIXME: Some of the states should be replaced by modal dialogs.
-        stateProvider
+        $stateProvider
             .state(STATE_HOME, {
                 url: '/',
                 templateUrl: 'home.html',
@@ -349,7 +352,7 @@ app.config([
             });
 
         if (FEATURE_DASHBOARD_ENABLED) {
-            stateProvider.state(STATE_DASHBOARD, {
+            $stateProvider.state(STATE_DASHBOARD, {
                 url: '/dashboard',
                 templateUrl: 'dashboard.html',
                 controller: 'DashboardController'
@@ -360,7 +363,7 @@ app.config([
         }
 
         if (FEATURE_EXAMPLES_ENABLED) {
-            stateProvider.state(STATE_EXAMPLES, {
+            $stateProvider.state(STATE_EXAMPLES, {
                 url: '/examples',
                 templateUrl: 'examples.html',
                 controller: 'examples-controller'
@@ -371,7 +374,7 @@ app.config([
         }
 
         if (FEATURE_GIST_ENABLED) {
-            stateProvider.state(STATE_GIST, {
+            $stateProvider.state(STATE_GIST, {
                 url: '/gists/{gistId}?output',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -382,7 +385,7 @@ app.config([
         }
 
         if (FEATURE_REPO_ENABLED) {
-            stateProvider.state(STATE_REPO, {
+            $stateProvider.state(STATE_REPO, {
                 url: '/users/{owner}/repos/{repo}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -392,13 +395,15 @@ app.config([
             // TODO: Recognize the url but go to a no droids here.
         }
 
-        stateProvider.state(STATE_ROOM, {
+        $stateProvider.state(STATE_ROOM, {
             url: '/rooms/{roomId}',
             templateUrl: 'doodle.html',
             controller: 'DoodleController'
         });
 
-        urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/');
+
+        $locationProvider.html5Mode(true);
 
         translateGatewayProvider.path = 'translations';
         // The source language must be English, because that is how the application was developed.

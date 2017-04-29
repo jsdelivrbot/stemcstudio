@@ -24,7 +24,7 @@ System.config({
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
-    "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
+    "angular-ui-router": "github:angular-ui/ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
@@ -42,9 +42,6 @@ System.config({
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.9",
-    "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.9"
-    },
     "github:angular/bower-angular-animate@1.5.9": {
       "angular": "github:angular/bower-angular@1.5.9"
     },

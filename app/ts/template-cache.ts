@@ -375,10 +375,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"Physics\"}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>\n" +
     "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
@@ -393,10 +393,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"Graphics\"}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>\n" +
     "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
@@ -411,10 +411,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"Mathematics\"}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>\n" +
     "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
@@ -428,10 +428,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"Chemistry\"}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>\n" +
     "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
@@ -444,10 +444,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"CompSci\"}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
-    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>\n" +
     "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +

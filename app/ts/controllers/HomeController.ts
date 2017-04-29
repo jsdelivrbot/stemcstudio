@@ -171,13 +171,14 @@ export default class HomeController extends AbstractPageController {
      *
      */
     $onInit(): void {
-        console.warn("HomeController.$onInit");
+        // This is being called, every time I go to or return to the home page.
     }
 
     /**
      *
      */
     $onDestroy(): void {
+        // However, this is not being called.
         console.warn("HomeController.$onDestroy");
     }
 }

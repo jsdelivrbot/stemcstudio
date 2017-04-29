@@ -389,15 +389,14 @@ export default class ExamplesController extends AbstractPageController {
      *
      */
     $onInit(): void {
-        // This method is NOT called.
-        console.warn("ExamplesController.$onInit");
+        // This is being called, every time I go to the Examples page.
     }
 
     /**
      *
      */
     $onDestroy(): void {
-        // This method is NOT called.
+        // However, this method is NOT called.
         console.warn("ExamplesController.$onDestroy");
     }
 }
