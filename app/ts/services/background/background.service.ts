@@ -4,7 +4,6 @@ import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudSe
 import copyDoodleToWorkspace from '../../mappings/copyDoodleToWorkspace';
 import Doodle from '../../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
-import isString from '../../utils/isString';
 import MwEdits from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/RoomAgent';
 import { IRoomsService, ROOMS_SERVICE_UUID } from '../../modules/rooms/api';
@@ -45,13 +44,13 @@ export class BackgroundService implements IBackgroundService {
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
         const matches = this.doodleManager.filter(function (doodle: Doodle) {
-            if (isString(owner) && isString(repo)) {
+            if (typeof owner === 'string' && typeof repo === 'string') {
                 return doodle.owner === owner && doodle.repo === repo;
             }
-            else if (isString(gistId)) {
+            else if (typeof gistId === 'string') {
                 return doodle.gistId === gistId;
             }
-            else if (isString(roomId)) {
+            else if (typeof roomId === 'string') {
                 // TODO: This line could prevent users from re-joining a room.
                 // By loading the doodle from local storage we bypass the code
                 // that runs the download and then pushes up edits.

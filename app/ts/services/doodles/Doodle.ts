@@ -1,9 +1,9 @@
 import DoodleFile from './DoodleFile';
 import { PackageSettings } from '../../modules/wsmodel/WsModel';
 import modeFromName from '../../utils/modeFromName';
-import setOptionalBooleanProperty from './setOptionalBooleanProperty';
-import setOptionalStringProperty from './setOptionalStringProperty';
-import setOptionalStringArrayProperty from './setOptionalStringArrayProperty';
+import { setOptionalBooleanProperty } from './setOptionalBooleanProperty';
+import { setOptionalStringProperty } from './setOptionalStringProperty';
+import { setOptionalStringArrayProperty } from './setOptionalStringArrayProperty';
 
 const PACKAGE_DOT_JSON = 'package.json';
 

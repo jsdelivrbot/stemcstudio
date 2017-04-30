@@ -15,7 +15,7 @@ import Gist from '../github/Gist';
 import GistData from '../github/GistData';
 import GitHubReason from '../github/GitHubReason';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../github/IGitHubService';
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
 import PathContents from '../github/PathContents';

@@ -6,7 +6,7 @@ import ModalDialog from '../services/modalService/ModalDialog';
  * This class is intended to serve as an abstract base, not as a concrete controller.
  * It's main purpose is to DRY (Don't Repeat Yourself) the derived classes.
  */
-export default class AbstractPageController {
+export class AbstractPageController {
     // We're not a concrete controller so we don't need to declare our dependencies.
     /**
      * @param $window

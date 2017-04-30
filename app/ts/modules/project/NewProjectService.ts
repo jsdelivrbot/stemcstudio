@@ -8,7 +8,7 @@ import NewProjectController from './NewProjectController';
 /**
  * The implementation that is registered with the application module.
  */
-export default class NewProjectService implements NewProjectDialog {
+export class NewProjectService implements NewProjectDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 export interface GitHubUser {
     avatar_url: string | undefined;
     bio: any;
@@ -41,5 +44,3 @@ export interface GitHubUser {
     updated_at: string;
     url: string;
 }
-
-export default GitHubUser;

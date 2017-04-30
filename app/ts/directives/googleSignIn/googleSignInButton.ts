@@ -5,7 +5,7 @@ import GoogleSignInScope from './GoogleSignInScope';
  * Directive Definition Factory
  * Usage <google-sign-in-button button-id="uniqueid" options="options"></google-sign-in-button>
  */
-export default function (): IDirective {
+export function googleSignInButton(): IDirective {
     return {
         scope: {
             /**

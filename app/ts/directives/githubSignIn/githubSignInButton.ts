@@ -3,13 +3,9 @@ import GitHubSignInScope from './GitHubSignInScope';
 
 /**
  * Directive Definition Factory
- * Usage <google-sign-in-button button-id="uniqueid" options="options"></google-sign-in-button>
+ * Usage <github-sign-in-button button-id="uniqueid" options="options"></google-sign-in-button>
  */
-export default function (): IDirective {
-    // const lines: string[] = [];
-    // lines.push("<div class='login-provider-button'>");
-    // lines.push("</div>")
-    // const template = lines.join('');
+export function githubSignInButton(): IDirective {
     return {
         scope: {
             buttonId: '@',

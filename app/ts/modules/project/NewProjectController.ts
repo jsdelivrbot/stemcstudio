@@ -1,6 +1,6 @@
 import { IFormController } from 'angular';
 import { IModalServiceInstance } from 'angular-bootstrap';
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import { ITemplate } from '../../services/templates/template';
 import NewProjectScope from './NewProjectScope';
 import { NewProjectSettings } from './NewProjectSettings';

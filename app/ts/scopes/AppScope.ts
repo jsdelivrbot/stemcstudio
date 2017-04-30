@@ -41,9 +41,27 @@ export interface AppScope extends IRootScopeService {
     isGoogleSignedIn(): boolean;
 
     /**
+     * 'ts' or 'STEM'.
+     */
+    brandPartA: string;
+    /**
+     * 'Code' or 'C'.
+     */
+    brandPartB: string;
+    /**
+     * 'Hub' or 'studio'.
+     */
+    brandPartC: string;
+    /**
+     * 'com'
+     */
+    brandPartD: string;
+
+    /**
      * The version of the application.
      */
     version: string;
+
 
     /**
      * 

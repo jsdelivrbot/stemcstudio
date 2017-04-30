@@ -66,37 +66,32 @@ import { COOKIE_SERVICE_UUID, ICookieService } from './services/cookie/ICookieSe
 import { RoomsService } from './modules/rooms/services/rooms.service';
 import { ROOMS_SERVICE_UUID } from './modules/rooms/api';
 
-import githubSignInButton from './directives/githubSignIn/githubSignInButton';
-import googleSignInButton from './directives/googleSignIn/googleSignInButton';
-import BodyController from './controllers/BodyController';
-import HomeController from './controllers/HomeController';
+import { githubSignInButton } from './directives/githubSignIn/githubSignInButton';
+import { googleSignInButton } from './directives/googleSignIn/googleSignInButton';
+import { BodyController } from './controllers/BodyController';
+import { HomeController } from './controllers/HomeController';
 import { RoomsController } from './modules/rooms/controllers/rooms.controller';
 
-import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
-import GitHubLoginController from './controllers/login/github/GitHubLoginController';
-import TwitterLoginController from './controllers/login/twitter/TwitterLoginController';
+import { FacebookLoginController } from './controllers/login/facebook/FacebookLoginController';
+import { GitHubLoginController } from './controllers/login/github/GitHubLoginController';
+import { TwitterLoginController } from './controllers/login/twitter/TwitterLoginController';
 
-import LabelDialogService from './modules/publish/LabelDialogService';
-import NewProjectService from './modules/project/NewProjectService';
-import OpenProjectService from './modules/project/OpenProjectService';
-import CopyProjectService from './modules/project/CopyProjectService';
-import PropertiesDialogService from './modules/properties/PropertiesDialogService';
-import PublishDialogService from './modules/publish/PublishDialogService';
+import { LabelDialogService } from './modules/labelsAndTags/LabelDialogService';
+import { NewProjectService } from './modules/project/NewProjectService';
+import { OpenProjectService } from './modules/project/OpenProjectService';
+import { CopyProjectService } from './modules/project/CopyProjectService';
+import { PropertiesDialogService } from './modules/properties/PropertiesDialogService';
 
 import { BrandComponent } from './directives/brand/brand.component';
-import domain from './directives/domain/domain';
-import logoText from './directives/logoText/logoText';
-import packageName from './directives/packageName/packageName';
-import pageTitle from './directives/pageTitle/pageTitle';
+import { logoText } from './directives/logoText/logoText';
+import { packageName } from './directives/packageName/packageName';
+import { pageTitle } from './directives/pageTitle/pageTitle';
 
 import propsFilter from './filters/propsFilter';
 
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
 import preferences from './modules/preferences/index';
-/**
- * The module for TypeScript Linting.
- */
 import tslint from './modules/tslint/index';
 import stemcArXiv from './modules/stemcArXiv/index';
 import editors from './modules/editors/index';
@@ -198,7 +193,8 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.24.53');
+// This is put on the AppScope when the app.run
+app.constant('version', '2.24.54');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -282,7 +278,6 @@ app.controller('github-login-controller', GitHubLoginController);
 app.controller('twitter-login-controller', TwitterLoginController);
 
 app.directive('brand', downgradeComponent({ component: BrandComponent }) as IDirectiveFactory);
-app.directive('domain', domain);
 app.directive('logoText', logoText);
 app.directive('pageTitle', pageTitle);
 app.directive('packageName', packageName);
@@ -297,7 +292,6 @@ app.service('newProject', NewProjectService);
 app.service('openProject', OpenProjectService);
 app.service('copyProject', CopyProjectService);
 app.service('propertiesDialog', PropertiesDialogService);
-app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
@@ -449,6 +443,10 @@ app.run([
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.version = version;
+        $rootScope.brandPartA = 'STEM';
+        $rootScope.brandPartB = 'C';
+        $rootScope.brandPartC = 'studio';
+        $rootScope.brandPartD = 'com';
 
         // The server drops this cookie so that we can make the GitHub autorization request.
         $rootScope.clientId = function () {

@@ -5,7 +5,7 @@ import isUndefined from '../../utils/isUndefined';
  * Empty arrays remove the corresponding property name.
  * Undefined values remove the corresponding property name.
  */
-export default function setOptionalStringArrayProperty(name: string, value: string[], target: { [name: string]: any }): void {
+export function setOptionalStringArrayProperty(name: string, value: string[], target: { [name: string]: any }): void {
     if (Array.isArray(value)) {
         if (value.length > 0) {
             target[name] = value;

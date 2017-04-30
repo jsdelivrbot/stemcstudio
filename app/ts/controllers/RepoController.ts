@@ -1,6 +1,6 @@
 import { IWindowService } from 'angular';
 import { BodyScope } from '../scopes/BodyScope';
-import AbstractPageController from './AbstractPageController';
+import { AbstractPageController } from './AbstractPageController';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
@@ -8,7 +8,7 @@ import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 /**
  * Controller when the project is based upon a GitHub repository.
  */
-export default class RepoController extends AbstractPageController {
+export class RepoController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',

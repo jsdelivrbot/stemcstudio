@@ -200,7 +200,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "								<a ng-click='doUpload()' role='button'>Upload to GitHub</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
-    "								<a ng-click='doPublish()' role='button'>Publish to tsCodeHub arXiv</a>\n" +
+    "								<a ng-click='doPublish()' role='button'>Publish to arXiv</a>\n" +
     "							</li>\n" +
     "							<li>\n" +
     "								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
@@ -533,7 +533,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
-    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search tsCodeHub arXiv\">\n" +
+    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search arXiv\">\n" +
     "                </form>\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
@@ -563,7 +563,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <div class='col-md-9' role='main'>\n" +
     "                <div class='md-docs-section' ng-if='params.query'>\n" +
     "                    <!-- Search -->\n" +
-    "                    <h1 id='overview' class='page-header'>tsCodeHub arXiv</h1>\n" +
+    "                    <h1 id='overview' class='page-header'>arXiv</h1>\n" +
     "                    <div class=\"thumbnails\">\n" +
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
@@ -612,7 +612,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                            <li>Code Now!</li>\n" +
     "                            <!-- li>Learn using the Tutorials.</li -->\n" +
     "                            <!-- li>Take a look at some of the Examples.</li -->\n" +
-    "                            <li>Search the tsCodeHub arXiv.</li>\n" +
+    "                            <li>Search the arXiv.</li>\n" +
     "                        </ul>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -900,57 +900,6 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "        </div>\n" +
     "    </fieldset>\n" +
     "</form>"
-  );
-
-
-  $templateCache.put('publish-modal.html',
-    "<div class=\"modal-header\" style=\"clear: both\">\n" +
-    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
-    "    <h3 class='modal-title' style=\"float: right;\">Publish Settings</h3>\n" +
-    "</div>\n" +
-    "<div id='publish-modal-body' class=\"modal-body\">\n" +
-    "    <h3>Subject</h3>\n" +
-    "    <ui-select ng-model=\"selected.category\" theme=\"select2\" on-select='onCategorySelect($item, $model)' ng-disabled=\"!categoriesEnabled\"\n" +
-    "    style=\"min-width: 200px;\" title=\"Choose a Category\">\n" +
-    "        <ui-select-match placeholder=\"Select a category in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
-    "        <!-- $item is the category, $model is category.code -->\n" +
-    "        <ui-select-choices repeat=\"category.code as category in categories | propsFilter: {title: $select.search} track by category.code\">\n" +
-    "            <div ng-bind-html=\"category.title | highlight: $select.search\"></div>\n" +
-    "        </ui-select-choices>\n" +
-    "    </ui-select>\n" +
-    "    <h3>Book</h3>\n" +
-    "    <ui-select ng-model=\"selected.book\" theme=\"select2\" on-select='onBookSelect($item, $model)' ng-disabled=\"!booksEnabled\" style=\"min-width: 200px;\" title=\"Choose a Book\">\n" +
-    "        <ui-select-match placeholder=\"Select a book in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
-    "        <ui-select-choices repeat=\"book.code as book in books | propsFilter: {title: $select.search} track by book.code\">\n" +
-    "            <div ng-bind-html=\"book.title | highlight: $select.search\"></div>\n" +
-    "        </ui-select-choices>\n" +
-    "    </ui-select>\n" +
-    "    <h3>Chapter</h3>\n" +
-    "    <ui-select ng-model=\"selected.chapter\" theme=\"select2\" on-select='onChapterSelect($item, $model)' ng-disabled=\"!chaptersEnabled\" style=\"min-width: 200px;\" title=\"Choose a Chapter\">\n" +
-    "        <ui-select-match placeholder=\"Select a chapter in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
-    "        <ui-select-choices repeat=\"chapter.code as chapter in chapters | propsFilter: {title: $select.search}\">\n" +
-    "            <div ng-bind-html=\"chapter.title | highlight: $select.search\"></div>\n" +
-    "        </ui-select-choices>\n" +
-    "    </ui-select>\n" +
-    "    <h3>Topic</h3>\n" +
-    "    <ui-select ng-model=\"selected.topic\" theme=\"select2\" on-select='onTopicSelect($item, $model)' ng-disabled=\"!topicsEnabled\" style=\"min-width: 200px;\" title=\"Choose a Topic\">\n" +
-    "        <ui-select-match placeholder=\"Select a topic in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
-    "        <ui-select-choices repeat=\"topic.title as topic in topics | propsFilter: {title: $select.search}\">\n" +
-    "            <div ng-bind-html=\"topic.title | highlight: $select.search\"></div>\n" +
-    "        </ui-select-choices>\n" +
-    "    </ui-select>\n" +
-    "    <h3>Level</h3>\n" +
-    "    <ui-select ng-model=\"ctrl.level.selected\" theme=\"select2\" style=\"min-width: 200px;\" title=\"Choose a Level\">\n" +
-    "        <ui-select-match placeholder=\"Select a level in the list or search...\">{{$select.selected.name}}</ui-select-match>\n" +
-    "        <ui-select-choices repeat=\"level.name as level in levels | propsFilter: {name: $select.search}\">\n" +
-    "            <div ng-bind-html=\"level.name | highlight: $select.search\"></div>\n" +
-    "        </ui-select-choices>\n" +
-    "    </ui-select>\n" +
-    "</div>\n" +
-    "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
-    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok()\">Publish</button>\n" +
-    "</div>"
   );
 
 

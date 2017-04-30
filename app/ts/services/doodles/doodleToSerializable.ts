@@ -26,17 +26,17 @@ function mapDoodleFilesToIDoodleFiles(files: { [path: string]: DoodleFile }): { 
     return result;
 }
 
-export default function doodleToSerializable(dude: Doodle): IDoodleDS {
+export function doodleToSerializable(dude: Doodle): IDoodleDS {
     const data: IDoodleDS = {
-        owner: dude.owner,
-        repo: dude.repo,
+        owner: dude.owner as string,
+        repo: dude.repo as string,
         gistId: dude.gistId,
         lastKnownJs: dude.lastKnownJs,
         lastKnownJsMap: dude.lastKnownJsMap,
         files: dude.files ? mapDoodleFilesToIDoodleFiles(dude.files) : void 0,
         trash: dude.trash ? mapDoodleFilesToIDoodleFiles(dude.trash) : void 0,
-        created_at: dude.created_at,
-        updated_at: dude.updated_at
+        created_at: dude.created_at as string,
+        updated_at: dude.updated_at as string
     };
     return data;
 }

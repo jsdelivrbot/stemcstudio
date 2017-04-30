@@ -8,7 +8,7 @@ import CommitKey from './CommitKey';
 import Gist from './Gist';
 import GistComment from './GistComment';
 import GistData from './GistData';
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import Repo from './Repo';
 import RepoData from './RepoData';
 import RepoElement from './RepoElement';
@@ -23,7 +23,7 @@ import ReferenceUpdateData from './ReferenceUpdateData';
 import Tree from './Tree';
 import TreeData from './TreeData';
 import TreeKey from './TreeKey';
-import GitHubUser from './GitHubUser';
+import { GitHubUser } from './GitHubUser';
 // TODO: Get rid of the underscore dependency.
 import { map } from 'underscore';
 import { GITHUB_TOKEN_COOKIE_NAME } from '../../constants';

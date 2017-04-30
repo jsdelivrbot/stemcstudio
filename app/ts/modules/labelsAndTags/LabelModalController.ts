@@ -1,10 +1,10 @@
 import { isArray, isString } from 'angular';
 import { IModalServiceInstance } from 'angular-bootstrap';
-import LabelModalScope from './LabelModalScope';
-import LabelSettings from './LabelSettings';
-import splitStringToKeywords from './splitStringToKeywords';
+import { LabelModalScope } from './LabelModalScope';
+import { LabelSettings } from './LabelSettings';
+import { splitStringToKeywords } from './splitStringToKeywords';
 
-export default class LabelModalController {
+export class LabelModalController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: LabelModalScope, $uibModalInstance: IModalServiceInstance, options: LabelSettings) {
 
@@ -24,25 +24,6 @@ export default class LabelModalController {
             // Important that this string be consistent with workflow.
             $uibModalInstance.dismiss('cancel click');
         };
-
-        $scope.levels = [
-            {
-                value: 10,
-                name: 'Graduate'
-            },
-            {
-                value: 7,
-                name: 'Undergraduate'
-            },
-            {
-                value: 4,
-                name: 'High School'
-            },
-            {
-                value: 1,
-                name: 'Middle School'
-            }
-        ];
     }
     $onInit(): void {
         // This IS called.

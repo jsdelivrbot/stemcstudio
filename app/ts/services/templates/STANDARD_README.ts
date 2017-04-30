@@ -5,7 +5,7 @@ const NEWLINE = '\n';
 export function STANDARD_README(options: TemplateOptions): string {
     // const _ = options.tab;
     const lines: string[] = [];
-    lines.push("# Getting Started with tsCodeHub");
+    lines.push("# Getting Started");
     lines.push("");
     lines.push("## Overview");
     lines.push("");
@@ -32,7 +32,7 @@ export function STANDARD_README(options: TemplateOptions): string {
     lines.push("## Documentation");
     lines.push("");
     lines.push([
-        "Documentation of your software can take many forms. tsCodeHub supports the *Markdown* format ",
+        "Documentation of your software can take many forms. The *Markdown* format is supported, ",
         "making it easy to create application- or library-level documentation. ",
         "The contents of the `README.md` file, transpiled to HTML, are displayed while ",
         "your application is *not* running. The `README.md` file is also a prominent artifact in GitHub."].join(''));

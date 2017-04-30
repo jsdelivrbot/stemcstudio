@@ -4,7 +4,7 @@ import IDoodleDS from './IDoodleDS';
 import { IDoodleManager } from './IDoodleManager';
 import IDoodleFile from './IDoodleFile';
 import modeFromName from '../../utils/modeFromName';
-import doodlesToString from './doodlesToString';
+import { doodlesToString } from './doodlesToString';
 import { Injectable } from '@angular/core';
 
 /**
@@ -86,7 +86,7 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
 }
 
 //
-// TODO: Some more work to make into a bona fide Angular service.
+// Manages persistent storage of projects to Local Storage.
 //
 @Injectable()
 export class DoodleManager implements IDoodleManager {

@@ -1,7 +1,10 @@
 import { IAttributes, IAugmentedJQuery, IDirective, IScope, ITranscludeFunction } from 'angular';
-import controller from './WorkspaceController';
+import { WorkspaceController } from './WorkspaceController';
 
-function factory() {
+/**
+ * 
+ */
+export function workspace() {
 
     function link($scope: IScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction) {
         // Do nothing.
@@ -10,13 +13,11 @@ function factory() {
     const directive: IDirective = {
         require: [],
         restrict: 'E',
-        controller,
+        controller: WorkspaceController,
         link: link
     };
 
     return directive;
 }
 
-factory.$inject = [];
-
-export default factory;
+workspace.$inject = [];

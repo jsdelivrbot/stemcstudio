@@ -1,13 +1,13 @@
 import { GitHubAccountScope } from '../scopes/GitHubAccountScope';
 import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../services/github/IGitHubUserService';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
-import GitHubUser from '../services/github/GitHubUser';
+import { GitHubUser } from '../services/github/GitHubUser';
 import Repo from '../services/github/Repo';
 
 /**
  *
  */
-export default class GitHubAccountController {
+export class GitHubAccountController {
     public static $inject: string[] = ['$scope', GITHUB_USER_SERVICE_UUID, GITHUB_SERVICE_UUID];
     /**
      *

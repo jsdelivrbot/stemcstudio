@@ -1,6 +1,6 @@
 import { IFormController } from 'angular';
 import { IModalServiceInstance } from 'angular-bootstrap';
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import CopyProjectScope from './CopyProjectScope';
 import CopyProjectSettings from './CopyProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';

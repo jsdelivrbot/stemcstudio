@@ -1,4 +1,4 @@
-import GitHubUser from './GitHubUser';
+import { GitHubUser } from './GitHubUser';
 
 /**
  * The GitHub v3 API.

@@ -7,7 +7,7 @@ import CopyProjectController from './CopyProjectController';
 /**
  * The implementation that is registered with the application module.
  */
-export default class CopyProjectService implements CopyProjectDialog {
+export class CopyProjectService implements CopyProjectDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

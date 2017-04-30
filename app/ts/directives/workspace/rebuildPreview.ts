@@ -4,7 +4,7 @@ import { closure } from './closure';
 import csvTypeFromContent from './csvTypeFromContent';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';

@@ -5,7 +5,7 @@ import { validate } from '../../utils/validateNpmPackageName';
  * Directive Definition Factory
  * Usage <package-name>
  */
-export default function (): IDirective {
+export function packageName(): IDirective {
     // Requires an isolated model.
     return {
         // Restrict to an attribute type.

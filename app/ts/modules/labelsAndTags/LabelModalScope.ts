@@ -1,8 +1,7 @@
-import Level from './Level';
-
-interface LabelModalScope {
-
-    levels: Level[];
+/**
+ * 
+ */
+export interface LabelModalScope {
 
     /**
      * form
@@ -26,5 +25,3 @@ interface LabelModalScope {
     submit(): void;
     cancel(): void;
 }
-
-export default LabelModalScope;

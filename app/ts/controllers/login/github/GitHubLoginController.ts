@@ -18,7 +18,7 @@ const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authori
 /**
  *
  */
-export default class GitHubLoginController {
+export class GitHubLoginController {
     public static $inject: string[] = [
         '$scope',
         '$window',

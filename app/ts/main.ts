@@ -48,11 +48,12 @@ import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoControl
 import CommitMessageController from './services/cloud/CommitMessageController';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
 import contiguous from './filters/contiguous';
-import DashboardController from './controllers/DashboardController';
-import DoodleController from './controllers/DoodleController';
-import ExamplesController from './controllers/ExamplesController';
-import GitHubAccountController from './controllers/GitHubAccountController';
-import HomeController from './controllers/HomeController';
+import { DashboardController } from './controllers/DashboardController';
+import { DoodleController } from './controllers/DoodleController';
+import { DownloadController } from './controllers/DownloadController';
+import { ExamplesController } from './controllers/ExamplesController';
+import { GitHubAccountController } from './controllers/GitHubAccountController';
+import { HomeController } from './controllers/HomeController';
 import editorDirective1x from './directives/editor/editor.directive1x';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
@@ -67,10 +68,10 @@ import ModalDialogService from './services/modalService/ModalDialogService';
 
 import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
 import ReteFlowService from './services/flow/ReteFlowService';
-import RepoController from './controllers/RepoController';
+import { RepoController } from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
-import workspace from './directives/workspace/workspace.component';
+import { workspace } from './directives/workspace/workspace.component';
 
 import { templateCache } from './template-cache';
 
@@ -93,6 +94,7 @@ app.controller('DoodleController', DoodleController);
 app.controller('examples-controller', ExamplesController);
 app.controller('GitHubAccountController', GitHubAccountController);
 app.controller('home-controller', HomeController);
+app.controller('download-controller', DownloadController);
 
 app.controller('ExplorerFilesController', ExplorerFilesController);
 
@@ -108,8 +110,6 @@ app.controller('CommitMessageController', CommitMessageController);
 app.controller('RepoDataController', RepoDataController);
 
 app.controller('RepoController', RepoController);
-// FIXME: Don't like this style of import.
-import './controllers/DownloadController';
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editorDirective1x);

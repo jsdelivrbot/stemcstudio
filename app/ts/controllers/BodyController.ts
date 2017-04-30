@@ -9,7 +9,7 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
  * The controller for the <body> tag.
  * The controller is referred to as 'body-controller' in layout.jade.
  */
-export default class BodyController {
+export class BodyController {
     public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
     constructor($scope: BodyScope, githubService: IGitHubService, navigation: INavigationService, translateService: ITranslateService) {
 

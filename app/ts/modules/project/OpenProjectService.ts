@@ -7,7 +7,7 @@ import OpenProjectController from './OpenProjectController';
 /**
  * The implementation that is registered with the application module.
  */
-export default class OpenProjectService implements OpenProjectDialog {
+export class OpenProjectService implements OpenProjectDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

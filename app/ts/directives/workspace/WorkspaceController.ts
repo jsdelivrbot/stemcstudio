@@ -16,7 +16,7 @@ import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudSe
 import Doodle from '../../services/doodles/Doodle';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../../services/github/IGitHubService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
-import LabelDialog from '../../modules/publish/LabelDialog';
+import { LabelDialog } from '../../modules/labelsAndTags/LabelDialog';
 import LabelFlow from './LabelFlow';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
@@ -105,9 +105,9 @@ function fileExtensionIs(path: string, extension: string): boolean {
 }
 
 /**
- *
+ * Used be the workspace.
  */
-export default class WorkspaceController implements WorkspaceEditorHost {
+export class WorkspaceController implements WorkspaceEditorHost {
 
     /**
      * Keep track of the dependencies (module names) that are loaded in the workspace.

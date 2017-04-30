@@ -1,4 +1,4 @@
-export default class TwitterLoginController {
+export class TwitterLoginController {
     public static $inject: string[] = [
         'FEATURE_TWITTER_SIGNIN_ENABLED'
     ];

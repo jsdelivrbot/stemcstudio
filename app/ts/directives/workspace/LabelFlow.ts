@@ -1,7 +1,7 @@
 import FlowService from '../../services/flow/FlowService';
-import LabelDialog from '../../modules/publish/LabelDialog';
+import { LabelDialog } from '../../modules/labelsAndTags/LabelDialog';
 import LabelFacts from './LabelFacts';
-import LabelSettings from '../../modules/publish/LabelSettings';
+import { LabelSettings } from '../../modules/labelsAndTags/LabelSettings';
 import WsModel from '../../modules/wsmodel/WsModel';
 
 export default class LabelFlow {

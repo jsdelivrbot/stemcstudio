@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import AbstractPageController from './AbstractPageController';
+import { AbstractPageController } from './AbstractPageController';
 import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
 import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
 import { DoodleScope } from '../scopes/DoodleScope';
@@ -18,7 +18,7 @@ import CopyProjectSettings from '../modules/project/CopyProjectSettings';
 /**
  * This class could probably be merged with the WorkspaceController?
  */
-export default class DoodleController extends AbstractPageController {
+export class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',

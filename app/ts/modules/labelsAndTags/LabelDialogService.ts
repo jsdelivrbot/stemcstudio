@@ -1,10 +1,13 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import LabelDialog from './LabelDialog';
-import LabelSettings from './LabelSettings';
-import LabelModalController from './LabelModalController';
+import { LabelDialog } from './LabelDialog';
+import { LabelSettings } from './LabelSettings';
+import { LabelModalController } from './LabelModalController';
 
-export default class LabelDialogService implements LabelDialog {
+/**
+ * 
+ */
+export class LabelDialogService implements LabelDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

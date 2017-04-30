@@ -1,4 +1,3 @@
-import app from '../app';
 import BootstrapDialog from 'bootstrap-dialog';
 import { DownloadScope } from '../scopes/DownloadScope';
 import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
@@ -11,11 +10,13 @@ const PAGE_P = 'prev';
 const PAGE_N = 'next';
 const PAGE_L = 'last';
 
-app.controller('download-controller', [
-    '$scope',
-    GITHUB_SERVICE_UUID,
-    NAVIGATION_SERVICE_UUID,
-    function (
+export class DownloadController {
+    public static $inject: string[] = [
+        '$scope',
+        GITHUB_SERVICE_UUID,
+        NAVIGATION_SERVICE_UUID,
+    ];
+    constructor(
         $scope: DownloadScope,
         githubService: IGitHubService,
         navigationService: INavigationService
@@ -99,4 +100,12 @@ app.controller('download-controller', [
             navigationService.gotoWork();
         };
     }
-]);
+    $onInit(): void {
+        // This will not be called because this is a routing controller.
+        console.warn("RepoController.$onDestroy()");
+    }
+    $onDestroy(): void {
+        // This will not be called because this is a routing controller.
+        console.warn("RepoController.$onDestroy()");
+    }
+}

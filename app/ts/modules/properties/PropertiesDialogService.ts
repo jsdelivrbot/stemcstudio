@@ -7,7 +7,7 @@ import PropertiesModalController from './PropertiesModalController';
 /**
  * The implementation that is registered with the application module.
  */
-export default class PropertiesDialogService implements PropertiesDialog {
+export class PropertiesDialogService implements PropertiesDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

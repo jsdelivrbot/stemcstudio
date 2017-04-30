@@ -6,7 +6,7 @@ import isUndefined from '../../utils/isUndefined';
  * 'false' values remove the corresponding property name.
  * Undefined values remove the corresponding property name.
  */
-export default function setOptionalBooleanProperty(name: string, value: boolean | undefined, target: { [name: string]: any }): void {
+export function setOptionalBooleanProperty(name: string, value: boolean | undefined, target: { [name: string]: any }): void {
     if (isBoolean(value)) {
         if (value) {
             target[name] = value;

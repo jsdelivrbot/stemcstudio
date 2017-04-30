@@ -1,6 +1,8 @@
-export default class FacebookLoginController {
+import { GOOGLE_ANALYTICS_UUID } from '../../../fugly/ga/ga';
+
+export class FacebookLoginController {
     public static $inject: string[] = [
-        'ga',
+        GOOGLE_ANALYTICS_UUID,
         'FEATURE_FACEBOOK_SIGNIN_ENABLED'
     ];
     constructor(

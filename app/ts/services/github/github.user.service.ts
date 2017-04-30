@@ -1,13 +1,12 @@
 import { CookieService } from '../cookie/cookie.service';
-import { Headers, Http, RequestOptions, Response } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { IGitHubUserService } from './IGitHubUserService';
-import GitHubUser from './GitHubUser';
+import { GitHubUser } from './GitHubUser';
 import { GITHUB_TOKEN_COOKIE_NAME } from '../../constants';
 //
 // Funky stuff to get Observable typing and for map, toPromise methods to be defined.
 //
-import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
@@ -56,7 +55,8 @@ export class GitHubUserService implements IGitHubUserService {
         const url = `${this.gitHub()}/user`;
         const headers = this.requestHeaders();
         const options = new RequestOptions({ headers });
-        const observable: Observable<Response> = this.http.get(url, options);
-        return observable.map(function (response) { return response.json(); }).toPromise<GitHubUser>();
+        return this.http.get(url, options)
+            .map(function (response) { return response.json() as GitHubUser; })
+            .toPromise();
     }
 }

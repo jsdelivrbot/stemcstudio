@@ -1,4 +1,4 @@
-import isString from '../../utils/isString';
+import { isString } from '../../utils/isString';
 import isUndefined from '../../utils/isUndefined';
 
 /**
@@ -7,7 +7,7 @@ import isUndefined from '../../utils/isUndefined';
  * Empty strings remove the corresponding property name.
  * Undefined values remove the corresponding property name.
  */
-export default function setOptionalStringProperty(name: string, value: string | undefined, target: { [name: string]: any }): void {
+export function setOptionalStringProperty(name: string, value: string | undefined, target: { [name: string]: any }): void {
     if (isString(value)) {
         // Ignore leading and trailing whitespace.
         value = value.trim();

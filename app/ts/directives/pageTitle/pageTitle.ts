@@ -4,7 +4,7 @@ import { IDirective } from 'angular';
  * Directive Definition Factory
  * Usage <page-title>
  */
-export default function (): IDirective {
+export function pageTitle(): IDirective {
     return {
         restrict: 'E',
         scope: { title: '@' },

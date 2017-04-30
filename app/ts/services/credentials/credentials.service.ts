@@ -5,7 +5,7 @@ const PROVIDER_NAME_GOOGLE_PLUS = 'accounts.google.com';
 
 
 /**
- *
+ * Provides Google credentials for AWS Search.
  */
 @Injectable()
 export class CredentialsService implements ICredentialsService {

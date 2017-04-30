@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import AbstractPageController from './AbstractPageController';
+import { AbstractPageController } from './AbstractPageController';
 import { ExamplesScope } from '../scopes/ExamplesScope';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
@@ -41,7 +41,7 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
 /**
  * The examples are currently not data-driven and not very pretty!
  */
-export default class ExamplesController extends AbstractPageController {
+export class ExamplesController extends AbstractPageController {
 
     public static $inject: string[] = [
         '$scope',

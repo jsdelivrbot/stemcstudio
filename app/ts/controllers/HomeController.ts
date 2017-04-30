@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import AbstractPageController from './AbstractPageController';
+import { AbstractPageController } from './AbstractPageController';
 import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
 import Doodle from '../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
@@ -16,7 +16,7 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
 /**
  * Manages the Home Page.
  */
-export default class HomeController extends AbstractPageController {
+export class HomeController extends AbstractPageController {
 
     public static $inject: string[] = [
         '$scope',
