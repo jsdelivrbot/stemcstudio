@@ -1,5 +1,5 @@
 import { AppScope } from './AppScope';
-import Gist from '../services/github/Gist';
+import { Gist } from '../services/github/Gist';
 
 /**
  * 

@@ -1,6 +1,6 @@
 import GistCommentUser from './GistCommentUser';
 
-interface GistComment {
+export interface GistComment {
     id: number;
     url: string;
     body: string;
@@ -8,5 +8,3 @@ interface GistComment {
     created_at: string;
     updated_at: string;
 }
-
-export default GistComment;

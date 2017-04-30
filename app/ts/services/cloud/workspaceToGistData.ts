@@ -1,8 +1,8 @@
-import GistData from '../github/GistData';
+import { GistData } from '../github/GistData';
 import doodleFilesToGistFiles from './doodleFilesToGistFiles';
 import WsModel from '../../modules/wsmodel/WsModel';
 
-export default function (workspace: WsModel): GistData {
+export function workspaceToGistData(workspace: WsModel): GistData {
     const gist: GistData = {
         description: workspace.description,
         public: true,

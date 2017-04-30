@@ -75,10 +75,9 @@ export class BackgroundService implements IBackgroundService {
                         this.doodleManager.addHead(doodle);
                         this.doodleManager.updateStorage();
                         copyDoodleToWorkspace(doodle, this.wsModel, callback);
-                    }, (reason) => {
+                    })
+                    .catch((reason) => {
                         callback(new Error(`Error attempting to download repository '${repo}':  ${JSON.stringify(reason, null, 2)}`));
-                    }, function (/* state */) {
-                        // The state is {doneCount: number; todoCount: number}
                     });
             }
             else if (gistId) {

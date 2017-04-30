@@ -1,7 +1,7 @@
 /**
  * This appears to extend RepoElement by adding content and encoding.
  */
-interface PathContents {
+export interface PathContents {
     name: string;
     path: string;
     sha: string;
@@ -28,5 +28,3 @@ interface PathContents {
         html: string;
     };
 }
-
-export default PathContents;

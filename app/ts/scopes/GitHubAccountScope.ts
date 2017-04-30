@@ -1,6 +1,6 @@
 import { AppScope } from '../scopes/AppScope';
 import { GitHubUser } from '../services/github/GitHubUser';
-import Repo from '../services/github/Repo';
+import { Repo } from '../services/github/Repo';
 
 export interface GitHubAccountScope extends AppScope {
     /**

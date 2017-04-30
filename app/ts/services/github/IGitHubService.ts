@@ -1,4 +1,4 @@
-import { IHttpPromise, IPromise } from 'angular';
+import { IHttpPromise } from 'angular';
 import Blob from './Blob';
 import BlobData from './BlobData';
 import BlobKey from './BlobKey';
@@ -7,21 +7,11 @@ import Commit from './Commit';
 import CommitData from './CommitData';
 import CommitKey from './CommitKey';
 
-import Gist from './Gist';
-import GistComment from './GistComment';
-import GistData from './GistData';
-
-import PathContents from './PathContents';
 import PutFileResponse from './PutFileResponse';
 
 import Reference from './Reference';
 import ReferenceCreateData from './ReferenceCreateData';
 import ReferenceUpdateData from './ReferenceUpdateData';
-
-import Repo from './Repo';
-import RepoData from './RepoData';
-import RepoElement from './RepoElement';
-import RepoKey from './RepoKey';
 
 import Tree from './Tree';
 import TreeData from './TreeData';
@@ -39,48 +29,6 @@ import TreeKey from './TreeKey';
 export interface IGitHubService /* extends IGitHubUserService */ {
     deleteFile(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response: any) => any): void;
     deleteRepo(owner: string, repo: string, done: (err: any, response: any) => any): void;
-
-    /**
-     *
-     */
-    getGists(): IHttpPromise<Gist[]>;
-
-    /**
-     * Used for pagination of Gists.
-     */
-    getGistsPage(href: string): IHttpPromise<Gist[]>;
-
-    /**
-     * Returns the contents of a file or directory in the repository.
-     */
-    getPathContents(owner: string, repo: string, path: string): IPromise<PathContents>;
-
-    /**
-     * 
-     */
-    getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any): void;
-    /**
-     * 
-     */
-    // getUser(): Promise<GitHubUser>;
-    getUserGists(user: string, done: (err: any, response: any) => any): void;
-    getUserRepos(done: (err: any, repos: Repo[]) => any): void;
-
-    getGist(gistId: string): IHttpPromise<Gist>;
-    createGist(data: GistData): IHttpPromise<Gist>;
-    updateGist(gistId: string, data: GistData): IHttpPromise<Gist>;
-    deleteGist(gistId: string, done: (err: any, response: any) => any): void;
-    getGistComments(gistId: string): IHttpPromise<GistComment[]>;
-
-    /**
-     * 
-     */
-    getRepo(owner: string, repo: string): IHttpPromise<Repo>;
-
-    /**
-     * 
-     */
-    createRepo(data: RepoData): IHttpPromise<RepoKey>;
 
     putFile(owner: string, repo: string, path: string, message: string, content: string, sha: string): IHttpPromise<PutFileResponse>;
 

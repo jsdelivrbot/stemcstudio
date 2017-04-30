@@ -25,8 +25,8 @@ export class RepoController extends AbstractPageController {
         super($window, authManager, modalDialog, 'hidden');
     }
     $onInit(): void {
-        // This will not be called because this is a routing controller.
-        console.warn("RepoController.$onDestroy()");
+        // This is being called. e.g. When downloading Gists.
+        console.warn("RepoController.$onInit()");
     }
     $onDestroy(): void {
         // This will not be called because this is a routing controller.

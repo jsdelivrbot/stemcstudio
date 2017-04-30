@@ -1,7 +1,7 @@
 /**
  * 
  */
-interface RepoData {
+export interface RepoData {
 
     /**
      * The name of the repository.
@@ -69,5 +69,3 @@ interface RepoData {
      */
     license_template?: string;
 }
-
-export default RepoData;

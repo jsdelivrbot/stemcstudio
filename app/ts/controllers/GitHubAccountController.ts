@@ -1,18 +1,24 @@
 import { GitHubAccountScope } from '../scopes/GitHubAccountScope';
 import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../services/github/IGitHubUserService';
-import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
+import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../services/github/IGitHubRepoService';
 import { GitHubUser } from '../services/github/GitHubUser';
-import Repo from '../services/github/Repo';
 
 /**
  *
  */
 export class GitHubAccountController {
-    public static $inject: string[] = ['$scope', GITHUB_USER_SERVICE_UUID, GITHUB_SERVICE_UUID];
+    public static $inject: string[] = [
+        '$scope',
+        GITHUB_USER_SERVICE_UUID,
+        GITHUB_REPO_SERVICE_UUID
+    ];
     /**
      *
      */
-    constructor(private $scope: GitHubAccountScope, private githubUserService: IGitHubUserService, private githubService: IGitHubService) {
+    constructor(
+        private $scope: GitHubAccountScope,
+        private githubUserService: IGitHubUserService,
+        private githubRepoService: IGitHubRepoService) {
         // Do nothing.
     }
 
@@ -29,14 +35,14 @@ export class GitHubAccountController {
                 this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
             });
 
-        this.githubService.getUserRepos((err: any, repos: Repo[]) => {
-            if (!err) {
+        this.githubRepoService.getUserRepos()
+            .then((repos) => {
                 this.$scope.repos = repos;
-            }
-            else {
+
+            })
+            .catch((err) => {
                 this.$scope.repos = [];
-            }
-        });
+            });
     }
 
     /**

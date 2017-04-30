@@ -1,4 +1,4 @@
-interface RepoElement {
+export interface RepoElement {
     name: string;
     path: string;
     sha: string;
@@ -18,4 +18,3 @@ interface RepoElement {
     };
 }
 
-export default RepoElement;

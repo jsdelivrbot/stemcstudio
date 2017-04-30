@@ -1,7 +1,6 @@
 import BootstrapDialog from 'bootstrap-dialog';
 import { DownloadScope } from '../scopes/DownloadScope';
-import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
-import linkToMap from '../utils/linkToMap';
+import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../services/github/IGitHubGistService';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 
 // The 'rel' values that we understand for Hypermedia links.
@@ -13,12 +12,12 @@ const PAGE_L = 'last';
 export class DownloadController {
     public static $inject: string[] = [
         '$scope',
-        GITHUB_SERVICE_UUID,
+        GITHUB_GIST_SERVICE_UUID,
         NAVIGATION_SERVICE_UUID,
     ];
     constructor(
         $scope: DownloadScope,
-        githubService: IGitHubService,
+        githubGistService: IGitHubGistService,
         navigationService: INavigationService
     ) {
 
@@ -44,24 +43,11 @@ export class DownloadController {
                 return;
             }
             const href = $scope.links[rel];
-            githubService.getGistsPage(href)
-                .then(function (promiseValue) {
-                    if (promiseValue.data) {
-                        const gists = promiseValue.data;
-                        const headers = promiseValue.headers;
-                        $scope.gists = gists;
-                        if (headers && headers('link')) {
-                            $scope.links = linkToMap(headers('link'));
-                        }
-                        else {
-                            $scope.links = {};
-                        }
-                        navigationService.gotoDownload();
-                    }
-                    else {
-                        // Why do we get undefined as a possibility?
-                        console.warn(`typeof promiseValue.data => ${typeof promiseValue.data}`);
-                    }
+            githubGistService.getGistsPage(href)
+                .then(function ({ gists, links }) {
+                    $scope.gists = gists;
+                    $scope.links = links;
+                    navigationService.gotoDownload();
                 })
                 .catch(function (reason: any) {
                     BootstrapDialog.show({
@@ -101,11 +87,10 @@ export class DownloadController {
         };
     }
     $onInit(): void {
-        // This will not be called because this is a routing controller.
-        console.warn("RepoController.$onDestroy()");
+        // This method is called.
     }
     $onDestroy(): void {
         // This will not be called because this is a routing controller.
-        console.warn("RepoController.$onDestroy()");
+        console.warn("DownloadController.$onDestroy()");
     }
 }

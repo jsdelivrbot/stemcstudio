@@ -9,7 +9,8 @@ import { Base64Service } from './services/base64/base64.service';
 import { CookieService } from './services/cookie/cookie.service';
 import { CredentialsService } from './services/credentials/credentials.service';
 import { DoodleManager } from './services/doodles/doodleManager.service';
-// import { GitHubService } from './services/github/github.service';
+import { GitHubGistService } from './services/github/github.gist.service';
+import { GitHubRepoService } from './services/github/github.repo.service';
 import { GitHubUserService } from './services/github/github.user.service';
 import { OptionManager } from './services/options/optionManager.service';
 import { RoomsService } from './modules/rooms/services/rooms.service';
@@ -38,8 +39,9 @@ import { BrandComponent } from './directives/brand/brand.component';
         CookieService,
         CredentialsService,
         DoodleManager,
+        GitHubGistService,
+        GitHubRepoService,
         GitHubUserService,
-        // GitHubService,
         OptionManager,
         RoomsService,
         UuidService,

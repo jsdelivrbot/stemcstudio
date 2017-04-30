@@ -1,8 +1,8 @@
-import { IHttpPromise, IPromise } from 'angular';
+import { IPromise } from 'angular';
 import Doodle from '../doodles/Doodle';
-import Gist from '../github/Gist';
-import RepoData from '../github/RepoData';
-import RepoKey from '../github/RepoKey';
+import { Gist } from '../github/Gist';
+import { RepoData } from '../github/RepoData';
+import { RepoKey } from '../github/RepoKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
 import WsModel from '../../modules/wsmodel/WsModel';
 
@@ -19,12 +19,12 @@ export interface ICloudService {
     /**
      *
      */
-    createGist(workspace: WsModel): IHttpPromise<Gist>;
+    createGist(workspace: WsModel): Promise<Gist>;
 
     /**
      *
      */
-    updateGist(workspace: WsModel, gistId: string): IHttpPromise<Gist>;
+    updateGist(workspace: WsModel, gistId: string): Promise<Gist>;
 
     /**
      *
@@ -33,13 +33,13 @@ export interface ICloudService {
     /**
      * @param data
      */
-    createRepo(data: RepoData): IHttpPromise<RepoKey>;
+    createRepo(data: RepoData): Promise<RepoKey>;
 
     /**
      * TODO: Why is there no specification of the branch (commit).
      */
-    downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void): void;
-    downloadTree(owner: string, repo: string, ref: string): IPromise<Doodle>;
+    downloadRepo(owner: string, repo: string): Promise<Doodle>;
+    downloadTree(owner: string, repo: string, ref: string): Promise<Doodle>;
 
     /**
      * TODO: This is currently fire-and-forget.

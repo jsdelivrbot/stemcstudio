@@ -1,7 +1,7 @@
 import GistFile from './GistFile';
 import GitHubOwner from './GitHubOwner';
 
-interface Gist {
+export interface Gist {
     url: string;
     forks_url: string;
     commits_url: string;
@@ -32,5 +32,3 @@ interface Gist {
     }[];
     truncated: boolean;
 }
-
-export default Gist;

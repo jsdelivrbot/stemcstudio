@@ -1,5 +1,5 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import RepoData from '../github/RepoData';
+import { RepoData } from '../github/RepoData';
 import RepoDataScope from './RepoDataScope';
 import RepoDataOptions from './RepoDataOptions';
 

@@ -41,6 +41,13 @@ import { GOOGLE_ANALYTICS_UUID, googleUniversalAnalyticsFactory } from './fugly/
 
 import { GITHUB_SERVICE_UUID } from './services/github/IGitHubService';
 import { GitHubService } from './services/github/github.service';
+
+import { GITHUB_GIST_SERVICE_UUID } from './services/github/IGitHubGistService';
+import { GitHubGistService } from './services/github/github.gist.service';
+
+import { GITHUB_REPO_SERVICE_UUID } from './services/github/IGitHubRepoService';
+import { GitHubRepoService } from './services/github/github.repo.service';
+
 import { GITHUB_USER_SERVICE_UUID } from './services/github/IGitHubUserService';
 import { GitHubUserService } from './services/github/github.user.service';
 
@@ -128,6 +135,8 @@ app.factory(COOKIE_SERVICE_UUID, downgradeInjectable(CookieService));
 app.service(CLOUD_SERVICE_UUID, CloudService);
 app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_SERVICE_UUID, GitHubService);
+app.factory(GITHUB_GIST_SERVICE_UUID, downgradeInjectable(GitHubGistService));
+app.factory(GITHUB_REPO_SERVICE_UUID, downgradeInjectable(GitHubRepoService));
 app.factory(GITHUB_USER_SERVICE_UUID, downgradeInjectable(GitHubUserService));
 // Google Universal Analytics
 app.factory(GOOGLE_ANALYTICS_UUID, googleUniversalAnalyticsFactory);

@@ -162,15 +162,13 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "							</li>\n" +
     "						</ul>\n" +
     "					</li>\n" +
-    "					<!--\n" +
-    "                    <li>\n" +
-    "                        <a role='button' ng-click='toggleCommentsVisible()'>\n" +
-    "                            <ng-md-icon icon='comment' style=\"fill: {{isCommentsVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isCommentsVisible ?  'Hide Comments' : 'Show Comments'}}\"\n" +
-    "                            tooltip-placement='bottom'>\n" +
-    "                                <ng-md-icon>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    -->\n" +
+    "					<li>\n" +
+    "						<a role='button' ng-click='toggleCommentsVisible()'>\n" +
+    "							<ng-md-icon icon='comment' style=\"fill: {{isCommentsVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isCommentsVisible ?  'Hide Comments' : 'Show Comments'}}\"\n" +
+    "							 tooltip-placement='bottom'>\n" +
+    "								<ng-md-icon>\n" +
+    "						</a>\n" +
+    "					</li>\n" +
     "					<li uib-dropdown>\n" +
     "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='bottom'>\n" +
     "							<ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
@@ -261,8 +259,9 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "			</div>\n" +
     "			<div id='output' ng-if='isViewVisible'></div>\n" +
     "			<div id='readme' ng-if='isMarkdownVisible'></div>\n" +
-    "			<div id='gist-comments' ng-if='isCommentsVisible && comments.length > 0'>\n" +
+    "			<div id='gist-comments' ng-if='isCommentsVisible'>\n" +
     "				<div ng-repeat=\"comment in comments\" class='gist-comment'><span>{{comment.msg}}</span></div>\n" +
+    "				<div ng-if='comments.length === 0'>This Gist does not have any comments.</div>\n" +
     "			</div>\n" +
     "		</div>\n" +
     "	</workspace>\n" +

@@ -1,4 +1,4 @@
-interface Repo {
+export interface Repo {
     id: number;
     owner: {
         login: string;
@@ -12,5 +12,3 @@ interface Repo {
     fork: boolean;
     // more ...
 }
-
-export default Repo;

@@ -3,13 +3,10 @@ import UploadFacts from './UploadFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import { INavigationService } from '../../modules/navigation/INavigationService';
 import { ICloudService } from '../../services/cloud/ICloudService';
-import Gist from '../../services/github/Gist';
 import GitHubReason from '../../services/github/GitHubReason';
-import { IGitHubService } from '../../services/github/IGitHubService';
+import { IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import PromptOptions from '../../services/modalService/PromptOptions';
-import Repo from '../../services/github/Repo';
-import RepoData from '../../services/github/RepoData';
-import RepoKey from '../../services/github/RepoKey';
+import { RepoData } from '../../services/github/RepoData';
 import isNumber from '../../utils/isNumber';
 import Method from './Method';
 import WsModel from '../../modules/wsmodel/WsModel';
@@ -17,6 +14,9 @@ import WsModel from '../../modules/wsmodel/WsModel';
 const FEATURE_GIST_ENABLED = true;
 const FEATURE_REPO_ENABLED = false;
 
+/**
+ * TODO: Avoid asymmetry in use of cloud service versus GitHub Repo service.
+ */
 export default class UploadFlow {
     constructor(
         private owner: string | null | undefined,
@@ -24,7 +24,7 @@ export default class UploadFlow {
         private modalDialog: ModalDialog,
         private navigation: INavigationService,
         private cloudService: ICloudService,
-        private githubService: IGitHubService,
+        private githubRepoService: IGitHubRepoService,
         private wsModel: WsModel
     ) {
         // Do nothing.
@@ -71,32 +71,17 @@ export default class UploadFlow {
             },
             (facts, session, next) => {
                 this.cloudService.createGist(this.wsModel)
-                    .then((http) => {
-                        const status = http.status as number;
-                        facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText as string);
-                        switch (status) {
-                            case 201: {
-                                const gist = http.data as Gist;
-                                facts.gistId.resolve(gist.id);
-                                facts.uploadedAt.resolve(gist.created_at);
-                                facts.redirect.resolve(true);
-                                facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`);
+                    .then((gist) => {
+                        facts.gistId.resolve(gist.id);
+                        facts.uploadedAt.resolve(gist.created_at);
+                        facts.redirect.resolve(true);
+                        facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`);
 
-                                this.wsModel.gistId = gist.id;
-                                this.wsModel.created_at = gist.created_at;
-                                this.wsModel.updated_at = gist.updated_at;
-                                this.wsModel.updateStorage();
-
-                                next();
-                                break;
-                            }
-                            default: {
-                                const reason = `Unexpected HTTP status (${status})`;
-                                facts.uploadedAt.reject(reason);
-                                next(reason);
-                            }
-                        }
+                        this.wsModel.gistId = gist.id;
+                        this.wsModel.created_at = gist.created_at;
+                        this.wsModel.updated_at = gist.updated_at;
+                        this.wsModel.updateStorage();
+                        next();
                     })
                     .catch((reason) => {
                         facts.uploadedAt.reject(reason);
@@ -110,44 +95,19 @@ export default class UploadFlow {
             },
             (facts, session, next) => {
                 this.cloudService.updateGist(this.wsModel, this.wsModel.gistId as string)
-                    .then((http) => {
-                        const status = http.status as number;
-                        const statusText = http.statusText;
-                        facts.status.resolve(status);
-                        facts.statusText.resolve(statusText as string);
-                        switch (status) {
-                            case 200: {
-                                const gist = http.data as Gist;
-                                facts.uploadedAt.resolve(gist.updated_at);
-                                facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
-                                try {
-                                    this.wsModel.markAllFilesAsInGitHub();
-                                    this.wsModel.emptyTrash();
-                                    this.wsModel.updated_at = gist.updated_at;
-                                    this.wsModel.updateStorage();
-                                    next();
-                                }
-                                catch (reason) {
-                                    console.warn(`reason => ${JSON.stringify(reason, null, 2)}`);
-                                    next(reason);
-                                }
-                                break;
-                            }
-                            case 404: {
-                                // The Gist no longer exists on GitHub
-                                // TODO: Test this we may end up down in the catch.
-                                this.wsModel.gistId = void 0;
-                                this.wsModel.updateStorage();
-
-                                facts.gistId.reset();
-                                next();
-                                break;
-                            }
-                            default: {
-                                const reason = `Unexpected HTTP status (${status})`;
-                                facts.uploadedAt.reject(reason);
-                                next(reason);
-                            }
+                    .then((gist) => {
+                        facts.uploadedAt.resolve(gist.updated_at);
+                        facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
+                        try {
+                            this.wsModel.markAllFilesAsInGitHub();
+                            this.wsModel.emptyTrash();
+                            this.wsModel.updated_at = gist.updated_at;
+                            this.wsModel.updateStorage();
+                            next();
+                        }
+                        catch (reason) {
+                            console.warn(`reason => ${JSON.stringify(reason, null, 2)}`);
+                            next(reason);
                         }
                     })
                     .catch((reason: GitHubReason) => {
@@ -190,30 +150,11 @@ export default class UploadFlow {
                 return facts.canDetermineRepoExists();
             },
             (facts, session, next) => {
-                this.githubService.getRepo(facts.userLogin.value as string, facts.repo.value as string)
-                    .then((http) => {
-                        const status = http.status as number;
-                        facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText as string);
-                        switch (status) {
-                            case 404: {
-                                facts.repoExists.resolve(false);
-                                next();
-                                break;
-                            }
-                            case 200: {
-                                facts.repoExists.resolve(true);
-                                const repo = http.data as Repo;
-                                facts.repoId.resolve(repo.id);
-                                next();
-                                break;
-                            }
-                            default: {
-                                const reason = `Unexpected HTTP status (${status})`;
-                                facts.uploadedAt.reject(reason);
-                                next(reason);
-                            }
-                        }
+                this.githubRepoService.getRepo(facts.userLogin.value as string, facts.repo.value as string)
+                    .then((repo) => {
+                        facts.repoExists.resolve(true);
+                        facts.repoId.resolve(repo.id);
+                        next();
                     })
                     .catch((reason) => {
                         if (isNumber(reason.status)) {
@@ -262,11 +203,7 @@ export default class UploadFlow {
             },
             (facts, session, next) => {
                 this.cloudService.createRepo(facts.repoData.value as RepoData)
-                    .then((http) => {
-                        const status = http.status as number;
-                        facts.status.resolve(status);
-                        facts.statusText.resolve(http.statusText as string);
-                        const repository = http.data as RepoKey;
+                    .then((repository) => {
                         facts.repoId.resolve(repository.id);
                         facts.repo.resolve(repository.name);
                         facts.repoExists.resolve(true);
@@ -310,7 +247,7 @@ export default class UploadFlow {
                 const commitMessage = facts.commitMessage.value as string;
                 this.cloudService.uploadToRepo(this.wsModel, owner, repo, ref, commitMessage, (err, details) => {
                     if (!err) {
-                        if (details.refUpdate.isResolved()) {
+                        if (details && details.refUpdate.isResolved()) {
                             this.wsModel.owner = owner;
                             this.wsModel.repo = repo;
                             this.wsModel.updateStorage();

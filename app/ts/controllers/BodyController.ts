@@ -1,7 +1,7 @@
 import { BodyScope } from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
-import { GITHUB_SERVICE_UUID, IGitHubService } from '../services/github/IGitHubService';
-import linkToMap from '../utils/linkToMap';
+import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../services/github/IGitHubGistService';
+// import linkToMap from '../utils/linkToMap';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
@@ -10,8 +10,8 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/
  * The controller is referred to as 'body-controller' in layout.jade.
  */
 export class BodyController {
-    public static $inject: string[] = ['$scope', GITHUB_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
-    constructor($scope: BodyScope, githubService: IGitHubService, navigation: INavigationService, translateService: ITranslateService) {
+    public static $inject: string[] = ['$scope', GITHUB_GIST_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
+    constructor($scope: BodyScope, githubGistService: IGitHubGistService, navigation: INavigationService, translateService: ITranslateService) {
 
         $scope.goHome = () => {
             navigation.gotoHome()
@@ -24,15 +24,11 @@ export class BodyController {
         };
 
         $scope.clickDownload = function () {
-            githubService.getGists()
-                .then(function (promiseValue) {
-                    if (promiseValue.data) {
-                        $scope.gists = promiseValue.data;
-                        if (promiseValue.headers) {
-                            $scope.links = linkToMap(promiseValue.headers('link'));
-                        }
-                        navigation.gotoDownload();
-                    }
+            githubGistService.getGists()
+                .then(function ({ gists, links }) {
+                    $scope.gists = gists;
+                    $scope.links = links;
+                    navigation.gotoDownload();
                 })
                 .catch(function (reason) {
                     BootstrapDialog.show({

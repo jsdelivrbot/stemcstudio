@@ -1,4 +1,4 @@
-import RepoData from '../github/RepoData';
+import { RepoData } from '../github/RepoData';
 import RepoDataOptions from './RepoDataOptions';
 
 interface RepoDataScope {

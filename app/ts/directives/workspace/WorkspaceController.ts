@@ -14,7 +14,8 @@ import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '..
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import Doodle from '../../services/doodles/Doodle';
-import { GITHUB_SERVICE_UUID, IGitHubService } from '../../services/github/IGitHubService';
+import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../../services/github/IGitHubGistService';
+import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
 import { LabelDialog } from '../../modules/labelsAndTags/LabelDialog';
 import LabelFlow from './LabelFlow';
@@ -183,7 +184,8 @@ export class WorkspaceController implements WorkspaceEditorHost {
         '$window',
         CREDENTIALS_SERVICE_UUID,
         BACKGROUND_SERVICE_UUID,
-        GITHUB_SERVICE_UUID,
+        GITHUB_GIST_SERVICE_UUID,
+        GITHUB_REPO_SERVICE_UUID,
         GITHUB_AUTH_MANAGER_UUID,
         CLOUD_SERVICE_UUID,
         'templates',
@@ -222,7 +224,8 @@ export class WorkspaceController implements WorkspaceEditorHost {
         private $window: IWindowService,
         private credentialsService: ICredentialsService,
         private backgroundService: IBackgroundService,
-        private githubService: IGitHubService,
+        githubGistService: IGitHubGistService,
+        private githubRepoService: IGitHubRepoService,
         authManager: IGitHubAuthManager,
         private cloudService: ICloudService,
         templates: Doodle[],
@@ -365,20 +368,22 @@ export class WorkspaceController implements WorkspaceEditorHost {
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
-                if (wsModel.isZombie()) {
-                    githubService.getGistComments(wsModel.gistId as string)
-                        .then((httpResponse) => {
-                            const comments = httpResponse.data;
-                            if (Array.isArray(comments)) {
+                githubGistService.getGistComments(wsModel.gistId as string)
+                    .then((comments) => {
+                        if (Array.isArray(comments)) {
+                            if (comments.length > 0) {
                                 $scope.comments = comments.map(function (comment) {
                                     return { type: 'info', msg: comment.body };
                                 });
                             }
-                        })
-                        .catch((reason) => {
-                            console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
-                        });
-                }
+                            else {
+                                $scope.comments = [];
+                            }
+                        }
+                    })
+                    .catch((reason) => {
+                        console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
+                    });
             }
         };
 
@@ -440,7 +445,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                 this.modalDialog,
                 this.navigation,
                 this.cloudService,
-                this.githubService,
+                this.githubRepoService,
                 wsModel);
             uploadFlow.execute();
         };

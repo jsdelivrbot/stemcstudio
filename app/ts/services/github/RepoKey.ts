@@ -1,4 +1,4 @@
-interface RepoKey {
+export interface RepoKey {
     id: number;
     owner: {
         login: string;
@@ -12,5 +12,3 @@ interface RepoKey {
     created_at: string;
     updated_at: string;
 }
-
-export default RepoKey;
