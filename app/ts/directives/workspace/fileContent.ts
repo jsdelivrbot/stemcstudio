@@ -1,4 +1,4 @@
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
  * Returns the contents of the file providing that the fileName exists on the Doodle.

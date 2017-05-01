@@ -143,7 +143,7 @@ import { UUID_SERVICE_UUID } from './services/uuid/IUuidService';
 //
 //
 //
-import WsModel from './modules/wsmodel/WsModel';
+import { WsModel } from './modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
 
 //
@@ -194,7 +194,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.55');
+app.constant('version', '2.24.56');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

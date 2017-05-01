@@ -1,4 +1,4 @@
-import hyphenate from './hyphenate';
+import { hyphenate } from './hyphenate';
 
 describe("hyphenate", function () {
     it("should convert to lower case", function () {

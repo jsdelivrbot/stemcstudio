@@ -58,7 +58,7 @@ import { TsLintJsonMonitor } from './monitors/TsLintJsonMonitor';
 import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import { TypesConfigJsonMonitor } from './monitors/TypesConfigJsonMonitor';
 import { TypeScriptMonitor } from './monitors/TypeScriptMonitor';
-import WsFile from './WsFile';
+import { WsFile } from './WsFile';
 import { setOptionalBooleanProperty } from '../../services/doodles/setOptionalBooleanProperty';
 import { setOptionalStringProperty } from '../../services/doodles/setOptionalStringProperty';
 import { setOptionalStringArrayProperty } from '../../services/doodles/setOptionalStringArrayProperty';
@@ -401,7 +401,7 @@ export type WsModelEventName = 'changedLinting'
  * and so this instance must have state so that it can manage the associated worker threads.
  */
 @Injectable()
-export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
+export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
@@ -897,30 +897,20 @@ export default class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoT
 
     synchTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
         return new Promise<TsConfigSettings>((resolve, reject) => {
-            this.setTsConfig(settings, function (reason, updatedSettings) {
-                if (!reason) {
-                    resolve(updatedSettings);
-                }
-                else {
-                    reject(reason);
-                }
-            });
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.setTsConfig(settings, (err: any, updatedSettings: TsConfigSettings) => {
+                    if (!err) {
+                        resolve(updatedSettings);
+                    }
+                    else {
+                        reject(err);
+                    }
+                });
+            }
+            else {
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+            }
         });
-    }
-
-    /**
-     *
-     */
-    private setTsConfig(settings: TsConfigSettings, callback: (err: any, updatedSettings?: TsConfigSettings) => void): void {
-        checkCallback(callback);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.setTsConfig(settings, (err: any, updatedSettings: TsConfigSettings) => {
-                callback(err, updatedSettings);
-            });
-        }
-        else {
-            callback(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
-        }
     }
 
     setTrace(trace: boolean): Promise<void> {

@@ -4,7 +4,7 @@ import PublishFacts from './PublishFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
  *

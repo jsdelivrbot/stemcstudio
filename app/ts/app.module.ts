@@ -15,7 +15,7 @@ import { GitHubUserService } from './services/github/github.user.service';
 import { OptionManager } from './services/options/optionManager.service';
 import { RoomsService } from './modules/rooms/services/rooms.service';
 import { UuidService } from './services/uuid/uuid.service';
-import WsModel from './modules/wsmodel/WsModel';
+import { WsModel } from './modules/wsmodel/WsModel';
 
 import { AppComponent } from './app.component';
 import { BrandComponent } from './directives/brand/brand.component';

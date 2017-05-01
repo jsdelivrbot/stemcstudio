@@ -1,4 +1,4 @@
-import { IAngularEvent, IHttpService, ILocationService, IPromise, IScope, ITimeoutService, IWindowService } from 'angular';
+import { IAngularEvent, IHttpService, ILocationService, IPromise, ISCEService, IScope, ITimeoutService, IWindowService } from 'angular';
 import { IStateParamsService, IStateService } from 'angular-ui-router';
 import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationServiceJS';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
@@ -44,8 +44,8 @@ import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
-import WsFile from '../../modules/wsmodel/WsFile';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsFile } from '../../modules/wsmodel/WsFile';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
@@ -175,6 +175,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      *
      */
     public static $inject: string[] = [
+        '$sce',
         '$scope',
         '$state',
         '$stateParams',
@@ -215,6 +216,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      *
      */
     constructor(
+        $sce: ISCEService,
         private $scope: WorkspaceScope,
         private $state: IStateService,
         private $stateParams: IStateParamsService,
@@ -361,6 +363,9 @@ export class WorkspaceController implements WorkspaceEditorHost {
         };
 
         $scope.comments = [];
+        $scope.githubGistPageURL = function () {
+            return $sce.trustAsResourceUrl(`https://gist.github.com/${$scope.workspace.owner}/${$scope.workspace.gistId}.js`);
+        };
 
         $scope.toggleCommentsVisible = (label?: string, value?: number) => {
             ga('send', 'event', CATEGORY_WORKSPACE, 'toggleCommentsVisible', label, value);
@@ -368,6 +373,9 @@ export class WorkspaceController implements WorkspaceEditorHost {
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
+                console.log(`owner  = ${$scope.workspace.owner}`);
+                console.log(`gistId = ${$scope.workspace.gistId}`);
+                /*
                 githubGistService.getGistComments(wsModel.gistId as string)
                     .then((comments) => {
                         if (Array.isArray(comments)) {
@@ -384,6 +392,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                     .catch((reason) => {
                         console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
                     });
+                */
             }
         };
 

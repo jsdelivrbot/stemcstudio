@@ -1,7 +1,7 @@
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITranscludeFunction } from 'angular';
 import controller from './ExplorerController';
 import ExplorerScope from './ExplorerScope';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
  * interface for the DOM attributes.

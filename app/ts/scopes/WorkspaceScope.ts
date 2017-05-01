@@ -1,6 +1,6 @@
 import { DoodleScope } from './DoodleScope';
-import WsModel from '../modules/wsmodel/WsModel';
-import WsFile from '../modules/wsmodel/WsFile';
+import { WsModel } from '../modules/wsmodel/WsModel';
+import { WsFile } from '../modules/wsmodel/WsFile';
 
 export interface WorkspaceScope extends DoodleScope {
 
@@ -49,6 +49,7 @@ export interface WorkspaceScope extends DoodleScope {
     comments: { type: string; msg: string }[];
     isCommentsVisible: boolean;
     toggleCommentsVisible(): void;
+    githubGistPageURL(): string;
 
     isMarkdownVisible: boolean;
     toggleMarkdownVisible(): void;

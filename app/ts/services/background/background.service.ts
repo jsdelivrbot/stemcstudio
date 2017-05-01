@@ -7,7 +7,7 @@ import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/dood
 import MwEdits from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/RoomAgent';
 import { IRoomsService, ROOMS_SERVICE_UUID } from '../../modules/rooms/api';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
 /**

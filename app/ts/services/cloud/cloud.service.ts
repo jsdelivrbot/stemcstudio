@@ -19,7 +19,7 @@ import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../github/IGitHubG
 import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../github/IGitHubRepoService';
 import { isString } from '../../utils/isString';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
-import hyphenate from '../../utils/hyphenate';
+import { hyphenate } from '../../utils/hyphenate';
 import { PathContents } from '../github/PathContents';
 import Reference from '../github/Reference';
 import ReferenceUpdateData from '../github/ReferenceUpdateData';
@@ -29,7 +29,7 @@ import RepoDataOptions from './RepoDataOptions';
 import TreeData from '../github/TreeData';
 import TreeKey from '../github/TreeKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 
 const LEGACY_META = 'doodle.json';
 

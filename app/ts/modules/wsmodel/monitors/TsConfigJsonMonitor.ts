@@ -1,6 +1,6 @@
 import Document from '../../../editor/Document';
 import { DocumentMonitor } from '../monitoring.service';
-import WsModel from '.././WsModel';
+import { WsModel } from '.././WsModel';
 
 //
 // RxJS imports

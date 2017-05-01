@@ -1,5 +1,5 @@
-import WsFile from '../../modules/wsmodel/WsFile';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsFile } from '../../modules/wsmodel/WsFile';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
  * Existence check of a file (by name).

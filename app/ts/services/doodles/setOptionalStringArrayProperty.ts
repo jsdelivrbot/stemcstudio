@@ -1,21 +1,19 @@
-import isUndefined from '../../utils/isUndefined';
-
 /**
  * Sets a string[] property on a target object.
  * Empty arrays remove the corresponding property name.
  * Undefined values remove the corresponding property name.
  */
-export function setOptionalStringArrayProperty(name: string, value: string[], target: { [name: string]: any }): void {
-    if (Array.isArray(value)) {
-        if (value.length > 0) {
-            target[name] = value;
+export function setOptionalStringArrayProperty(name: string, values: string[], target: { [name: string]: any }): void {
+    if (Array.isArray(values)) {
+        if (values.length > 0) {
+            target[name] = values;
         }
         else {
             // A zero-length array is interpreted as omitting the property.
             delete target[name];
         }
     }
-    else if (isUndefined(value)) {
+    else if (typeof values === 'undefined') {
         delete target[name];
     }
     else {

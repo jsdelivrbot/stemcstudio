@@ -5,7 +5,7 @@ import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import { updateWorkspaceTypes } from './updateWorkspaceTypes';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import dependenciesMap from './dependenciesMap';
 import dependencyNames from './dependencyNames';

@@ -6,7 +6,7 @@ import Shareable from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
 import Patch from '../../synchronization/Patch';
-import WsModel from './WsModel';
+import { WsModel } from './WsModel';
 
 /**
  * This class corresponds to a file at a particular path in a workspace.
@@ -33,7 +33,7 @@ import WsModel from './WsModel';
  * events are forwarded to the workspace, allowing the editor property of this file
  * to reflect the existence of an Editor in the user interface.
  */
-export default class WsFile implements MwDocument, Shareable {
+export class WsFile implements MwDocument, Shareable {
 
     public editor: Editor | undefined;
 

@@ -3,7 +3,7 @@ import RoomAgent from '../RoomAgent';
 import { IRoomsService, RoomParams, ROOMS_SERVICE_UUID } from '../api';
 import ModalDialog from '../../../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../../navigation/INavigationService';
-import WsModel from '../../wsmodel/WsModel';
+import { WsModel } from '../../wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../wsmodel/IWorkspaceModel';
 
 const TITLE_CREATE_ROOM = "Create Room";

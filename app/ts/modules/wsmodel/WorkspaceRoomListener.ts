@@ -4,7 +4,7 @@ import { ACTION_DELTA_MERGE } from '../../synchronization/MwAction';
 import MwEdits from '../../synchronization/MwEdits';
 import { MwOptions } from '../../synchronization/MwOptions';
 import MwUnit from '../../synchronization/MwUnit';
-import WsModel from './WsModel';
+import { WsModel } from './WsModel';
 
 /**
  * Adapter onto the workspace that is called by the RoomAgent.

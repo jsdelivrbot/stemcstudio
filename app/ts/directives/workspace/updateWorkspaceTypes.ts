@@ -5,7 +5,7 @@ import { IOptionManager } from '../../services/options/IOptionManager';
 // import { packageNamesToOptions } from './packageNamesToOptions';
 // import { moduleNamesToOptions } from './moduleNamesToOptions';
 import scriptURL from './scriptURL';
-import WsModel from '../../modules/wsmodel/WsModel';
+import { WsModel } from '../../modules/wsmodel/WsModel';
 import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 
 interface ModularUnit {
