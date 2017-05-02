@@ -1,5 +1,5 @@
-// Type definitions for @angular/core 4.0.3
-// Project: tsCodeHub
+// Type definitions for @angular/core 4.1.0
+// Project: STEMCstudio
 // Definitions by: David Geo Holmes <david.geo.holmes@gmail.com>
 
 /**
