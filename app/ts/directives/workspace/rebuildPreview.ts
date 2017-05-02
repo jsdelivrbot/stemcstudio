@@ -1,22 +1,22 @@
 import { ILocationService, IWindowService } from 'angular';
-import bubbleIframeMouseMove from './bubbleIframeMouseMove';
+import { bubbleIframeMouseMove } from './bubbleIframeMouseMove';
 import { closure } from './closure';
-import csvTypeFromContent from './csvTypeFromContent';
-import fileContent from './fileContent';
-import fileExists from './fileExists';
+import { csvTypeFromContent } from './csvTypeFromContent';
+import { fileContent } from './fileContent';
+import { fileExists } from './fileExists';
 import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
-import currentJavaScript from './currentJavaScript';
-import detect1x from './detect1x';
-import detectMarker from './detectMarker';
+import { currentJavaScript } from './currentJavaScript';
+import { detect1x } from './detect1x';
+import { detectMarker } from './detectMarker';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
-import replaceMarker from './replaceMarker';
-import scriptURL from './scriptURL';
-import schemeTypeFromContent from './schemeTypeFromContent';
-import shaderTypeFromContent from './shaderTypeFromContent';
+import { replaceMarker } from './replaceMarker';
+import { scriptURL } from './scriptURL';
+import { schemeTypeFromContent } from './schemeTypeFromContent';
+import { shaderTypeFromContent } from './shaderTypeFromContent';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
@@ -70,7 +70,7 @@ interface SystemJsConfigArg {
 
 export default function rebuildPreview(
     workspace: WsModel,
-    options: IOptionManager,
+    optionManager: IOptionManager,
     $scope: WorkspaceScope,
     $location: ILocationService,
     $window: IWindowService,
@@ -125,11 +125,11 @@ export default function rebuildPreview(
                     let html = fileContent(bestFile, workspace);
                     if (isString(html)) {
 
-                        const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
+                        const selOpts: IOption[] = optionManager.filter((option: IOption, index: number, array: IOption[]) => {
                             return workspace.getPackageDependencies().hasOwnProperty(option.packageName);
                         });
 
-                        const closureOpts: IOption[] = closure(selOpts, options);
+                        const closureOpts: IOption[] = closure(selOpts, optionManager);
 
                         const chosenCssFileNames: string[] = closureOpts.map(function (option: IOption) { return option.css; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         const stylesTags = chosenCssFileNames.map((fileName: string) => {

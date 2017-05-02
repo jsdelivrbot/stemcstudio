@@ -1,10 +1,5 @@
 import { IHttpService, ILocationService } from 'angular';
-// import closure from './closure';
-// import IOption from '../../services/options/IOption';
-import { IOptionManager } from '../../services/options/IOptionManager';
-// import { packageNamesToOptions } from './packageNamesToOptions';
-// import { moduleNamesToOptions } from './moduleNamesToOptions';
-import scriptURL from './scriptURL';
+import { scriptURL } from './scriptURL';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 
@@ -26,7 +21,6 @@ function optionsToPackageNames(options: IOption[]): string[] {
 
 function updateModules(
     wsModel: WsModel,
-    optionManager: IOptionManager,
     /**
      * The old dependencies (module names).
      */
@@ -174,7 +168,6 @@ function updateModules(
 
 function updateAmbients(
     wsModel: WsModel,
-    optionManager: IOptionManager,
     /**
      * The old dependencies (global names).
      */
@@ -324,7 +317,6 @@ function updateAmbients(
  */
 export function updateWorkspaceTypes(
     wsModel: WsModel,
-    optionManager: IOptionManager,
     ambients: AmbientResolutions,
     modulars: ModuleResolutions,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
@@ -333,8 +325,8 @@ export function updateWorkspaceTypes(
     VENDOR_FOLDER_MARKER: string,
     callback: (err?: any) => void
 ) {
-    const doneAmbients = updateAmbients(wsModel, optionManager, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
-    const doneModules = updateModules(wsModel, optionManager, modulars, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneModules = updateModules(wsModel, modulars, $http, $location, VENDOR_FOLDER_MARKER);
     Promise.all([doneAmbients, doneModules])
         .then(() => {
             callback();

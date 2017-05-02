@@ -43,10 +43,12 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     /**
      * Determines whether the key exists in the map with a defined value.
      *
-     * @param key
-     * @returns <p><code>true</code> if there is an element at the specified key.</p>
+     * Throws an error if the key argument is not a string.
      */
     public exists(key: string): boolean {
+        if (typeof key !== 'string') {
+            throw new Error("key must be a string");
+        }
         const element = this.elements[key];
         return element ? true : false;
     }

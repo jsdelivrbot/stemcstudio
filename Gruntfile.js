@@ -342,12 +342,24 @@ function copies(target) {
             dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
-            src: `museum/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`,
-            dest: prepend(target, `vendor/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`)
+            src: `museum/@angular/forms@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/forms@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
+            src: `museum/@angular/http@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/http@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
             src: `museum/@angular/platform-browser-dynamic@${VERSION_ANGULAR}/index.d.ts`,
             dest: prepend(target, `vendor/@angular/platform-browser-dynamic@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
+            src: `museum/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/platform-browser@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
+            src: `museum/@angular/router@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/router@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
             expand: true,

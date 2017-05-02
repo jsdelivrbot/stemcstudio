@@ -1,6 +1,6 @@
 /**
  * 
  */
-export default function schemeTypeFromContent(content: string): string {
+export function schemeTypeFromContent(content: string): string {
     return 'text/scheme';
 }

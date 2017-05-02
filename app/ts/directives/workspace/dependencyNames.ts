@@ -2,7 +2,7 @@
  * Extracts the names from a map of name to semantic version range.
  * TODO: Temporary until we do semantic versioning.
  */
-export default function dependencyNames(deps: { [packageName: string]: string }): string[] {
+export function dependencyNames(deps: { [packageName: string]: string }): string[] {
     const ds: string[] = [];
     for (let prop in deps) {
         if (deps.hasOwnProperty(prop)) {

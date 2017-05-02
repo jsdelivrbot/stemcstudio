@@ -7,8 +7,8 @@ import { IOptionManager } from '../../services/options/IOptionManager';
 import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
-import dependenciesMap from './dependenciesMap';
-import dependencyNames from './dependencyNames';
+import { dependenciesMap } from './dependenciesMap';
+import { dependencyNames } from './dependencyNames';
 
 /**
  * 
@@ -79,7 +79,6 @@ export default class PropertiesFlow {
                 //
                 updateWorkspaceTypes(
                     this.wsModel,
-                    this.optionManager,
                     this.ambients,
                     this.modulars,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,

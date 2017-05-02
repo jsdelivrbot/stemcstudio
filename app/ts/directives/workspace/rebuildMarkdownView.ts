@@ -1,8 +1,8 @@
-import bubbleIframeMouseMove from './bubbleIframeMouseMove';
-import fileContent from './fileContent';
-import fileExists from './fileExists';
+import { bubbleIframeMouseMove } from './bubbleIframeMouseMove';
+import { fileContent } from './fileContent';
+import { fileExists } from './fileExists';
 import { IWindowService } from 'angular';
-import readMeHTML from './readMeHTML';
+import { readMeHTML } from './readMeHTML';
 import sd from 'showdown';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WsModel } from '../../modules/wsmodel/WsModel';
@@ -43,13 +43,14 @@ export default function rebuildMarkdownView(
 
                 const markdownFilePath = workspace.getMarkdownFileChoiceOrBestAvailable();
                 if (markdownFilePath && fileExists(markdownFilePath, workspace)) {
-                    const markdown: string = fileContent(markdownFilePath, workspace);
+                    const markdown = fileContent(markdownFilePath, workspace) as string;
                     const converter: sd.Converter = new sd.Converter({ tables: true });
                     const markdownHTML = converter.makeHtml(markdown);
                     html = html.replace('// README.md', markdownHTML);
                 }
                 if (fileExists('README.css', workspace)) {
-                    html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', workspace));
+                    const searchValue = `${FSLASH_STAR} README.css ${STAR_FSLASH}`;
+                    html = html.replace(searchValue, fileContent('README.css', workspace) as string);
                 }
 
                 content.open();

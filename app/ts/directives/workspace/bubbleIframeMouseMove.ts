@@ -1,6 +1,6 @@
 // The iframe will capture the mouse events that we need to
 // resize the output widow. This function
-export default function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
+export function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
     // Save any previous onmousemove handler.
     // We're taking abit of a chance here by casting away the requirement that this ave type Window.
     const existingOnMouseMove: (this: void, event: MouseEvent) => any = <any>iframe.contentWindow.onmousemove;

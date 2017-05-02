@@ -1,5 +1,5 @@
-import detectMarker from './detectMarker';
-import fileContent from './fileContent';
+import { detectMarker } from './detectMarker';
+import { fileContent } from './fileContent';
 import modeFromName from '../../utils/modeFromName';
 import prefixFromPath from '../../utils/prefixFromPath';
 
@@ -10,7 +10,7 @@ import { WsModel } from '../../modules/wsmodel/WsModel';
  * @param language e.g. LANGUAGE_GLSL
  * @param workspace The workspace that provides the files.
  */
-export default function replaceMarker(marker: string, language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
+export function replaceMarker(marker: string, language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
     const filePaths: string[] = workspace.getFileDocumentPaths().filter(function (filePath: string) {
         return language === modeFromName(filePath);
     });

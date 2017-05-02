@@ -577,7 +577,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
                     .subscribe((settings) => {
                         updateWorkspaceTypes(
                             this.wsModel,
-                            this.optionManager,
                             this.ambients,
                             this.modulars,
                             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
@@ -744,7 +743,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         updateWorkspaceTypes(
             this.wsModel,
-            this.optionManager,
             this.ambients,
             this.modulars,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,

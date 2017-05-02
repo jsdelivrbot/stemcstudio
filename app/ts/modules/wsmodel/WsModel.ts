@@ -2022,7 +2022,15 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     }
 
+    /**
+     * Determines whether a file exists with the specified path.
+     * 
+     * Throws an Error if the path is not a string.
+     */
     existsFile(path: string): boolean {
+        if (typeof path !== 'string') {
+            throw new Error("path must be a string");
+        }
         return this.files ? this.files.exists(path) : false;
     }
 

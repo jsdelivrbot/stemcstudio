@@ -6,7 +6,7 @@
  * The current implementation is a guess based upon the existence of the return variables.
  * In future, we could parse the content to unambiguously determine the shader type.
  */
-export default function shaderTypeFromContent(content: string): string {
+export function shaderTypeFromContent(content: string): string {
     const mayBeVS = content.includes('gl_Position');
     const mayBeFS = content.includes('gl_FragColor');
     if (mayBeVS) {

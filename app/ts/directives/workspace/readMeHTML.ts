@@ -2,12 +2,8 @@ const NEWLINE = '\n';
 
 /**
  * The template used for creating the README.html for the README.md
- * 
- * @function readMeHTML
- * @param options {}
- * @return {string}
  */
-export default function readMeHTML(options: {} = {}): string {
+export function readMeHTML(options: {} = {}): string {
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<html>");
@@ -115,5 +111,5 @@ function mathJax(lines: string[]): void {
     lines.push('      }');
     lines.push('    });');
     lines.push('    </script>');
-    lines.push("    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
+    lines.push("    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
 }

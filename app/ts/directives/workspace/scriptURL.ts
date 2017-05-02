@@ -13,7 +13,7 @@ function startsWith(sourceString: string, searchString: string, position = 0): b
  * are assumed to be located in the local `vendor` folder of the domain.
  * Otherwise, the fileName is considered to be the URL of a remote server.
  */
-export default function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: string): string {
+export function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: string): string {
     if (startsWith(fileName, VENDOR_FOLDER_MARKER)) {
         // fileName(s) should be defined as VENDOR_FOLDER_MARKER + '/package/**/*.js'
         return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length);

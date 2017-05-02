@@ -19,7 +19,7 @@ function exists(path: string, workspace: WsModel): boolean {
  * 
  * A 1.x program has exactly four working files with fixed names.
  */
-export default function detect1x(workspace: WsModel): boolean {
+export function detect1x(workspace: WsModel): boolean {
     // It's OK to have these file name constants because we are detecting fixed 1.x characteristics.
     if (exists('index.html', workspace) && exists('script.ts', workspace) && exists('extras.ts', workspace) && exists('style.less', workspace)) {
         // It MAY be a 1.x project, but 2.x migrated projects may use the same file names as 1.x.
