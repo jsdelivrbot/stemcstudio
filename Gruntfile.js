@@ -230,6 +230,10 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
         },
         {
+            src: 'manual/typescript@2.3.1/lib.es2015.core.d.ts',
+            dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.core.d.ts')
+        },
+        {
             src: 'manual/typescript@2.3.1/lib.es2015.promise.d.ts',
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.promise.d.ts')
         },
