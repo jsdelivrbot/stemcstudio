@@ -13,22 +13,12 @@ interface AmbientUnit {
     URL: string;
 }
 
-/*
-function optionsToPackageNames(options: IOption[]): string[] {
-    return options.map(function (option: IOption) { return option.packageName; });
-}
-*/
-
-function updateModules(
-    wsModel: WsModel,
-    /**
-     * The old dependencies (module names).
-     */
-    modulars: ModuleResolutions,
-    $http: IHttpService,
-    $location: ILocationService,
-    VENDOR_FOLDER_MARKER: string
-): Promise<string[]> {
+/**
+ * TODO: Refactor.
+ * 
+ * oldResolutions referes to the module resolutions that are loaded (mirror)
+ */
+function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $http: IHttpService, $location: ILocationService, VENDOR_FOLDER_MARKER: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
         //
         // TODO: This needs revising now that we can change almost any part of the mapping.
@@ -37,15 +27,15 @@ function updateModules(
         /**
          * A mapping from moduleName to d.ts URL.
          */
-        const moduleResolutions = wsModel.getModuleResolutions();
+        const newResolutions = wsModel.getModuleResolutions();
         //     const ambientResolutions = wsModel.getAmbientResolutions();
 
         // Load the wokspace with the appropriate TypeScript definitions.
         /**
          * The new module dependencies (module names).
          */
-        const news: string[] = Object.keys(moduleResolutions);
-        const olds: string[] = Object.keys(modulars);
+        const news: string[] = Object.keys(newResolutions);
+        const olds: string[] = Object.keys(oldResolutions);
 
         // Determine what we need to add and remove from the workspace.
         //
@@ -63,7 +53,7 @@ function updateModules(
         const rmvs: string[] = olds.filter(function (moduleName) { return news.indexOf(moduleName) < 0; });
 
         // TODO: Optimize so that we don't keep loading `lib`.
-        let addUnits: ModularUnit[] = adds.map(function (moduleName) { return { moduleName, URL: moduleResolutions[moduleName] }; });
+        let addUnits: ModularUnit[] = adds.map(function (moduleName) { return { moduleName, URL: newResolutions[moduleName] }; });
 
         /**
          * The domain on which we are running. e.g., `https://www.stemcstudio.com` or `localhost:8080`.
@@ -95,7 +85,7 @@ function updateModules(
                                 if (removed) {
                                     const index = olds.indexOf(moduleName);
                                     if (index >= 0) {
-                                        delete modulars[moduleName];
+                                        delete oldResolutions[moduleName];
                                     }
                                     else {
                                         console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
@@ -134,7 +124,7 @@ function updateModules(
                             wsModel.addScript(addUnit.URL, content.replace(/\r\n?/g, '\n'))
                                 .then((added) => {
                                     if (added) {
-                                        modulars[addUnit.moduleName] = addUnit.URL;
+                                        oldResolutions[addUnit.moduleName] = addUnit.URL;
                                         //
                                         // This crucial step provides the mapping from the module name to the URL.
                                         //
@@ -166,17 +156,11 @@ function updateModules(
     });
 }
 
-function updateAmbients(
-    wsModel: WsModel,
-    /**
-     * The old dependencies (global names).
-     */
-    ambients: AmbientResolutions,
-    FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-    $http: IHttpService,
-    $location: ILocationService,
-    VENDOR_FOLDER_MARKER: string
-): Promise<string[]> {
+/**
+ * TODO: Refactor.
+ */
+function updateAmbients(wsModel: WsModel, ambients: AmbientResolutions, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string, $http: IHttpService, $location: ILocationService, VENDOR_FOLDER_MARKER: string): Promise<string[]> {
+    console.log(`'${FILENAME_TYPESCRIPT_CURRENT_LIB_DTS}'`);
     return new Promise<string[]>(function (resolve, reject) {
         //
         // TODO: This needs revising now that we can change almost any part of the mapping.
@@ -209,12 +193,13 @@ function updateAmbients(
          */
         const rmvs: string[] = olds.filter(function (globalName) { return news.indexOf(globalName) < 0; });
 
-        // The following is not essential, as `lib` is not an option, it's always there.
-        // TODO: Dead code because dependency changes cause a page reload.
-        // In future, dependency changes will not cause a page reload.
         if (rmvs.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS) >= 0) {
             // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
             rmvs.splice(rmvs.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS), 1);
+        }
+        if (rmvs.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS) >= 0) {
+            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
+            rmvs.splice(rmvs.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS), 1);
         }
 
         // TODO: Optimize so that we don't keep loading `lib`.
@@ -223,6 +208,9 @@ function updateAmbients(
         // Ensure that the TypeScript ambient type definitions are present.
         if (olds.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS) < 0) {
             addUnits = addUnits.concat({ globalName: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, URL: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
+        }
+        if (olds.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS) < 0) {
+            addUnits = addUnits.concat({ globalName: FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, URL: FILENAME_TYPESCRIPT_PROMISE_LIB_DTS });
         }
 
         /**
@@ -320,12 +308,13 @@ export function updateWorkspaceTypes(
     ambients: AmbientResolutions,
     modulars: ModuleResolutions,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
+    FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
     $http: IHttpService,
     $location: ILocationService,
     VENDOR_FOLDER_MARKER: string,
     callback: (err?: any) => void
 ) {
-    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
     const doneModules = updateModules(wsModel, modulars, $http, $location, VENDOR_FOLDER_MARKER);
     Promise.all([doneAmbients, doneModules])
         .then(() => {

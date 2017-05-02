@@ -19,6 +19,7 @@ export default class PropertiesFlow {
         private ambients: AmbientResolutions,
         private modulars: ModuleResolutions,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
+        private FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
         private $http: IHttpService,
         private $location: ILocationService,
         private VENDOR_FOLDER_MARKER: string,
@@ -82,6 +83,7 @@ export default class PropertiesFlow {
                     this.ambients,
                     this.modulars,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
+                    this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {

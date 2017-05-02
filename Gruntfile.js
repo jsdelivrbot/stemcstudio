@@ -230,6 +230,10 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
         },
         {
+            src: 'manual/typescript@2.3.1/lib.es2015.promise.d.ts',
+            dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.promise.d.ts')
+        },
+        {
             src: `jspm_packages/github/geometryzen/ace-workers@${VERSION_ACE_WORKERS}/src/worker.js`,
             dest: prepend(target, 'js/worker.js')
         },
