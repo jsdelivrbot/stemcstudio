@@ -346,6 +346,10 @@ function copies(target) {
             dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
+            src: `museum/@angular/common@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/common@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
             src: `museum/@angular/forms@${VERSION_ANGULAR}/index.d.ts`,
             dest: prepend(target, `vendor/@angular/forms@${VERSION_ANGULAR}/index.d.ts`)
         },

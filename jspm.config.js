@@ -35,7 +35,7 @@ System.config({
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
-    "rxjs": "npm:rxjs@5.3.0",
+    "rxjs": "npm:rxjs@5.3.1",
     "showdown": "npm:showdown@1.6.4",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.3",
@@ -123,7 +123,7 @@ System.config({
     },
     "npm:@angular/core@4.1.0": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.3.0",
+      "rxjs": "npm:rxjs@5.3.1",
       "zone.js": "npm:zone.js@0.8.9"
     },
     "npm:@angular/forms@4.1.0": {
@@ -135,7 +135,7 @@ System.config({
     "npm:@angular/http@4.1.0": {
       "@angular/core": "npm:@angular/core@4.1.0",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.1.0",
-      "rxjs": "npm:rxjs@5.3.0"
+      "rxjs": "npm:rxjs@5.3.1"
     },
     "npm:@angular/platform-browser-dynamic@4.1.0": {
       "@angular/common": "npm:@angular/common@4.1.0",
@@ -153,7 +153,7 @@ System.config({
       "@angular/core": "npm:@angular/core@4.1.0",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.3.0"
+      "rxjs": "npm:rxjs@5.3.1"
     },
     "npm:@angular/upgrade@4.1.0": {
       "@angular/compiler": "npm:@angular/compiler@4.1.0",
@@ -667,7 +667,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.3.0": {
+    "npm:rxjs@5.3.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"

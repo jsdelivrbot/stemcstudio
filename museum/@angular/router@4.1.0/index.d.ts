@@ -1,4 +1,8 @@
 
+import { Compiler, ErrorHandler, ModuleWithProviders, NgModuleFactory, NgModuleFactoryLoader, OnDestroy } from '@angular/core'
+import { ComponentRef, ComponentFactoryResolver, EventEmitter, Injector, ResolvedReflectiveProvider, ViewContainerRef } from '@angular/core'
+import { Observable } from 'rxjs/Observable';
+
 export interface ParamMap {
     has(name: string): boolean;
     /**
@@ -87,6 +91,8 @@ export declare type LoadChildrenCallback = () => Type<any> | NgModuleFactory<any
 
 export declare type LoadChildren = string | LoadChildrenCallback;
 
+export declare type RunGuardsAndResolvers = 'paramsChange' | 'paramsOrQueryParamsChange' | 'always';
+
 export interface Route {
     path?: string;
     pathMatch?: string;
@@ -106,6 +112,230 @@ export interface Route {
 }
 
 export declare type Routes = Route[];
+
+export declare class UrlTree {
+    /** The root segment group of the URL tree */
+    root: UrlSegmentGroup;
+    /** The query params of the URL */
+    queryParams: {
+        [key: string]: string;
+    };
+    /** The fragment of the URL */
+    fragment: string | null;
+    readonly queryParamMap: ParamMap;
+    /** @docsNotRequired */
+    toString(): string;
+}
+
+export declare abstract class UrlHandlingStrategy {
+    /**
+     * Tells the router if this URL should be processed.
+     *
+     * When it returns true, the router will execute the regular navigation.
+     * When it returns false, the router will set the router state to an empty state.
+     * As a result, all the active components will be destroyed.
+     *
+     */
+    abstract shouldProcessUrl(url: UrlTree): boolean;
+    /**
+     * Extracts the part of the URL that should be handled by the router.
+     * The rest of the URL will remain untouched.
+     */
+    abstract extract(url: UrlTree): UrlTree;
+    /**
+     * Merges the URL fragment with the rest of the URL.
+     */
+    abstract merge(newUrlPart: UrlTree, rawUrl: UrlTree): UrlTree;
+}
+
+export declare type DetachedRouteHandle = {};
+
+export declare abstract class RouteReuseStrategy {
+    /** Determines if this route (and its subtree) should be detached to be reused later */
+    abstract shouldDetach(route: ActivatedRouteSnapshot): boolean;
+    /** Stores the detached route */
+    abstract store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void;
+    /** Determines if this route (and its subtree) should be reattached */
+    abstract shouldAttach(route: ActivatedRouteSnapshot): boolean;
+    /** Retrieves the previously stored route */
+    abstract retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null;
+    /** Determines if a route should be reused */
+    abstract shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean;
+}
+
+export declare abstract class UrlSerializer {
+    /** Parse a url into a {@link UrlTree} */
+    abstract parse(url: string): UrlTree;
+    /** Converts a {@link UrlTree} into a url */
+    abstract serialize(tree: UrlTree): string;
+}
+
+export declare class RouterOutlet implements OnDestroy {
+    private parentOutletMap;
+    private location;
+    private resolver;
+    private name;
+    private activated;
+    private _activatedRoute;
+    outletMap: RouterOutletMap;
+    activateEvents: EventEmitter<any>;
+    deactivateEvents: EventEmitter<any>;
+    constructor(parentOutletMap: RouterOutletMap, location: ViewContainerRef, resolver: ComponentFactoryResolver, name: string);
+    ngOnDestroy(): void;
+    /** @deprecated since v4 **/
+    readonly locationInjector: Injector;
+    /** @deprecated since v4 **/
+    readonly locationFactoryResolver: ComponentFactoryResolver;
+    readonly isActivated: boolean;
+    readonly component: Object;
+    readonly activatedRoute: ActivatedRoute;
+    detach(): ComponentRef<any>;
+    attach(ref: ComponentRef<any>, activatedRoute: ActivatedRoute): void;
+    deactivate(): void;
+    /** @deprecated since v4, use {@link activateWith} */
+    activate(activatedRoute: ActivatedRoute, resolver: ComponentFactoryResolver, injector: Injector, providers: ResolvedReflectiveProvider[], outletMap: RouterOutletMap): void;
+    activateWith(activatedRoute: ActivatedRoute, resolver: ComponentFactoryResolver | null, outletMap: RouterOutletMap): void;
+}
+
+export declare class RouterOutletMap {
+    /**
+     * Adds an outlet to this map.
+     */
+    registerOutlet(name: string, outlet: RouterOutlet): void;
+    /**
+     * Removes an outlet from this map.
+     */
+    removeOutlet(name: string): void;
+}
+
+export declare class Tree<T> {
+    constructor(root: TreeNode<T>);
+    readonly root: T;
+}
+
+export declare class TreeNode<T> {
+    value: T;
+    children: TreeNode<T>[];
+    constructor(value: T, children: TreeNode<T>[]);
+    toString(): string;
+}
+
+export declare class RouterStateSnapshot extends Tree<ActivatedRouteSnapshot> {
+    /** The url from which this snapshot was created */
+    url: string;
+    toString(): string;
+}
+
+export declare class RouterState extends Tree<ActivatedRoute> {
+    /** The current snapshot of the router state */
+    snapshot: RouterStateSnapshot;
+    toString(): string;
+}
+
+export declare type QueryParamsHandling = 'merge' | 'preserve' | '';
+
+export interface NavigationExtras {
+    /**
+    * Enables relative navigation from the current ActivatedRoute.
+    *
+    * Configuration:
+    *
+    * ```
+    * [{
+    *   path: 'parent',
+    *   component: ParentComponent,
+    *   children: [{
+    *     path: 'list',
+    *     component: ListComponent
+    *   },{
+    *     path: 'child',
+    *     component: ChildComponent
+    *   }]
+    * }]
+    * ```
+    *
+    * Navigate to list route from child route:
+    *
+    * ```
+    *  @Component({...})
+    *  class ChildComponent {
+    *    constructor(private router: Router, private route: ActivatedRoute) {}
+    *
+    *    go() {
+    *      this.router.navigate(['../list'], { relativeTo: this.route });
+    *    }
+    *  }
+    * ```
+    */
+    relativeTo?: ActivatedRoute | null;
+    /**
+    * Sets query parameters to the URL.
+    *
+    * ```
+    * // Navigate to /results?page=1
+    * this.router.navigate(['/results'], { queryParams: { page: 1 } });
+    * ```
+    */
+    queryParams?: Params | null;
+    /**
+    * Sets the hash fragment for the URL.
+    *
+    * ```
+    * // Navigate to /results#top
+    * this.router.navigate(['/results'], { fragment: 'top' });
+    * ```
+    */
+    fragment?: string;
+    /**
+    * Preserves the query parameters for the next navigation.
+    *
+    * deprecated, use `queryParamsHandling` instead
+    *
+    * ```
+    * // Preserve query params from /results?page=1 to /view?page=1
+    * this.router.navigate(['/view'], { preserveQueryParams: true });
+    * ```
+    *
+    * @deprecated since v4
+    */
+    preserveQueryParams?: boolean;
+    /**
+    *  config strategy to handle the query parameters for the next navigation.
+    *
+    * ```
+    * // from /results?page=1 to /view?page=1&page=2
+    * this.router.navigate(['/view'], { queryParams: { page: 2 },  queryParamsHandling: "merge" });
+    * ```
+    */
+    queryParamsHandling?: QueryParamsHandling | null;
+    /**
+    * Preserves the fragment for the next navigation
+    *
+    * ```
+    * // Preserve fragment from /results#top to /view#top
+    * this.router.navigate(['/view'], { preserveFragment: true });
+    * ```
+    */
+    preserveFragment?: boolean;
+    /**
+    * Navigates without pushing a new state into history.
+    *
+    * ```
+    * // Navigate silently to /view
+    * this.router.navigate(['/view'], { skipLocationChange: true });
+    * ```
+    */
+    skipLocationChange?: boolean;
+    /**
+    * Navigates while replacing the current state in history.
+    *
+    * ```
+    * // Navigate to /view
+    * this.router.navigate(['/view'], { replaceUrl: true });
+    * ```
+    */
+    replaceUrl?: boolean;
+}
 
 export declare class Router {
     private rootComponentType;
@@ -273,8 +503,103 @@ export declare class Router {
     private resetUrlToCurrentUrlTree();
 }
 
+export declare type InitialNavigation = true | false | 'enabled' | 'disabled' | 'legacy_enabled' | 'legacy_disabled';
+
+export interface ExtraOptions {
+    /**
+     * Makes the router log all its internal events to the console.
+     */
+    enableTracing?: boolean;
+    /**
+     * Enables the location strategy that uses the URL fragment instead of the history API.
+     */
+    useHash?: boolean;
+    /**
+     * Disables the initial navigation.
+     */
+    initialNavigation?: InitialNavigation;
+    /**
+     * A custom error handler.
+     */
+    errorHandler?: ErrorHandler;
+    /**
+     * Configures a preloading strategy. See {@link PreloadAllModules}.
+     */
+    preloadingStrategy?: any;
+}
+
 export declare class RouterModule {
     constructor(guard: any, router: Router);
     static forRoot(routes: Routes, config?: ExtraOptions): ModuleWithProviders;
     static forChild(routes: Routes): ModuleWithProviders;
+}
+
+export declare type Params = {
+    [key: string]: any;
+};
+
+export declare class ActivatedRouteSnapshot {
+    /** The URL segments matched by this route */
+    url: UrlSegment[];
+    /** The matrix parameters scoped to this route */
+    params: Params;
+    /** The query parameters shared by all the routes */
+    queryParams: Params;
+    /** The URL fragment shared by all the routes */
+    fragment: string;
+    /** The static and resolved data of this route */
+    data: Data;
+    /** The outlet name of the route */
+    outlet: string;
+    /** The component of the route */
+    component: Type<any> | string | null;
+    /** The configuration used to match this route */
+    readonly routeConfig: Route | null;
+    /** The root of the router state */
+    readonly root: ActivatedRouteSnapshot;
+    /** The parent of this route in the router state tree */
+    readonly parent: ActivatedRouteSnapshot | null;
+    /** The first child of this route in the router state tree */
+    readonly firstChild: ActivatedRouteSnapshot | null;
+    /** The children of this route in the router state tree */
+    readonly children: ActivatedRouteSnapshot[];
+    /** The path from the root of the router state tree to this route */
+    readonly pathFromRoot: ActivatedRouteSnapshot[];
+    readonly paramMap: ParamMap;
+    readonly queryParamMap: ParamMap;
+    toString(): string;
+}
+
+export declare class ActivatedRoute {
+    /** An observable of the URL segments matched by this route */
+    url: Observable<UrlSegment[]>;
+    /** An observable of the matrix parameters scoped to this route */
+    params: Observable<Params>;
+    /** An observable of the query parameters shared by all the routes */
+    queryParams: Observable<Params>;
+    /** An observable of the URL fragment shared by all the routes */
+    fragment: Observable<string>;
+    /** An observable of the static and resolved data of this route. */
+    data: Observable<Data>;
+    /** The outlet name of the route. It's a constant */
+    outlet: string;
+    /** The component of the route. It's a constant */
+    component: Type<any> | string | null;
+    /** The current snapshot of this route */
+    snapshot: ActivatedRouteSnapshot;
+    /** The configuration used to match this route */
+    readonly routeConfig: Route | null;
+    /** The root of the router state */
+    readonly root: ActivatedRoute;
+    /** The parent of this route in the router state tree */
+    readonly parent: ActivatedRoute | null;
+    /** The first child of this route in the router state tree */
+    readonly firstChild: ActivatedRoute | null;
+    /** The children of this route in the router state tree */
+    readonly children: ActivatedRoute[];
+    /** The path from the root of the router state tree to this route */
+    readonly pathFromRoot: ActivatedRoute[];
+    readonly paramMap: Observable<ParamMap>;
+    readonly queryParamMap: Observable<ParamMap>;
+    toString(): string;
 }
