@@ -159,8 +159,15 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
 /**
  * TODO: Refactor.
  */
-function updateAmbients(wsModel: WsModel, ambients: AmbientResolutions, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string, $http: IHttpService, $location: ILocationService, VENDOR_FOLDER_MARKER: string): Promise<string[]> {
-    console.log(`'${FILENAME_TYPESCRIPT_CURRENT_LIB_DTS}'`);
+function updateAmbients(
+    wsModel: WsModel,
+    ambients: AmbientResolutions,
+    FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
+    FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
+    FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
+    $http: IHttpService,
+    $location: ILocationService,
+    VENDOR_FOLDER_MARKER: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
         //
         // TODO: This needs revising now that we can change almost any part of the mapping.
@@ -197,6 +204,10 @@ function updateAmbients(wsModel: WsModel, ambients: AmbientResolutions, FILENAME
             // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
             rmvs.splice(rmvs.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS), 1);
         }
+        if (rmvs.indexOf(FILENAME_TYPESCRIPT_ES2015_CORE_DTS) >= 0) {
+            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
+            rmvs.splice(rmvs.indexOf(FILENAME_TYPESCRIPT_ES2015_CORE_DTS), 1);
+        }
         if (rmvs.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS) >= 0) {
             // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
             rmvs.splice(rmvs.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS), 1);
@@ -208,6 +219,9 @@ function updateAmbients(wsModel: WsModel, ambients: AmbientResolutions, FILENAME
         // Ensure that the TypeScript ambient type definitions are present.
         if (olds.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS) < 0) {
             addUnits = addUnits.concat({ globalName: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, URL: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
+        }
+        if (olds.indexOf(FILENAME_TYPESCRIPT_ES2015_CORE_DTS) < 0) {
+            addUnits = addUnits.concat({ globalName: FILENAME_TYPESCRIPT_ES2015_CORE_DTS, URL: FILENAME_TYPESCRIPT_ES2015_CORE_DTS });
         }
         if (olds.indexOf(FILENAME_TYPESCRIPT_PROMISE_LIB_DTS) < 0) {
             addUnits = addUnits.concat({ globalName: FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, URL: FILENAME_TYPESCRIPT_PROMISE_LIB_DTS });
@@ -308,13 +322,14 @@ export function updateWorkspaceTypes(
     ambients: AmbientResolutions,
     modulars: ModuleResolutions,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
+    FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
     FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
     $http: IHttpService,
     $location: ILocationService,
     VENDOR_FOLDER_MARKER: string,
     callback: (err?: any) => void
 ) {
-    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_ES2015_CORE_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
     const doneModules = updateModules(wsModel, modulars, $http, $location, VENDOR_FOLDER_MARKER);
     Promise.all([doneAmbients, doneModules])
         .then(() => {

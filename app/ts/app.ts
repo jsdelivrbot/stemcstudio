@@ -194,7 +194,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.60');
+app.constant('version', '2.24.61');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -248,6 +248,7 @@ app.constant('GITHUB_LOGIN_COOKIE_NAME', 'github-login');
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 // WARNING: The Gruntfile.js must also copy the same version.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath(`typescript@${TYPESCRIPT_SERVICES_VERSION}`, 'lib.d.ts'));
+app.constant('FILENAME_TYPESCRIPT_ES2015_CORE_DTS', vendorPath(`typescript@${TYPESCRIPT_SERVICES_VERSION}`, 'lib.es2015.core.d.ts'));
 app.constant('FILENAME_TYPESCRIPT_PROMISE_LIB_DTS', vendorPath(`typescript@${TYPESCRIPT_SERVICES_VERSION}`, 'lib.es2015.promise.d.ts'));
 
 // The MathScript js library provides operator overloading at runtime.
