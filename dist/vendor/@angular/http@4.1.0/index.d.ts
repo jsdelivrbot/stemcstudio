@@ -10,7 +10,11 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { Observable } from 'rxjs/Observable';
+//
+// We import from rxjs because that is what will be loaded in the Language Service.
+// If we don't do this, Observable will be any for this module.
+//
+import { Observable } from 'rxjs';
 
 export declare class HttpModule {
 }
