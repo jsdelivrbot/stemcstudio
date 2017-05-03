@@ -189,12 +189,12 @@ function makeKey(name: string): string {
 const VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER';
 
 function vendorPath(packageFolder: string, fileName: string): string {
-    return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
+    return `${VENDOR_FOLDER_MARKER}/${packageFolder}/${fileName}`;
 }
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.67');
+app.constant('version', '2.24.68');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

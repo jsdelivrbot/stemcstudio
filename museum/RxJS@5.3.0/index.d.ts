@@ -267,3 +267,25 @@ export class Observable<T> {
      */
     static timer(dueTime: number, period: number, scheduler?: IScheduler): Observable<number>;
 }
+
+export interface Operator<T, R> {
+    call(subscriber: Subscriber<R>, source: any): TeardownLogic;
+}
+
+export declare class Subject<T> extends Observable<T> implements ISubscription {
+    observers: Observer<T>[];
+    closed: boolean;
+    isStopped: boolean;
+    hasError: boolean;
+    thrownError: any;
+    constructor();
+    static create: Function;
+    lift<R>(operator: Operator<T, R>): Observable<T>;
+    next(value?: T): void;
+    error(err: any): void;
+    complete(): void;
+    unsubscribe(): void;
+    protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    asObservable(): Observable<T>;
+}
