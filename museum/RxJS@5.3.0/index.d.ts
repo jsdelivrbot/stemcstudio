@@ -228,6 +228,11 @@ export class Observable<T> {
     takeUntil(notifier: Observable<any>): Observable<T>;
 
     /**
+     * Converts the observable to a promise.
+     */
+    toPromise(): Promise<T>;
+
+    /**
      * Creates a new Observable sequence from an array-like or iterable object.
      */
     static from<T>(array: ArrayOrIterable<T>): Observable<T>;
