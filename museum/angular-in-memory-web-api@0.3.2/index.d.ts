@@ -734,10 +734,11 @@ export declare class InMemoryBackendService {
     protected setPassThruBackend(): void;
 }
 
-import { Injector, ModuleWithProviders, Type } from '@angular/core';
+import { ModuleWithProviders, Type } from '@angular/core';
 import { XHRBackend } from '@angular/http';
-import { InMemoryBackendConfigArgs, InMemoryBackendConfig, InMemoryDbService } from './in-memory-backend.service';
+
 export declare function inMemoryBackendServiceFactory(injector: Injector, dbService: InMemoryDbService, options: InMemoryBackendConfig): XHRBackend;
+
 export declare class InMemoryWebApiModule {
     /**
     *  Prepare in-memory-web-api in the root/boot application module
