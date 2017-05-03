@@ -374,6 +374,10 @@ function copies(target) {
             dest: prepend(target, `vendor/@angular/router@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
+            src: `museum/angular-in-memory-web-api@0.3.2/index.d.ts`,
+            dest: prepend(target, `vendor/angular-in-memory-web-api@0.3.2/index.d.ts`)
+        },
+        {
             expand: true,
             cwd: "museum/async@1.4.2",
             src: ["**"],
