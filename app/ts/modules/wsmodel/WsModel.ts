@@ -90,6 +90,86 @@ export interface AmbientResolutions {
     [globalName: string]: string;
 }
 
+/**
+ * Mirros the state of the Language Service cache for ambients or modules.
+ */
+export class LanguageServiceMirror<T> {
+    /**
+     * Tracks the number of ambients or modules that are using the specified path.
+     * This is used to ensure that scripts are not removed while they are being used.
+     */
+    private readonly usage: { [path: string]: number } = {};
+    /**
+     * The mapping of an ambient name or module name to a path.
+     * This is used to manage the loading of scripts into the Language Service cache
+     */
+    private readonly resolutions: T;
+
+    /**
+     *
+     */
+    constructor(resolutions: T) {
+        this.resolutions = resolutions;
+    }
+
+    /**
+     * Returns the names of the modules or hlobal variables.
+     */
+    names(): string[] {
+        return Object.keys(this.resolutions);
+    }
+
+    pathForName(name: string): string {
+        return this.resolutions[name];
+    }
+
+    addMapping(name: string, path: string): number {
+        this.resolutions[name] = path;
+        return this.incUsage(path);
+    }
+
+    removeMapping(name: string, path: string): number {
+        delete this.resolutions[name];
+        return this.decUsage(path);
+    }
+
+    /**
+     * Increments the reference count on the resource specified by a path.
+     * Returns the reference count after the increment. 
+     */
+    private incUsage(path: string): number {
+        if (typeof this.usage[path] === 'number') {
+            this.usage[path] += 1;
+        }
+        else {
+            this.usage[path] = 1;
+        }
+        return this.usage[path];
+    }
+
+    /**
+     * Decrements the reference count on the resource specified by the path.
+     * Returns the reference count after the decrement. 
+     */
+    private decUsage(path: string): number {
+        if (typeof this.usage[path] === 'number') {
+            const usage = this.usage[path];
+            if (usage === 1) {
+                // Decrement will take it to zero, delete the map entry.
+                delete this.usage[path];
+                return 0;
+            }
+            else {
+                this.usage[path] = usage + 1;
+                return this.usage[path];
+            }
+        }
+        else {
+            throw new Error(`decUsage(${path}) must have an existing usage.`);
+        }
+    }
+}
+
 export interface TypesConfigSettings {
     warnings?: boolean;
     /**
@@ -169,11 +249,13 @@ const LANGUAGE_SERVICE_NOT_AVAILABLE = "Language Service is not available";
  * Returns a promise that will always report an error indicating that
  * the Language Service is not available.
  */
+/*
 function noLanguageServicePromise<T>(): Promise<T> {
     return new Promise<T>(function (resolve, reject) {
         reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
     });
 }
+*/
 
 /**
  * Syntax and Semantic diagnostics are reported to the user as errors.
@@ -482,6 +564,12 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private languageServiceProxy: LanguageServiceProxy | undefined;
 
     /**
+     * Keep track of the dependencies (module names) that are loaded in the Language Service.
+     */
+    private readonly ambients = new LanguageServiceMirror<AmbientResolutions>({});
+    private readonly modulars = new LanguageServiceMirror<ModuleResolutions>({});
+
+    /**
      * The room that this workspace is currently connected to.
      */
     private room: RoomAgent | undefined;
@@ -607,6 +695,33 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         // We do nothing. There is no destructor; it would never be called.
     }
 
+    private logLifecycle(message: string): void {
+        console.log(message);
+    }
+
+    private languageServiceOrThrow(): LanguageServiceProxy {
+        if (this.languageServiceProxy) {
+            return this.languageServiceProxy;
+        }
+        else {
+            throw new Error(LANGUAGE_SERVICE_NOT_AVAILABLE);
+        }
+    }
+
+    /**
+     * By accessing the language service through a Promise we ensure
+     * that an exception due to a missing language service becomes
+     * a rejection.
+     */
+    private languageService(): Promise<LanguageServiceProxy> {
+        if (this.languageServiceProxy) {
+            return Promise.resolve(this.languageServiceProxy);
+        }
+        else {
+            return Promise.reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+        }
+    }
+
     /**
      * Informs the workspace that we want to reuse it.
      * This method starts the workspace thread.
@@ -616,7 +731,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     recycle(): Promise<void> {
         if (this.traceLifecycle) {
-            console.log(`WsModel.recycle()`);
+            this.logLifecycle(`WsModel.recycle()`);
         }
         return new Promise<void>((resolve, reject) => {
             function callback(reason: Error | null | undefined): void {
@@ -637,7 +752,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private recycleInternal(callback: (err: Error | null | undefined) => void): void {
         if (this.waitUntilZeroRefCount) {
             if (this.traceLifecycle) {
-                console.log(`WsModel @waitUntilZeroRefCount`);
+                this.logLifecycle(`WsModel @waitUntilZeroRefCount`);
             }
             this.waitUntilZeroRefCount
                 .then(() => {
@@ -650,7 +765,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
         else if (this.waitUntilMonitoringEnded) {
             if (this.traceLifecycle) {
-                console.log(`WsModel @waitUntilMonitoringEnded`);
+                this.logLifecycle(`WsModel @waitUntilMonitoringEnded`);
             }
             this.waitUntilMonitoringEnded
                 .then(() => {
@@ -672,17 +787,23 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 this.languageServiceProxy.initialize(scriptImports, (err: any) => {
                     if (!err) {
                         if (this.languageServiceProxy) {
-                            this.languageServiceProxy.setTrace(this.traceLanguageService, callback);
+                            this.languageServiceProxy.setTrace(this.traceLanguageService)
+                                .then((oldTrace) => {
+                                    callback(void 0);
+                                })
+                                .catch(callback);
                         }
                         else {
-                            console.warn("Language Service lost following initialize");
-                            callback(null);
+                            callback(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
                         }
                     }
                     else {
                         callback(err);
                     }
                 });
+            }
+            else {
+                callback(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
             }
         }
     }
@@ -698,7 +819,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     dispose(): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.dispose()`);
+            this.logLifecycle(`WsModel.dispose()`);
         }
         // Just as recycle calls addRef, a dispose calls release.
         this.release();
@@ -710,7 +831,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private addRef(): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.addRef() @refCount = ${this.refCount}`);
+            this.logLifecycle(`WsModel.addRef() @refCount = ${this.refCount}`);
         }
         if (this.refCount === 0) {
             if (this.files || this.trash) {
@@ -729,7 +850,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
         this.refCount++;
         if (this.traceLifecycle) {
-            console.log(`WsModel @refCount = ${this.refCount}`);
+            this.logLifecycle(`WsModel @refCount = ${this.refCount}`);
         }
     }
 
@@ -739,7 +860,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private release(): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.release() @refCount = ${this.refCount}`);
+            this.logLifecycle(`WsModel.release() @refCount = ${this.refCount}`);
         }
         this.refCount--;
         if (this.refCount === 0) {
@@ -748,24 +869,28 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 this.endMonitoring()
                     .then(() => {
                         if (this.traceLifecycle) {
-                            console.log(`WsModel Language Service monitoring has ended.`);
+                            this.logLifecycle(`WsModel Language Service monitoring has ended.`);
                         }
                         this.eventBus.reset();
-                        if (this.languageServiceProxy) {
-                            this.languageServiceProxy.terminate();
-                            this.languageServiceProxy = void 0;
-                        }
-                        if (this.files) {
-                            this.files.release();
-                            this.files = void 0;
-                        }
-                        if (this.trash) {
-                            this.trash.release();
-                            this.trash = void 0;
-                        }
-                        // Clear this property, we don't need to wait on it in the recycle method.
-                        this.waitUntilMonitoringEnded = void 0;
-                        resolve();
+                        this.cleanLanguageService()
+                            .then(() => {
+                                this.languageServiceOrThrow().terminate();
+                                this.languageServiceProxy = void 0;
+                                if (this.files) {
+                                    this.files.release();
+                                    this.files = void 0;
+                                }
+                                if (this.trash) {
+                                    this.trash.release();
+                                    this.trash = void 0;
+                                }
+                                // Clear this property, we don't need to wait on it in the recycle method.
+                                this.waitUntilMonitoringEnded = void 0;
+                                resolve();
+                            })
+                            .catch((err) => {
+                                reject(err);
+                            });
                     })
                     .catch(function (reason) {
                         reject(reason);
@@ -783,8 +908,25 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             }
         }
         if (this.traceLifecycle) {
-            console.log(`WsModel @refCount = ${this.refCount}`);
+            this.logLifecycle(`WsModel @refCount = ${this.refCount}`);
         }
+    }
+
+    /**
+     * Remove d.ts files that we have added to the Language Service.
+     */
+    private cleanLanguageService(): Promise<any> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.cleanLangaugeService()`);
+        }
+        const todos: Promise<any>[] = [];
+        for (const moduleName of this.modulars.names()) {
+            todos.push(this.removeModule(moduleName));
+        }
+        for (const globalName of this.ambients.names()) {
+            todos.push(this.removeAmbient(globalName));
+        }
+        return Promise.all(todos);
     }
 
     /**
@@ -845,29 +987,11 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Uses the returned contents to set the default library on the language service (proxy).
      * This method is asynchronous. The callback is executed upon completion.
      */
-    setDefaultLibrary(url: string): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            get(url, (err: Error, sourceCode: string) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    if (this.languageServiceProxy) {
-                        this.languageServiceProxy.setDefaultLibContent(sourceCode, (err: any) => {
-                            if (!err) {
-                                resolve();
-                            }
-                            else {
-                                reject(err);
-                            }
-                        });
-                    }
-                    else {
-                        reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
-                    }
-                }
-            });
-        });
+    setDefaultLibrary(url: string) {
+        const setDefaultLibContent = (sourceCode: string) => {
+            return this.languageServiceOrThrow().setDefaultLibContent(sourceCode);
+        };
+        return get(url).then(setDefaultLibContent);
     }
 
     /**
@@ -895,42 +1019,18 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         });
     }
 
+    /**
+     * Returns a promise containing the updated settings.
+     */
     synchTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
-        return new Promise<TsConfigSettings>((resolve, reject) => {
-            if (this.languageServiceProxy) {
-                this.languageServiceProxy.setTsConfig(settings, (err: any, updatedSettings: TsConfigSettings) => {
-                    if (!err) {
-                        resolve(updatedSettings);
-                    }
-                    else {
-                        reject(err);
-                    }
-                });
-            }
-            else {
-                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
-            }
-        });
+        return this.languageService().then(languageService => languageService.setTsConfig(settings));
     }
 
-    setTrace(trace: boolean): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            // We won't bother tracking inFlight for tracing.
-            if (this.languageServiceProxy) {
-                const callback = function (err: any): void {
-                    if (!err) {
-                        resolve();
-                    }
-                    else {
-                        reject(err);
-                    }
-                };
-                this.languageServiceProxy.setTrace(trace, callback);
-            }
-            else {
-                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
-            }
-        });
+    /**
+     * Sets the trace flag in the language service worker and returns the old trace value.
+     */
+    setTrace(trace: boolean): Promise<boolean> {
+        return this.languageService().then(languageService => languageService.setTrace(trace));
     }
 
     /**
@@ -938,7 +1038,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     attachEditor(path: string, editor: Editor): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.attachEditor(path = ${path})`);
+            this.logLifecycle(`WsModel.attachEditor(path = ${path})`);
         }
         // The user may elect to open an editor but then leave the workspace as the editor is opening.
         if (this.isZombie()) {
@@ -1015,7 +1115,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     detachEditor(path: string, editor: Editor): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.detachEditor(path = ${path})`);
+            this.logLifecycle(`WsModel.detachEditor(path = ${path})`);
         }
         if (this.isZombie()) {
             return;
@@ -1140,7 +1240,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
         if (this.traceLifecycle) {
-            console.log(`WsModel.beginDocumentMonitoring(path = ${path})`);
+            this.logLifecycle(`WsModel.beginDocumentMonitoring(path = ${path})`);
         }
         checkPath(path);
         checkCallback(callback);
@@ -1220,7 +1320,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     endDocumentMonitoring(path: string, callback: (err: any) => void) {
         if (this.traceLifecycle) {
-            console.log(`WsModel.endMonitoring(path = ${path})`);
+            this.logLifecycle(`WsModel.endMonitoring(path = ${path})`);
         }
         try {
             checkPath(path);
@@ -1267,7 +1367,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private endMonitoring(): Promise<void> {
         if (this.traceLifecycle) {
-            console.log("WsModel.endMonitoring()");
+            this.logLifecycle("WsModel.endMonitoring()");
         }
         return new Promise<void>((resolve, reject) => {
             const paths = Object.keys(this.langDocumentChangeListenerRemovers);
@@ -1294,54 +1394,139 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         });
     }
 
+    addAmbient(globalName: string, path: string, content: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.addScript(path, content)
+                .then((added) => {
+                    this.ambients.addMapping(globalName, path);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    removeAmbient(globalName: string): Promise<boolean> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.removeAmbient("${globalName}")`);
+        }
+        return new Promise<boolean>((resolve, reject) => {
+            const path = this.ambients.pathForName(globalName);
+            this.removeScript(path)
+                .then((removed) => {
+                    if (removed) {
+                        this.ambients.removeMapping(globalName, path);
+                        resolve(removed);
+                    }
+                    else {
+                        reject(new Error(`removeAmbient(${globalName}) but ${path} does not exist.`));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
     /**
-     * Ensures a mapping, in the Language Service, from a module name to a URL.
-     * The promise returns the previously mapped-to URL which is expected to be undefined. 
+     * 
      */
-    ensureModuleMapping(moduleName: string, path: string): Promise<string | undefined> {
-        if (this.languageServiceProxy) {
-            return this.languageServiceProxy.ensureModuleMapping(moduleName, path);
+    addModule(moduleName: string, path: string, content: string): Promise<{ previous: string | undefined; added: boolean }> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.addModule('${moduleName}', '${path}')`);
         }
-        else {
-            return noLanguageServicePromise<string | undefined>();
-        }
+        return new Promise<{ previous: string | undefined; added: boolean }>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.ensureScript(path, content)
+                    .then((added) => {
+                        if (this.languageServiceProxy) {
+                            this.languageServiceProxy.ensureModuleMapping(moduleName, path)
+                                .then((previous) => {
+                                    this.modulars.addMapping(moduleName, path);
+                                    if (added) {
+                                        this.filesEventHub.emitAsync('addedToLanguageService', { path });
+                                    }
+                                    resolve({ previous, added });
+                                })
+                                .catch(function (err) {
+                                    reject(new Error(`ensureModuleMapping(${moduleName}) failed. ${err}`));
+                                });
+                        }
+                        else {
+                            reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+                        }
+                    })
+                    .catch((err) => {
+                        reject(new Error(`ensureScript(${path}) failed. Cause: ${err}`));
+                    });
+            }
+            else {
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+            }
+        });
     }
 
     /**
      * Removes a mapping, in the Language Service, from a module name to a URL.
      * The promise returns the previously mapped-to URL allowing subsequent script removal. 
      */
-    removeModuleMapping(moduleName: string): Promise<string | undefined> {
-        if (this.languageServiceProxy) {
-            return this.languageServiceProxy.removeModuleMapping(moduleName);
+    removeModule(moduleName: string): Promise<{ previous: string | undefined; removed: boolean }> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.removeModule('${moduleName}')`);
         }
-        else {
-            return noLanguageServicePromise<string | undefined>();
-        }
+        return new Promise<{ previous: string | undefined; removed: boolean }>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.removeModuleMapping(moduleName)
+                    .then((previous) => {
+                        const path = this.modulars.pathForName(moduleName);
+                        const refCount = this.modulars.removeMapping(moduleName, path);
+                        if (refCount === 0) {
+                            this.removeScript(path)
+                                .then(function (removed) {
+                                    resolve({ previous, removed });
+                                })
+                                .catch(function (err) {
+                                    reject(err);
+                                });
+                        }
+                        else {
+                            resolve({ previous, removed: false });
+                        }
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            }
+            else {
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+            }
+        });
     }
 
     /**
      * Synchronization method to add a script to the Language Service.
+     * TODO: Rename the `path` parameter to `moduleName`?
      */
     addScript(path: string, content: string): Promise<boolean> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.addScript("${path}")`);
+        }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.ensureScript(path, content, (err: any, added?: boolean) => {
-                    if (!err) {
+                this.languageServiceProxy.ensureScript(path, content)
+                    .then((added) => {
                         if (added) {
                             this.filesEventHub.emitAsync('addedToLanguageService', { path });
                             resolve(added);
                         }
                         else {
-                            // Attempting to add a script which is already there.
-                            console.warn(`WsModel.ensureScript(${path}) returned ${added}`);
-                            resolve(added);
+                            reject(new Error(`ensureScript(${path}) returned ${added}, indicating that the script ${path} already exists.`));
                         }
-                    }
-                    else {
-                        reject(new Error(`WsModel.ensureScript(${path}) failed. Cause: ${err}`));
-                    }
-                });
+                    })
+                    .catch((err) => {
+                        reject(new Error(`ensureScript(${path}) failed. Cause: ${err}`));
+
+                    });
             }
             else {
                 throw new Error(LANGUAGE_SERVICE_NOT_AVAILABLE);
@@ -1361,28 +1546,27 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * error if something goes wrong.
      */
     removeScript(path: string): Promise<boolean> {
+        if (this.traceLifecycle) {
+            this.logLifecycle(`WsModel.removeScript("${path}")`);
+        }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.removeScript(path, (err: any, removed?: boolean) => {
-                    if (!err) {
+                this.languageServiceProxy.removeScript(path)
+                    .then((removed) => {
                         if (removed) {
                             this.filesEventHub.emitAsync('removedFromLanguageService', { path });
                             resolve(removed);
                         }
                         else {
-                            // Attempting to remove a script which is not there.
-                            console.warn(`WsModel.removeScript(${path}) returned ${removed}`);
-                            resolve(removed);
+                            reject(new Error(`removeScript(${path}) returned ${removed} indicating that ${path} does not exist.`));
                         }
-                    }
-                    else {
-                        reject(new Error(`WsModel.removeScript(${path}) failed. Cause: ${err}`));
-                    }
-                });
-
+                    })
+                    .catch((err) => {
+                        reject(new Error(`removeScript(${path}) failed. Cause: ${err}`));
+                    });
             }
             else {
-                throw new Error(LANGUAGE_SERVICE_NOT_AVAILABLE);
+                reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
             }
         });
     }
@@ -1637,6 +1821,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     /**
+     * TODO: Temporary pending refactoring.
+     */
+    getModulesLoaded(): LanguageServiceMirror<ModuleResolutions> {
+        return this.modulars;
+    }
+
+    /**
      * Returns a map from module name to URL.
      */
     getAmbientResolutions(): AmbientResolutions {
@@ -1649,6 +1840,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         else {
             return this.ambientResolutionsFromPackageDependencies();
         }
+    }
+
+    /**
+     * TODO: Temporary pending refactoring.
+     */
+    getAmbientsLoaded(): LanguageServiceMirror<AmbientResolutions> {
+        return this.ambients;
     }
 
     /**
@@ -1961,7 +2159,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     deleteFile(path: string, master: boolean): Promise<void> {
         if (this.traceFileOperations) {
-            console.log(`WsModel.deleteFile(path = ${path}, master = ${master})`);
+            this.logLifecycle(`WsModel.deleteFile(path = ${path}, master = ${master})`);
         }
         return new Promise<void>((resolve, reject) => {
             const file = this.files ? this.files.getWeakRef(path) : void 0;

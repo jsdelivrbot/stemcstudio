@@ -26247,12 +26247,14 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             trace = _a.trace,
                             callbackId = _a.callbackId;
                         try {
-                            _this.trace = trace;
-                            _this.documentRegistry_.trace = trace;
-                            if (_this.trace) {
-                                console.log(LanguageServiceEvents_17.EVENT_SET_TRACE + "(" + trace + ")");
+                            var newTrace = trace;
+                            var oldTrace = _this.trace;
+                            _this.trace = newTrace;
+                            _this.documentRegistry_.trace = newTrace;
+                            if (oldTrace || newTrace) {
+                                console.log(LanguageServiceEvents_17.EVENT_SET_TRACE + "(oldTrace = " + oldTrace + ", newTrace = " + newTrace + ")");
                             }
-                            _this.resolve(LanguageServiceEvents_17.EVENT_SET_TRACE, _this.trace, callbackId);
+                            _this.resolve(LanguageServiceEvents_17.EVENT_SET_TRACE, oldTrace, callbackId);
                         } catch (err) {
                             _this.reject(LanguageServiceEvents_17.EVENT_SET_TRACE, err, callbackId);
                         }

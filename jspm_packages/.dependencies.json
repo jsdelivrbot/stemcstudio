@@ -841,13 +841,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:zone.js@0.8.9": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:process@0.11.10": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
@@ -907,5 +900,12 @@
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:zone.js@0.8.10": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

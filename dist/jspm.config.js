@@ -41,7 +41,7 @@ System.config({
     "socket.io-client": "npm:socket.io-client@1.7.3",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
-    "zone.js": "npm:zone.js@0.8.9",
+    "zone.js": "npm:zone.js@0.8.10",
     "github:angular/bower-angular-animate@1.5.9": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
@@ -124,7 +124,7 @@ System.config({
     "npm:@angular/core@4.1.0": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.3.1",
-      "zone.js": "npm:zone.js@0.8.9"
+      "zone.js": "npm:zone.js@0.8.10"
     },
     "npm:@angular/forms@4.1.0": {
       "@angular/common": "npm:@angular/common@4.1.0",
@@ -880,7 +880,7 @@ System.config({
       "y18n": "npm:y18n@3.2.1",
       "yargs-parser": "npm:yargs-parser@4.2.1"
     },
-    "npm:zone.js@0.8.9": {
+    "npm:zone.js@0.8.10": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

@@ -38,6 +38,10 @@ interface WorkerClientData<T> {
     callbackId: number;
 }
 
+function missingCallbackMessage(eventName: string): string {
+    return ``;
+}
+
 /**
  * Lowercase string constants corresponding to the Language Service ScriptTarget enumeration.
  */
@@ -79,6 +83,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_APPLY_DELTA));
+            }
         });
 
         this.worker.on(EVENT_DEFAULT_LIB_CONTENT, (response: { data: WorkerClientData<any> }) => {
@@ -86,6 +93,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_DEFAULT_LIB_CONTENT));
             }
         });
 
@@ -95,6 +105,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_ENSURE_SCRIPT));
+            }
         });
 
         this.worker.on(EVENT_ENSURE_MODULE_MAPPING, (response: { data: WorkerClientData<string | undefined> }) => {
@@ -103,6 +116,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_ENSURE_MODULE_MAPPING));
+            }
         });
 
         this.worker.on(EVENT_REMOVE_MODULE_MAPPING, (response: { data: WorkerClientData<string | undefined> }) => {
@@ -110,6 +126,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_REMOVE_MODULE_MAPPING));
             }
         });
 
@@ -131,6 +150,9 @@ export class LanguageServiceProxy {
                     callback(err);
                 }
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_REMOVE_SCRIPT));
+            }
         });
 
         this.worker.on(EVENT_GET_LINT_ERRORS, (response: { data: WorkerClientData<RuleFailure[]> }) => {
@@ -138,6 +160,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_LINT_ERRORS));
             }
         });
 
@@ -147,6 +172,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_SYNTAX_ERRORS));
+            }
         });
 
         this.worker.on(EVENT_GET_SEMANTIC_ERRORS, (response: { data: WorkerClientData<Diagnostic[]> }) => {
@@ -154,6 +182,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_SEMANTIC_ERRORS));
             }
         });
 
@@ -163,6 +194,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_COMPLETIONS_AT_POSITION));
+            }
         });
 
         this.worker.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, (response: { data: WorkerClientData<TextChange[]> }) => {
@@ -170,6 +204,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT));
             }
         });
 
@@ -179,6 +216,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_QUICK_INFO_AT_POSITION));
+            }
         });
 
         this.worker.on(EVENT_GET_OUTPUT_FILES, (response: { data: WorkerClientData<OutputFile[]> }) => {
@@ -186,6 +226,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_OUTPUT_FILES));
             }
         });
 
@@ -195,6 +238,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_SET_OPERATOR_OVERLOADING));
+            }
         });
 
         this.worker.on(EVENT_SET_TRACE, (response: { data: WorkerClientData<boolean> }) => {
@@ -203,6 +249,9 @@ export class LanguageServiceProxy {
             if (callback) {
                 callback(err, value);
             }
+            else {
+                console.warn(missingCallbackMessage(EVENT_SET_TRACE));
+            }
         });
 
         this.worker.on(EVENT_SET_TS_CONFIG, (response: { data: WorkerClientData<TsConfigSettings> }) => {
@@ -210,6 +259,9 @@ export class LanguageServiceProxy {
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_SET_TS_CONFIG));
             }
         });
     }
@@ -223,14 +275,27 @@ export class LanguageServiceProxy {
         });
     }
 
+    /**
+     * Calls the terminate method of the underlying worker thread.
+     */
     terminate(): void {
         this.worker.dispose();
     }
 
-    setDefaultLibContent(content: string, callback: (err: any) => any): void {
-        const callbackId = this.captureCallback(callback);
-        const message = { data: { content, callbackId } };
-        this.worker.emit(EVENT_DEFAULT_LIB_CONTENT, message);
+    setDefaultLibContent(content: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            function callback(err: any) {
+                if (!err) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message = { data: { content, callbackId } };
+            this.worker.emit(EVENT_DEFAULT_LIB_CONTENT, message);
+        });
     }
 
     /**
@@ -246,7 +311,6 @@ export class LanguageServiceProxy {
         }
         else {
             throw new Error("callback must be supplied.");
-            // return void 0;
         }
     }
 
@@ -312,16 +376,44 @@ export class LanguageServiceProxy {
         });
     }
 
-    ensureScript(path: string, content: string, callback: (err: any, added?: boolean) => void): void {
-        const callbackId = this.captureCallback(callback);
-        const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
-        this.worker.emit(EVENT_ENSURE_SCRIPT, message);
+    /**
+     * Ensures that there is a mapping from the path to the script content.
+     * The return boolean promise indicates whether there was an addition (true) or update (false).
+     */
+    ensureScript(path: string, content: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            function callback(err: any, added?: boolean) {
+                if (!err) {
+                    resolve(added);
+                }
+                else {
+                    reject(err);
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
+            this.worker.emit(EVENT_ENSURE_SCRIPT, message);
+        });
     }
 
-    removeScript(path: string, callback: (err: any, removed?: boolean) => void): void {
-        const callbackId = this.captureCallback(callback);
-        const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
-        this.worker.emit(EVENT_REMOVE_SCRIPT, message);
+    /**
+     * Removes the mapping from the path to a script.
+     * The returned promise indicates whether a removal happened (true) or path missing (false).
+     */
+    removeScript(path: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            const callback = function (err: any, removed?: boolean) {
+                if (!err) {
+                    resolve(removed);
+                }
+                else {
+                    reject(err);
+                }
+            };
+            const callbackId = this.captureCallback(callback);
+            const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
+            this.worker.emit(EVENT_REMOVE_SCRIPT, message);
+        });
     }
 
     /**
@@ -350,16 +442,40 @@ export class LanguageServiceProxy {
         });
     }
 
-    public setTrace(trace: boolean, callback: (err: any) => any): void {
-        const callbackId = this.captureCallback(callback);
-        const message: { data: SetTraceRequest } = { data: { trace, callbackId } };
-        this.worker.emit(EVENT_SET_TRACE, message);
+    /**
+     * Sets the trace flag in the worker thread.
+     * Returns the previous setting of the trace flag.
+     */
+    public setTrace(trace: boolean): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            function callback(err: any, oldValue: boolean) {
+                if (!err) {
+                    resolve(oldValue);
+                }
+                else {
+                    reject(err);
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message: { data: SetTraceRequest } = { data: { trace, callbackId } };
+            this.worker.emit(EVENT_SET_TRACE, message);
+        });
     }
 
-    public setTsConfig(settings: TsConfigSettings, callback: (err: any, settingsOut: TsConfigSettings) => void): void {
-        const callbackId = this.captureCallback(callback);
-        const message: { data: SetTsConfigRequest } = { data: { settings, callbackId } };
-        this.worker.emit(EVENT_SET_TS_CONFIG, message);
+    public setTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
+        return new Promise<TsConfigSettings>((resolve, reject) => {
+            function callback(err: any, settings: TsConfigSettings) {
+                if (!err) {
+                    resolve(settings);
+                }
+                else {
+                    reject(err);
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message: { data: SetTsConfigRequest } = { data: { settings, callbackId } };
+            this.worker.emit(EVENT_SET_TS_CONFIG, message);
+        });
     }
 
     public getLintErrors(fileName: string, configuration: TsLintSettings, callback: (err: any, results: Diagnostic[]) => void): void {

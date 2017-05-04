@@ -1,24 +1,14 @@
 import { IHttpService, ILocationService } from 'angular';
 import { scriptURL } from './scriptURL';
 import { WsModel } from '../../modules/wsmodel/WsModel';
-import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
-
-interface ModularUnit {
-    moduleName: string;
-    URL: string;
-}
-
-interface AmbientUnit {
-    globalName: string;
-    URL: string;
-}
 
 /**
  * TODO: Refactor.
  * 
- * oldResolutions referes to the module resolutions that are loaded (mirror)
+ * oldResolutions refers to the module resolutions that are loaded (mirror).
+ * oldResolutions thus mirrors the current state of the cache in the language service.
  */
-function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $http: IHttpService, $location: ILocationService, VENDOR_FOLDER_MARKER: string): Promise<string[]> {
+function updateModules(wsModel: WsModel, $http: IHttpService, $location: ILocationService, VENDOR_FOLDER_MARKER: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
         //
         // TODO: This needs revising now that we can change almost any part of the mapping.
@@ -28,14 +18,14 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
          * A mapping from moduleName to d.ts URL.
          */
         const newResolutions = wsModel.getModuleResolutions();
-        //     const ambientResolutions = wsModel.getAmbientResolutions();
+        const modules = wsModel.getModulesLoaded();
 
         // Load the wokspace with the appropriate TypeScript definitions.
         /**
          * The new module dependencies (module names).
          */
-        const news: string[] = Object.keys(newResolutions);
-        const olds: string[] = Object.keys(oldResolutions);
+        const news = Object.keys(newResolutions);
+        const olds = modules.names();
 
         // Determine what we need to add and remove from the workspace.
         //
@@ -45,15 +35,15 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
         /**
          * The modules that we need to add to the workspace.
          */
-        const adds: string[] = news.filter((moduleName) => { return olds.indexOf(moduleName) < 0; });
+        const adds = news.filter((moduleName) => { return olds.indexOf(moduleName) < 0; });
 
         /**
          * The modules that we need to remove from the workspace.
          */
-        const rmvs: string[] = olds.filter(function (moduleName) { return news.indexOf(moduleName) < 0; });
+        const rmvs = olds.filter(function (moduleName) { return news.indexOf(moduleName) < 0; });
 
         // TODO: Optimize so that we don't keep loading `lib`.
-        let addUnits: ModularUnit[] = adds.map(function (moduleName) { return { moduleName, URL: newResolutions[moduleName] }; });
+        let addUnits = adds.map(function (moduleName) { return { moduleName, URL: newResolutions[moduleName] }; });
 
         /**
          * The domain on which we are running. e.g., `https://www.stemcstudio.com` or `localhost:8080`.
@@ -77,27 +67,10 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
         };
 
         rmvs.forEach((moduleName) => {
-            wsModel.removeModuleMapping(moduleName)
-                .then(function (moduleURL) {
-                    if (typeof moduleURL === 'string') {
-                        wsModel.removeScript(moduleURL)
-                            .then(function (removed) {
-                                if (removed) {
-                                    const index = olds.indexOf(moduleName);
-                                    if (index >= 0) {
-                                        delete oldResolutions[moduleName];
-                                    }
-                                    else {
-                                        console.warn(`olds.indexOf(${moduleName}) returned ${index}`);
-                                    }
-                                }
-                            })
-                            .catch(function (err) {
-                                console.warn(`removeScript(${moduleURL}) failed. ${err}`);
-                            });
-                    }
-                    else {
-                        console.warn(`removeModuleMapping(${moduleName}) did not return a mapped URL.`);
+            wsModel.removeModule(moduleName)
+                .then(({ previous, removed }) => {
+                    if (typeof previous === 'undefined' || !removed) {
+                        console.warn(`removeModuleMapping(${moduleName}) returned previous ${previous} and removed ${removed}`);
                     }
                 })
                 .catch(function (err) {
@@ -118,27 +91,7 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
                     inFlightCount--;
                     if (!err) {
                         if (content) {
-                            //
-                            // d.ts file content is provided to the workspace with the path being the URL.
-                            //
-                            wsModel.addScript(addUnit.URL, content.replace(/\r\n?/g, '\n'))
-                                .then((added) => {
-                                    if (added) {
-                                        oldResolutions[addUnit.moduleName] = addUnit.URL;
-                                        //
-                                        // This crucial step provides the mapping from the module name to the URL.
-                                        //
-                                        wsModel.ensureModuleMapping(addUnit.moduleName, addUnit.URL)
-                                            .then(function (previousURL) {
-                                                if (typeof previousURL === 'string') {
-                                                    console.warn(`ensureModuleMapping(${addUnit.moduleName},${addUnit.URL}) when ${addUnit.moduleName}is already mapped to ${previousURL}.`);
-                                                }
-                                            })
-                                            .catch(function (err) {
-                                                console.warn(`ensureModuleMapping(${addUnit.moduleName}) failed. ${err}`);
-                                            });
-                                    }
-                                })
+                            wsModel.addModule(addUnit.moduleName, addUnit.URL, content.replace(/\r\n?/g, '\n'))
                                 .catch((err) => {
                                     console.warn(`ensureScript(${addUnit.URL}) failed. ${err}`);
                                 });
@@ -161,7 +114,6 @@ function updateModules(wsModel: WsModel, oldResolutions: ModuleResolutions, $htt
  */
 function updateAmbients(
     wsModel: WsModel,
-    ambients: AmbientResolutions,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
     FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
@@ -177,13 +129,17 @@ function updateAmbients(
          * A mapping from globalName to d.ts URL.
          */
         const ambientResolutions = wsModel.getAmbientResolutions();
+        const ambients = wsModel.getAmbientsLoaded();
 
         // Load the wokspace with the appropriate TypeScript definitions.
         /**
          * The new ambient dependencies (global names).
          */
-        const news: string[] = Object.keys(ambientResolutions);
-        const olds: string[] = Object.keys(ambients);
+        const news = Object.keys(ambientResolutions);
+        /**
+         * The existing ambient dependencies (global names).
+         */
+        const olds = ambients.names();
 
         // Determine what we need to add and remove from the workspace.
         //
@@ -214,7 +170,7 @@ function updateAmbients(
         }
 
         // TODO: Optimize so that we don't keep loading `lib`.
-        let addUnits: AmbientUnit[] = adds.map(function (globalName) { return { globalName, URL: ambientResolutions[globalName] }; });
+        let addUnits = adds.map(function (globalName) { return { globalName, URL: ambientResolutions[globalName] }; });
 
         // Ensure that the TypeScript ambient type definitions are present.
         if (olds.indexOf(FILENAME_TYPESCRIPT_CURRENT_LIB_DTS) < 0) {
@@ -248,28 +204,9 @@ function updateAmbients(
                 });
         };
 
+        // TODO: We could now wait until this resolves.
         rmvs.forEach((globalName) => {
-            const ambientURL = ambients[globalName];
-            if (typeof ambientURL === 'string') {
-                wsModel.removeScript(ambientURL)
-                    .then(function (removed) {
-                        if (removed) {
-                            const index = olds.indexOf(ambientURL);
-                            if (index >= 0) {
-                                delete ambients[globalName];
-                            }
-                            else {
-                                console.warn(`olds.indexOf(${ambientURL}) returned ${index}`);
-                            }
-                        }
-                    })
-                    .catch(function (reason) {
-                        console.warn(`removeScript(${ambientURL}) failed. Reason ${reason}`);
-                    });
-            }
-            else {
-                console.warn(`ambients['${globalName}'] did not return a mapped URL.`);
-            }
+            wsModel.removeAmbient(globalName);
         });
 
         // Make sure that the callback gets called, even when adding no files.
@@ -288,14 +225,9 @@ function updateAmbients(
                             //
                             // d.ts file content is provided to the workspace with the path being the URL.
                             //
-                            wsModel.addScript(addUnit.URL, content.replace(/\r\n?/g, '\n'))
-                                .then((added) => {
-                                    if (added) {
-                                        ambients[addUnit.globalName] = addUnit.URL;
-                                    }
-                                })
+                            wsModel.addAmbient(addUnit.globalName, addUnit.URL, content.replace(/\r\n?/g, '\n'))
                                 .catch((err) => {
-                                    console.warn(`ensureScript(${addUnit.URL}) failed. ${err}`);
+                                    console.warn(`addAmbientensureScript(${addUnit.URL}) failed. ${err}`);
                                 });
                         }
                     }
@@ -319,8 +251,6 @@ function updateAmbients(
  */
 export function updateWorkspaceTypes(
     wsModel: WsModel,
-    ambients: AmbientResolutions,
-    modulars: ModuleResolutions,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
     FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
@@ -329,8 +259,8 @@ export function updateWorkspaceTypes(
     VENDOR_FOLDER_MARKER: string,
     callback: (err?: any) => void
 ) {
-    const doneAmbients = updateAmbients(wsModel, ambients, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_ES2015_CORE_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
-    const doneModules = updateModules(wsModel, modulars, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneAmbients = updateAmbients(wsModel, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_ES2015_CORE_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
+    const doneModules = updateModules(wsModel, $http, $location, VENDOR_FOLDER_MARKER);
     Promise.all([doneAmbients, doneModules])
         .then(() => {
             callback();

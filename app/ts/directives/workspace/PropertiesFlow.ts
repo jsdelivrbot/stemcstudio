@@ -6,7 +6,6 @@ import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import { WsModel } from '../../modules/wsmodel/WsModel';
-import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import { dependenciesMap } from './dependenciesMap';
 import { dependencyNames } from './dependencyNames';
 
@@ -16,8 +15,6 @@ import { dependencyNames } from './dependencyNames';
 export default class PropertiesFlow {
     constructor(
         private optionManager: IOptionManager,
-        private ambients: AmbientResolutions,
-        private modulars: ModuleResolutions,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
         private FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
@@ -81,8 +78,6 @@ export default class PropertiesFlow {
                 //
                 updateWorkspaceTypes(
                     this.wsModel,
-                    this.ambients,
-                    this.modulars,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                     this.FILENAME_TYPESCRIPT_ES2015_CORE_DTS,
                     this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,

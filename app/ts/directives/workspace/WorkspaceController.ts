@@ -46,7 +46,6 @@ import TextChange from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
-import { AmbientResolutions, ModuleResolutions } from '../../modules/wsmodel/WsModel';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -110,12 +109,6 @@ function fileExtensionIs(path: string, extension: string): boolean {
  */
 export class WorkspaceController implements WorkspaceEditorHost {
 
-    /**
-     * Keep track of the dependencies (module names) that are loaded in the workspace.
-     */
-    private readonly ambients: AmbientResolutions = {};
-    private readonly modulars: ModuleResolutions = {};
-
     private outputFilesWatchRemover: (() => void) | undefined;
     private renamedFileWatchRemover: (() => void) | undefined;
 
@@ -166,11 +159,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
      */
     private readonly watches: ((() => any) | undefined)[] = [];
 
-    /**
-     * Convenient flag used for debugging.
-     * Normally set to false for production.
-     */
-    private readonly trace = false;
     /**
      *
      */
@@ -377,8 +365,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isMarkdownVisible = false;
-                console.log(`owner  = ${$scope.workspace.owner}`);
-                console.log(`gistId = ${$scope.workspace.gistId}`);
                 /*
                 githubGistService.getGistComments(wsModel.gistId as string)
                     .then((comments) => {
@@ -425,8 +411,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
             ga('send', 'event', CATEGORY_WORKSPACE, 'properties', label, value);
             const propertiesFlow = new PropertiesFlow(
                 this.optionManager,
-                this.ambients,
-                this.modulars,
                 this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                 this.FILENAME_TYPESCRIPT_ES2015_CORE_DTS,
                 this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,
@@ -488,7 +472,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * initialization work of a controller.
      */
     $onInit(): void {
-
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
@@ -498,9 +481,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         this.$scope.doodleLoaded = false;
 
         this.wsModel.recycle()
-            .then(() => {
-                return this.wsModel.setTrace(this.trace);
-            })
             .then(() => {
                 this.backgroundService.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
                     if (!err) {
@@ -583,8 +563,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
                     .subscribe((settings) => {
                         updateWorkspaceTypes(
                             this.wsModel,
-                            this.ambients,
-                            this.modulars,
                             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
                             this.FILENAME_TYPESCRIPT_ES2015_CORE_DTS,
                             this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,
@@ -751,8 +729,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         updateWorkspaceTypes(
             this.wsModel,
-            this.ambients,
-            this.modulars,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
             this.FILENAME_TYPESCRIPT_ES2015_CORE_DTS,
             this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,

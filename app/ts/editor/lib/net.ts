@@ -6,30 +6,33 @@
  * see: http://github.com/jrburke/requirejs for details
  */
 
-import getDocumentHead from '../dom/getDocumentHead';
+// import getDocumentHead from '../dom/getDocumentHead';
 
 /**
  * Executes a 'GET' HTTP request with a responseText callback.
  */
-export function get(url: string, callback: (err: Error, responseText?: string) => any) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function (ev: ProgressEvent) {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                callback(void 0, xhr.responseText);
+export function get(url: string, user?: string, password?: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true, user, password);
+        xhr.onreadystatechange = function (this: XMLHttpRequest, ev: ProgressEvent) {
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    resolve(this.responseText);
+                }
+                else {
+                    reject(new Error(this.statusText));
+                }
             }
-            else {
-                callback(new Error(xhr.statusText));
-            }
-        }
-    };
-    xhr.send(null);
+        };
+        xhr.send(null);
+    });
 }
 
 /**
  * Creates a <script> tag, sets the 'src' property, and calls back when loaded.
  */
+/*
 export function loadScript(src: string, callback: () => any, doc: Document): void {
 
     const head: HTMLHeadElement = getDocumentHead(doc);
@@ -47,6 +50,7 @@ export function loadScript(src: string, callback: () => any, doc: Document): voi
         }
     };
 }
+*/
 
 /**
  * Convert a url into a fully qualified absolute URL.
