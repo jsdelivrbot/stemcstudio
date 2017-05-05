@@ -87,6 +87,10 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
+//
+// Choose which editor to inject here. e.g. MONACO_EDITOR_SERVICE_UUID.
+// Note, because we are a hybrid application, the WsModel injection must also change.
+//
 factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE, NATIVE_EDITOR_SERVICE_UUID];
 /**
  * Factory for the editor (attribute) directive.

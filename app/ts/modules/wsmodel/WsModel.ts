@@ -63,13 +63,13 @@ import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHos
 import { Delta } from '../../virtual/editor';
 import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
-import { EditorFactory } from '../../virtual/editor';
+import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 import { Marker } from '../../virtual/editor';
 import { QuickInfo } from '../../virtual/editor';
 import { QuickInfoTooltip } from '../../virtual/editor';
 import { QuickInfoTooltipHost } from '../../virtual/editor';
-import { NativeEditorFactory } from '../../services/editor/native-editor.service';
+import { NativeEditorService } from '../../services/editor/native-editor.service';
 
 
 const NEWLINE = '\n';
@@ -666,15 +666,20 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private traceFileOperations = false;
 
-    private factory: EditorFactory;
+    /**
+     * The editor service is only used here to create Document and EditSession objects.
+     * The creation of Editor objects is the responsibility of UI components.
+     * This editor reference is passed to the WsFile constructor.
+     */
+    private editorService: EditorService;
 
     /**
      *
      */
-    constructor(private doodles: DoodleManager, private optionManager: OptionManager, factory: NativeEditorFactory) {
+    constructor(private doodles: DoodleManager, private optionManager: OptionManager, editorService: NativeEditorService) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing, much. There is no destructor; it would never be called.
-        this.factory = factory;
+        this.editorService = editorService;
     }
 
     private logLifecycle(message: string): void {
@@ -2092,7 +2097,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         if (!this.existsFile(pathToCreate)) {
             const trashedFile = this.trash ? this.trash.get(pathToCreate) : void 0;
             if (!trashedFile) {
-                const file = new WsFile(this, this.factory);
+                const file = new WsFile(this, this.editorService);
                 file.setText("");
                 file.mode = mode;
                 if (!this.files) {
@@ -2974,7 +2979,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     public trashPut(path: string): void {
         if (this.trash) {
-            const placeholder = new WsFile(this, this.factory);
+            const placeholder = new WsFile(this, this.editorService);
             placeholder.existsInGitHub = true;
             this.trash.putWeakRef(path, placeholder);
         }

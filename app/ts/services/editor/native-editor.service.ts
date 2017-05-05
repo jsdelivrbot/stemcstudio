@@ -8,7 +8,6 @@ import { Editor } from '../../virtual/editor';
 import { EditorAction } from '../../virtual/editor';
 import { EditorEventHandler } from '../../virtual/editor';
 import { EditorEventType } from '../../virtual/editor';
-import { EditorFactory } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 import { KeyboardHandler } from '../../virtual/editor';
@@ -32,30 +31,24 @@ import NativeUndoManager from '../../editor/UndoManager';
 import NativeQuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
 import Renderer from '../../editor/Renderer';
 
-export const NATIVE_EDITOR_FACTORY_UUID = 'NativeEditorFactory';
-
-@Injectable()
-export class NativeEditorFactory implements EditorFactory {
-    createDocument(textOrLines: string | string[]): Document {
-        return new NativeDocument(textOrLines);
-    }
-    createSession(doc: Document): EditSession {
-        return new NativeEditSession(doc as NativeDocument);
-    }
-}
-
-export const NATIVE_EDITOR_SERVICE_UUID = 'NativeEditorService';
+/**
+ * AngularJS dependency injection registry identifier.
+ */
+export const NATIVE_EDITOR_SERVICE_UUID = 'native-editor.service.uuid';
 
 @Injectable()
 export class NativeEditorService implements EditorService {
-    createEditor(container: HTMLElement): Editor {
-        return new NativeEditorAdapter(container);
+    constructor() {
+        console.log(`NativeEditorService.constructor()`);
     }
     createDocument(textOrLines: string | string[]): Document {
         return new NativeDocument(textOrLines);
     }
     createSession(doc: Document): EditSession {
         return new NativeEditSession(doc as NativeDocument);
+    }
+    createEditor(container: HTMLElement): Editor {
+        return new NativeEditorAdapter(container);
     }
 }
 

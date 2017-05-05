@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Command } from '../../virtual/editor';
 import { Completer } from '../../virtual/editor';
 import { Direction } from '../../virtual/editor';
+import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
 import { EditorAction } from '../../virtual/editor';
 import { EditorEventHandler } from '../../virtual/editor';
@@ -20,17 +21,22 @@ import { SnippetOptions } from '../../virtual/editor';
 import { TabstopManager } from '../../virtual/editor';
 import { UndoManager } from '../../virtual/editor';
 
-export const MONACO_EDITOR_FACTORY_UUID = 'MonacoEditorFactory';
-
-@Injectable()
-export class MonacoEditorFactory {
-
-}
-
-export const MONACO_EDITOR_SERVICE_UUID = 'MonacoEditorService';
+/**
+ * AngularJS dependency injection registry identifier.
+ */
+export const MONACO_EDITOR_SERVICE_UUID = 'monaco-editor.service.uuid';
 
 @Injectable()
 export class MonacoEditorService implements EditorService {
+    constructor() {
+        console.log(`MonacoEditorService.constructor()`);
+    }
+    createDocument(textOrLines: string | string[]): Document {
+        throw new Error("MonacoEditorService.createDocument");
+    }
+    createSession(doc: Document): EditSession {
+        throw new Error("MonacoEditorService.createSession");
+    }
     createEditor(container: HTMLElement): Editor {
         return new MonacoEditorAdapter(container);
     }

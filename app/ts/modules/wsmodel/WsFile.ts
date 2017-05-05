@@ -9,7 +9,7 @@ import { WsModel } from './WsModel';
 //
 import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
-import { EditorFactory } from '../../virtual/editor';
+import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 
 /**
@@ -110,7 +110,7 @@ export class WsFile implements MwDocument, Shareable {
     /**
      * @param workspace
      */
-    constructor(workspace: WsModel, private factory: EditorFactory) {
+    constructor(workspace: WsModel, private editorService: EditorService) {
         this.workspace = workspace;
     }
 
@@ -207,7 +207,7 @@ export class WsFile implements MwDocument, Shareable {
         }
         else if (this.doc) {
             // TODO: This means that the WsFile needs to have a factory.
-            const session = this.factory.createSession(this.doc);
+            const session = this.editorService.createSession(this.doc);
             // TODO: Do some mode-based session initialization here.
             this.setSession(session);
             return session;
@@ -260,7 +260,7 @@ export class WsFile implements MwDocument, Shareable {
                 this.doc.setValue(text);
             }
             else {
-                const doc = this.factory.createDocument(text);
+                const doc = this.editorService.createDocument(text);
                 this.setDocument(doc);
                 doc.release();
             }

@@ -124,12 +124,9 @@ export interface EditorAction {
 
 }
 
-export interface EditorFactory {
+export interface EditorService {
     createDocument(textOrLines: string | string[]): Document;
     createSession(doc: Document): EditSession;
-}
-
-export interface EditorService {
     createEditor(container: HTMLElement): Editor;
 }
 
