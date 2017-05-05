@@ -718,5 +718,3 @@ export class Document implements Shareable {
         return index + position.column;
     }
 }
-
-export default Document;

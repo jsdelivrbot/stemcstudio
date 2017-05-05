@@ -1,15 +1,19 @@
 import AbstractLayer from './AbstractLayer';
 import Marker from '../Marker';
-import EditSession from '../EditSession';
+import { EditSession } from '../EditSession';
 import LayerConfig from "./LayerConfig";
 import MarkerConfig from "./MarkerConfig";
 import Range from "../Range";
 import refChange from '../../utils/refChange';
 
+export interface IMarkerLayer {
+
+}
+
 /**
  * The MarkerLayer is used for highlighting parts of the code.
  */
-export default class MarkerLayer extends AbstractLayer {
+export class MarkerLayer extends AbstractLayer implements IMarkerLayer {
 
     private session: EditSession;
     private markers: { [id: number]: Marker };

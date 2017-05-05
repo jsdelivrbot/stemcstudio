@@ -1,7 +1,7 @@
 import CppMode from './CppMode';
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import CstyleFoldMode from './folding/CstyleFoldMode';
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import GlslHighlightRules from './GlslHighlightRules';
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import MatchingBraceOutdent from "./MatchingBraceOutdent";

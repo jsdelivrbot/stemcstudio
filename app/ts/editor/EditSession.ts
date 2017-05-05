@@ -126,10 +126,11 @@ export type EditSessionEventName =
     | 'session' // When the EditSession constructor completes. Who cares?
     | 'tokenizerUpdate';
 
+
 /**
  *
  */
-export default class EditSession implements EventBus<EditSessionEventName, any, EditSession>, Shareable {
+export class EditSession implements EventBus<EditSessionEventName, any, EditSession>, Shareable {
     public $firstLineNumber = 1;
     public gutterRenderer: GutterRenderer;
     public $breakpoints: string[] = [];
@@ -400,9 +401,6 @@ export default class EditSession implements EventBus<EditSessionEventName, any, 
         this.resetCaches();
 
         if (doc) {
-            if (!(doc instanceof Document)) {
-                throw new Error("doc must be a Document");
-            }
             this.doc = doc;
             this.doc.addRef();
             this.removeDocumentChangeListener = this.doc.addChangeListener(this.$onChange);
@@ -3764,6 +3762,3 @@ export default class EditSession implements EventBus<EditSessionEventName, any, 
         return "off";
     }
 }
-
-// FIXME: Restore
-// Folding.call(EditSession.prototype);

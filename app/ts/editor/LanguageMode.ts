@@ -1,6 +1,6 @@
 import Completion from "./Completion";
-import Editor from "./Editor";
-import EditSession from "./EditSession";
+import { Editor } from "./Editor";
+import { EditSession } from "./EditSession";
 import Position from "./Position";
 import Range from "./Range";
 import TextAndSelection from "./TextAndSelection";

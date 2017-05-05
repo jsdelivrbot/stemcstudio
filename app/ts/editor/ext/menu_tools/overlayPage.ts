@@ -1,5 +1,5 @@
 import { createHTMLDivElement } from "../../lib/dom";
-import Editor from '../../Editor';
+import { Editor } from '../../../virtual/editor';
 // cssText = require("../../requirejs/text!./settings_menu.css");
 // dom.importCssString(cssText);
 
@@ -28,7 +28,7 @@ import Editor from '../../Editor';
  * bottom is an absolute position value.
  * left is an absolute position value.
  */
-export default function overlayPage(editor: Editor, contentElement: Node, top: string | number, right: string | number, bottom: string | number, left: string | number | null, callback: (err: any) => any): void {
+export function overlayPage(editor: Editor, contentElement: Node, top: string | number, right: string | number, bottom: string | number, left: string | number | null, callback: (err: any) => any): void {
 
     const topStyle = top ? 'top: ' + top + ';' : '';
     const bottomStyle = bottom ? 'bottom: ' + bottom + ';' : '';

@@ -6,7 +6,7 @@ import MatchOffset from './lib/MatchOffset';
 import Position from './Position';
 import Range from "./Range";
 import SearchOptions from "./SearchOptions";
-import EditSession from "./EditSession";
+import { EditSession } from "./EditSession";
 
 /**
  * A class designed to handle all sorts of text searches within a [[Document `Document`]].

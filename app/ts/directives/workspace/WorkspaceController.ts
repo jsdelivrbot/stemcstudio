@@ -3,11 +3,7 @@ import { IStateParamsService, IStateService } from 'angular-ui-router';
 import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationServiceJS';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import Delta from '../../editor/Delta';
-import Document from '../../editor/Document';
 import DocumentChangeHandler from './DocumentChangeHandler';
-import Editor from '../../editor/Editor';
-import EditSession from '../../editor/EditSession';
-import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
 import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
@@ -67,6 +63,13 @@ import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
+//
+// Editor Abstraction Layer
+//
+import { Document } from '../../virtual/editor';
+import { Editor } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
+import { EditSessionChangeHandler } from '../../virtual/editor';
 
 //
 // RxJS
@@ -854,19 +857,8 @@ export class WorkspaceController implements WorkspaceEditorHost {
     /**
      * Requests the formatting edit text changes for a document specified by its path.
      */
-    requestFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
-        return new Promise<TextChange[]>((resolve, reject) => {
-            function callback(err: any, textChanges: TextChange[]) {
-                if (!err) {
-                    resolve(textChanges);
-                }
-                else {
-                    reject(err);
-                }
-            }
-            // TODO: Promisify this function on the workspace model too.
-            this.wsModel.getFormattingEditsForDocument(path, settings, callback);
-        });
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
+        return this.wsModel.getFormattingEditsForDocument(path, settings);
     }
 
     /**

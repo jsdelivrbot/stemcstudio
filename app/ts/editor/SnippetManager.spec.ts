@@ -1,9 +1,9 @@
 //// <reference path="../../../typings/main/ambient/jasmine/index.d.ts" />
 
-import Document from './Document';
-import Editor from './Editor';
-import EditSession from './EditSession';
-import SnippetManager from './SnippetManager';
+import { Document } from './Document';
+import { Editor } from './Editor';
+import { EditSession } from './EditSession';
+import { SnippetManager } from './SnippetManager';
 import { TabstopIndex } from './Tabstop';
 import { TabstopText } from './Tabstop';
 

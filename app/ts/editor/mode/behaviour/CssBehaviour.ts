@@ -1,7 +1,7 @@
 import CstyleBehaviour from "./CstyleBehaviour";
 import TokenIterator from "../../TokenIterator";
-import Editor from "../../Editor";
-import EditSession from "../../EditSession";
+import { Editor } from "../../Editor";
+import { EditSession } from "../../EditSession";
 import Range from "../../Range";
 
 export default class CssBehavior extends CstyleBehaviour {
@@ -11,7 +11,7 @@ export default class CssBehavior extends CstyleBehaviour {
         this.inherit(new CstyleBehaviour());
 
         this.add("colon", "insertion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } | undefined {
                 if (text === ':') {
                     const cursor = editor.getCursorPosition();
                     const iterator = new TokenIterator(session, cursor.row, cursor.column);
@@ -20,7 +20,7 @@ export default class CssBehavior extends CstyleBehaviour {
                         token = iterator.stepBackward();
                     }
                     if (token && token.type === 'support.type') {
-                        const line = session.doc.getLine(cursor.row);
+                        const line = session.docOrThrow().getLine(cursor.row);
                         const rightChar = line.substring(cursor.column, cursor.column + 1);
                         if (rightChar === ':') {
                             return {
@@ -41,8 +41,8 @@ export default class CssBehavior extends CstyleBehaviour {
         );
 
         this.add("colon", "deletion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
-                const selected = session.doc.getTextRange(range);
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
+                const selected = session.docOrThrow().getTextRange(range);
                 if (!range.isMultiLine() && selected === ':') {
                     const cursor = editor.getCursorPosition();
                     const iterator = new TokenIterator(session, cursor.row, cursor.column);
@@ -51,7 +51,7 @@ export default class CssBehavior extends CstyleBehaviour {
                         token = iterator.stepBackward();
                     }
                     if (token && token.type === 'support.type') {
-                        const line = session.doc.getLine(range.start.row);
+                        const line = session.docOrThrow().getLine(range.start.row);
                         const rightChar = line.substring(range.end.column, range.end.column + 1);
                         if (rightChar === ';') {
                             range.end.column++;
@@ -64,10 +64,10 @@ export default class CssBehavior extends CstyleBehaviour {
         );
 
         this.add("semicolon", "insertion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } | undefined {
                 if (text === ';') {
                     const cursor = editor.getCursorPosition();
-                    const line = session.doc.getLine(cursor.row);
+                    const line = session.docOrThrow().getLine(cursor.row);
                     const rightChar = line.substring(cursor.column, cursor.column + 1);
                     if (rightChar === ';') {
                         return {

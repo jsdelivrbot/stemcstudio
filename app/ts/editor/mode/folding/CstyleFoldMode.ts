@@ -1,6 +1,6 @@
 import Range from "../../Range";
 import FoldMode from "./FoldMode";
-import EditSession from "../../EditSession";
+import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
 
 /**

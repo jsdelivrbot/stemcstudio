@@ -1,11 +1,20 @@
-import Completer from './autocomplete/Completer';
-import Completion from './Completion';
-import Editor from './Editor';
-import Position from './Position';
+import { Completer } from '../virtual/editor';
+import { Completion } from '../virtual/editor';
+import { Editor } from '../virtual/editor';
+import { EditSession } from '../virtual/editor';
+import { Position } from '../virtual/editor';
+import { SnippetManager } from './SnippetManager';
 
-export default class SnippetCompleter implements Completer {
 
-    getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
+export interface SnippetCompleterEditor extends Editor {
+    getCursorPosition(): Position;
+    snippetManager: SnippetManager;
+    sessionOrThrow(): EditSession;
+}
+
+export class SnippetCompleter implements Completer<SnippetCompleterEditor> {
+
+    getCompletionsAtPosition(editor: SnippetCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
 
         return new Promise<Completion[]>(function (resolve, reject) {
 
@@ -29,7 +38,7 @@ export default class SnippetCompleter implements Completer {
         });
     }
 
-    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
+    getCompletions(editor: SnippetCompleterEditor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
         this.getCompletionsAtPosition(editor, position, prefix)
             .then(function (completions) {
                 callback(void 0, completions);

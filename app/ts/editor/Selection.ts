@@ -1,10 +1,10 @@
-import Document from "./Document";
+import { Document } from "./Document";
 import { stringReverse } from "./lib/lang";
 import EventEmitterClass from "./lib/EventEmitterClass";
 import Position from "./Position";
 import Range from "./Range";
 import RangeList from "./RangeList";
-import EditSession from "./EditSession";
+import { EditSession } from "./EditSession";
 import Anchor from "./Anchor";
 import AnchorChangeEvent from "./events/AnchorChangeEvent";
 import EventBus from "./EventBus";

@@ -1,7 +1,7 @@
 import Delta from './Delta';
-import EditSession from './EditSession';
+import { EditSession } from './EditSession';
 import EventBus from './EventBus';
-import Document from './Document';
+import { Document } from './Document';
 import EventEmitterClass from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
 import Tokenizer from './Tokenizer';

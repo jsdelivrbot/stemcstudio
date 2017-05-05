@@ -20,17 +20,14 @@ import TypeScriptMode from '../../editor/mode/TypeScriptMode';
 import TsxMode from '../../editor/mode/TsxMode';
 import XmlMode from '../../editor/mode/XmlMode';
 import YamlMode from '../../editor/mode/YamlMode';
-import EditSession from '../../editor/EditSession';
-import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
-import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import IndentStyle from '../../editor/workspace/IndentStyle';
 import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showFindReplace from '../../editor/ext/showFindReplace';
 import showGreekKeyboard from '../../editor/ext/showGreekKeyboard';
-import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
+import { showKeyboardShortcuts } from '../../editor/ext/showKeyboardShortcuts';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
@@ -55,6 +52,22 @@ import { LANGUAGE_XML } from '../../languages/modes';
 import { LANGUAGE_YAML } from '../../languages/modes';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import refChange from '../../utils/refChange';
+//
+// Editor Abstraction Layer
+//
+import { Editor } from '../../virtual/editor';
+import { EditorService } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
+import { NATIVE_EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
+
+const FIND_REPLACE_COMMAND = {
+    name: COMMAND_NAME_FIND,
+    bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
+    exec: function (editor: Editor) {
+        showFindReplace(editor, false);
+    },
+    readOnly: true // false if this command should not apply in readOnly mode
+};
 
 function isTypeScript(path: string): boolean {
     const period = path.lastIndexOf('.');
@@ -74,7 +87,7 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
-factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];
+factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE, NATIVE_EDITOR_SERVICE_UUID];
 /**
  * Factory for the editor (attribute) directive.
  * This directive turns an HTMLElement into a container for an Editor.
@@ -84,7 +97,8 @@ factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];
  */
 function factory(
     $timeout: ITimeoutService,
-    editorPreferencesService: EditorPreferencesService): IDirective {
+    editorPreferencesService: EditorPreferencesService,
+    editorService: EditorService): IDirective {
 
     /**
      * $scope Used to monitor $onDestroy and support transclude.
@@ -107,7 +121,7 @@ function factory(
 
         const container: HTMLElement = element[0];
         refChange('start');
-        const editor: Editor = new Editor(new Renderer(container), void 0);
+        const editor = editorService.createEditor(container);
         /**
          * The function to call that will cause the editor to be removed from the workspace. 
          */
@@ -187,16 +201,9 @@ function factory(
                         // Maybe the WsFile can do some of the work?
                         editor.setSession(session);
                         const undoManager = new UndoManager();
-                        session.setUndoManager(undoManager);
-                        editor.commands.addCommand({
-                            name: COMMAND_NAME_FIND,
-                            bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
-                            exec: function (editor: Editor) {
-                                showFindReplace(editor, false);
-                            },
-                            readOnly: true // false if this command should not apply in readOnly mode
-                        });
-                        editor.commands.addCommand({
+                        editor.setUndoManager(undoManager);
+                        editor.addCommand(FIND_REPLACE_COMMAND);
+                        editor.addCommand({
                             name: 'Replace',
                             bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
                             exec: function (editor: Editor) {
@@ -204,7 +211,7 @@ function factory(
                             },
                             readOnly: true // false if this command should not apply in readOnly mode
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: 'goToNextError',
                             bindKey: { win: 'Alt-E', mac: 'F4' },
                             exec: function (editor: Editor) {
@@ -213,7 +220,7 @@ function factory(
                             scrollIntoView: 'animate',
                             readOnly: true
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: 'goToPreviousError',
                             bindKey: { win: 'Alt-Shift-E', mac: 'Shift-F4' },
                             exec: function (editor: Editor) {
@@ -222,32 +229,32 @@ function factory(
                             scrollIntoView: 'animate',
                             readOnly: true
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: "showGreekKeyboard",
                             bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
                             exec: function (editor: Editor, line: any) {
                                 showGreekKeyboard(editor);
                             }
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: "showKeyboardShortcuts",
                             bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
                             exec: function (editor: Editor, line: any) {
                                 showKeyboardShortcuts(editor);
                             }
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: 'expandSnippet',
                             bindKey: 'Tab',
                             exec: function (editor: Editor) {
                                 const success = editor.expandSnippetWithTab({ dryRun: false });
                                 if (!success) {
-                                    const indentCommand = editor.commands.getCommandByName(COMMAND_NAME_INDENT);
+                                    const indentCommand = editor.getCommandByName(COMMAND_NAME_INDENT);
                                     editor.execCommand(indentCommand);
                                 }
                             }
                         });
-                        editor.commands.addCommand({
+                        editor.addCommand({
                             name: 'formatDocument',
                             bindKey: { win: 'Ctrl-Shift-I', mac: 'Command-Alt-I' },
                             exec: function (editor: Editor) {
@@ -273,7 +280,7 @@ function factory(
                                     settings.insertSpaceBeforeAndAfterBinaryOperators = true;
                                     settings.insertSpaceBeforeFunctionParenthesis = false;
                                     settings.newLineCharacter = '\n';
-                                    wsController.requestFormattingEditsForDocument($scope.path, settings)
+                                    wsController.getFormattingEditsForDocument($scope.path, settings)
                                         .then(function (textChanges) {
                                             applyTextChanges(textChanges, session);
                                         })
@@ -481,7 +488,7 @@ function factory(
 
         function resizeEditor() {
             editor.resize(true);
-            editor.renderer.updateFull();
+            editor.updateFull();
         }
 
         // Both the scope and the element receive '$destroy' events, but the scope is called first.

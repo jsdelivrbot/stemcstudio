@@ -31,7 +31,7 @@
 
 import { keyCodeToString } from "../lib/keys";
 import { stopEvent } from "../lib/event";
-import Editor from "../Editor";
+import { Editor } from "../Editor";
 import KeyboardHandler from "./KeyboardHandler";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 import KeyboardResponse from './KeyboardResponse';

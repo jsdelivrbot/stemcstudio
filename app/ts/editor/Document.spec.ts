@@ -1,7 +1,7 @@
 // import Anchor from './Anchor';
 // import AnchorChangeEvent from './events/AnchorChangeEvent';
 import Delta from './Delta';
-import Document from './Document';
+import { Document } from './Document';
 import Range from './Range';
 
 describe("Document", function () {

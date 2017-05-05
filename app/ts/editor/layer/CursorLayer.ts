@@ -2,7 +2,7 @@ import { addCssClass, createElement, removeCssClass, setCssClass } from "../lib/
 import AbstractLayer from './AbstractLayer';
 import CursorConfig from './CursorConfig';
 import Disposable from '../base/Disposable';
-import EditSession from '../EditSession';
+import { EditSession } from '../EditSession';
 import PixelPosition from '../PixelPosition';
 import Position from '../Position';
 import Interval from '../../utils/Interval';

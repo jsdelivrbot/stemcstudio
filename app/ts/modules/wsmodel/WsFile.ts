@@ -1,12 +1,16 @@
-import applyPatchToDocument from './applyPatchToDocument';
-import Document from '../../editor/Document';
-import EditSession from '../../editor/EditSession';
-import Editor from '../../editor/Editor';
+import { applyPatchToDocument } from './applyPatchToDocument';
 import Shareable from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
 import Patch from '../../synchronization/Patch';
 import { WsModel } from './WsModel';
+//
+// Editor Abstraction Layer.
+//
+import { Document } from '../../virtual/editor';
+import { Editor } from '../../virtual/editor';
+import { EditorFactory } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
 
 /**
  * This class corresponds to a file at a particular path in a workspace.
@@ -35,7 +39,7 @@ import { WsModel } from './WsModel';
  */
 export class WsFile implements MwDocument, Shareable {
 
-    public editor: Editor | undefined;
+    private editor: Editor | undefined;
 
     /**
      * The editSession is (almost) an implementation detail except that
@@ -106,7 +110,7 @@ export class WsFile implements MwDocument, Shareable {
     /**
      * @param workspace
      */
-    constructor(workspace: WsModel) {
+    constructor(workspace: WsModel, private factory: EditorFactory) {
         this.workspace = workspace;
     }
 
@@ -130,9 +134,6 @@ export class WsFile implements MwDocument, Shareable {
             this.session = void 0;
         }
         if (session) {
-            if (!(session instanceof EditSession)) {
-                throw new TypeError("session must be an EditSession.");
-            }
             this.session = session;
             this.session.addRef();
             // TODO: attachSession
@@ -148,9 +149,6 @@ export class WsFile implements MwDocument, Shareable {
             this.doc = void 0;
         }
         if (doc) {
-            if (!(doc instanceof Document)) {
-                throw new TypeError("doc must be a Document.");
-            }
             this.doc = doc;
             this.doc.addRef();
         }
@@ -208,7 +206,8 @@ export class WsFile implements MwDocument, Shareable {
             return this.session;
         }
         else if (this.doc) {
-            const session = new EditSession(this.doc);
+            // TODO: This means that the WsFile needs to have a factory.
+            const session = this.factory.createSession(this.doc);
             // TODO: Do some mode-based session initialization here.
             this.setSession(session);
             return session;
@@ -261,7 +260,7 @@ export class WsFile implements MwDocument, Shareable {
                 this.doc.setValue(text);
             }
             else {
-                const doc = new Document(text);
+                const doc = this.factory.createDocument(text);
                 this.setDocument(doc);
                 doc.release();
             }

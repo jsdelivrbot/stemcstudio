@@ -1,14 +1,18 @@
-import Completer from '../autocomplete/Completer';
+// import Completer from '../autocomplete/Completer';
 import Completion from '../Completion';
 import CompletionEntry from './CompletionEntry';
-import Editor from '../Editor';
 import Position from "../Position";
 import WorkspaceCompleterHost from './WorkspaceCompleterHost';
+import { Completer } from '../../virtual/editor';
+import { Editor } from '../../virtual/editor';
+
+export interface WorkspaceCompleterEditor extends Editor {
+}
 
 /**
  *
  */
-export default class WorkspaceCompleter implements Completer {
+export class WorkspaceCompleter implements Completer<WorkspaceCompleterEditor> {
 
     private workspace: WorkspaceCompleterHost;
     private fileName: string;
@@ -21,7 +25,7 @@ export default class WorkspaceCompleter implements Completer {
     /**
      *
      */
-    getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
+    getCompletionsAtPosition(editor: WorkspaceCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
 
 
         return new Promise<Completion[]>((resolve: (completions: Completion[]) => any, reject: (err: any) => any) => {
@@ -54,7 +58,7 @@ export default class WorkspaceCompleter implements Completer {
         });
     }
 
-    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
+    getCompletions(editor: WorkspaceCompleterEditor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
         this.getCompletionsAtPosition(editor, position, prefix)
             .then(function (completions) {
                 callback(void 0, completions);

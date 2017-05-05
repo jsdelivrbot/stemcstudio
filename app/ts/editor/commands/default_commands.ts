@@ -1,7 +1,7 @@
 import { stringRepeat, stringTrimLeft, stringTrimRight } from "../lib/lang";
 import Range from "../Range";
 import Command from './Command';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INDENT } from "../editor_protocol";

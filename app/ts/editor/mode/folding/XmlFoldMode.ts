@@ -3,7 +3,7 @@ import Range from "../../Range";
 import FoldMode from "./FoldMode";
 import Token from '../../Token';
 import TokenIterator from "../../TokenIterator";
-import EditSession from "../../EditSession";
+import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
 import FoldWidget from "../../FoldWidget";
 import Position from "../../Position";

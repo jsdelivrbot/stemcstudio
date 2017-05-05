@@ -1,4 +1,4 @@
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import FoldMode from "./folding/FoldMode";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import TextMode from "./TextMode";

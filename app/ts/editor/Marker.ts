@@ -1,7 +1,7 @@
 import MarkerConfig from './layer/MarkerConfig';
-import MarkerLayer from './layer/MarkerLayer';
+import { IMarkerLayer } from './layer/MarkerLayer';
 import MarkerRenderer from './layer/MarkerRenderer';
-import EditSession from './EditSession';
+import { EditSession } from './EditSession';
 import Range from './Range';
 
 export type MarkerType = 'fullLine' | 'line' | 'text' | 'screenLine';
@@ -44,7 +44,7 @@ export interface Marker {
     /**
      *
      */
-    update?: (html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig) => void;
+    update?: (html: (number | string)[], markerLayer: IMarkerLayer, session: EditSession, config: MarkerConfig) => void;
 }
 
 export default Marker;

@@ -1,5 +1,5 @@
-import Document from './Document';
-import EditSession from './EditSession';
+import { Document } from './Document';
+import { EditSession } from './EditSession';
 import Range from './Range';
 import JavaScriptMode from './mode/JavaScriptMode';
 

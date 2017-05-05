@@ -1,9 +1,12 @@
-import Document from '../../editor/Document';
 import Patch from '../../synchronization/Patch';
 import DIFF_DELETE from '../../synchronization/DIFF_DELETE';
 import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
 import DIFF_INSERT from '../../synchronization/DIFF_INSERT';
 import Range from '../../editor/Range';
+//
+// Editor AbstractionLayer
+//
+import { Document } from '../../virtual/editor';
 
 /**
  * Applies a patch to a document.
@@ -14,7 +17,7 @@ import Range from '../../editor/Range';
  * length: 
  * applied: A boolean array corresponding to each of the diffs in patch.
  */
-export default function applyPatchToDocument(patch: Patch, doc: Document): { start: number; length: number; applied: boolean[] } {
+export function applyPatchToDocument(patch: Patch, doc: Document): { start: number; length: number; applied: boolean[] } {
     const start = patch.start1;
     if ((typeof start === 'number') && start >= 0) {
         let offset = start;

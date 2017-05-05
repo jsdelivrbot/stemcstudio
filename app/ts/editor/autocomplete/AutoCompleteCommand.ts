@@ -1,5 +1,5 @@
 import Command from '../commands/Command';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import EditorAction from '../keyboard/EditorAction';
 import { CompletionManager } from './CompletionManager';
 import { COMMAND_NAME_AUTO_COMPLETE } from '../editor_protocol';

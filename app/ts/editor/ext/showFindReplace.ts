@@ -1,11 +1,14 @@
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';
-import Editor from '../Editor';
 import { setCssClass } from '../lib/dom';
 import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
 import Range from '../Range';
+//
+// Editor Abstraction Layer
+//
+import { Editor } from '../../virtual/editor';
 
 // TODO: Need to negotiate with Editor to install (disposable) extension.
 const SEARCH_EXTENSION = "searchBox";
@@ -142,7 +145,7 @@ class SearchBox {
     setEditor(editor: Editor) {
         // FIXME
         editor[SEARCH_EXTENSION] = this;
-        editor.container.appendChild(this.element);
+        editor.getContainer().appendChild(this.element);
         this.editor = editor;
     }
     $initElements(sb: HTMLDivElement) {
@@ -223,15 +226,16 @@ class SearchBox {
     }
 
     highlight(re?: RegExp): void {
-        if (this.editor.session) {
+        const session = this.editor.getSession();
+        if (session) {
             if (re) {
-                this.editor.session.highlight(re);
+                session.highlight(re);
             }
             else {
-                this.editor.session.highlight(this.editor.$search.$options.re as RegExp);
+                session.highlight(this.editor.getSearchRegExp());
             }
         }
-        this.editor.renderer.updateBackMarkers();
+        this.editor.updateBackMarkers();
     }
 
     find(skipCurrent?: boolean, backwards?: boolean): void {
@@ -245,7 +249,7 @@ class SearchBox {
         });
         const noMatch: boolean = !range && !!this.searchInput.value;
         setCssClass(this.searchForm, "ace_nomatch", noMatch);
-        this.editor._emit("findSearchBox", { match: !noMatch });
+        this.editor.findSearchBox(!noMatch);
         this.highlight();
     }
     findNext() {
@@ -262,7 +266,7 @@ class SearchBox {
         });
         const noMatch = !range && !!this.searchInput.value;
         setCssClass(this.searchForm, "ace_nomatch", noMatch);
-        this.editor._emit("findSearchBox", { match: !noMatch });
+        this.editor.findSearchBox(!noMatch);
         this.highlight();
         this.hide();
     }
@@ -290,7 +294,7 @@ class SearchBox {
     }
     hide() {
         this.element.style.display = "none";
-        this.editor.keyBinding.removeKeyboardHandler(this.$closeSearchBarKb);
+        this.editor.removeKeyboardHandler(this.$closeSearchBarKb);
         this.editor.focus();
     }
     show(value?: string, isReplace = false) {
@@ -305,7 +309,7 @@ class SearchBox {
         this.searchInput.focus();
         this.searchInput.select();
 
-        this.editor.keyBinding.addKeyboardHandler(this.$closeSearchBarKb);
+        this.editor.addKeyboardHandler(this.$closeSearchBarKb);
     }
     isFocused() {
         const el = document.activeElement;

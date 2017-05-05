@@ -1,8 +1,7 @@
 import displayPartsToHtml from './displayPartsToHtml';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import Tooltip from '../Tooltip';
 import Position from '../Position';
-import QuickInfo from './QuickInfo';
 import QuickInfoTooltipHost from './QuickInfoTooltipHost';
 
 /**
@@ -70,6 +69,7 @@ export default class QuickInfoTooltip extends Tooltip {
         this.editor = editor;
         this.host = workspace;
 
+        // Binding to `this` is allows us to use the mouseHandler method as a mouse event callback.
         this.mouseHandler = (event: MouseEvent) => {
 
             this.hide();
@@ -85,8 +85,9 @@ export default class QuickInfoTooltip extends Tooltip {
                         if (session) {
                             const document = session.getDocument();
                             if (document) {
-                                this.host.getQuickInfoAtPosition(this.path, document.positionToIndex(documentPosition), (err: any, quickInfo: QuickInfo) => {
-                                    if (!err) {
+                                const documentIndex = document.positionToIndex(documentPosition);
+                                this.host.getQuickInfoAtPosition(this.path, documentIndex)
+                                    .then((quickInfo) => {
                                         if (quickInfo) {
                                             // The displayParts and documentation are tokenized according to TypeScript conventions.
                                             // TODO: This information could be used to popup a syntax highlighted editor.
@@ -100,8 +101,10 @@ export default class QuickInfoTooltip extends Tooltip {
                                                 this.show();
                                             }
                                         }
-                                    }
-                                });
+                                    })
+                                    .catch((err) => {
+                                        console.warn(`Unable to get quick information for '${this.path}' at position ${JSON.stringify(documentPosition)}`);
+                                    });
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 
 /**
  * 'changeEditor' event emitted by a Session.

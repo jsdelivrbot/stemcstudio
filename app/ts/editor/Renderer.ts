@@ -11,7 +11,7 @@ import CursorLayer from "./layer/CursorLayer";
 import FontMetrics from "./layer/FontMetrics";
 import { changeCharacterSize } from './layer/FontMetrics';
 import GutterLayer from "./layer/GutterLayer";
-import MarkerLayer from "./layer/MarkerLayer";
+import { MarkerLayer } from "./layer/MarkerLayer";
 // import PrintMarginLayer from "./layer/PrintMarginLayer";
 import TextLayer from "./layer/TextLayer";
 
@@ -20,7 +20,7 @@ import HScrollBar from "./HScrollBar";
 
 import RenderLoop from "./RenderLoop";
 import EventEmitterClass from "./lib/EventEmitterClass";
-import EditSession from './EditSession';
+import { EditSession } from './EditSession';
 import EventBus from './EventBus';
 import OptionsProvider from "./OptionsProvider";
 import PixelPosition from './PixelPosition';
@@ -1489,6 +1489,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
 
     /**
      * Schedules an update to all the front markers in the document.
+     * TODO: Could this return a promise?
      */
     updateFrontMarkers(): void {
         const session = this.sessionOrThrow();

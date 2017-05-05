@@ -1,7 +1,7 @@
 import QuickInfo from './QuickInfo';
 
 interface QuickInfoTooltipHost {
-    getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void;
+    getQuickInfoAtPosition(path: string, position: number): Promise<QuickInfo>;
 }
 
 export default QuickInfoTooltipHost;

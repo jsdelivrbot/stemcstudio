@@ -17981,7 +17981,7 @@ System.register("src/applyDelta.js", [], function (exports_1, context_1) {
                 break;
         }
     }
-    exports_1("default", applyDelta);
+    exports_1("applyDelta", applyDelta);
     return {
         setters: [],
         execute: function () {}
@@ -18429,7 +18429,7 @@ System.register("src/Document.js", ["./applyDelta", "./Range"], function (export
                         return;
                     }
                     if (isInsert && delta.lines.length > 20000) this.$splitAndapplyLargeDelta(delta, 20000);
-                    applyDelta_1.default(this.$lines, delta, doNotValidate);
+                    applyDelta_1.applyDelta(this.$lines, delta, doNotValidate);
                 };
                 Document.prototype.$splitAndapplyLargeDelta = function (delta, MAX) {
                     var lines = delta.lines;
@@ -18520,7 +18520,7 @@ System.register("src/mode/typescript/ScriptInfo.js", ["../../Document"], functio
                 };
                 return ScriptInfo;
             }();
-            exports_1("default", ScriptInfo);
+            exports_1("ScriptInfo", ScriptInfo);
         }
     };
 });
@@ -18613,7 +18613,7 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                     return Object.keys(this.scripts);
                 };
                 DefaultLanguageServiceHost.prototype.addScript = function (fileName, content) {
-                    var script = new ScriptInfo_1.default(content);
+                    var script = new ScriptInfo_1.ScriptInfo(content);
                     this.scripts[fileName] = script;
                 };
                 DefaultLanguageServiceHost.prototype.ensureModuleMapping = function (moduleName, fileName) {

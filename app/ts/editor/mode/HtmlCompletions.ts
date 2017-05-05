@@ -1,5 +1,5 @@
 import Completion from "../Completion";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import Position from "../Position";
 import Token from "../Token";
 import TokenIterator from "../TokenIterator";

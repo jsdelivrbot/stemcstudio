@@ -2,8 +2,8 @@ import Behaviour from "../Behaviour";
 import { BehaviorCallbackThis } from '../../BehaviourCallback';
 import TokenIterator from "../../TokenIterator";
 import { stringRepeat } from "../../lib/lang";
-import Editor from "../../Editor";
-import EditSession from "../../EditSession";
+import { Editor } from "../../Editor";
+import { EditSession } from "../../EditSession";
 import Position from "../../Position";
 import Range from "../../Range";
 import Token from "../../Token";
@@ -60,7 +60,7 @@ export default class CstyleBehaviour extends Behaviour {
     constructor() {
         super();
         this.add("braces", "insertion",
-            function (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } {
+            function (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | null | undefined {
                 const cursor = editor.getCursorPosition();
                 const doc = session.docOrThrow();
                 const line = doc.getLine(cursor.row);
@@ -139,7 +139,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("braces", "deletion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
                 if (!range.isMultiLine() && selected === '{') {
@@ -159,7 +159,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("parens", "insertion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | undefined {
                 if (text === '(') {
                     initContext(editor);
                     const selectionRange = editor.getSelectionRange();
@@ -192,7 +192,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("parens", "deletion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const selected: string = session.docOrThrow().getTextRange(range);
                 if (!range.isMultiLine() && selected === '(') {
                     initContext(editor);
@@ -209,7 +209,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("brackets", "insertion",
-            function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } {
+            function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | undefined {
                 if (text === '[') {
                     initContext(editor);
                     const selectionRange: Range = editor.getSelectionRange();
@@ -242,7 +242,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("brackets", "deletion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
                 if (!range.isMultiLine() && selected === '[') {
@@ -259,7 +259,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("string_dquotes", "insertion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | null | undefined {
                 if (text === '"' || text === "'") {
                     initContext(editor);
                     const quote = text;
@@ -282,7 +282,7 @@ export default class CstyleBehaviour extends Behaviour {
                         // Find what token we're inside.
                         const tokens: Token[] = session.getTokens(selection.start.row);
                         let col = 0;
-                        let token: Token;
+                        let token: Token | undefined;
                         let quotepos = -1; // Track whether we're inside an open quote.
 
                         for (let x = 0; x < tokens.length; x++) {
@@ -320,7 +320,7 @@ export default class CstyleBehaviour extends Behaviour {
         );
 
         this.add("string_dquotes", "deletion",
-            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
                 if (!range.isMultiLine() && (selected === '"' || selected === "'")) {

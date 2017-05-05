@@ -1,4 +1,4 @@
-import Editor from '../../editor/Editor';
+import { Editor } from '../../virtual/editor';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import TextChange from '../../editor/workspace/TextChange';
 
@@ -24,5 +24,5 @@ export interface WorkspaceEditorHost {
      * The function is asynchronous because a Language Service will typically run
      * in a thread or be located on a remote network endpoint.
      */
-    requestFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]>;
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]>;
 }

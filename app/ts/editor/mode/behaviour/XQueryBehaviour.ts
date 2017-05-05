@@ -2,8 +2,8 @@ import Behaviour from '../Behaviour';
 import CstyleBehaviour from './CstyleBehaviour';
 import XmlBehaviour from "../behaviour/XmlBehaviour";
 import TokenIterator from "../../TokenIterator";
-import Editor from "../../Editor";
-import EditSession from "../../EditSession";
+import { Editor } from "../../Editor";
+import { EditSession } from "../../EditSession";
 
 function hasType(token: { type: string }, type: string) {
     let hasType = true;

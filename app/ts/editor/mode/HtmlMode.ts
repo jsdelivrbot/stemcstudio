@@ -11,7 +11,7 @@ import HtmlBehaviour from "./behaviour/HtmlBehaviour";
 import HtmlFoldMode from "./folding/HtmlFoldMode";
 import HtmlCompletions from "./HtmlCompletions";
 import WorkerClient from "../worker/WorkerClient";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 
 // http://www.w3.org/TR/html5/syntax.html#void-elements
 const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"];

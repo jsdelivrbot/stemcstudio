@@ -4,7 +4,7 @@ import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
 import WorkerClient from "../worker/WorkerClient";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import { EditSessionEventName } from "../EditSession";
 
 export default class TypeScriptMode extends JavaScriptMode {

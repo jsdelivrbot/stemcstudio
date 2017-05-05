@@ -1,5 +1,5 @@
-import Editor from "./Editor";
-import EditSession from "./EditSession";
+import { Editor } from "./Editor";
+import { EditSession } from "./EditSession";
 
 export interface BehaviorCallbackThis {
     $getIndent: (line: string) => string;

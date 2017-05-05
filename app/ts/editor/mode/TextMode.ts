@@ -16,9 +16,9 @@ import LanguageModeFactory from "../LanguageModeFactory";
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
-import EditSession from '../EditSession';
+import { EditSession } from '../EditSession';
 import { workerCompleted } from '../EditSession';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import WorkerClient from "../worker/WorkerClient";
 import LanguageMode from '../LanguageMode';
 

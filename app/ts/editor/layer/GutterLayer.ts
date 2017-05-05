@@ -4,7 +4,7 @@ import AbstractLayer from './AbstractLayer';
 import escapeHTML from "../lib/escapeHTML";
 import EventEmitterClass from "../lib/EventEmitterClass";
 import Delta from "../Delta";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import EventBus from "../EventBus";
 import FoldWidget from "../FoldWidget";
 import Annotation from "../Annotation";

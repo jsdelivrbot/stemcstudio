@@ -1,7 +1,7 @@
 import Behaviour from "../Behaviour";
 import TokenIterator from "../../TokenIterator";
-import Editor from "../../Editor";
-import EditSession from "../../EditSession";
+import { Editor } from "../../Editor";
+import { EditSession } from "../../EditSession";
 import Range from "../../Range";
 import Token from "../../Token";
 

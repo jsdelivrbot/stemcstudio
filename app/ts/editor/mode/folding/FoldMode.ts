@@ -1,5 +1,5 @@
 import Range from "../../Range";
-import EditSession from "../../EditSession";
+import { EditSession } from "../../EditSession";
 import FoldStyle from '../../FoldStyle';
 import FoldWidget from '../../FoldWidget';
 

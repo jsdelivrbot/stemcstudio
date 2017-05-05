@@ -1,4 +1,4 @@
-import Editor from './Editor';
+import { Editor } from './Editor';
 import { getButton, preventDefault, stopPropagation } from "./lib/event";
 import { isMac } from "./lib/useragent";
 import Position from "./Position";

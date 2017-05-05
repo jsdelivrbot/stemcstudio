@@ -1,5 +1,5 @@
 import Command from '../../commands/Command';
-import Editor from '../../Editor';
+import { Editor } from '../../../virtual/editor';
 import { KEY_MODS } from '../../lib/keys';
 /**
  * Gets a map of keyboard shortcuts to command names for the current platform.
@@ -12,10 +12,10 @@ export interface KeyboardShortcut {
 
 interface CommandMap { [name: string]: KeyboardShortcut; }
 
-export default function getEditorKeyboardShortcuts(editor: Editor): KeyboardShortcut[] {
+export function getEditorKeyboardShortcuts(editor: Editor): KeyboardShortcut[] {
     const keybindings: KeyboardShortcut[] = [];
     const commandMap: CommandMap = {};
-    editor.keyBinding.$handlers.forEach(function (handler) {
+    editor.getKeyboardHandlers().forEach(function (handler) {
         const ckb = handler.commandKeyBinding;
         for (let hashString in ckb) {
             if (ckb.hasOwnProperty(hashString)) {

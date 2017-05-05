@@ -3,7 +3,7 @@ import TextMode from './TextMode';
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 
 export default class JsxMode extends TextMode {
     private readonly $outdent = new MatchingBraceOutdent();

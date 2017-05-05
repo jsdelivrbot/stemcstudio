@@ -32,7 +32,7 @@
 import { FUNCTION_KEYS, KEY_MODS } from "../lib/keys";
 import keyCodes from "../lib/keys";
 import { isMac } from "../lib/useragent";
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import EditorAction from "./EditorAction";
 import KeyHash from './KeyHash';
 import Command from '../commands/Command';

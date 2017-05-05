@@ -1,24 +1,21 @@
 import Range from "../Range";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 
 /**
- * @class MatchingBraceOutdent
+ *
  */
 export default class MatchingBraceOutdent {
 
     /**
-     * @class MatchingBraceOutdent
-     * @constructor
+     *
      */
     constructor() {
         // Do nothing.
     }
 
     /**
-     * @method checkOutdent
-     * @param line {string}
-     * @param text {string}
-     * @return {boolean}
+     * @param line
+     * @param text
      */
     checkOutdent(line: string, text: string): boolean {
         if (! /^\s+$/.test(line)) {

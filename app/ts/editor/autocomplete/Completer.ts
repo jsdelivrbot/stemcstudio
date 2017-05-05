@@ -1,6 +1,9 @@
 import Completion from '../Completion';
-import Editor from '../Editor';
 import Position from '../Position';
+
+export interface CompleterEditor {
+
+}
 
 /**
  *
@@ -15,18 +18,18 @@ interface Completer {
     /**
      *
      */
-    getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]>;
+    getCompletionsAtPosition(editor: CompleterEditor, position: Position, prefix: string): Promise<Completion[]>;
 
     /**
      *
      */
-    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, results: Completion[]) => any): void;
+    // getCompletions(editor: CompleterEditor, position: Position, prefix: string, callback: (err: any, results: Completion[]) => any): void;
 
     /**
      * The completer may, optionally, define how it wants insertions to be performed.
      * TODO: But how does it know what the insertion is?
      */
-    insertMatch?(editor: Editor): void;
+    insertMatch?(editor: CompleterEditor): void;
 
     /**
      *

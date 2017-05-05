@@ -5,7 +5,7 @@ import Completion from '../Completion';
 import CompletionList from '../CompletionList';
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import EditorMouseEvent from '../EditorMouseEvent';
 import getCompletionPrefix from './getCompletionPrefix';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
@@ -301,11 +301,8 @@ export class CompletionManager {
         let total = editor.completers.length;
 
         editor.completers.forEach(function (completer: Completer, index: number) {
-            completer.getCompletions(editor, position, prefix, function (err, results: Completion[]) {
-                if (err) {
-                    callback(err);
-                }
-                else {
+            completer.getCompletionsAtPosition(editor, position, prefix)
+                .then((results) => {
                     if (results) {
                         matches = matches.concat(results);
                     }
@@ -317,8 +314,10 @@ export class CompletionManager {
                         matches: matches,
                         finished: (--total === 0)
                     });
-                }
-            });
+                })
+                .catch((err) => {
+                    callback(err);
+                });
         });
         return true;
     }

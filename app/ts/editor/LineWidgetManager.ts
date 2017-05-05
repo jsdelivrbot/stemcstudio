@@ -1,7 +1,7 @@
 import { addCssClass, createHTMLDivElement } from "./lib/dom";
 import Delta from "./Delta";
-import Editor from "./Editor";
-import EditSession from "./EditSession";
+import { Editor } from "./Editor";
+import { EditSession } from "./EditSession";
 import Renderer from "./Renderer";
 import LineWidget from "./LineWidget";
 import Change from './Change';

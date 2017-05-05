@@ -1,4 +1,4 @@
-import EditSession from '../EditSession';
+import { EditSession } from '../EditSession';
 import GutterConfig from './GutterConfig';
 
 interface GutterRenderer {

@@ -1,4 +1,4 @@
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import TextMode from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import ClojureHighlightRules from "./ClojureHighlightRules";

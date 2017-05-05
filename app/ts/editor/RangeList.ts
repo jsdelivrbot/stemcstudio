@@ -1,5 +1,5 @@
 import Range from "./Range";
-import EditSession from "./EditSession";
+import { EditSession } from "./EditSession";
 import { comparePositions } from "./Position";
 import Position from "./Position";
 
@@ -16,7 +16,7 @@ export default class RangeList {
     /**
      *
      */
-    private session: EditSession;
+    private session: EditSession | null;
 
     /**
      * 
@@ -81,7 +81,7 @@ export default class RangeList {
         return removed;
     }
 
-    substractPoint(pos: Position): Range[] {
+    substractPoint(pos: Position): Range[] | undefined {
         const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges.splice(i, 1);
@@ -134,7 +134,7 @@ export default class RangeList {
         return this.pointIndex(pos) >= 0;
     }
 
-    rangeAtPoint(pos: Position): Range {
+    rangeAtPoint(pos: Position): Range | undefined {
         const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges[i];

@@ -1,5 +1,5 @@
 import TokenIterator from "./TokenIterator";
-import EditSession from "./EditSession";
+import { EditSession } from "./EditSession";
 import Position from "./Position";
 import Range from "./Range";
 

@@ -2,7 +2,7 @@
 
 import { qualifyURL } from '../lib/net';
 import Delta from "../Delta";
-import Document from "../Document";
+import { Document } from "../Document";
 import EventBus from "../EventBus";
 import EventEmitterClass from '../lib/EventEmitterClass';
 import CallbackManager from './CallbackManager';
@@ -246,7 +246,7 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
             this.detachFromDocument();
         }
 
-        if (doc instanceof Document) {
+        if (doc) {
             this.$doc = doc;
             this.$doc.addRef();
             this.call("setValue", [doc.getValue()], function () {
@@ -255,7 +255,7 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
             doc.addChangeListener(this.changeListener);
         }
         else {
-            throw new Error("doc must be a Document");
+            throw new Error("doc must be defined.");
         }
     }
 

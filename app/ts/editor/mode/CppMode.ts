@@ -3,7 +3,7 @@ import CppHighlightRules from "./CppHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 
 export default class CppMode extends TextMode {
     $id = "ace/mode/c_cpp";

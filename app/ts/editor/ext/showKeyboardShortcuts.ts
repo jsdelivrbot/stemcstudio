@@ -1,7 +1,10 @@
-import Editor from '../Editor';
 import { KeyboardShortcut } from '../ext/menu_tools/getEditorKeyboardShortcuts';
-import getEditorKeyboardShortcuts from '../ext/menu_tools/getEditorKeyboardShortcuts';
-import overlayPage from '../ext/menu_tools/overlayPage';
+import { getEditorKeyboardShortcuts } from '../ext/menu_tools/getEditorKeyboardShortcuts';
+import { overlayPage } from '../ext/menu_tools/overlayPage';
+//
+// Editor Abstraction Layer
+//
+import { Editor } from '../../virtual/editor';
 
 const ID_CONTENT_ELEMENT = 'kbshortcutmenu';
 
@@ -10,7 +13,7 @@ const ID_CONTENT_ELEMENT = 'kbshortcutmenu';
  * The keyboard shortcuts are specific to the editor.
  * The shortcuts are sorted in lowercase.
  */
-export default function showKeyboardShortcuts(editor: Editor) {
+export function showKeyboardShortcuts(editor: Editor) {
     // make sure the menu isn't open already.
     if (!document.getElementById(ID_CONTENT_ELEMENT)) {
         const kb = getEditorKeyboardShortcuts(editor);

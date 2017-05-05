@@ -4,7 +4,7 @@ import KeyHash from "../keyboard/KeyHash";
 import EditorAction from '../keyboard/EditorAction';
 import EventEmitterClass from "../lib/EventEmitterClass";
 import Command from './Command';
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import EventBus from '../EventBus';
 import KeyboardResponse from '../keyboard/KeyboardResponse';
 

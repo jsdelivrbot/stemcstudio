@@ -3,7 +3,7 @@ import { isChrome, isGecko, isIE, isMac, isTouchPad, isWebKit, isWin } from "../
 import { createElement } from "../lib/dom";
 import createDelayedCall from "../lib/lang/createDelayedCall";
 import DelayedCall from "../lib/lang/DelayedCall";
-import Editor from "../Editor";
+import { Editor } from "../Editor";
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import Range from '../Range';
@@ -174,7 +174,7 @@ export default class TextInput {
                 if (editor.selection) {
                     const r = editor.selection.getRange();
                     editor.insert(this.inComposition.lastValue, false);
-                    editor.getSession().markUndoGroup();
+                    editor.sessionOrThrow().markUndoGroup();
                     this.inComposition.range = editor.selection.getRange();
                     editor.selection.setRange(r);
                     editor.selection.clearSelection();
@@ -250,11 +250,11 @@ export default class TextInput {
             if (editor.selection) {
                 if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
                     editor.insert("", false);
-                    editor.getSession().markUndoGroup();
+                    editor.sessionOrThrow().markUndoGroup();
                     editor.selection.clearSelection();
                 }
             }
-            editor.getSession().markUndoGroup();
+            editor.sessionOrThrow().markUndoGroup();
         };
 
         const onSelect = (e: any) => {

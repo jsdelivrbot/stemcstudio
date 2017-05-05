@@ -6,18 +6,14 @@ import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
-import Delta from '../../editor/Delta';
 import Diagnostic from '../../editor/workspace/Diagnostic';
-import Document from '../../editor/Document';
 import { DocumentMonitor } from './monitoring.service';
-import Editor from '../../editor/Editor';
-import EditSession from '../../editor/EditSession';
 import { workerCompleted } from '../../editor/EditSession';
 import EventBus from './EventBus';
 import { EventHub } from './EventHub';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
-import getPosition from '../../editor/workspace/getPosition';
+import { getPosition, DocumentWithLines } from '../../editor/workspace/getPosition';
 import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import IWorkspaceModel from './IWorkspaceModel';
@@ -25,7 +21,6 @@ import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
 import Position from '../../editor/Position';
-import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
@@ -40,15 +35,12 @@ import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { PackageJsonMonitor } from './monitors/PackageJsonMonitor';
-import QuickInfo from '../../editor/workspace/QuickInfo';
-import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
-import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
 import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
-import SnippetCompleter from '../../editor/SnippetCompleter';
+import { SnippetCompleter } from '../../editor/SnippetCompleter';
 import StringShareableMap from '../../collections/StringShareableMap';
 import TextChange from '../../editor/workspace/TextChange';
 import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
@@ -63,8 +55,22 @@ import { setOptionalBooleanProperty } from '../../services/doodles/setOptionalBo
 import { setOptionalStringProperty } from '../../services/doodles/setOptionalStringProperty';
 import { setOptionalStringArrayProperty } from '../../services/doodles/setOptionalStringArrayProperty';
 import { WorkspaceRoomListener } from './WorkspaceRoomListener';
-import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
+import { WorkspaceCompleter } from '../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
+//
+// Editor Abstraction Layer.
+//
+import { Delta } from '../../virtual/editor';
+import { Document } from '../../virtual/editor';
+import { Editor } from '../../virtual/editor';
+import { EditorFactory } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
+import { Marker } from '../../virtual/editor';
+import { QuickInfo } from '../../virtual/editor';
+import { QuickInfoTooltip } from '../../virtual/editor';
+import { QuickInfoTooltipHost } from '../../virtual/editor';
+import { NativeEditorFactory } from '../../services/editor/native-editor.service';
+
 
 const NEWLINE = '\n';
 
@@ -295,7 +301,7 @@ function diagnosticOriginToMarkerClass(origin: DiagnosticOrigin): string {
  * Converts a Diagnostic to an Annotation.
  * The type of the annotation is currently based upon the origin.
  */
-function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic, origin: DiagnosticOrigin): Annotation {
+function diagnosticToAnnotation(doc: DocumentWithLines, diagnostic: Diagnostic, origin: DiagnosticOrigin): Annotation {
     const minChar = diagnostic.start;
     const pos: Position = getPosition(doc, minChar);
     const type = diagnosticOriginToAnnotationType(origin);
@@ -308,33 +314,6 @@ function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic, origin: D
 function checkPath(path: string): void {
     if (typeof path !== 'string') {
         throw new Error("path must be a string.");
-    }
-}
-
-/**
- * Asserts that the specified editor is an Editor instance.
- */
-function checkEditor(editor: Editor): void {
-    if (!(editor instanceof Editor)) {
-        throw new Error("editor must be an Editor.");
-    }
-}
-
-/**
- * Asserts that the session really is an EditSession.
- */
-function checkSession(session: EditSession): void {
-    if (!(session instanceof EditSession)) {
-        throw new Error("session must be an EditSession.");
-    }
-}
-
-/**
- * Asserts that the specified doc is a Document instance.
- */
-function checkDocument(doc: Document): void {
-    if (!(doc instanceof Document)) {
-        throw new Error("doc must be a Document.");
     }
 }
 
@@ -687,12 +666,15 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private traceFileOperations = false;
 
+    private factory: EditorFactory;
+
     /**
      *
      */
-    constructor(private doodles: DoodleManager, private optionManager: OptionManager) {
+    constructor(private doodles: DoodleManager, private optionManager: OptionManager, factory: NativeEditorFactory) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
-        // We do nothing. There is no destructor; it would never be called.
+        // We do nothing, much. There is no destructor; it would never be called.
+        this.factory = factory;
     }
 
     private logLifecycle(message: string): void {
@@ -1050,7 +1032,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         this.addRef();
 
         checkPath(path);
-        checkEditor(editor);
 
         // Idempotency.
         const existing = this.getFileEditor(path);
@@ -1069,14 +1050,14 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             // TODO: How do we remove these later?
-            editor.commands.addCommand(new AutoCompleteCommand());
-            editor.completers.push(new WorkspaceCompleter(path, this));
+            editor.addCommand(new AutoCompleteCommand());
+            editor.addCompleter(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
             // editor.completers.push(new SnippetCompleter());
-            editor.snippetManager.register(typescriptSnippets);
+            editor.registerSnippets(typescriptSnippets);
 
             // Finally, enable QuickInfo.
-            const quickInfo = new QuickInfoTooltip(path, editor, this);
+            const quickInfo = editor.createQuickInfoTooltip(path, this);
             quickInfo.init();
             this.quickInfo[path] = quickInfo;
         }
@@ -1085,26 +1066,26 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             // TODO: How do we remove these later?
-            editor.commands.addCommand(new AutoCompleteCommand());
+            editor.addCommand(new AutoCompleteCommand());
             // editor.completers.push(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
             // editor.completers.push(new SnippetCompleter());
-            editor.snippetManager.register(javascriptSnippets);
+            editor.registerSnippets(javascriptSnippets);
 
             // Finally, enable QuickInfo.
-            const quickInfo = new QuickInfoTooltip(path, editor, this);
+            const quickInfo = editor.createQuickInfoTooltip(path, this);
             quickInfo.init();
             this.quickInfo[path] = quickInfo;
         }
         else if (isHtmlScript(path)) {
-            editor.commands.addCommand(new AutoCompleteCommand());
-            editor.completers.push(new KeywordCompleter());
-            editor.completers.push(new SnippetCompleter());
+            editor.addCommand(new AutoCompleteCommand());
+            editor.addCompleter(new KeywordCompleter());
+            editor.addCompleter(new SnippetCompleter());
         }
         else {
-            editor.commands.addCommand(new AutoCompleteCommand());
-            editor.completers.push(new KeywordCompleter());
-            editor.completers.push(new SnippetCompleter());
+            editor.addCommand(new AutoCompleteCommand());
+            editor.addCompleter(new KeywordCompleter());
+            editor.addCompleter(new SnippetCompleter());
         }
 
         this.attachSession(path, editor.getSession());
@@ -1122,7 +1103,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
         try {
             checkPath(path);
-            checkEditor(editor);
 
             this.setFileEditor(path, void 0);
 
@@ -1161,10 +1141,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private attachSession(path: string, session: EditSession | undefined): void {
         checkPath(path);
 
-        if (session) {
-            checkSession(session);
-        }
-        else {
+        if (!session) {
             return;
         }
 
@@ -1213,10 +1190,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private detachSession(path: string, session: EditSession | undefined) {
         checkPath(path);
 
-        if (session) {
-            checkSession(session);
-        }
-        else {
+        if (!session) {
             return;
         }
 
@@ -1248,7 +1222,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         const doc = this.getFileDocument(path);
         if (doc) {
             try {
-                checkDocument(doc);
 
                 // Monitoring for Language Analysis.
                 if (isTypeScript(path)) {
@@ -1329,7 +1302,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             const doc = this.getFileDocument(path);
             if (doc) {
                 try {
-                    checkDocument(doc);
 
                     if (this.docMonitors[path]) {
                         const monitor = this.docMonitors[path];
@@ -1610,10 +1582,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
         // We have the path and diagnostics, so we should be able to provide hyperlinks to errors.
-        if (session) {
-            checkSession(session);
-        }
-        else {
+        if (!session) {
             return;
         }
 
@@ -2123,7 +2092,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         if (!this.existsFile(pathToCreate)) {
             const trashedFile = this.trash ? this.trash.get(pathToCreate) : void 0;
             if (!trashedFile) {
-                const file = new WsFile(this);
+                const file = new WsFile(this, this.factory);
                 file.setText("");
                 file.mode = mode;
                 if (!this.files) {
@@ -3005,7 +2974,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     public trashPut(path: string): void {
         if (this.trash) {
-            const placeholder = new WsFile(this);
+            const placeholder = new WsFile(this, this.factory);
             placeholder.existsInGitHub = true;
             this.trash.putWeakRef(path, placeholder);
         }
@@ -3303,7 +3272,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     updateFileEditorFrontMarkers(path: string): void {
         const editor = this.getFileEditor(path);
         if (editor) {
-            editor.renderer.updateFrontMarkers();
+            editor.updateFrontMarkers();
         }
     }
 
@@ -3323,24 +3292,42 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     /**
      *
      */
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
-        checkPath(path);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange[]) => {
-                callback(err, textChanges);
-            });
-        }
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
+        return new Promise<TextChange[]>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange[]) => {
+                    if (!err) {
+                        resolve(textChanges);
+                    }
+                    else {
+                        reject(err);
+                    }
+                });
+            }
+            else {
+                reject(new Error("Formatting edits are not available at this moment."));
+            }
+        });
     }
 
     /**
      *
      */
-    getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
-        checkPath(path);
-        if (this.languageServiceProxy) {
-            this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {
-                callback(err, quickInfo);
-            });
-        }
+    getQuickInfoAtPosition(path: string, position: number): Promise<QuickInfo> {
+        return new Promise<QuickInfo>((resolve, reject) => {
+            if (this.languageServiceProxy) {
+                this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {
+                    if (!err) {
+                        resolve(quickInfo);
+                    }
+                    else {
+                        reject(err);
+                    }
+                });
+            }
+            else {
+                reject(new Error("QuickInfo is not available at this moment."));
+            }
+        });
     }
 }

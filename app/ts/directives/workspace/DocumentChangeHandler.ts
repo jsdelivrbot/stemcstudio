@@ -1,5 +1,5 @@
 import Delta from '../../editor/Delta';
-import Document from '../../editor/Document';
+import { Document } from '../../editor/Document';
 
 /**
  *

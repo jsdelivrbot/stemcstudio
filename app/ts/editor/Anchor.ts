@@ -1,6 +1,6 @@
 import AnchorChangeEvent from './events/AnchorChangeEvent';
 import Delta from "./Delta";
-import Document from "./Document";
+import { Document } from "./Document";
 import Position from "./Position";
 import EventEmitterClass from './lib/EventEmitterClass';
 import EventBus from "./EventBus";

@@ -1,6 +1,9 @@
-import Document from '../../../editor/Document';
 import { DocumentMonitor } from '../monitoring.service';
 import { WsModel } from '.././WsModel';
+//
+// Editor Abstraction Layer
+//
+import { Document } from '../../../virtual/editor';
 
 //
 // RxJS imports

@@ -6,7 +6,7 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import CssBehaviour from "./behaviour/CssBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import EditSession from "../EditSession";
+import { EditSession } from "../EditSession";
 import Position from '../Position';
 
 export default class CssMode extends TextMode {

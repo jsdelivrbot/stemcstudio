@@ -1,7 +1,10 @@
-import Document from '../Document';
 import Position from '../Position';
 
-export default function getPosition(doc: Document, chars: number): Position {
+export interface DocumentWithLines {
+    getAllLines(): string[];
+}
+
+export function getPosition(doc: DocumentWithLines, chars: number): Position {
     const lines: string[] = doc.getAllLines();
     let count = 0;
     let row = 0;

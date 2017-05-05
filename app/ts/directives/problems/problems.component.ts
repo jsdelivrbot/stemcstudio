@@ -1,7 +1,7 @@
 import { ACE_WORKER_PATH } from '../../constants';
-import Document from '../../editor/Document';
-import Editor from '../../editor/Editor';
-import EditSession from '../../editor/EditSession';
+import { Document } from '../../editor/Document';
+import { Editor } from '../../editor/Editor';
+import { EditSession } from '../../editor/EditSession';
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import ProblemsScope from './ProblemsScope';
 import Renderer from '../../editor/Renderer';

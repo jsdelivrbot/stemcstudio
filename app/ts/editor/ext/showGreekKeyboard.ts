@@ -1,6 +1,6 @@
 import Clipboard from 'clipboard';
-import Editor from '../Editor';
-import overlayPage from '../ext/menu_tools/overlayPage';
+import { Editor } from '../../virtual/editor';
+import { overlayPage } from '../ext/menu_tools/overlayPage';
 
 const ID_CONTENT_ELEMENT = 'greek-keyboard';
 

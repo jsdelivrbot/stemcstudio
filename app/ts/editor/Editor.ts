@@ -14,7 +14,7 @@ import KeyBinding from "./keyboard/KeyBinding";
 import TextInput from "./keyboard/TextInput";
 import Delta from "./Delta";
 import EditorAction from "./keyboard/EditorAction";
-import EditSession from "./EditSession";
+import { EditSession } from "./EditSession";
 import Search from "./Search";
 import { assembleRegExp } from './Search';
 import FirstAndLast from "./FirstAndLast";
@@ -39,7 +39,7 @@ import { CompletionManager } from "./autocomplete/CompletionManager";
 import refChange from '../utils/refChange';
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
-import SnippetManager from './SnippetManager';
+import { SnippetManager } from './SnippetManager';
 import SnippetOptions from './SnippetOptions';
 import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, preventDefault, stopEvent } from "./lib/event";
 import TabstopManager from './TabstopManager';
@@ -479,6 +479,13 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
         });
 
         this.setSession(session);
+    }
+
+    addCommand(keybinding: number, handler: any, context: string): void {
+        const command: Command = {
+
+        };
+        this.commands.addCommand(command);
     }
 
     /**
@@ -1410,6 +1417,14 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
      */
     setFontSize(fontSize: string | null): void {
         this.renderer.setFontSize(fontSize);
+    }
+
+    isSnippetSelectionMode(): boolean {
+        return this.inVirtualSelectionMode;
+    }
+
+    enableTabStops(): TabstopManager {
+        return this.tabstopManager ? this.tabstopManager : new TabstopManager(this);
     }
 
     /**
@@ -3132,6 +3147,10 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
         return this.sessionOrThrow().documentToScreenPosition(cursor.row, cursor.column);
     }
 
+    getSelectionIndex(): number {
+        return this.selectionOrThrow().index;
+    }
+
     /**
      *
      */
@@ -3925,8 +3944,6 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
         cursorLayer.setCssClass("ace_slim-cursors", /slim/.test(style));
     }
 }
-
-export default Editor;
 
 class FoldHandler {
     constructor(editor: Editor) {

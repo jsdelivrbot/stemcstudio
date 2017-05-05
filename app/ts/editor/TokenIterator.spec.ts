@@ -1,5 +1,5 @@
-import Document from './Document';
-import EditSession from './EditSession';
+import { Document } from './Document';
+import { EditSession } from './EditSession';
 import { HighlighterToken } from './mode/Highlighter';
 import JavaScriptMode from './mode/JavaScriptMode';
 import TokenIterator from './TokenIterator';

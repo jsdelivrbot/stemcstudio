@@ -4,7 +4,7 @@ import Delta from "./Delta";
 
 import Command from './commands/Command';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
-import Editor from './Editor';
+import { Editor } from './Editor';
 import Position from "./Position";
 import Range from "./Range";
 import Selection from "./Selection";
@@ -238,7 +238,7 @@ export default class TabstopManager {
     /**
      *
      */
-    public tabNext(direction = 1): void {
+    public tabNext(direction: Direction = 1): void {
         if (this.tabstops) {
             const max = this.tabstops.length;
             const index = Math.min(Math.max(this.index + direction, 1), max);
