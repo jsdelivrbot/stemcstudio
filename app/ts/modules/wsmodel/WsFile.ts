@@ -275,11 +275,12 @@ export class WsFile implements MwDocument, Shareable {
      * TODO: Implement boolean[] of return values.
      */
     patch(patches: Patch[]): boolean[] {
-        for (let i = 0; i < patches.length; i++) {
-            const patch = patches[i];
+        for (const patch of patches) {
             if (this.doc) {
-            /* const {start, length, applied} = */ applyPatchToDocument(patch, this.doc);
+                const { start, length, applied } = applyPatchToDocument(patch, this.doc);
                 // The results of aplying the patch as a collection of diffs.
+                // TODO: Used the applied or return everything?
+                console.log(`applyPatchToDocument(${patch}) => start=${start}, length=${length}, applied=${applied}`);
             }
         }
         return [];

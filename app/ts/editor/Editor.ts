@@ -490,6 +490,8 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
 
     /**
      * Cleans up the entire editor.
+     * 1. Dispose of the UI elements.
+     * 2. 
      */
     dispose(): void {
         this.renderer.dispose();
@@ -1126,6 +1128,14 @@ export class Editor implements Disposable, EventBus<EditorEventName, any, Editor
     /**
      * Sets the EditSession to use.
      * This method also emits the `'changeSession'` event.
+     * 1. Does nothing if the session is the same as the existing session.
+     * 2. Ends and current operations.
+     * 3. Removes handlers from the existing session.
+     * 4. Adds handlers to the new session.
+     * 5. Associates the renderer with the correct session.
+     * 6. addRef's the new session.
+     * 7. releases the existing session.
+     * 8. Schedules a start of the background tokenizer for syntax coloring.
      */
     setSession(session: EditSession | undefined): void {
         if (this.session === session) {

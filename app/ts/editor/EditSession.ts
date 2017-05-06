@@ -354,8 +354,8 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      * 
      */
-    on(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): void {
-        this.eventBus.on(eventName, callback, false);
+    on(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): () => void {
+        return this.eventBus.on(eventName, callback, false);
     }
 
     /**

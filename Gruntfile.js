@@ -205,6 +205,7 @@ function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.16';
     const VERSION_ANGULAR = '4.1.0';
+    const VERSION_MONACO = '0.8.3';
 
     return [
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
@@ -213,6 +214,12 @@ function copies(target) {
         /*
         { src: 'app/index.html', dest: prepend(target, 'index.html') },
         */
+        {
+            expand: true,
+            cwd: `manual/monaco-editor@${VERSION_MONACO}`,
+            src: ["**"],
+            dest: prepend(target, `js/monaco-editor@${VERSION_MONACO}`)
+        },
         {
             src: 'manual/typescript@2.3.1/typescriptServices.js',
             dest: prepend(target, 'js/typescript@2.3.1/typescriptServices.js')

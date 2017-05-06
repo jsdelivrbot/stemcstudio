@@ -39,10 +39,10 @@ export const NATIVE_EDITOR_SERVICE_UUID = 'native-editor.service.uuid';
 @Injectable()
 export class NativeEditorService implements EditorService {
     constructor() {
-        console.log(`NativeEditorService.constructor()`);
+        // Nothing to do because native editor is ready to go.
     }
-    createDocument(textOrLines: string | string[]): Document {
-        return new NativeDocument(textOrLines);
+    createDocument(text: string): Document {
+        return new NativeDocument(text);
     }
     createSession(doc: Document): EditSession {
         return new NativeEditSession(doc as NativeDocument);
@@ -75,7 +75,7 @@ class NativeEditorAdapter implements Editor {
     createKeyboardHandler(): KeyboardHandler {
         return new NativeKeyboardHandler();
     }
-    createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip {
+    createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip | undefined {
         return new NativeQuickInfoTooltip(path, this.editor, host);
     }
     dispose(): void {

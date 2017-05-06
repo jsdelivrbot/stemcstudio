@@ -24,6 +24,9 @@ export interface Delta {
     lines: string[];
 }
 
+/**
+ * A convenient wrapper for the contents of a text-based editor.
+ */
 export interface Document {
     readonly changeEvents: Observable<Delta>;
     addChangeListener(callback: (event: Delta, source: Document) => void): () => void;
@@ -36,7 +39,7 @@ export interface Document {
     positionToIndex(position: Position): number;
     release(): number;
     remove(range: Readonly<Range>): Position;
-    removeChangeListener(callback: (event: Delta, source: Document) => any): void;
+    removeChangeListener(callback: (event: Delta, source: Document) => void): void;
     removeInLine(row: number, startColumn: number, endColumn: number): Position;
     setValue(value: string): void;
 }
@@ -50,7 +53,8 @@ export enum Direction { FORWARD = +1, BACKWARD = -1 }
 export type EditorEventType = 'change' | 'changeAnnotation' | 'changeSelection' | 'changeSession' | 'mouseup';
 
 /**
- * 
+ * A wrapper around an HTMLElement for controlling an editor.
+ * The editor can be thought of as a controller containing a model and a view.
  */
 export interface Editor {
     addCommand(command: Command): void;
@@ -59,7 +63,7 @@ export interface Editor {
     addLineWidget(widget: LineWidget): LineWidget;
     blur(): void;
     createKeyboardHandler(): KeyboardHandler;
-    createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip;
+    createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip | undefined;
     dispose(): void;
     enableLineWidgets(): void;
     enableTabStops(): TabstopManager;
@@ -83,7 +87,7 @@ export interface Editor {
     getSelectionIndex(): number;
     getSelectionRange(): Range;
     getSession(): EditSession | undefined;
-    gotoLine(row: number, column: number): void;
+    gotoLine(lineNumber: number, column: number): void;
     isMousePressed(): boolean;
     isSnippetSelectionMode(): boolean;
     moveSelectionToPosition(pos: Position): void;
@@ -124,8 +128,19 @@ export interface EditorAction {
 
 }
 
+/**
+ * The editor service is a factory for creating editors, sessions, and documents.
+ * 
+ * The ordering of creation is normally...
+ * 1. Document - when a Gist is loaded.
+ * 2. Editor - when the UI requires one because a file has been opened.
+ * 3. EditSession - injected into the editor as needed.
+ */
 export interface EditorService {
-    createDocument(textOrLines: string | string[]): Document;
+    /**
+     * 
+     */
+    createDocument(text: string): Document;
     createSession(doc: Document): EditSession;
     createEditor(container: HTMLElement): Editor;
 }
@@ -156,7 +171,7 @@ export interface EditSession {
     getWordRange(row: number, column: number): Range;
     highlight(re: RegExp): void;
     modeOrThrow(): LanguageMode;
-    on(eventName: EditSessionEventType, callback: EditSessionEventHandler): void;
+    on(eventName: EditSessionEventType, callback: EditSessionEventHandler): () => void;
     off(eventName: EditSessionEventType, callback: EditSessionEventHandler): void;
     release(): number;
     replace(range: Range, newText: string): Position;
@@ -239,7 +254,7 @@ export interface Marker {
 
 export type MarkerType = 'fullLine' | 'line' | 'text' | 'screenLine';
 
-interface MarkerRenderer {
+export interface MarkerRenderer {
     (html: (number | string)[], range: Range, left: number, top: number, config: MarkerConfig): void;
 }
 

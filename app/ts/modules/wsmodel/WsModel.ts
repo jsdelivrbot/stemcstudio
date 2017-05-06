@@ -69,8 +69,8 @@ import { Marker } from '../../virtual/editor';
 import { QuickInfo } from '../../virtual/editor';
 import { QuickInfoTooltip } from '../../virtual/editor';
 import { QuickInfoTooltipHost } from '../../virtual/editor';
+// import { MonacoEditorService } from '../../services/editor/monaco-editor.service';
 import { NativeEditorService } from '../../services/editor/native-editor.service';
-
 
 const NEWLINE = '\n';
 
@@ -1063,8 +1063,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
             // Finally, enable QuickInfo.
             const quickInfo = editor.createQuickInfoTooltip(path, this);
-            quickInfo.init();
-            this.quickInfo[path] = quickInfo;
+            if (quickInfo) {
+                quickInfo.init();
+                this.quickInfo[path] = quickInfo;
+            }
         }
         else if (isJavaScript(path)) {
             // Enable auto completion using the workspace.
@@ -1079,8 +1081,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
             // Finally, enable QuickInfo.
             const quickInfo = editor.createQuickInfoTooltip(path, this);
-            quickInfo.init();
-            this.quickInfo[path] = quickInfo;
+            if (quickInfo) {
+                quickInfo.init();
+                this.quickInfo[path] = quickInfo;
+            }
         }
         else if (isHtmlScript(path)) {
             editor.addCommand(new AutoCompleteCommand());
