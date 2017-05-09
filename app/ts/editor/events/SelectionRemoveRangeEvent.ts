@@ -1,14 +1,12 @@
-import Range from '../Range';
+import { OrientedRange as Range } from '../../virtual/editor';
 
 /**
  *
  */
-interface SelectionRemoveRangeEvent {
+export interface SelectionRemoveRangeEvent {
 
     /**
      *
      */
     ranges: Range[];
 }
-
-export default SelectionRemoveRangeEvent;

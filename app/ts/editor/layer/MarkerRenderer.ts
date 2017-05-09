@@ -1,8 +1,8 @@
 import MarkerConfig from './MarkerConfig';
-import Range from '../Range';
+import RangeBasic from '../RangeBasic';
 
 interface MarkerRenderer {
-    (html: (number | string)[], range: Range, left: number, top: number, config: MarkerConfig): void;
+    (html: (number | string)[], range: RangeBasic, left: number, top: number, config: MarkerConfig): void;
 }
 
 export default MarkerRenderer;

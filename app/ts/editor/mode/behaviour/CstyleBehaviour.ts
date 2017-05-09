@@ -7,6 +7,7 @@ import { EditSession } from "../../EditSession";
 import Position from "../../Position";
 import Range from "../../Range";
 import Token from "../../Token";
+import { isMultiLine } from "../../RangeHelpers";
 
 const SAFE_INSERT_IN_TOKENS =
     ["text", "paren.rparen", "punctuation.operator"];
@@ -142,7 +143,7 @@ export default class CstyleBehaviour extends Behaviour {
             function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
-                if (!range.isMultiLine() && selected === '{') {
+                if (!isMultiLine(range) && selected === '{') {
                     initContext(editor);
                     const line = doc.getLine(range.start.row);
                     const rightChar = line.substring(range.end.column, range.end.column + 1);
@@ -194,7 +195,7 @@ export default class CstyleBehaviour extends Behaviour {
         this.add("parens", "deletion",
             function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const selected: string = session.docOrThrow().getTextRange(range);
-                if (!range.isMultiLine() && selected === '(') {
+                if (!isMultiLine(range) && selected === '(') {
                     initContext(editor);
                     const doc = session.docOrThrow();
                     const line = doc.getLine(range.start.row);
@@ -212,7 +213,7 @@ export default class CstyleBehaviour extends Behaviour {
             function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] | undefined } | undefined {
                 if (text === '[') {
                     initContext(editor);
-                    const selectionRange: Range = editor.getSelectionRange();
+                    const selectionRange = editor.getSelectionRange();
                     const doc = session.docOrThrow();
                     const selected: string = doc.getTextRange(selectionRange);
                     if (selected !== "" && editor.getWrapBehavioursEnabled()) {
@@ -245,7 +246,7 @@ export default class CstyleBehaviour extends Behaviour {
             function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
-                if (!range.isMultiLine() && selected === '[') {
+                if (!isMultiLine(range) && selected === '[') {
                     initContext(editor);
                     const line = session.docOrThrow().getLine(range.start.row);
                     const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
@@ -323,7 +324,7 @@ export default class CstyleBehaviour extends Behaviour {
             function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const doc = session.docOrThrow();
                 const selected: string = doc.getTextRange(range);
-                if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
+                if (!isMultiLine(range) && (selected === '"' || selected === "'")) {
                     initContext(editor);
                     const line = session.docOrThrow().getLine(range.start.row);
                     const rightChar = line.substring(range.start.column + 1, range.start.column + 2);

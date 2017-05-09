@@ -1,6 +1,6 @@
-import Command from '../commands/Command';
+import { Command } from '../commands/Command';
 import { Editor } from '../Editor';
-import EditorAction from '../keyboard/EditorAction';
+import { Action } from '../keyboard/Action';
 import { CompletionManager } from './CompletionManager';
 import { COMMAND_NAME_AUTO_COMPLETE } from '../editor_protocol';
 
@@ -21,9 +21,9 @@ function ensureCompletionManager(editor: Editor): CompletionManager {
 /**
  *
  */
-export default class AutoCompleteCommand implements Command {
+export class AutoCompleteCommand implements Command<Editor> {
     name: string;
-    exec: EditorAction;
+    exec: Action<Editor>;
     bindKey: string;
 
     /**

@@ -123,61 +123,8 @@ declare module monaco {
      *
      *
      */
-    export class Uri {
-        static isUri(thing: any): thing is Uri;
-        protected constructor();
-        /**
-         * scheme is the 'http' part of 'http://www.msft.com/some/path?query#fragment'.
-         * The part before the first colon.
-         */
-        readonly scheme: string;
-        /**
-         * authority is the 'www.msft.com' part of 'http://www.msft.com/some/path?query#fragment'.
-         * The part between the first double slashes and the next slash.
-         */
-        readonly authority: string;
-        /**
-         * path is the '/some/path' part of 'http://www.msft.com/some/path?query#fragment'.
-         */
-        readonly path: string;
-        /**
-         * query is the 'query' part of 'http://www.msft.com/some/path?query#fragment'.
-         */
-        readonly query: string;
-        /**
-         * fragment is the 'fragment' part of 'http://www.msft.com/some/path?query#fragment'.
-         */
-        readonly fragment: string;
-        /**
-         * Returns a string representing the corresponding file system path of this Uri.
-         * Will handle UNC paths and normalize windows drive letters to lower-case. Also
-         * uses the platform specific path separator. Will *not* validate the path for
-         * invalid characters and semantics. Will *not* look at the scheme of this Uri.
-         */
-        readonly fsPath: string;
-        with(change: {
-            scheme?: string;
-            authority?: string;
-            path?: string;
-            query?: string;
-            fragment?: string;
-        }): Uri;
-        static parse(value: string): Uri;
-        static file(path: string): Uri;
-        static from(components: {
-            scheme?: string;
-            authority?: string;
-            path?: string;
-            query?: string;
-            fragment?: string;
-        }): Uri;
-        /**
-         *
-         * @param skipEncoding Do not encode the result, default is `false`
-         */
+    export interface Uri {
         toString(skipEncoding?: boolean): string;
-        toJSON(): any;
-        static revive(data: any): Uri;
     }
 
     /**
@@ -1605,6 +1552,7 @@ declare module monaco.editor {
 
     /**
      * Vertical Lane in the overview ruler of the editor.
+     * Left, Center, Right, or Full.
      */
     export enum OverviewRulerLane {
         Left = 1,
@@ -1946,28 +1894,91 @@ declare module monaco.editor {
         readonly insertSpaces: boolean;
         readonly trimAutoWhitespace: boolean;
     }
+    /**
+     * A processed string with its EOL resolved ready to be turned into an editor model.
+     */
+    export interface ITextSource {
+        /**
+         * The entire text length.
+         */
+        readonly length: number;
+        /**
+         * The text split into lines.
+         */
+        readonly lines: string[];
+        /**
+         * The BOM (leading character sequence of the file).
+         */
+        readonly BOM: string;
+        /**
+         * The end of line sequence.
+         */
+        readonly EOL: string;
+        /**
+         * The text contains Unicode characters classified as "R" or "AL".
+         */
+        readonly containsRTL: boolean;
+        /**
+         * The text contains only characters inside the ASCII range 32-126 or \t \r \n
+         */
+        readonly isBasicASCII: boolean;
+    }
+
+    export class IndentRange {
+        _indentRangeBrand: void;
+        startLineNumber: number;
+        endLineNumber: number;
+        indent: number;
+
+        constructor(startLineNumber: number, endLineNumber: number, indent: number);
+        static deepCloneArr(indentRanges: IndentRange[]): IndentRange[];
+    }
 
     /**
      * A textual read-only model.
      */
     export interface ITextModel {
+
+        /**
+         * Undocumented
+         */
+        mightContainRTL(): boolean;
+
+        /**
+         * Undocumented
+         */
+        mightContainNonBasicASCII(): boolean;
+
+        /**
+         * Get the resolved options for this model.
+         */
         getOptions(): TextModelResolvedOptions;
+
         /**
          * Get the current version id of the model.
          * Anytime a change happens to the model (even undo/redo),
          * the version id is incremented.
          */
         getVersionId(): number;
+
         /**
          * Get the alternative version id of the model.
          * This alternative version id is not always incremented,
          * it will return the same values in the case of undo-redo.
          */
         getAlternativeVersionId(): number;
+
         /**
          * Replace the entire text buffer value contained in this model.
          */
         setValue(newValue: string): void;
+
+        /**
+         * Replace the entire text buffer value contained in this model.
+         * @internal
+         */
+        setValueFromTextSource(newValue: ITextSource): void;
+
         /**
          * Get the text stored in this model.
          * @param eol The end of line character preference. Defaults to `EndOfLinePreference.TextDefined`.
@@ -1975,10 +1986,18 @@ declare module monaco.editor {
          * @return The text.
          */
         getValue(eol?: EndOfLinePreference, preserveBOM?: boolean): string;
+
         /**
          * Get the length of the text stored in this model.
          */
         getValueLength(eol?: EndOfLinePreference, preserveBOM?: boolean): number;
+
+        /**
+         * Check if the raw text stored in this model equals another raw text.
+         * @internal
+         */
+        equals(other: ITextSource): boolean;
+
         /**
          * Get the text in a certain range.
          * @param range The range describing what text to get.
@@ -1986,55 +2005,91 @@ declare module monaco.editor {
          * @return The text.
          */
         getValueInRange(range: IRange, eol?: EndOfLinePreference): string;
+
         /**
          * Get the length of text in a certain range.
          * @param range The range describing what text length to get.
          * @return The text length.
          */
         getValueLengthInRange(range: IRange): number;
+
+        /**
+         * Splits characters in two buckets. First bucket (A) is of characters that
+         * sit in lines with length < `LONG_LINE_BOUNDARY`. Second bucket (B) is of
+         * characters that sit in lines with length >= `LONG_LINE_BOUNDARY`.
+         * If count(B) > count(A) return true. Returns false otherwise.
+         * @internal
+         */
+        isDominatedByLongLines(): boolean;
+
         /**
          * Get the number of lines in the model.
          */
         getLineCount(): number;
+
         /**
          * Get the text for a certain line.
          */
         getLineContent(lineNumber: number): string;
+
+        /**
+         * @internal
+         */
+        getIndentLevel(lineNumber: number): number;
+
+        /**
+         * @internal
+         */
+        getIndentRanges(): IndentRange[];
+
+        /**
+         * @internal
+         */
+        getLineIndentGuide(lineNumber: number): number;
+
         /**
          * Get the text for all lines.
          */
         getLinesContent(): string[];
+
         /**
          * Get the end of line sequence predominantly used in the text buffer.
          * @return EOL char sequence (e.g.: '\n' or '\r\n').
          */
         getEOL(): string;
+
         /**
          * Change the end of line sequence used in the text buffer.
          */
         setEOL(eol: EndOfLineSequence): void;
+
         /**
          * Get the minimum legal column for line at `lineNumber`
          */
         getLineMinColumn(lineNumber: number): number;
+
         /**
          * Get the maximum legal column for line at `lineNumber`
          */
         getLineMaxColumn(lineNumber: number): number;
+
         /**
          * Returns the column before the first non whitespace character for line at `lineNumber`.
          * Returns 0 if line is empty or contains only whitespace.
          */
         getLineFirstNonWhitespaceColumn(lineNumber: number): number;
+
         /**
          * Returns the column after the last non whitespace character for line at `lineNumber`.
          * Returns 0 if line is empty or contains only whitespace.
          */
         getLineLastNonWhitespaceColumn(lineNumber: number): number;
+
         /**
          * Create a valid position,
          */
         validatePosition(position: IPosition): Position;
+
         /**
          * Advances the given position by the given offest (negative offsets are also accepted)
          * and returns it as a new valid position.
@@ -2046,10 +2101,12 @@ declare module monaco.editor {
          * line terminator, throws an exception.
          */
         modifyPosition(position: IPosition, offset: number): Position;
+
         /**
          * Create a valid range.
          */
         validateRange(range: IRange): Range;
+
         /**
          * Converts the position to a zero-based offset.
          *
@@ -2059,6 +2116,7 @@ declare module monaco.editor {
          * @return A valid zero-based offset.
          */
         getOffsetAt(position: IPosition): number;
+
         /**
          * Converts a zero-based offset to a position.
          *
@@ -2066,14 +2124,31 @@ declare module monaco.editor {
          * @return A valid [position](#Position).
          */
         getPositionAt(offset: number): Position;
+
         /**
          * Get a range covering the entire model
          */
         getFullModelRange(): Range;
+
         /**
          * Returns iff the model was disposed or not.
          */
         isDisposed(): boolean;
+
+        /**
+         * No mode supports allowed on this model because it is simply too large.
+         * (even tokenization would cause too much memory pressure)
+         * @internal
+         */
+        isTooLargeForHavingAMode(): boolean;
+
+        /**
+         * Only basic mode supports allowed on this model because it is simply too large.
+         * (tokenization is allowed and other basic supports)
+         * @internal
+         */
+        isTooLargeForHavingARichMode(): boolean;
+
         /**
          * Search the model.
          * @param searchString The string used to search. If it is a regular expression, set `isRegex` to true.
@@ -2085,19 +2160,7 @@ declare module monaco.editor {
          * @param limitResultCount Limit the number of results
          * @return The ranges where the matches are. It is empty if not matches have been found.
          */
-        findMatches(searchString: string, searchOnlyEditableRange: boolean, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean, limitResultCount?: number): FindMatch[];
-        /**
-         * Search the model.
-         * @param searchString The string used to search. If it is a regular expression, set `isRegex` to true.
-         * @param searchScope Limit the searching to only search inside this range.
-         * @param isRegex Used to indicate that `searchString` is a regular expression.
-         * @param matchCase Force the matching to match lower/upper case exactly.
-         * @param wholeWord Force the matching to match entire words only.
-         * @param captureMatches The result will contain the captured groups.
-         * @param limitResultCount Limit the number of results
-         * @return The ranges where the matches are. It is empty if no matches have been found.
-         */
-        findMatches(searchString: string, searchScope: IRange, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean, limitResultCount?: number): FindMatch[];
+        findMatches(searchString: string, searchOnlyEditableRange: boolean | IRange, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean, limitResultCount?: number): FindMatch[];
         /**
          * Search the model for the next match. Loops to the beginning of the model if needed.
          * @param searchString The string used to search. If it is a regular expression, set `isRegex` to true.
@@ -2128,15 +2191,46 @@ declare module monaco.editor {
         readonly matches: string[];
     }
 
+    /**
+     * Open ended enum at runtime
+     * @internal
+     */
+    export const enum LanguageId {
+        Null = 0,
+        PlainText = 1
+    }
+
+    export interface LanguageIdentifier {
+        /**
+         * A string identifier. Unique across languages. e.g. 'javascript'.
+         */
+        readonly language: string;
+
+        /**
+         * A numeric identifier. Unique across languages. e.g. 5
+         * Will vary at runtime based on registration order, etc.
+         */
+        readonly id: LanguageId;
+    }
+
     export interface IReadOnlyModel extends ITextModel {
         /**
          * Gets the resource associated with this editor model.
+         * The model may be read-only but the uri is changed.
          */
-        readonly uri: Uri;
+        uri: Uri;
+
+        /**
+         * Get the language associated with this model.
+         * @internal
+         */
+        getLanguageIdentifier(): LanguageIdentifier;
+
         /**
          * Get the language associated with this model.
          */
         getModeId(): string;
+
         /**
          * Get the word under or besides `position`.
          * @param position The position to look for a word.
@@ -2144,6 +2238,7 @@ declare module monaco.editor {
          * @return The word under or besides `position`. Might be null.
          */
         getWordAtPosition(position: IPosition): IWordAtPosition;
+
         /**
          * Get the word under or besides `position` trimmed to `position`.column
          * @param position The position to look for a word.
@@ -2151,16 +2246,170 @@ declare module monaco.editor {
          * @return The word under or besides `position`. Will never be null.
          */
         getWordUntilPosition(position: IPosition): IWordAtPosition;
+    }
+
+    export const enum ColorId {
+        None = 0,
+        DefaultForeground = 1,
+        DefaultBackground = 2
+    }
+
+    export const enum StandardTokenType {
+        Other = 0,
+        Comment = 1,
+        String = 2,
+        RegEx = 4
+    }
+
+    export const enum FontStyle {
+        NotSet = -1,
+        None = 0,
+        Italic = 1,
+        Bold = 2,
+        Underline = 4
+    }
+
+    export class LineToken {
+        _lineTokenBrand: void;
+
+        private readonly _source: LineTokens;
+        private readonly _tokenIndex: number;
+        private readonly _metadata: number;
+
+        public readonly startOffset: number;
+        public readonly endOffset: number;
+
+        public readonly hasPrev: boolean;
+        public readonly hasNext: boolean;
+
+        public readonly languageId: LanguageId;
+
+        public readonly tokenType: StandardTokenType;
+
+        public readonly fontStyle: FontStyle;
+
+        public readonly foregroundId: ColorId;
+
+        public readonly backgroundId: ColorId;
+
+        constructor(source: LineTokens, tokenIndex: number, tokenCount: number, startOffset: number, endOffset: number, metadata: number);
+        public prev(): LineToken;
+
+        public next(): LineToken;
+    }
+    export class ViewLineToken {
+        _viewLineTokenBrand: void;
+
+        /**
+         * last char index of this token (not inclusive).
+         */
+        public readonly endIndex: number;
+
+        constructor(endIndex: number, metadata: number);
+
+        public getForeground(): ColorId;
+
+        public getType(): string;
+
+        public getInlineStyle(colorMap: string[]): string;
+
+        private static _equals(a: ViewLineToken, b: ViewLineToken): boolean;
+
+        public static equalsArr(a: ViewLineToken[], b: ViewLineToken[]): boolean;
+    }
+
+    export class LineTokens {
+        _lineTokensBrand: void;
+
+        private readonly _tokens: Uint32Array;
+        private readonly _tokensCount: number;
+        private readonly _text: string;
+        private readonly _textLength: number;
+
+        constructor(tokens: Uint32Array, text: string);
+
+        public getTokenCount(): number;
+
+        public getLineContent(): string;
+
+        public getLineLength(): number;
+
+        public getTokenStartOffset(tokenIndex: number): number;
+
+        public getLanguageId(tokenIndex: number): LanguageId;
+
+        public getStandardTokenType(tokenIndex: number): StandardTokenType;
+
+        public getTokenEndOffset(tokenIndex: number): number;
+
+        /**
+         * Find the token containing offset `offset`.
+         * ```
+         *   For example, with the following tokens [0, 5), [5, 9), [9, infinity)
+         *   Searching for 0, 1, 2, 3 or 4 will return 0.
+         *   Searching for 5, 6, 7 or 8 will return 1.
+         *   Searching for 9, 10, 11, ... will return 2.
+         * ```
+         * @param offset The search offset
+         * @return The index of the token containing the offset.
+         */
+        public findTokenIndexAtOffset(offset: number): number;
+
+        public findTokenAtOffset(offset: number): LineToken;
+
+        public tokenAt(tokenIndex: number): LineToken;
+
+        public firstToken(): LineToken;
+
+        public lastToken(): LineToken;
+
+        public inflate(): ViewLineToken[];
+
+        public sliceAndInflate(startOffset: number, endOffset: number, deltaOffset: number): ViewLineToken[];
     }
 
     /**
      * A model that is tokenized.
      */
     export interface ITokenizedModel extends ITextModel {
+
+        /**
+         * Force tokenization information for `lineNumber` to be accurate.
+         * @internal
+         */
+        forceTokenization(lineNumber: number): void;
+
+        /**
+         * Get the tokens for the line `lineNumber`.
+         * The tokens might be inaccurate. Use `forceTokenization` to ensure accurate tokens.
+         * @internal
+         */
+        getLineTokens(lineNumber: number): LineTokens;
+
+        /**
+         * Get the language associated with this model.
+         * @internal
+         */
+        getLanguageIdentifier(): LanguageIdentifier;
+
         /**
          * Get the language associated with this model.
          */
         getModeId(): string;
+
+        /**
+         * Set the current language mode associated with the model.
+         * @internal
+         */
+        setMode(languageIdentifier: LanguageIdentifier): void;
+
+        /**
+         * Returns the real (inner-most) language mode at a given position.
+         * The result might be inaccurate. Use `forceTokenization` to ensure accurate tokens.
+         * @internal
+         */
+        getLanguageIdAtPosition(lineNumber: number, column: number): LanguageId;
+
         /**
          * Get the word under or besides `position`.
          * @param position The position to look for a word.
@@ -2168,6 +2417,7 @@ declare module monaco.editor {
          * @return The word under or besides `position`. Might be null.
          */
         getWordAtPosition(position: IPosition): IWordAtPosition;
+
         /**
          * Get the word under or besides `position` trimmed to `position`.column
          * @param position The position to look for a word.
@@ -2175,12 +2425,63 @@ declare module monaco.editor {
          * @return The word under or besides `position`. Will never be null.
          */
         getWordUntilPosition(position: IPosition): IWordAtPosition;
+
+        /**
+         * Find the matching bracket of `request` up, counting brackets.
+         * @param request The bracket we're searching for
+         * @param position The position at which to start the search.
+         * @return The range of the matching bracket, or null if the bracket match was not found.
+         * @internal
+         */
+        findMatchingBracketUp(bracket: string, position: IPosition): Range;
+
+        // /**
+        //  * Find the first bracket in the model before `position`.
+        //  * @param position The position at which to start the search.
+        //  * @return The info for the first bracket before `position`, or null if there are no more brackets before `positions`.
+        //  */
+        // findPrevBracket(position:IPosition): IFoundBracket;
+
+        // /**
+        //  * Find the first bracket in the model after `position`.
+        //  * @param position The position at which to start the search.
+        //  * @return The info for the first bracket after `position`, or null if there are no more brackets after `positions`.
+        //  */
+        // findNextBracket(position:IPosition): IFoundBracket;
+
+        /**
+         * Given a `position`, if the position is on top or near a bracket,
+         * find the matching bracket of that bracket and return the ranges of both brackets.
+         * @param position The position at which to look for a bracket.
+         * @internal
+         */
+        matchBracket(position: IPosition): [Range, Range];
     }
 
     /**
      * A model that can track markers.
      */
     export interface ITextModelWithMarkers extends ITextModel {
+        /**
+         * @internal
+         */
+        _addMarker(internalDecorationId: number, lineNumber: number, column: number, stickToPreviousCharacter: boolean): string;
+        /**
+         * @internal
+         */
+        _changeMarker(id: string, newLineNumber: number, newColumn: number): void;
+        /**
+         * @internal
+         */
+        _changeMarkerStickiness(id: string, newStickToPreviousCharacter: boolean): void;
+        /**
+         * @internal
+         */
+        _getMarker(id: string): Position;
+        /**
+         * @internal
+         */
+        _removeMarker(id: string): void;
     }
 
     /**
@@ -2198,6 +2499,16 @@ declare module monaco.editor {
      */
     export interface ITextModelWithDecorations {
         /**
+         * Change the decorations. The callback will be called with a change accessor
+         * that becomes invalid as soon as the callback finishes executing.
+         * This allows for all events to be queued up until the change
+         * is completed. Returns whatever the callback returns.
+         * @param ownerId Identifies the editor id in which these decorations should appear. If no `ownerId` is provided, the decorations will appear in all editors that attach this model.
+         * @internal
+         */
+        changeDecorations<T>(callback: (changeAccessor: IModelDecorationsChangeAccessor) => T, ownerId?: number): T;
+
+        /**
          * Perform a minimum ammount of operations, in order to transform the decorations
          * identified by `oldDecorations` to the decorations described by `newDecorations`
          * and returns the new identifiers associated with the resulting decorations.
@@ -2208,18 +2519,28 @@ declare module monaco.editor {
          * @return An array containing the new decorations identifiers.
          */
         deltaDecorations(oldDecorations: string[], newDecorations: IModelDeltaDecoration[], ownerId?: number): string[];
+
+        /**
+         * Remove all decorations that have been added with this specific ownerId.
+         * @param ownerId The owner id to search for.
+         * @internal
+         */
+        removeAllDecorationsWithOwnerId(ownerId: number): void;
+
         /**
          * Get the options associated with a decoration.
          * @param id The decoration id.
          * @return The decoration options or null if the decoration was not found.
          */
         getDecorationOptions(id: string): IModelDecorationOptions;
+
         /**
          * Get the range associated with a decoration.
          * @param id The decoration id.
          * @return The decoration range or null if the decoration was not found.
          */
         getDecorationRange(id: string): Range;
+
         /**
          * Gets all the decorations for the line `lineNumber` as an array.
          * @param lineNumber The line number
@@ -2228,6 +2549,7 @@ declare module monaco.editor {
          * @return An array with the decorations
          */
         getLineDecorations(lineNumber: number, ownerId?: number, filterOutValidation?: boolean): IModelDecoration[];
+
         /**
          * Gets all the decorations for the lines between `startLineNumber` and `endLineNumber` as an array.
          * @param startLineNumber The start line number
@@ -2237,6 +2559,7 @@ declare module monaco.editor {
          * @return An array with the decorations
          */
         getLinesDecorations(startLineNumber: number, endLineNumber: number, ownerId?: number, filterOutValidation?: boolean): IModelDecoration[];
+
         /**
          * Gets all the deocorations in a range as an array. Only `startLineNumber` and `endLineNumber` from `range` are used for filtering.
          * So for now it returns all the decorations on the same line as `range`.
@@ -2246,6 +2569,7 @@ declare module monaco.editor {
          * @return An array with the decorations
          */
         getDecorationsInRange(range: IRange, ownerId?: number, filterOutValidation?: boolean): IModelDecoration[];
+
         /**
          * Gets all the decorations as an array.
          * @param ownerId If set, it will ignore decorations belonging to other owners.
@@ -2258,28 +2582,34 @@ declare module monaco.editor {
      * An editable text model.
      */
     export interface IEditableTextModel extends ITextModelWithMarkers {
+
         /**
          * Normalize a string containing whitespace according to indentation rules (converts to spaces or to tabs).
          */
         normalizeIndentation(str: string): string;
+
         /**
          * Get what is considered to be one indent (e.g. a tab character or 4 spaces, etc.).
          */
         getOneIndent(): string;
+
         /**
          * Change the options of this model.
          */
         updateOptions(newOpts: ITextModelUpdateOptions): void;
+
         /**
          * Detect the indentation options for this model from its content.
          */
         detectIndentation(defaultInsertSpaces: boolean, defaultTabSize: number): void;
+
         /**
          * Push a stack element onto the undo stack. This acts as an undo/redo point.
          * The idea is to use `pushEditOperations` to edit the model and then to
          * `pushStackElement` to create an undo/redo stop point.
          */
         pushStackElement(): void;
+
         /**
          * Push edit operations, basically editing the model. This is the preferred way
          * of editing the model. The edit operations will land on the undo stack.
@@ -2289,6 +2619,7 @@ declare module monaco.editor {
          * @return The cursor state returned by the `cursorStateComputer`.
          */
         pushEditOperations(beforeCursorState: Selection[], editOperations: IIdentifiedSingleEditOperation[], cursorStateComputer: ICursorStateComputer): Selection[];
+
         /**
          * Edit the model without adding the edits to the undo stack.
          * This can have dire consequences on the undo stack! See @pushEditOperations for the preferred way.
@@ -2296,12 +2627,192 @@ declare module monaco.editor {
          * @return The inverse edit operations, that, when applied, will bring the model back to the previous state.
          */
         applyEdits(operations: IIdentifiedSingleEditOperation[]): IIdentifiedSingleEditOperation[];
+
+        /**
+         * Undo edit operations until the first previous stop point created by `pushStackElement`.
+         * The inverse edit operations will be pushed on the redo stack.
+         * @internal
+         */
+        undo(): Selection[];
+
+        /**
+         * Redo edit operations until the next stop point created by `pushStackElement`.
+         * The inverse edit operations will be pushed on the undo stack.
+         * @internal
+         */
+        redo(): Selection[];
+
+        /**
+         * Set an editable range on the model.
+         * @internal
+         */
+        setEditableRange(range: IRange): void;
+
+        /**
+         * Check if the model has an editable range.
+         * @internal
+         */
+        hasEditableRange(): boolean;
+
+        /**
+         * Get the editable range on the model.
+         * @internal
+         */
+        getEditableRange(): Range;
+    }
+
+    export class EmitterEvent {
+        public readonly type: string | null;
+        public readonly data: any;
+        constructor(eventType: string | null, data: any)
+    }
+
+    export interface BulkListenerCallback {
+        (value: EmitterEvent[]): void;
+    }
+    export interface IModelDecorationsChangeAccessor {
+        /**
+         * Add a new decoration.
+         * @param range Range that this decoration covers.
+         * @param options Options associated with this decoration.
+         * @return An unique identifier associated with this decoration.
+         */
+        addDecoration(range: IRange, options: IModelDecorationOptions): string;
+        /**
+         * Change the range that an existing decoration covers.
+         * @param id The unique identifier associated with the decoration.
+         * @param newRange The new range that this decoration covers.
+         */
+        changeDecoration(id: string, newRange: IRange): void;
+        /**
+         * Change the options associated with an existing decoration.
+         * @param id The unique identifier associated with the decoration.
+         * @param newOptions The new options associated with this decoration.
+         */
+        changeDecorationOptions(id: string, newOptions: IModelDecorationOptions): void;
+        /**
+         * Remove an existing decoration.
+         * @param id The unique identifier associated with the decoration.
+         */
+        removeDecoration(id: string): void;
+        /**
+         * Perform a minimum ammount of operations, in order to transform the decorations
+         * identified by `oldDecorations` to the decorations described by `newDecorations`
+         * and returns the new identifiers associated with the resulting decorations.
+         *
+         * @param oldDecorations Array containing previous decorations identifiers.
+         * @param newDecorations Array describing what decorations should result after the call.
+         * @return An array containing the new decorations identifiers.
+         */
+        deltaDecorations(oldDecorations: string[], newDecorations: IModelDeltaDecoration[]): string[];
+    }
+
+    export const enum RawContentChangedType {
+        Flush = 1,
+        LineChanged = 2,
+        LinesDeleted = 3,
+        LinesInserted = 4
+    }
+
+    export class ModelRawFlush {
+        public readonly changeType: RawContentChangedType;
+    }
+
+    export class ModelRawLineChanged {
+        public readonly changeType: RawContentChangedType;
+        /**
+         * The line that has changed.
+         */
+        public readonly lineNumber: number;
+        /**
+         * The new value of the line.
+         */
+        public readonly detail: string;
+
+        constructor(lineNumber: number, detail: string);
+    }
+
+    export class ModelRawLinesDeleted {
+        public readonly changeType: RawContentChangedType;
+        /**
+         * At what line the deletion began (inclusive).
+         */
+        public readonly fromLineNumber: number;
+        /**
+         * At what line the deletion stopped (inclusive).
+         */
+        public readonly toLineNumber: number;
+
+        constructor(fromLineNumber: number, toLineNumber: number);
+    }
+    export class ModelRawLinesInserted {
+        public readonly changeType: RawContentChangedType;
+        /**
+         * Before what line did the insertion begin
+         */
+        public readonly fromLineNumber: number;
+        /**
+         * `toLineNumber` - `fromLineNumber` + 1 denotes the number of lines that were inserted
+         */
+        public readonly toLineNumber: number;
+        /**
+         * The text that was inserted
+         */
+        public readonly detail: string;
+
+        constructor(fromLineNumber: number, toLineNumber: number, detail: string);
+    }
+
+    export type ModelRawChange = ModelRawFlush | ModelRawLineChanged | ModelRawLinesDeleted | ModelRawLinesInserted;
+
+    export class ModelRawContentChangedEvent {
+
+        public readonly changes: ModelRawChange[];
+        /**
+         * The new version id the model has transitioned to.
+         */
+        public readonly versionId: number;
+        /**
+         * Flag that indicates that this event was generated while undoing.
+         */
+        public readonly isUndoing: boolean;
+        /**
+         * Flag that indicates that this event was generated while redoing.
+         */
+        public readonly isRedoing: boolean;
+
+        constructor(changes: ModelRawChange[], versionId: number, isUndoing: boolean, isRedoing: boolean);
     }
 
     /**
      * A model.
      */
     export interface IModel extends IReadOnlyModel, IEditableTextModel, ITextModelWithMarkers, ITokenizedModel, ITextModelWithDecorations, IEditorModel {
+        /**
+         * Undocumented
+         */
+        addBulkListener(listener: BulkListenerCallback): IDisposable;
+        /**
+         * Undocumented
+         */
+        changeDecorations<T>(callback: (changeAccessor: IModelDecorationsChangeAccessor) => T, ownerId?: number): T;
+        /**
+         * Undocumented
+         */
+        onBeforeAttached(): void;
+        /**
+         * Undocumented
+         */
+        onBeforeDetached(): void;
+        /**
+         * Undocumented
+         */
+        onDidChangeRawContent(listener: (e: ModelRawContentChangedEvent) => void): IDisposable;
+        /**
+         * Undocumented
+         */
+        _addMarker(internalDecorationId: number, lineNumber: number, column: number, stickToPreviousCharacter: boolean): string;
+
         /**
          * An event emitted when the contents of the model have changed.
          * @event
@@ -2861,7 +3372,7 @@ declare module monaco.editor {
     /**
      * An editor.
      */
-    export interface IEditor {
+    export interface IEditor<M extends IEditorModel> {
         /**
          * An event emitted when the content of the current model has changed.
          * @event
@@ -3051,7 +3562,7 @@ declare module monaco.editor {
         /**
          * Gets the current model attached to this editor.
          */
-        getModel(): IEditorModel;
+        getModel(): M;
         /**
          * Sets the current model attached to this editor.
          * If the previous model was created by the editor via the value key in the options
@@ -3061,7 +3572,7 @@ declare module monaco.editor {
          * It is safe to call setModel(null) to simply detach the current model from the editor.
          */
         // DGH: null added as per documentation.
-        setModel(model: IEditorModel | null): void;
+        setModel(model: M | null): void;
     }
 
     /**
@@ -3086,7 +3597,7 @@ declare module monaco.editor {
         restoreViewState?(state: any): void;
     }
 
-    export interface ICommonCodeEditor extends IEditor {
+    export interface ICommonCodeEditor extends IEditor<IModel> {
         /**
          * An event emitted when the model of this editor has changed (e.g. `editor.setModel()`).
          * @event
@@ -3220,7 +3731,7 @@ declare module monaco.editor {
         getLayoutInfo(): EditorLayoutInfo;
     }
 
-    export interface ICommonDiffEditor extends IEditor {
+    export interface ICommonDiffEditor extends IEditor<IDiffEditorModel> {
         /**
          * An event emitted when the diff information computed by this diff editor has been updated.
          * @event

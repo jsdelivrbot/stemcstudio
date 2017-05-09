@@ -1,9 +1,13 @@
 import { getMatchOffsets } from "./lib/lang";
 import { Marker, MarkerType } from "./Marker";
 import Range from "./Range";
-import { EditSession } from "./EditSession";
+// import { EditSession } from "./EditSession";
 import { MarkerLayer } from "./layer/MarkerLayer";
 import MarkerConfig from "./layer/MarkerConfig";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../virtual/editor";
 
 // needed to prevent long lines from freezing the browser
 const MAX_RANGES = 500;

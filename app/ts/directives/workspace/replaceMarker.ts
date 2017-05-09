@@ -11,7 +11,7 @@ import { WsModel } from '../../modules/wsmodel/WsModel';
  * @param workspace The workspace that provides the files.
  */
 export function replaceMarker(marker: string, language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
-    const filePaths: string[] = workspace.getFileDocumentPaths().filter(function (filePath: string) {
+    const filePaths: string[] = workspace.getFileSessionPaths().filter(function (filePath: string) {
         return language === modeFromName(filePath);
     });
     const fileTags = filePaths.map((path: string) => {

@@ -1,7 +1,5 @@
 /**
  * 'multiSelect' event emitted by a Selection.
  */
-interface SelectionMultiSelectEvent {
+export interface SelectionMultiSelectEvent {
 }
-
-export default SelectionMultiSelectEvent;

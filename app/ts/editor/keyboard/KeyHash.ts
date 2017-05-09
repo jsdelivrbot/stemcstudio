@@ -1,7 +1,7 @@
 /**
  *
  */
-interface KeyHash {
+export interface KeyHash {
 
     /**
      *
@@ -13,5 +13,3 @@ interface KeyHash {
      */
     hashId: number;
 }
-
-export default KeyHash;

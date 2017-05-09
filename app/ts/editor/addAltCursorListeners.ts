@@ -1,4 +1,4 @@
-import Editor from './Editor';
+import { Editor } from './Editor';
 import { addListener } from "./lib/event";
 
 export default function addAltCursorListeners(this: void, editor: Editor) {

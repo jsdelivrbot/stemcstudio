@@ -1,18 +1,21 @@
 import CppMode from './CppMode';
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import CstyleFoldMode from './folding/CstyleFoldMode';
-import { EditSession } from "../EditSession";
 import GlslHighlightRules from './GlslHighlightRules';
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class GlslMode extends CppMode {
 
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/glsl";
+        this.$id = "GLSL";
         this.HighlightRules = GlslHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();

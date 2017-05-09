@@ -24,7 +24,7 @@ export class WorkspaceRoomListener implements RoomListener {
      */
     getWorkspaceEdits(roomId: string): { [path: string]: MwEdits } {
         const map: { [path: string]: MwEdits } = {};
-        const paths = this.workspace.getFileDocumentPaths();
+        const paths = this.workspace.getFileSessionPaths();
         for (const path of paths) {
             const file = this.workspace.getFileWeakRef(path);
             if (file) {

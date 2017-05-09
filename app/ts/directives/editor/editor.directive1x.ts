@@ -1,25 +1,8 @@
 import { isUndefined } from 'angular';
 import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import applyTextChanges from './applyTextChanges';
-import ClojureMode from '../../editor/mode/ClojureMode';
-import { ACE_WORKER_PATH } from '../../constants';
-import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
-import CssMode from '../../editor/mode/CssMode';
-import GlslMode from '../../editor/mode/GlslMode';
-import HaskellMode from '../../editor/mode/HaskellMode';
-import HtmlMode from '../../editor/mode/HtmlMode';
-import JavaScriptMode from '../../editor/mode/JavaScriptMode';
-import JsxMode from '../../editor/mode/JsxMode';
-import JsonMode from '../../editor/mode/JsonMode';
-import MarkdownMode from '../../editor/mode/MarkdownMode';
-import PythonMode from '../../editor/mode/PythonMode';
-import TextMode from '../../editor/mode/TextMode';
-import TypeScriptMode from '../../editor/mode/TypeScriptMode';
-import TsxMode from '../../editor/mode/TsxMode';
-import XmlMode from '../../editor/mode/XmlMode';
-import YamlMode from '../../editor/mode/YamlMode';
 import UndoManager from '../../editor/UndoManager';
 import EditorScope from './EditorScope';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
@@ -33,31 +16,20 @@ import EditorPreferencesService from '../../modules/editors/EditorPreferencesSer
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WorkspaceEditorHost } from '../../directives/editor/WorkspaceEditorHost';
-import { LANGUAGE_CSS } from '../../languages/modes';
-import { LANGUAGE_CSV } from '../../languages/modes';
-import { LANGUAGE_GLSL } from '../../languages/modes';
-import { LANGUAGE_HASKELL } from '../../languages/modes';
-import { LANGUAGE_HTML } from '../../languages/modes';
-import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
-import { LANGUAGE_JSX } from '../../languages/modes';
-import { LANGUAGE_JSON } from '../../languages/modes';
-import { LANGUAGE_LESS } from '../../languages/modes';
-import { LANGUAGE_MARKDOWN } from '../../languages/modes';
-import { LANGUAGE_PYTHON } from '../../languages/modes';
-import { LANGUAGE_SCHEME } from '../../languages/modes';
-import { LANGUAGE_TEXT } from '../../languages/modes';
-import { LANGUAGE_TSX } from '../../languages/modes';
-import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
-import { LANGUAGE_XML } from '../../languages/modes';
-import { LANGUAGE_YAML } from '../../languages/modes';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import refChange from '../../utils/refChange';
 //
 // Editor Abstraction Layer
 //
 import { Editor } from '../../virtual/editor';
+import { EditorCommandable } from '../../virtual/EditorCommandable';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
+import { LanguageModeId } from '../../virtual/editor';
+//
+// Choose EditorService implementation (AngularJS).
+// See also WsModel for Angular.
+//
 // import { MONACO_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/monaco-editor.service';
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
 
@@ -68,7 +40,7 @@ const BOGUS_HACK = false;
 const FIND_REPLACE_COMMAND = {
     name: COMMAND_NAME_FIND,
     bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
-    exec: function (editor: Editor) {
+    exec: function (editor: EditorCommandable) {
         showFindReplace(editor, false);
     },
     readOnly: true // false if this command should not apply in readOnly mode
@@ -121,10 +93,6 @@ export function createEditorDirective(
      * transclude This parameter will only be set if we set the transclude option to true.
      */
     function link($scope: EditorScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction): void {
-
-        // Maybe these should be constants?
-        const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
 
         const ngModel: INgModelController = controllers[0];
         /**
@@ -212,7 +180,7 @@ export function createEditorDirective(
             const file: WsFile = ngModel.$viewValue;
             if (file instanceof WsFile) {
                 // If there is no a session, then the file should lazily create one.
-                const session: EditSession | undefined = file.getSession();
+                const session = file.getSession();
                 if (session) {
                     try {
                         // TODO: Crush this code down into an extensible mode-handling and session initializer?
@@ -223,13 +191,22 @@ export function createEditorDirective(
                         addCommands($scope.path, editor, session, wsController, editorPreferencesService);
 
                         // We must wait for the $render function to be called so that we have a session.
-                        setLanguageMode($scope.path, file, session, editor, workerImports, wsController)
-                            .then(function (tearDown) {
-                                removeEditor = tearDown;
-                            })
-                            .catch(function (err) {
-                                console.warn(`Unable to set language path ${$scope.path}.`);
-                            });
+                        const mode = file.mode;
+                        const path = $scope.path;
+                        if (mode) {
+                            session.setLanguage(mode as LanguageModeId)
+                                .then(function () {
+                                    // TODO: Some modes need further editor configuration.
+                                    // See the setLanguage method for comments.
+                                    removeEditor = wsController.attachEditor(path, mode, editor);
+                                })
+                                .catch(function (err) {
+                                    console.warn(`Unable to set language for path '${path}' with mode ${mode}.`);
+                                });
+                        }
+                        else {
+                            console.warn(`Unable to call session.setLanguage for path '${path}'. The mode property is ${typeof mode}`);
+                        }
 
                         // Almost ready to go. Resize the editor and put the cursor at the beginning.
                         // TODO: If we want to remember the lineNumber and column then these would be
@@ -346,12 +323,15 @@ export function createEditorDirective(
     return directive;
 }
 
+/**
+ * TODO: The directive should not be able to add commands that the editor cannot fulfil.
+ */
 function addCommands(path: string, editor: Editor, session: EditSession, wsController: WorkspaceEditorHost, editorPreferencesService: EditorPreferencesService): void {
     editor.addCommand(FIND_REPLACE_COMMAND);
     editor.addCommand({
         name: 'Replace',
         bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
-        exec: function (editor: Editor) {
+        exec: function () {
             showFindReplace(editor, true);
         },
         readOnly: true // false if this command should not apply in readOnly mode
@@ -359,7 +339,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand({
         name: 'goToNextError',
         bindKey: { win: 'Alt-E', mac: 'F4' },
-        exec: function (editor: Editor) {
+        exec: function () {
             showErrorMarker(editor, +1);
         },
         scrollIntoView: 'animate',
@@ -368,7 +348,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand({
         name: 'goToPreviousError',
         bindKey: { win: 'Alt-Shift-E', mac: 'Shift-F4' },
-        exec: function (editor: Editor) {
+        exec: function () {
             showErrorMarker(editor, -1);
         },
         scrollIntoView: 'animate',
@@ -377,21 +357,21 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand({
         name: "showGreekKeyboard",
         bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
-        exec: function (editor: Editor, line: any) {
+        exec: function () {
             showGreekKeyboard(editor);
         }
     });
     editor.addCommand({
         name: "showKeyboardShortcuts",
         bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
-        exec: function (editor: Editor, line: any) {
+        exec: function () {
             showKeyboardShortcuts(editor);
         }
     });
     editor.addCommand({
         name: 'expandSnippet',
         bindKey: 'Tab',
-        exec: function (editor: Editor) {
+        exec: function () {
             const success = editor.expandSnippetWithTab({ dryRun: false });
             if (!success) {
                 const indentCommand = editor.getCommandByName(COMMAND_NAME_INDENT);
@@ -402,7 +382,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand({
         name: 'formatDocument',
         bindKey: { win: 'Ctrl-Shift-I', mac: 'Command-Alt-I' },
-        exec: function (editor: Editor) {
+        exec: function () {
             if (isTypeScript(path)) {
                 const settings: FormatCodeSettings = {};
                 settings.baseIndentSize = 0;
@@ -437,172 +417,5 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         },
         scrollIntoView: 'animate',
         readOnly: true
-    });
-}
-
-/**
- * Helper function for
- * 1. setLanguageMode.
- * 2. attachEditor
- * 
- * TODO: This could be refactored into distinct setLanguageMode (asynchronous) and attachEditor (synchronous).
- * TODO: This should be re-designed so that the worker threads created are at the discretion of the editor service.
- * This implementation dictates creating workers appropriate to the native editor.
- * 
- * Returns a promise containing the function that detaches the editor from the controller.
- */
-function setLanguageMode(path: string, file: WsFile, session: EditSession, editor: Editor, workerImports: string[], wsController: WorkspaceEditorHost): Promise<EditorDetacher> {
-    return new Promise<EditorDetacher>(function (resolve, reject) {
-        switch (file.mode) {
-            case LANGUAGE_HASKELL: {
-                session.setUseWorker(false);
-                session.setLanguageMode(new HaskellMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_PYTHON: {
-                session.setUseWorker(false);
-                session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_SCHEME: {
-                // If we don't use the worker then we don't get a confirmation.
-                // session.setUseWorker(false);
-                session.setLanguageMode(new ClojureMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_JAVA_SCRIPT: {
-                session.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_JSX: {
-                session.setLanguageMode(new JsxMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_TYPE_SCRIPT: {
-                session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_TSX: {
-                session.setLanguageMode(new TsxMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_HTML: {
-                session.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_JSON: {
-                session.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_GLSL: {
-                // If we don't use the worker then we don't get a confirmation.
-                session.setLanguageMode(new GlslMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_CSS:
-            case LANGUAGE_LESS: {
-                // If we don't use the worker then we don't get a confirmation.
-                session.setUseWorker(false);
-                session.setLanguageMode(new CssMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_MARKDOWN: {
-                session.setUseWrapMode(true);
-                editor.setWrapBehavioursEnabled(true);
-                session.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_CSV:
-            case LANGUAGE_TEXT: {
-                session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_XML: {
-                session.setLanguageMode(new XmlMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            case LANGUAGE_YAML: {
-                session.setLanguageMode(new YamlMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`${file.mode} => ${err}`);
-                    }
-                    resolve(wsController.attachEditor(path, <string>file.mode, editor));
-                });
-                break;
-            }
-            default: {
-                reject(new Error(`Unrecognized mode '${file.mode}' for path '${path}'.`));
-            }
-        }
     });
 }

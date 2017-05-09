@@ -4,7 +4,7 @@ import { equalPositions } from './Position';
 /**
  * 
  */
-interface RangeBasic {
+export interface RangeBasic {
     /**
      * The starting position of the range.
      */

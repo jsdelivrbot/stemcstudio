@@ -1,5 +1,8 @@
 import Range from "../Range";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../../virtual/editor";
 
 export default class MatchingParensOutdent {
 

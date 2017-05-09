@@ -1,12 +1,13 @@
-"use strict";
-
 import { qualifyURL } from '../lib/net';
 import Delta from "../Delta";
-import { Document } from "../Document";
 import EventBus from "../EventBus";
-import EventEmitterClass from '../lib/EventEmitterClass';
+import { EventEmitterClass } from '../lib/EventEmitterClass';
 import CallbackManager from './CallbackManager';
 import Disposable from '../../base/Disposable';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../../virtual/editor";
 
 /**
  * Protocol for the initialization message.
@@ -22,7 +23,7 @@ interface InitRequestMessage {
 
 /**
  * <p>
- * WorkerClient controls the interaction between an editor document
+ * WorkerClient controls the interaction between an editor session
  * and a Web Worker.
  * </p>
  * It provides additional capabilities by being a wrapper around
@@ -30,7 +31,7 @@ interface InitRequestMessage {
  * <ul>
  * <li>
  * It is a controller between the editor
- * <code>Document</code> and the <code>Worker</code> thread.
+ * <code>EditSession</code> and the <code>Worker</code> thread.
  * </li>
  * <li>
  * It is a proxy to the underlying worker thread by providing
@@ -61,7 +62,7 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
     /**
      * 
      */
-    private $doc: Document | null;
+    private $session: EditSession | null;
 
     /**
      *
@@ -236,23 +237,23 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
      * Attaching to the document adds a listener for change deltas.
      * This method calls addRef on the document.
      */
-    public attachToDocument(doc: Document): void {
+    public attachToSession(session: EditSession): void {
 
-        if (this.$doc === doc) {
+        if (this.$session === session) {
             return;
         }
 
-        if (this.$doc) {
-            this.detachFromDocument();
+        if (this.$session) {
+            this.detachFromSession();
         }
 
-        if (doc) {
-            this.$doc = doc;
-            this.$doc.addRef();
-            this.call("setValue", [doc.getValue()], function () {
+        if (session) {
+            this.$session = session;
+            this.$session.addRef();
+            this.call("setValue", [session.getValue()], function () {
                 // Do nothing.
             });
-            doc.addChangeListener(this.changeListener);
+            session.addChangeListener(this.changeListener);
         }
         else {
             throw new Error("doc must be defined.");
@@ -263,11 +264,11 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
      * Detaching from the document removes the listener for change deltas.
      * This method calls release on the document.
      */
-    public detachFromDocument(): void {
-        if (this.$doc) {
-            this.$doc.removeChangeListener(this.changeListener);
-            this.$doc.release();
-            this.$doc = null;
+    public detachFromSession(): void {
+        if (this.$session) {
+            this.$session.removeChangeListener(this.changeListener);
+            this.$session.release();
+            this.$session = null;
         }
     }
 
@@ -311,18 +312,18 @@ export default class WorkerClient implements EventBus<string, MessageEvent, Work
      * It is replaced by a version that is bound to `this`.
      */
     private sendDeltaQueue(): void {
-        const doc = this.$doc;
-        if (doc) {
+        const session = this.$session;
+        if (session) {
             const queue = this.deltaQueue;
             if (!queue) return;
             this.deltaQueue = void 0;
 
             // We're going to post all the changes in one message, but we apply a
             // heuristic to just send the actual document if there are enough changes.
-            if (queue.length > 20 && queue.length > doc.getLength() >> 1) {
+            if (queue.length > 20 && queue.length > session.getLength() >> 1) {
                 // TODO: If there is no callback then call is the same as send,
                 // which is a postCommand.
-                this.call("setValue", [doc.getValue()], function () {
+                this.call("setValue", [session.getValue()], function () {
                     // Do nothing.
                 });
             }

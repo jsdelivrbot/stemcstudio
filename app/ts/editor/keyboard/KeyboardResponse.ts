@@ -1,13 +1,13 @@
-import Command from '../commands/Command';
+import { Command } from '../commands/Command';
 
 /**
  *
  */
-interface KeyboardResponse {
+export interface KeyboardResponse<TARGET> {
     /**
      *
      */
-    command: Command;
+    command: Command<TARGET> | null;
     /**
      *
      */
@@ -17,5 +17,3 @@ interface KeyboardResponse {
      */
     passEvent?: boolean;
 }
-
-export default KeyboardResponse;

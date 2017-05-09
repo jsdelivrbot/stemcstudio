@@ -1,3 +1,8 @@
+//
+// Editor Abstraction Layer
+//
+import { LanguageModeId } from '../../virtual/editor';
+
 /**
  *
  */
@@ -23,7 +28,7 @@ interface IDoodleFile {
      * Python
      * TypeScript
      */
-    language: string | undefined;
+    language: LanguageModeId | undefined;
 
     /**
      * (Volatile)

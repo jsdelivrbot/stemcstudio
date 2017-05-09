@@ -1,4 +1,5 @@
-import Range from "./Range";
+import RangeBasic from "./RangeBasic";
+import { isEmpty } from "./RangeHelpers";
 import { EditSession } from "./EditSession";
 import { comparePositions } from "./Position";
 import Position from "./Position";
@@ -6,12 +7,12 @@ import Position from "./Position";
 /**
  *
  */
-export default class RangeList {
+export default class RangeList<R extends RangeBasic> {
 
     /**
      *
      */
-    public ranges: Range[] = [];
+    public ranges: R[] = [];
 
     /**
      *
@@ -21,7 +22,7 @@ export default class RangeList {
     /**
      * 
      */
-    private onChange: (e: { data: { action: string; range: Range } }, unused: EditSession) => void;
+    private onChange: (e: { data: { action: string; range: R } }, unused: EditSession) => void;
 
     /**
      *
@@ -56,8 +57,8 @@ export default class RangeList {
         return -i - 1;
     }
 
-    add(range: Range): Range[] {
-        const excludeEdges = !range.isEmpty();
+    add(range: R): R[] {
+        const excludeEdges = !isEmpty(range);
         let startIndex = this.pointIndex(range.start, excludeEdges);
         if (startIndex < 0)
             startIndex = -startIndex - 1;
@@ -73,15 +74,15 @@ export default class RangeList {
         return this.ranges.splice(startIndex, endIndex - startIndex, range);
     }
 
-    addList(list: Range[]): Range[] {
-        const removed: Range[] = [];
+    addList(list: R[]): R[] {
+        const removed: R[] = [];
         for (let i = list.length; i--;) {
             removed.push.call(removed, this.add(list[i]));
         }
         return removed;
     }
 
-    substractPoint(pos: Position): Range[] | undefined {
+    substractPoint(pos: Position): R[] | undefined {
         const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges.splice(i, 1);
@@ -92,8 +93,8 @@ export default class RangeList {
     /**
      * merge overlapping ranges
      */
-    merge(): Range[] {
-        const removed: Range[] = [];
+    merge(): R[] {
+        const removed: R[] = [];
 
         const list = this.ranges.sort(function (a, b) {
             return comparePositions(a.start, b.start);
@@ -107,7 +108,7 @@ export default class RangeList {
             if (cmp < 0)
                 continue;
 
-            if (cmp === 0 && !range.isEmpty() && !next.isEmpty())
+            if (cmp === 0 && !isEmpty(range) && !isEmpty(next))
                 continue;
 
             if (comparePositions(range.end, next.end) < 0) {
@@ -134,7 +135,7 @@ export default class RangeList {
         return this.pointIndex(pos) >= 0;
     }
 
-    rangeAtPoint(pos: Position): Range | undefined {
+    rangeAtPoint(pos: Position): R | undefined {
         const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges[i];
@@ -142,7 +143,7 @@ export default class RangeList {
         return void 0;
     }
 
-    clipRows(startRow: number, endRow: number): Range[] {
+    clipRows(startRow: number, endRow: number): R[] {
         const list = this.ranges;
         if (list[0].start.row > endRow || list[list.length - 1].start.row < startRow) {
             return [];
@@ -159,14 +160,14 @@ export default class RangeList {
             endIndex = -endIndex - 1;
         }
 
-        const clipped: Range[] = [];
+        const clipped: R[] = [];
         for (let i = startIndex; i < endIndex; i++) {
             clipped.push(list[i]);
         }
         return clipped;
     }
 
-    removeAll(): Range[] {
+    removeAll(): R[] {
         return this.ranges.splice(0, this.ranges.length);
     }
 
@@ -200,8 +201,8 @@ export default class RangeList {
      * @param e
      * @param session
      */
-    private $onChange(e: { data: { action: string; range: Range } }, unused: EditSession): void {
-        const changeRange: Range = e.data.range;
+    private $onChange(e: { data: { action: string; range: R } }, unused: EditSession): void {
+        const changeRange: R = e.data.range;
         let start: Position;
         let end: Position;
         if (e.data.action[0] === "i") {

@@ -1,10 +1,9 @@
-import { Editor } from '../Editor';
-import EditorAction from '../keyboard/EditorAction';
+import { Action } from '../../virtual/editor';
 
 /**
  *
  */
-interface Command {
+export interface Command<TARGET> {
 
     /**
      *
@@ -14,7 +13,7 @@ interface Command {
     /**
      *
      */
-    exec?: EditorAction;
+    exec?: Action<TARGET>;
 
     /**
      *
@@ -29,7 +28,7 @@ interface Command {
     /**
      * 'single' is an instruction to exit the multi selection mode.
      */
-    multiSelectAction?: 'forEach' | 'forEachLine' | 'single' | EditorAction;
+    multiSelectAction?: 'forEach' | 'forEachLine' | 'single' | Action<TARGET>;
 
     /**
      *
@@ -49,7 +48,5 @@ interface Command {
     /**
      * Determines the context for the command.
      */
-    isAvailable?: (editor: Editor) => boolean;
+    isAvailable?: (target: TARGET) => boolean;
 }
-
-export default Command;

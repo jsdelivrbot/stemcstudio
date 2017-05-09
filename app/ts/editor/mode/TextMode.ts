@@ -7,7 +7,6 @@ import Tokenizer from "../Tokenizer";
 import TextHighlightRules from "./TextHighlightRules";
 import Behaviour from "./Behaviour";
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
-import FoldMode from './folding/FoldMode';
 import { packages } from "../unicode";
 import { escapeRegExp } from "../lib/lang";
 import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
@@ -16,11 +15,15 @@ import LanguageModeFactory from "../LanguageModeFactory";
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
-import { EditSession } from '../EditSession';
-import { workerCompleted } from '../EditSession';
-import { Editor } from '../Editor';
 import WorkerClient from "../worker/WorkerClient";
-import LanguageMode from '../LanguageMode';
+//
+// Editor Abstraction Layer
+//
+import { LanguageModeId } from '../../virtual/editor';
+import { LanguageMode } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
+import { Editor } from '../../virtual/editor';
+import { FoldMode } from '../../virtual/editor';
 
 /**
  * Standard hook of 'annotations' event.
@@ -40,7 +43,7 @@ export function hookAnnotations(worker: WorkerClient, session: EditSession, upda
                 session.clearAnnotations();
             }
         }
-        session._emit(workerCompleted, { data: annotations });
+        session.onWorkerCompleted(annotations);
     });
 }
 
@@ -62,7 +65,7 @@ export function hookTerminate(worker: WorkerClient, session: EditSession, tearDo
     function termHandler() {
         worker.off(terminate, termHandler);
         tearDown();
-        worker.detachFromDocument();
+        worker.detachFromSession();
         session.clearAnnotations();
     }
     // Wire up the event to the handler.
@@ -81,9 +84,8 @@ export function initWorker(worker: WorkerClient, moduleName: string, scriptImpor
     try {
         worker.init(scriptImports, ACE_WORKER_MODULE_NAME, moduleName, function (err: any) {
             if (!err) {
-                const doc = session.getDocument();
-                if (doc) {
-                    worker.attachToDocument(doc);
+                if (session) {
+                    worker.attachToSession(session);
                     callback(void 0, worker);
                 }
                 else {
@@ -149,7 +151,7 @@ export default class TextMode implements LanguageMode {
 
     protected lineCommentStart: string | string[] = "";
     protected blockComment: BlockComment;
-    public $id = "ace/mode/text";
+    public $id: LanguageModeId = "Text";
     private $tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;
     private $highlightRules: Highlighter;
     private $keywordList: string[];
@@ -199,8 +201,6 @@ export default class TextMode implements LanguageMode {
      *
      */
     public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): void {
-        const doc = session.docOrThrow();
-
         let ignoreBlankLines = true;
         let shouldRemove = true;
         let minIndent = Infinity;
@@ -224,18 +224,18 @@ export default class TextMode implements LanguageMode {
                 if (testRemove(line, i))
                     return;
                 if (!ignoreBlankLines || /\S/.test(line)) {
-                    doc.insertInLine({ row: i, column: line.length }, lineCommentEnd);
-                    doc.insertInLine({ row: i, column: minIndent }, lineCommentStart);
+                    session.insertInLine({ row: i, column: line.length }, lineCommentEnd);
+                    session.insertInLine({ row: i, column: minIndent }, lineCommentStart);
                 }
             };
 
             uncomment = function (line: string, i: number): void {
                 let m: RegExpMatchArray | null;
                 if (m = line.match(regexpEnd)) {
-                    doc.removeInLine(i, line.length - m[0].length, line.length);
+                    session.removeInLine(i, line.length - m[0].length, line.length);
                 }
                 if (m = line.match(regexpStart))
-                    doc.removeInLine(i, m[1].length, m[0].length);
+                    session.removeInLine(i, m[1].length, m[0].length);
             };
 
             testRemove = function (line: string, row: number): boolean {
@@ -294,16 +294,16 @@ export default class TextMode implements LanguageMode {
                 let end = m[0].length;
                 if (!shouldInsertSpace(line, start, end) && m[0][end - 1] === " ")
                     end--;
-                doc.removeInLine(i, start, end);
+                session.removeInLine(i, start, end);
             };
 
             const commentWithSpace = lineCommentStart + " ";
             comment = function (line: string, i: number) {
                 if (!ignoreBlankLines || /\S/.test(line)) {
                     if (shouldInsertSpace(line, minIndent, minIndent))
-                        doc.insertInLine({ row: i, column: minIndent }, commentWithSpace);
+                        session.insertInLine({ row: i, column: minIndent }, commentWithSpace);
                     else
-                        doc.insertInLine({ row: i, column: minIndent }, lineCommentStart);
+                        session.insertInLine({ row: i, column: minIndent }, lineCommentStart);
                 }
             };
             testRemove = function (line: string, i: number) {
@@ -313,7 +313,7 @@ export default class TextMode implements LanguageMode {
 
         function iter(fun: (line: string, row: number) => any) {
             for (let i = startRow; i <= endRow; i++) {
-                fun(doc.getLine(i), i);
+                fun(session.getLine(i), i);
             }
         }
 
@@ -452,7 +452,7 @@ export default class TextMode implements LanguageMode {
     /**
      *
      */
-    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
         // TextMode does not create a worker.
         callback(void 0);
     }

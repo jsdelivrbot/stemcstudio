@@ -3,16 +3,20 @@ import CppHighlightRules from "./CppHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class CppMode extends TextMode {
-    $id = "ace/mode/c_cpp";
-    $outdent: MatchingBraceOutdent;
-    lineCommentStart = "//";
-    blockComment = { start: "/*", end: "*/" };
+    // FIXME: What is happening here?
+    protected $outdent: MatchingBraceOutdent;
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "C++";
+        this.lineCommentStart = "//";
+        this.blockComment = { start: "/*", end: "*/" };
         this.HighlightRules = CppHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();

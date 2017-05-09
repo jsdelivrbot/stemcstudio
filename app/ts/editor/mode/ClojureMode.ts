@@ -1,9 +1,12 @@
-import { EditSession } from "../EditSession";
 import TextMode from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import ClojureHighlightRules from "./ClojureHighlightRules";
 import MatchingParensOutdent from "./MatchingParensOutdent";
 import WorkerClient from "../worker/WorkerClient";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 const minorIndentFunctions = ["defn", "defn-", "defmacro", "def", "deftest", "testing"];
 const outdent = new MatchingParensOutdent();
@@ -13,7 +16,7 @@ export default class ClojureMode extends TextMode {
         super(workerUrl, scriptImports);
         this.HighlightRules = ClojureHighlightRules;
         this.lineCommentStart = ";";
-        this.$id = "ace/mode/clojure";
+        this.$id = "Clojure";
     }
 
     private $toIndent(str: string): string {

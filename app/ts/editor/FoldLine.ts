@@ -1,6 +1,7 @@
 import Position from './Position';
 import Range from "./Range";
 import Fold from "./Fold";
+import { compareStart, compareEnd } from "./RangeHelpers";
 
 /**
  * If an array is passed in, the folds are expected to be sorted already.
@@ -61,12 +62,12 @@ export default class FoldLine {
             }
             this.folds.push(fold);
             this.folds.sort(function (a, b) {
-                return -a.range.compareEnd(b.start.row, b.start.column);
+                return -compareEnd(a.range, b.start.row, b.start.column);
             });
-            if (this.range.compareEnd(fold.start.row, fold.start.column) > 0) {
+            if (compareEnd(this.range, fold.start.row, fold.start.column) > 0) {
                 this.end.row = fold.end.row;
                 this.end.column = fold.end.column;
-            } else if (this.range.compareStart(fold.end.row, fold.end.column) < 0) {
+            } else if (compareStart(this.range, fold.end.row, fold.end.column) < 0) {
                 this.start.row = fold.start.row;
                 this.start.column = fold.start.column;
             }
@@ -110,7 +111,7 @@ export default class FoldLine {
         for (let i = 0; i < folds.length; i++) {
             const fold = folds[i];
 
-            const cmp = fold.range.compareStart(endRow, endColumn);
+            const cmp = compareStart(fold.range, endRow, endColumn);
             // This fold is after the endRow/Column.
             if (cmp === -1) {
                 callback(null, endRow, endColumn, lastEnd, isNewRow);
@@ -137,7 +138,7 @@ export default class FoldLine {
     getNextFoldTo(row: number, column: number): { fold: Fold; kind: 'after' | 'inside' } | null {
         for (let i = 0; i < this.folds.length; i++) {
             const fold = this.folds[i];
-            const cmp = fold.range.compareEnd(row, column);
+            const cmp = compareEnd(fold.range, row, column);
             if (cmp === -1) {
                 return {
                     fold: fold,

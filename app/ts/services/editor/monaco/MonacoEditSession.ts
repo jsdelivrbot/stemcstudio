@@ -1,22 +1,30 @@
-import { Annotation } from '../../virtual/editor';
-import { Document } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { EditSessionEventType } from '../../virtual/editor';
-import { EditSessionEventHandler } from '../../virtual/editor';
-import { LanguageMode } from '../../virtual/editor';
-import { Marker } from '../../virtual/editor';
-import { MarkerRenderer } from '../../virtual/editor';
-import { MarkerType } from '../../virtual/editor';
-import { Position } from '../../virtual/editor';
-import { Range } from '../../virtual/editor';
+import { Annotation } from '../../../virtual/editor';
+import { Document } from '../../../virtual/editor';
+import { EditSession } from '../../../virtual/editor';
+import { EditSessionEventType } from '../../../virtual/editor';
+import { EditSessionEventHandler } from '../../../virtual/editor';
+import { LanguageMode } from '../../../virtual/editor';
+import { LanguageModeId } from '../../../virtual/editor';
+import { Marker } from '../../../virtual/editor';
+import { MarkerRenderer } from '../../../virtual/editor';
+import { MarkerType } from '../../../virtual/editor';
+import { Position } from '../../../virtual/editor';
+import { Range } from '../../../virtual/editor';
+
+import { rowToLineNumber } from './virtualToMonaco';
 
 import { MonacoDocument } from './MonacoDocument';
+import { MonacoModel } from './MonacoModel';
 
+/**
+ * @deprecated
+ * This can only be used for single file editing.
+ */
 export class MonacoEditSession implements EditSession {
     private doc: MonacoDocument | undefined;
     private mode: LanguageMode;
     private refCount = 1;
-    constructor(doc: MonacoDocument) {
+    constructor(doc: MonacoDocument, private model: MonacoModel) {
         // console.warn(`EditSession.constructor()`);
         this.doc = doc;
         if (this.doc) {
@@ -55,10 +63,10 @@ export class MonacoEditSession implements EditSession {
     }
     getLine(row: number): string {
         console.warn(`EditSession.getLine(${row})`);
-        return "";
+        return this.model.getLineContent(rowToLineNumber(row));
     }
     getMarkers(inFront: boolean): { [id: number]: Marker } {
-        console.warn(`EditSession.getMarkers(${inFront})`);
+        // console.warn(`EditSession.getMarkers(${inFront})`);
         return {};
     }
     getState(row: number): string {
@@ -120,12 +128,15 @@ export class MonacoEditSession implements EditSession {
         console.warn(`EditSession.removeMarker(${markerId})`);
     }
     setAnnotations(annotations: Annotation[]): void {
-        console.warn(`EditSession.setAnnotations(${annotations})`);
+        // console.warn(`EditSession.setAnnotations(${JSON.stringify(annotations, null, 2)})`);
     }
-    setLanguageMode(mode: LanguageMode, callback: (err: any) => void): void {
-        // console.warn(`EditSession.setLanguageMode(${mode.$id})`);
-        this.mode = mode;
-        setTimeout(callback, 0);
+    setLanguage(mode: LanguageModeId): Promise<void> {
+        if (this.doc) {
+            // Converting the language mode identifiers to lower case is good enough for now.
+            // We cast out model to an IModel to keep the compiler happy and see what happens.
+            monaco.editor.setModelLanguage(this.doc.model as monaco.editor.IModel, mode.toLowerCase());
+        }
+        return Promise.resolve();
     }
     setUseWorker(useWorker: boolean): void {
         // console.warn(`EditSession.setUseWorker(${useWorker})`);

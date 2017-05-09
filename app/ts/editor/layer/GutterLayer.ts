@@ -2,7 +2,7 @@ import { addCssClass, createElement, removeCssClass } from "../lib/dom";
 
 import AbstractLayer from './AbstractLayer';
 import escapeHTML from "../lib/escapeHTML";
-import EventEmitterClass from "../lib/EventEmitterClass";
+import { EventEmitterClass } from "../lib/EventEmitterClass";
 import Delta from "../Delta";
 import { EditSession } from "../EditSession";
 import EventBus from "../EventBus";
@@ -159,7 +159,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<Gutte
         const foldWidgets = this.$showFoldWidgets && session.foldWidgets;
         const breakpoints = session.$breakpoints;
         const decorations = session.$decorations;
-        const firstLineNumber = session.$firstLineNumber;
+        const firstLineNumber = session.getFirstLineNumber();
         let lastLineNumber = 0;
 
         const gutterRenderer = session.gutterRenderer || this.$renderer;

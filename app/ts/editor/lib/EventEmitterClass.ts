@@ -1,14 +1,20 @@
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import EventBus from "../EventBus";
-
+import { Command } from '../../virtual/editor';
 const stopPropagation = function (this: { propagationStopped: boolean }) { this.propagationStopped = true; };
 const preventDefault = function (this: { defaultPrevented: boolean }) { this.defaultPrevented = true; };
+
+export interface DefaultHandler<T> {
+    (event: { command: Command<T>; target: T, args: any }, source: T): void;
+}
 
 /**
  * Intended to be used as a Mixin.
  * N.B. The original implementation was an object, the TypeScript way is
  * designed to satisfy the compiler.
  */
-export default class EventEmitterClass<NAME extends string, E, T> implements EventBus<NAME, E, T> {
+export class EventEmitterClass<NAME extends string, E, T> implements EventBus<NAME, E, T> {
 
     /**
      * Each event name has multiple callbacks.
@@ -114,6 +120,15 @@ export default class EventEmitterClass<NAME extends string, E, T> implements Eve
         }
     }
 
+    events(eventName: NAME): Observable<E> {
+        return new Observable<E>((observer: Observer<E>) => {
+            function changeListener(value: E, source: T) {
+                observer.next(value);
+            }
+            return this.on(eventName, changeListener, false);
+        });
+    }
+
     once(eventName: NAME, callback: (event: E, source: T) => any) {
         const _self = this;
         if (callback) {
@@ -124,7 +139,7 @@ export default class EventEmitterClass<NAME extends string, E, T> implements Eve
         }
     }
 
-    setDefaultHandler(eventName: NAME, callback: (event: E, source: T) => any) {
+    setDefaultHandler(eventName: NAME, callback: DefaultHandler<T>) {
         // FIXME: All this casting is creepy.
         let handlers: any = this._defaultHandlers;
         if (!handlers) {

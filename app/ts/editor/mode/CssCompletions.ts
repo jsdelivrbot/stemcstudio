@@ -1,5 +1,8 @@
-import { EditSession } from '../EditSession';
 import Position from '../Position';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 const propertyMap = {
   "background": { "#$0": 1 },

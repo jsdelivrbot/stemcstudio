@@ -5,7 +5,10 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class JsonMode extends TextMode {
 
@@ -13,7 +16,7 @@ export default class JsonMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/json";
+        this.$id = "JSON";
         this.HighlightRules = JsonHighlightRules;
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();

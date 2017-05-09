@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 
-import { MonacoEditor } from './MonacoEditor';
-import { MonacoEditSession } from './MonacoEditSession';
-import { MonacoDocument } from './MonacoDocument';
+import { MonacoEditor } from './monaco/MonacoEditor';
+
+import { Document as NativeDocument } from '../../editor/Document';
+import { EditSession as NativeEditSession } from '../../editor/EditSession';
 
 /**
  * AngularJS dependency injection registry identifier.
@@ -84,18 +84,14 @@ export class MonacoEditorService implements EditorService {
             }
         });
     }
-    createDocument(text: string): Document {
-        return new MonacoDocument(text);
-    }
-    createSession(doc: Document): EditSession {
-        if (doc instanceof MonacoDocument) {
-            return new MonacoEditSession(doc);
-        }
-        else {
-            throw new Error("Expecting doc to be a Document");
-        }
+    createSession(text: string): EditSession {
+        const doc = new NativeDocument(text);
+        const session = new NativeEditSession(doc);
+        doc.release();
+        return session;
     }
     createEditor(container: HTMLElement): Editor {
+        // The MonacoEditor will be injected with a NativeEditSession.
         return new MonacoEditor(container);
     }
 }

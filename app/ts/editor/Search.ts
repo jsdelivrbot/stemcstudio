@@ -5,8 +5,25 @@ import MatchHandler from './MatchHandler';
 import MatchOffset from './lib/MatchOffset';
 import Position from './Position';
 import Range from "./Range";
+import { isEqual } from "./RangeHelpers";
+import RangeBasic from "./RangeBasic";
 import SearchOptions from "./SearchOptions";
-import { EditSession } from "./EditSession";
+// import { EditSession } from "./EditSession";
+//
+// Editor Abstraction Layer
+//
+import { Selection } from '../virtual/editor';
+
+/**
+ * The contract for the Search class.
+ */
+export interface EditSession {
+    getAllLines(): string[];
+    getLength(): number;
+    getLine(row: number): string;
+    getLines(firstRow: number, lastRow: number): string[];
+    selection: Selection | undefined;
+}
 
 /**
  * A class designed to handle all sorts of text searches within a [[Document `Document`]].
@@ -88,7 +105,7 @@ export default class Search {
                 else {
                     const column = range.offset + (startIndex || 0);
                     firstRange = new Range(row, column, row, column + range.length);
-                    if (!range.length && options.start && options.start.start && options.skipCurrent !== false && firstRange.isEqual(options.start)) {
+                    if (!range.length && options.start && options.start.start && options.skipCurrent !== false && isEqual(firstRange, options.start)) {
                         firstRange = null;
                         return false;
                     }
@@ -118,8 +135,8 @@ export default class Search {
         // The side-effect of this call is mutation of the options.
         assembleRegExp(options);
 
-        const range: Range = options.range;
-        const lines: string[] = range ? session.getLines(range.start.row, range.end.row) : session.doc.getAllLines();
+        const range = options.range;
+        const lines: string[] = range ? session.getLines(range.start.row, range.end.row) : session.getAllLines();
 
         let ranges: Range[] = [];
         if (options.$isMultiLine) {
@@ -127,7 +144,7 @@ export default class Search {
             const re = <RegExp[]>options.re;
             const len = re.length;
             const maxRow = lines.length - len;
-            let prevRange: Range;
+            let prevRange: Range | undefined;
             // TODO: What is this offset property?
             outer: for (let row = re['offset'] || 0; row <= maxRow; row++) {
                 for (let j = 0; j < len; j++)
@@ -136,8 +153,8 @@ export default class Search {
 
                 const startLine = lines[row];
                 const line = lines[row + len - 1];
-                const startIndex = startLine.length - startLine.match(re[0])[0].length;
-                const endIndex = line.match(re[len - 1])[0].length;
+                const startIndex = startLine.length - (startLine.match(re[0]) as RegExpMatchArray)[0].length;
+                const endIndex = (line.match(re[len - 1]) as RegExpMatchArray)[0].length;
 
                 if (prevRange && prevRange.end.row === row && prevRange.end.column > startIndex) {
                     continue;
@@ -190,10 +207,10 @@ export default class Search {
      * + (String): If `options.regExp` is `true`, this function returns `input` with the replacement already made. Otherwise, this function just returns `replacement`.<br/>
      * If `options.needle` was not found, this function returns `null`.
      */
-    replace(input: string, replacement: string): string {
+    replace(input: string, replacement: string): string | null | undefined {
         const options = this.$options;
 
-        const re: boolean | RegExp | RegExp[] = assembleRegExp(options);
+        const re: boolean | RegExp | RegExp[] | undefined = assembleRegExp(options);
         if (options.$isMultiLine) {
             // This eliminates the RegExp[]
             return replacement;
@@ -204,7 +221,7 @@ export default class Search {
             return void 0;
         }
 
-        const match: RegExpExecArray = (<RegExp>re).exec(input);
+        const match: RegExpExecArray | null = (<RegExp>re).exec(input);
         if (!match || match[0].length !== input.length) {
             return null;
         }
@@ -227,7 +244,7 @@ export default class Search {
 }
 
 function $matchIterator(session: EditSession, options: SearchOptions): boolean | { forEach: (callback: MatchHandler) => void } {
-    const re: boolean | RegExp | RegExp[] = assembleRegExp(options);
+    const re: boolean | RegExp | RegExp[] | undefined = assembleRegExp(options);
 
     if (!re) {
         // This eliminates the case where re is a boolean.
@@ -239,7 +256,7 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
     let lineFilter: LineFilter;
     if (options.$isMultiLine) {
         const len = (<RegExp[]>re).length;
-        lineFilter = function (line: string, row: number, offset: number): true {
+        lineFilter = function (line: string, row: number, offset: number): true | undefined {
             const startIndex = line.search(re[0]);
             if (startIndex === -1)
                 return void 0;
@@ -249,7 +266,7 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
                     return void 0;
             }
 
-            const endIndex = line.match(re[len - 1])[0].length;
+            const endIndex = (line.match(re[len - 1]) as RegExpMatchArray)[0].length;
 
             const range = new Range(row, startIndex, row + len - 1, endIndex);
             // FIXME: What's going on here?
@@ -267,7 +284,7 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
         };
     }
     else if (backwards) {
-        lineFilter = function (line: string, row: number, startIndex: number): boolean {
+        lineFilter = function (line: string, row: number, startIndex: number): boolean | undefined {
             const matches = getMatchOffsets(line, <RegExp>re);
             for (let i = matches.length - 1; i >= 0; i--) {
                 if (callback(matches[i], row, startIndex)) {
@@ -278,7 +295,7 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
         };
     }
     else {
-        lineFilter = function (line: string, row: number, startIndex: number): boolean {
+        lineFilter = function (line: string, row: number, startIndex: number): boolean | undefined {
             const matches = getMatchOffsets(line, <RegExp>re);
             for (let i = 0; i < matches.length; i++) {
                 if (callback(matches[i], row, startIndex)) {
@@ -308,7 +325,7 @@ function addWordBoundary(needle: string, options: SearchOptions): string {
 /**
  * 
  */
-export function assembleRegExp(options: SearchOptions, $disableFakeMultiline?: boolean): boolean | RegExp | RegExp[] {
+export function assembleRegExp(options: SearchOptions, $disableFakeMultiline?: boolean): boolean | RegExp | RegExp[] | undefined {
 
     if (!options.needle) {
         options.re = false;
@@ -349,7 +366,7 @@ export function assembleRegExp(options: SearchOptions, $disableFakeMultiline?: b
     return options.re;
 }
 
-function $assembleMultilineRegExp(needle: string, modifier: string): RegExp[] {
+function $assembleMultilineRegExp(needle: string, modifier: string): RegExp[] | undefined {
     const parts: string[] = needle.replace(/\r\n|\r|\n/g, "$\n^").split("\n");
     const re: RegExp[] = [];
     for (let i = 0; i < parts.length; i++) {
@@ -427,7 +444,7 @@ function $lineIterator(session: EditSession, options: SearchOptions): { forEach:
  * Returns the appropriate property of the range (start or end) according to the
  * direction of the search and whether the currently selected range should be skipped.
  */
-function getRangePosition(range: Range, options: SearchOptions): Position {
+function getRangePosition(range: RangeBasic, options: SearchOptions): Position {
     const backwards = options.backwards === true;
     const skipCurrent = options.skipCurrent !== false;
     return skipCurrent !== backwards ? range.end : range.start;
@@ -441,7 +458,12 @@ function getStartPosition(session: EditSession, options: SearchOptions): Positio
             return backwards ? options.range.end : options.range.start;
         }
         else {
-            return getRangePosition(session.selection.getRange(), options);
+            if (session.selection) {
+                return getRangePosition(session.selection.getRange(), options);
+            }
+            else {
+                throw new Error("Unable to get a start position without a selection.");
+            }
         }
     }
     else {

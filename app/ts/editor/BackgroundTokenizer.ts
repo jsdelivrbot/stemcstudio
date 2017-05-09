@@ -1,11 +1,14 @@
 import Delta from './Delta';
-import { EditSession } from './EditSession';
 import EventBus from './EventBus';
 import { Document } from './Document';
-import EventEmitterClass from "./lib/EventEmitterClass";
+import { EventEmitterClass } from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
-import Tokenizer from './Tokenizer';
-import { HighlighterStackElement, HighlighterStack, HighlighterToken } from './mode/Highlighter';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../virtual/editor";
+import { Tokenizer } from "../virtual/editor";
+import { HighlighterStackElement, HighlighterStack, HighlighterToken } from '../virtual/editor';
 
 /**
  * Symbolic constant for the timer handle.

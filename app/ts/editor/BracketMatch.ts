@@ -1,7 +1,11 @@
 import TokenIterator from "./TokenIterator";
-import { EditSession } from "./EditSession";
 import Position from "./Position";
-import Range from "./Range";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../virtual/editor";
+import { OrientedRange } from "../virtual/editor";
+import { fromPoints } from "./RangeHelpers";
 
 /**
  * Maps an opening(closing) bracket string to the corresponding closing(opening) bracket.
@@ -54,10 +58,10 @@ export default class BracketMatch {
     /**
      * @param pos
      */
-    getBracketRange(pos: Position): Range | null {
+    getBracketRange(pos: Position): OrientedRange | null {
         const line = this.editSession.getLine(pos.row);
         let before = true;
-        let range: Range;
+        let range: OrientedRange;
 
         let chr = line.charAt(pos.column - 1);
         let match = chr && chr.match(/([\(\[\{])|([\)\]\}])/);
@@ -74,7 +78,7 @@ export default class BracketMatch {
             const closingPos = this.findClosingBracket(match[1], pos);
             if (!closingPos)
                 return null;
-            range = Range.fromPoints(pos, closingPos);
+            range = fromPoints(pos, closingPos) as OrientedRange;
             if (!before) {
                 range.end.column++;
                 range.start.column--;
@@ -85,7 +89,7 @@ export default class BracketMatch {
             const openingPos = this.findOpeningBracket(match[2], pos);
             if (!openingPos)
                 return null;
-            range = Range.fromPoints(openingPos, pos);
+            range = fromPoints(openingPos, pos) as OrientedRange;
             if (!before) {
                 range.start.column++;
                 range.end.column--;

@@ -4,7 +4,7 @@ import AbstractLayer from './AbstractLayer';
 import Disposable from '../base/Disposable';
 import { EditSession } from "../EditSession";
 import EventBus from "../EventBus";
-import EventEmitterClass from "../lib/EventEmitterClass";
+import { EventEmitterClass } from "../lib/EventEmitterClass";
 import FoldLine from "../FoldLine";
 import FontMetrics from "../layer/FontMetrics";
 import { changeCharacterSize } from '../layer/FontMetrics';
@@ -520,7 +520,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     // FIXME; How can max be optional if it is always used?
     private renderIndentGuide(stringBuilder: (number | string)[], value: string, max?: number): string {
         let cols = value.search(this.$indentGuideRe);
-        if (cols <= 0 || cols >= max) {
+        if (cols <= 0 || cols >= (max as number)) {
             return value;
         }
         if (value[0] === " ") {

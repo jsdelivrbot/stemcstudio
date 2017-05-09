@@ -3,6 +3,7 @@ import TokenIterator from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import Range from "../../Range";
+import { isMultiLine } from "../../RangeHelpers";
 
 export default class CssBehavior extends CstyleBehaviour {
     constructor() {
@@ -43,7 +44,7 @@ export default class CssBehavior extends CstyleBehaviour {
         this.add("colon", "deletion",
             function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const selected = session.docOrThrow().getTextRange(range);
-                if (!range.isMultiLine() && selected === ':') {
+                if (!isMultiLine(range) && selected === ':') {
                     const cursor = editor.getCursorPosition();
                     const iterator = new TokenIterator(session, cursor.row, cursor.column);
                     let token = iterator.getCurrentToken();

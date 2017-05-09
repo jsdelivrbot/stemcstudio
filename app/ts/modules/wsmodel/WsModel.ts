@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ACE_WORKER_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
-import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
+import { AutoCompleteCommand } from '../../editor/autocomplete/AutoCompleteCommand';
 import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
@@ -61,7 +61,6 @@ import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHos
 // Editor Abstraction Layer.
 //
 import { Delta } from '../../virtual/editor';
-import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
@@ -69,8 +68,12 @@ import { Marker } from '../../virtual/editor';
 import { QuickInfo } from '../../virtual/editor';
 import { QuickInfoTooltip } from '../../virtual/editor';
 import { QuickInfoTooltipHost } from '../../virtual/editor';
-// import { MonacoEditorService } from '../../services/editor/monaco-editor.service';
-import { NativeEditorService } from '../../services/editor/native-editor.service';
+//
+// Choose EditorService implementation (Angular).
+// See also editor.directive1x.ts for AngularJS.
+//
+// import { MonacoEditorService as ConcreteEditorService } from '../../services/editor/monaco-editor.service';
+import { NativeEditorService as ConcreteEditorService } from '../../services/editor/native-editor.service';
 
 const NEWLINE = '\n';
 
@@ -676,7 +679,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     /**
      *
      */
-    constructor(private doodles: DoodleManager, private optionManager: OptionManager, editorService: NativeEditorService) {
+    constructor(private doodles: DoodleManager, private optionManager: OptionManager, editorService: ConcreteEditorService) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing, much. There is no destructor; it would never be called.
         this.editorService = editorService;
@@ -1228,13 +1231,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         checkPath(path);
         checkCallback(callback);
 
-        const doc = this.getFileDocument(path);
-        if (doc) {
+        const session = this.getFileSession(path);
+        if (session) {
             try {
 
                 // Monitoring for Language Analysis.
                 if (isTypeScript(path)) {
-                    const monitor = new TypeScriptMonitor(path, doc, this);
+                    const monitor = new TypeScriptMonitor(path, session, this);
                     this.docMonitors[path] = monitor;
                     monitor.beginMonitoring(callback);
                 }
@@ -1243,31 +1246,31 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                         // I'm assuming that there will not be both kinds of files.
                         case JSPM_DOT_CONFIG_DOT_JS:
                         case JSPM_DOT_CONFIG_DOT_JSON: {
-                            const monitor = new JspmConfigJsonMonitor(doc, this);
+                            const monitor = new JspmConfigJsonMonitor(session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
                             break;
                         }
                         case TSCONFIG_DOT_JSON: {
-                            const monitor = new TsConfigJsonMonitor(doc, this);
+                            const monitor = new TsConfigJsonMonitor(session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
                             break;
                         }
                         case TSLINT_DOT_JSON: {
-                            const monitor = new TsLintJsonMonitor(doc, this);
+                            const monitor = new TsLintJsonMonitor(session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
                             break;
                         }
                         case PACKAGE_DOT_JSON: {
-                            const monitor = new PackageJsonMonitor(doc, this);
+                            const monitor = new PackageJsonMonitor(session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
                             break;
                         }
                         case TYPES_DOT_CONFIG_DOT_JSON: {
-                            const monitor = new TypesConfigJsonMonitor(path, doc, this);
+                            const monitor = new TypesConfigJsonMonitor(path, session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
                             break;
@@ -1284,10 +1287,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
                 // Monitoring for Local Storage.
                 const storageHandler = debounce(() => { this.updateStorage(); }, STORE_DELAY_MILLISECONDS);
-                this.saveDocumentChangeListenerRemovers[path] = doc.addChangeListener(storageHandler);
+                this.saveDocumentChangeListenerRemovers[path] = session.addChangeListener(storageHandler);
             }
             finally {
-                doc.release();
+                session.release();
             }
         }
         else {
@@ -1308,8 +1311,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             checkPath(path);
             checkCallback(callback);
 
-            const doc = this.getFileDocument(path);
-            if (doc) {
+            // TODO: Why do we do this? 
+            const session = this.getFileSession(path);
+            if (session) {
                 try {
 
                     if (this.docMonitors[path]) {
@@ -1329,7 +1333,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                     }
                 }
                 finally {
-                    doc.release();
+                    session.release();
                 }
             }
             else {
@@ -1600,13 +1604,11 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             file.tainted = false;
         }
 
-        const doc = session.docOrThrow();
-
         const annotations = diagnostics.map(function (diagnostic) {
             if (file) {
                 file.tainted = true;
             }
-            return diagnosticToAnnotation(doc, diagnostic, origin);
+            return diagnosticToAnnotation(session, diagnostic, origin);
         });
         session.setAnnotations(annotations);
 
@@ -1618,8 +1620,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         diagnostics.forEach((diagnostic) => {
             const minChar = diagnostic.start;
             const limChar = minChar + diagnostic.length;
-            const start = getPosition(doc, minChar);
-            const end = getPosition(doc, limChar);
+            const start = getPosition(session, minChar);
+            const end = getPosition(session, limChar);
             const range = new Range(start.row, start.column, end.row, end.column);
             // Add a new marker to the given Range. The last argument (inFront) causes a
             // front marker to be defined and the 'changeFrontMarker' event fires.
@@ -1706,7 +1708,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The responses are published on the outputFilesTopic.
      */
     public outputFiles(): void {
-        const paths = this.getFileDocumentPaths();
+        const paths = this.getFileSessionPaths();
         for (const path of paths) {
             if (isTypeScript(path)) {
                 this.outputFilesForPath(path);
@@ -2573,38 +2575,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
     }
 
-    /**
-     * Return the Document for the specified file. This reference must be released when no longer required.
-     */
-    getFileDocument(path: string): Document | undefined {
-        if (this.files) {
-            const file = this.files.getWeakRef(path);
-            if (file) {
-                return file.getDocument();
-            }
-            else {
-                return void 0;
-            }
-        }
-        else {
-            return void 0;
-        }
-    }
-
-    getFileDocumentPaths(): string[] {
-        const files = this.files;
-        if (files) {
-            const paths = files.keys;
-            return paths.filter((path) => {
-                const file = files.getWeakRef(path);
-                return file.hasDocument();
-            });
-        }
-        else {
-            return [];
-        }
-    }
-
+    //
+    // TODO: Determine whether we can make Document an implementation detail.
+    //
+    /*
     setFileDocument(path: string, doc: Document) {
         if (this.files) {
             const file = this.files.getWeakRef(path);
@@ -2613,6 +2587,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             }
         }
     }
+    */
 
     setHtmlFileChoice(path: string): void {
         const files = this.files;
@@ -3089,8 +3064,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     public subscribeRoomToDocumentChanges(path: string): void {
         // We need the document in order to add the change listener.
-        const doc = this.getFileDocument(path);
-        if (doc) {
+        const session = this.getFileSession(path);
+        if (session) {
             try {
                 if (this.files) {
                     const file = this.files.getWeakRef(path);
@@ -3100,12 +3075,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                     // The edits are sent to the room (server) via the room agent that acts as a proxy.
                     if (this.room) {
                         const changeHandler = debounce(uploadFileEditsToRoom(path, unit, this.room), SYNCH_DELAY_MILLISECONDS);
-                        this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+                        // TODO: addChangeHandler is deprecated.
+                        this.roomDocumentChangeListenerRemovers[path] = session.addChangeListener(changeHandler);
                     }
                 }
             }
             finally {
-                doc.release();
+                session.release();
             }
         }
     }

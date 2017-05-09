@@ -19,7 +19,7 @@ import VScrollBar from "./VScrollBar";
 import HScrollBar from "./HScrollBar";
 
 import RenderLoop from "./RenderLoop";
-import EventEmitterClass from "./lib/EventEmitterClass";
+import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { EditSession } from './EditSession';
 import EventBus from './EventBus';
 import OptionsProvider from "./OptionsProvider";

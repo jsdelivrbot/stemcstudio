@@ -1,0 +1,1 @@
+module.exports = require("npm:socket.io-client@1.7.4/dist/socket.io.js");

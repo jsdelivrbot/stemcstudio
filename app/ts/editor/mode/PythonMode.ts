@@ -3,10 +3,13 @@ import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import PythonHighlightRules from "./PythonHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
-import { EditSession } from "../EditSession";
 import Range from '../Range';
 import Token from '../Token';
 import PythonFoldMode from './folding/PythonFoldMode';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 const outdents = {
     "pass": 1,
@@ -22,7 +25,7 @@ export default class PythonMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/python";
+        this.$id = "Python";
         this.lineCommentStart = "#";
         this.HighlightRules = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");

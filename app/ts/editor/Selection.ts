@@ -1,15 +1,28 @@
 import { Document } from "./Document";
 import { stringReverse } from "./lib/lang";
-import EventEmitterClass from "./lib/EventEmitterClass";
+import { EventEmitterClass } from "./lib/EventEmitterClass";
 import Position from "./Position";
 import Range from "./Range";
+import RangeBasic from "./RangeBasic";
+import { clone, isEmpty, isEqual, isMultiLine } from "./RangeHelpers";
 import RangeList from "./RangeList";
 import { EditSession } from "./EditSession";
 import Anchor from "./Anchor";
 import AnchorChangeEvent from "./events/AnchorChangeEvent";
 import EventBus from "./EventBus";
-import SelectionAddRangeEvent from "./events/SelectionAddRangeEvent";
-import SelectionRemoveRangeEvent from "./events/SelectionRemoveRangeEvent";
+import { SelectionAddRangeEvent } from "./events/SelectionAddRangeEvent";
+import { SelectionRemoveRangeEvent } from "./events/SelectionRemoveRangeEvent";
+//
+// Editor Abstraction Layer
+//
+import { OrientedRange } from '../virtual/editor';
+// import { RangeSelectionMarker } from '../virtual/editor';
+
+/*
+export interface EditSession {
+    $undoSelect: boolean;
+}
+*/
 
 /**
  * Nothing (void 0).
@@ -76,12 +89,12 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * List of ranges in reverse addition order.
      */
-    public ranges: Range[] = [];
+    public ranges: OrientedRange[] = [];
 
     /**
      * Automatically sorted list of ranges.
      */
-    public rangeList: RangeList = new RangeList();
+    public rangeList = new RangeList<OrientedRange>();
 
     /**
      *
@@ -132,12 +145,12 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * adds multicursor support to selection
      */
-    public ensureRangeList(): RangeList {
+    public ensureRangeList(): RangeList<RangeBasic> {
         if (this.rangeList) {
             return this.rangeList;
         }
 
-        this.rangeList = new RangeList();
+        this.rangeList = new RangeList<OrientedRange>();
         this.ranges = [];
         this.rangeCount = 0;
         return this.rangeList;
@@ -148,8 +161,8 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
      * If the selection contains a Range that contains the point, the Range is returned.
      * Otherwise, nothing is returned.
      */
-    substractPoint(pos: Position): Range | undefined {
-        const removed: Range[] = this.rangeList.substractPoint(pos);
+    substractPoint(pos: Position): RangeBasic | undefined {
+        const removed = this.rangeList.substractPoint(pos);
         if (removed) {
             this.$onRemoveRange(removed);
             return removed[0];
@@ -160,7 +173,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * Returns a concatenation of all the ranges.
      */
-    public getAllRanges(): Range[] {
+    public getAllRanges(): OrientedRange[] {
         return this.rangeCount ? this.rangeList.ranges.concat() : [this.getRange()];
     }
 
@@ -234,7 +247,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
             return false;
         }
 
-        return this.getRange().isMultiLine();
+        return isMultiLine(this.getRange());
     }
 
     /**
@@ -324,7 +337,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * Returns the range for the selected text.
      */
-    getRange() {
+    getRange(): OrientedRange {
 
         const anchor: Anchor = this.anchor;
         const lead: Anchor = this.lead;
@@ -385,11 +398,11 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
      * @param The range of text to select
      * @param reverse Indicates if the range should go backwards (`true`) or not
      */
-    public setRange(range: Range, reverse?: boolean): void {
+    public setRange(range: RangeBasic, reverse?: boolean): void {
         this.setSelectionRange(range, reverse);
     }
 
-    public setSelectionRange(range: Range, reverse?: boolean): void {
+    public setSelectionRange(range: Readonly<RangeBasic>, reverse?: boolean): void {
         if (reverse) {
             this.setSelectionAnchor(range.end.row, range.end.column);
             this.selectTo(range.start.row, range.start.column);
@@ -398,8 +411,9 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
             this.setSelectionAnchor(range.start.row, range.start.column);
             this.selectTo(range.end.row, range.end.column);
         }
-        if (this.getRange().isEmpty())
+        if (isEmpty(this.getRange())) {
             this.$isEmpty = true;
+        }
         this.$desiredColumn = null;
     }
 
@@ -529,7 +543,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * Moves the selection to highlight the entire word.
      */
-    getWordRange(row?: number, column?: number): Range {
+    getWordRange(row?: number, column?: number): OrientedRange {
         const session = this.sessionOrThrow();
         if (typeof row === 'undefined' || typeof column === 'undefined') {
             const cursor: Anchor = this.lead;
@@ -1047,15 +1061,15 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
         this.session = this.doc = null;
     }
 
-    fromOrientedRange(range: Range): void {
+    fromOrientedRange(range: OrientedRange): void {
         this.setSelectionRange(range, range.cursor === range.start);
         this.$desiredColumn = range.desiredColumn || this.$desiredColumn;
     }
 
     /**
-     *
+     * Constructs a new OrientedRange if one is not passed in as an argument.
      */
-    toOrientedRange(range?: Range): Range {
+    toOrientedRange(range?: OrientedRange): OrientedRange {
         const r = this.getRange();
         if (range) {
             range.start.column = r.start.column;
@@ -1095,7 +1109,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      *
      */
-    public toSingleRange(range?: Range): void {
+    public toSingleRange(range?: OrientedRange): void {
         range = range || this.ranges[0];
         const removed = this.rangeList.removeAll();
         if (removed.length) {
@@ -1109,7 +1123,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /** 
      * Adds a range to a selection by entering multiselect mode, if necessary.
      */
-    public addRange(range: Range, $blockChangeEvents?: boolean): boolean | void {
+    public addRange(range: OrientedRange, $blockChangeEvents?: boolean): boolean | void {
 
         if (!range) {
             return;
@@ -1155,7 +1169,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      *
      */
-    private $onAddRange(range: Range): void {
+    private $onAddRange(range: OrientedRange): void {
         this.rangeCount = this.rangeList.ranges.length;
         this.ranges.unshift(range);
         const event: SelectionAddRangeEvent = { range: range };
@@ -1165,10 +1179,10 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      *
      */
-    private $onRemoveRange(removed: Range[]): void {
+    private $onRemoveRange(removed: OrientedRange[]): void {
         const session = this.sessionOrThrow();
         this.rangeCount = this.rangeList.ranges.length;
-        let lastRange: Range | undefined;
+        let lastRange: OrientedRange | undefined;
         if (this.rangeCount === 1 && this.inMultiSelectMode) {
             lastRange = this.rangeList.ranges.pop();
             if (lastRange) {
@@ -1182,6 +1196,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
             this.ranges.splice(index, 1);
         }
 
+        // When the event is fired, it appears that we only have OrientedRange[].
         const event: SelectionRemoveRangeEvent = { ranges: removed };
         this.eventBus._signal("removeRange", event);
 
@@ -1193,7 +1208,7 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
         }
 
         lastRange = lastRange || this.ranges[0];
-        if (lastRange && !lastRange.isEqual(this.getRange())) {
+        if (lastRange && !isEqual(lastRange, this.getRange())) {
             this.fromOrientedRange(lastRange);
         }
     }
@@ -1201,17 +1216,18 @@ export default class Selection implements EventBus<SelectionEventName, any, Sele
     /**
      * Used by the Editor
      */
-    toJSON(): Range[] {
+    toJSON(): OrientedRange[] {
         if (this.rangeCount) {
-            const ranges: Range[] = this.ranges.map(function (r) {
-                const r1 = r.clone();
+            const ranges: OrientedRange[] = this.ranges.map(function (r) {
+                // This will only copy the start and end positions.u 
+                const r1 = clone(r) as OrientedRange;
                 r1.isBackwards = r.cursor === r.start;
                 return r1;
             });
             return ranges;
         }
         else {
-            const range: Range = this.getRange();
+            const range = this.getRange();
             range.isBackwards = this.isBackwards();
             return [range];
         }

@@ -6,7 +6,7 @@ import DelayedCall from "../lib/lang/DelayedCall";
 import { Editor } from "../Editor";
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
-import Range from '../Range';
+import { OrientedRange } from '../../virtual/editor';
 
 const BROKEN_SETDATA = <number>isChrome < 18;
 const USE_IE_MIME_TYPE = isIE;
@@ -37,7 +37,7 @@ export default class TextInput {
 
     private afterContextMenu: boolean;
 
-    private inComposition: { range?: Range; lastValue?: string; canUndo?: boolean };
+    private inComposition: { range?: OrientedRange; lastValue?: string; canUndo?: boolean };
 
     private inputHandler: ((data: string) => string) | null;
 

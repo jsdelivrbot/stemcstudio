@@ -2,7 +2,7 @@ import { createElement } from "../lib/dom";
 import { stringRepeat } from "../lib/lang";
 import { isIE } from "../lib/useragent";
 import EventBus from "../EventBus";
-import EventEmitterClass from "../lib/EventEmitterClass";
+import { EventEmitterClass } from "../lib/EventEmitterClass";
 import refChange from '../../utils/refChange';
 import Shareable from '../base/Shareable';
 

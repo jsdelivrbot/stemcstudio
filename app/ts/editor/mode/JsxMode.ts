@@ -3,16 +3,19 @@ import TextMode from './TextMode';
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class JsxMode extends TextMode {
     private readonly $outdent = new MatchingBraceOutdent();
-    lineCommentStart = "//";
-    blockComment = { start: "/*", end: "*/" };
-    $id = "ace/mode/jsx";
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "JSX";
+        this.blockComment = { start: "/*", end: "*/" };
+        this.lineCommentStart = "//";
         this.HighlightRules = JsxHighlightRules;
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();

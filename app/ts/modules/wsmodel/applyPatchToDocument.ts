@@ -6,7 +6,7 @@ import Range from '../../editor/Range';
 //
 // Editor AbstractionLayer
 //
-import { Document } from '../../virtual/editor';
+import { EditSession } from '../../virtual/editor';
 
 /**
  * Applies a patch to a document.
@@ -16,8 +16,10 @@ import { Document } from '../../virtual/editor';
  * start: The same as patch.start1
  * length: 
  * applied: A boolean array corresponding to each of the diffs in patch.
+ * 
+ * TODO: applyTextChanges should be similar.
  */
-export function applyPatchToDocument(patch: Patch, doc: Document): { start: number; length: number; applied: boolean[] } {
+export function applyPatchToDocument(patch: Patch, session: EditSession): { start: number; length: number; applied: boolean[] } {
     const start = patch.start1;
     if ((typeof start === 'number') && start >= 0) {
         let offset = start;
@@ -29,7 +31,7 @@ export function applyPatchToDocument(patch: Patch, doc: Document): { start: numb
             const op = chunk[0];
             const text = chunk[1];
             if (op === DIFF_EQUAL) {
-                const existing = doc.getTextRange(Range.fromPoints(doc.indexToPosition(offset, 0), doc.indexToPosition(offset + text.length, 0)));
+                const existing = session.getTextRange(Range.fromPoints(session.indexToPosition(offset, 0), session.indexToPosition(offset + text.length, 0)));
                 if (text === existing) {
                     applied[d] = true;
                 }
@@ -42,9 +44,9 @@ export function applyPatchToDocument(patch: Patch, doc: Document): { start: numb
                 // Remove from the document.
                 // The offset does not change.
                 // We should check that the removed text matches.
-                const existing = doc.getTextRange(Range.fromPoints(doc.indexToPosition(offset, 0), doc.indexToPosition(offset + text.length, 0)));
+                const existing = session.getTextRange(Range.fromPoints(session.indexToPosition(offset, 0), session.indexToPosition(offset + text.length, 0)));
                 if (text === existing) {
-                    doc.remove(Range.fromPoints(doc.indexToPosition(offset, 0), doc.indexToPosition(offset + text.length, 0)));
+                    session.remove(Range.fromPoints(session.indexToPosition(offset, 0), session.indexToPosition(offset + text.length, 0)));
                     applied[d] = true;
                 }
                 else {
@@ -53,7 +55,7 @@ export function applyPatchToDocument(patch: Patch, doc: Document): { start: numb
             }
             else if (op === DIFF_INSERT) {
                 // Insert the text into the document.
-                doc.insert(doc.indexToPosition(offset, 0), text);
+                session.insert(session.indexToPosition(offset, 0), text);
                 // Advance the offset.
                 offset += text.length;
                 applied[d] = true;

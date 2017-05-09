@@ -1,19 +1,21 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { Delta } from '../../virtual/editor';
-import { Document } from '../../virtual/editor';
-import { Position } from '../../virtual/editor';
-import { Range } from '../../virtual/editor';
+import { Delta } from '../../../virtual/editor';
+import { Document } from '../../../virtual/editor';
+import { Position } from '../../../virtual/editor';
+import { Range } from '../../../virtual/editor';
 
+import { MonacoModel } from './MonacoModel';
+
+/**
+ * @deprecated
+ * This can only be used for single file editing.
+ */
 export class MonacoDocument implements Document {
     readonly changeEvents: Observable<Delta>;
-    public model: monaco.editor.IModel;
     private refCount = 1;
-    constructor(text: string, language?: string, uri?: monaco.Uri) {
-        // console.warn(`Document.constructor("${text.substring(0, 10)} ...")`);
-        this.model = monaco.editor.createModel(text, language, uri);
-
+    constructor(public model: MonacoModel) {
         //
         // The wiring for change events is standard boilerplate so long as it is done
         // in terms of the existing functions. When those are deprecated it will
@@ -21,7 +23,7 @@ export class MonacoDocument implements Document {
         //
         this.changeEvents = new Observable<Delta>((observer: Observer<Delta>) => {
             function changeListener(delta: Delta, source: Document) {
-                console.warn(`changeEvents ${JSON.stringify(delta, null, 2)}`);
+                // console.warn(`changeEvents ${JSON.stringify(delta, null, 2)}`);
                 observer.next(delta);
             }
             this.addChangeListener(changeListener);
@@ -37,7 +39,7 @@ export class MonacoDocument implements Document {
     addChangeListener(callback: (delta: Delta, source: Document) => void): () => void {
         // console.warn(`Document.addChangeListener()`);
         const monacoChangeHandler = (event: monaco.editor.IModelContentChangedEvent2) => {
-            console.warn(`Document.changed ${JSON.stringify(event, null, 2)}`);
+            // console.warn(`Document.changed ${JSON.stringify(event, null, 2)}`);
             const delta: Delta = { action: 'insert', start: { row: 0, column: 0 }, end: { row: 0, column: 0 }, lines: [] };
             callback(delta, this);
         };

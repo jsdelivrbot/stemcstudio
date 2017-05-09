@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.71",
+  "version": "2.24.72",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -53,7 +53,7 @@
     "rxjs": "5.0.1",
     "serve-favicon": "^2.4.2",
     "showdown": "^1.6.4",
-    "socket.io": "^1.7.3",
+    "socket.io": "^1.7.4",
     "systemjs": "0.20.4",
     "zone.js": "^0.8.10"
   },
@@ -72,6 +72,7 @@
     "@types/react-dom": "^0.14.23",
     "angular-ui-router": "^0.4.2",
     "bootstrap": "^3.3.7",
+    "codemirror": "^5.25.2",
     "concurrently": "^3.4.0",
     "davinci-eight": "^6.1.0",
     "davinci-newton": "0.0.39",
@@ -90,6 +91,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-jspm": "^2.2.3",
     "lite-server": "^2.3.0",
+    "monaco-editor": "^0.8.3",
     "plotly.js": "^1.26.1",
     "protractor": "^3.3.0",
     "react": "^15.5.4",
@@ -132,9 +134,9 @@
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",
-      "rxjs": "npm:rxjs@^5.3.0",
+      "rxjs": "npm:rxjs@^5.0.1",
       "showdown": "npm:showdown@^1.6.4",
-      "socket.io-client": "npm:socket.io-client@^1.7.3",
+      "socket.io-client": "npm:socket.io-client@^1.7.4",
       "ui-select": "npm:ui-select@^0.17.1",
       "underscore": "npm:underscore@^1.8.3",
       "zone.js": "npm:zone.js@^0.8.10"

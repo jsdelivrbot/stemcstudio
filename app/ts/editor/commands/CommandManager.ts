@@ -1,30 +1,28 @@
 import { applyMixins } from "../lib/mix";
-import KeyboardHandler from "../keyboard/KeyboardHandler";
-import KeyHash from "../keyboard/KeyHash";
-import EditorAction from '../keyboard/EditorAction';
-import EventEmitterClass from "../lib/EventEmitterClass";
-import Command from './Command';
-import { Editor } from '../Editor';
+import { KeyboardHandler } from "../keyboard/KeyboardHandler";
+import { KeyHash } from "../keyboard/KeyHash";
+import { Action } from '../keyboard/Action';
+import { EventEmitterClass } from "../lib/EventEmitterClass";
+import { Command } from './Command';
+import { CommandExecutor } from './CommandExecutor';
 import EventBus from '../EventBus';
-import KeyboardResponse from '../keyboard/KeyboardResponse';
+import { KeyboardResponse } from '../keyboard/KeyboardResponse';
 
-interface CommandAndArgs {
-    command: Command;
+interface CommandAndArgs<TARGET> {
+    command: Command<TARGET>;
     args: any;
 }
-
-type Macro = CommandAndArgs[];
 
 export type CommandManagerEventName = 'afterExec' | 'exec';
 
 /**
  *
  */
-export default class CommandManager implements EventBus<CommandManagerEventName, any, CommandManager> {
+export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, EventBus<CommandManagerEventName, any, CommandManager<TARGET>> {
     /**
      *
      */
-    public readonly hashHandler: KeyboardHandler;
+    public readonly hashHandler: KeyboardHandler<TARGET>;
     /**
      *
      */
@@ -36,10 +34,10 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
     /**
      * A macro is a sequence of commands.
      */
-    private macros: Macro[];
-    private oldMacros: Macro[];
-    private $addCommandToMacro: (event: any, cm: CommandManager) => any;
-    private readonly eventBus: EventEmitterClass<CommandManagerEventName, any, CommandManager>;
+    private macros: CommandAndArgs<TARGET>[][];
+    private oldMacros: CommandAndArgs<TARGET>[][];
+    private $addCommandToMacro: (event: any, cm: CommandManager<TARGET>) => any;
+    private readonly eventBus: EventEmitterClass<CommandManagerEventName, any, CommandManager<TARGET>>;
 
     _buildKeyHash: any;
 
@@ -47,21 +45,26 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
      * @param platform Identifier for the platform; must be either `'mac'` or `'win'`
      * @param commands A list of commands
      */
-    constructor(platform: string, commands: Command[]) {
-        this.eventBus = new EventEmitterClass<CommandManagerEventName, any, CommandManager>(this);
+    constructor(platform: string, commands: Command<TARGET>[]) {
+        this.eventBus = new EventEmitterClass<CommandManagerEventName, any, CommandManager<TARGET>>(this);
         this.hashHandler = new KeyboardHandler(commands, platform);
-        this.eventBus.setDefaultHandler("exec", function (e: { command: Command; editor: Editor; args: any }) {
+        this.eventBus.setDefaultHandler("exec", function (e) {
             if (e.command.exec) {
-                return e.command.exec(e.editor, e.args || {});
+                return e.command.exec(e.target, e.args || {});
             }
         });
     }
 
-    setDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
+    // FIXME: having to implement this is a bit wierd.
+    changeStatus(): void {
+        // Do nothing
+    }
+
+    setDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager<TARGET>) => any): void {
         this.eventBus.setDefaultHandler(eventName, callback);
     }
 
-    removeDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
+    removeDefaultHandler(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager<TARGET>) => any): void {
         this.eventBus.removeDefaultHandler(eventName, callback);
     }
 
@@ -77,18 +80,18 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
         return this.hashHandler.commandKeyBinding;
     }
 
-    bindKey(key: string, command: EditorAction): void {
+    bindKey(key: string, command: Action<TARGET>): void {
         return this.hashHandler.bindKey(key, command);
     }
 
-    bindKeys(keyList: { [name: string]: EditorAction }): void {
+    bindKeys(keyList: { [name: string]: Action<TARGET> }): void {
         return this.hashHandler.bindKeys(keyList);
     }
 
     /**
      * @param command
      */
-    addCommand(command: Command): void {
+    addCommand(command: Command<TARGET>): void {
         this.hashHandler.addCommand(command);
     }
 
@@ -96,7 +99,7 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
         this.hashHandler.removeCommand(commandName);
     }
 
-    findKeyCommand(hashId: number, keyString: string): Command {
+    findKeyCommand(hashId: number, keyString: string): Command<TARGET> {
         return this.hashHandler.findKeyCommand(hashId, keyString);
     }
 
@@ -104,29 +107,29 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
         return this.hashHandler.parseKeys(keys);
     }
 
-    addCommands(commands: Command[]): void {
+    addCommands(commands: Command<TARGET>[]): void {
         this.hashHandler.addCommands(commands);
     }
 
-    removeCommands(commands: { [name: string]: (string | Command) }): void {
+    removeCommands(commands: { [name: string]: (string | Command<TARGET>) }): void {
         this.hashHandler.removeCommands(commands);
     }
 
-    handleKeyboard(data: any, hashId: number, keyString: string, keyCode: number): KeyboardResponse {
+    handleKeyboard(data: any, hashId: number, keyString: string, keyCode: number): KeyboardResponse<TARGET> {
         return this.hashHandler.handleKeyboard(data, hashId, keyString, keyCode);
     }
 
     /**
      * @param name
      */
-    getCommandByName(name: string): Command {
+    getCommandByName(name: string): Command<TARGET> {
         return this.hashHandler.commands[name];
     }
 
     /**
      * Executes a <code>Command</code> in the context of an <code>Editor</code> using the specified arguments.
      */
-    exec(command: Command, editor?: Editor, args?: any): boolean {
+    exec(command: Command<TARGET>, target?: TARGET, args?: any): boolean {
         if (typeof command === 'string') {
             throw new TypeError("command must not be a string.");
             // command = this.hashHandler.commands[command];
@@ -136,15 +139,11 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
             return false;
         }
 
-        if (editor && editor.$readOnly && !command.readOnly) {
+        if (target && command.isAvailable && !command.isAvailable(target)) {
             return false;
         }
 
-        if (editor && command.isAvailable && !command.isAvailable(editor)) {
-            return false;
-        }
-
-        const e = { editor: editor, command: command, args: args };
+        const e = { target, command, args };
         /**
          * @event exec
          */
@@ -157,14 +156,11 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
         return retvalue === false ? false : true;
     }
 
-    toggleRecording(editor: Editor): boolean | undefined {
+    toggleRecording(target: TARGET): boolean | undefined {
         if (this.$inReplay) {
             return void 0;
         }
 
-        if (editor) {
-            editor._emit("changeStatus");
-        }
         if (this.recording) {
             this.macros.pop();
             this.eventBus.off("exec", this.$addCommandToMacro);
@@ -176,11 +172,9 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
             return this.recording = false;
         }
         if (!this.$addCommandToMacro) {
-            this.$addCommandToMacro = (step: CommandAndArgs) => {
+            this.$addCommandToMacro = (step: CommandAndArgs<TARGET>) => {
                 // FIXME: This does not look right
-                const macro: Macro = [step.command, step.args];
-                // This looks better...
-                // const macro: Macro = [step];
+                const macro: CommandAndArgs<TARGET>[] = [step.command, step.args];
                 this.macros.push(macro);
             };
         }
@@ -191,19 +185,19 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
         return this.recording = true;
     }
 
-    replay(editor: Editor): boolean | undefined {
+    replay(target: TARGET): boolean | undefined {
         if (this.$inReplay || !this.macros)
             return void 0;
 
         if (this.recording)
-            return this.toggleRecording(editor);
+            return this.toggleRecording(target);
 
         try {
             this.$inReplay = true;
             this.macros.forEach((macro) => {
                 for (let i = 0; i < macro.length; i++) {
                     const step = macro[i];
-                    this.exec(step.command, editor, step.args);
+                    this.exec(step.command, target, step.args);
                 }
             });
         }
@@ -227,7 +221,7 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
      * @param eventName
      * @param callback
      */
-    on(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any, capturing?: boolean): void {
+    on(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager<TARGET>) => any, capturing?: boolean): void {
         this.eventBus.on(eventName, callback, capturing);
     }
 
@@ -235,7 +229,7 @@ export default class CommandManager implements EventBus<CommandManagerEventName,
      * @param eventName
      * @param callback
      */
-    off(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager) => any): void {
+    off(eventName: CommandManagerEventName, callback: (event: any, source: CommandManager<TARGET>) => any): void {
         this.eventBus.off(eventName, callback);
     }
 }

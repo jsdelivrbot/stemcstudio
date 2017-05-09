@@ -7,10 +7,10 @@ import { WsModel } from './WsModel';
 //
 // Editor Abstraction Layer.
 //
-import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
+import { LanguageModeId } from '../../virtual/editor';
 
 /**
  * This class corresponds to a file at a particular path in a workspace.
@@ -49,11 +49,6 @@ export class WsFile implements MwDocument, Shareable {
     private session: EditSession | undefined;
 
     /**
-     * The line-oriented textual content.
-     */
-    public doc: Document | undefined;
-
-    /**
      * The synchronization data (shadow, backup, versions, etc).
      */
     public unit: MwUnit;
@@ -64,7 +59,7 @@ export class WsFile implements MwDocument, Shareable {
      * Note that the editSession contains a $mode: LanguageMode.
      * TODO: Eventually, we would like the mode to be extensible.
      */
-    mode: string | undefined;
+    mode: LanguageModeId | undefined;
 
     /**
      * The file is open for editing.
@@ -119,7 +114,6 @@ export class WsFile implements MwDocument, Shareable {
      */
     protected destructor(): void {
         this.setSession(void 0);
-        this.setDocument(void 0);
         this.workspace = void 0;
     }
 
@@ -137,20 +131,6 @@ export class WsFile implements MwDocument, Shareable {
             this.session = session;
             this.session.addRef();
             // TODO: attachSession
-        }
-    }
-
-    public setDocument(doc: Document | undefined) {
-        if (this.doc === doc) {
-            return;
-        }
-        if (this.doc) {
-            this.doc.release();
-            this.doc = void 0;
-        }
-        if (doc) {
-            this.doc = doc;
-            this.doc.addRef();
         }
     }
 
@@ -200,21 +180,17 @@ export class WsFile implements MwDocument, Shareable {
      * FIXME: Really ensureSession
      * The caller must release the session reference when no longer needed.
      */
-    getSession(): EditSession | undefined {
+    getSession(): EditSession {
         if (this.session) {
             this.session.addRef();
             return this.session;
         }
-        else if (this.doc) {
+        else {
             // TODO: This means that the WsFile needs to have a factory.
-            const session = this.editorService.createSession(this.doc);
+            const session = this.editorService.createSession("");
             // TODO: Do some mode-based session initialization here.
             this.setSession(session);
             return session;
-        }
-        else {
-            // May be better to throw an exception here?
-            return void 0;
         }
     }
 
@@ -222,27 +198,9 @@ export class WsFile implements MwDocument, Shareable {
         return this.session ? true : false;
     }
 
-    /**
-     * @returns The underlying document.
-     * This must be released when no longer required.
-     */
-    getDocument(): Document {
-        if (this.doc) {
-            this.doc.addRef();
-            return this.doc;
-        }
-        else {
-            throw new Error("missing document");
-        }
-    }
-
-    hasDocument(): boolean {
-        return this.doc ? true : false;
-    }
-
     getText(): string {
-        if (this.doc) {
-            return this.doc.getValue();
+        if (this.session) {
+            return this.session.getValue();
         }
         else {
             console.warn("WsFile.getValue() called when text is not defined.");
@@ -256,13 +214,13 @@ export class WsFile implements MwDocument, Shareable {
      */
     setText(text: string): void {
         if (typeof text === 'string') {
-            if (this.doc) {
-                this.doc.setValue(text);
+            if (this.session) {
+                this.session.setValue(text);
             }
             else {
-                const doc = this.editorService.createDocument(text);
-                this.setDocument(doc);
-                doc.release();
+                const session = this.editorService.createSession(text);
+                this.setSession(session);
+                session.release();
             }
         }
         else {
@@ -275,13 +233,17 @@ export class WsFile implements MwDocument, Shareable {
      * TODO: Implement boolean[] of return values.
      */
     patch(patches: Patch[]): boolean[] {
-        for (const patch of patches) {
-            if (this.doc) {
-                const { start, length, applied } = applyPatchToDocument(patch, this.doc);
+        const session = this.session;
+        if (session) {
+            for (const patch of patches) {
+                const { start, length, applied } = applyPatchToDocument(patch, session);
                 // The results of aplying the patch as a collection of diffs.
                 // TODO: Used the applied or return everything?
                 console.log(`applyPatchToDocument(${patch}) => start=${start}, length=${length}, applied=${applied}`);
             }
+        }
+        else {
+            throw new Error(`Unable to apply patches because session is '${typeof session}'`);
         }
         return [];
     }

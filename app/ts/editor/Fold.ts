@@ -1,15 +1,16 @@
 import FoldLine from "./FoldLine";
-import Range from "./Range";
+import { clone, compare, containsRange, isEqual } from "./RangeHelpers";
+import RangeBasic from "./RangeBasic";
 import RangeList from "./RangeList";
 import Position from "./Position";
 
 /**
  * Simple fold-data struct.
  */
-export default class Fold extends RangeList {
+export default class Fold extends RangeList<RangeBasic> {
     foldLine: FoldLine | null;
     placeholder: string;
-    range: Range;
+    range: Readonly<RangeBasic>;
     start: Position;
     end: Position;
     endRow: number;
@@ -21,7 +22,7 @@ export default class Fold extends RangeList {
      * @param range
      * @param placeholder
      */
-    constructor(range: Range, placeholder: string) {
+    constructor(range: RangeBasic, placeholder: string) {
         super();
         this.foldLine = null;
         this.placeholder = placeholder;
@@ -54,7 +55,7 @@ export default class Fold extends RangeList {
      *
      */
     clone(): Fold {
-        const range = this.range.clone();
+        const range = clone(this.range);
         const fold = new Fold(range, this.placeholder);
         this.subFolds.forEach(function (subFold) {
             fold.subFolds.push(subFold.clone());
@@ -67,11 +68,11 @@ export default class Fold extends RangeList {
      * @param fold
      */
     addSubFold(fold: Fold): Fold | undefined {
-        if (this.range.isEqual(fold)) {
+        if (isEqual(this.range, fold)) {
             return void 0;
         }
 
-        if (!this.range.containsRange(fold))
+        if (!containsRange(this.range, fold))
             throw new Error("A fold can't intersect already existing fold" + fold.range + this.range);
 
         // transform fold to local coordinates
@@ -82,7 +83,7 @@ export default class Fold extends RangeList {
         let i: number;
         let cmp: number;
         for (i = 0, cmp = -1; i < this.subFolds.length; i++) {
-            cmp = this.subFolds[i].range.compare(row, column);
+            cmp = compare(this.subFolds[i].range, row, column);
             if (cmp !== 1)
                 break;
         }
@@ -97,7 +98,7 @@ export default class Fold extends RangeList {
         column = fold.range.end.column;
         let j: number;
         for (j = i, cmp = -1; j < this.subFolds.length; j++) {
-            cmp = this.subFolds[j].range.compare(row, column);
+            cmp = compare(this.subFolds[j].range, row, column);
             if (cmp !== 1)
                 break;
         }

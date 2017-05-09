@@ -15,8 +15,7 @@ function ensureDoodleFile(doodle: Doodle, path: string): DoodleFile {
 function removeUnwantedFilesFromDoodle(workspace: WsModel, doodle: Doodle): void {
     if (doodle.files) {
         const paths = Object.keys(doodle.files);
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
+        for (const path of paths) {
             if (!workspace.existsFile(path)) {
                 doodle.deleteFile(path);
             }
@@ -25,9 +24,8 @@ function removeUnwantedFilesFromDoodle(workspace: WsModel, doodle: Doodle): void
 }
 
 function copyFiles(workspace: WsModel, doodle: Doodle) {
-    const paths = workspace.getFileDocumentPaths();
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
+    const paths = workspace.getFileSessionPaths();
+    for (const path of paths) {
         const doodleFile = ensureDoodleFile(doodle, path);
         const wsFile = workspace.findFileByPath(path);
         if (wsFile) {
@@ -52,8 +50,7 @@ function copyTrash(workspace: WsModel, doodle: Doodle) {
     // If we don't do this then we won't be able to delete Gist files after a serialize-deserialize cycle.
     const trashMap = workspace.trashByPath;
     const paths = Object.keys(trashMap);
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
+    for (const path of paths) {
         const doodleFile = ensureDoodleFile(doodle, path);
         const wsFile = trashMap[path];
         doodleFile.raw_url = wsFile.existsInGitHub ? "bogusURL" : void 0;

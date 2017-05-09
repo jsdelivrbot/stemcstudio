@@ -5,7 +5,10 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 /**
  *
@@ -19,7 +22,7 @@ export default class JavaScriptMode extends TextMode {
      */
     constructor(workerUrl = '', scriptImports: string[] = []) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/javascript";
+        this.$id = "JavaScript";
         // The Tokenizer will be built using these rules.
         this.HighlightRules = JavaScriptHighlightRules;
         this.$behaviour = new CstyleBehaviour();

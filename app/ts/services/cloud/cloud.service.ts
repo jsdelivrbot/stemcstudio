@@ -427,7 +427,7 @@ export class CloudService implements ICloudService {
                 }
             },
             (facts, session, next) => {
-                const paths = workspace.getFileDocumentPaths();
+                const paths = workspace.getFileSessionPaths();
                 const blobs = this.createBlobsInRepo(workspace, owner, repo, paths);
                 const value = facts.baseCommit.value;
                 const baseTreeSHA = facts.baseCommit.isResolved() ? (value ? value.tree.sha : void 0) : void 0;

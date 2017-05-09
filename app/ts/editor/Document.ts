@@ -1,9 +1,9 @@
 import applyDelta from './applyDelta';
 import { equalPositions } from './Position';
 import Delta from './Delta';
-import EventEmitterClass from './lib/EventEmitterClass';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { EventEmitterClass } from './lib/EventEmitterClass';
+// import { Observable } from 'rxjs/Observable';
+// import { Observer } from 'rxjs/Observer';
 import Position from './Position';
 import Range from './Range';
 import RangeBasic from './RangeBasic';
@@ -13,7 +13,7 @@ import Shareable from './base/Shareable';
 /**
  * Copies a Position.
  */
-function clonePos(pos: Position): Position {
+function clonePos(pos: Readonly<Position>): Position {
     return { row: pos.row, column: pos.column };
 }
 
@@ -88,7 +88,9 @@ export class Document implements Shareable {
     /**
      * A source of 'change' events that is observable.
      */
+    /*
     public readonly changeEvents: Observable<Delta>;
+    */
 
     /**
      *
@@ -110,7 +112,7 @@ export class Document implements Shareable {
         this._lines = [""];
 
         this._eventBus = new EventEmitterClass<DocumentEventName, any, Document>(this);
-
+        /*
         this.changeEvents = new Observable<Delta>((observer: Observer<Delta>) => {
             function changeListener(value: Delta, source: Document) {
                 observer.next(value);
@@ -120,6 +122,7 @@ export class Document implements Shareable {
                 this.removeChangeListener(changeListener);
             };
         });
+        */
 
         // There has to be one line at least in the document. If you pass an empty
         // string to the insert function, nothing will happen. Workaround.
@@ -279,14 +282,14 @@ export class Document implements Shareable {
     /**
      * Returns all the text corresponding to the range with line terminators.
      */
-    getTextRange(range: RangeBasic): string {
+    getTextRange(range: Readonly<RangeBasic>): string {
         return this.getLinesForRange(range).join(this.getNewLineCharacter());
     }
 
     /**
      * Returns all the text within `range` as an array of lines.
      */
-    getLinesForRange(range: RangeBasic): string[] {
+    getLinesForRange(range: Readonly<RangeBasic>): string[] {
         let lines: string[];
         if (range.start.row === range.end.row) {
             // Handle a single-line range.

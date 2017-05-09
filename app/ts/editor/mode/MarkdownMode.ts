@@ -13,13 +13,13 @@ export default class MarkdownMode extends TextMode {
 
     protected type = "text";
     protected blockComment = { start: "<!--", end: "-->" };
-    public $id = "ace/mode/markdown";
 
     /**
      *
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "Markdown";
         this.HighlightRules = MarkdownHighlightRules;
 
         this.createModeDelegates({

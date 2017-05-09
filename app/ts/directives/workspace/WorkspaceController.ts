@@ -3,7 +3,6 @@ import { IStateParamsService, IStateService } from 'angular-ui-router';
 import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationServiceJS';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import Delta from '../../editor/Delta';
-import DocumentChangeHandler from './DocumentChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
 import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
@@ -66,10 +65,9 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 //
 // Editor Abstraction Layer
 //
-import { Document } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
 import { EditSessionChangeHandler } from '../../virtual/editor';
+import { LanguageModeId } from '../../virtual/editor';
 
 //
 // RxJS
@@ -153,7 +151,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
-    private readonly markdownChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
+    private readonly markdownChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     private resizeListener: ((unused: UIEvent) => any) | undefined;
 
@@ -273,7 +271,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
         $scope.files = function () {
             const fs: { [path: string]: WsFile } = {};
             if (!wsModel.isZombie()) {
-                const paths = wsModel.getFileDocumentPaths();
+                const paths = wsModel.getFileSessionPaths();
                 for (const path of paths) {
                     const file = wsModel.getFileWeakRef(path);
                     if (file) {
@@ -286,7 +284,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         $scope.htmlFileCount = function () {
             if (wsModel && !wsModel.isZombie()) {
-                const paths = wsModel.getFileDocumentPaths();
+                const paths = wsModel.getFileSessionPaths();
                 return paths.filter(function (path) { return isHtmlFilePath(path); }).length;
             }
             else {
@@ -296,7 +294,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         $scope.markdownFileCount = function () {
             if (wsModel && !wsModel.isZombie()) {
-                const paths = wsModel.getFileDocumentPaths();
+                const paths = wsModel.getFileSessionPaths();
                 return paths.filter(function (path) { return isMarkdownFilePath(path); }).length;
             }
             else {
@@ -804,7 +802,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * Attaches the Editor to the workspace model, enabling the IDE features.
      * Connects a Preview change handler to all appropriate editors so for Live Coding.
      */
-    attachEditor(path: string, mode: string, editor: Editor): () => void {
+    attachEditor(path: string, mode: LanguageModeId, editor: Editor): () => void {
         // const startTime = performance.now();
         if (this.wsModel.isZombie()) {
             return () => {
@@ -942,7 +940,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * Creates a handler for prevew changes and caches it for later removal.
      */
     private createLiveCodeChangeHandler(path: string): EditSessionChangeHandler {
-        const liveCodeChangeHandler = (delta: Delta, session: EditSession) => {
+        const liveCodeChangeHandler = (delta: Delta) => {
             this.updatePreview();
         };
         // Cache it for later removal.
@@ -956,8 +954,8 @@ export class WorkspaceController implements WorkspaceEditorHost {
         }
     }
 
-    private createMarkdownChangeHandler(path: string): DocumentChangeHandler {
-        const handler = (delta: Delta, source: Document) => {
+    private createMarkdownChangeHandler(path: string): EditSessionChangeHandler {
+        const handler = (delta: Delta) => {
             if (this.wsModel && !this.wsModel.isZombie()) {
                 this.updateMarkdownView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
@@ -988,20 +986,21 @@ export class WorkspaceController implements WorkspaceEditorHost {
             const file = this.wsModel.findFileByPath(filePath);
             if (file) {
                 try {
-                    const doc = file.getDocument();
-                    if (doc) {
+                    const session = file.getSession();
+                    if (session) {
                         try {
                             if (this.markdownChangeHandlers[filePath]) {
                                 console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
                                 return;
                             }
                             const handler = this.createMarkdownChangeHandler(filePath);
-                            doc.addChangeListener(handler);
+                            // TODO: 
+                            session.addChangeListener(handler);
                             this.markdownChangeHandlers[filePath] = handler;
                             this.updateMarkdownView(WAIT_NO_MORE);
                         }
                         finally {
-                            doc.release();
+                            session.release();
                         }
                     }
                 }
@@ -1024,12 +1023,12 @@ export class WorkspaceController implements WorkspaceEditorHost {
             const file = this.wsModel.findFileByPath(filePath);
             if (file) {
                 try {
-                    const doc = file.getDocument();
-                    if (doc) {
+                    const session = file.getSession();
+                    if (session) {
                         try {
                             const handler = this.markdownChangeHandlers[filePath];
                             if (handler) {
-                                doc.removeChangeListener(handler);
+                                session.removeChangeListener(handler);
                                 delete this.markdownChangeHandlers[filePath];
                             }
                             else {
@@ -1037,7 +1036,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                             }
                         }
                         finally {
-                            doc.release();
+                            session.release();
                         }
                     }
                 }

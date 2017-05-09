@@ -2,6 +2,7 @@ import Range from "../../Range";
 import FoldMode from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
+import { isMultiLine } from "../../RangeHelpers";
 
 /**
  *
@@ -45,7 +46,7 @@ export default class CstyleFoldMode extends FoldMode {
 
             let range: Range | null | undefined = session.getCommentFoldRange(row, <number>match.index + match[0].length, 1);
 
-            if (range && !range.isMultiLine()) {
+            if (range && !isMultiLine(range)) {
                 if (forceMultiline) {
                     range = this.getSectionRange(session, row);
                 }
@@ -95,7 +96,7 @@ export default class CstyleFoldMode extends FoldMode {
                 if (subRange.start.row <= startRow) {
                     break;
                 }
-                else if (subRange.isMultiLine()) {
+                else if (isMultiLine(subRange)) {
                     row = subRange.end.row;
                 }
                 else if (startIndent === indent) {

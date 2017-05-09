@@ -1,4 +1,4 @@
-import EventEmitterClass from "./lib/EventEmitterClass";
+import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { escapeRegExp } from "./lib/lang";
 import Tokenizer from "./Tokenizer";
 import EventBus from './EventBus';
@@ -11,17 +11,11 @@ import { LOWERCASE_NEXT_LETTER } from "./Tabstop";
 import { UPPERCASE_UNTIL_CHANGE } from "./Tabstop";
 import { LOWERCASE_UNTIL_CHANGE } from "./Tabstop";
 import { END_CHANGE_CASE } from "./Tabstop";
-// import TabstopManager from "./TabstopManager";
-import { SnippetCompleterEditor } from './SnippetCompleter';
 //
 // Editor Abstraction Layer
 //
-import { Editor } from '../virtual/editor';
-import { EditorAction } from '../virtual/editor';
-import { EditSession } from '../virtual/editor';
 import { Position } from '../virtual/editor';
-import { Range } from '../virtual/editor';
-import { TabstopManager } from '../virtual/editor';
+import { EditorCommandable as Editor } from '../virtual/EditorCommandable';
 
 /**
  * This hack is used by the velocity language only.
@@ -70,7 +64,7 @@ function tabstopTokenArray(value: string, state: string, stack: TabstopStack): (
 }
 
 interface Variable {
-    (editor: SnippetManagerEditor | null | undefined, varName: string): string;
+    (editor: Editor | null | undefined, varName: string): string;
 }
 
 const startRuleColon: TabstopRule = {
@@ -224,16 +218,18 @@ const formatStringRules: TabstopRule[] = [
 
 export type SnippetManagerEventName = 'registerSnippets';
 
+/*
 export interface SnippetManagerEditor {
     enableTabStops(): TabstopManager;
     isSnippetSelectionMode(): boolean;
-    forEachSelection(action: EditorAction, args: any, options?: { keepOrder?: boolean; $byLines?: boolean }): any;
+    forEachSelection(action: Action<SnippetManagerEditor>, args: any, options?: { keepOrder?: boolean; $byLines?: boolean }): any;
     getCursorPosition(): Position;
     getSelectionIndex(): number;
     getSelectionRange(): Range;
     sessionOrThrow(): EditSession;
     tabNext(): void;
 }
+*/
 
 /**
  *
@@ -295,7 +291,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      * Returns undefined if the editor is not defined.
      */
-    private $getDefaultValue(editor: SnippetManagerEditor | null | undefined, name: string): number | string | undefined {
+    private $getDefaultValue(editor: Editor | null | undefined, name: string): number | string | undefined {
 
         if (/^[A-Z]\d+$/.test(name)) {
             const i = name.substr(1);
@@ -312,26 +308,26 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
         if (!editor) {
             return void 0;
         }
-        const session = editor.sessionOrThrow();
+        // const session = editor.sessionOrThrow();
         switch (name) {
             case "CURRENT_WORD":
-                const r = session.getWordRange(editor.getCursorPosition().row, editor.getCursorPosition().column);
-                return session.getTextRange(r);
+                const r = editor.getWordRange(editor.getCursorPosition().row, editor.getCursorPosition().column);
+                return editor.getTextRange(r);
             case "SELECTION":
             case "SELECTED_TEXT":
-                return session.getTextRange();
+                return editor.getTextRange();
             case "CURRENT_LINE":
-                return session.getLine(editor.getCursorPosition().row);
+                return editor.getLine(editor.getCursorPosition().row);
             case "PREV_LINE": // not possible in textmate
-                return session.getLine(editor.getCursorPosition().row - 1);
+                return editor.getLine(editor.getCursorPosition().row - 1);
             case "LINE_INDEX":
                 return editor.getCursorPosition().column;
             case "LINE_NUMBER":
                 return editor.getCursorPosition().row + 1;
             case "SOFT_TABS":
-                return session.getUseSoftTabs() ? "YES" : "NO";
+                return editor.getUseSoftTabs() ? "YES" : "NO";
             case "TAB_SIZE":
-                return session.getTabSize();
+                return editor.getTabSize();
             // default but can't fill :(
             case "FILENAME":
             case "FILEPATH":
@@ -345,7 +341,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    private getVariableValue(editor: SnippetManagerEditor | null | undefined, varName: string): number | string | undefined {
+    private getVariableValue(editor: Editor | null | undefined, varName: string): number | string | undefined {
         if (this.variables.hasOwnProperty(varName)) {
             return (<Variable>this.variables[varName])(editor, varName) || "";
         }
@@ -433,7 +429,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    private resolveVariables(fmtTokens: (string | TmFormatToken)[], editor?: SnippetManagerEditor): (string | TmFormatPart)[] {
+    private resolveVariables(fmtTokens: (string | TmFormatToken)[], editor?: Editor): (string | TmFormatPart)[] {
         const result: (string | TmFormatPart)[] = [];
         for (let i = 0; i < fmtTokens.length; i++) {
             const ch = fmtTokens[i];
@@ -497,11 +493,11 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    private insertSnippetForSelection(editor: SnippetManagerEditor, snippetText: string): void {
+    private insertSnippetForSelection(editor: Editor, snippetText: string): void {
         const cursor = editor.getCursorPosition();
-        const session = editor.sessionOrThrow();
-        const line = session.getLine(cursor.row);
-        const tabString = session.getTabString();
+        // const session = editor.sessionOrThrow();
+        const line = editor.getLine(cursor.row);
+        const tabString = editor.getTabString();
         let indentString = (<RegExpMatchArray>line.match(/^\s*/))[0];
 
         if (cursor.column < indentString.length)
@@ -620,7 +616,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
         });
 
         const range = editor.getSelectionRange();
-        const end = editor.sessionOrThrow().replace(range, text);
+        const end = editor.replaceRange(range, text);
 
         const tsManager = editor.enableTabStops();
         const selectionIndex = editor.isSnippetSelectionMode() && editor.getSelectionIndex();
@@ -632,7 +628,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
      * The snippet text is inserted for each selection.
      * The editor tabs to the first insertion point.
      */
-    public insertSnippet(editor: SnippetManagerEditor, snippetText: string, options?: SnippetOptions): void {
+    public insertSnippet(editor: Editor, snippetText: string, options?: SnippetOptions): void {
 
         if (editor.isSnippetSelectionMode()) {
             this.insertSnippetForSelection(editor, snippetText);
@@ -649,7 +645,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
      * There is some additional logic for HTML and PHP that should be generalized
      * through the LanguageMode for languages with embedded languages.
      */
-    private $getScope(editor: SnippetManagerEditor): string | undefined {
+    private $getScope(editor: Editor): string | undefined {
         const session = editor.sessionOrThrow();
         const mode = session.modeOrThrow();
         let scope: string | undefined = mode.$id || "";
@@ -684,7 +680,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
      * 2) an underscore '_' (don't know why)
      * 3) other language modes in the special case of embedded languages.
      */
-    public getActiveScopes(editor: SnippetManagerEditor): string[] {
+    public getActiveScopes(editor: Editor): string[] {
         const scope = this.$getScope(editor);
         if (typeof scope === 'string') {
             const scopes = [scope];
@@ -703,7 +699,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    public expandWithTab(editor: SnippetManagerEditor, options?: SnippetOptions): any {
+    public expandWithTab(editor: Editor, options?: SnippetOptions): any {
         const result = editor.forEachSelection(() => { return this.expandSnippetForSelection(editor, options); }, null, { keepOrder: true });
         if (result) {
             editor.tabNext();
@@ -714,11 +710,11 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    private expandSnippetForSelection(editor: SnippetManagerEditor, options?: SnippetOptions): boolean {
+    private expandSnippetForSelection(editor: Editor, options?: SnippetOptions): boolean {
 
         const cursor: Position = editor.getCursorPosition();
-        const session: EditSession = editor.sessionOrThrow();
-        const line: string = session.getLine(cursor.row);
+        // const session: EditSession = editor.sessionOrThrow();
+        const line: string = editor.getLine(cursor.row);
         const before: string = line.substring(0, cursor.column);
         const after: string = line.substr(cursor.column);
 
@@ -739,7 +735,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
         if (options && options.dryRun) {
             return true;
         }
-        session.docOrThrow().removeInLine(cursor.row,
+        editor.removeInLine(cursor.row,
             cursor.column - (<string>(<Snippet>snippet).replaceBefore).length,
             cursor.column + (<string>(<Snippet>snippet).replaceAfter).length
         );
@@ -876,7 +872,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      *
      */
-    public getSnippetByName(name: string, editor: SnippetCompleterEditor): Snippet | undefined {
+    public getSnippetByName(name: string, editor: Editor): Snippet | undefined {
         let snippet: Snippet | undefined;
         this.getActiveScopes(editor).some((scope: string) => {
             const snippets: { [sname: string]: Snippet } = this.snippetNameMap[scope];

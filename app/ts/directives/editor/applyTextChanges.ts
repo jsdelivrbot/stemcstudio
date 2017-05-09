@@ -6,6 +6,9 @@ function removeWhitespace(text: string): string {
     return text.replace(/\s/g, "");
 }
 
+/**
+ * TODO: applyPatchToDocument should be similar.
+ */
 export default function applyTextChanges(edits: TextChange[], session: EditSession): void {
 
     // The text changes are relative to the initial document.
@@ -18,14 +21,13 @@ export default function applyTextChanges(edits: TextChange[], session: EditSessi
      */
     let runningOffset = 0;
 
-    const document = session.getDocument();
-    if (document) {
+    if (session) {
         for (const edit of edits) {
             const oldTextLength = edit.span.length;
             const editStartIndex = edit.span.start + runningOffset;
             const editEndIndex = editStartIndex + oldTextLength;
-            const start: Position = document.indexToPosition(editStartIndex);
-            const end: Position = document.indexToPosition(editEndIndex);
+            const start: Position = session.indexToPosition(editStartIndex);
+            const end: Position = session.indexToPosition(editEndIndex);
             const range = { start, end };
 
             // If these are formatting edits then we ensure that the text being replaced is whitespace only.
@@ -45,5 +47,9 @@ export default function applyTextChanges(edits: TextChange[], session: EditSessi
             const offset = newText.length - oldTextLength;
             runningOffset += offset;
         }
+    }
+    else {
+        // TODO: Determine if there is a better strategy based upon usage.
+        console.warn(`Unable to apply text changes because session is '${typeof session}'`);
     }
 }

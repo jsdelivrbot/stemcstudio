@@ -1,57 +1,25 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import { FUNCTION_KEYS, KEY_MODS } from "../lib/keys";
 import keyCodes from "../lib/keys";
 import { isMac } from "../lib/useragent";
-import { Editor } from '../Editor';
-import EditorAction from "./EditorAction";
-import KeyHash from './KeyHash';
-import Command from '../commands/Command';
-import KeyboardResponse from './KeyboardResponse';
+import { Action } from "./Action";
+import { KeyHash } from './KeyHash';
+import { Command } from '../commands/Command';
+import { KeyboardResponse } from './KeyboardResponse';
 
 /**
  *
  */
-export default class KeyboardHandler {
+export class KeyboardHandler<TARGET> {
 
     /**
      *
      */
-    public commandKeyBinding: { [hashId: number]: { [name: string]: Command } };
+    public commandKeyBinding: { [hashId: number]: { [name: string]: Command<TARGET> } };
 
     /**
      *
      */
-    public commands: { [name: string]: Command };
+    public commands: { [name: string]: Command<TARGET> };
 
     /**
      *
@@ -61,7 +29,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    constructor(commands?: Command[], platform?: string) {
+    constructor(commands?: Command<TARGET>[], platform?: string) {
 
         this.platform = platform || (isMac ? "mac" : "win");
         this.commands = {};
@@ -75,7 +43,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    addCommand(command: Command): void {
+    addCommand(command: Command<TARGET>): void {
         if (this.commands[command.name as string]) {
             this.removeCommand(command);
         }
@@ -90,7 +58,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    removeCommand(command: string | Command /* | { [name: string]: Command }*/, keepCommand = false): void {
+    removeCommand(command: string | Command<TARGET> /* | { [name: string]: Command }*/, keepCommand = false): void {
         const name = (typeof command === 'string' ? command : command.name) as string;
         command = this.commands[name];
         if (!keepCommand) {
@@ -125,7 +93,7 @@ export default class KeyboardHandler {
      * exec is the action, bindKey and name are the key.
      * The name of the command is derived from the key alternatives string.
      */
-    bindKey(key: string, action: EditorAction/*, position*/): void {
+    bindKey(key: string, action: Action<TARGET>/*, position*/): void {
         if (!key) {
             throw new TypeError("key must be a string.");
         }
@@ -135,7 +103,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    bindCommand(key: string, command: Command/*, position*/): void {
+    bindCommand(key: string, command: Command<TARGET>/*, position*/): void {
         // TODO: Do we need to generalize key?
         /*
         if (typeof key === "object" && key) {
@@ -162,7 +130,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    addCommands(commands: Command[]): void {
+    addCommands(commands: Command<TARGET>[]): void {
         for (const command of commands) {
             this.addCommand(command);
         }
@@ -185,7 +153,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    removeCommands(commands: { [name: string]: string | Command }): void {
+    removeCommands(commands: { [name: string]: string | Command<TARGET> }): void {
         Object.keys(commands).forEach((name) => {
             this.removeCommand(commands[name]);
         });
@@ -194,7 +162,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    bindKeys(keyList: { [name: string]: EditorAction }): void {
+    bindKeys(keyList: { [name: string]: Action<TARGET> }): void {
         Object.keys(keyList).forEach((key) => {
             this.bindKey(key, keyList[key]);
         });
@@ -203,7 +171,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    public _buildKeyHash(command: Command): void {
+    public _buildKeyHash(command: Command<TARGET>): void {
         const binding = command.bindKey;
         if (!binding) {
             return;
@@ -251,7 +219,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    findKeyCommand(hashId: number, keyString: string): Command {
+    findKeyCommand(hashId: number, keyString: string): Command<TARGET> {
         const ckbr = this.commandKeyBinding;
         return ckbr[hashId] && ckbr[hashId][keyString];
     }
@@ -259,7 +227,7 @@ export default class KeyboardHandler {
     /**
      *
      */
-    handleKeyboard(data: any, hashId: number, keyString: string, keyCode?: number, e?: KeyboardEvent): KeyboardResponse {
+    handleKeyboard(data: any, hashId: number, keyString: string, keyCode?: number, e?: KeyboardEvent): KeyboardResponse<TARGET> {
         const response = {
             command: this.findKeyCommand(hashId, keyString)
         };
@@ -269,14 +237,14 @@ export default class KeyboardHandler {
     /**
      *
      */
-    public attach(editor: Editor): void {
+    public attach(target: TARGET): void {
         // This implementation does nothing.
     }
 
     /**
      *
      */
-    public detach(editor: Editor): void {
+    public detach(target: TARGET): void {
         // This implementation does nothing.
     }
 }

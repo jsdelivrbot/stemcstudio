@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { equalPositions } from './Position';
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
@@ -6,9 +7,10 @@ import { stringRepeat } from "./lib/lang";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
+import Disposable from '../base/Disposable';
 import EditorMouseEvent from './EditorMouseEvent';
 import EventBus from "./EventBus";
-import EventEmitterClass from "./lib/EventEmitterClass";
+import { EventEmitterClass } from "./lib/EventEmitterClass";
 import FirstAndLast from "./FirstAndLast";
 import FoldLine from "./FoldLine";
 import Fold from "./Fold";
@@ -17,13 +19,14 @@ import FoldWidget from "./FoldWidget";
 import FoldStyle from "./FoldStyle";
 import GutterRenderer from './layer/GutterRenderer';
 import Selection from "./Selection";
-import LanguageMode from "./LanguageMode";
+// import LanguageMode from "./LanguageMode";
 import { Marker, MarkerType } from "./Marker";
 import MarkerRenderer from "./layer/MarkerRenderer";
 import Range from "./Range";
 import RangeBasic from "./RangeBasic";
+import { collapseRows, compareEnd, comparePoint, compareRange, contains, isEmpty, isEnd, isEqual, isPosition, isRange, isMultiLine, isStart, setEnd } from "./RangeHelpers";
 import Shareable from './base/Shareable';
-import { mutateExtendToken, TokenWithIndex } from "./Token";
+import { mutateExtendToken } from "./Token";
 import Token from "./Token";
 import { Document, NewLineMode } from "./Document";
 import BackgroundTokenizer from "./BackgroundTokenizer";
@@ -31,13 +34,60 @@ import SearchHighlight from "./SearchHighlight";
 import BracketMatch from "./BracketMatch";
 import UndoManager from './UndoManager';
 import TokenIterator from './TokenIterator';
-import WorkerClient from "./worker/WorkerClient";
+// import WorkerClient from "./worker/WorkerClient";
 import LineWidget from './LineWidget';
 import LineWidgetManager from './LineWidgetManager';
 import Position from './Position';
-import FoldMode from "./mode/folding/FoldMode";
-import TextMode from "./mode/TextMode";
 import { HighlighterToken } from './mode/Highlighter';
+
+// Built-In Languages.
+import { ACE_WORKER_PATH } from '../constants';
+import { TYPESCRIPT_SERVICES_PATH } from '../constants';
+import ClojureMode from './mode/ClojureMode';
+import CssMode from './mode/CssMode';
+import GlslMode from './mode/GlslMode';
+import HaskellMode from './mode/HaskellMode';
+import HtmlMode from './mode/HtmlMode';
+import JavaScriptMode from './mode/JavaScriptMode';
+import JsxMode from './mode/JsxMode';
+import JsonMode from './mode/JsonMode';
+import MarkdownMode from './mode/MarkdownMode';
+import PythonMode from './mode/PythonMode';
+import TextMode from './mode/TextMode';
+import TypeScriptMode from './mode/TypeScriptMode';
+import TsxMode from './mode/TsxMode';
+import XmlMode from './mode/XmlMode';
+import YamlMode from './mode/YamlMode';
+import { LANGUAGE_CSS } from '../languages/modes';
+import { LANGUAGE_CSV } from '../languages/modes';
+import { LANGUAGE_GLSL } from '../languages/modes';
+import { LANGUAGE_HASKELL } from '../languages/modes';
+import { LANGUAGE_HTML } from '../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
+import { LANGUAGE_JSX } from '../languages/modes';
+import { LANGUAGE_JSON } from '../languages/modes';
+import { LANGUAGE_LESS } from '../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../languages/modes';
+import { LANGUAGE_PYTHON } from '../languages/modes';
+import { LANGUAGE_SCHEME } from '../languages/modes';
+import { LANGUAGE_TEXT } from '../languages/modes';
+import { LANGUAGE_TSX } from '../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
+import { LANGUAGE_XML } from '../languages/modes';
+import { LANGUAGE_YAML } from '../languages/modes';
+//
+// Editor Abstraction Layer
+//
+import { EditSession as AbstractEditSession } from '../virtual/editor';
+import { EditorControllerEditSession } from '../virtual/editor';
+import { FoldMode } from '../virtual/editor';
+import { LanguageModeId } from '../virtual/editor';
+import { LanguageMode } from '../virtual/editor';
+import { RangeWithCollapseChildren } from '../virtual/editor';
+import { OrientedRange } from '../virtual/editor';
+import { RangeSelectionMarker } from '../virtual/editor';
+import { TokenWithIndex } from '../virtual/editor';
+
 
 // "Tokens"
 const CHAR = 1;
@@ -126,12 +176,11 @@ export type EditSessionEventName =
     | 'session' // When the EditSession constructor completes. Who cares?
     | 'tokenizerUpdate';
 
-
 /**
  *
  */
-export class EditSession implements EventBus<EditSessionEventName, any, EditSession>, Shareable {
-    public $firstLineNumber = 1;
+export class EditSession implements EditorControllerEditSession, AbstractEditSession, EventBus<EditSessionEventName, any, EditSession>, Shareable {
+    private firstLineNumber_ = 1;
     public gutterRenderer: GutterRenderer;
     public $breakpoints: string[] = [];
     public $decorations: string[] = [];
@@ -163,7 +212,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      * May return "start" or "end".
      */
     public getFoldWidget: (row: number) => FoldWidget;
-    public getFoldWidgetRange: (row: number, forceMultiline?: boolean) => Range;
+    public getFoldWidgetRange: (row: number, forceMultiline?: boolean) => RangeWithCollapseChildren;
     public _changedWidgets: LineWidget[];
 
     // Emacs
@@ -209,7 +258,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      *
      */
-    public $selectionMarkers: Range[];
+    public $selectionMarkers: RangeSelectionMarker[];
 
     /**
      *
@@ -230,6 +279,14 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      */
     private eventBus: EventEmitterClass<EditSessionEventName, any, EditSession>;
 
+    // private readonly changeModeBus = new EventEmitterClass<'changeMode', {}, EditSession>(this);
+    // public readonly changeModeEvents = this.changeModeBus.events('changeMode');
+
+    /**
+     * A source of 'change' events that is observable.
+     */
+    public readonly changeEvents: Observable<Delta>;
+
     /**
      * Determines whether the worker will be started.
      */
@@ -248,7 +305,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      * The worker corresponding to the mode (i.e. Language).
      */
-    private $worker: WorkerClient | null;
+    private $worker: Disposable | null;
 
     /**
      * 
@@ -291,7 +348,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      * This is really a Range with an added marker id.
      */
-    public $highlightLineMarker: Range | null;
+    public $highlightLineMarker: RangeSelectionMarker | null;
     /**
      * A number is a marker identifier, null indicates that no such marker exists. 
      */
@@ -306,8 +363,15 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         this.$breakpoints = [];
         this.eventBus = new EventEmitterClass<EditSessionEventName, any, EditSession>(this);
 
-        // FIXME: What is this used for?
-        // this.id = "session" + (++EditSession.$uid);
+        // TODO: This is getting better. Can we turn it into a 1-liner on the eventBus?
+        this.changeEvents = this.eventBus.events('change');
+        this.changeEvents = new Observable<Delta>((observer: Observer<Delta>) => {
+            function changeListener(value: Delta, source: EditSession) {
+                observer.next(value);
+            }
+            return this.eventBus.on('change', changeListener, false);
+        });
+
         this.foldLines_.toString = function (this: FoldLine[]) {
             return this.join("\n");
         };
@@ -331,6 +395,20 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     protected destructor(): void {
         this.$stopWorker();
         this.setDocument(void 0);
+    }
+
+    /**
+     * DEPRECATED Use changeEvents instead.
+     */
+    addChangeListener(callback: (event: Delta, source: EditSession) => void): () => void {
+        return this.on('change', callback);
+    }
+
+    /**
+     * DEPRECATED Use changeEvents instead.
+     */
+    removeChangeListener(callback: (event: Delta, source: EditSession) => void): void {
+        this.off('change', callback);
     }
 
     addRef(): number {
@@ -528,6 +606,19 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      */
     public toString(): string {
         return this.getValue();
+    }
+
+    /**
+     * Returns a copy of all lines in the document.
+     * These lines do not include the line terminator.
+     */
+    public getAllLines(): string[] {
+        if (this.doc) {
+            return this.doc.getAllLines();
+        }
+        else {
+            throw new Error("document must be defined");
+        }
     }
 
     /**
@@ -892,7 +983,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      * Adds a new marker to the given `Range`, returning the new marker id.
      * If `inFront` is `true`, a front marker is defined, and the `'changeFrontMarker'` event fires; otherwise, the `'changeBackMarker'` event fires.
      */
-    public addMarker(range: Range, clazz: string, type: MarkerType = 'line', renderer?: MarkerRenderer | null, inFront?: boolean): number {
+    public addMarker(range: OrientedRange, clazz: string, type: MarkerType = 'line', renderer?: MarkerRenderer | null, inFront?: boolean): number {
         const id = this.$markerId++;
 
         if (range) {
@@ -1014,6 +1105,10 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         this.eventBus._signal("changeAnnotation", {});
     }
 
+    public onWorkerCompleted(annotations: Annotation[]): void {
+        this.eventBus._emit(workerCompleted, { data: annotations });
+    }
+
     /**
      * Returns the annotations for the `EditSession`.
      */
@@ -1048,7 +1143,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      * Given a starting row and column, this method returns the `Range` of the first word boundary it finds.
      */
-    public getWordRange(row: number, column: number): Range {
+    public getWordRange(row: number, column: number): OrientedRange {
         const line: string = this.getLine(row);
 
         let inToken = false;
@@ -1090,7 +1185,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      * @param row The row number to start from.
      * @param column The column number to start from.
      */
-    public getAWordRange(row: number, column: number): Range {
+    public getAWordRange(row: number, column: number): RangeBasic {
         const wordRange = this.getWordRange(row, column);
         const line = this.getLine(wordRange.end.row);
 
@@ -1101,6 +1196,12 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         return wordRange;
     }
 
+    /**
+     * Returns the underlying Document, if it is defined.
+     * Throws an exception if it is not defined.
+     * The returned Document is a weak reference.
+     * TODO: This should not be a public method; Document should be an implementation detail.
+     */
     public docOrThrow(): Document {
         if (this.doc) {
             return this.doc;
@@ -1154,14 +1255,111 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     }
 
     /**
+     * 
+     */
+    public setLanguage(mode: LanguageModeId): Promise<void> {
+        const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
+        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
+
+        return new Promise<void>((resolve, reject) => {
+            function onSetLanguageMode(err: any) {
+                if (!err) {
+                    resolve();
+                }
+                else {
+                    reject(err);
+                }
+            }
+            switch (mode) {
+                case LANGUAGE_HASKELL: {
+                    this.setUseWorker(false);
+                    this.setLanguageMode(new HaskellMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_PYTHON: {
+                    this.setUseWorker(false);
+                    this.setLanguageMode(new PythonMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_SCHEME: {
+                    // If we don't use the worker then we don't get a confirmation.
+                    // this.setUseWorker(false);
+                    this.setLanguageMode(new ClojureMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_JAVA_SCRIPT: {
+                    this.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_JSX: {
+                    this.setLanguageMode(new JsxMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_TYPE_SCRIPT: {
+                    this.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_TSX: {
+                    this.setLanguageMode(new TsxMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_HTML: {
+                    this.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_JSON: {
+                    this.setLanguageMode(new JsonMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_GLSL: {
+                    // If we don't use the worker then we don't get a confirmation.
+                    this.setLanguageMode(new GlslMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_CSS:
+                case LANGUAGE_LESS: {
+                    // If we don't use the worker then we don't get a confirmation.
+                    this.setUseWorker(false);
+                    this.setLanguageMode(new CssMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_MARKDOWN: {
+                    this.setUseWrapMode(true);
+                    // editor.setWrapBehavioursEnabled(true);
+                    this.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_CSV:
+                case LANGUAGE_TEXT: {
+                    this.setLanguageMode(new TextMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_XML: {
+                    this.setLanguageMode(new XmlMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_YAML: {
+                    this.setLanguageMode(new YamlMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                default: {
+                    reject(new Error(`Unrecognized mode '${mode}'.`));
+                }
+            }
+        });
+    }
+
+    /**
      * Sets a new langauge mode for the `EditSession`.
      * This method also emits the `'changeMode'` event.
      * If a background tokenizer is set, the `'tokenizerUpdate'` event is also emitted.
      *
      * @param mode Set a new language mode instance or module name.
      * @param callback
+     * 
+     * TODO: This should become a private helper.
      */
-    public setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
+    private setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
 
         if (this.$mode === mode) {
             setTimeout(callback, 0);
@@ -1219,6 +1417,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         else {
             setTimeout(callback, 0);
         }
+        // this.changeModeBus._emit('changeMode', {});
         /**
          * @event changeMode
          */
@@ -1249,16 +1448,21 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      */
     private $startWorker(callback: (err: any) => any): void {
         try {
-            this.modeOrThrow().createWorker(this, (err: any, worker: WorkerClient) => {
-                if (!err) {
-                    // This amounts to an asynchronous ACK that the worker started.
-                    this.$worker = worker;
-                    callback(void 0);
-                }
-                else {
-                    callback(err);
-                }
-            });
+            if (this.$mode) {
+                this.$mode.createWorker(this, (err: any, worker: Disposable) => {
+                    if (!err) {
+                        // This amounts to an asynchronous ACK that the worker started.
+                        this.$worker = worker;
+                        callback(void 0);
+                    }
+                    else {
+                        callback(err);
+                    }
+                });
+            }
+            else {
+                callback(new Error("language mode is not available"));
+            }
         }
         catch (e) {
             this.$worker = null;
@@ -1402,7 +1606,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
 
     /**
      * Returns a COPY of the lines between and including `firstRow` and `lastRow`.
-     * These lines fo not include the line terminator.
+     * These lines do not include the line terminator.
      */
     public getLines(firstRow: number, lastRow: number): string[] {
         return this.docOrThrow().getLines(firstRow, lastRow);
@@ -1433,6 +1637,14 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         }
     }
 
+    public indexToPosition(index: number, startRow?: number): Position {
+        return this.docOrThrow().indexToPosition(index, startRow);
+    }
+
+    public positionToIndex(position: Position, startRow?: number): number {
+        return this.docOrThrow().positionToIndex(position, startRow);
+    }
+
     /**
      * Inserts a block of `text` at the indicated `position`.
      * Returns the end position of the inserted text.
@@ -1443,12 +1655,20 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         return this.docOrThrow().insert(position, text);
     }
 
+    public insertInLine(position: Readonly<Position>, text: string): Position {
+        return this.docOrThrow().insertInLine(position, text);
+    }
+
+    public removeInLine(row: number, startColumn: number, endColumn: number): Position {
+        return this.docOrThrow().removeInLine(row, startColumn, endColumn);
+    }
+
     /**
      * Removes the `range` from the document.
      * Triggers a 'change' event in the document.
      * Throws if the document is not defined.
      */
-    public remove(range: Range): Position {
+    public remove(range: Readonly<RangeBasic>): Position {
         return this.docOrThrow().remove(range);
     }
 
@@ -1565,7 +1785,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
                 }
                 point = delta.end;
                 if (range.compare(point.row, point.column) === 1) {
-                    range.setEnd(point.row, point.column);
+                    setEnd(range, point.row, point.column);
                 }
                 lastDeltaIsInsert = true;
             }
@@ -1586,12 +1806,12 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
                 lastUndoRange.end.column += range.end.column - range.start.column;
             }
 
-            const cmp = lastUndoRange.compareRange(range);
+            const cmp = compareRange(lastUndoRange, range);
             if (cmp === 1) {
                 range.setStart(lastUndoRange.start.row, lastUndoRange.start.column);
             }
             else if (cmp === -1) {
-                range.setEnd(lastUndoRange.end.row, lastUndoRange.end.column);
+                setEnd(range, lastUndoRange.end.row, lastUndoRange.end.column);
             }
         }
 
@@ -1684,8 +1904,8 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
      *
      * @param range A range of rows.
      */
-    public outdentRows(range: Range): void {
-        const rowRange = range.collapseRows();
+    public outdentRows(range: RangeBasic): void {
+        const rowRange = collapseRows(range);
         const deleteRange = new Range(0, 0, 0, 0);
         const size = this.getTabSize();
 
@@ -1823,7 +2043,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      *
      */
-    public $clipRangeToDocument(range: Range): Range {
+    public $clipRangeToDocument(range: RangeBasic): RangeBasic {
         const doc = this.docOrThrow();
         if (range.start.row < 0) {
             range.start.row = 0;
@@ -2775,7 +2995,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      *
      */
-    getBracketRange(position: Position): Range | null {
+    getBracketRange(position: Position): OrientedRange | null {
         return this.$bracketMatcher.getBracketRange(position);
     }
 
@@ -2821,11 +3041,11 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         const folds = foldLine.folds;
         for (let i = 0; i < folds.length; i++) {
             const fold = folds[i];
-            if (fold.range.contains(row, column)) {
-                if (side === 1 && fold.range.isEnd(row, column)) {
+            if (contains(fold.range, row, column)) {
+                if (side === 1 && isEnd(fold.range, row, column)) {
                     continue;
                 }
-                else if (side === -1 && fold.range.isStart(row, column)) {
+                else if (side === -1 && isStart(fold.range, row, column)) {
                     continue;
                 }
                 return fold;
@@ -2847,7 +3067,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         end.column -= 1;
 
         for (let i = 0; i < foldLines.length; i++) {
-            let cmp = foldLines[i].range.compareRange(range);
+            let cmp = compareRange(foldLines[i].range, range);
             if (cmp === 2) {
                 // Range is before foldLine. No intersection. This means,
                 // there might be other foldLines that intersect.
@@ -2862,7 +3082,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
             const folds = foldLines[i].folds;
             for (let j = 0; j < folds.length; j++) {
                 const fold = folds[j];
-                cmp = fold.range.compareRange(range);
+                cmp = compareRange(fold.range, range);
                 if (cmp === -2) {
                     break;
                 }
@@ -2942,7 +3162,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         let fold: Fold | undefined;
         for (let i = 0; i < foldLine.folds.length; i++) {
             fold = foldLine.folds[i];
-            const cmp = fold.range.compareEnd(row, column);
+            const cmp = compareEnd(fold.range, row, column);
             if (cmp === -1) {
                 str = this.getLine(fold.start.row).substring(lastFold.end.column, fold.start.column);
                 break;
@@ -3050,7 +3270,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         return foldLine;
     }
 
-    addPlaceholderFold(placeholder: string, range: Range): Fold | undefined {
+    addPlaceholderFold(placeholder: string, range: RangeWithCollapseChildren): Fold | undefined {
         const fold = new Fold(range, placeholder);
         fold.collapseChildren = range.collapseChildren;
         return this.addFold(fold);
@@ -3084,10 +3304,10 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         if (startFold && endFold === startFold)
             return startFold.addSubFold(fold);
 
-        if (startFold && !startFold.range.isStart(startRow, startColumn))
+        if (startFold && !isStart(startFold.range, startRow, startColumn))
             this.removeFold(startFold);
 
-        if (endFold && !endFold.range.isEnd(endRow, endColumn))
+        if (endFold && !isEnd(endFold.range, endRow, endColumn))
             this.removeFold(endFold);
 
         // Check if there are folds in the range we create the new fold for.
@@ -3169,14 +3389,14 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
             }
             else
                 // If the fold is the last fold of the foldLine, just remove it.
-                if (foldLine.range.isEnd(fold.end.row, fold.end.column)) {
+                if (isEnd(foldLine.range, fold.end.row, fold.end.column)) {
                     folds.pop();
                     foldLine.end.row = folds[folds.length - 1].end.row;
                     foldLine.end.column = folds[folds.length - 1].end.column;
                 }
                 else
                     // If the fold is the first fold of the foldLine, just remove it.
-                    if (foldLine.range.isStart(fold.start.row, fold.start.column)) {
+                    if (isStart(foldLine.range, fold.start.row, fold.start.column)) {
                         folds.shift();
                         foldLine.start.row = folds[0].start.row;
                         foldLine.start.column = folds[0].start.column;
@@ -3252,19 +3472,19 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     }
 
     getFirstLineNumber(): number {
-        return this.$firstLineNumber;
+        return this.firstLineNumber_;
     }
 
     setFirstLineNumber(firstLineNumber: number) {
-        this.$firstLineNumber = firstLineNumber;
+        this.firstLineNumber_ = firstLineNumber;
         this._signal("changeBreakpoint");
     }
 
     /**
      *
      */
-    unfold(location?: number | Position | Range, expandInner?: boolean): Fold[] | undefined {
-        let range: Range;
+    unfold(location?: number | Position | RangeBasic, expandInner?: boolean): Fold[] | undefined {
+        let range: RangeBasic;
         let folds: Fold[];
         // FIXME: Not handling undefined.
         if (location == null) {
@@ -3273,9 +3493,9 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
         }
         else if (typeof location === "number")
             range = new Range(location, 0, location, this.getLine(location).length);
-        else if ("row" in location)
+        else if (isPosition(location))
             range = Range.fromPoints(<Position>location, <Position>location);
-        else if (location instanceof Range) {
+        else if (isRange(location)) {
             range = location;
         }
         else {
@@ -3356,11 +3576,11 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     toggleFold(tryToUnfold: boolean): void {
         const selection = this.selection;
         if (selection) {
-            let range: Range = selection.getRange();
+            let range = selection.getRange();
             let fold: Fold | null | undefined;
             let bracketPos: Position | null;
 
-            if (range.isEmpty()) {
+            if (isEmpty(range)) {
                 const cursor = range.start;
                 fold = this.getFoldAt(cursor.row, cursor.column);
 
@@ -3368,7 +3588,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
                     this.expandFold(fold);
                     return;
                 } else if (bracketPos = this.findMatchingBracket(cursor)) {
-                    if (range.comparePoint(bracketPos) === 1) {
+                    if (comparePoint(range, bracketPos) === 1) {
                         range.end = bracketPos;
                     } else {
                         range.start = bracketPos;
@@ -3376,7 +3596,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
                         range.end.column--;
                     }
                 } else if (bracketPos = this.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 })) {
-                    if (range.comparePoint(bracketPos) === 1)
+                    if (comparePoint(range, bracketPos) === 1)
                         range.end = bracketPos;
                     else
                         range.start = bracketPos;
@@ -3406,7 +3626,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
             }
 
             let placeholder = "...";
-            if (!range.isMultiLine()) {
+            if (!isMultiLine(range)) {
                 placeholder = this.getTextRange(range);
                 if (placeholder.length < 4) {
                     return;
@@ -3497,7 +3717,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
             const range = this.getFoldWidgetRange(row);
             // sometimes range can be incompatible with existing fold
             // TODO change addFold to return null istead of throwing
-            if (range && range.isMultiLine()
+            if (range && isMultiLine(range)
                 && range.end.row <= endRow
                 && range.start.row >= startRow
             ) {
@@ -3555,15 +3775,15 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
 
     }
 
-    getParentFoldRangeData(row: number, ignoreCurrent?: boolean): { range?: Range; firstRange?: Range } {
+    getParentFoldRangeData(row: number, ignoreCurrent?: boolean): { range?: RangeWithCollapseChildren; firstRange?: RangeWithCollapseChildren } {
         const fw = this.foldWidgets;
         if (!fw || (ignoreCurrent && fw[row])) {
             return {};
         }
 
         let i = row - 1;
-        let firstRange: Range | undefined;
-        let range: Range | undefined;
+        let firstRange: RangeWithCollapseChildren | undefined;
+        let range: RangeWithCollapseChildren | undefined;
         while (i >= 0) {
             let c = fw[i];
             if (c == null)
@@ -3611,7 +3831,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      * 
      */
-    private $toggleFoldWidget(row: number, options: { children?: boolean; all?: boolean; siblings?: boolean }): Range | undefined {
+    private $toggleFoldWidget(row: number, options: { children?: boolean; all?: boolean; siblings?: boolean }): RangeWithCollapseChildren | undefined {
         // Dead code
         if (!this.getFoldWidget) {
             return void 0;
@@ -3634,9 +3854,9 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
 
         const range = this.getFoldWidgetRange(row, true);
         // sometimes singleline folds can be missed by the code above
-        if (range && !range.isMultiLine()) {
+        if (range && !isMultiLine(range)) {
             const fold = this.getFoldAt(range.start.row, range.start.column, 1);
-            if (fold && range.isEqual(fold.range)) {
+            if (fold && isEqual(range, fold.range)) {
                 this.removeFold(fold);
                 return void 0;
             }
@@ -3718,7 +3938,7 @@ export class EditSession implements EventBus<EditSessionEventName, any, EditSess
     /**
      *
      */
-    tokenizerUpdateFoldWidgets = (event: { data: FirstAndLast }, session: EditSession) => {
+    tokenizerUpdateFoldWidgets = (event: { data: FirstAndLast }) => {
         const rows = event.data;
         if (rows.first !== rows.last) {
             if (this.foldWidgets && this.foldWidgets.length > rows.first) {

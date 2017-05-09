@@ -1,14 +1,18 @@
 import { comparePositions } from "./Position";
 import createDelayedCall from "./lib/lang/createDelayedCall";
 import Delta from "./Delta";
-
-import Command from './commands/Command';
-import KeyboardHandler from "./keyboard/KeyboardHandler";
-import { Editor } from './Editor';
+import { Editor } from "./Editor";
+import { Command } from './commands/Command';
+import { KeyboardHandler } from "./keyboard/KeyboardHandler";
 import Position from "./Position";
 import Range from "./Range";
+import { clone, contains } from "./RangeHelpers";
 import Selection from "./Selection";
 import { Tabstop, TabstopRange } from './Tabstop';
+//
+// Editor Abstraction Layer
+//
+import { OrientedRange } from '../virtual/editor';
 
 function movePoint(point: Position, diff: Position) {
     if (point.row === 0) {
@@ -45,7 +49,7 @@ export default class TabstopManager {
      * The attach and detach lifecycle means that the editor comes and goes.
      */
     private editor: Editor | null;
-    private keyboardHandler = new KeyboardHandler();
+    private keyboardHandler = new KeyboardHandler<Editor>();
     private $onChangeSelection: (timeout: number) => void;
     private $inChange: boolean;
 
@@ -59,19 +63,19 @@ export default class TabstopManager {
         this.attach(editor);
         this.keyboardHandler.bindKeys(
             {
-                "Tab": (editor: Editor) => {
+                "Tab": (editor) => {
                     if (editor.expandSnippetWithTab()) {
                         return;
                     }
                     this.tabNext(Direction.FORWARD);
                 },
-                "Shift-Tab": (editor: Editor) => {
+                "Shift-Tab": (editor) => {
                     this.tabNext(Direction.BACKWARD);
                 },
-                "Esc": (editor: Editor) => {
+                "Esc": (editor) => {
                     this.detach();
                 },
-                "Return": function (editor: Editor) {
+                "Return": function (editor) {
                     return false;
                 }
             });
@@ -197,7 +201,7 @@ export default class TabstopManager {
     }
 
     // TODO: CommandManagerAfterExecEvent.
-    private onAfterExec = (e: { command: Command }) => {
+    private onAfterExec = (e: { command: Command<Editor> }) => {
         if (e.command && !e.command.readOnly) {
             this.updateLinkedFields();
         }
@@ -219,8 +223,8 @@ export default class TabstopManager {
                     if (ranges[i].linked) {
                         continue;
                     }
-                    const containsLead = ranges[i].contains(lead.row, lead.column);
-                    const containsAnchor = isEmpty || ranges[i].contains(anchor.row, anchor.column);
+                    const containsLead = contains(ranges[i], lead.row, lead.column);
+                    const containsAnchor = isEmpty || contains(ranges[i], anchor.row, anchor.column);
                     if (containsLead && containsAnchor) {
                         return;
                     }
@@ -282,7 +286,7 @@ export default class TabstopManager {
                 }
                 // todo investigate why is this needed
                 if (sel.ranges[0]) {
-                    sel.addRange(sel.ranges[0].clone());
+                    sel.addRange(clone(sel.ranges[0]) as OrientedRange);
                 }
             }
             else {
@@ -372,15 +376,13 @@ export default class TabstopManager {
      *
      */
     private addTabstopMarkers(ts: Tabstop): void {
-        if (this.editor) {
-            const session = this.editor.getSession();
-            if (session) {
-                ts.forEach(function (range) {
-                    if (!range.markerId) {
-                        range.markerId = session.addMarker(range, "ace_snippet-marker", "text");
-                    }
-                });
-            }
+        const editor = this.editor;
+        if (editor) {
+            ts.forEach(function (range) {
+                if (!range.markerId) {
+                    range.markerId = editor.addMarker(range, "ace_snippet-marker", "text");
+                }
+            });
         }
     }
 
@@ -388,16 +390,14 @@ export default class TabstopManager {
      *
      */
     private removeTabstopMarkers(ts: Tabstop): void {
-        if (this.editor) {
-            const session = this.editor.getSession();
-            if (session) {
-                ts.forEach(function (range) {
-                    if (typeof range.markerId === 'number') {
-                        session.removeMarker(range.markerId);
-                        range.markerId = null;
-                    }
-                });
-            }
+        const editor = this.editor;
+        if (editor) {
+            ts.forEach(function (range) {
+                if (typeof range.markerId === 'number') {
+                    editor.removeMarker(range.markerId);
+                    range.markerId = null;
+                }
+            });
         }
     }
 
@@ -414,9 +414,9 @@ export default class TabstopManager {
                 this.ranges.splice(i, 1);
                 if (this.editor) {
                     if (typeof range.markerId === 'number') {
-                        const session = this.editor.getSession();
-                        if (session) {
-                            session.removeMarker(range.markerId);
+                        const editor = this.editor;
+                        if (editor) {
+                            editor.removeMarker(range.markerId);
                         }
                     }
                     if (tabstop.length === 0) {

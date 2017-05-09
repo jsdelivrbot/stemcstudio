@@ -129,13 +129,6 @@ module.exports = function (grunt) {
         },
 
         watch: {
-            eight: {
-                files: ['../davinci-eight/dist/*.*'],
-                tasks: ['dev'],
-                options: {
-                    spawn: false
-                }
-            },
             scripts: {
                 files: ['app/ts/**/*.ts'],
                 tasks: ['ts:app'],
@@ -530,9 +523,9 @@ function copies(target) {
         },
         {
             expand: true,
-            cwd: "museum/RxJS@5.3.0",
+            cwd: "museum/RxJS@5.3.1",
             src: ["**"],
-            dest: prepend(target, 'vendor/RxJS@5.3.0')
+            dest: prepend(target, 'vendor/RxJS@5.3.1')
         },
         {
             expand: true,

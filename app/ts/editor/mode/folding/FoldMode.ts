@@ -1,7 +1,11 @@
 import Range from "../../Range";
-import { EditSession } from "../../EditSession";
 import FoldStyle from '../../FoldStyle';
 import FoldWidget from '../../FoldWidget';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from "../../../virtual/editor";
+
 
 /**
  *

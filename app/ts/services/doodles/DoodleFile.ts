@@ -1,3 +1,5 @@
+import { LanguageModeId } from '../../virtual/editor';
+
 /**
  *
  */
@@ -15,7 +17,7 @@ export default class DoodleFile {
     /**
      * The mode of the file refers to the computing language canonical name.
      */
-    public language: string | undefined;
+    public language: LanguageModeId | undefined;
     public htmlChoice: boolean;
     public markdownChoice: boolean;
     public raw_url: string | undefined;

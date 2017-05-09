@@ -1,8 +1,11 @@
-import { EditSession } from "../EditSession";
 import FoldMode from "./folding/FoldMode";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import TextMode from "./TextMode";
 import YamlHighlightRules from "./YamlHighlightRules";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class YamlMode extends TextMode {
 
@@ -16,7 +19,7 @@ export default class YamlMode extends TextMode {
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/yaml";
+        this.$id = "YAML";
         this.lineCommentStart = "#";
         this.HighlightRules = YamlHighlightRules;
         this.foldingRules = new FoldMode();

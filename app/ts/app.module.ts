@@ -12,6 +12,7 @@ import { DoodleManager } from './services/doodles/doodleManager.service';
 import { GitHubGistService } from './services/github/github.gist.service';
 import { GitHubRepoService } from './services/github/github.repo.service';
 import { GitHubUserService } from './services/github/github.user.service';
+import { MirrorEditorService } from './services/editor/mirror-editor.service';
 import { MonacoEditorService } from './services/editor/monaco-editor.service';
 import { NativeEditorService } from './services/editor/native-editor.service';
 import { OptionManager } from './services/options/optionManager.service';
@@ -44,6 +45,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         GitHubGistService,
         GitHubRepoService,
         GitHubUserService,
+        MirrorEditorService,
         MonacoEditorService,
         NativeEditorService,
         OptionManager,

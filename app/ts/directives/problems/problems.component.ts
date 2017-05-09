@@ -1,11 +1,9 @@
-import { ACE_WORKER_PATH } from '../../constants';
 import { Document } from '../../editor/Document';
 import { Editor } from '../../editor/Editor';
 import { EditSession } from '../../editor/EditSession';
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import ProblemsScope from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
-import TextMode from '../../editor/mode/TextMode';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
@@ -67,9 +65,6 @@ function factory($timeout: ITimeoutService, editorPreferencesService: EditorPref
              * The postLink step always takes place from bottom to top in the DOM hierarchy.
              */
             post: function ($scope: ProblemsScope, element: IAugmentedJQuery, attrs: ProblemsAttributes, controller: {}, transclude: ITranscludeFunction) {
-                // Maybe these should be constants?
-                const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-                const workerImports: string[] = systemImports.concat([ACE_WORKER_PATH]);
 
                 const ngModel: INgModelController = controller[0];
 
@@ -87,11 +82,10 @@ function factory($timeout: ITimeoutService, editorPreferencesService: EditorPref
                 const editSession = new EditSession(doc);
                 const editor: Editor = new Editor(renderer, editSession);
 
-                editSession.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
-                    if (err) {
-                        console.warn(`setLanguageMode failed. ${err}`);
-                    }
-                });
+                editSession.setLanguage('Text')
+                    .catch(function (err) {
+                        console.warn(`setLanguageMode('Text') failed. ${err}`);
+                    });
 
                 const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
                     setTimeout(function () {

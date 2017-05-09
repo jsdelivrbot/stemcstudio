@@ -6,6 +6,10 @@ import IDoodleFile from './IDoodleFile';
 import modeFromName from '../../utils/modeFromName';
 import { doodlesToString } from './doodlesToString';
 import { Injectable } from '@angular/core';
+//
+// Editor Abstraction Layer
+//
+import { LanguageModeId } from '../../virtual/editor';
 
 /**
  * The key in local storage for doodles.
@@ -40,19 +44,19 @@ function deserializeDoodles(doodles: IDoodleDS[]): Doodle[] {
 
             d.files[FILENAME_HTML] = new DoodleFile();
             d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
-            d.files[FILENAME_HTML].language = <string>modeFromName(FILENAME_HTML);
+            d.files[FILENAME_HTML].language = <LanguageModeId>modeFromName(FILENAME_HTML);
 
             d.files[FILENAME_CODE] = new DoodleFile();
             d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
-            d.files[FILENAME_CODE].language = <string>modeFromName(FILENAME_CODE);
+            d.files[FILENAME_CODE].language = <LanguageModeId>modeFromName(FILENAME_CODE);
 
             d.files[FILENAME_LIBS] = new DoodleFile();
             d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
-            d.files[FILENAME_LIBS].language = <string>modeFromName(FILENAME_LIBS);
+            d.files[FILENAME_LIBS].language = <LanguageModeId>modeFromName(FILENAME_LIBS);
 
             d.files[FILENAME_LESS] = new DoodleFile();
             d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
-            d.files[FILENAME_LESS].language = <string>modeFromName(FILENAME_LESS);
+            d.files[FILENAME_LESS].language = <LanguageModeId>modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
         d.gistId = inDoodle.gistId;

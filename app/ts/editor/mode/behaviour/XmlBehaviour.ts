@@ -3,6 +3,7 @@ import TokenIterator from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import Range from "../../Range";
+import { isMultiLine } from "../../RangeHelpers";
 import Token from "../../Token";
 
 function is(token: Token | undefined | null, type: string): boolean {
@@ -75,7 +76,7 @@ export default class XmlBehaviour extends Behaviour {
         this.add("string_dquotes", "deletion",
             function callback(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range | undefined {
                 const selected: string = session.docOrThrow().getTextRange(range);
-                if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
+                if (!isMultiLine(range) && (selected === '"' || selected === "'")) {
                     const line = session.docOrThrow().getLine(range.start.row);
                     const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
                     if (rightChar === selected) {

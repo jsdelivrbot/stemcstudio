@@ -1,9 +1,9 @@
 import { Completer } from '../virtual/editor';
 import { Completion } from '../virtual/editor';
-import { Editor } from '../virtual/editor';
 import { EditSession } from '../virtual/editor';
 import { Position } from '../virtual/editor';
 import { SnippetManager } from './SnippetManager';
+import { Editor } from '../virtual/editor';
 
 
 export interface SnippetCompleterEditor extends Editor {
@@ -12,7 +12,7 @@ export interface SnippetCompleterEditor extends Editor {
     sessionOrThrow(): EditSession;
 }
 
-export class SnippetCompleter implements Completer<SnippetCompleterEditor> {
+export class SnippetCompleter implements Completer<Editor> {
 
     getCompletionsAtPosition(editor: SnippetCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
 

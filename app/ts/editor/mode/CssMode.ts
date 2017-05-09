@@ -6,17 +6,20 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import CssBehaviour from "./behaviour/CssBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
-import { EditSession } from "../EditSession";
 import Position from '../Position';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class CssMode extends TextMode {
-    $id = "ace/mode/css";
     $outdent: MatchingBraceOutdent;
-    blockComment = { start: "/*", end: "*/" };
     $completer: CssCompletions;
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
+        this.$id = "CSS";
+        this.blockComment = { start: "/*", end: "*/" };
         this.HighlightRules = CssHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CssBehaviour();

@@ -1,4 +1,4 @@
-import Range from './Range';
+import { Range } from '../virtual/editor';
 
 /**
  *
@@ -34,7 +34,7 @@ interface SearchOptions {
     /**
      * A multi-line search will have an array of regular expressions.
      */
-    re?: boolean | RegExp | RegExp[];
+    re?: boolean | RegExp | RegExp[] | undefined;
 
     /**
      * Whether the search is a regular expression or not. Defaults to false.

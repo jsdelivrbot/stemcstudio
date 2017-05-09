@@ -2,6 +2,7 @@ import { Editor } from './Editor';
 import { getButton, preventDefault, stopPropagation } from "./lib/event";
 import { isMac } from "./lib/useragent";
 import Position from "./Position";
+import { contains, isEmpty } from './RangeHelpers';
 
 /**
  * Custom mouse event
@@ -87,14 +88,13 @@ export class EditorMouseEvent {
         const editor = this.editor;
 
         const selectionRange = editor.getSelectionRange();
-        if (selectionRange.isEmpty()) {
+        if (isEmpty(selectionRange)) {
             this.$inSelection = false;
         }
         else {
             const pos = this.getDocumentPosition();
-            this.$inSelection = selectionRange.contains(pos.row, pos.column);
+            this.$inSelection = contains(selectionRange, pos.row, pos.column);
         }
-
         return this.$inSelection;
     }
 

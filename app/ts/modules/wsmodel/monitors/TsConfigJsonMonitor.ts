@@ -3,7 +3,7 @@ import { WsModel } from '.././WsModel';
 //
 // Editor Abstraction Layer
 //
-import { Document } from '../../../virtual/editor';
+import { EditSession } from '../../../virtual/editor';
 
 //
 // RxJS imports
@@ -17,7 +17,7 @@ const TSCONFIG_DOT_JSON = 'tsconfig.json';
 
 export class TsConfigJsonMonitor implements DocumentMonitor {
     private changeEventsSubscription: Subscription | undefined;
-    constructor(private doc: Document, private workspace: WsModel) {
+    constructor(private session: EditSession, private workspace: WsModel) {
         // Do nothing yet.
     }
 
@@ -25,7 +25,7 @@ export class TsConfigJsonMonitor implements DocumentMonitor {
      * Begins a debounced subscription that emits changedCompilerSettings events.
      */
     beginMonitoring(callback: (err: any) => void): void {
-        this.changeEventsSubscription = this.doc.changeEvents
+        this.changeEventsSubscription = this.session.changeEvents
             .debounceTime(JSON_EDIT_SYNCH_DELAY_MILLIS)
             .subscribe((delta) => {
                 const newSettings = this.workspace.tsconfigSettings;

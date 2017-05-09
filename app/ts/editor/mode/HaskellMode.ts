@@ -3,13 +3,16 @@ import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import HaskellHighlightRules from "./HaskellHighlightRules";
 import CstyleFoldMode from "./folding/CstyleFoldMode";
 import WorkerClient from "../worker/WorkerClient";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class HaskellMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/haskell";
+        this.$id = "Haskell";
         this.blockComment = { start: "/*", end: "*/" };
         this.lineCommentStart = "--";
         this.HighlightRules = HaskellHighlightRules;

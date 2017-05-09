@@ -3,7 +3,7 @@ import { WsModel } from '.././WsModel';
 //
 // Editor Abstraction Layer
 //
-import { Document } from '../../../virtual/editor';
+import { EditSession } from '../../../virtual/editor';
 
 //
 // RxJS imports
@@ -19,14 +19,14 @@ const JSON_EDIT_SYNCH_DELAY_MILLIS = 500;
  */
 export class TsLintJsonMonitor implements DocumentMonitor {
     private changeEventsSubscription: Subscription | undefined;
-    constructor(private doc: Document, private workspace: WsModel) {
+    constructor(private session: EditSession, private workspace: WsModel) {
         // Do nothing yet.
     }
 
     beginMonitoring(callback: (err: any) => void): void {
-        const doc = this.doc;
+        const session = this.session;
         const workspace = this.workspace;
-        this.changeEventsSubscription = doc.changeEvents
+        this.changeEventsSubscription = session.changeEvents
             .debounceTime(JSON_EDIT_SYNCH_DELAY_MILLIS)
             .subscribe((delta) => {
                 const tsl = workspace.getTsLintSettings();

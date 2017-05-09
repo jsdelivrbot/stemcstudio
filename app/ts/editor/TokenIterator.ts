@@ -1,5 +1,9 @@
-import { EditSession } from './EditSession';
-import Token from './Token';
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../virtual/editor';
+import { BasicToken } from '../virtual/editor';
+import { TokenWithIndex } from '../virtual/editor';
 
 /**
  * Temporary check for undefined token values. 
@@ -23,7 +27,7 @@ function check<T>(xs: T[], where: string): T[] {
 export default class TokenIterator {
     private session: EditSession;
     private $row: number;
-    private $rowTokens: Token[];
+    private $rowTokens: BasicToken[];
     private $tokenIndex: number;
 
     /**
@@ -49,7 +53,7 @@ export default class TokenIterator {
      * @returns If the current point is not at the top of the file, this function returns `null`.
      *                 Otherwise, it returns an array of the tokenized strings.
      */
-    stepBackward(): Token | null {
+    stepBackward(): BasicToken | null {
         if (typeof this.$tokenIndex === 'number') {
             this.$tokenIndex -= 1;
 
@@ -77,7 +81,7 @@ export default class TokenIterator {
      * @returns If the current point is at the end of the file, this function returns `null`.
      *                 Otherwise, it returns the tokenized string.
      */
-    stepForward(): Token | null {
+    stepForward(): BasicToken | null {
         if (this.$rowTokens) {
             if (typeof this.$tokenIndex === 'number') {
                 this.$tokenIndex += 1;
@@ -112,7 +116,7 @@ export default class TokenIterator {
      * If the token index is out of bounds, returns null.
      * If there is no token index, throws an exception.
      */
-    getCurrentToken(): Token | null {
+    getCurrentToken(): BasicToken | null {
         const tokenIndex = this.$tokenIndex;
         if (typeof tokenIndex === 'number') {
             const rowTokens = this.$rowTokens;
@@ -151,7 +155,8 @@ export default class TokenIterator {
         let tokenIndex = this.$tokenIndex;
 
         // If a column was cached by EditSession.getTokenAt, then use it.
-        let column = (typeof tokenIndex === 'number') ? rowTokens[tokenIndex].start : undefined;
+        // If this is the case, the token will have been extended to have index and start.
+        let column = (typeof tokenIndex === 'number') ? (rowTokens[tokenIndex] as TokenWithIndex).start : undefined;
         if (column !== undefined) {
             return column;
         }

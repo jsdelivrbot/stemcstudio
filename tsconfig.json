@@ -33,6 +33,8 @@
         "app/ts/editor/Anchor.spec.ts",
         "app/ts/editor/BackgroundTokenizer.spec.ts",
         "app/ts/editor/Document.spec.ts",
+        "app/ts/editor/Range.spec.ts",
+        "app/ts/editor/RangeHelpers.spec.ts",
         "app/ts/editor/SnippetManager.spec.ts",
         "app/ts/editor/TokenIterator.spec.ts",
         "app/ts/editor/snippets/parseSnippetFile.spec.ts",
@@ -50,6 +52,7 @@
         "app/ts/utils/validateNpmPackageName.spec.ts",
         "app/ts/template-cache.ts",
         "typings-manual/browser.d.ts",
+        "manual/codemirror@5.25.2/codemirror.d.ts",
         "manual/monaco-editor@0.8.3/monaco.d.ts",
         "node_modules/typescript/lib/lib.dom.d.ts",
         "node_modules/typescript/lib/lib.es2016.d.ts"

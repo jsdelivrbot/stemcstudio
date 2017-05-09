@@ -11,17 +11,24 @@ import HtmlBehaviour from "./behaviour/HtmlBehaviour";
 import HtmlFoldMode from "./folding/HtmlFoldMode";
 import HtmlCompletions from "./HtmlCompletions";
 import WorkerClient from "../worker/WorkerClient";
-import { EditSession } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 // http://www.w3.org/TR/html5/syntax.html#void-elements
 const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"];
 const optionalEndTags = ["li", "dt", "dd", "p", "rt", "rp", "optgroup", "option", "colgroup", "td", "th"];
 
+interface VoidElementsMap {
+    [name: string]: number;
+}
+
 /**
  *
  */
 export default class HtmlMode extends TextMode {
-    private voidElements: { [name: string]: number } = arrayToMap(voidElements, 1);
+    private voidElements: VoidElementsMap = arrayToMap(voidElements, 1) as VoidElementsMap;
 
     /**
      * The name of the element for fragment parsing.
@@ -32,7 +39,7 @@ export default class HtmlMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[], options?: { fragmentContext: string }) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/html";
+        this.$id = "HTML";
         this.blockComment = { start: "<!--", end: "-->" };
         this.fragmentContext = options && options.fragmentContext;
         this.HighlightRules = HtmlHighlightRules;
@@ -41,7 +48,7 @@ export default class HtmlMode extends TextMode {
 
         this.createModeDelegates({ "js-": JavaScriptMode, "css-": CssMode });
 
-        this.foldingRules = new HtmlFoldMode(this.voidElements, arrayToMap(optionalEndTags, 1));
+        this.foldingRules = new HtmlFoldMode(this.voidElements, arrayToMap(optionalEndTags, 1) as VoidElementsMap);
     }
 
     getNextLineIndent(state: string, line: string, tab: string): string {
@@ -65,9 +72,8 @@ export default class HtmlMode extends TextMode {
         try {
             worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'HtmlWorker', (err: any) => {
                 if (!err) {
-                    const doc = session.getDocument();
-                    if (doc) {
-                        worker.attachToDocument(doc);
+                    if (session) {
+                        worker.attachToSession(session);
                         if (this.fragmentContext) {
                             worker.call("setOptions", [{ context: this.fragmentContext }], function (data: any) {
                                 // Do nothing?
@@ -77,7 +83,7 @@ export default class HtmlMode extends TextMode {
                     }
                     else {
                         // We have to do it this way to handle race conditions.
-                        callback(new Error("Unable to initialize worker because session.getDocument() is undefined."));
+                        callback(new Error("Unable to initialize worker because session is undefined."));
                     }
                 }
                 else {

@@ -5,19 +5,26 @@ import Position from "./Position";
 import Range from "./Range";
 import TextAndSelection from "./TextAndSelection";
 import Tokenizer from "./Tokenizer";
-import WorkerClient from "./worker/WorkerClient";
+// import WorkerClient from "./worker/WorkerClient";
 import FoldMode from "./mode/folding/FoldMode";
 import { HighlighterToken, HighlighterStack, HighlighterStackElement } from './mode/Highlighter';
+//
+// Editor Abstraction Layer
+//
+import { LanguageModeId } from '../virtual/editor';
+
+export interface Disposable {
+    dispose(): void;
+}
 
 /**
  *
  */
 interface LanguageMode {
-
     /**
      *
      */
-    $id: string;
+    $id: LanguageModeId;
 
     /**
      * 
@@ -64,7 +71,7 @@ interface LanguageMode {
      * Called to create a worker which can perform analysis in the background.
      * This analysis is usually for detecting syntax errors.
      */
-    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void;
+    createWorker(session: EditSession, callback: (err: any, worker?: Disposable) => any): void;
 
     /**
      *

@@ -3,12 +3,10 @@ import DelayedCall from '../lib/lang/DelayedCall';
 import { setCssClass } from '../lib/dom';
 import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
-import KeyboardHandler from '../keyboard/KeyboardHandler';
+import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import Range from '../Range';
-//
-// Editor Abstraction Layer
-//
-import { Editor } from '../../virtual/editor';
+// import { Editor } from '../Editor';
+import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
 
 // TODO: Need to negotiate with Editor to install (disposable) extension.
 const SEARCH_EXTENSION = "searchBox";
@@ -48,20 +46,20 @@ class SearchBox {
      * 
      */
     private activeInput: HTMLInputElement;
-    private $closeSearchBarKb: KeyboardHandler;
-    private $searchBarKb: KeyboardHandler;
+    private $closeSearchBarKb: KeyboardHandler<Editor>;
+    private $searchBarKb: KeyboardHandler<Editor>;
     private isReplace: boolean;
     private $onChange: DelayedCall;
     /**
      * 
      */
-    constructor(editor: Editor, range?: Range, showReplaceForm?: boolean) {
+    constructor(editor: Editor, unused?: Range, showReplaceForm?: boolean) {
         const div = document.createElement("div");
         div.innerHTML = html;
         // The cast is allowed because of the way the html variable is defined above.
         this.element = <HTMLDivElement>div.firstChild;
 
-        this.$init();
+        this.$init(editor);
         this.setEditor(editor);
 
         this.$closeSearchBarKb = new KeyboardHandler([{
@@ -73,71 +71,71 @@ class SearchBox {
             }
         }]);
 
-        this.$searchBarKb = new KeyboardHandler();
+        this.$searchBarKb = new KeyboardHandler<Editor>();
         this.$searchBarKb.bindKeys({
-            "Ctrl-F|Command-F": function (sb: SearchBox) {
+            "Ctrl-F|Command-F": () => {
                 // const isReplace = sb.isReplace = !sb.isReplace;
                 // sb.replaceForm.style.display = isReplace ? "" : "none";
-                sb.searchInput.focus();
+                this.searchInput.focus();
             },
-            "Ctrl-H|Command-H": function (sb: SearchBox) {
-                sb.replaceForm.style.display = "";
-                sb.replaceInput.focus();
+            "Ctrl-H|Command-H": () => {
+                this.replaceForm.style.display = "";
+                this.replaceInput.focus();
             },
-            "F3|Ctrl-G|Command-G": function (sb: SearchBox) {
-                sb.findNext();
+            "F3|Ctrl-G|Command-G": () => {
+                this.findNext();
             },
-            "Shift-F3|Ctrl-Shift-G|Command-Shift-G": function (sb: SearchBox) {
-                sb.findPrev();
+            "Shift-F3|Ctrl-Shift-G|Command-Shift-G": () => {
+                this.findPrev();
             },
-            "esc": function (sb: SearchBox) {
-                setTimeout(function () { sb.hide(); });
+            "esc": () => {
+                setTimeout(() => { this.hide(); });
             },
-            "Return": function (sb: SearchBox) {
-                if (sb.activeInput === sb.replaceInput) {
-                    sb.replace();
+            "Return": () => {
+                if (this.activeInput === this.replaceInput) {
+                    this.replace();
                 }
-                sb.findNext();
+                this.findNext();
             },
-            "Shift-Return": function (sb: SearchBox) {
-                if (sb.activeInput === sb.replaceInput) {
-                    sb.replace();
+            "Shift-Return": () => {
+                if (this.activeInput === this.replaceInput) {
+                    this.replace();
                 }
-                sb.findPrev();
+                this.findPrev();
             },
-            "Alt-Return": function (sb: SearchBox) {
-                if (sb.activeInput === sb.replaceInput) {
-                    sb.replaceAll();
+            "Alt-Return": () => {
+                if (this.activeInput === this.replaceInput) {
+                    this.replaceAll();
                 }
-                sb.findAll();
+                this.findAll();
             },
-            "Tab": function (sb: SearchBox) {
-                (sb.activeInput === sb.replaceInput ? sb.searchInput : sb.replaceInput).focus();
+            "Tab": () => {
+                (this.activeInput === this.replaceInput ? this.searchInput : this.replaceInput).focus();
             }
         });
         this.$searchBarKb.addCommands([
             {
                 name: "toggleRegexpMode",
                 bindKey: { win: "Alt-R|Alt-/", mac: "Ctrl-Alt-R|Ctrl-Alt-/" },
-                exec: function (sb: SearchBox) {
-                    sb.regExpOption.checked = !sb.regExpOption.checked;
-                    sb.$syncOptions();
+                exec: () => {
+                    this.regExpOption.checked = !this.regExpOption.checked;
+                    this.$syncOptions();
                 }
             },
             {
                 name: "toggleCaseSensitive",
                 bindKey: { win: "Alt-C|Alt-I", mac: "Ctrl-Alt-R|Ctrl-Alt-I" },
-                exec: function (sb: SearchBox) {
-                    sb.caseSensitiveOption.checked = !sb.caseSensitiveOption.checked;
-                    sb.$syncOptions();
+                exec: () => {
+                    this.caseSensitiveOption.checked = !this.caseSensitiveOption.checked;
+                    this.$syncOptions();
                 }
             },
             {
                 name: "toggleWholeWords",
                 bindKey: { win: "Alt-B|Alt-W", mac: "Ctrl-Alt-B|Ctrl-Alt-W" },
-                exec: function (sb: SearchBox) {
-                    sb.wholeWordOption.checked = !sb.wholeWordOption.checked;
-                    sb.$syncOptions();
+                exec: () => {
+                    this.wholeWordOption.checked = !this.wholeWordOption.checked;
+                    this.$syncOptions();
                 }
             }
         ]);
@@ -158,7 +156,7 @@ class SearchBox {
         this.searchInput = <HTMLInputElement>this.searchForm.querySelector(".ace_search_field");
         this.replaceInput = <HTMLInputElement>this.replaceForm.querySelector(".ace_search_field");
     }
-    $init() {
+    $init(editor: Editor) {
         const sb = this.element;
 
         this.$initElements(sb);
@@ -179,7 +177,7 @@ class SearchBox {
                 else if (action && this.$searchBarKb.commands[action]) {
                     const command = this.$searchBarKb.commands[action];
                     if (command.exec) {
-                        command.exec(this);
+                        command.exec(editor);
                     }
                 }
             }
@@ -190,7 +188,7 @@ class SearchBox {
             const keyString = keyCodeToString(keyCode);
             const command = this.$searchBarKb.findKeyCommand(hashId, keyString);
             if (command && command.exec) {
-                command.exec(this);
+                command.exec(editor);
                 stopEvent(e);
             }
         });
@@ -226,16 +224,7 @@ class SearchBox {
     }
 
     highlight(re?: RegExp): void {
-        const session = this.editor.getSession();
-        if (session) {
-            if (re) {
-                session.highlight(re);
-            }
-            else {
-                session.highlight(this.editor.getSearchRegExp());
-            }
-        }
-        this.editor.updateBackMarkers();
+        this.editor.highlight(re);
     }
 
     find(skipCurrent?: boolean, backwards?: boolean): void {
@@ -318,10 +307,10 @@ class SearchBox {
 }
 
 /**
- * 
+ * This function is called from the editor directive.
  */
 export default function showFindReplace(editor: Editor, isReplace?: boolean): void {
     const searchBox = editor[SEARCH_EXTENSION] as SearchBox;
     const sb = searchBox || new SearchBox(editor);
-    sb.show(editor.sessionOrThrow().getTextRange(), isReplace);
+    sb.show(editor.getTextRange(), isReplace);
 }

@@ -1,7 +1,6 @@
 import { Document } from './Document';
 import { EditSession } from './EditSession';
 import Range from './Range';
-import JavaScriptMode from './mode/JavaScriptMode';
 
 function forceTokenize(session: EditSession, startLine = 0): void {
     for (let i = startLine, l = session.getLength(); i < l; i++) {
@@ -24,10 +23,8 @@ describe("background tokenizer update on session change", function () {
         "var juhu"
     ]);
     const session = new EditSession(doc);
-    const jsMode = new JavaScriptMode('', []);
-    session.setLanguageMode(jsMode, function (err) {
-        // We are not using the worker, so we don't need to wait.
-    });
+    session.setLanguage('JavaScript');
+    // We are not using the worker, so we don't need to wait on the promise.
 
     // The FSM for the JavaScript mode appears to have changed.
     xit("", function () {

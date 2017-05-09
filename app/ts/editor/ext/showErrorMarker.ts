@@ -1,99 +1,8 @@
 import { createHTMLDivElement } from '../lib/dom';
-import { Annotation } from '../../virtual/editor';
-import { Direction } from '../../virtual/editor';
-import { Editor } from '../../virtual/editor';
 import { EditorEventHandler } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
 import { LineWidget } from '../../virtual/editor';
 import { KeyboardResponse } from '../../virtual/editor';
-// import LineWidgetManager from '../LineWidgetManager';
-
-/**
- * A modified Position with an optional column (like Annotation).
- */
-interface Position {
-    /**
-     *
-     */
-    row: number;
-    /**
-     *
-     */
-    column?: number;
-}
-
-function comparePoints(p1: Annotation, p2: Annotation): number {
-    return p1.row - p2.row || (p1.column as number) - (p2.column as number);
-}
-
-function binarySearch(array: Annotation[], needle: { row: number; column: number }, comparator: (lhs: Position, rhs: Position) => number) {
-    let first = 0;
-    let last = array.length - 1;
-
-    while (first <= last) {
-        const mid = (first + last) >> 1;
-        const c = comparator(needle, array[mid]);
-        if (c > 0) {
-            first = mid + 1;
-        }
-        else if (c < 0) {
-            last = mid - 1;
-        }
-        else {
-            return mid;
-        }
-    }
-
-    // Return the nearest lesser index, "-1" means "0, "-2" means "1", etc.
-    return -(first + 1);
-}
-
-function findAnnotations(session: EditSession, row: number, direction: Direction): Annotation[] | undefined {
-    const annotations = session.getAnnotations().sort(comparePoints);
-    if (!annotations.length) {
-        return void 0;
-    }
-
-    let i = binarySearch(annotations, { row: row, column: -1 }, comparePoints);
-    if (i < 0)
-        i = -i - 1;
-
-    if (i >= annotations.length - 1)
-        i = direction > 0 ? 0 : annotations.length - 1;
-    else if (i === 0 && direction < 0)
-        i = annotations.length - 1;
-
-    let annotation = annotations[i];
-    if (!annotation || !direction)
-        return void 0;
-
-    if (annotation.row === row) {
-        do {
-            annotation = annotations[i += direction];
-        } while (annotation && annotation.row === row);
-        if (!annotation)
-            return annotations.slice();
-    }
-
-
-    const matched: Annotation[] = [];
-    row = annotation.row;
-    do {
-        if (direction < 0) {
-            matched.unshift(annotation);
-        }
-        else {
-            matched.push(annotation);
-        }
-        annotation = annotations[i += direction];
-    } while (annotation && annotation.row === row);
-    if (matched.length) {
-        return matched;
-    }
-    else {
-        return void 0;
-    }
-}
+import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
 
 /**
  * The purpose of this function is to scroll the editor such that it displays the next or previous error marker.
@@ -102,11 +11,6 @@ function findAnnotations(session: EditSession, row: number, direction: Direction
  * @param direction +1 for the next error, -1 for the previous error.
  */
 export default function showErrorMarker(editor: Editor, direction: number): void {
-
-    if (!editor.getSession()) {
-        return;
-    }
-    const session = editor.getSession() as EditSession;
 
     editor.enableLineWidgets();
 
@@ -120,7 +24,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
     else {
         row -= direction;
     }
-    const annotations = findAnnotations(session, row, direction);
+    const annotations = editor.findAnnotations(row, direction);
     let gutterAnno: { className: string | undefined, text: string[] } | null;
     if (annotations) {
         const annotation = annotations[0];
@@ -136,7 +40,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
     else {
         gutterAnno = { text: ["Looks good! Press Esc key to cancel."], className: "ace_ok" };
     }
-    session.unfold(pos.row);
+    editor.unfold(pos.row);
     editor.moveSelectionToPosition(pos);
 
     const w: LineWidget = {
@@ -167,7 +71,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
     errorWidget.appendChild(createHTMLDivElement());
 
     const kb = editor.createKeyboardHandler();
-    kb.handleKeyboard = function (data: any, hashId: number, keyString: string): KeyboardResponse | undefined {
+    kb.handleKeyboard = function (data: any, hashId: number, keyString: string): KeyboardResponse<Editor> | undefined {
         if (hashId === 0 && (keyString === "esc" || keyString === "return")) {
             if (w.destroy) {
                 w.destroy();

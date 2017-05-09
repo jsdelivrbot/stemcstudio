@@ -17,9 +17,13 @@ import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_TSX } from '../languages/modes';
 import { LANGUAGE_XML } from '../languages/modes';
 import { LANGUAGE_YAML } from '../languages/modes';
+//
+// Editor Abstraction Layer
+//
+import { LanguageModeId } from '../virtual/editor';
 
-const extensionToMode: { [ext: string]: string } = {};
-const fileNameToMode: { [fileName: string]: string } = {};
+const extensionToMode: { [ext: string]: LanguageModeId } = {};
+const fileNameToMode: { [fileName: string]: LanguageModeId } = {};
 
 extensionToMode['c'] = LANGUAGE_C;
 extensionToMode['cpp'] = LANGUAGE_CPP;
@@ -51,7 +55,7 @@ fileNameToMode['.gitignore'] = LANGUAGE_TEXT;
  * The mode returned is a string containing the canonical mode name.
  * If the mode cannot be determined, then undefined is returned.
  */
-export default function modeFromName(fileName: string): string | undefined {
+export default function modeFromName(fileName: string): LanguageModeId | undefined {
     const period = fileName.lastIndexOf('.');
     if (period >= 0) {
         const extension = fileName.substring(period + 1);

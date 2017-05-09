@@ -4,14 +4,17 @@ import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
 import CstyleBehaviour from "./behaviour/CstyleBehaviour";
 import CStyleFoldMode from "./folding/CstyleFoldMode";
 import WorkerClient from "../worker/WorkerClient";
-import { EditSession } from "../EditSession";
-import { EditSessionEventName } from "../EditSession";
+// import { EditSessionEventName } from "../EditSession";
+//
+// Editor Abstraction Layer
+//
+import { EditSession } from '../../virtual/editor';
 
 export default class TypeScriptMode extends JavaScriptMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.$id = "ace/mode/typescript";
+        this.$id = "TypeScript";
         this.HighlightRules = TypeScriptHighlightRules;
         this.$highlightRuleConfig = { jsx: false };
         this.$behaviour = new CstyleBehaviour();
@@ -32,7 +35,9 @@ export default class TypeScriptMode extends JavaScriptMode {
         //
         worker.on("getFileNames", function (event) {
             // Dangerous but casting away the problem fo now.
-            session._emit("getFileNames" as EditSessionEventName, { data: event.data });
+            console.warn("Does the TypeScript worker thread really emit this event?");
+            throw new Error("getDileNames");
+            // session._emit("getFileNames" as EditSessionEventName, { data: event.data });
         });
 
         initWorker(worker, 'TypeScriptWorker', this.scriptImports, session, callback);

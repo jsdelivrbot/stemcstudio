@@ -1,5 +1,5 @@
 import Anchor from '../Anchor';
-import EditorAction from '../keyboard/EditorAction';
+import { Action } from '../keyboard/Action';
 import Completer from './Completer';
 import Completion from '../Completion';
 import CompletionList from '../CompletionList';
@@ -8,7 +8,7 @@ import DelayedCall from '../lib/lang/DelayedCall';
 import { Editor } from '../Editor';
 import EditorMouseEvent from '../EditorMouseEvent';
 import getCompletionPrefix from './getCompletionPrefix';
-import KeyboardHandler from '../keyboard/KeyboardHandler';
+import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import { ListViewPopup } from './ListViewPopup';
 import PixelPosition from '../PixelPosition';
 import Position from '../Position';
@@ -75,7 +75,7 @@ export class CompletionManager {
     private gatherCompletionsId = 0;
     private base: Anchor | null;
     private completions: CompletionList | null;
-    private commands: { [name: string]: EditorAction };
+    private commands: { [name: string]: Action<Editor> };
 
     /**
      * Determines what happens when the autocomplete list is presented.
@@ -102,13 +102,13 @@ export class CompletionManager {
         /**
          *
          */
-        const detachAction: EditorAction = (editor: Editor) => {
+        const detachAction: Action<Editor> = (editor: Editor) => {
             this.detach();
         };
         /**
          *
          */
-        const downAction: EditorAction = (editor: Editor) => {
+        const downAction: Action<Editor> = (editor: Editor) => {
             this.down();
         };
 
@@ -235,7 +235,7 @@ export class CompletionManager {
             // TODO: add support for options.deleteSuffix
             // If we have filterText, remove that from the editor before performing the full insert.
             if (this.completions && this.completions.filterText) {
-                const ranges: Range[] = this.editor.selectionOrThrow().getAllRanges();
+                const ranges = this.editor.selectionOrThrow().getAllRanges();
                 for (const range of ranges) {
                     range.start.column -= this.completions.filterText.length;
                     this.editor.sessionOrThrow().remove(range);

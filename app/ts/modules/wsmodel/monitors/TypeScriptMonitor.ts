@@ -3,7 +3,7 @@ import { WsModel } from '.././WsModel';
 //
 // Editor Abstraction Layer
 //
-import { Document } from '../../../virtual/editor';
+import { EditSession } from '../../../virtual/editor';
 
 //
 // RxJS imports
@@ -16,7 +16,7 @@ import { Document } from '../../../virtual/editor';
 
 export class TypeScriptMonitor implements DocumentMonitor {
     private documentChangeListenerRemover: (() => void) | undefined;
-    constructor(private path: string, private doc: Document, private workspace: WsModel) {
+    constructor(private path: string, private session: EditSession, private workspace: WsModel) {
         // Do nothing yet,maybe never.
     }
 
@@ -28,11 +28,11 @@ export class TypeScriptMonitor implements DocumentMonitor {
     beginMonitoring(callback: (err: any) => void): void {
         const workspace = this.workspace;
         const path = this.path;
-        const doc = this.doc;
+        const session = this.session;
 
-        workspace.addScript(path, doc.getValue())
+        workspace.addScript(path, session.getValue())
             .then((added) => {
-                this.documentChangeListenerRemover = doc.addChangeListener((delta) => {
+                this.documentChangeListenerRemover = session.addChangeListener((delta) => {
                     workspace.applyDelta(path, delta);
                 });
                 callback(void 0);

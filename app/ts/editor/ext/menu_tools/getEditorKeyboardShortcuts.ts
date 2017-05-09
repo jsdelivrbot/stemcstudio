@@ -1,4 +1,3 @@
-import Command from '../../commands/Command';
 import { Editor } from '../../../virtual/editor';
 import { KEY_MODS } from '../../lib/keys';
 /**
@@ -37,7 +36,7 @@ export function getEditorKeyboardShortcuts(editor: Editor): KeyboardShortcut[] {
                 const commands = ckb[hashString];
                 for (let key in commands) {
                     if (commands.hasOwnProperty(key)) {
-                        const command: Command = commands[key];
+                        const command = commands[key];
                         if (commandMap[command.name as string]) {
                             commandMap[command.name as string].key += "|" + modString + key;
                         }

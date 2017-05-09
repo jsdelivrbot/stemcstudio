@@ -1,9 +1,11 @@
+import { LanguageModeId } from '../../virtual/editor';
+
 /**
  * 
  */
 export interface ITemplateFile {
     content: string;
-    language: string;
+    language: LanguageModeId;
 }
 /**
  * 
