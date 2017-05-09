@@ -97,7 +97,7 @@ module.exports = function (config) {
         //      'generated/js/**/!(*spec).js',
       ],
       //      map: {
-      //        "rxjs": "npm:rxjs@5.3.1",
+      //        "rxjs": "npm:rxjs@5.3.3",
       //      },
       //      paths: {
       //        //        "github:*": "../generated/jspm_packages/github/*",

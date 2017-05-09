@@ -1,4 +1,8 @@
 import { Range } from './editor';
+import { EditorCommandable } from './EditorCommandable';
+import { EditorFocusable } from './EditorFocusable';
+import { EditorKeyable } from './EditorKeyable';
+import { EditorMinimal } from './EditorMinimal';
 
 interface SearchOptions {
 
@@ -71,7 +75,7 @@ interface SearchOptions {
     preventScroll?: boolean;
 }
 
-export interface EditorSearchable {
+export interface EditorSearchable extends EditorCommandable, EditorFocusable, EditorKeyable {
     find(value: string, options: {}): Range | null | undefined;
     findAll(needle?: (string | RegExp), options?: SearchOptions, additive?: boolean): number;
     findNext(): void;
@@ -85,4 +89,15 @@ export interface EditorSearchable {
     getTextRange(range?: Range): string;
 
     highlight(re?: RegExp): void;
+}
+
+export function isEditorSearchable(editor: EditorMinimal): editor is EditorSearchable {
+    if (editor) {
+        const candidate = editor as EditorSearchable;
+        return typeof candidate.find === 'function'
+            && typeof candidate.findAll === 'function';
+    }
+    else {
+        return false;
+    }
 }

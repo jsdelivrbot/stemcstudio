@@ -819,11 +819,6 @@
   },
   "github:geometryzen/ace-workers@2.9.16": {},
   "github:angular-ui/ui-router@0.4.2": {},
-  "npm:rxjs@5.3.1": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:zone.js@0.8.10": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -919,6 +914,11 @@
     "parseqs": "npm:parseqs@0.0.5",
     "parseuri": "npm:parseuri@0.0.5",
     "yeast": "npm:yeast@0.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:rxjs@5.3.3": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   }

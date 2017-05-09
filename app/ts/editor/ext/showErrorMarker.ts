@@ -2,7 +2,10 @@ import { createHTMLDivElement } from '../lib/dom';
 import { EditorEventHandler } from '../../virtual/editor';
 import { LineWidget } from '../../virtual/editor';
 import { KeyboardResponse } from '../../virtual/editor';
-import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
+//
+// TODO: Less restrictive dependency.
+//
+import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
 
 /**
  * The purpose of this function is to scroll the editor such that it displays the next or previous error marker.
@@ -10,7 +13,7 @@ import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
  * @param editor
  * @param direction +1 for the next error, -1 for the previous error.
  */
-export default function showErrorMarker(editor: Editor, direction: number): void {
+export function showErrorMarker(editor: Editor, direction: number): void {
 
     editor.enableLineWidgets();
 

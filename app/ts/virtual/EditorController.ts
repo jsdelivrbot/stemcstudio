@@ -1,8 +1,7 @@
 import { EditSession } from './editor';
+import { EditorMinimal } from './EditorMinimal';
 
-export interface EditorController {
+export interface EditorController extends EditorMinimal {
     getSession(): EditSession | undefined;
-    setSession(session: EditSession | undefined): void;
-
     sessionOrThrow(): EditSession;
 }

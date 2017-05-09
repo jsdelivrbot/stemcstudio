@@ -3,31 +3,32 @@ import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INDENT } from "../editor_protocol";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
+
 //
+// TODO: Use EditorMinimal as the baseline and check for capabilities.
 //
-//
-import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
+import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
 import { Command } from './Command';
 
 function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
     return { win, mac };
 }
 
-const commands: Command<Editor>[] = [
+export const commands: Command<Editor>[] = [
     {
-        name: "selectall",
+        name: "selectAll",
         bindKey: bindKey("Ctrl-A", "Command-A"),
         exec: function (editor: Editor) { editor.selectAll(); },
         readOnly: true
     },
     {
-        name: "centerselection",
+        name: "centerSelection",
         bindKey: bindKey(null, "Ctrl-L"),
         exec: function (editor: Editor) { editor.centerSelection(); },
         readOnly: true
     },
     {
-        name: "gotoline",
+        name: "gotoLine",
         bindKey: bindKey("Ctrl-L", "Command-L"),
         exec: function (editor: Editor) {
             const response = prompt("Enter line number:");
@@ -73,7 +74,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "foldall",
+        name: "foldAll",
         // TODO: Should this be bindKey(null, ...?
         bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
         exec: function (editor: Editor) { editor.foldAll(); },
@@ -86,20 +87,20 @@ const commands: Command<Editor>[] = [
         exec: function (editor: Editor) {
             editor.foldAll();
             // FIXME: unfold must accept a Range[], then we add this line...
-            // editor.getSession().unfold(editor.selection.getAllRanges());
+            // editor.unfold(editor.selection.getAllRanges());
         },
         scrollIntoView: "center",
         readOnly: true
     },
     {
-        name: "unfoldall",
+        name: "unfoldAll",
         bindKey: bindKey("Alt-Shift-0", "Command-Option-Shift-0"),
         exec: function (editor: Editor) { editor.unfold(); },
         scrollIntoView: "center",
         readOnly: true
     },
     {
-        name: "findnext",
+        name: "findNext",
         bindKey: bindKey("Ctrl-K", "Command-G"),
         exec: function (editor: Editor) { editor.findNext(); },
         multiSelectAction: "forEach",
@@ -107,7 +108,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "findprevious",
+        name: "findPrevious",
         bindKey: bindKey("Ctrl-Shift-K", "Command-Shift-G"),
         exec: function (editor: Editor) { editor.findPrevious(); },
         multiSelectAction: "forEach",
@@ -115,13 +116,13 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectOrFindNext",
+        name: "selectWordOrFindNext",
         bindKey: bindKey("Alt-K", "Ctrl-G"),
         exec: function (editor: Editor) { editor.selectWordOrFindNext(); },
         readOnly: true
     },
     {
-        name: "selectOrFindPrevious",
+        name: "selectWordOrFindPrevious",
         bindKey: bindKey("Alt-Shift-K", "Ctrl-Shift-G"),
         exec: function (editor: Editor) { editor.selectWordOrFindPrevious(); },
         readOnly: true
@@ -133,7 +134,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selecttostart",
+        name: "selectToFileStart",
         bindKey: bindKey("Ctrl-Shift-Home", "Command-Shift-Home|Command-Shift-Up"),
         exec: function (editor: Editor) { editor.selectToFileStart(); },
         multiSelectAction: "forEach",
@@ -142,7 +143,7 @@ const commands: Command<Editor>[] = [
         group: "fileJump"
     },
     {
-        name: "gotostart",
+        name: "gotoFileStart",
         bindKey: bindKey("Ctrl-Home", "Command-Home|Command-Up"),
         exec: function (editor: Editor) { editor.navigateFileStart(); },
         multiSelectAction: "forEach",
@@ -151,21 +152,21 @@ const commands: Command<Editor>[] = [
         group: "fileJump"
     },
     {
-        name: "selectup",
+        name: "selectUp",
         bindKey: bindKey("Shift-Up", "Shift-Up|Ctrl-Shift-P"),
         exec: function (editor: Editor) { editor.selectUp(); },
         multiSelectAction: "forEach",
         readOnly: true
     },
     {
-        name: "golineup",
+        name: "goLineUp",
         bindKey: bindKey("Up", "Up|Ctrl-P"),
         exec: function (editor: Editor, args: { times: number }) { editor.navigateUp(args.times); },
         multiSelectAction: "forEach",
         readOnly: true
     },
     {
-        name: "selecttoend",
+        name: "selectToFileEnd",
         bindKey: bindKey("Ctrl-Shift-End", "Command-Shift-End|Command-Shift-Down"),
         exec: function (editor: Editor) { editor.selectFileEnd(); },
         multiSelectAction: "forEach",
@@ -174,7 +175,7 @@ const commands: Command<Editor>[] = [
         group: "fileJump"
     },
     {
-        name: "gotoend",
+        name: "gotoFileEnd",
         bindKey: bindKey("Ctrl-End", "Command-End|Command-Down"),
         exec: function (editor: Editor) { editor.navigateFileEnd(); },
         multiSelectAction: "forEach",
@@ -183,7 +184,7 @@ const commands: Command<Editor>[] = [
         group: "fileJump"
     },
     {
-        name: "selectdown",
+        name: "selectDown",
         bindKey: bindKey("Shift-Down", "Shift-Down|Ctrl-Shift-N"),
         exec: function (editor: Editor) { editor.selectDown(); },
         multiSelectAction: "forEach",
@@ -191,7 +192,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "golinedown",
+        name: "goLineDown",
         bindKey: bindKey("Down", "Down|Ctrl-N"),
         exec: function (editor: Editor, args: { times: number }) { editor.navigateDown(args.times); },
         multiSelectAction: "forEach",
@@ -199,7 +200,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectwordleft",
+        name: "selectWordLeft",
         bindKey: bindKey("Ctrl-Shift-Left", "Option-Shift-Left"),
         exec: function (editor: Editor) { editor.selectWordLeft(); },
         multiSelectAction: "forEach",
@@ -207,7 +208,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotowordleft",
+        name: "gotoWordLeft",
         bindKey: bindKey("Ctrl-Left", "Option-Left"),
         exec: function (editor: Editor) { editor.navigateWordLeft(); },
         multiSelectAction: "forEach",
@@ -215,7 +216,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selecttolinestart",
+        name: "selectToLineStart",
         bindKey: bindKey("Alt-Shift-Left", "Command-Shift-Left|Ctrl-Shift-A"),
         exec: function (editor: Editor) { editor.selectLineStart(); },
         multiSelectAction: "forEach",
@@ -223,7 +224,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotolinestart",
+        name: "gotoLineStart",
         bindKey: bindKey("Alt-Left|Home", "Command-Left|Home|Ctrl-A"),
         exec: function (editor: Editor) { editor.navigateLineStart(); },
         multiSelectAction: "forEach",
@@ -231,7 +232,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectleft",
+        name: "selectLeft",
         bindKey: bindKey("Shift-Left", "Shift-Left|Ctrl-Shift-B"),
         exec: function (editor: Editor) { editor.selectLeft(); },
         multiSelectAction: "forEach",
@@ -239,7 +240,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotoleft",
+        name: "gotoLeft",
         bindKey: bindKey("Left", "Left|Ctrl-B"),
         exec: function (editor: Editor, args: { times: number }) { editor.navigateLeft(args.times); },
         multiSelectAction: "forEach",
@@ -247,7 +248,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectwordright",
+        name: "selectWordRight",
         bindKey: bindKey("Ctrl-Shift-Right", "Option-Shift-Right"),
         exec: function (editor: Editor) { editor.selectWordRight(); },
         multiSelectAction: "forEach",
@@ -255,7 +256,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotowordright",
+        name: "gotoWordRight",
         bindKey: bindKey("Ctrl-Right", "Option-Right"),
         exec: function (editor: Editor) { editor.navigateWordRight(); },
         multiSelectAction: "forEach",
@@ -263,7 +264,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selecttolineend",
+        name: "selectToLineEnd",
         bindKey: bindKey("Alt-Shift-Right", "Command-Shift-Right|Shift-End|Ctrl-Shift-E"),
         exec: function (editor: Editor) { editor.selectLineEnd(); },
         multiSelectAction: "forEach",
@@ -271,7 +272,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotolineend",
+        name: "gotoLineEnd",
         bindKey: bindKey("Alt-Right|End", "Command-Right|End|Ctrl-E"),
         exec: function (editor: Editor) { editor.navigateLineEnd(); },
         multiSelectAction: "forEach",
@@ -279,7 +280,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectright",
+        name: "selectRight",
         bindKey: bindKey("Shift-Right", "Shift-Right"),
         exec: function (editor: Editor) { editor.selectRight(); },
         multiSelectAction: "forEach",
@@ -287,7 +288,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "gotoright",
+        name: "gotoRight",
         bindKey: bindKey("Right", "Right|Ctrl-F"),
         exec: function (editor: Editor, args: { times: number }) { editor.navigateRight(args.times); },
         multiSelectAction: "forEach",
@@ -295,55 +296,55 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectpagedown",
+        name: "selectPageDown",
         bindKey: "Shift-PageDown",
         exec: function (editor: Editor) { editor.selectPageDown(); },
         readOnly: true
     },
     {
-        name: "pagedown",
+        name: "pageDown",
         bindKey: bindKey(null, "Option-PageDown"),
         exec: function (editor: Editor) { editor.scrollPageDown(); },
         readOnly: true
     },
     {
-        name: "gotopagedown",
+        name: "gotoPageDown",
         bindKey: bindKey("PageDown", "PageDown|Ctrl-V"),
         exec: function (editor: Editor) { editor.gotoPageDown(); },
         readOnly: true
     },
     {
-        name: "selectpageup",
+        name: "selectPageUp",
         bindKey: "Shift-PageUp",
         exec: function (editor: Editor) { editor.selectPageUp(); },
         readOnly: true
     },
     {
-        name: "pageup",
+        name: "pageUp",
         bindKey: bindKey(null, "Option-PageUp"),
         exec: function (editor: Editor) { editor.scrollPageUp(); },
         readOnly: true
     },
     {
-        name: "gotopageup",
+        name: "gotoPageUp",
         bindKey: "PageUp",
         exec: function (editor: Editor) { editor.gotoPageUp(); },
         readOnly: true
     },
     {
-        name: "scrollup",
+        name: "scrollUp",
         bindKey: bindKey("Ctrl-Up", null),
         exec: function (editor: Editor) { editor.scrollUp(); },
         readOnly: true
     },
     {
-        name: "scrolldown",
+        name: "scrollDown",
         bindKey: bindKey("Ctrl-Down", null),
         exec: function (editor: Editor) { editor.scrollDown(); },
         readOnly: true
     },
     {
-        name: "selectlinestart",
+        name: "selectLineStart",
         bindKey: "Shift-Home",
         exec: function (editor: Editor) { editor.selectLineStart(); },
         multiSelectAction: "forEach",
@@ -351,7 +352,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "selectlineend",
+        name: "selectLineEnd",
         bindKey: "Shift-End",
         exec: function (editor: Editor) { editor.selectLineEnd(); },
         multiSelectAction: "forEach",
@@ -359,26 +360,26 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "togglerecording",
+        name: "toggleRecording",
         bindKey: bindKey("Ctrl-Alt-E", "Command-Option-E"),
         exec: function (editor: Editor) { editor.toggleRecording(); },
         readOnly: true
     },
     {
-        name: "replaymacro",
+        name: "replayMacro",
         bindKey: bindKey("Ctrl-Shift-E", "Command-Shift-E"),
         exec: function (editor: Editor) { editor.replay(); },
         readOnly: true
     },
     {
-        name: "jumptomatching",
+        name: "jumpToMatching",
         bindKey: bindKey("Ctrl-P", "Ctrl-P"),
         exec: function (editor: Editor) { editor.jumpToMatching(); },
         multiSelectAction: "forEach",
         readOnly: true
     },
     {
-        name: "selecttomatching",
+        name: "selectToMatching",
         bindKey: bindKey("Ctrl-Shift-P", "Ctrl-Shift-P"),
         exec: function (editor: Editor) { editor.jumpToMatching(true); },
         multiSelectAction: "forEach",
@@ -412,7 +413,7 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "removeline",
+        name: "removeLines",
         bindKey: bindKey("Ctrl-D", "Command-D"),
         exec: function (editor: Editor) { editor.removeLines(); },
         scrollIntoView: "cursor",
@@ -426,14 +427,14 @@ const commands: Command<Editor>[] = [
         multiSelectAction: "forEach"
     },
     {
-        name: "sortlines",
+        name: "sortLines",
         bindKey: bindKey("Ctrl-Alt-S", "Command-Alt-S"),
         exec: function (editor: Editor) { editor.sortLines(); },
         scrollIntoView: "selection",
         multiSelectAction: "forEachLine"
     },
     {
-        name: "togglecomment",
+        name: "toggleCommentLines",
         bindKey: bindKey("Ctrl-/", "Command-/"),
         exec: function (editor: Editor) { editor.toggleCommentLines(); },
         multiSelectAction: "forEachLine",
@@ -449,7 +450,7 @@ const commands: Command<Editor>[] = [
     {
         name: "modifyNumberUp",
         bindKey: bindKey("Ctrl-Shift-Up", "Alt-Shift-Up"),
-        exec: function (editor: Editor) { editor.modifyNumber(1); },
+        exec: function (editor: Editor) { editor.modifyNumber(+1); },
         multiSelectAction: "forEach"
     },
     {
@@ -469,25 +470,25 @@ const commands: Command<Editor>[] = [
         exec: function (editor: Editor) { editor.redo(); }
     },
     {
-        name: "copylinesup",
+        name: "copyLinesUp",
         bindKey: bindKey("Alt-Shift-Up", "Command-Option-Up"),
         exec: function (editor: Editor) { editor.copyLinesUp(); },
         scrollIntoView: "cursor"
     },
     {
-        name: "movelinesup",
+        name: "moveLinesUp",
         bindKey: bindKey("Alt-Up", "Option-Up"),
         exec: function (editor: Editor) { editor.moveLinesUp(); },
         scrollIntoView: "cursor"
     },
     {
-        name: "copylinesdown",
+        name: "copyLinesDown",
         bindKey: bindKey("Alt-Shift-Down", "Command-Option-Down"),
         exec: function (editor: Editor) { editor.copyLinesDown(); },
         scrollIntoView: "cursor"
     },
     {
-        name: "movelinesdown",
+        name: "moveLinesDown",
         bindKey: bindKey("Alt-Down", "Option-Down"),
         exec: function (editor: Editor) { editor.moveLinesDown(); },
         scrollIntoView: "cursor"
@@ -510,42 +511,42 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "cut_or_delete",
+        name: "deleteLeft",
         bindKey: bindKey("Shift-Delete", null),
         exec: function (editor: Editor) { editor.deleteLeft(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "removetolinestart",
+        name: "removeToLineStart",
         bindKey: bindKey("Alt-Backspace", "Command-Backspace"),
         exec: function (editor: Editor) { editor.removeToLineStart(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "removetolineend",
+        name: "removeToLineEnd",
         bindKey: bindKey("Alt-Delete", "Ctrl-K"),
         exec: function (editor: Editor) { editor.removeToLineEnd(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "removewordleft",
+        name: "removeWordLeft",
         bindKey: bindKey("Ctrl-Backspace", "Alt-Backspace|Ctrl-Alt-Backspace"),
         exec: function (editor: Editor) { editor.removeWordLeft(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "removewordright",
+        name: "removeWordRight",
         bindKey: bindKey("Ctrl-Delete", "Alt-Delete"),
         exec: function (editor: Editor) { editor.removeWordRight(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "outdent",
+        name: "blockOutdent",
         bindKey: bindKey("Shift-Tab", "Shift-Tab"),
         exec: function (editor: Editor) { editor.blockOutdent(); },
         multiSelectAction: "forEach",
@@ -559,14 +560,14 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "selectionPart"
     },
     {
-        name: "blockoutdent",
+        name: "blockOutdent",
         bindKey: bindKey("Ctrl-[", "Ctrl-["),
         exec: function (editor: Editor) { editor.blockOutdent(); },
         multiSelectAction: "forEachLine",
         scrollIntoView: "selectionPart"
     },
     {
-        name: "blockindent",
+        name: "blockIndent",
         bindKey: bindKey("Ctrl-]", "Ctrl-]"),
         exec: function (editor: Editor) { editor.blockIndent(); },
         multiSelectAction: "forEachLine",
@@ -579,7 +580,7 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "inserttext",
+        name: "insertText",
         exec: function (editor: Editor, args: { text?: string; times?: number }) {
             editor.insert(stringRepeat(args.text || "", args.times || 1));
         },
@@ -587,14 +588,14 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "splitline",
+        name: "splitLine",
         bindKey: bindKey(null, "Ctrl-O"),
         exec: function (editor: Editor) { editor.splitLine(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "transposeletters",
+        name: "transposeLetters",
         // Ctrl-T does not work on Chrome.
         bindKey: bindKey("Alt-X", "Ctrl-T"),
         exec: function (editor: Editor) { editor.transposeLetters(); },
@@ -602,21 +603,21 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "touppercase",
+        name: "toUpperCase",
         bindKey: bindKey("Ctrl-U", "Ctrl-U"),
         exec: function (editor: Editor) { editor.toUpperCase(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "tolowercase",
+        name: "toLowerCase",
         bindKey: bindKey("Ctrl-Shift-U", "Ctrl-Shift-U"),
         exec: function (editor: Editor) { editor.toLowerCase(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },
     {
-        name: "expandtoline",
+        name: "expandToLine",
         bindKey: bindKey("Ctrl-Shift-L", "Command-Shift-L"),
         exec: function (editor: Editor) { editor.expandToLine(); },
         multiSelectAction: "forEach",
@@ -624,7 +625,7 @@ const commands: Command<Editor>[] = [
         readOnly: true
     },
     {
-        name: "joinlines",
+        name: "joinLines",
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) { editor.joinLines(); },
         multiSelectAction: "forEach",
@@ -638,5 +639,3 @@ const commands: Command<Editor>[] = [
         scrollIntoView: "none"
     }
 ];
-
-export default commands;

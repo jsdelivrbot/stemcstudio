@@ -60,7 +60,7 @@ const VERSION_RXJS = '5.0.1';
 /**
  * Works for standalone RxJS.
  */
-const VERSION_RXJS_RX = '5.3.1';
+const VERSION_RXJS_RX = '5.3.3';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 // const VERSION_SYSTEMJS = '0.19.37';

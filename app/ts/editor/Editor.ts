@@ -31,7 +31,7 @@ import EventBus from "./EventBus";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { Command } from "./commands/Command";
 import CommandManager from "./commands/CommandManager";
-import defaultCommands from "./commands/default_commands";
+import { commands as defaultCommands } from "./commands/default_commands";
 import TokenIterator from "./TokenIterator";
 import { COMMAND_NAME_AUTO_COMPLETE } from './editor_protocol';
 import { COMMAND_NAME_BACKSPACE } from './editor_protocol';
@@ -62,7 +62,7 @@ import NativeQuickInfoTooltip from './workspace/QuickInfoTooltip';
 // Editor Abstraction Layer
 //
 import { Annotation } from '../virtual/editor';
-import { EditorCommandable } from '../virtual/EditorCommandable';
+import { EditorMaximal } from '../virtual/EditorMaximal';
 import { EditSession } from '../virtual/editor';
 import { Direction } from '../virtual/editor';
 import { KeyboardHandler } from '../virtual/editor';
@@ -170,7 +170,7 @@ export type EditorEventName = 'blur'
 /**
  * The `Editor` acts as a controller, mediating between the session and renderer.
  */
-export class Editor implements EditorCommandable, Disposable, EventBus<EditorEventName, any, Editor> {
+export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventName, any, Editor> {
 
     /**
      *
@@ -192,7 +192,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
     /**
      * The command manager.
      */
-    public readonly commands = new CommandManager<EditorCommandable>(isMac ? "mac" : "win", defaultCommands);
+    public readonly commands = new CommandManager<EditorMaximal>(isMac ? "mac" : "win", defaultCommands);
 
     /**
      *
@@ -268,13 +268,13 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
      */
     private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
-    private curOp: { command?: Command<EditorCommandable>; args?: any; scrollTop?: number; docChanged?: boolean; selectionChanged?: boolean } | null;
-    private prevOp: { command?: Command<EditorCommandable>; args?: any };
+    private curOp: { command?: Command<EditorMaximal>; args?: any; scrollTop?: number; docChanged?: boolean; selectionChanged?: boolean } | null;
+    private prevOp: { command?: Command<EditorMaximal>; args?: any };
     private lastFileJumpPos: Range | null;
     /**
      * FIXME: Dead code?
      */
-    private previousCommand: Command<EditorCommandable> | null;
+    private previousCommand: Command<EditorMaximal> | null;
     private $mergeableCommands: string[];
     private mergeNextCommand: boolean;
     private $mergeNextCommand: boolean;
@@ -399,13 +399,13 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
                 }
             };
 
-            const keyboardMultiSelect = new KeyboardHandlerClazz<EditorCommandable>([{
+            const keyboardMultiSelect = new KeyboardHandlerClazz<EditorMaximal>([{
                 name: "singleSelection",
                 bindKey: "esc",
-                exec: function (editor: EditorCommandable) { editor.exitMultiSelectMode(); },
+                exec: function (editor: EditorMaximal) { editor.exitMultiSelectMode(); },
                 scrollIntoView: "cursor",
                 readOnly: true,
-                isAvailable: function (editor: EditorCommandable) { return editor && editor.inMultiSelectMode; }
+                isAvailable: function (editor: EditorMaximal) { return editor && editor.inMultiSelectMode; }
             }]);
 
             const onMultiSelectExec = function (e: { command: Command<Editor>, editor: Editor, args: any }) {
@@ -555,7 +555,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
         return this.sessionOrThrow().getTextRange(range);
     }
 
-    addCommand(command: Command<EditorCommandable>): void {
+    addCommand(command: Command<EditorMaximal>): void {
         this.commands.addCommand(command);
     }
 
@@ -577,7 +577,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
             session.widgetManager.attach(this);
         }
     }
-    getCommandByName(commandName: string): Command<EditorCommandable> {
+    getCommandByName(commandName: string): Command<EditorMaximal> {
         return this.commands.getCommandByName(commandName);
     }
     getCursorPixelPosition(pos?: Position): PixelPosition {
@@ -1225,7 +1225,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
         function last<T>(a: T[]): T { return a[a.length - 1]; }
 
         this.selectionRanges_.length = 0;
-        this.commands.on("exec", (e: { command: Command<EditorCommandable> }) => {
+        this.commands.on("exec", (e: { command: Command<EditorMaximal> }) => {
             this.startOperation(e);
 
             const command = e.command;
@@ -1240,7 +1240,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
             }
         }, true);
 
-        this.commands.on("afterExec", (e: { command: Command<EditorCommandable> }, cm: CommandManager<EditorCommandable>) => {
+        this.commands.on("afterExec", (e: { command: Command<EditorMaximal> }, cm: CommandManager<EditorMaximal>) => {
             const command = e.command;
 
             if (command.group === "fileJump") {
@@ -1277,7 +1277,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
     /**
      * By the end of this method, the curOp property should be defined.
      */
-    private startOperation(commandEvent?: { command?: Command<EditorCommandable>; args?: any }): void {
+    private startOperation(commandEvent?: { command?: Command<EditorMaximal>; args?: any }): void {
         if (this.curOp) {
             if (!commandEvent || this.curOp.command) {
                 return;
@@ -1308,7 +1308,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
         }
     }
 
-    private endOperation(unused?: { command: Command<EditorCommandable> }): void {
+    private endOperation(unused?: { command: Command<EditorMaximal> }): void {
         if (this.curOp) {
             const command = this.curOp.command;
             if (command && command.scrollIntoView) {
@@ -1357,7 +1357,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
      * The method is used to listen for 'exec' events from the command manager.
      * A fat arrow is used so that the `this` context is correct without the need for binding.
      */
-    private $historyTracker = (e: { command: Command<EditorCommandable>; args?: any }): void => {
+    private $historyTracker = (e: { command: Command<EditorMaximal>; args?: any }): void => {
         if (!this.$mergeUndoDeltas) {
             // false and 'always'
             return;
@@ -1403,7 +1403,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
      *
      * @param keyboardHandler The new key handler.
      */
-    setKeyboardHandler(keyboardHandler: KeyboardHandler<EditorCommandable>): void {
+    setKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): void {
         if (!keyboardHandler) {
             this.keyBinding.setKeyboardHandler(null);
         }
@@ -1416,7 +1416,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
     /**
      * Returns the keyboard handler, such as "vim" or "windows".
      */
-    getKeyboardHandler(): KeyboardHandler<EditorCommandable> {
+    getKeyboardHandler(): KeyboardHandler<EditorMaximal> {
         return this.keyBinding.getKeyboardHandler();
     }
 
@@ -2283,7 +2283,7 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
     /**
      * Executes the specified command using the editor's command manager.
      */
-    execCommand(command: Command<EditorCommandable>, args?: any): void {
+    execCommand(command: Command<EditorMaximal>, args?: any): void {
         this.commands.exec(command, this, args);
     }
 
@@ -2480,17 +2480,17 @@ export class Editor implements EditorCommandable, Disposable, EventBus<EditorEve
     // EditorKeyable
     //
 
-    createKeyboardHandler(): KeyboardHandler<EditorCommandable> {
-        return new KeyboardHandlerClazz<EditorCommandable>();
+    createKeyboardHandler(): KeyboardHandler<EditorMaximal> {
+        return new KeyboardHandlerClazz<EditorMaximal>();
     }
-    addKeyboardHandler(keyboardHandler: KeyboardHandler<EditorCommandable>): void {
-        return this.keyBinding.addKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorCommandable>);
+    addKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): void {
+        return this.keyBinding.addKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorMaximal>);
     }
-    getKeyboardHandlers(): KeyboardHandler<EditorCommandable>[] {
+    getKeyboardHandlers(): KeyboardHandler<EditorMaximal>[] {
         return this.keyBinding.$handlers;
     }
-    removeKeyboardHandler(keyboardHandler: KeyboardHandler<EditorCommandable>): boolean {
-        return this.keyBinding.removeKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorCommandable>);
+    removeKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): boolean {
+        return this.keyBinding.removeKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorMaximal>);
     }
 
     /**

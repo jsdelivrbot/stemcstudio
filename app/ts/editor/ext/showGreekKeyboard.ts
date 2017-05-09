@@ -1,6 +1,6 @@
 import Clipboard from 'clipboard';
-import { Editor } from '../../virtual/editor';
 import { overlayPage } from '../ext/menu_tools/overlayPage';
+import { EditorFocusable as Editor } from '../../virtual/EditorFocusable';
 
 const ID_CONTENT_ELEMENT = 'greek-keyboard';
 
@@ -76,7 +76,7 @@ const CLASSNAME_GREEK_SYMBOL_BUTTON = 'greek-symbol-button';
  * Shows a Greek Keyboard" using an overlay page.
  * The contentElement is given the DOM identifier 'greek-keyboard'
  */
-export default function showGreekKeyboard(editor: Editor) {
+export function showGreekKeyboard(editor: Editor) {
     // Make sure the menu isn't open already.
     if (!document.getElementById(ID_CONTENT_ELEMENT)) {
         const contentElement = document.createElement('div');

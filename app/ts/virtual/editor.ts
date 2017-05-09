@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { EditorCommandable } from './EditorCommandable';
+import { EditorMaximal } from './EditorMaximal';
+import { EditorMinimal } from './EditorMinimal';
 
 export interface Annotation {
     row: number;
@@ -99,30 +100,16 @@ export type EditorEventType = 'change' | 'changeAnnotation' | 'changeSelection' 
  * A wrapper around an HTMLElement for controlling an editor.
  * The editor can be thought of as a controller containing a model and a view.
  */
-export interface Editor extends EditorCommandable {
-    addCommand(command: Command<EditorCommandable>): void;
+export interface Editor extends EditorMaximal, EditorMinimal {
     addCompleter<T extends Editor>(completer: Completer<T>): void;
-    blur(): void;
     createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip | undefined;
-    dispose(): void;
-    execCommand(command: Command<EditorCommandable>): void;
-    focus(): void;
-    getCommandByName(name: string): Command<EditorCommandable>;
+    execCommand(command: Command<EditorMaximal>): void;
     getContainer(): HTMLElement;
     resize(force?: boolean): void;
     selectPageDown(): void;
     selectPageUp(): void;
-    setDisplayIndentGuides(displayIndentGuides: boolean): void;
-    setFontSize(fontSize: string): void;
     setPadding(padding: number): void;
     setReadOnly(readOnly: boolean): void;
-    setShowFoldWidgets(showFoldWidgets: boolean): void;
-    setShowGutter(showGutter: boolean): void;
-    setShowInvisibles(showInvisibles: boolean): void;
-    setShowLineNumbers(showLineNumbers: boolean): void;
-    setShowPrintMargin(showPrintMargin: boolean): void;
-    setThemeCss(themeId: string, href?: string): void;
-    setThemeDark(isdark: boolean): void;
     setWrapBehavioursEnabled(wrapBehaviorsEnabled: boolean): void;
     updateBackMarkers(): void;
     updateFrontMarkers(): void;

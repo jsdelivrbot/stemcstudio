@@ -1,7 +1,8 @@
 import { Position } from './editor';
 import { Range } from './editor';
+import { EditorMinimal } from './EditorMinimal';
 
-export interface EditorChangeable {
+export interface EditorChangeable extends EditorMinimal {
     blockOutdent(): void;
     blockIndent(): void;
 
@@ -13,6 +14,8 @@ export interface EditorChangeable {
     paste(): void;
 
     deleteLeft(): void;
+
+    getReadOnly(): boolean;
 
     indent(): void;
     insert(text: string): void;
@@ -61,4 +64,14 @@ export interface EditorChangeable {
     toUpperCase(): void;
 
     transposeLetters(): void;
+}
+
+export function isEditorChangeable(editor: EditorMinimal): editor is EditorChangeable {
+    if (editor) {
+        const candidate = editor as EditorChangeable;
+        return typeof candidate.replace === 'function' && typeof candidate.replaceAll === 'function';
+    }
+    else {
+        return false;
+    }
 }

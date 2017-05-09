@@ -5,8 +5,12 @@ import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
 import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import Range from '../Range';
-// import { Editor } from '../Editor';
-import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
+//
+// TODO: EditorSearchable?
+//
+// import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
+import { /*EditorChangeable,*/ isEditorChangeable } from '../../virtual/EditorChangeable';
+import { EditorSearchable as Editor } from '../../virtual/EditorSearchable';
 
 // TODO: Need to negotiate with Editor to install (disposable) extension.
 const SEARCH_EXTENSION = "searchBox";
@@ -260,25 +264,33 @@ class SearchBox {
         this.hide();
     }
     replace() {
-        if (!this.editor.getReadOnly()) {
-            this.editor.replace(this.replaceInput.value);
+        if (isEditorChangeable(this.editor)) {
+            if (!this.editor.getReadOnly()) {
+                this.editor.replace(this.replaceInput.value);
+            }
         }
     }
     replaceAndFindPrev() {
-        if (!this.editor.getReadOnly()) {
-            this.editor.replace(this.replaceInput.value);
-            this.findPrev();
+        if (isEditorChangeable(this.editor)) {
+            if (!this.editor.getReadOnly()) {
+                this.editor.replace(this.replaceInput.value);
+                this.findPrev();
+            }
         }
     }
     replaceAndFindNext() {
-        if (!this.editor.getReadOnly()) {
-            this.editor.replace(this.replaceInput.value);
-            this.findNext();
+        if (isEditorChangeable(this.editor)) {
+            if (!this.editor.getReadOnly()) {
+                this.editor.replace(this.replaceInput.value);
+                this.findNext();
+            }
         }
     }
     replaceAll() {
-        if (!this.editor.getReadOnly()) {
-            this.editor.replaceAll(this.replaceInput.value);
+        if (isEditorChangeable(this.editor)) {
+            if (!this.editor.getReadOnly()) {
+                this.editor.replaceAll(this.replaceInput.value);
+            }
         }
     }
     hide() {
@@ -309,7 +321,7 @@ class SearchBox {
 /**
  * This function is called from the editor directive.
  */
-export default function showFindReplace(editor: Editor, isReplace?: boolean): void {
+export function showFindReplace(editor: Editor, isReplace?: boolean): void {
     const searchBox = editor[SEARCH_EXTENSION] as SearchBox;
     const sb = searchBox || new SearchBox(editor);
     sb.show(editor.getTextRange(), isReplace);

@@ -1,6 +1,6 @@
 // import Range from "../Range";
-import Command from './Command';
-import { EditorCommandable as Editor } from '../../virtual/EditorCommandable';
+import { Command } from './Command';
+import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
 import { Direction } from '../../virtual/editor';
 // import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
 // import {COMMAND_NAME_DEL} from '../editor_protocol';
@@ -13,7 +13,7 @@ function bindKey(win: string, mac: string) {
 */
 
 // commands to enter multiselect mode
-const commands: Command[] = [{
+const commands: Command<Editor>[] = [{
     name: "addCursorAbove",
     exec: function (editor: Editor) { editor.selectMoreLines(Direction.BACKWARD); },
     bindKey: { win: "Ctrl-Alt-Up", mac: "Ctrl-Alt-Up" },

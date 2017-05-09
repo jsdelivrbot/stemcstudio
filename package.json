@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.72",
+  "version": "2.24.73",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -58,7 +58,7 @@
     "zone.js": "^0.8.10"
   },
   "devDependencies": {
-    "@reactivex/rxjs": "^5.3.1",
+    "@reactivex/rxjs": "^5.3.3",
     "@types/angular": "^1.6.17",
     "@types/angular-animate": "^1.5.6",
     "@types/angular-cookies": "^1.4.3",

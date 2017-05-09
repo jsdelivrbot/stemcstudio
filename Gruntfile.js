@@ -523,9 +523,9 @@ function copies(target) {
         },
         {
             expand: true,
-            cwd: "museum/RxJS@5.3.1",
+            cwd: "museum/RxJS@5.3.3",
             src: ["**"],
-            dest: prepend(target, 'vendor/RxJS@5.3.1')
+            dest: prepend(target, 'vendor/RxJS@5.3.3')
         },
         {
             expand: true,

@@ -15,7 +15,7 @@ import { END_CHANGE_CASE } from "./Tabstop";
 // Editor Abstraction Layer
 //
 import { Position } from '../virtual/editor';
-import { EditorCommandable as Editor } from '../virtual/EditorCommandable';
+import { EditorMaximal as Editor } from '../virtual/EditorMaximal';
 
 /**
  * This hack is used by the velocity language only.
