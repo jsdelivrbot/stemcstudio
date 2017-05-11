@@ -64,6 +64,7 @@ import { Delta } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
+import { LanguageModeId } from '../../virtual/editor';
 import { Marker } from '../../virtual/editor';
 import { QuickInfo } from '../../virtual/editor';
 import { QuickInfoTooltip } from '../../virtual/editor';
@@ -672,7 +673,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     /**
      * The editor service is only used here to create Document and EditSession objects.
      * The creation of Editor objects is the responsibility of UI components.
-     * This editor reference is passed to the WsFile constructor.
+     * This editor service reference is passed to the WsFile constructor.
      */
     private editorService: EditorService;
 
@@ -686,7 +687,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     private logLifecycle(message: string): void {
-        console.log(message);
+        console.log(`WsModel.${message}`);
     }
 
     private languageServiceOrThrow(): LanguageServiceProxy {
@@ -721,7 +722,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     recycle(): Promise<void> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.recycle()`);
+            this.logLifecycle(`recycle()`);
         }
         return new Promise<void>((resolve, reject) => {
             function callback(reason: Error | null | undefined): void {
@@ -809,7 +810,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     dispose(): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.dispose()`);
+            this.logLifecycle(`dispose()`);
         }
         // Just as recycle calls addRef, a dispose calls release.
         this.release();
@@ -821,7 +822,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private addRef(): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.addRef() @refCount = ${this.refCount}`);
+            this.logLifecycle(`addRef() @refCount = ${this.refCount}`);
         }
         if (this.refCount === 0) {
             if (this.files || this.trash) {
@@ -850,7 +851,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private release(): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.release() @refCount = ${this.refCount}`);
+            this.logLifecycle(`release() @refCount = ${this.refCount}`);
         }
         this.refCount--;
         if (this.refCount === 0) {
@@ -907,7 +908,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private cleanLanguageService(): Promise<any> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.cleanLangaugeService()`);
+            this.logLifecycle(`cleanLangaugeService()`);
         }
         const todos: Promise<any>[] = [];
         for (const moduleName of this.modulars.names()) {
@@ -1028,7 +1029,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     attachEditor(path: string, editor: Editor): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.attachEditor(path = ${path})`);
+            this.logLifecycle(`attachEditor(path = ${path})`);
         }
         // The user may elect to open an editor but then leave the workspace as the editor is opening.
         if (this.isZombie()) {
@@ -1108,7 +1109,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     detachEditor(path: string, editor: Editor): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.detachEditor(path = ${path})`);
+            this.logLifecycle(`detachEditor(path = ${path})`);
         }
         if (this.isZombie()) {
             return;
@@ -1226,7 +1227,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.beginDocumentMonitoring(path = ${path})`);
+            this.logLifecycle(`beginDocumentMonitoring(path = "${path}")`);
         }
         checkPath(path);
         checkCallback(callback);
@@ -1305,7 +1306,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     endDocumentMonitoring(path: string, callback: (err: any) => void) {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.endMonitoring(path = ${path})`);
+            this.logLifecycle(`endDocumentMonitoring(path = "${path}")`);
         }
         try {
             checkPath(path);
@@ -1393,7 +1394,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     removeAmbient(globalName: string): Promise<boolean> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.removeAmbient("${globalName}")`);
+            this.logLifecycle(`removeAmbient(globalName = "${globalName}")`);
         }
         return new Promise<boolean>((resolve, reject) => {
             const path = this.ambients.pathForName(globalName);
@@ -1418,7 +1419,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     addModule(moduleName: string, path: string, content: string): Promise<{ previous: string | undefined; added: boolean }> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.addModule('${moduleName}', '${path}')`);
+            this.logLifecycle(`addModule('${moduleName}', '${path}')`);
         }
         return new Promise<{ previous: string | undefined; added: boolean }>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1457,7 +1458,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     removeModule(moduleName: string): Promise<{ previous: string | undefined; removed: boolean }> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.removeModule('${moduleName}')`);
+            this.logLifecycle(`removeModule('${moduleName}')`);
         }
         return new Promise<{ previous: string | undefined; removed: boolean }>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1494,7 +1495,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     addScript(path: string, content: string): Promise<boolean> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.addScript("${path}")`);
+            this.logLifecycle(`addScript(path = "${path}")`);
         }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1505,7 +1506,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                             resolve(added);
                         }
                         else {
-                            reject(new Error(`ensureScript(${path}) returned ${added}, indicating that the script ${path} already exists.`));
+                            reject(new Error(`ensureScript(${path}) returned ${added}: ${typeof added}, indicating that the script ${path} already exists.`));
                         }
                     })
                     .catch((err) => {
@@ -1532,7 +1533,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     removeScript(path: string): Promise<boolean> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`WsModel.removeScript("${path}")`);
+            this.logLifecycle(`removeScript(path = "${path}")`);
         }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -2139,7 +2140,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     deleteFile(path: string, master: boolean): Promise<void> {
         if (this.traceFileOperations) {
-            this.logLifecycle(`WsModel.deleteFile(path = ${path}, master = ${master})`);
+            this.logLifecycle(`deleteFile(path = ${path}, master = ${master})`);
         }
         return new Promise<void>((resolve, reject) => {
             const file = this.files ? this.files.getWeakRef(path) : void 0;
@@ -2161,6 +2162,40 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                         resolve();
                     }, SLOW_MOTION_DELAY_MILLIS);
                 });
+                // Send a message that the file has been deleted.
+                if (this.room && master) {
+                    this.unsubscribeRoomFromDocumentChanges(path);
+                    this.room.deleteFile(path);
+                }
+            }
+            else {
+                setTimeout(() => {
+                    reject(new Error(`deleteFile(${path}), ${path} was not found.`));
+                }, 0);
+            }
+        });
+    }
+
+    private deleteFileUnmonitored(path: string, master: boolean): Promise<void> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`deleteFileUnmonitored(path = ${path}, master = ${master})`);
+        }
+        return new Promise<void>((resolve, reject) => {
+            const file = this.files ? this.files.getWeakRef(path) : void 0;
+            if (file) {
+                this.deletePending[path] = true;
+                // We intentionally magnify a race condition here.
+                // When some listeners receive the event that the file has been removed
+                // from the Language Service, they will initiate a compile.
+                // What happens if we try to get diagnostics on a file in the workspace
+                // that no longer exists in the Language Service?
+                window.setTimeout(() => {
+                    // The fact that the following method call is synchronous ensures
+                    // that the clearing of the delete pending tally happens in synch.
+                    this.expungeFile(file, path);
+                    delete this.deletePending[path];
+                    resolve();
+                }, SLOW_MOTION_DELAY_MILLIS);
                 // Send a message that the file has been deleted.
                 if (this.room && master) {
                     this.unsubscribeRoomFromDocumentChanges(path);
@@ -2228,74 +2263,130 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     /**
+     * 
+     */
+    renameFile(oldPath: string, newPath: string): Promise<void> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`renameFile(oldPath = ${oldPath}, newPath = ${newPath})`);
+        }
+        // TODO: Refactor to remove the nesting.
+        // Thhis will require fixing the monitoring calls.
+        return new Promise<void>((resolve, reject) => {
+            this.endDocumentMonitoring(oldPath, (endMonitoringError) => {
+                if (!endMonitoringError) {
+                    // TODO: Where is the Promise?
+                    this.renameUnmonitoredFile(oldPath, newPath)
+                        .then(() => {
+                            this.beginDocumentMonitoring(newPath, (beginMonitoringError) => {
+                                if (!beginMonitoringError) {
+                                    resolve();
+                                }
+                                else {
+                                    reject(beginMonitoringError);
+                                }
+                            });
+
+                        })
+                        .catch((renameError) => {
+                            reject(renameError);
+                        });
+                }
+                else {
+                    reject(endMonitoringError);
+                }
+            });
+        });
+    }
+
+    /**
+     * Creates a new file in the unmonitored state.
+     */
+    private createUnmonitoredFile(newPath: string, text: string, isOpen: boolean, selected: boolean, mode: LanguageModeId): Promise<void> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`createUnmonitoredFile(newPath = ${newPath}, mode = ${mode})`);
+        }
+        return new Promise<void>((resolve, reject) => {
+            // Determine whether we can recycle a file from trash or must create a new file.
+            if (!this.existsFileInTrash(newPath)) {
+
+                // We must create a new file.
+                const newFile = this.newFile(newPath);
+
+                // Initialize properties.
+                newFile.setText(text);
+                newFile.isOpen = isOpen;
+                newFile.selected = selected;
+
+                // Make it clear that this file did not come from GitHub.
+                newFile.existsInGitHub = false;
+
+                // Initialize properties that depend upon the new path.
+                newFile.mode = mode;
+
+                if (this.files) {
+                    this.files.putWeakRef(newPath, newFile);
+                }
+            }
+            else {
+                // We can recycle a file from trash.
+                this.restoreFileFromTrash(newPath);
+                if (this.files) {
+                    const theFile = this.files.getWeakRef(newPath);
+                    // Initialize properties that depend upon the new path.
+                    theFile.mode = mode;
+                }
+            }
+            resolve();
+        });
+    }
+
+    /**
      * Renames a file.
      * The file should not be being monitored.
+     * The file (renamed) will not be monitored.
+     * 
+     * TODO: Better that this be a private method and that the workspace does the right thing.
      */
-    renameFileUnmonitored(oldPath: string, newPath: string): void {
-        const mode = modeFromName(newPath);
-        if (!mode) {
-            throw new Error(`${newPath} is not a recognized language.`);
-        }
-        // Make sure that the file we want to re-path really does exist.
-        const oldFile = this.files ? this.files.getWeakRef(oldPath) : void 0;
-        if (oldFile) {
-            if (!this.existsFile(newPath)) {
-                // Determine whether we can recycle a file from trash or must create a new file.
-                if (!this.existsFileInTrash(newPath)) {
+    private renameUnmonitoredFile(oldPath: string, newPath: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const mode = modeFromName(newPath);
+            if (mode) {
+                // Make sure that the file we want to re-path really does exist.
+                const oldFile = this.files ? this.files.getWeakRef(oldPath) : void 0;
+                if (oldFile) {
+                    // We're now in the clear to proceed.
+                    if (!this.existsFile(newPath)) {
 
-                    // We must create a new file.
-                    const newFile = this.newFile(newPath);
-
-                    // Initialize properties.
-                    newFile.setText(oldFile.getText());
-                    newFile.isOpen = oldFile.isOpen;
-                    newFile.selected = oldFile.selected;
-
-                    // Make it clear that this file did not come from GitHub.
-                    newFile.existsInGitHub = false;
-
-                    // Initialize properties that depend upon the new path.
-                    newFile.mode = mode;
-
-                    if (this.files) {
-                        this.files.putWeakRef(newPath, newFile);
+                        this.createUnmonitoredFile(newPath, oldFile.getText(), oldFile.isOpen, oldFile.selected, mode)
+                            .then(() => {
+                                return this.deleteFileUnmonitored(oldPath, true);
+                            })
+                            .then(() => {
+                                // TODO: This could be decoupled by using an EventHub.
+                                // {begin, path} triggers wsModel.outputFilesForPath()
+                                this.eventBus.emit(renamedFileTopic, new RenamedFileMessage(oldPath, newPath));
+                                this.outputFilesForPath(newPath);
+                                return Promise.resolve();
+                            })
+                            .then(() => {
+                                resolve();
+                            })
+                            .catch((reason) => {
+                                console.warn(`renameUnmonitoredFile('${oldPath}', '${newPath}') failed. Reason: ${reason}`);
+                            });
+                    }
+                    else {
+                        reject(new Error(`${newPath} already exists. The new path must be unique.`));
                     }
                 }
                 else {
-                    // We can recycle a file from trash.
-                    this.restoreFileFromTrash(newPath);
-                    if (this.files) {
-                        const theFile = this.files.getWeakRef(newPath);
-                        // Initialize properties that depend upon the new path.
-                        theFile.mode = mode;
-                    }
+                    reject(new Error(`${oldPath} does not exist. The old path must be the path of an existing file.`));
                 }
-                // Delete the file by the old path, remove monitoring etc.
-                // We are deleting the file in the role of master.
-                this.deleteFile(oldPath, true)
-                    .then(() => {
-                        // Do nothing
-                    })
-                    .catch((reason) => {
-                        console.warn(`renameFile('${oldPath}', '${newPath}') could not delete the oldFile: ${reason.message}`);
-                    });
-
-                // TODO: This could be decoupled by using an EventHub.
-                // {begin, path} triggers wsModel.outputFilesForPath()
-                this.beginDocumentMonitoring(newPath, (err) => {
-                    if (!err) {
-                        this.eventBus.emit(renamedFileTopic, new RenamedFileMessage(oldPath, newPath));
-                        this.outputFilesForPath(newPath);
-                    }
-                });
             }
             else {
-                throw new Error(`${newPath} already exists. The new path must be unique.`);
+                reject(new Error(`${newPath} is not a recognized language.`));
             }
-        }
-        else {
-            throw new Error(`${oldPath} does not exist. The old path must be the path of an existing file.`);
-        }
+        });
     }
 
     /**

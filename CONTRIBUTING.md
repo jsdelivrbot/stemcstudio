@@ -90,6 +90,11 @@ Make sure that the version references are correct in the following files:
 3. jspm.config.js
 4. constants.ts (ACE_WORKER_VERSION)
 
+### Upgrading @angular/upgrade/static
+
+If you get errors Running "bundle" task, check version of @angular/upgrade/static.
+This bundle does not have a package.json equivalent entry and so can get left behind.
+
 git push origin master
 
 ### Upgrading TypeScript (version used at runtime)

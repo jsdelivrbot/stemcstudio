@@ -1,7 +1,9 @@
 import { Action } from '../../virtual/editor';
 
 /**
- *
+ * Associates an action function (the `exec` property) with a specification of key bindings.
+ * Also allows the specification of other behaviors that determine whether the command is available
+ * and what happens next in the editor. 
  */
 export interface Command<TARGET> {
 

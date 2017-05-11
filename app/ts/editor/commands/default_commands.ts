@@ -3,6 +3,9 @@ import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INDENT } from "../editor_protocol";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
+import { createCutCommand } from '../../workbench/commands/cut';
+import { createCopyCommand } from '../../workbench/commands/copy';
+import { createPasteCommand } from '../../workbench/commands/paste';
 
 //
 // TODO: Use EditorMinimal as the baseline and check for capabilities.
@@ -14,6 +17,11 @@ function bindKey(win: string | null, mac: string | null): { win: string | null; 
     return { win, mac };
 }
 
+//
+// Observe that the name property is not intended to be visible to the user.
+// It could be used for i18n.
+// Alternatively, we could define a label property and use Machine Learning to translate.
+//
 export const commands: Command<Editor>[] = [
     {
         name: "selectAll",
@@ -394,24 +402,9 @@ export const commands: Command<Editor>[] = [
         passEvent: true,
         readOnly: true
     },
-    {
-        name: "copy",
-        exec: function (editor: Editor) { editor.copy(); },
-        readOnly: true,
-    },
-
-    // commands disabled in readOnly mode
-    {
-        name: "cut",
-        exec: function (editor: Editor) { editor.cut(); },
-        scrollIntoView: "cursor",
-        multiSelectAction: "forEach"
-    },
-    {
-        name: "paste",
-        exec: function (editor: Editor, args) { editor.paste(); },
-        scrollIntoView: "cursor"
-    },
+    createCutCommand(),
+    createCopyCommand(),
+    createPasteCommand(),
     {
         name: "removeLines",
         bindKey: bindKey("Ctrl-D", "Command-D"),

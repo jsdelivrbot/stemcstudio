@@ -15,7 +15,9 @@ export class ModelDebug implements monaco.editor.IModel {
         throw new Error("id is readonly");
     }
     get uri(): monaco.Uri {
-        return this.model.uri;
+        const result = this.model.uri;
+        console.log(`get uri() => ${result}`);
+        return result;
     }
     set uri(uri: monaco.Uri) {
         // console.warn(`uri => ${JSON.stringify(uri)}`);
@@ -296,7 +298,10 @@ export class ModelDebug implements monaco.editor.IModel {
     }
 
     validateRange(range: monaco.IRange): monaco.Range {
-        return this.model.validateRange(range);
+        console.log(`validateRange(${range})`);
+        const result = this.model.validateRange(range);
+        console.log(`validateRange(${range}) => ${result}`);
+        return result;
     }
 
     getOffsetAt(position: monaco.IPosition): number {

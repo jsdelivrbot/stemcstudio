@@ -56,7 +56,7 @@ export function removeListener(target: ListenerTarget, type: string, callback: E
 }
 
 /*
-* Prevents propagation and clobbers the default action of the passed event
+* Prevents propagation and clobbers the default action of the passed Event (standard DOM).
 */
 export function stopEvent(e: Event): boolean {
     stopPropagation(e);
@@ -64,6 +64,10 @@ export function stopEvent(e: Event): boolean {
     return false;
 }
 
+/**
+ * Calls the `stopPropagation` method (if it is defined).
+ * If it is not defined, sets the `cancelBubble` property to `true`.
+ */
 export function stopPropagation(e: Event): void {
     if (e.stopPropagation) {
         e.stopPropagation();
@@ -327,6 +331,10 @@ function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCo
     return callback(e, hashId, keyCode as number);
 }
 
+/**
+ * A utility for adding listeners for keyboard events to produce hashId(s).
+ * The hashId value is compatible with the KeyboardHandler which maps them onto commands.
+ */
 export function addCommandKeyListener(el: ListenerTarget, callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any) {
     if (isOldGecko || (isOpera && !("KeyboardEvent" in window))) {
         // Old versions of Gecko aka. Firefox < 4.0 didn't repeat the keydown

@@ -1,6 +1,5 @@
 import { applyMixins } from "../lib/mix";
-import { KeyboardHandler } from "../keyboard/KeyboardHandler";
-import { KeyHash } from "../keyboard/KeyHash";
+import { KeyboardHandler, KeyboardType } from "../keyboard/KeyboardHandler";
 import { Action } from '../keyboard/Action';
 import { EventEmitterClass } from "../lib/EventEmitterClass";
 import { Command } from './Command';
@@ -18,7 +17,7 @@ export type CommandManagerEventName = 'afterExec' | 'exec';
 /**
  *
  */
-export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, EventBus<CommandManagerEventName, any, CommandManager<TARGET>> {
+export class CommandManager<TARGET> implements CommandExecutor<TARGET>, EventBus<CommandManagerEventName, any, CommandManager<TARGET>> {
     /**
      *
      */
@@ -42,10 +41,10 @@ export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, 
     _buildKeyHash: any;
 
     /**
-     * @param platform Identifier for the platform; must be either `'mac'` or `'win'`
+     * @param platform Identifier for the keyboard type; must be either `'mac'` or `'win'`
      * @param commands A list of commands
      */
-    constructor(platform: string, commands: Command<TARGET>[]) {
+    constructor(platform: KeyboardType, commands: Command<TARGET>[]) {
         this.eventBus = new EventEmitterClass<CommandManagerEventName, any, CommandManager<TARGET>>(this);
         this.hashHandler = new KeyboardHandler(commands, platform);
         this.eventBus.setDefaultHandler("exec", function (e) {
@@ -68,7 +67,7 @@ export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, 
         this.eventBus.removeDefaultHandler(eventName, callback);
     }
 
-    get platform(): string {
+    get platform(): KeyboardType {
         return this.hashHandler.platform;
     }
 
@@ -101,10 +100,6 @@ export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, 
 
     findKeyCommand(hashId: number, keyString: string): Command<TARGET> {
         return this.hashHandler.findKeyCommand(hashId, keyString);
-    }
-
-    parseKeys(keys: string): KeyHash {
-        return this.hashHandler.parseKeys(keys);
     }
 
     addCommands(commands: Command<TARGET>[]): void {
@@ -234,4 +229,5 @@ export default class CommandManager<TARGET> implements CommandExecutor<TARGET>, 
     }
 }
 
+// TODO: This is a bit strange. If it is used, CommandManager should implement KeyboardHandler.
 applyMixins(CommandManager, [KeyboardHandler]);

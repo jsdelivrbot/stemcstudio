@@ -94,30 +94,16 @@ export default class ExplorerFilesController {
         };
         this.modalService.prompt(options)
             .then((newName) => {
-                try {
-                    this.wsModel.endDocumentMonitoring(oldName, (endMonitoringError) => {
-                        if (!endMonitoringError) {
-                            this.wsModel.renameFileUnmonitored(oldName, newName);
-                            this.wsModel.beginDocumentMonitoring(newName, (beginMonitoringError) => {
-                                if (!beginMonitoringError) {
-                                    this.wsModel.updateStorage();
-                                }
-                                else {
-                                    this.modalService.alert({ title: "Error", message: `${beginMonitoringError}` });
-                                }
-                            });
-                        }
-                        else {
-                            this.modalService.alert({ title: "Error", message: `${endMonitoringError}` });
-                        }
+                this.wsModel.renameFile(oldName, newName)
+                    .then(() => {
+                        this.wsModel.updateStorage();
+                    })
+                    .catch((err) => {
+                        this.modalService.alert({ title: "Error", message: `${err}` });
                     });
-                }
-                catch (e) {
-                    this.modalService.alert({ title: "Error", message: e.toString() });
-                }
             })
             .catch(function (reason: any) {
-                // Do nothing.
+                // Do nothing, user has cancelled.
             });
     }
 

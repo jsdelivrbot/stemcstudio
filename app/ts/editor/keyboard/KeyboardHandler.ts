@@ -1,35 +1,46 @@
-import { FUNCTION_KEYS, KEY_MODS } from "../lib/keys";
-import keyCodes from "../lib/keys";
 import { isMac } from "../lib/useragent";
 import { Action } from "./Action";
 import { KeyHash } from './KeyHash';
 import { Command } from '../commands/Command';
 import { KeyboardResponse } from './KeyboardResponse';
+import { parseKeys } from './parseKeys';
 
 /**
- *
+ * The point of this type is to distinguish the description of the key bindings.
+ * TODO: It would probably be more precise to say 'mac' or 'other'. Refactor?
+ */
+export type KeyboardType = 'mac' | 'win';
+
+/**
+ * A two-layer cache from hashId to keyString to Command.
+ * Adding a command causes its bindKey property to be parsed and the hash is computed.
+ * Utilities exist in lib/events for binding to KeyboardEvent targets and computing a stream consisting
+ * of hashId: number and keyCode: number events. Utilities also exist in lib/keys to compute the key string from
+ * the keyCode, enabling the findKeyCommand on this class to be called.
  */
 export class KeyboardHandler<TARGET> {
 
     /**
-     *
+     * hashId => name => Command
+     * 
+     * The hashId is computed by KeyboardEvent bindings in lib/events.ts
      */
-    public commandKeyBinding: { [hashId: number]: { [name: string]: Command<TARGET> } };
+    public readonly commandKeyBinding: { [hashId: number]: { [name: string]: Command<TARGET> } };
 
     /**
      *
      */
-    public commands: { [name: string]: Command<TARGET> };
+    public readonly commands: { [name: string]: Command<TARGET> };
+
+    /**
+     * The type of keyboard being used.
+     */
+    public readonly platform: KeyboardType;
 
     /**
      *
      */
-    public platform: string;
-
-    /**
-     *
-     */
-    constructor(commands?: Command<TARGET>[], platform?: string) {
+    constructor(commands?: Command<TARGET>[], platform?: KeyboardType) {
 
         this.platform = platform || (isMac ? "mac" : "win");
         this.commands = {};
@@ -51,7 +62,7 @@ export class KeyboardHandler<TARGET> {
         this.commands[command.name as string] = command;
 
         if (command.bindKey) {
-            this._buildKeyHash(command);
+            this.buildKeyHash(command);
         }
     }
 
@@ -93,35 +104,26 @@ export class KeyboardHandler<TARGET> {
      * exec is the action, bindKey and name are the key.
      * The name of the command is derived from the key alternatives string.
      */
-    bindKey(key: string, action: Action<TARGET>/*, position*/): void {
-        if (!key) {
+    bindKey(bindKey: string, action: Action<TARGET>/*, position*/): void {
+        if (!bindKey) {
             throw new TypeError("key must be a string.");
         }
-        this.addCommand({ exec: action, bindKey: key, name: key });
+        this.addCommand({ exec: action, bindKey: bindKey, name: bindKey });
     }
 
     /**
-     *
+     * keys is a '|' (vertical bar) delimited list of keys.
+     * If there is no key specified, no binding takes place.
      */
-    bindCommand(key: string, command: Command<TARGET>/*, position*/): void {
-        // TODO: Do we need to generalize key?
-        /*
-        if (typeof key === "object" && key) {
-            if (position === undefined) {
-                position = key.position;
-            }
-            key = key[this.platform];
-        }
-        */
-
-        if (!key) {
+    bindCommand(keys: string | null, command: Command<TARGET>/*, position*/): void {
+        if (!keys) {
             return;
         }
 
         const ckb = this.commandKeyBinding;
 
-        key.split("|").forEach((keyPart) => {
-            const binding: KeyHash = this.parseKeys(keyPart);
+        keys.split("|").forEach((keyPart) => {
+            const binding: KeyHash = parseKeys(keyPart);
             const hashId = binding.hashId;
             (ckb[hashId] || (ckb[hashId] = {}))[binding.key] = command;
         });
@@ -169,55 +171,25 @@ export class KeyboardHandler<TARGET> {
     }
 
     /**
-     *
+     * The keys appropriate to the current platform (keyboard type) are extracted
+     * and used
+     * If the bindKey property on the command is not defined, nothing happens.
      */
-    public _buildKeyHash(command: Command<TARGET>): void {
-        const binding = command.bindKey;
-        if (!binding) {
+    private buildKeyHash(command: Command<TARGET>): void {
+        const bindKey = command.bindKey;
+        if (!bindKey) {
             return;
         }
 
-        const key = typeof binding === "string" ? binding : binding[this.platform];
-        this.bindCommand(key, command);
+        /**
+         *  The '|' delimited keys in the appropriate keyboard format.
+         */
+        const keys = typeof bindKey === "string" ? bindKey : bindKey[this.platform];
+        this.bindCommand(keys, command);
     }
 
     /**
-     * accepts keys in the form ctrl+Enter or ctrl-Enter
-     * keys without modifiers or shift only.
-     */
-    parseKeys(keys: string): KeyHash {
-        // todo support keychains 
-        if (keys.indexOf(" ") !== -1) {
-            keys = keys.split(/\s+/).pop() as string;
-        }
-
-        const parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function (x: any) { return x; });
-        let key = parts.pop() as string;
-
-        const keyCode = keyCodes[key];
-        if (FUNCTION_KEYS[keyCode]) {
-            key = FUNCTION_KEYS[keyCode].toLowerCase();
-        }
-        else if (!parts.length) {
-            return { key: key, hashId: -1 };
-        }
-        else if (parts.length === 1 && parts[0] === "shift") {
-            return { key: key.toUpperCase(), hashId: -1 };
-        }
-
-        let hashId = 0;
-        for (let i = parts.length; i--;) {
-            const modifier = KEY_MODS[parts[i]];
-            if (modifier === null) {
-                throw new Error("invalid modifier " + parts[i] + " in " + keys);
-            }
-            hashId |= modifier;
-        }
-        return { key: key, hashId: hashId };
-    }
-
-    /**
-     *
+     * 
      */
     findKeyCommand(hashId: number, keyString: string): Command<TARGET> {
         const ckbr = this.commandKeyBinding;

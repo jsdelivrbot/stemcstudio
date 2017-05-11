@@ -157,12 +157,15 @@ export default class RoomAgent implements Shareable {
         return this.roomId;
     }
 
+    /**
+     * Sends a message to the remote room requesting that the file with the specified path be deleted.
+     */
     deleteFile(path: string): void {
         const action: MwAction = { c: ACTION_NULLIFY_UPPERCASE };
         const changes: MwChange[] = [{ a: action }];
         const edits: MwEdits = { x: changes };
-        this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
-            // console.lg(`Room has acknowledged edits for path ${path} from this node ${this.nodeId}.`);
+        this.socket.emit(SOCKET_EVENT_EDITS, { fromId: this.nodeId, roomId: this.roomId, path, edits }, (err: any) => {
+            console.log(`Room ${this.roomId} has acknowledged message to deleteFile('${path}') sent from this node ${this.nodeId}.`);
         });
     }
 

@@ -161,6 +161,9 @@ class SearchBox {
         this.replaceInput = <HTMLInputElement>this.replaceForm.querySelector(".ace_search_field");
     }
     $init(editor: Editor) {
+        /**
+         * The SearchBox element.
+         */
         const sb = this.element;
 
         this.$initElements(sb);

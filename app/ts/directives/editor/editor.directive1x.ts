@@ -1,12 +1,12 @@
 import { isUndefined } from 'angular';
-import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
+import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IQService, ITimeoutService, ITranscludeFunction } from 'angular';
 import applyTextChanges from './applyTextChanges';
+import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
 import UndoManager from '../../editor/UndoManager';
 import EditorScope from './EditorScope';
 import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
-import IndentStyle from '../../editor/workspace/IndentStyle';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
 import { showFindReplace } from '../../editor/ext/showFindReplace';
 import { showGreekKeyboard } from '../../editor/ext/showGreekKeyboard';
@@ -18,6 +18,15 @@ import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WorkspaceEditorHost } from '../../directives/editor/WorkspaceEditorHost';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import refChange from '../../utils/refChange';
+import { computeContextMenu } from './computeContextMenu';
+import { renderContextMenu } from '../contextMenu/renderContextMenu';
+//
+// Format Document
+//
+import { formatCodeSettings } from '../../workbench/actions/formatDocument';
+import { createFormatDocumentCommand } from '../../workbench/commands/formatDocument';
+import TextChange from '../../editor/workspace/TextChange';
+
 //
 // Editor Abstraction Layer
 //
@@ -52,24 +61,6 @@ const FIND_REPLACE_COMMAND = {
     readOnly: true // false if this command should not apply in readOnly mode
 };
 
-function isTypeScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'ts':
-            case 'tsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isTypeScript('${path}') can't figure that one out.`);
-    return false;
-}
-
 interface EditorDetacher {
     (): void;
 }
@@ -78,7 +69,7 @@ interface EditorDetacher {
 // Choose which editor to inject here. e.g. MONACO_EDITOR_SERVICE_UUID.
 // Note, because we are a hybrid application, the WsModel injection must also change.
 //
-createEditorDirective.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE, EDITOR_SERVICE_UUID];
+createEditorDirective.$inject = ['$q', '$timeout', EDITOR_PREFERENCES_SERVICE, EDITOR_SERVICE_UUID, 'FEATURE_EXPLORER_CONTEXT_MENU'];
 /**
  * Factory for the editor (attribute) directive.
  * This directive turns an HTMLElement into a container for an Editor.
@@ -87,9 +78,11 @@ createEditorDirective.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE, EDITOR_
  * When changing the parameters to this function, be sure to update the $inject property.
  */
 export function createEditorDirective(
+    $q: IQService,
     $timeout: ITimeoutService,
     editorPreferencesService: EditorPreferencesService,
-    editorService: EditorService): IDirective {
+    editorService: EditorService,
+    FEATURE_EXPLORER_CONTEXT_MENU: boolean): IDirective {
 
     /**
      * $scope Used to monitor $onDestroy and support transclude.
@@ -260,6 +253,51 @@ export function createEditorDirective(
             }
         });
 
+        /**
+         * Our mutable state includes the currently displayed context menu.
+         */
+        let currentContextMenu: IAugmentedJQuery | undefined = void 0;
+
+        /**
+         * 
+         */
+        function removeContextMenu() {
+            if (currentContextMenu) {
+                currentContextMenu.remove();
+                currentContextMenu = void 0;
+            }
+        }
+
+        const contextMenuHandler = function (contextMenuEvent: PointerEvent) {
+            contextMenuEvent.stopPropagation();
+            $scope.$apply(function () {
+                contextMenuEvent.preventDefault();
+                const indentSize = editorPreferencesService.getTabSize();
+                const file: WsFile = ngModel.$viewValue;
+                const session = file.getSession();
+                const menu: (ContextMenuItem | null)[] = computeContextMenu($scope.path, editor, indentSize, {
+                    getFormattingEditsForDocument() {
+                        const settings = formatCodeSettings(indentSize);
+                        return wsController.getFormattingEditsForDocument($scope.path, settings);
+                    },
+                    applyTextChanges(edits: TextChange[], session: EditSession) {
+                        applyTextChanges(edits, session);
+                    }
+                }, session);
+                if (menu instanceof Array) {
+                    currentContextMenu = renderContextMenu($q, $scope, contextMenuEvent, menu, removeContextMenu);
+                }
+                else {
+                    const msg = "context-menu expression must evaluate to an array.";
+                    console.warn(msg);
+                }
+            });
+        };
+
+        if (FEATURE_EXPLORER_CONTEXT_MENU) {
+            container.addEventListener('contextmenu', contextMenuHandler, false);
+        }
+
         function resizeEditorNextTick() {
             $timeout(function () { resizeEditor(BOGUS_WIDTH, BOGUS_HEIGHT); }, 0, /* No delay. */ false /* Don't trigger a digest. */);
         }
@@ -277,6 +315,11 @@ export function createEditorDirective(
         // Both the scope and the element receive '$destroy' events, but the scope is called first.
         // It's probably also the more consistent place to release non-AngularJS resources allocated for the scope.
         function onDestroyScope() {
+
+            if (FEATURE_EXPLORER_CONTEXT_MENU) {
+                container.removeEventListener('contextmenu', contextMenuHandler, false);
+            }
+
             unregisterWatchNgShow();
             // TODO: Since we only attach the editor after its thread has started and has been initialized,
             // should we only stop the thread after it has been detached?
@@ -395,43 +438,14 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
             }
         }
     });
-    editor.addCommand({
-        name: 'formatDocument',
-        bindKey: { win: 'Ctrl-Shift-I', mac: 'Command-Alt-I' },
-        exec: function () {
-            if (isTypeScript(path)) {
-                const settings: FormatCodeSettings = {};
-                settings.baseIndentSize = 0;
-                settings.convertTabsToSpaces = true;
-                settings.indentSize = editorPreferencesService.getTabSize();
-                settings.indentStyle = IndentStyle.Smart;
-                settings.insertSpaceAfterCommaDelimiter = true;
-                settings.insertSpaceAfterConstructor = false;
-                settings.insertSpaceAfterFunctionKeywordForAnonymousFunctions = false;
-                settings.insertSpaceAfterKeywordsInControlFlowStatements = true;
-
-                settings.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = false;
-                settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces = false;
-                settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets = false;
-                settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis = false;
-                settings.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces = false;
-
-                settings.insertSpaceAfterSemicolonInForStatements = true;
-                settings.insertSpaceAfterTypeAssertion = true;
-                settings.insertSpaceBeforeAndAfterBinaryOperators = true;
-                settings.insertSpaceBeforeFunctionParenthesis = false;
-                settings.newLineCharacter = '\n';
-                wsController.getFormattingEditsForDocument(path, settings)
-                    .then(function (textChanges) {
-                        applyTextChanges(textChanges, session);
-                    })
-                    .catch(function (reason) {
-                        // This is rather unlikely, given that our service is running in a thread.
-                        console.warn(`${reason}`);
-                    });
-            }
+    // Format Document
+    // TODO: If the file gets renamed
+    editor.addCommand(createFormatDocumentCommand(path, editorPreferencesService.getTabSize(), {
+        getFormattingEditsForDocument(path: string, settings: FormatCodeSettings) {
+            return wsController.getFormattingEditsForDocument(path, settings);
         },
-        scrollIntoView: 'animate',
-        readOnly: true
-    });
+        applyTextChanges(textChanges: TextChange[]) {
+            applyTextChanges(textChanges, session);
+        }
+    }, session));
 }

@@ -1,5 +1,5 @@
 import { IScope } from 'angular';
-import ContextMenuItem from '../contextMenu/ContextMenuItem';
+import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 
 /**

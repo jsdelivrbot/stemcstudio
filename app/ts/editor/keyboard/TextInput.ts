@@ -318,16 +318,20 @@ export default class TextInput {
             doCopy(e, false);
         };
 
+        // TODO: I don't see this being cleaned up. 
         const onPaste = (e: ClipboardEvent) => {
-            const data = handleClipboardData(e);
-            if (typeof data === "string") {
-                if (data)
-                    editor.onPaste(data);
-                if (isIE)
+            const text = handleClipboardData(e);
+            if (typeof text === "string") {
+                if (text) {
+                    editor.onPaste(text);
+                }
+                if (isIE) {
                     setTimeout(() => { this.resetSelection(); });
+                }
                 preventDefault(e);
             }
             else {
+                // The clipboard 'paste' event has given us a boolean or undefined.
                 this.text.value = "";
                 this.pasted = true;
             }
@@ -594,5 +598,4 @@ export default class TextInput {
         if (isWebKit)
             this.syncValue.schedule();
     }
-
 }

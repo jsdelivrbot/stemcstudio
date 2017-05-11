@@ -26,6 +26,11 @@ import { ModelDebug } from './ModelDebug';
 // import { MonacoModel } from './MonacoModel';
 import { EditSession as NativeEditSession } from '../../../editor/EditSession';
 
+/**
+ * It looks like it is going to be hopeless to use the monaco editor in a workspace scenario.
+ * There are too many undocumented semantics, too many completely undocumented APIs (which
+ * had to be reverse-engineered), and no guarantee that all the extension points will exist.
+ */
 export class MonacoEditor implements Editor {
     private editor: monaco.editor.IStandaloneCodeEditor;
     private session: NativeEditSession | undefined;

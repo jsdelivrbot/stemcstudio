@@ -11,7 +11,7 @@ import { EditSession as NativeEditSession } from './EditSession';
 import GutterLayer from "./layer/GutterLayer";
 import GutterTooltip from './GutterTooltip';
 import { KeyboardHandler as KeyboardHandlerClazz } from "./keyboard/KeyboardHandler";
-import KeyBinding from "./keyboard/KeyBinding";
+import { KeyBinding } from "./keyboard/KeyBinding";
 import TextInput from "./keyboard/TextInput";
 import Delta from "./Delta";
 import { Action } from "./keyboard/Action";
@@ -30,13 +30,16 @@ import TextAndSelection from "./TextAndSelection";
 import EventBus from "./EventBus";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { Command } from "./commands/Command";
-import CommandManager from "./commands/CommandManager";
+import { CommandManager } from "./commands/CommandManager";
 import { commands as defaultCommands } from "./commands/default_commands";
 import TokenIterator from "./TokenIterator";
 import { COMMAND_NAME_AUTO_COMPLETE } from './editor_protocol';
 import { COMMAND_NAME_BACKSPACE } from './editor_protocol';
+import { COMMAND_NAME_COPY } from './editor_protocol';
+import { COMMAND_NAME_CUT } from './editor_protocol';
 import { COMMAND_NAME_DEL } from './editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from './editor_protocol';
+import { COMMAND_NAME_PASTE } from './editor_protocol';
 import Renderer from './Renderer';
 import Completer from "./autocomplete/Completer";
 import { CompletionManager } from "./autocomplete/CompletionManager";
@@ -2239,9 +2242,21 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * Called whenever a text "cut" happens.
      */
     public onCut(): void {
-        const cutCommand = this.commands.getCommandByName("cut");
+        const cutCommand = this.commands.getCommandByName(COMMAND_NAME_CUT);
         if (cutCommand) {
             this.commands.exec(cutCommand, this);
+        }
+    }
+
+    cut(): void {
+        const cutRange = this.getSelectionRange();
+
+        // The 'cut' event announces the range that is about to be cut out.
+        this._emit("cut", cutRange);
+
+        if (this.selection && !this.selection.isEmpty()) {
+            this.sessionOrThrow().remove(cutRange);
+            this.clearSelection();
         }
     }
 
@@ -2249,35 +2264,78 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * Called whenever a text "copy" happens.
      */
     public onCopy(): void {
-        const copyCommand = this.commands.getCommandByName("copy");
+        const copyCommand = this.commands.getCommandByName(COMMAND_NAME_COPY);
         if (copyCommand) {
             this.commands.exec(copyCommand, this);
         }
     }
 
     copy(): void {
-        // Do nothing.
+        // Don't expect this to be called. 
+        console.warn("Editor.copy called but there is no implementation.");
     }
 
     /**
      * Called whenever a text "paste" happens.
+     * This originates from a ClipboardEvent caught by keyboard/TextInput.
+     * The original listener has already ensured that we are only called
+     * with strings that are non-zero length.
      *
      * @param text The pasted text.
      */
     onPaste(text: string): void {
         // todo this should change when paste becomes a command
-        if (this.$readOnly)
+        if (this.$readOnly) {
             return;
-        const e = { text: text };
-        /**
-         * @event paste
-         */
-        this.eventBus._signal("paste", e);
-        this.insert(e.text, true);
+        }
+
+        // Original implementation...
+        // this.eventBus._signal("paste", { text });
+        // this.insert(text, true);
+
+        // Alternatively, run it through the 'paste' command so that we remain DRY.
+        const pasteCommand = this.commands.getCommandByName(COMMAND_NAME_PASTE);
+        if (pasteCommand.exec) {
+            pasteCommand.exec(this, { text });
+        }
     }
 
-    paste(): void {
-        // Do nothing.
+    /**
+     * This is the handler for the 'paste' command.
+     * Since we don't currently have a key binding (Ctrl-V, etc), how does it get called?
+     */
+    paste(args: { text: string }): void {
+
+        this._signal("paste", args);
+
+        const { text } = args;
+        if (!this.inMultiSelectMode || this.inVirtualSelectionMode) {
+            this.insert(text, true);
+        }
+        else {
+            // We're in multi select mode and not in virtual selection mode.
+            const lines = text.split(/\r\n|\r|\n/);
+            const ranges = this.selectionOrThrow().rangeList.ranges;
+
+            if (lines.length > ranges.length || lines.length < 2 || !lines[1]) {
+                const insertStringCommand = this.commands.getCommandByName(COMMAND_NAME_INSERT_STRING);
+                if (insertStringCommand) {
+                    this.commands.exec(insertStringCommand, this, text);
+                }
+                else {
+                    console.warn(`command '${COMMAND_NAME_INSERT_STRING}' does not exist.`);
+                }
+            }
+
+            const session = this.sessionOrThrow();
+            for (let i = ranges.length; i--;) {
+                const range = ranges[i];
+                if (!isEmpty(range)) {
+                    session.remove(range);
+                }
+                session.insert(range.start, lines[i]);
+            }
+        }
     }
 
     /**
@@ -2340,6 +2398,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         const lineState = session.getState(cursor.row);
         const line = session.getLine(cursor.row);
         const shouldOutdent = mode.checkOutdent(lineState, line, text);
+        // Insert the text.
         /* const end = */ session.insert(cursor, text);
 
         if (transform && transform.selection) {
@@ -3522,18 +3581,6 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     //
     // EditorChangeable
     //
-
-    cut(): void {
-        const cutRange = this.getSelectionRange();
-
-        // The 'cut' event announces the range that is about to be cut out.
-        this._emit("cut", cutRange);
-
-        if (this.selection && !this.selection.isEmpty()) {
-            this.sessionOrThrow().remove(cutRange);
-            this.clearSelection();
-        }
-    }
 
     deleteLeft(): void {
         if (this.selection && this.selection.isEmpty()) {

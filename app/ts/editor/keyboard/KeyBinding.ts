@@ -15,7 +15,7 @@ export interface TargetWithCommands<TARGET> {
 /**
  *
  */
-export default class KeyBinding<TARGET extends TargetWithCommands<TARGET>> {
+export class KeyBinding<TARGET extends TargetWithCommands<TARGET>> {
     /**
      *
      */

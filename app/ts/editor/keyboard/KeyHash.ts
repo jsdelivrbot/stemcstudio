@@ -2,7 +2,6 @@
  *
  */
 export interface KeyHash {
-
     /**
      *
      */

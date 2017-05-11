@@ -1,14 +1,20 @@
 import Delta from '../../../editor/Delta';
 import { EditSession } from '../../../editor/EditSession';
-import { rowToLineNumber, columnToMonaco } from './virtualToMonaco';
-import { lineNumberToRow, monacoToNativePosition } from './monacoToNative';
+// import { rowToLineNumber, columnToMonaco } from './virtualToMonaco';
+// import { lineNumberToRow } from './monacoToNative';
 
 /**
  * Experiment in containing the model.
  * WARNING: This uses many undocumented APIs in Monaco.
+ * 
+ * Difficulties in mapping:
+ * 1. The monaco IModel API is not well documented (it's what is in monaco.d.ts).
+ * 2. May not be able to hook all needed aspects to use workspace.
+ * 3. Using many undocumented APIs (not even in the original d.ts but called anyway).
  */
 export class MonacoModel implements monaco.editor.IModel {
-
+    private uri_: monaco.Uri;
+    private versionId_ = 0;
     /**
      * 
      */
@@ -18,13 +24,13 @@ export class MonacoModel implements monaco.editor.IModel {
     }
 
     get id(): string {
-        return this.session.id;
+        throw new Error("get id");
     }
     set id(id: string) {
         throw new Error("id is readonly");
     }
     get uri(): monaco.Uri {
-        return this.session.uri;
+        return this.uri_;
     }
     set uri(uri: monaco.Uri) {
         console.warn(`uri => ${JSON.stringify(uri)}`);
@@ -42,80 +48,72 @@ export class MonacoModel implements monaco.editor.IModel {
     }
 
     forceTokenization(lineNumber: number): void {
-        this.session.getTokens(lineNumberToRow(lineNumber));
+        throw new Error();
     }
 
     setMode(languageIdentifier: monaco.editor.LanguageIdentifier): void {
-        const language = languageIdentifier.language as any;
-        this.session.setLanguage(language);
+        throw new Error();
     }
 
     findMatchingBracketUp(bracket: string, position: monaco.IPosition): monaco.Range {
-        return this.session.modeOrThrow().getMatching.findMatchingBracketUp(bracket, position);
+        throw new Error();
     }
 
     matchBracket(position: monaco.IPosition): [monaco.Range, monaco.Range] {
-        const range = this.session.getBracketRange(monacoToNativePosition(position));
-        if (range) {
-            //
-        }
-        else {
-            //
-        }
+        throw new Error();
     }
 
     getLanguageIdAtPosition(lineNumber: number, column: number): monaco.editor.LanguageId {
-        return this.session.getLanguageIdAtPosition(lineNumber, column);
+        throw new Error();
     }
 
     getLineTokens(lineNumber: number): monaco.editor.LineTokens {
-        return this.session.getLineTokens(lineNumber);
+        throw new Error();
     }
 
     setValueFromTextSource(newValue: monaco.editor.ITextSource): void {
-        return this.session.setValueFromTextSource(newValue);
+        throw new Error();
     }
 
     equals(other: monaco.editor.ITextSource): boolean {
-        return this.session.equals(other);
+        throw new Error();
     }
 
     getIndentLevel(lineNumber: number): number {
-        return this.session.getIndentLevel(lineNumber);
+        throw new Error();
     }
 
     getIndentRanges(): monaco.editor.IndentRange[] {
-        return this.session.getIndentRanges();
+        throw new Error();
     }
 
     getLineIndentGuide(lineNumber: number): number {
-        return this.session.getLineIndentGuide(lineNumber);
+        throw new Error();
     }
 
     _addMarker(internalDecorationId: number, lineNumber: number, column: number, stickToPreviousCharacter: boolean): string {
-        // this.session.addMarker()
-        // return this.session._addMarker(internalDecorationId, lineNumber, column, stickToPreviousCharacter);
+        throw new Error();
     }
 
     /**
      * @internal
      */
     _changeMarker(id: string, newLineNumber: number, newColumn: number): void {
-        // return this.session._changeMarker(id, newLineNumber, newColumn);
+        throw new Error();
     }
 
     /**
      * @internal
      */
     _changeMarkerStickiness(id: string, newStickToPreviousCharacter: boolean): void {
-        // return this.session._changeMarkerStickiness(id, newStickToPreviousCharacter);
+        throw new Error();
     }
 
     /**
      * @internal
      */
     _getMarker(id: string): monaco.Position {
-        // return this.session.._getMarker(id);
+        throw new Error();
     }
 
     /**
@@ -130,17 +128,7 @@ export class MonacoModel implements monaco.editor.IModel {
      * @internal
      */
     undo(): monaco.Selection[] {
-        const range = this.session.getUndoManager().undo();
-        if (range) {
-            const selectionStartLineNumber = rowToLineNumber(range.start.row);
-            const selectionStartColumn = columnToMonaco(range.start.column);
-            const positionLineNumber = rowToLineNumber(range.end.row);
-            const positionColumn = columnToMonaco(range.end.column);
-            return [new monaco.Selection(selectionStartLineNumber, selectionStartColumn, positionLineNumber, positionColumn)];
-        }
-        else {
-            return [];
-        }
+        throw new Error();
     }
 
     /**
@@ -149,17 +137,7 @@ export class MonacoModel implements monaco.editor.IModel {
      * @internal
      */
     redo(): monaco.Selection[] {
-        const range = this.session.getUndoManager().redo();
-        if (range) {
-            const selectionStartLineNumber = rowToLineNumber(range.start.row);
-            const selectionStartColumn = columnToMonaco(range.start.column);
-            const positionLineNumber = rowToLineNumber(range.end.row);
-            const positionColumn = columnToMonaco(range.end.column);
-            return [new monaco.Selection(selectionStartLineNumber, selectionStartColumn, positionLineNumber, positionColumn)];
-        }
-        else {
-            return [];
-        }
+        throw new Error();
     }
 
     /**
@@ -167,7 +145,7 @@ export class MonacoModel implements monaco.editor.IModel {
      * @internal
      */
     setEditableRange(range: monaco.IRange): void {
-        return this.session.setEditableRange(range);
+        throw new Error();
     }
 
     /**
@@ -175,7 +153,7 @@ export class MonacoModel implements monaco.editor.IModel {
      * @internal
      */
     hasEditableRange(): boolean {
-        return this.session.hasEditableRange();
+        throw new Error();
     }
 
     /**
@@ -183,11 +161,11 @@ export class MonacoModel implements monaco.editor.IModel {
      * @internal
      */
     getEditableRange(): monaco.Range {
-        return this.session.getBracketRange.getEditableRange();
+        throw new Error();
     }
 
     normalizeIndentation(str: string): string {
-        return this.session.normalizeIndentation(str);
+        throw new Error();
     }
 
     getOneIndent(): string {
@@ -195,100 +173,125 @@ export class MonacoModel implements monaco.editor.IModel {
     }
 
     updateOptions(newOpts: monaco.editor.ITextModelUpdateOptions): void {
-        // return this.session.updateOptions(newOpts);
+        throw new Error();
     }
 
     detectIndentation(defaultInsertSpaces: boolean, defaultTabSize: number): void {
-        // return this.session..detectIndentation(defaultInsertSpaces, defaultTabSize);
+        throw new Error();
     }
 
     /**
      * Push a marker onto the undo-redo stack.
      */
     pushStackElement(): void {
-        // this.session.getUndoManager().
+        throw new Error();
     }
 
     pushEditOperations(beforeCursorState: monaco.Selection[], editOperations: monaco.editor.IIdentifiedSingleEditOperation[], cursorStateComputer: monaco.editor.ICursorStateComputer): monaco.Selection[] {
-        // return this.session.pushEditOperations(beforeCursorState, editOperations, cursorStateComputer);
-        return [];
+        throw new Error();
     }
 
     applyEdits(operations: monaco.editor.IIdentifiedSingleEditOperation[]): monaco.editor.IIdentifiedSingleEditOperation[] {
-        this.session.docOrThrow().applyDeltas([]);
-        return [];
+        throw new Error();
     }
 
     addBulkListener(listener: monaco.editor.BulkListenerCallback): monaco.IDisposable {
-        return this.session.addBulkListener(listener);
+        // TODO
+        // It's not known what the Editor wants to listen for or how the data is formatted.
+        // This would have to be reverse engineered by sniffing the traffic.
+        return {
+            dispose() {
+                // Do nothing.
+            }
+        };
     }
 
     getModeId(): string {
-        return this.session.getModeId();
+        throw new Error();
     }
 
     deltaDecorations(oldDecorations: string[], newDecorations: monaco.editor.IModelDeltaDecoration[], ownerId?: number): string[] {
-        return this.session.deltaDecorations(oldDecorations, newDecorations, ownerId);
+        throw new Error();
     }
 
     removeAllDecorationsWithOwnerId(ownerId: number): void {
-        return this.session.removeAllDecorationsWithOwnerId(ownerId);
+        throw new Error();
     }
 
     getDecorationOptions(id: string): monaco.editor.IModelDecorationOptions {
-        return this.session.getDecorationOptions(id);
+        throw new Error();
     }
 
     getDecorationRange(id: string): monaco.Range {
-        return this.session..getDecorationRange(id);
+        throw new Error();
     }
 
     getLineDecorations(lineNumber: number, ownerId?: number, filterOutValidation?: boolean): monaco.editor.IModelDecoration[] {
-        return this.session.getLineDecorations(lineNumber, ownerId, filterOutValidation);
+        throw new Error();
     }
 
     getLinesDecorations(startLineNumber: number, endLineNumber: number, ownerId?: number, filterOutValidation?: boolean): monaco.editor.IModelDecoration[] {
-        return this.session.getLinesDecorations(startLineNumber, endLineNumber, ownerId, filterOutValidation);
+        throw new Error();
     }
 
     getDecorationsInRange(range: monaco.IRange, ownerId?: number, filterOutValidation?: boolean): monaco.editor.IModelDecoration[] {
-        return this.session.getDecorationsInRange(range, ownerId, filterOutValidation);
+        throw new Error();
     }
 
     getAllDecorations(ownerId?: number, filterOutValidation?: boolean): monaco.editor.IModelDecoration[] {
-        return this.session.getAllDecorations(ownerId, filterOutValidation);
+        throw new Error();
     }
 
     getWordAtPosition(position: monaco.IPosition): monaco.editor.IWordAtPosition {
-        return this.session.getWordAtPosition(position);
+        throw new Error();
     }
 
     getWordUntilPosition(position: monaco.IPosition): monaco.editor.IWordAtPosition {
-        return this.session.getWordUntilPosition(position);
+        throw new Error();
     }
 
     getOptions(): monaco.editor.TextModelResolvedOptions {
-        return this.session.getOptions();
+        function defaultEOL(session: EditSession): monaco.editor.DefaultEndOfLine {
+            switch (session.getNewLineMode()) {
+                case 'unix': {
+                    return monaco.editor.DefaultEndOfLine.LF;
+                }
+                case 'windows': {
+                    return monaco.editor.DefaultEndOfLine.CRLF;
+                }
+                case 'auto': {
+                    return monaco.editor.DefaultEndOfLine.LF;
+                }
+            }
+        }
+        const options: monaco.editor.TextModelResolvedOptions = {
+            _textModelResolvedOptionsBrand: void 0,
+            defaultEOL: defaultEOL(this.session),
+            insertSpaces: true,
+            tabSize: this.session.getTabSize(),
+            trimAutoWhitespace: true
+        };
+        return options;
     }
 
     getVersionId(): number {
-        return this.session.getVersionId();
+        return this.versionId_;
     }
 
     getAlternativeVersionId(): number {
-        return this.session.getAlternativeVersionId();
+        throw new Error();
     }
 
     getValueLength(eol?: monaco.editor.EndOfLinePreference, preserveBOM?: boolean): number {
-        return this.session.getValueLength(eol, preserveBOM);
+        throw new Error();
     }
 
     getValueInRange(range: monaco.IRange, eol?: monaco.editor.EndOfLinePreference): string {
-        return this.session.getValueInRange(range, eol);
+        throw new Error();
     }
 
     getValueLengthInRange(range: monaco.IRange): number {
-        return this.session.getValueLengthInRange(range);
+        throw new Error();
     }
 
     getLineCount(): number {
@@ -296,7 +299,7 @@ export class MonacoModel implements monaco.editor.IModel {
     }
 
     getLineContent(lineNumber: number): string {
-        return this.session.getLineContent(lineNumber);
+        throw new Error();
     }
 
     getLinesContent(): string[] {
@@ -326,63 +329,63 @@ export class MonacoModel implements monaco.editor.IModel {
     }
 
     getLineMinColumn(lineNumber: number): number {
-        return this.session.getLineMinColumn(lineNumber);
+        throw new Error();
     }
 
     getLineMaxColumn(lineNumber: number): number {
-        return this.session.getLineMaxColumn(lineNumber);
+        throw new Error();
     }
 
     getLineFirstNonWhitespaceColumn(lineNumber: number): number {
-        return this.session.getLineFirstNonWhitespaceColumn(lineNumber);
+        throw new Error();
     }
 
     getLineLastNonWhitespaceColumn(lineNumber: number): number {
-        return this.session.getLineLastNonWhitespaceColumn(lineNumber);
+        throw new Error();
     }
 
     validatePosition(position: monaco.IPosition): monaco.Position {
-        return this.session.validatePosition(position);
+        throw new Error();
     }
 
     modifyPosition(position: monaco.IPosition, offset: number): monaco.Position {
-        return this.session.modifyPosition(position, offset);
+        throw new Error();
     }
 
     onDidChangeRawContent(listener: (e: monaco.editor.ModelRawContentChangedEvent) => void): monaco.IDisposable {
-        return this.session.onDidChangeRawContent(listener);
+        throw new Error();
     }
 
     validateRange(range: monaco.IRange): monaco.Range {
-        return this.session.validateRange(range);
+        throw new Error();
     }
 
     getOffsetAt(position: monaco.IPosition): number {
-        return this.session.getOffsetAt(position);
+        throw new Error();
     }
 
     getPositionAt(offset: number): monaco.Position {
-        return this.session.getPositionAt(offset);
+        throw new Error();
     }
 
     getFullModelRange(): monaco.Range {
-        return this.session.getFullModelRange();
+        throw new Error();
     }
 
     isDisposed(): boolean {
-        return this.session.isDisposed();
+        throw new Error();
     }
 
     findMatches(searchString: string, searchOnlyEditableRange: boolean | monaco.IRange, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean, limitResultCount?: number): monaco.editor.FindMatch[] {
-        return this.session.findMatches(searchString, searchOnlyEditableRange, isRegex, matchCase, wholeWord, captureMatches, limitResultCount);
+        throw new Error();
     }
 
     findNextMatch(searchString: string, searchStart: monaco.IPosition, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean): monaco.editor.FindMatch {
-        return this.session.findNextMatch(searchString, searchStart, isRegex, matchCase, wholeWord, captureMatches);
+        throw new Error();
     }
 
     findPreviousMatch(searchString: string, searchStart: monaco.IPosition, isRegex: boolean, matchCase: boolean, wholeWord: boolean, captureMatches: boolean): monaco.editor.FindMatch {
-        return this.session.findPreviousMatch(searchString, searchStart, isRegex, matchCase, wholeWord, captureMatches);
+        throw new Error();
     }
 
     /**

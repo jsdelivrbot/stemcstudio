@@ -200,12 +200,13 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.73');
+app.constant('version', '2.24.74');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
+app.constant('FEATURE_EXPLORER_CONTEXT_MENU', false);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);

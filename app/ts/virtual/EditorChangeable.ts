@@ -11,7 +11,7 @@ export interface EditorChangeable extends EditorMinimal {
 
     cut(): void;
     copy(): void;
-    paste(): void;
+    paste(args: { text: string }): void;
 
     deleteLeft(): void;
 

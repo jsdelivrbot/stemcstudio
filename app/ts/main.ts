@@ -53,7 +53,7 @@ import { GitHubUserService } from './services/github/github.user.service';
 
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
 import CommitMessageController from './services/cloud/CommitMessageController';
-import contextMenu from './directives/contextMenu/contextMenu.directive';
+import { contextMenu } from './directives/contextMenu/contextMenu.directive';
 import contiguous from './filters/contiguous';
 import { DashboardController } from './controllers/DashboardController';
 import { DoodleController } from './controllers/DoodleController';

@@ -1,6 +1,6 @@
-import { element, forEach, isFunction } from 'angular';
-import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, IPromise, IQService, IScope, ITranscludeFunction } from 'angular';
-import ContextMenuItem from './ContextMenuItem';
+import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, IQService, IScope, ITranscludeFunction } from 'angular';
+import { ContextMenuItem } from './ContextMenuItem';
+import { renderContextMenu } from './renderContextMenu';
 
 /**
  * interface for the DOM attributes.
@@ -16,8 +16,13 @@ interface ContextMenuAttributes extends IAttributes {
 /**
  * This implementation was inspired by...
  * https://github.com/Templarian/ui.bootstrap.contextMenu
+ * 
+ * Usage: context-menu='menu(path, file)' attribute explorer.html
+ * 
+ * It's probably not worth trying to improve this code since it uses
+ * both AnhularJS $scope, $q
  */
-function factory($q: IQService) {
+export function contextMenu($q: IQService): IDirective {
 
     /**
      * Our mutable state includes the currently displayed context menu.
@@ -27,171 +32,11 @@ function factory($q: IQService) {
     /**
      * 
      */
-    function removeContextMenus() {
+    function removeContextMenu() {
         if (currentContextMenu) {
             currentContextMenu.remove();
             currentContextMenu = void 0;
         }
-    }
-
-    /**
-     *
-     */
-    function handlePromises(ul: IAugmentedJQuery, event: JQueryEventObject, promises: IPromise<any>[]) {
-        $q.all(promises).then(function () {
-
-            let topCoordinate = event.pageY;
-            const menuHeight: number = element(ul[0]).prop('offsetHeight');
-            // TODO: What is view?
-            const winHeight: number = event['view'].innerHeight;
-            if (topCoordinate > menuHeight && winHeight - topCoordinate < menuHeight) {
-                topCoordinate = event.pageY - menuHeight;
-            }
-
-            let leftCoordinate = event.pageX;
-            const menuWidth = element(ul[0]).prop('offsetWidth');
-            const winWidth = event['view'].innerWidth;
-            if (leftCoordinate > menuWidth && winWidth - leftCoordinate < menuWidth) {
-                leftCoordinate = event.pageX - menuWidth;
-            }
-
-            ul.css({
-                display: 'block',
-                position: 'absolute',
-                left: leftCoordinate + 'px',
-                top: topCoordinate + 'px'
-            });
-        });
-    }
-
-    function registerEventHandler($scope: IScope, enabled: boolean, menuItem: ContextMenuItem, li: IAugmentedJQuery, contextMenuEvent: JQueryEventObject) {
-        if (enabled) {
-            li.on('click', function (clickEvent: JQueryMouseEventObject) {
-                // WARNING: href='#' will drive us back to the home page if we don't prevent the default action for click.
-                clickEvent.preventDefault();
-                $scope.$apply(function () {
-                    element(contextMenuEvent.currentTarget).removeClass('context');
-                    removeContextMenus();
-                    if (isFunction(menuItem.action)) {
-                        menuItem.action();
-                    }
-                    else {
-                        console.warn(`ContextMenuItem[label=${menuItem.label}].action must be a function.`);
-                    }
-                });
-            });
-        }
-        else {
-            li.on('click', function (clickEvent: JQueryMouseEventObject) {
-                clickEvent.preventDefault();
-            });
-            li.addClass('disabled');
-        }
-    }
-
-    /**
-     *
-     */
-    function processLabel(menuItem: ContextMenuItem, promises: IPromise<string>[]): IAugmentedJQuery {
-        const anchor = element('<a>');
-        anchor.css('padding-right', '8px');
-        // href='#' makes the mouse cursor correct but we must prevent the default action when we register the event handler. 
-        anchor.attr({ tabIndex: '-1', href: '#' });
-
-        const promise: IPromise<string> = $q.when(menuItem.label);
-        promise.then(function (text: string) {
-            anchor.text(text);
-        });
-        return anchor;
-    }
-
-    /**
-     *
-     */
-    function renderContextMenuItem($scope: IScope, contextMenuEvent: JQueryEventObject, li: IAugmentedJQuery, menuItem: ContextMenuItem, promises: IPromise<string>[]): void {
-        const label: IAugmentedJQuery = processLabel(menuItem, promises);
-        li.append(label);
-
-        registerEventHandler($scope, true, menuItem, li, contextMenuEvent);
-    }
-
-    /**
-     * Create a dropdown menu consistent with Bootstrap standards.
-     * This is basically a DOM structure that looks like:
-     *
-     * <div class='dropdown'>
-     *  <!-- Don't need the button or the caret. -->
-     *   <ul class='dropdown-menu' role='menu' aria-labelledby='...'>
-     *     <li role='presentation'>
-     *       <a role='menuitem' href='#'>Label</a>
-     *     </li>
-     *     <li class='divider'></li>
-     *     <li class='disabled'></li>
-     *   </ul>
-     * </div>
-     *
-     * Accessibility provided by including the role and aria- attributes.
-     */
-    function renderContextMenu($scope: IScope, contextMenuEvent: JQueryEventObject, menu: ContextMenuItem[]) {
-
-        /**
-         * TODO: Documentation
-         */
-        const promises: IPromise<string>[] = [];
-
-        element(contextMenuEvent.currentTarget).addClass('context');
-        const contextMenu: IAugmentedJQuery = element('<div>');
-        currentContextMenu = contextMenu;
-        contextMenu.addClass('dropdown clearfix');
-        const ul: IAugmentedJQuery = element('<ul>');
-        ul.addClass('dropdown-menu');
-        ul.attr({ role: 'menu' });
-        ul.css({
-            'display': 'block',
-            'position': 'absolute',
-            'left': contextMenuEvent.pageX + 'px',
-            'top': contextMenuEvent.pageY + 'px',
-            'z-index': 1000
-        });
-
-        forEach(menu, function (menuItem: ContextMenuItem) {
-            const li: IAugmentedJQuery = element('<li>');
-            ul.append(li);
-            if (menuItem === null) {
-                li.addClass('divider');
-            }
-            else {
-                renderContextMenuItem($scope, contextMenuEvent, li, menuItem, promises);
-            }
-        });
-
-        contextMenu.append(ul);
-        const height = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        contextMenu.css({
-            width: '100%',
-            height: height + 'px',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            zIndex: 9999
-        });
-        element(document).find('body').append(contextMenu);
-
-        // Now that the menu has been built, we make some adjustments to the dimensions.
-        handlePromises(ul, contextMenuEvent, promises);
-
-        contextMenu.on('mousedown', function (event: JQueryEventObject) {
-            // The following code dismisses the context menu if a mousedown event
-            // occurs outside of the menu items.
-            if (element(event.target).hasClass('dropdown')) {
-                element(event.currentTarget).removeClass('context');
-                removeContextMenus();
-            }
-        });
     }
 
     /**
@@ -221,7 +66,7 @@ function factory($q: IQService) {
                         contextMenuEvent.preventDefault();
                         const menu: ContextMenuItem[] = $scope.$eval(iAttrs.contextMenu);
                         if (menu instanceof Array) {
-                            renderContextMenu($scope, contextMenuEvent, menu);
+                            currentContextMenu = renderContextMenu($q, $scope, contextMenuEvent.originalEvent as PointerEvent, menu, removeContextMenu);
                         }
                         else {
                             const msg = "context-menu expression must evaluate to an array.";
@@ -231,7 +76,7 @@ function factory($q: IQService) {
                 }
                 function onDestroyScope() {
                     iElem.off('contextmenu', contextMenuEventHandler);
-                    removeContextMenus();
+                    removeContextMenu();
                 }
                 iElem.on('contextmenu', contextMenuEventHandler);
                 $scope.$on("$destroy", onDestroyScope);
@@ -253,6 +98,4 @@ function factory($q: IQService) {
 /**
  * Dependencies that will be injected into the factory function.
  */
-factory.$inject = ['$q'];
-
-export default factory;
+contextMenu.$inject = ['$q'];
