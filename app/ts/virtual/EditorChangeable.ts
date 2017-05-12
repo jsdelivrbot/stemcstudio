@@ -3,6 +3,11 @@ import { Range } from './editor';
 import { EditorMinimal } from './EditorMinimal';
 
 export interface EditorChangeable extends EditorMinimal {
+    /**
+     * Indicates that the editor content cannot be changed.
+     */
+    readOnly: boolean;
+
     blockOutdent(): void;
     blockIndent(): void;
 
@@ -14,8 +19,6 @@ export interface EditorChangeable extends EditorMinimal {
     paste(args: { text: string }): void;
 
     deleteLeft(): void;
-
-    getReadOnly(): boolean;
 
     indent(): void;
     insert(text: string): void;

@@ -1,7 +1,7 @@
 /**
  *
  */
-interface CompletionEntry {
+export interface CompletionEntry {
 
     /**
      *
@@ -23,5 +23,3 @@ interface CompletionEntry {
      */
     sortText: string;
 }
-
-export default CompletionEntry;

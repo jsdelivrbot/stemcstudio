@@ -1,7 +1,7 @@
 import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import Annotation from "../Annotation";
 import BlockComment from './BlockComment';
-import Completion from "../Completion";
+import { Completion } from "../Completion";
 import Position from "../Position";
 import Tokenizer from "../Tokenizer";
 import TextHighlightRules from "./TextHighlightRules";

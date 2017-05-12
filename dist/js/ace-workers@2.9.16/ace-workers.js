@@ -18621,16 +18621,6 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                     this.moduleNameToFileName[moduleName] = fileName;
                     return previousFileName;
                 };
-                DefaultLanguageServiceHost.prototype.ensureScript = function (fileName, content) {
-                    var script = this.scripts[fileName];
-                    if (script) {
-                        script.updateContent(content);
-                        return false;
-                    } else {
-                        this.addScript(fileName, content);
-                        return true;
-                    }
-                };
                 DefaultLanguageServiceHost.prototype.applyDelta = function (fileName, delta) {
                     var script = this.scripts[fileName];
                     if (script) {
@@ -18644,6 +18634,14 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                     delete this.moduleNameToFileName[moduleName];
                     return fileName;
                 };
+                DefaultLanguageServiceHost.prototype.getScriptContent = function (fileName) {
+                    var script = this.scripts[fileName];
+                    if (script) {
+                        return script.getValue();
+                    } else {
+                        return void 0;
+                    }
+                };
                 DefaultLanguageServiceHost.prototype.removeScript = function (fileName) {
                     var script = this.scripts[fileName];
                     if (script) {
@@ -18651,6 +18649,16 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                         return true;
                     } else {
                         return false;
+                    }
+                };
+                DefaultLanguageServiceHost.prototype.setScriptContent = function (fileName, content) {
+                    var script = this.scripts[fileName];
+                    if (script) {
+                        script.updateContent(content);
+                        return false;
+                    } else {
+                        this.addScript(fileName, content);
+                        return true;
                     }
                 };
                 DefaultLanguageServiceHost.prototype.setCompilationSettings = function (compilerOptions) {
@@ -25673,17 +25681,18 @@ System.register("src/mode/LanguageServiceEvents.js", [], function (exports_1, co
     "use strict";
 
     var __moduleName = context_1 && context_1.id;
-    var EVENT_APPLY_DELTA, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_MODULE_MAPPING, EVENT_ENSURE_SCRIPT, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, EVENT_GET_OUTPUT_FILES, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_LINT_ERRORS, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_REMOVE_MODULE_MAPPING, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_OPERATOR_OVERLOADING, EVENT_SET_SCRIPT_TARGET, EVENT_SET_TRACE, EVENT_SET_TS_CONFIG;
+    var EVENT_APPLY_DELTA, EVENT_DEFAULT_LIB_CONTENT, EVENT_ENSURE_MODULE_MAPPING, EVENT_GET_COMPLETIONS_AT_POSITION, EVENT_GET_DEFINITION_AT_POSITION, EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, EVENT_GET_OUTPUT_FILES, EVENT_GET_SCRIPT_CONTENT, EVENT_GET_SEMANTIC_ERRORS, EVENT_GET_SYNTAX_ERRORS, EVENT_GET_LINT_ERRORS, EVENT_GET_QUICK_INFO_AT_POSITION, EVENT_REMOVE_MODULE_MAPPING, EVENT_REMOVE_SCRIPT, EVENT_SET_MODULE_KIND, EVENT_SET_OPERATOR_OVERLOADING, EVENT_SET_SCRIPT_CONTENT, EVENT_SET_SCRIPT_TARGET, EVENT_SET_TRACE, EVENT_SET_TS_CONFIG;
     return {
         setters: [],
         execute: function () {
             exports_1("EVENT_APPLY_DELTA", EVENT_APPLY_DELTA = 'applyDelta');
             exports_1("EVENT_DEFAULT_LIB_CONTENT", EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent');
             exports_1("EVENT_ENSURE_MODULE_MAPPING", EVENT_ENSURE_MODULE_MAPPING = 'ensureModuleMapping');
-            exports_1("EVENT_ENSURE_SCRIPT", EVENT_ENSURE_SCRIPT = 'ensureScript');
             exports_1("EVENT_GET_COMPLETIONS_AT_POSITION", EVENT_GET_COMPLETIONS_AT_POSITION = 'getCompletionsAtPosition');
+            exports_1("EVENT_GET_DEFINITION_AT_POSITION", EVENT_GET_DEFINITION_AT_POSITION = 'getDefinitionAtPosition');
             exports_1("EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT", EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT = 'getFormattingEditsForDocument');
             exports_1("EVENT_GET_OUTPUT_FILES", EVENT_GET_OUTPUT_FILES = 'getOutputFiles');
+            exports_1("EVENT_GET_SCRIPT_CONTENT", EVENT_GET_SCRIPT_CONTENT = 'getScriptContent');
             exports_1("EVENT_GET_SEMANTIC_ERRORS", EVENT_GET_SEMANTIC_ERRORS = 'getSemanticErrors');
             exports_1("EVENT_GET_SYNTAX_ERRORS", EVENT_GET_SYNTAX_ERRORS = 'getSyntaxErrors');
             exports_1("EVENT_GET_LINT_ERRORS", EVENT_GET_LINT_ERRORS = 'getLintErrors');
@@ -25692,6 +25701,7 @@ System.register("src/mode/LanguageServiceEvents.js", [], function (exports_1, co
             exports_1("EVENT_REMOVE_SCRIPT", EVENT_REMOVE_SCRIPT = 'removeScript');
             exports_1("EVENT_SET_MODULE_KIND", EVENT_SET_MODULE_KIND = 'setModuleKind');
             exports_1("EVENT_SET_OPERATOR_OVERLOADING", EVENT_SET_OPERATOR_OVERLOADING = 'setOperatorOverloading');
+            exports_1("EVENT_SET_SCRIPT_CONTENT", EVENT_SET_SCRIPT_CONTENT = 'setScriptContent');
             exports_1("EVENT_SET_SCRIPT_TARGET", EVENT_SET_SCRIPT_TARGET = 'setScriptTarget');
             exports_1("EVENT_SET_TRACE", EVENT_SET_TRACE = 'setTrace');
             exports_1("EVENT_SET_TS_CONFIG", EVENT_SET_TS_CONFIG = 'setTsConfig');
@@ -26195,7 +26205,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
             code: ruleName
         };
     }
-    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, linter_1, transpileModule_1, LanguageServiceEvents_1, LanguageServiceEvents_2, LanguageServiceEvents_3, LanguageServiceEvents_4, LanguageServiceEvents_5, LanguageServiceEvents_6, LanguageServiceEvents_7, LanguageServiceEvents_8, LanguageServiceEvents_9, LanguageServiceEvents_10, LanguageServiceEvents_11, LanguageServiceEvents_12, LanguageServiceEvents_13, LanguageServiceEvents_14, LanguageServiceEvents_15, LanguageServiceEvents_16, LanguageServiceEvents_17, LanguageServiceEvents_18, LanguageServiceHelpers_1, LanguageServiceHelpers_2, useCaseSensitiveFileNames, DiagnosticCategory, LanguageServiceWorker;
+    var DefaultLanguageServiceHost_1, DocumentRegistryInspector_1, linter_1, transpileModule_1, LanguageServiceEvents_1, LanguageServiceEvents_2, LanguageServiceEvents_3, LanguageServiceEvents_4, LanguageServiceEvents_5, LanguageServiceEvents_6, LanguageServiceEvents_7, LanguageServiceEvents_8, LanguageServiceEvents_9, LanguageServiceEvents_10, LanguageServiceEvents_11, LanguageServiceEvents_12, LanguageServiceEvents_13, LanguageServiceEvents_14, LanguageServiceEvents_15, LanguageServiceEvents_16, LanguageServiceEvents_17, LanguageServiceEvents_18, LanguageServiceEvents_19, LanguageServiceEvents_20, LanguageServiceHelpers_1, LanguageServiceHelpers_2, useCaseSensitiveFileNames, DiagnosticCategory, LanguageServiceWorker;
     return {
         setters: [function (DefaultLanguageServiceHost_1_1) {
             DefaultLanguageServiceHost_1 = DefaultLanguageServiceHost_1_1;
@@ -26224,6 +26234,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
             LanguageServiceEvents_16 = LanguageServiceEvents_1_1;
             LanguageServiceEvents_17 = LanguageServiceEvents_1_1;
             LanguageServiceEvents_18 = LanguageServiceEvents_1_1;
+            LanguageServiceEvents_19 = LanguageServiceEvents_1_1;
+            LanguageServiceEvents_20 = LanguageServiceEvents_1_1;
         }, function (LanguageServiceHelpers_1_1) {
             LanguageServiceHelpers_1 = LanguageServiceHelpers_1_1;
             LanguageServiceHelpers_2 = LanguageServiceHelpers_1_1;
@@ -26251,9 +26263,6 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             var oldTrace = _this.trace;
                             _this.trace = newTrace;
                             _this.documentRegistry_.trace = newTrace;
-                            if (oldTrace || newTrace) {
-                                console.log(LanguageServiceEvents_17.EVENT_SET_TRACE + "(oldTrace = " + oldTrace + ", newTrace = " + newTrace + ")");
-                            }
                             _this.resolve(LanguageServiceEvents_17.EVENT_SET_TRACE, oldTrace, callbackId);
                         } catch (err) {
                             _this.reject(LanguageServiceEvents_17.EVENT_SET_TRACE, err, callbackId);
@@ -26267,7 +26276,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT + "(" + _this.lsHost.getDefaultLibFileName({}) + ")");
                             }
-                            var added = _this.lsHost.ensureScript(_this.lsHost.getDefaultLibFileName({}), content);
+                            var added = _this.lsHost.setScriptContent(_this.lsHost.getDefaultLibFileName({}), content);
                             _this.resolve(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT, added, callbackId);
                         } catch (reason) {
                             _this.reject(LanguageServiceEvents_2.EVENT_DEFAULT_LIB_CONTENT, reason, callbackId);
@@ -26288,19 +26297,33 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             _this.reject(LanguageServiceEvents_3.EVENT_ENSURE_MODULE_MAPPING, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_4.EVENT_ENSURE_SCRIPT, function (message) {
+                    sender.on(LanguageServiceEvents_10.EVENT_GET_SCRIPT_CONTENT, function (message) {
+                        var _a = message.data,
+                            fileName = _a.fileName,
+                            callbackId = _a.callbackId;
+                        try {
+                            if (_this.trace) {
+                                console.log(LanguageServiceEvents_10.EVENT_GET_SCRIPT_CONTENT + "(" + fileName + ")");
+                            }
+                            var content = _this.lsHost.getScriptContent(fileName);
+                            _this.resolve(LanguageServiceEvents_10.EVENT_GET_SCRIPT_CONTENT, content, callbackId);
+                        } catch (reason) {
+                            _this.reject(LanguageServiceEvents_10.EVENT_GET_SCRIPT_CONTENT, reason, callbackId);
+                        }
+                    });
+                    sender.on(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
                             content = _a.content,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_4.EVENT_ENSURE_SCRIPT + "(" + fileName + ")");
+                                console.log(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT + "(" + fileName + ")");
                             }
-                            var added = _this.lsHost.ensureScript(fileName, content);
-                            _this.resolve(LanguageServiceEvents_4.EVENT_ENSURE_SCRIPT, added, callbackId);
+                            var added = _this.lsHost.setScriptContent(fileName, content);
+                            _this.resolve(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT, added, callbackId);
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_4.EVENT_ENSURE_SCRIPT, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT, reason, callbackId);
                         }
                     });
                     sender.on(LanguageServiceEvents_1.EVENT_APPLY_DELTA, function (message) {
@@ -26318,32 +26341,32 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             _this.reject(LanguageServiceEvents_1.EVENT_APPLY_DELTA, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_12.EVENT_REMOVE_MODULE_MAPPING, function (message) {
+                    sender.on(LanguageServiceEvents_13.EVENT_REMOVE_MODULE_MAPPING, function (message) {
                         var _a = message.data,
                             moduleName = _a.moduleName,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_12.EVENT_REMOVE_MODULE_MAPPING + "(" + moduleName + ")");
+                                console.log(LanguageServiceEvents_13.EVENT_REMOVE_MODULE_MAPPING + "(" + moduleName + ")");
                             }
                             var mappedFileName = _this.lsHost.removeModuleMapping(moduleName);
-                            _this.resolve(LanguageServiceEvents_12.EVENT_REMOVE_MODULE_MAPPING, mappedFileName, callbackId);
+                            _this.resolve(LanguageServiceEvents_13.EVENT_REMOVE_MODULE_MAPPING, mappedFileName, callbackId);
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_12.EVENT_REMOVE_MODULE_MAPPING, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_13.EVENT_REMOVE_MODULE_MAPPING, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_13.EVENT_REMOVE_SCRIPT, function (message) {
+                    sender.on(LanguageServiceEvents_20.EVENT_REMOVE_SCRIPT, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_13.EVENT_REMOVE_SCRIPT + "(" + fileName + ")");
+                                console.log(LanguageServiceEvents_20.EVENT_REMOVE_SCRIPT + "(" + fileName + ")");
                             }
                             var removed = _this.lsHost.removeScript(fileName);
-                            _this.resolve(LanguageServiceEvents_13.EVENT_REMOVE_SCRIPT, removed, callbackId);
+                            _this.resolve(LanguageServiceEvents_20.EVENT_REMOVE_SCRIPT, removed, callbackId);
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_13.EVENT_REMOVE_SCRIPT, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_20.EVENT_REMOVE_SCRIPT, reason, callbackId);
                         }
                     });
                     sender.on(LanguageServiceEvents_14.EVENT_SET_MODULE_KIND, function (message) {
@@ -26409,37 +26432,37 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             _this.reject(LanguageServiceEvents_18.EVENT_SET_TS_CONFIG, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_11.EVENT_GET_SYNTAX_ERRORS, function (message) {
+                    sender.on(LanguageServiceEvents_12.EVENT_GET_SYNTAX_ERRORS, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_11.EVENT_GET_SYNTAX_ERRORS + "(" + fileName + ")");
+                                console.log(LanguageServiceEvents_12.EVENT_GET_SYNTAX_ERRORS + "(" + fileName + ")");
                             }
                             var diagnostics = _this.ensureLS().getSyntacticDiagnostics(fileName);
                             var errors = diagnostics.map(tsDiagnosticToEditorDiagnostic);
-                            _this.resolve(LanguageServiceEvents_11.EVENT_GET_SYNTAX_ERRORS, errors, callbackId);
+                            _this.resolve(LanguageServiceEvents_12.EVENT_GET_SYNTAX_ERRORS, errors, callbackId);
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_11.EVENT_GET_SYNTAX_ERRORS, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_12.EVENT_GET_SYNTAX_ERRORS, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_10.EVENT_GET_SEMANTIC_ERRORS, function (message) {
+                    sender.on(LanguageServiceEvents_11.EVENT_GET_SEMANTIC_ERRORS, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_10.EVENT_GET_SEMANTIC_ERRORS + "(" + fileName + ")");
+                                console.log(LanguageServiceEvents_11.EVENT_GET_SEMANTIC_ERRORS + "(" + fileName + ")");
                             }
                             var diagnostics = _this.ensureLS().getSemanticDiagnostics(fileName);
                             var errors = diagnostics.map(tsDiagnosticToEditorDiagnostic);
-                            _this.resolve(LanguageServiceEvents_10.EVENT_GET_SEMANTIC_ERRORS, errors, callbackId);
+                            _this.resolve(LanguageServiceEvents_11.EVENT_GET_SEMANTIC_ERRORS, errors, callbackId);
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_10.EVENT_GET_SEMANTIC_ERRORS, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_11.EVENT_GET_SEMANTIC_ERRORS, reason, callbackId);
                         }
                     });
-                    sender.on(LanguageServiceEvents_5.EVENT_GET_COMPLETIONS_AT_POSITION, function (message) {
+                    sender.on(LanguageServiceEvents_4.EVENT_GET_COMPLETIONS_AT_POSITION, function (message) {
                         var _a = message.data,
                             fileName = _a.fileName,
                             position = _a.position,
@@ -26447,7 +26470,7 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             callbackId = _a.callbackId;
                         try {
                             if (_this.trace) {
-                                console.log(LanguageServiceEvents_5.EVENT_GET_COMPLETIONS_AT_POSITION + "(" + fileName + ", " + position + ", " + prefix + ")");
+                                console.log(LanguageServiceEvents_4.EVENT_GET_COMPLETIONS_AT_POSITION + "(" + fileName + ", " + position + ", " + prefix + ")");
                             }
                             if (typeof position !== 'number' || isNaN(position)) {
                                 throw new Error("position must be a number and not NaN");
@@ -26455,12 +26478,34 @@ System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLangu
                             var completionInfo = _this.ensureLS().getCompletionsAtPosition(fileName, position);
                             if (completionInfo) {
                                 var completions = completionInfo.entries;
-                                _this.resolve(LanguageServiceEvents_5.EVENT_GET_COMPLETIONS_AT_POSITION, completions, callbackId);
+                                _this.resolve(LanguageServiceEvents_4.EVENT_GET_COMPLETIONS_AT_POSITION, completions, callbackId);
                             } else {
-                                _this.resolve(LanguageServiceEvents_5.EVENT_GET_COMPLETIONS_AT_POSITION, [], callbackId);
+                                _this.resolve(LanguageServiceEvents_4.EVENT_GET_COMPLETIONS_AT_POSITION, [], callbackId);
                             }
                         } catch (reason) {
-                            _this.reject(LanguageServiceEvents_5.EVENT_GET_COMPLETIONS_AT_POSITION, reason, callbackId);
+                            _this.reject(LanguageServiceEvents_4.EVENT_GET_COMPLETIONS_AT_POSITION, reason, callbackId);
+                        }
+                    });
+                    sender.on(LanguageServiceEvents_5.EVENT_GET_DEFINITION_AT_POSITION, function (message) {
+                        var _a = message.data,
+                            fileName = _a.fileName,
+                            position = _a.position,
+                            callbackId = _a.callbackId;
+                        try {
+                            if (_this.trace) {
+                                console.log(LanguageServiceEvents_5.EVENT_GET_DEFINITION_AT_POSITION + "(" + fileName + ", " + position + ")");
+                            }
+                            if (typeof position !== 'number' || isNaN(position)) {
+                                throw new Error("position must be a number and not NaN");
+                            }
+                            var definitionInfo = _this.ensureLS().getDefinitionAtPosition(fileName, position);
+                            if (definitionInfo) {
+                                _this.resolve(LanguageServiceEvents_5.EVENT_GET_DEFINITION_AT_POSITION, definitionInfo, callbackId);
+                            } else {
+                                _this.resolve(LanguageServiceEvents_5.EVENT_GET_DEFINITION_AT_POSITION, [], callbackId);
+                            }
+                        } catch (reason) {
+                            _this.reject(LanguageServiceEvents_5.EVENT_GET_DEFINITION_AT_POSITION, reason, callbackId);
                         }
                     });
                     sender.on(LanguageServiceEvents_9.EVENT_GET_QUICK_INFO_AT_POSITION, function (message) {

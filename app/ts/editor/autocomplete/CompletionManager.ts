@@ -1,7 +1,7 @@
 import Anchor from '../Anchor';
 import { Action } from '../keyboard/Action';
 import Completer from './Completer';
-import Completion from '../Completion';
+import { Completion } from '../Completion';
 import CompletionList from '../CompletionList';
 import createDelayedCall from '../lib/lang/createDelayedCall';
 import DelayedCall from '../lib/lang/DelayedCall';

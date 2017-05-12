@@ -59,9 +59,10 @@ export interface Command<TARGET> {
     scrollIntoView?: 'animate' | 'center' | 'cursor' | 'none' | 'selection' | 'selectionPart';
 
     /**
-     * Determines the context for the command.
+     * Determines whether the command is allowed in the specified context.
+     * If this method is not defined then the command assumes it can be executed.
      */
-    isAvailable?: (target: TARGET) => boolean;
+    isAvailable?: (context: TARGET) => boolean;
 }
 
 export interface Completer<T extends Editor> {
@@ -102,6 +103,9 @@ export type EditorEventType = 'change' | 'changeAnnotation' | 'changeSelection' 
  */
 export interface Editor extends EditorMaximal, EditorMinimal {
     addCompleter<T extends Editor>(completer: Completer<T>): void;
+    /**
+     * This is called when the editor is attached to the workspace.
+     */
     createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip | undefined;
     execCommand(command: Command<EditorMaximal>): void;
     getContainer(): HTMLElement;

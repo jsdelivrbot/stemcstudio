@@ -4,14 +4,15 @@ import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
 import { AutoCompleteCommand } from '../../editor/autocomplete/AutoCompleteCommand';
 import { ChangedOperatorOverloadingMessage, changedOperatorOverloading } from './IWorkspaceModel';
-import CompletionEntry from '../../editor/workspace/CompletionEntry';
-import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
-import Diagnostic from '../../editor/workspace/Diagnostic';
+import { CompletionEntry } from '../../editor/workspace/CompletionEntry';
+import { copyWorkspaceToDoodle } from '../../mappings/copyWorkspaceToDoodle';
+import { DefinitionInfo } from '../../editor/workspace/DefinitionInfo';
+import { Diagnostic } from '../../editor/workspace/Diagnostic';
 import { DocumentMonitor } from './monitoring.service';
 import { workerCompleted } from '../../editor/EditSession';
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import { EventHub } from './EventHub';
-import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { get } from '../../editor/lib/net';
 import { getPosition, DocumentWithLines } from '../../editor/workspace/getPosition';
 import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
@@ -42,7 +43,7 @@ import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
 import { SnippetCompleter } from '../../editor/SnippetCompleter';
 import StringShareableMap from '../../collections/StringShareableMap';
-import TextChange from '../../editor/workspace/TextChange';
+import { TextChange } from '../../editor/workspace/TextChange';
 import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
 import { TsConfigJsonMonitor } from './monitors/TsConfigJsonMonitor';
 import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
@@ -56,9 +57,12 @@ import { setOptionalStringProperty } from '../../services/doodles/setOptionalStr
 import { setOptionalStringArrayProperty } from '../../services/doodles/setOptionalStringArrayProperty';
 import { WorkspaceRoomListener } from './WorkspaceRoomListener';
 import { WorkspaceCompleter } from '../../editor/workspace/WorkspaceCompleter';
-import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
+import { WorkspaceCompleterHost } from '../../editor/workspace/WorkspaceCompleterHost';
 //
 // Editor Abstraction Layer.
+// The workspace knows about the editor through a well-defined API allowing the editor
+// implementation to be changed using adapters. Over time we can reduce the surface area
+// of the bootstrapping API then use dynamic discovery of capabilities.
 //
 import { Delta } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';
@@ -667,6 +671,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     /**
      * Used to control logging of file operations.
+     * Use this whenever the method specifies a file `path`.
      */
     private traceFileOperations = false;
 
@@ -1028,7 +1033,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Attaching the Editor to the workspace enables the IDE features.
      */
     attachEditor(path: string, editor: Editor): void {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`attachEditor(path = ${path})`);
         }
         // The user may elect to open an editor but then leave the workspace as the editor is opening.
@@ -1108,7 +1113,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Detaching the Editor from the workspace disables the IDE features.
      */
     detachEditor(path: string, editor: Editor): void {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`detachEditor(path = ${path})`);
         }
         if (this.isZombie()) {
@@ -1149,9 +1154,12 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     /**
      * If the path corresponds to a TypeScript file, we wire up the completion
-     * of the editor worker to refresh the diagnostices.
+     * of the editor worker to refresh the diagnostics.
      */
     private attachSession(path: string, session: EditSession | undefined): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`attachSession(path = "${path}")`);
+        }
         checkPath(path);
 
         if (!session) {
@@ -1201,6 +1209,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * a worker completion event to trigger a refresh of the diagnostics.
      */
     private detachSession(path: string, session: EditSession | undefined) {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`detachSession(path = "${path}")`);
+        }
         checkPath(path);
 
         if (!session) {
@@ -1226,7 +1237,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * All files are monitored so that changes trigger an update to local storage.
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`beginDocumentMonitoring(path = "${path}")`);
         }
         checkPath(path);
@@ -1305,7 +1316,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err: any) => void) {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`endDocumentMonitoring(path = "${path}")`);
         }
         try {
@@ -1423,7 +1434,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
         return new Promise<{ previous: string | undefined; added: boolean }>((resolve, reject) => {
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.ensureScript(path, content)
+                this.languageServiceProxy.setScriptContent(path, content)
                     .then((added) => {
                         if (this.languageServiceProxy) {
                             this.languageServiceProxy.ensureModuleMapping(moduleName, path)
@@ -1435,7 +1446,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                                     resolve({ previous, added });
                                 })
                                 .catch(function (err) {
-                                    reject(new Error(`ensureModuleMapping(${moduleName}) failed. ${err}`));
+                                    reject(new Error(`addModule(${moduleName}) failed. ${err}`));
                                 });
                         }
                         else {
@@ -1443,7 +1454,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                         }
                     })
                     .catch((err) => {
-                        reject(new Error(`ensureScript(${path}) failed. Cause: ${err}`));
+                        reject(new Error(`addModule(${path}) failed. Cause: ${err}`));
                     });
             }
             else {
@@ -1494,23 +1505,23 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * TODO: Rename the `path` parameter to `moduleName`?
      */
     addScript(path: string, content: string): Promise<boolean> {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`addScript(path = "${path}")`);
         }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.ensureScript(path, content)
+                this.languageServiceProxy.setScriptContent(path, content)
                     .then((added) => {
                         if (added) {
                             this.filesEventHub.emitAsync('addedToLanguageService', { path });
                             resolve(added);
                         }
                         else {
-                            reject(new Error(`ensureScript(${path}) returned ${added}: ${typeof added}, indicating that the script ${path} already exists.`));
+                            reject(new Error(`addScript(${path}) returned ${added}: ${typeof added}, indicating that the script ${path} already exists.`));
                         }
                     })
                     .catch((err) => {
-                        reject(new Error(`ensureScript(${path}) failed. Cause: ${err}`));
+                        reject(new Error(`addScript(${path}) failed. Cause: ${err}`));
 
                     });
             }
@@ -1532,7 +1543,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * error if something goes wrong.
      */
     removeScript(path: string): Promise<boolean> {
-        if (this.traceLifecycle) {
+        if (this.traceFileOperations) {
             this.logLifecycle(`removeScript(path = "${path}")`);
         }
         return new Promise<boolean>((resolve, reject) => {
@@ -1595,6 +1606,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Transfers the diagnostic information to the appropriate edit session.
      */
     private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`updateSession(path = "${path}")`);
+        }
         // We have the path and diagnostics, so we should be able to provide hyperlinks to errors.
         if (!session) {
             return;
@@ -1636,6 +1650,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The results are used to update the appropriate edit session.
      */
     private diagnosticsForSession(path: string, session: EditSession): Promise<Diagnostic[]> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`diagnosticsForSession(path = "${path}")`);
+        }
         return new Promise<Diagnostic[]>((resolve, reject) => {
             if (this.languageServiceProxy) {
                 this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
@@ -1722,6 +1739,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The response is published on the outputFilesTopic.
      */
     private outputFilesForPath(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`outputFilesForPath(path = "${path}")`);
+        }
         if (this.deletePending[path]) {
             // This is a race condition.
             // TODO: By ignoring it, we are assuming that there is at least one TypeScript file
@@ -2064,9 +2084,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The file is not yet monitored for changes (affecting the Language Service).
      * The file is synchronized with the remote server if the workspace is being shared.
      * The corresponding document changes are hooked up to the collaboration room.
+     * The file is reference counted and must be released.
      */
-    newFile(path: string): WsFile {
-        const file = this.createFileOrRestoreFromTrash(path);
+    newFile(path: string, isExternal: boolean): WsFile {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`newFile(path = "${path}", isExternal = ${JSON.stringify(isExternal)})`);
+        }
+        const file = this.createFileOrRestoreFromTrash(path, isExternal);
         if (this.room) {
             file.unit = new MwUnit(this, this.mwOptions);
             file.unit.setEditor(file);
@@ -2082,7 +2106,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The file is reference counted and must be released.
      */
     createFile(path: string, roomId: string, change: MwChange): WsFile {
-        const file = this.createFileOrRestoreFromTrash(path);
+        // TODO: Is it possible to create a file which is external?
+        const file = this.createFileOrRestoreFromTrash(path, false);
         file.unit = new MwUnit(this, this.mwOptions);
         file.unit.setEditor(file);
         file.unit.setChange(roomId, path, change);
@@ -2099,30 +2124,33 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Helper function that only provides the file.
      * The file is reference counted and must be released.
      */
-    public createFileOrRestoreFromTrash(pathToCreate: string): WsFile {
-        const mode = modeFromName(pathToCreate);
-        if (!this.existsFile(pathToCreate)) {
-            const trashedFile = this.trash ? this.trash.get(pathToCreate) : void 0;
+    public createFileOrRestoreFromTrash(path: string, isExternal: boolean): WsFile {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`createFileOrRestoreFromTrash(path = ${path}, isExternal = ${isExternal})`);
+        }
+        const mode = modeFromName(path);
+        if (!this.existsFile(path)) {
+            const trashedFile = this.trash ? this.trash.get(path) : void 0;
             if (!trashedFile) {
-                const file = new WsFile(this, this.editorService);
+                const file = new WsFile(isExternal, this, this.editorService);
                 file.setText("");
                 file.mode = mode;
                 if (!this.files) {
                     this.files = new StringShareableMap<WsFile>();
                 }
                 // The file is captured by the files collection (incrementing the reference count again).
-                this.files.put(pathToCreate, file);
+                this.files.put(path, file);
                 // We return the other reference.
                 return file;
             }
             else {
-                this.restoreFileFromTrash(pathToCreate);
+                this.restoreFileFromTrash(path);
                 trashedFile.mode = mode;
                 return trashedFile;
             }
         }
         else {
-            throw new Error(`${pathToCreate} already exists. The path must be unique.`);
+            throw new Error(`${path} already exists. The path must be unique.`);
         }
     }
 
@@ -2204,7 +2232,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             }
             else {
                 setTimeout(() => {
-                    reject(new Error(`deleteFile(${path}), ${path} was not found.`));
+                    reject(new Error(`deleteFileUnmonitored(${path}), ${path} was not found.`));
                 }, 0);
             }
         });
@@ -2310,7 +2338,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             if (!this.existsFileInTrash(newPath)) {
 
                 // We must create a new file.
-                const newFile = this.newFile(newPath);
+                const newFile = this.newFile(newPath, false);
 
                 // Initialize properties.
                 newFile.setText(text);
@@ -2386,6 +2414,104 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             else {
                 reject(new Error(`${newPath} is not a recognized language.`));
             }
+        });
+    }
+
+    /**
+     * Navigates to the specified file and position withing that file.
+     * The file may be internal to the workspace, or it may be an external URL, usually for a d.ts file.
+     * The external file should be found in the Language Service.
+     * External files may be loaded and marked as external allowing them to be browsed but not saved.
+     */
+    navigateToFileAndPosition(path: string, position: Position): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`navigateToFileAndPosition(path = "${path}", position = ${JSON.stringify(position)})`);
+        }
+        this.ensureFileExists(path)
+            .then((file) => {
+                this.openFile(path);
+                this.selectFile(path);
+                // We can't expect the Editor to have been created.
+                // We subscribe for events relating to the editor.
+                // When the editor is attached, set the position and unsubscribe.
+                // TODO: Another way to do this would be to leave a "package" for the editor when it arrives at the file.
+                // A general way to do this would be to leave a list of commands.
+                const subscription = file.editorEvents.subscribe(({ oldEditor, newEditor }) => {
+                    if (newEditor) {
+                        newEditor.scrollCursorIntoView(position);
+                        subscription.unsubscribe();
+                    }
+                });
+                file.release();
+            })
+            .catch((reason) => {
+                console.warn(`navigateToFileAndPosition(path = "${path}", position = ${JSON.stringify(position)}) failed. Reason: ${reason}`);
+            });
+    }
+
+    /**
+     * Ensures that a file exists in the workspace whether it be an internal file or an external reference.
+     * The returned file is reference counted and must be released by the caller.
+     */
+    private ensureFileExists(path: string): Promise<WsFile> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`ensureFileExists(path = "${path}")`);
+        }
+        if (this.files) {
+            const file = this.files.get(path);
+            if (file) {
+                return Promise.resolve(file);
+            }
+            else {
+                return this.loadFileFromLanguageService(path);
+            }
+        }
+        else {
+            return this.loadFileFromLanguageService(path);
+        }
+    }
+
+    /**
+     * Loads a file from a URL into the workspace.
+     * The returned file is reference counted and must be released by the caller.
+     */
+    /*
+    private loadExternalFile(url: string): Promise<WsFile> {
+        return new Promise<WsFile>((resolve, reject) => {
+            get(url)
+                .then((text) => {
+                    // TODO: Need to mark the file as external.
+                    const file = this.newFile(url);
+                    file.setText(text);
+                    resolve(file);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+    */
+
+    private loadFileFromLanguageService(path: string): Promise<WsFile> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`loadFileFromLanguageService(path = "${path}")`);
+        }
+        return new Promise<WsFile>((resolve, reject) => {
+            this.languageService()
+                .then((languageService) => {
+                    languageService.getScriptContent(path)
+                        .then((text) => {
+                            const file = this.newFile(path, true);
+                            file.setText(text);
+                            resolve(file);
+                        })
+                        .catch((err) => {
+                            reject(new Error(""));
+                        });
+                })
+                .catch((reason) => {
+                    reject(new Error(""));
+                });
         });
     }
 
@@ -2821,7 +2947,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 traceResolution: true
             };
             const content = stringifyFileContent(configuration);
-            return this.ensureFile(TSCONFIG_DOT_JSON, content);
+            return this.ensureFile(TSCONFIG_DOT_JSON, content, false);
         }
         else {
             return existingFile;
@@ -2862,7 +2988,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             rules['use-isnan'] = true;
             configuration.rules = rules;
             const content = stringifyFileContent(configuration);
-            return this.ensureFile(TSLINT_DOT_JSON, content);
+            return this.ensureFile(TSLINT_DOT_JSON, content, false);
         }
         else {
             return existingFile;
@@ -2915,7 +3041,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The caller must release the returned file when the reference is no longer needed.
      */
     private ensurePackageJson(): WsFile {
-        return this.ensureFile(PACKAGE_DOT_JSON, '{}');
+        return this.ensureFile(PACKAGE_DOT_JSON, '{}', false);
     }
 
     private existsTypesConfigJson(): boolean {
@@ -2975,7 +3101,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 warnings: true,
                 map: this.moduleResolutionsFromPackageDependencies()
             };
-            return this.ensureFile(TYPES_DOT_CONFIG_DOT_JSON, JSON.stringify(settings, null, 4));
+            return this.ensureFile(TYPES_DOT_CONFIG_DOT_JSON, JSON.stringify(settings, null, 4), false);
         }
         else {
             return this.findFileByPath(TYPES_DOT_CONFIG_DOT_JSON) as WsFile;
@@ -3006,9 +3132,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The caller must release the returned file when the reference is no longer needed.
      * TODO: It would be more efficient for the content to be provided by a function.
      */
-    private ensureFile(path: string, content: string): WsFile {
+    private ensureFile(path: string, content: string, isExternal: boolean): WsFile {
         if (!this.existsFile(path)) {
-            const file = this.newFile(path);
+            const file = this.newFile(path, isExternal);
             file.setText(content);
             file.mode = modeFromName(path);
             return file;
@@ -3023,6 +3149,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Moving a file to trash is synchronous.
      */
     private moveFileToTrash(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`moveFileToTrash(path = "${path}")`);
+        }
         const files = this.files;
         if (files) {
             const unwantedFile = files.getWeakRef(path);
@@ -3048,8 +3177,11 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     public trashPut(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`trashPut(path = "${path}")`);
+        }
         if (this.trash) {
-            const placeholder = new WsFile(this, this.editorService);
+            const placeholder = new WsFile(false, this, this.editorService);
             placeholder.existsInGitHub = true;
             this.trash.putWeakRef(path, placeholder);
         }
@@ -3063,6 +3195,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Restores a file from trash. The file is not monitored.
      */
     private restoreFileFromTrash(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`restoreFromTrash(path = ${path}`);
+        }
         const trash = this.trash;
         const files = this.files;
         if (trash) {
@@ -3154,6 +3289,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * @param path The path of the file document.
      */
     public subscribeRoomToDocumentChanges(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`subscribeRoomToDocumentChanges(path = "${path}")`);
+        }
         // We need the document in order to add the change listener.
         const session = this.getFileSession(path);
         if (session) {
@@ -3181,6 +3319,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Stop listening to document changes that gives rise to delta edits for the room.
      */
     unsubscribeRoomFromDocumentChanges(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`unsubscribeRoomFromDocumentChanges(path = "${path}")`);
+        }
         // We don't need the document because the remover performs the removal.
         if (this.roomDocumentChangeListenerRemovers[path]) {
             // Calling the remover function removes the change listener from the document.
@@ -3274,6 +3415,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * This is called by the TypeScriptMonitor in response to Document 'change' events.
      */
     public applyDelta(path: string, delta: Delta): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`applyDelta(path = "${path}")`);
+        }
         if (this.languageServiceProxy) {
             this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
                 if (!err) {
@@ -3299,6 +3443,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * because it needs to call the updateFrontMarkers method or the Renderer.
      */
     private updateFileSessionMarkerModels(path: string, delta: Delta): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`updateFileSessionMarkerModels(path = "${path}")`);
+        }
         checkPath(path);
         const session = this.getFileSession(path);
         if (session) {
@@ -3346,6 +3493,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * This is like notifying a view that it needs to update itself because a model has changed.
      */
     updateFileEditorFrontMarkers(path: string): void {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`updateFileEditorFrontMarkers(path = "${path}")`);
+        }
         const editor = this.getFileEditor(path);
         if (editor) {
             editor.updateFrontMarkers();
@@ -3356,22 +3506,68 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      *
      */
     getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]> {
-        checkPath(path);
+        if (this.traceFileOperations) {
+            this.logLifecycle(`getCompletionsAtPosition(path = "${path}")`);
+        }
         if (this.languageServiceProxy) {
             return this.languageServiceProxy.getCompletionsAtPosition(path, position, prefix);
         }
         else {
-            throw new Error("Language Service is not available.");
+            return Promise.reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
         }
     }
 
     /**
      *
      */
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
-        return new Promise<TextChange[]>((resolve, reject) => {
+    getDefinitionAtPosition(path: string, position: Position): Promise<DefinitionInfo<Position>[]> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`getDefinitionAtPosition(path = "${path}")`);
+        }
+        return new Promise<DefinitionInfo<Position>[]>((resolve, reject) => {
+            const session = this.getFileSession(path);
+            if (session) {
+                if (this.languageServiceProxy) {
+                    this.languageServiceProxy.getDefinitionAtPosition(path, session.positionToIndex(position))
+                        .then((ds) => {
+                            const results = ds.map((d) => {
+                                const that: DefinitionInfo<Position> = {
+                                    fileName: d.fileName,
+                                    textSpan: { start: session.indexToPosition(d.textSpan.start), length: d.textSpan.length },
+                                    kind: d.kind,
+                                    name: d.name,
+                                    containerKind: d.containerKind,
+                                    containerName: d.containerName
+                                };
+                                return that;
+                            });
+                            resolve(results);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                }
+                else {
+                    reject(new Error(LANGUAGE_SERVICE_NOT_AVAILABLE));
+                }
+                session.release();
+            }
+            else {
+                reject(new Error(`session must exist for file "${path}" for textSpan conversion.`));
+            }
+        });
+    }
+
+    /**
+     *
+     */
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`getFormattingEditsForDocument(path = "${path}")`);
+        }
+        return new Promise<TextChange<number>[]>((resolve, reject) => {
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange[]) => {
+                this.languageServiceProxy.getFormattingEditsForDocument(path, settings, (err: any, textChanges: TextChange<number>[]) => {
                     if (!err) {
                         resolve(textChanges);
                     }
@@ -3390,6 +3586,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      *
      */
     getQuickInfoAtPosition(path: string, position: number): Promise<QuickInfo> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`getQuickInfoAtPosition(path = "${path}")`);
+        }
         return new Promise<QuickInfo>((resolve, reject) => {
             if (this.languageServiceProxy) {
                 this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {

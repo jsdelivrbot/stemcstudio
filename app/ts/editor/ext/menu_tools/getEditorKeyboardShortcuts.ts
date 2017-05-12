@@ -37,12 +37,15 @@ export function getEditorKeyboardShortcuts(editor: Editor): KeyboardShortcut[] {
                 for (let key in commands) {
                     if (commands.hasOwnProperty(key)) {
                         const command = commands[key];
-                        if (commandMap[command.name as string]) {
-                            commandMap[command.name as string].key += "|" + modString + key;
-                        }
-                        else {
-                            commandMap[command.name as string] = { key: modString + key, command: command.name as string };
-                            keybindings.push(commandMap[command.name as string]);
+                        const available = typeof command.isAvailable === 'function' ? command.isAvailable(editor) : true;
+                        if (available) {
+                            if (commandMap[command.name as string]) {
+                                commandMap[command.name as string].key += "|" + modString + key;
+                            }
+                            else {
+                                commandMap[command.name as string] = { key: modString + key, command: command.name as string };
+                                keybindings.push(commandMap[command.name as string]);
+                            }
                         }
                     }
                 }

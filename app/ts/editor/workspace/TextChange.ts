@@ -1,19 +1,17 @@
-import TextSpan from './TextSpan';
+import { TextSpan } from './TextSpan';
 
 /**
  *
  */
-interface TextChange {
+export interface TextChange<POSITION> {
 
     /**
      *
      */
-    span: TextSpan;
+    span: TextSpan<POSITION>;
 
     /**
      *
      */
     newText: string;
 }
-
-export default TextChange;

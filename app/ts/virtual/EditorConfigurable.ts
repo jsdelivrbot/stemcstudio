@@ -1,7 +1,10 @@
 import { EditorMinimal } from './EditorMinimal';
 
 export interface EditorConfigurable extends EditorMinimal {
-    getReadOnly(): boolean;
+    /**
+     * 
+     */
+    readOnly: boolean;
 
     setDisplayIndentGuides(displayIndentGuides: boolean): void;
 

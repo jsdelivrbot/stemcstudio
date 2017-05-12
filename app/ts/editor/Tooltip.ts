@@ -3,10 +3,10 @@ import { addCssClass, createElement, setInnerText } from "./lib/dom";
 /**
  *
  */
-export default class Tooltip {
+export class Tooltip {
 
     protected isOpen = false;
-    private $element: HTMLElement = null;
+    private $element: HTMLElement | null = null;
     private $parentElement: HTMLElement;
 
     /**

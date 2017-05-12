@@ -1,6 +1,6 @@
-import IndentStyle from './IndentStyle';
+import { IndentStyle } from './IndentStyle';
 
-interface EditorSettings {
+export interface EditorSettings {
     baseIndentSize?: number;
     indentSize?: number;
     tabSize?: number;
@@ -8,5 +8,3 @@ interface EditorSettings {
     convertTabsToSpaces?: boolean;
     indentStyle?: IndentStyle;
 }
-
-export default EditorSettings;

@@ -41,7 +41,7 @@ export default class ExplorerFilesController {
         this.modalService.prompt(options)
             .then((path) => {
                 try {
-                    this.wsModel.newFile(path);
+                    this.wsModel.newFile(path, false);
                     this.wsModel.beginDocumentMonitoring(path, (monitoringError) => {
                         if (!monitoringError) {
                             this.wsModel.openFile(path);

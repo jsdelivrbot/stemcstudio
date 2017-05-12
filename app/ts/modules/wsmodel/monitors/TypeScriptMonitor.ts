@@ -5,15 +5,6 @@ import { WsModel } from '.././WsModel';
 //
 import { EditSession } from '../../../virtual/editor';
 
-//
-// RxJS imports
-//
-// import { Subscription } from 'rxjs/Subscription';
-// import 'rxjs/add/operator/debounceTime';
-
-
-// const JSON_EDIT_SYNCH_DELAY_MILLIS = 500;
-
 export class TypeScriptMonitor implements DocumentMonitor {
     private documentChangeListenerRemover: (() => void) | undefined;
     constructor(private path: string, private session: EditSession, private workspace: WsModel) {
@@ -32,10 +23,15 @@ export class TypeScriptMonitor implements DocumentMonitor {
 
         workspace.addScript(path, session.getValue())
             .then((added) => {
-                this.documentChangeListenerRemover = session.addChangeListener((delta) => {
-                    workspace.applyDelta(path, delta);
-                });
-                callback(void 0);
+                if (added) {
+                    this.documentChangeListenerRemover = session.addChangeListener((delta) => {
+                        workspace.applyDelta(path, delta);
+                    });
+                    callback(void 0);
+                }
+                else {
+                    callback(new Error(`addScript(${path}) => added = ${added}`));
+                }
             })
             .catch(function (err) {
                 callback(new Error(`addScript(${path}) failed. Cause: ${err}`));
@@ -60,7 +56,12 @@ export class TypeScriptMonitor implements DocumentMonitor {
 
         workspace.removeScript(path)
             .then(function (removed) {
-                callback(void 0);
+                if (removed) {
+                    callback(void 0);
+                }
+                else {
+                    callback(new Error(`removeScript(${path}) => removed = ${removed}`));
+                }
             })
             .catch(function (err) {
                 callback(new Error(`removeScript(${path}) failed. Cause: ${err}`));

@@ -6,7 +6,7 @@ import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
 import UndoManager from '../../editor/UndoManager';
 import EditorScope from './EditorScope';
-import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
+import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
 import { showFindReplace } from '../../editor/ext/showFindReplace';
 import { showGreekKeyboard } from '../../editor/ext/showGreekKeyboard';
@@ -25,7 +25,7 @@ import { renderContextMenu } from '../contextMenu/renderContextMenu';
 //
 import { formatCodeSettings } from '../../workbench/actions/formatDocument';
 import { createFormatDocumentCommand } from '../../workbench/commands/formatDocument';
-import TextChange from '../../editor/workspace/TextChange';
+import { TextChange } from '../../editor/workspace/TextChange';
 
 //
 // Editor Abstraction Layer
@@ -69,7 +69,7 @@ interface EditorDetacher {
 // Choose which editor to inject here. e.g. MONACO_EDITOR_SERVICE_UUID.
 // Note, because we are a hybrid application, the WsModel injection must also change.
 //
-createEditorDirective.$inject = ['$q', '$timeout', EDITOR_PREFERENCES_SERVICE, EDITOR_SERVICE_UUID, 'FEATURE_EXPLORER_CONTEXT_MENU'];
+createEditorDirective.$inject = ['$q', '$timeout', EDITOR_PREFERENCES_SERVICE, EDITOR_SERVICE_UUID, 'FEATURE_EDITOR_CONTEXT_MENU'];
 /**
  * Factory for the editor (attribute) directive.
  * This directive turns an HTMLElement into a container for an Editor.
@@ -82,7 +82,7 @@ export function createEditorDirective(
     $timeout: ITimeoutService,
     editorPreferencesService: EditorPreferencesService,
     editorService: EditorService,
-    FEATURE_EXPLORER_CONTEXT_MENU: boolean): IDirective {
+    FEATURE_EDITOR_CONTEXT_MENU: boolean): IDirective {
 
     /**
      * $scope Used to monitor $onDestroy and support transclude.
@@ -269,32 +269,34 @@ export function createEditorDirective(
         }
 
         const contextMenuHandler = function (contextMenuEvent: PointerEvent) {
-            contextMenuEvent.stopPropagation();
-            $scope.$apply(function () {
-                contextMenuEvent.preventDefault();
-                const indentSize = editorPreferencesService.getTabSize();
-                const file: WsFile = ngModel.$viewValue;
-                const session = file.getSession();
-                const menu: (ContextMenuItem | null)[] = computeContextMenu($scope.path, editor, indentSize, {
-                    getFormattingEditsForDocument() {
-                        const settings = formatCodeSettings(indentSize);
-                        return wsController.getFormattingEditsForDocument($scope.path, settings);
-                    },
-                    applyTextChanges(edits: TextChange[], session: EditSession) {
-                        applyTextChanges(edits, session);
-                    }
-                }, session);
-                if (menu instanceof Array) {
-                    currentContextMenu = renderContextMenu($q, $scope, contextMenuEvent, menu, removeContextMenu);
+            const indentSize = editorPreferencesService.getTabSize();
+            const file: WsFile = ngModel.$viewValue;
+            const session = file.getSession();
+            const menu: (ContextMenuItem | null)[] = computeContextMenu($scope.path, editor, indentSize, {
+                getFormattingEditsForDocument() {
+                    const settings = formatCodeSettings(indentSize);
+                    return wsController.getFormattingEditsForDocument($scope.path, settings);
+                },
+                applyTextChanges(edits: TextChange<number>[], session: EditSession) {
+                    applyTextChanges(edits, session);
                 }
-                else {
-                    const msg = "context-menu expression must evaluate to an array.";
-                    console.warn(msg);
+            }, session);
+            if (menu instanceof Array) {
+                if (menu.length > 0) {
+                    contextMenuEvent.stopPropagation();
+                    $scope.$apply(function () {
+                        contextMenuEvent.preventDefault();
+                        currentContextMenu = renderContextMenu($q, $scope, contextMenuEvent, menu, removeContextMenu);
+                    });
                 }
-            });
+            }
+            else {
+                const msg = "context-menu expression must evaluate to an array.";
+                console.warn(msg);
+            }
         };
 
-        if (FEATURE_EXPLORER_CONTEXT_MENU) {
+        if (FEATURE_EDITOR_CONTEXT_MENU) {
             container.addEventListener('contextmenu', contextMenuHandler, false);
         }
 
@@ -316,7 +318,7 @@ export function createEditorDirective(
         // It's probably also the more consistent place to release non-AngularJS resources allocated for the scope.
         function onDestroyScope() {
 
-            if (FEATURE_EXPLORER_CONTEXT_MENU) {
+            if (FEATURE_EDITOR_CONTEXT_MENU) {
                 container.removeEventListener('contextmenu', contextMenuHandler, false);
             }
 
@@ -444,7 +446,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         getFormattingEditsForDocument(path: string, settings: FormatCodeSettings) {
             return wsController.getFormattingEditsForDocument(path, settings);
         },
-        applyTextChanges(textChanges: TextChange[]) {
+        applyTextChanges(textChanges: TextChange<number>[]) {
             applyTextChanges(textChanges, session);
         }
     }, session));

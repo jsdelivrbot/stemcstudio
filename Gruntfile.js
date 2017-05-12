@@ -198,6 +198,7 @@ function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.16';
     const VERSION_ANGULAR = '4.1.0';
+    const VERSION_EIGHT = '6.1.1';
     const VERSION_MONACO = '0.8.3';
 
     return [
@@ -619,43 +620,43 @@ function copies(target) {
         },
         {
             src: "node_modules/davinci-eight/package.json",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/package.json')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/package.json`)
         },
         {
             src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
         },
         {
             src: "node_modules/davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.js')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.js`)
         },
         {
             src: "node_modules/davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.css')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.css`)
         },
         {
             src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
         },
         {
             src: "../davinci-eight/dist/package.json",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/package.json')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/package.json`)
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.js')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.js`)
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/davinci-eight.css')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.css`)
         },
         {
             src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@6.1.0/index.d.ts')
+            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",

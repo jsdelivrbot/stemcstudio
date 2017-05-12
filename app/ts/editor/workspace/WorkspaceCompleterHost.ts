@@ -1,7 +1,8 @@
-import CompletionEntry from './CompletionEntry';
+import { CompletionEntry } from './CompletionEntry';
 
-interface WorkspaceCompleterHost {
+export interface WorkspaceCompleterHost {
+    /**
+     * TODO: Parameterize position?
+     */
     getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]>;
 }
-
-export default WorkspaceCompleterHost;

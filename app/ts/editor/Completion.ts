@@ -3,7 +3,7 @@ import Completer from './autocomplete/Completer';
 /**
  * TODO: Why do we have caption, value, and name? caption should be enough?
  */
-interface Completion {
+export interface Completion {
 
     /**
      * 
@@ -61,5 +61,3 @@ interface Completion {
      */
     completer?: Completer;
 }
-
-export default Completion;

@@ -35,4 +35,3 @@ function isTypeScript(path: string): boolean {
     console.warn(`isTypeScript('${path}') can't figure that one out.`);
     return false;
 }
-

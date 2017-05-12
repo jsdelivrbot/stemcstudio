@@ -1,6 +1,6 @@
 import { EditSession } from '../../virtual/editor';
 import { Position } from '../../virtual/editor';
-import TextChange from '../../editor/workspace/TextChange';
+import { TextChange } from '../../editor/workspace/TextChange';
 
 function removeWhitespace(text: string): string {
     return text.replace(/\s/g, "");
@@ -9,7 +9,7 @@ function removeWhitespace(text: string): string {
 /**
  * TODO: applyPatchToDocument should be similar.
  */
-export default function applyTextChanges(edits: TextChange[], session: EditSession): void {
+export default function applyTextChanges(edits: TextChange<number>[], session: EditSession): void {
 
     // The text changes are relative to the initial document.
     // We apply them one by one in document order.

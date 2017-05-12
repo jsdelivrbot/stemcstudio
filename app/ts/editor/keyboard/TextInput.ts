@@ -157,7 +157,7 @@ export default class TextInput {
         }
         const onCompositionUpdate = () => {
 
-            if (!this.inComposition || !editor.onCompositionUpdate || editor.$readOnly) {
+            if (!this.inComposition || !editor.onCompositionUpdate || editor.readOnly) {
                 return;
             }
             const val = this.text.value.replace(/\x01/g, "");
@@ -196,7 +196,10 @@ export default class TextInput {
         };
 
         const onCompositionEnd: any = (e: Event, editor: Editor) => {
-            if (!editor.onCompositionEnd || editor.$readOnly) return;
+
+            if (!editor.onCompositionEnd || editor.readOnly) {
+                return;
+            }
 
             const c = this.inComposition;
             this.inComposition = false;
@@ -239,7 +242,7 @@ export default class TextInput {
         };
 
         const onCompositionStart = () => {
-            if (this.inComposition || !editor.onCompositionStart || editor.$readOnly) {
+            if (this.inComposition || !editor.onCompositionStart || editor.readOnly) {
                 return;
             }
 

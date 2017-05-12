@@ -268,14 +268,14 @@ class SearchBox {
     }
     replace() {
         if (isEditorChangeable(this.editor)) {
-            if (!this.editor.getReadOnly()) {
+            if (!this.editor.readOnly) {
                 this.editor.replace(this.replaceInput.value);
             }
         }
     }
     replaceAndFindPrev() {
         if (isEditorChangeable(this.editor)) {
-            if (!this.editor.getReadOnly()) {
+            if (!this.editor.readOnly) {
                 this.editor.replace(this.replaceInput.value);
                 this.findPrev();
             }
@@ -283,7 +283,7 @@ class SearchBox {
     }
     replaceAndFindNext() {
         if (isEditorChangeable(this.editor)) {
-            if (!this.editor.getReadOnly()) {
+            if (!this.editor.readOnly) {
                 this.editor.replace(this.replaceInput.value);
                 this.findNext();
             }
@@ -291,7 +291,7 @@ class SearchBox {
     }
     replaceAll() {
         if (isEditorChangeable(this.editor)) {
-            if (!this.editor.getReadOnly()) {
+            if (!this.editor.readOnly) {
                 this.editor.replaceAll(this.replaceInput.value);
             }
         }

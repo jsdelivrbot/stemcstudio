@@ -36,7 +36,8 @@ export class EventEmitterClass<NAME extends string, E, T> implements EventBus<NA
     }
 
     /**
-     *
+     * Calls the listeners any any default handlers with an elaborate
+     * mechanism for limiting both propagation and the default invocation. 
      */
     private _dispatchEvent(eventName: NAME, event?: E): any {
 
@@ -96,16 +97,20 @@ export class EventEmitterClass<NAME extends string, E, T> implements EventBus<NA
     }
 
     /**
-     *
+     * Emit uses the somewhat complex semantics of the dispatchEvent method.
+     * Consider using `signal` for more elementary behaviour.
      */
     _emit(eventName: NAME, event?: E): any {
         return this._dispatchEvent(eventName, event);
     }
 
     /**
-     *
+     * Calls each listener subscribed to the eventName passing the event and the source.
      */
     _signal(eventName: NAME, event?: E) {
+        /**
+         * The listeners subscribed to the specified event name
+         */
         let listeners = (this._eventRegistry || {})[eventName];
 
         if (!listeners) {

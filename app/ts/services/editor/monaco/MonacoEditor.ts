@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+
 import { Command } from '../../../virtual/editor';
 import { Completer } from '../../../virtual/editor';
 import { Direction } from '../../../virtual/editor';
@@ -35,6 +37,7 @@ export class MonacoEditor implements Editor {
     private editor: monaco.editor.IStandaloneCodeEditor;
     private session: NativeEditSession | undefined;
     commands: any;
+    gotoDefinitionEvents: Observable<Position>;
     inMultiSelectMode: boolean;
     sortLines: any;
     constructor(container: HTMLElement) {
@@ -78,7 +81,6 @@ export class MonacoEditor implements Editor {
         throw new Error();
     }
     createQuickInfoTooltip(path: string, host: QuickInfoTooltipHost): QuickInfoTooltip | undefined {
-        // console.warn(`Editor.createQuickInfoTooltip('${path}')`);
         return void 0;
     }
     enableLineWidgets(): void {
@@ -92,7 +94,6 @@ export class MonacoEditor implements Editor {
         console.warn("Editor.ececCommand");
     }
     expandSnippetWithTab(options: SnippetOptions): boolean {
-        console.warn("Editor.createQuickInfoTooltip");
         return false;
     }
     find(): Range | null | undefined {
@@ -146,8 +147,8 @@ export class MonacoEditor implements Editor {
         console.warn("Editor.getLineWidgetsAtRow");
         return [];
     }
-    getReadOnly(): boolean {
-        console.warn("Editor.getReadOnly");
+    get readOnly(): boolean {
+        console.warn("Editor.readOnly (get)");
         return false;
     }
     getSearchRegExp(): RegExp {
@@ -621,13 +622,16 @@ export class MonacoEditor implements Editor {
     findPrevious(): void {
         throw new Error();
     }
-
     getTextRange(): string {
         throw new Error();
     }
-
     highlight(re?: RegExp): void {
         throw new Error();
     }
-
+    gotoDefinition(): void {
+        throw new Error();
+    }
+    isGotoDefinitionAvailable(): boolean {
+        throw new Error();
+    }
 }

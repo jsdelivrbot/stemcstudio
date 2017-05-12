@@ -38,6 +38,9 @@ export interface Command<TARGET> {
     passEvent?: boolean;
 
     /**
+     * Means that this command can be performed when the editor is read-only.
+     * Most commands leave this undefined, meaning that the editor must be writeable.
+     * true if this command should apply in readOnly mode?
      * false if this command should not apply in readOnly mode
      */
     readOnly?: boolean;

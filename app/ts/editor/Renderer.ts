@@ -1554,9 +1554,9 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
     }
 
     /**
-     * Scrolls the cursor into the first visibile area of the editor.
+     * Scrolls the cursor into the first visible area of the editor.
      */
-    scrollCursorIntoView(cursor?: Position | null, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void {
+    scrollCursorIntoView(cursor?: Position | null, offset?: number, viewMargin?: { top?: number; bottom?: number }): void {
         // the editor is not visible
         if (this.$size.scrollerHeight === 0) {
             return;
@@ -1569,8 +1569,8 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
         let left = pos.left;
         let top = pos.top;
 
-        const topMargin = $viewMargin && $viewMargin.top || 0;
-        const bottomMargin = $viewMargin && $viewMargin.bottom || 0;
+        const topMargin = viewMargin && viewMargin.top || 0;
+        const bottomMargin = viewMargin && viewMargin.bottom || 0;
 
         const scrollTop = this.$scrollAnimation ? session.getScrollTop() : this.scrollTop;
 

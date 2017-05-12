@@ -1,10 +1,10 @@
 import SymbolDisplayPart from './SymbolDisplayPart';
-import TextSpan from './TextSpan';
+import { TextSpan } from './TextSpan';
 
 /**
  *
  */
-interface QuickInfo {
+export interface QuickInfo {
 
     /**
      *
@@ -19,7 +19,7 @@ interface QuickInfo {
     /**
      *
      */
-    textSpan: TextSpan;
+    textSpan: TextSpan<number>;
 
     /**
      *
@@ -31,5 +31,3 @@ interface QuickInfo {
      */
     documentation: SymbolDisplayPart[];
 }
-
-export default QuickInfo;

@@ -1,4 +1,4 @@
-import Editor from '../Editor';
+import { Editor } from '../Editor';
 import PixelPosition from '../PixelPosition';
 
 const CLASSNAME = 'ace_autocomplete';

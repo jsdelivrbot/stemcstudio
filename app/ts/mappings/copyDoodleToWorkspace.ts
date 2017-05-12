@@ -14,7 +14,7 @@ function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
             for (let i = 0; i < iLen; i++) {
                 const path = paths[i];
                 const dudeFile = dudeFiles[path];
-                const wsFile = workspace.newFile(path);
+                const wsFile = workspace.newFile(path, false);
                 try {
                     wsFile.setText(dudeFile.content);
                     wsFile.isOpen = dudeFile.isOpen;

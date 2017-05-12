@@ -1,4 +1,4 @@
-import Completion from "../Completion";
+import { Completion } from "../Completion";
 import Position from "../Position";
 import Token from "../Token";
 import TokenIterator from "../TokenIterator";

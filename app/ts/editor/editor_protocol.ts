@@ -11,6 +11,10 @@ export const COMMAND_NAME_FIND = 'find';
  */
 export const COMMAND_NAME_FORMAT_DOCUMENT = 'formatDocument';
 /**
+ * 'gotoDefinition'
+ */
+export const COMMAND_NAME_GOTO_DEFINITION = 'gotoDefinition';
+/**
  * 'indent'
  */
 export const COMMAND_NAME_INDENT = 'indent';

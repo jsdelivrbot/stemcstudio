@@ -69,7 +69,7 @@ Update versions in
 
 ### Upgrading a library dependency such as davinci-eight
 
-1. bower.json - update the version
+1. package.json or bower.json - update the version
 2. options.ts - update the version
 3. Gruntfile.js - update the version
 

@@ -1,5 +1,5 @@
 import BackgroundTokenizer from "../BackgroundTokenizer";
-import Completion from "../Completion";
+import { Completion } from "../Completion";
 import { EditSession } from '../EditSession';
 import { Document } from "../Document";
 import Renderer from "../Renderer";

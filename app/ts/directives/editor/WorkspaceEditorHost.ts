@@ -1,7 +1,7 @@
 import { EditorMinimal } from '../../virtual/EditorMinimal';
 import { LanguageModeId } from '../../virtual/editor';
-import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
-import TextChange from '../../editor/workspace/TextChange';
+import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
+import { TextChange } from '../../editor/workspace/TextChange';
 
 /**
  * The means by which an `Editor` connects-to and interacts-with a workspace.
@@ -25,5 +25,5 @@ export interface WorkspaceEditorHost {
      * The function is asynchronous because a Language Service will typically run
      * in a thread or be located on a remote network endpoint.
      */
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]>;
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]>;
 }

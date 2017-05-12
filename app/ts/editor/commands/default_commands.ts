@@ -3,6 +3,7 @@ import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INDENT } from "../editor_protocol";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
+import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefinition';
 import { createCutCommand } from '../../workbench/commands/cut';
 import { createCopyCommand } from '../../workbench/commands/copy';
 import { createPasteCommand } from '../../workbench/commands/paste';
@@ -35,6 +36,7 @@ export const commands: Command<Editor>[] = [
         exec: function (editor: Editor) { editor.centerSelection(); },
         readOnly: true
     },
+    createGotoDefinitionCommand(),
     {
         name: "gotoLine",
         bindKey: bindKey("Ctrl-L", "Command-L"),
@@ -499,7 +501,14 @@ export const commands: Command<Editor>[] = [
             "Shift-Backspace|Backspace",
             "Ctrl-Backspace|Shift-Backspace|Backspace|Ctrl-H"
         ),
-        exec: function (editor: Editor) { editor.remove("left"); },
+        exec: function (editor: Editor) {
+            if (!editor.readOnly) {
+                editor.remove("left");
+            }
+        },
+        isAvailable(editor): boolean {
+            return !editor.readOnly;
+        },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor"
     },

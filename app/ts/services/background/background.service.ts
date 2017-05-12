@@ -103,7 +103,7 @@ export class BackgroundService implements IBackgroundService {
                                     // We are expecting Raw edits on every file so every edit is a create.
                                     for (const path of paths) {
                                         if (!this.wsModel.existsFile(path)) {
-                                            const newFile = this.wsModel.newFile(path);
+                                            const newFile = this.wsModel.newFile(path, false);
                                             this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
                                                 if (!monitoringError) {
                                                     // Nothing to do.

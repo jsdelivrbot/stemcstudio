@@ -1,9 +1,9 @@
-import EditorSettings from './EditorSettings';
+import { EditorSettings } from './EditorSettings';
 
 /**
  *
  */
-interface FormatCodeSettings extends EditorSettings {
+export interface FormatCodeSettings extends EditorSettings {
     insertSpaceAfterCommaDelimiter?: boolean;
     insertSpaceAfterSemicolonInForStatements?: boolean;
     insertSpaceBeforeAndAfterBinaryOperators?: boolean;
@@ -20,5 +20,3 @@ interface FormatCodeSettings extends EditorSettings {
     placeOpenBraceOnNewLineForFunctions?: boolean;
     placeOpenBraceOnNewLineForControlBlocks?: boolean;
 }
-
-export default FormatCodeSettings;

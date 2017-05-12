@@ -1,4 +1,5 @@
 import { applyPatchToDocument } from './applyPatchToDocument';
+import { EventBus } from './EventBus';
 import Shareable from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
@@ -39,7 +40,15 @@ import { LanguageModeId } from '../../virtual/editor';
  */
 export class WsFile implements MwDocument, Shareable {
 
+    /**
+     * A weak reference to the editor.
+     */
     private editor: Editor | undefined;
+    private readonly editorBus = new EventBus<'editor', { oldEditor: Editor | undefined; newEditor: Editor | undefined }, WsFile>(this);
+    /**
+     * Events recording the changing of the editor property.
+     */
+    public readonly editorEvents = this.editorBus.events('editor');
 
     /**
      * The editSession is (almost) an implementation detail except that
@@ -105,7 +114,7 @@ export class WsFile implements MwDocument, Shareable {
     /**
      * @param workspace
      */
-    constructor(workspace: WsModel, private editorService: EditorService) {
+    constructor(public readonly isExternal: boolean, workspace: WsModel, private editorService: EditorService) {
         this.workspace = workspace;
     }
 
@@ -168,8 +177,10 @@ export class WsFile implements MwDocument, Shareable {
         }
     }
 
-    setEditor(editor: Editor | undefined) {
-        this.editor = editor;
+    setEditor(newEditor: Editor | undefined) {
+        const oldEditor = this.editor;
+        this.editor = newEditor;
+        this.editorBus.emitAsync('editor', { oldEditor, newEditor });
     }
 
     hasEditor(): boolean {
@@ -209,7 +220,7 @@ export class WsFile implements MwDocument, Shareable {
     }
 
     /**
-     * Sets the text on the Document level.
+     * Sets the text on the edit session, which is guaranteed to exist.
      * A `change` event will be emitted on the document.
      */
     setText(text: string): void {

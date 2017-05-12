@@ -1,11 +1,11 @@
 import { EditSession } from '../../virtual/editor';
-import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
-import TextChange from '../../editor/workspace/TextChange';
-import IndentStyle from '../../editor/workspace/IndentStyle';
+import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
+import { TextChange } from '../../editor/workspace/TextChange';
+import { IndentStyle } from '../../editor/workspace/IndentStyle';
 
 export interface FormatDocumentController {
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]>;
-    applyTextChanges(edits: TextChange[], session: EditSession): void;
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]>;
+    applyTextChanges(edits: TextChange<number>[], session: EditSession): void;
 }
 
 export function formatCodeSettings(indentSize: number): FormatCodeSettings {

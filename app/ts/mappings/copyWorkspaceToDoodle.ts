@@ -66,7 +66,7 @@ function copyTrash(workspace: WsModel, doodle: Doodle) {
 /**
  * Used for serializing the workspace to the (intermediate) Doodle representation.
  */
-export default function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle): void {
+export function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle): void {
 
     // Try to reduce thrashing by only removing the files we don't want.
     removeUnwantedFilesFromDoodle(workspace, doodle);

@@ -10,7 +10,7 @@ interface ExplorerAttributes extends IAttributes {
 
 }
 
-function factory(): IDirective {
+export function createExplorerDirective(): IDirective {
 
     const directive: IDirective = {
         require: ['ngModel'],
@@ -81,6 +81,4 @@ function factory(): IDirective {
     return directive;
 }
 
-factory.$inject = [];
-
-export default factory;
+createExplorerDirective.$inject = [];

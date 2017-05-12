@@ -36,8 +36,8 @@ import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
-import FormatCodeSettings from '../../editor/workspace/FormatCodeSettings';
-import TextChange from '../../editor/workspace/TextChange';
+import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
+import { TextChange } from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
@@ -138,6 +138,8 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * 
      */
     private monitoringSubscription: Subscription | undefined;
+
+    private gotoDefinitionSubscriptions: { [path: string]: Subscription } = {};
 
     private changedLintingRemover: (() => void) | undefined;
 
@@ -800,7 +802,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
     /**
      * Attaches the Editor to the workspace model, enabling the IDE features.
-     * Connects a Preview change handler to all appropriate editors so for Live Coding.
+     * Connects a Preview change handler to all appropriate editors for Live Coding.
      */
     attachEditor(path: string, mode: LanguageModeId, editor: Editor): () => void {
         // const startTime = performance.now();
@@ -810,6 +812,19 @@ export class WorkspaceController implements WorkspaceEditorHost {
             };
         }
         this.wsModel.attachEditor(path, editor);
+
+        this.gotoDefinitionSubscriptions[path] = editor.gotoDefinitionEvents.subscribe((position) => {
+            this.wsModel.getDefinitionAtPosition(path, position)
+                .then((definitions) => {
+                    if (Array.isArray(definitions) && definitions.length > 0) {
+                        // TODO: Why do we receive a list of definitions?
+                        const definition = definitions[0];
+                        this.wsModel.navigateToFileAndPosition(definition.fileName, definition.textSpan.start);
+                    }
+                }).catch((err) => {
+                    console.log(`definition => ${JSON.stringify(err)}`);
+                });
+        });
 
         switch (mode) {
             case LANGUAGE_HASKELL:
@@ -855,7 +870,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
     /**
      * Requests the formatting edit text changes for a document specified by its path.
      */
-    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange[]> {
+    getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]> {
         return this.wsModel.getFormattingEditsForDocument(path, settings);
     }
 
@@ -994,7 +1009,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
                                 return;
                             }
                             const handler = this.createMarkdownChangeHandler(filePath);
-                            // TODO: 
                             session.addChangeListener(handler);
                             this.markdownChangeHandlers[filePath] = handler;
                             this.updateMarkdownView(WAIT_NO_MORE);
@@ -1108,6 +1122,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
         }
 
         this.removeLiveCodeChangeHandler(path, mode, editor);
+
+        for (const path of Object.keys(this.gotoDefinitionSubscriptions)) {
+            this.gotoDefinitionSubscriptions[path].unsubscribe();
+        }
+        this.gotoDefinitionSubscriptions = {};
 
         this.wsModel.detachEditor(path, editor);
     }

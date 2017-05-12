@@ -1,7 +1,10 @@
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+
 /**
  * 
  */
-export default class EventBus<NAME extends string, E, T> {
+export class EventBus<NAME extends string, E, T> {
 
     /**
      * Each event name has multiple callbacks.
@@ -13,6 +16,15 @@ export default class EventBus<NAME extends string, E, T> {
     constructor(owner: T) {
         this.owner = owner;
         this._eventRegistry = {};
+    }
+
+    events(eventName: NAME): Observable<E> {
+        return new Observable<E>((observer: Observer<E>) => {
+            function callback(value: E, source: T) {
+                observer.next(value);
+            }
+            return this.watch(eventName, callback);
+        });
     }
 
     reset(): void {

@@ -1,32 +1,36 @@
 import { ACE_WORKER_MODULE_NAME } from '../../constants';
-import CompletionEntry from './CompletionEntry';
+import { CompletionEntry } from './CompletionEntry';
+import { DefinitionInfo } from './DefinitionInfo';
 import Delta from '../Delta';
-import Diagnostic from './Diagnostic';
-import FormatCodeSettings from './FormatCodeSettings';
-import TextChange from './TextChange';
+import { Diagnostic } from './Diagnostic';
+import { FormatCodeSettings } from './FormatCodeSettings';
+import { TextChange } from './TextChange';
 import OutputFile from './OutputFile';
 import RuleFailure from './RuleFailure';
-import QuickInfo from './QuickInfo';
+import { QuickInfo } from './QuickInfo';
 import WorkerClient from '../worker/WorkerClient';
 import TsLintSettings from '../../modules/tslint/TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
 import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';
 import { EVENT_ENSURE_MODULE_MAPPING } from './LanguageServiceEvents';
-import { EVENT_ENSURE_SCRIPT } from './LanguageServiceEvents';
 import { EVENT_GET_LINT_ERRORS } from './LanguageServiceEvents';
+import { EVENT_GET_SCRIPT_CONTENT } from './LanguageServiceEvents';
 import { EVENT_GET_SYNTAX_ERRORS } from './LanguageServiceEvents';
 import { EVENT_GET_SEMANTIC_ERRORS } from './LanguageServiceEvents';
 import { EVENT_GET_COMPLETIONS_AT_POSITION } from './LanguageServiceEvents';
+import { EVENT_GET_DEFINITION_AT_POSITION } from './LanguageServiceEvents';
 import { EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT } from './LanguageServiceEvents';
 import { EVENT_GET_QUICK_INFO_AT_POSITION } from './LanguageServiceEvents';
 import { EVENT_GET_OUTPUT_FILES } from './LanguageServiceEvents';
 import { EVENT_REMOVE_MODULE_MAPPING } from './LanguageServiceEvents';
 import { EVENT_REMOVE_SCRIPT } from './LanguageServiceEvents';
 import { EVENT_SET_OPERATOR_OVERLOADING } from './LanguageServiceEvents';
+import { EVENT_SET_SCRIPT_CONTENT } from './LanguageServiceEvents';
 import { EVENT_SET_TRACE } from './LanguageServiceEvents';
 import { EVENT_SET_TS_CONFIG } from './LanguageServiceEvents';
 import { EnsureModuleMappingRequest, RemoveModuleMappingRequest } from './LanguageServiceEvents';
-import { EnsureScriptRequest, RemoveScriptRequest } from './LanguageServiceEvents';
+import { GetScriptContentRequest, SetScriptContentRequest, RemoveScriptRequest } from './LanguageServiceEvents';
+import { GetDefinitionAtPositionRequest } from './LanguageServiceEvents';
 import { GetOutputFilesRequest } from './LanguageServiceEvents';
 import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
 import { SetTraceRequest } from './LanguageServiceEvents';
@@ -36,6 +40,10 @@ interface WorkerClientData<T> {
     err?: any;
     value?: T;
     callbackId: number;
+}
+
+interface RequestMessage<T> {
+    data: T;
 }
 
 function missingCallbackMessage(eventName: string): string {
@@ -99,14 +107,25 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_ENSURE_SCRIPT, (response: { data: WorkerClientData<boolean> }) => {
+        this.worker.on(EVENT_GET_SCRIPT_CONTENT, (response: { data: WorkerClientData<string> }) => {
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
                 callback(err, value);
             }
             else {
-                console.warn(missingCallbackMessage(EVENT_ENSURE_SCRIPT));
+                console.warn(missingCallbackMessage(EVENT_GET_SCRIPT_CONTENT));
+            }
+        });
+
+        this.worker.on(EVENT_SET_SCRIPT_CONTENT, (response: { data: WorkerClientData<boolean> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_SET_SCRIPT_CONTENT));
             }
         });
 
@@ -199,7 +218,18 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, (response: { data: WorkerClientData<TextChange[]> }) => {
+        this.worker.on(EVENT_GET_DEFINITION_AT_POSITION, (response: { data: WorkerClientData<DefinitionInfo<number>[]> }) => {
+            const { err, value, callbackId } = response.data;
+            const callback = this.releaseCallback(callbackId);
+            if (callback) {
+                callback(err, value);
+            }
+            else {
+                console.warn(missingCallbackMessage(EVENT_GET_DEFINITION_AT_POSITION));
+            }
+        });
+
+        this.worker.on(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, (response: { data: WorkerClientData<TextChange<number>[]> }) => {
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
@@ -376,11 +406,27 @@ export class LanguageServiceProxy {
         });
     }
 
+    getScriptContent(path: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            function callback(err: any, content?: string) {
+                if (!err) {
+                    resolve(content);
+                }
+                else {
+                    reject(err);
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message: { data: GetScriptContentRequest } = { data: { fileName: path, callbackId } };
+            this.worker.emit(EVENT_GET_SCRIPT_CONTENT, message);
+        });
+    }
+
     /**
      * Ensures that there is a mapping from the path to the script content.
      * The return boolean promise indicates whether there was an addition (true) or update (false).
      */
-    ensureScript(path: string, content: string): Promise<boolean> {
+    setScriptContent(path: string, content: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             function callback(err: any, added?: boolean) {
                 if (!err) {
@@ -391,8 +437,8 @@ export class LanguageServiceProxy {
                 }
             }
             const callbackId = this.captureCallback(callback);
-            const message: { data: EnsureScriptRequest } = { data: { fileName: path, content, callbackId } };
-            this.worker.emit(EVENT_ENSURE_SCRIPT, message);
+            const message: { data: SetScriptContentRequest } = { data: { fileName: path, content, callbackId } };
+            this.worker.emit(EVENT_SET_SCRIPT_CONTENT, message);
         });
     }
 
@@ -457,7 +503,7 @@ export class LanguageServiceProxy {
                 }
             }
             const callbackId = this.captureCallback(callback);
-            const message: { data: SetTraceRequest } = { data: { trace, callbackId } };
+            const message: RequestMessage<SetTraceRequest> = { data: { trace, callbackId } };
             this.worker.emit(EVENT_SET_TRACE, message);
         });
     }
@@ -473,7 +519,7 @@ export class LanguageServiceProxy {
                 }
             }
             const callbackId = this.captureCallback(callback);
-            const message: { data: SetTsConfigRequest } = { data: { settings, callbackId } };
+            const message: RequestMessage<SetTsConfigRequest> = { data: { settings, callbackId } };
             this.worker.emit(EVENT_SET_TS_CONFIG, message);
         });
     }
@@ -515,7 +561,23 @@ export class LanguageServiceProxy {
         });
     }
 
-    public getFormattingEditsForDocument(fileName: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange[]) => any): void {
+    getDefinitionAtPosition(fileName: string, position: number): Promise<DefinitionInfo<number>[]> {
+        return new Promise<DefinitionInfo<number>[]>((resolve, reject) => {
+            function callback(err: any, definitionInfo: DefinitionInfo<number>[]) {
+                if (!err) {
+                    resolve(definitionInfo);
+                }
+                else {
+                    reject(err);
+                }
+            }
+            const callbackId = this.captureCallback(callback);
+            const message: RequestMessage<GetDefinitionAtPositionRequest> = { data: { fileName, position, callbackId } };
+            this.worker.emit(EVENT_GET_DEFINITION_AT_POSITION, message);
+        });
+    }
+
+    public getFormattingEditsForDocument(fileName: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange<number>[]) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, settings, callbackId } };
         this.worker.emit(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, message);
@@ -529,7 +591,7 @@ export class LanguageServiceProxy {
 
     getOutputFiles(fileName: string, callback: (err: any, outputFiles: OutputFile[]) => any): void {
         const callbackId = this.captureCallback(callback);
-        const message: { data: GetOutputFilesRequest } = { data: { fileName, callbackId } };
+        const message: RequestMessage<GetOutputFilesRequest> = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_OUTPUT_FILES, message);
     }
 }

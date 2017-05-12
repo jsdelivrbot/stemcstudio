@@ -14,6 +14,7 @@ import { EditorScrollable } from './EditorScrollable';
 import { EditorSearchable } from './EditorSearchable';
 import { EditorSelectable } from './EditorSelectable';
 import { EditorSortable } from './EditorSortable';
+import { EditorTypeAware } from './EditorTypeAware';
 import { EditorUndoable } from './EditorUndoable';
 import { EditorWithPointer } from './EditorWithPointer';
 import { EditorWithSnippets } from './EditorWithSnippets';
@@ -39,11 +40,11 @@ export interface EditorMaximal
     EditorSearchable,
     EditorSelectable,
     EditorSortable,
+    EditorTypeAware,
     EditorUndoable,
     EditorWithPointer,
     EditorWithSnippets,
     EditorWithStatus,
     EditorWithTabStops,
     EditorWithLineWidgets {
-    getReadOnly(): boolean;
 }

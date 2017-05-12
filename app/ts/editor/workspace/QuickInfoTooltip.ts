@@ -1,6 +1,6 @@
 import displayPartsToHtml from './displayPartsToHtml';
 import { Editor } from '../Editor';
-import Tooltip from '../Tooltip';
+import { Tooltip } from '../Tooltip';
 import Position from '../Position';
 import QuickInfoTooltipHost from './QuickInfoTooltipHost';
 
@@ -51,7 +51,7 @@ function isEditorContent(target: EventTarget): boolean {
 /**
  *
  */
-export default class QuickInfoTooltip extends Tooltip {
+export class QuickInfoTooltip extends Tooltip {
     private path: string;
     private editor: Editor;
     private host: QuickInfoTooltipHost;

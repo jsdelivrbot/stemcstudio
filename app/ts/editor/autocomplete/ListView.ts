@@ -1,4 +1,4 @@
-import Completion from "../Completion";
+import { Completion } from "../Completion";
 import PixelPosition from "../PixelPosition";
 
 interface ListView {

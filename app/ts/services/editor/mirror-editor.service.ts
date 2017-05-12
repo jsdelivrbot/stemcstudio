@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { Action } from '../../virtual/editor';
 import { Annotation } from '../../virtual/editor';
@@ -54,6 +55,7 @@ export class MirrorEditorService implements EditorService {
 class MirrorEditorAdapter implements Editor {
     private editor: CodeMirror.Editor;
     commands: any;
+    gotoDefinitionEvents: Observable<Position>;
     inMultiSelectMode: boolean;
     sortLines: any;
     constructor(container: HTMLElement) {
@@ -141,7 +143,7 @@ class MirrorEditorAdapter implements Editor {
     getLineWidgetsAtRow(row: number): LineWidget[] {
         throw new Error();
     }
-    getReadOnly(): boolean {
+    get readOnly(): boolean {
         throw new Error();
     }
     getSearchRegExp(): RegExp {
@@ -577,12 +579,16 @@ class MirrorEditorAdapter implements Editor {
     findPrevious(): void {
         throw new Error();
     }
-
     getTextRange(): string {
         throw new Error();
     }
-
     highlight(re?: RegExp): void {
+        throw new Error();
+    }
+    gotoDefinition(): void {
+        throw new Error();
+    }
+    isGotoDefinitionAvailable(): boolean {
         throw new Error();
     }
 }

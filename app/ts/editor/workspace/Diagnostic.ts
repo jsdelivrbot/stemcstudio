@@ -38,5 +38,3 @@ export interface Diagnostic {
      */
     code: number | string;
 }
-
-export default Diagnostic;

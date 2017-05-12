@@ -59,7 +59,7 @@ import { SelectionRemoveRangeEvent } from './events/SelectionRemoveRangeEvent';
 import { SelectionMultiSelectEvent } from './events/SelectionMultiSelectEvent';
 import { SelectionSingleSelectEvent } from './events/SelectionSingleSelectEvent';
 import NativeUndoManager from './UndoManager';
-import NativeQuickInfoTooltip from './workspace/QuickInfoTooltip';
+import { QuickInfoTooltip as NativeQuickInfoTooltip } from './workspace/QuickInfoTooltip';
 
 //
 // Editor Abstraction Layer
@@ -134,6 +134,13 @@ function find(session: EditSession, needle: string | RegExp, direction: Directio
     return search.find(session);
 }
 
+/**
+ * Returns "${operation} is not allowed in readOnly mode."
+ */
+function verbotenWhenReadOnly(operation: string): string {
+    return `${operation} is not allowed in readOnly mode.`;
+}
+
 export type EditorEventName = 'blur'
     | 'change'
     | 'changeAnnotation'
@@ -186,6 +193,9 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     public session: NativeEditSession | undefined;
 
     private eventBus: EventEmitterClass<EditorEventName, any, Editor>;
+
+    private readonly gotoDefinitionBus = new EventEmitterClass<'gotoDefinition', Position, Editor>(this);
+    public readonly gotoDefinitionEvents = this.gotoDefinitionBus.events('gotoDefinition');
 
     /**
      * Have to make this public to support error marker extension.
@@ -253,7 +263,14 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * 
      */
     private $mergeUndoDeltas: boolean | 'always' = true;
-    public $readOnly = false;
+    /**
+     * The internal representation of the readOnly property.
+     * The default setting is `false`, meaning that the editor is writeable.
+     */
+    private $readOnly = false;
+    private readonly $readOnlyBus = new EventEmitterClass<'$readOnly', { oldValue: boolean; newValue: boolean }, Editor>(this);
+    public readonly readOnlyEvents = this.$readOnlyBus.events('$readOnly');
+
     private $scrollAnchor: HTMLDivElement;
     /**
      * Used by SearchBox.
@@ -2794,17 +2811,19 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      *
      * @param readOnly Specifies whether the editor can be modified or not.
      */
-    setReadOnly(readOnly: boolean): void {
-        this.$readOnly = readOnly;
+    setReadOnly(newValue: boolean): void {
+        const oldValue = this.$readOnly;
+        this.$readOnly = newValue;
         // disabled to not break vim mode!
-        this.textInput.setReadOnly(readOnly);
-        this.$resetCursorStyle();
+        this.textInput.setReadOnly(this.$readOnly);
+        this.resetCursorStyle();
+        this.$readOnlyBus._signal('$readOnly', { oldValue, newValue });
     }
 
     /**
      * Returns `true` if the editor is set to read-only mode.
      */
-    getReadOnly(): boolean {
+    get readOnly(): boolean {
         return this.$readOnly;
     }
 
@@ -2879,6 +2898,9 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * @param direction The direction of the deletion to occur, either "left" or "right".
      */
     remove(direction: 'left' | 'right'): void {
+        if (this.readOnly) {
+            throw new Error(verbotenWhenReadOnly(`remove(direction = '${direction}')`));
+        }
         const session = this.sessionOrThrow();
         if (this.selection && this.selection.isEmpty()) {
             if (direction === "left")
@@ -3635,8 +3657,11 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         this.$moveByPage(Direction.BACKWARD);
     }
 
-    scrollCursorIntoView(): void {
-        throw new Error("TODO");
+    scrollCursorIntoView(cursor?: Position | null, offset?: number, viewMargin?: { top?: number; bottom?: number }): void {
+        const renderer = this.renderer;
+        if (renderer) {
+            renderer.scrollCursorIntoView(cursor, offset, viewMargin);
+        }
     }
 
     /**
@@ -3733,6 +3758,24 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     clearSelection(): void {
         const selection = this.selectionOrThrow();
         selection.clearSelection();
+    }
+
+    //
+    // EditorTypeAware
+    //
+
+    /**
+     * Handles the "Go to Definition" request when initiated from the keyboard (F12).
+     * The editor itself can't do much.
+     * The event is relayed to an observable for those who want to know.
+     */
+    gotoDefinition(): void {
+        const cursorPosition = this.getCursorPosition();
+        this.gotoDefinitionBus._signal('gotoDefinition', cursorPosition);
+    }
+
+    isGotoDefinitionAvailable(): boolean {
+        return true;
     }
 
     /**
@@ -4534,16 +4577,14 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         };
     }
 
-    /**
-     *
-     */
-    public $resetCursorStyle(): void {
+    private resetCursorStyle(): void {
         const style = this.$cursorStyle || "ace";
         const cursorLayer = this.renderer.cursorLayer;
         if (!cursorLayer) {
             return;
         }
         cursorLayer.setSmoothBlinking(/smooth/.test(style));
+        // The cursor only blinks if the editor is writeable.
         cursorLayer.isBlinking = !this.$readOnly && style !== "wide";
         cursorLayer.setCssClass("ace_slim-cursors", /slim/.test(style));
     }

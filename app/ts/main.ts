@@ -62,7 +62,7 @@ import { ExamplesController } from './controllers/ExamplesController';
 import { GitHubAccountController } from './controllers/GitHubAccountController';
 import { HomeController } from './controllers/HomeController';
 import { createEditorDirective } from './directives/editor/editor.directive1x';
-import explorer from './directives/explorer/explorer.component';
+import { createExplorerDirective } from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
 import problems from './directives/problems/problems.component';
 
@@ -120,7 +120,7 @@ app.controller('RepoController', RepoController);
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', createEditorDirective);
-app.directive('explorer', explorer);
+app.directive('explorer', createExplorerDirective);
 app.directive('problems', problems);
 app.directive('resizable', resizable);
 app.directive('workspace', workspace);
