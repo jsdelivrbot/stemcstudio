@@ -31,7 +31,7 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.16",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.17",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",

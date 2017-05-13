@@ -791,7 +791,6 @@
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.9.16": {},
   "github:angular-ui/ui-router@0.4.2": {},
   "npm:zone.js@0.8.10": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -936,5 +935,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  }
+  },
+  "github:geometryzen/ace-workers@2.9.17": {}
 }

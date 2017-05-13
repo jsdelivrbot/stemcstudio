@@ -196,7 +196,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_ACE_WORKERS = '2.9.16';
+    const VERSION_ACE_WORKERS = '2.9.17';
     const VERSION_ANGULAR = '4.1.0';
     const VERSION_EIGHT = '6.1.1';
     const VERSION_MONACO = '0.8.3';
