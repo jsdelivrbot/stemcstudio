@@ -1,19 +1,19 @@
-import app from '../../app';
+import { app } from '../../app';
 import { ITemplate } from './template';
-import EIGHT_BOOTSTRAP from './EIGHT_BOOTSTRAP';
+import { EIGHT_BOOTSTRAP } from './EIGHT_BOOTSTRAP';
 import { HTML } from './COMMON_HTML';
-import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
-import MINIMAL_CSS from './MINIMAL_CSS';
+import { MINIMAL_BOOTSTRAP } from './MINIMAL_BOOTSTRAP';
+import { MINIMAL_CSS } from './MINIMAL_CSS';
 import { STANDARD_README } from './STANDARD_README';
-import MINIMAL_SPEC_RUNNER from './MINIMAL_SPEC_RUNNER';
-import MINIMAL_EXAMPLE_SPEC from './MINIMAL_EXAMPLE_SPEC';
-import REACT_BOOTSTRAP from './REACT_BOOTSTRAP';
+import { MINIMAL_SPEC_RUNNER } from './MINIMAL_SPEC_RUNNER';
+import { MINIMAL_EXAMPLE_SPEC } from './MINIMAL_EXAMPLE_SPEC';
+import { REACT_BOOTSTRAP } from './REACT_BOOTSTRAP';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { EDITOR_PREFERENCES_STORAGE } from '../../modules/preferences/constants';
-import EditorPreferencesStorage from '../../modules/preferences/EditorPreferencesStorage';
+import { EditorPreferencesStorage } from '../../modules/preferences/EditorPreferencesStorage';
 import { TemplateOptions } from './template';
 
 const INDEX_DOT_JS = `main.js`;

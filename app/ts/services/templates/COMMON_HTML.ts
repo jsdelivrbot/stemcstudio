@@ -33,6 +33,9 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + "</head>");
     lines.push(_ + "<body>");
 
+    // The "console-to-page" handling may be useful but creates a bad impression.
+    lines.push(_ + _ + "<!--");
+
     lines.push(_ + _ + "<div id='errors' style='display: none;'></div>");
     lines.push(_ + _ + "<div id='warnings' style='display: none;'></div>");
     lines.push(_ + _ + "<div id='infos' style='display: none;'></div>");
@@ -85,6 +88,8 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + _ + _ + "errors.style.display = ''");
     lines.push(_ + _ + "}");
     lines.push(_ + _ + "</script>");
+
+    lines.push(_ + _ + "-->");
 
     if (typeof options.canvasId === 'string') {
         lines.push(_ + _ + `<canvas id='${options.canvasId}'></canvas>`);

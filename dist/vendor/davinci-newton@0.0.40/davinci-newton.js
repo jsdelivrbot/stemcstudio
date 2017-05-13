@@ -6533,9 +6533,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-04-23';
+            this.LAST_MODIFIED = '2017-05-12';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.40';
+            this.VERSION = '0.0.41';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];

@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import EditorPreferencesStorage from '../EditorPreferencesStorage';
+import { EditorPreferencesStorage } from '../EditorPreferencesStorage';
 
 /**
  * 

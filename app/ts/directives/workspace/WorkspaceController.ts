@@ -819,6 +819,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                     if (Array.isArray(definitions) && definitions.length > 0) {
                         // TODO: Why do we receive a list of definitions?
                         const definition = definitions[0];
+                        console.log(`definitions => ${JSON.stringify(definitions)}`);
                         this.wsModel.navigateToFileAndPosition(definition.fileName, definition.textSpan.start);
                     }
                 }).catch((err) => {

@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function MINIMAL_EXAMPLE_SPEC(tabString: string): string {
+export function MINIMAL_EXAMPLE_SPEC(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("// Run these specifications by selecting 'tests.html' from the 'Choose Program' toolbar menu.");

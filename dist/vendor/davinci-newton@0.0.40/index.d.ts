@@ -1,4 +1,4 @@
-// Type definitions for davinci-newton 0.0.38
+// Type definitions for davinci-newton 0.0.41
 // Project: https://github.com/geometryzen/davinci-newton
 // Definitions by: David Geo Holmes david.geo.holmes@gmail.com https://www.stemcstudio.com
 //
@@ -100,7 +100,7 @@ declare namespace NEWTON {
         readonly temperature: QQ;
         readonly amount: QQ;
         readonly intensity: QQ;
-        constructor(M: QQ, L: QQ, T: QQ, Q: QQ, temperature: QQ, amount: QQ, intensity);
+        constructor(M: QQ, L: QQ, T: QQ, Q: QQ, temperature: QQ, amount: QQ, intensity: QQ);
         isOne(): boolean;
         isZero(): boolean;
         inv(): Dimensions;
@@ -342,7 +342,7 @@ declare namespace NEWTON {
         constructor(varNames: string[]);
         addVariables(names: string[]): number;
         deleteVariables(index: number, howMany: number): void;
-        incrSequence(...indexes: number[]);
+        incrSequence(...indexes: number[]): void;
         getValues(): number[];
         setValues(values: number[], continuous?: boolean): void;
         setValue(index: number, value: number, continuous?: boolean): void;
@@ -478,7 +478,7 @@ declare namespace NEWTON {
         approx(n: number): Geometric3;
 
         /**
-         *Returns a clone of this multivector.
+         * Returns a clone of this multivector.
          */
         clone(): Geometric3;
 
@@ -1138,7 +1138,7 @@ declare namespace NEWTON {
         /**
          * The application defined unique identifier.
          */
-        uuid: string
+        uuid: string;
         /**
          * The center of mass position vector in local coordinates.
          */
@@ -1807,7 +1807,6 @@ declare namespace NEWTON {
         RIGHT = 2,
         FULL = 3
     }
-
 
     enum AlignV {
         TOP = 0,

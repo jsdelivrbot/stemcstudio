@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function (tabString: string): string {
+export function MINIMAL_SPEC_RUNNER(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("//");

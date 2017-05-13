@@ -5,7 +5,7 @@ import EditorPreferencesEvent from '../../EditorPreferencesEvent';
 import { currentTheme } from '../../EditorPreferencesEvent';
 import { EDITOR_PREFERENCES_STORAGE } from '../../../preferences/constants';
 import { IDeferred, IPromise, IQService } from 'angular';
-import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
+import { EditorPreferencesStorage } from '../../../preferences/EditorPreferencesStorage';
 
 const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
 const tabSizes: number[] = [2, 3, 4];

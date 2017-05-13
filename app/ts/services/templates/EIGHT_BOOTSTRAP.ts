@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function (tabString: string): string {
+export function EIGHT_BOOTSTRAP(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("import {Geometric3, Color} from 'davinci-eight'");

@@ -1,7 +1,7 @@
 /**
  *
  */
-interface EditorPreferencesStorage {
+export interface EditorPreferencesStorage {
     /**
      * 
      */
@@ -43,5 +43,3 @@ interface EditorPreferencesStorage {
      */
     useSoftTabs: boolean;
 }
-
-export default EditorPreferencesStorage;

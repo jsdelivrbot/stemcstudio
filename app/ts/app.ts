@@ -167,7 +167,7 @@ import { STATE_ROOM } from './modules/navigation/NavigationServiceJS';
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
-const app = module('app', [
+export const app = module('app', [
     'ngMdIcons',
     'ngSanitize',
     'ui.bootstrap',
@@ -200,7 +200,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.75');
+app.constant('version', '2.24.76');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

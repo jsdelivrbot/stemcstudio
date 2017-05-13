@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function REACT_BOOTSTRAP(tabString: string): string {
+export function REACT_BOOTSTRAP(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("import * as React from 'react'");
