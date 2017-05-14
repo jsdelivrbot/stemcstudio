@@ -198,6 +198,7 @@ function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.17';
     const VERSION_ANGULAR = '4.1.0';
+    const VERSION_CSV = '0.9.4';
     const VERSION_EIGHT = '6.1.1';
     const VERSION_MONACO = '0.8.3';
 
@@ -589,28 +590,32 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-csv')
         },
         {
-            src: "bower_components/davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
+            src: "node_modules/davinci-csv/package.json",
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/package.json`)
         },
         {
-            src: "bower_components/davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/davinci-csv.js')
+            src: "node_modules/davinci-csv/dist/index.d.ts",
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
         },
         {
-            src: "bower_components/davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
+            src: "node_modules/davinci-csv/dist/davinci-csv.js",
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/davinci-csv.js`)
+        },
+        {
+            src: "node_modules/davinci-csv/dist/index.d.ts",
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
         },
         {
             src: "../davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
         },
         {
             src: "../davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/davinci-csv.js')
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/davinci-csv.js`)
         },
         {
             src: "../davinci-csv/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-csv@0.9.2/index.d.ts')
+            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
         },
         {
             expand: true,

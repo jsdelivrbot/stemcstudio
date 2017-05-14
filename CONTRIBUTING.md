@@ -67,10 +67,10 @@ Update versions in
 2. bower.json
 3. app/ts/app.ts
 
-### Upgrading a library dependency such as davinci-eight
+### Upgrading a library dependency such as davinci-csv, davinci-eight, or davinci-newton.
 
 1. package.json or bower.json - update the version
-2. options.ts - update the version
+2. optionManager.service.ts - update the version
 3. Gruntfile.js - update the version
 
 

@@ -36,7 +36,7 @@ const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
 const VERSION_ANGULARJS = '1.5.3';
 const VERSION_BACONJS = '0.7.89';
 const VERSION_BIWASCHEME = '0.6.6';
-const VERSION_CSV = '0.9.2';
+const VERSION_CSV = '0.9.4';
 const VERSION_DAT_GUI = '0.5.0';
 const VERSION_DECKJS = '1.1.0';
 const VERSION_DOMREADY = '1.0.0';
@@ -120,9 +120,6 @@ function baconjs(fileName: string): string {
 }
 function biwascheme(fileName: string): string {
     return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
-}
-function csv(fileName: string): string {
-    return vendorFolder('davinci-csv', VERSION_CSV, void 0, fileName);
 }
 function datGUI(fileName: string): string {
     return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
@@ -309,21 +306,6 @@ export class OptionManager implements IOptionManager {
                 dependencies: {}
             },
             {
-                packageName: 'davinci-csv',
-                moduleName: 'davinci-csv',
-                libraryKind: LibraryKind.UMD,
-                globalName: 'CSV',
-                description: "Comma Separated Value (CSV) Library",
-                homepage: 'https://www.stemcstudio.com/docs/davinci-csv/index.html',
-                version: VERSION_CSV,
-                visible: true,
-                css: [],
-                dts: csv(INDEX_DTS),
-                js: [csv('davinci-csv.js')],
-                minJs: [csv('davinci-csv.js')],
-                dependencies: {}
-            },
-            {
                 packageName: 'geocas',
                 moduleName: 'geocas',
                 libraryKind: LibraryKind.UMD,
@@ -381,6 +363,21 @@ export class OptionManager implements IOptionManager {
                 dts: datGUI('dat-gui.d.ts'),
                 js: [datGUI('dat-gui.js')],
                 minJs: [datGUI('dat-gui.min.js')],
+                dependencies: {}
+            },
+            {
+                packageName: 'davinci-csv',
+                moduleName: 'davinci-csv',
+                libraryKind: LibraryKind.UMD,
+                globalName: 'CSV',
+                description: "Comma Separated Value (CSV) Library",
+                homepage: 'https://www.stemcstudio.com/docs/davinci-csv/index.html',
+                version: VERSION_CSV,
+                visible: true,
+                css: [],
+                dts: `https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/${INDEX_DTS}`,
+                js: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/davinci-csv.js`],
+                minJs: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/davinci-csv.min.js`],
                 dependencies: {}
             },
             {
