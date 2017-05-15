@@ -36,7 +36,7 @@ const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
 const VERSION_ANGULARJS = '1.5.3';
 const VERSION_BACONJS = '0.7.89';
 const VERSION_BIWASCHEME = '0.6.6';
-const VERSION_CSV = '0.9.4';
+const VERSION_CSV = '0.9.5';
 const VERSION_DAT_GUI = '0.5.0';
 const VERSION_DECKJS = '1.1.0';
 const VERSION_DOMREADY = '1.0.0';
@@ -371,13 +371,13 @@ export class OptionManager implements IOptionManager {
                 libraryKind: LibraryKind.UMD,
                 globalName: 'CSV',
                 description: "Comma Separated Value (CSV) Library",
-                homepage: 'https://www.stemcstudio.com/docs/davinci-csv/index.html',
+                homepage: 'https://geometryzen.github.io/davinci-csv/',
                 version: VERSION_CSV,
                 visible: true,
                 css: [],
-                dts: `https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/${INDEX_DTS}`,
-                js: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/davinci-csv.js`],
-                minJs: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/dist/davinci-csv.min.js`],
+                dts: `https://unpkg.com/davinci-csv@${VERSION_CSV}/build/browser/${INDEX_DTS}`,
+                js: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/build/browser/index.js`],
+                minJs: [`https://unpkg.com/davinci-csv@${VERSION_CSV}/build/browser/index.js`],
                 dependencies: {}
             },
             {

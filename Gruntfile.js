@@ -198,7 +198,6 @@ function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.17';
     const VERSION_ANGULAR = '4.1.0';
-    const VERSION_CSV = '0.9.4';
     const VERSION_EIGHT = '6.1.1';
     const VERSION_MONACO = '0.8.3';
 
@@ -582,40 +581,6 @@ function copies(target) {
         {
             src: "bower_components/underscore/underscore-min.map",
             dest: prepend(target, 'vendor/underscore@1.8.3/underscore-min.map')
-        },
-        {
-            expand: true,
-            cwd: "../davinci-csv/documentation",
-            src: ["**"],
-            dest: prepend(target, 'docs/davinci-csv')
-        },
-        {
-            src: "node_modules/davinci-csv/package.json",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/package.json`)
-        },
-        {
-            src: "node_modules/davinci-csv/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
-        },
-        {
-            src: "node_modules/davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/davinci-csv.js`)
-        },
-        {
-            src: "node_modules/davinci-csv/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
-        },
-        {
-            src: "../davinci-csv/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
-        },
-        {
-            src: "../davinci-csv/dist/davinci-csv.js",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/davinci-csv.js`)
-        },
-        {
-            src: "../davinci-csv/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-csv@${VERSION_CSV}/index.d.ts`)
         },
         {
             expand: true,
