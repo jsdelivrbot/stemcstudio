@@ -24,8 +24,8 @@ import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_
 
 const NEWLINE = '\n';
 
-const JSPM_CONFIG_JS = 'jspm.config.js';
-const JSPM_CONFIG_JSON = 'jspm.config.json';
+const SYSTEM_CONFIG_JS = 'system.config.js';
+const SYSTEM_CONFIG_JSON = 'system.config.json';
 
 /**
  * Synthesize the argument object to System.config for libraries that should be loaded as modules.
@@ -227,10 +227,10 @@ export default function rebuildPreview(
                              * In time we will deprecate the sythesis approach in favor of explicit specification
                              * through the jspm.config.js file as this opens up the use of external modules.
                              */
-                            const systemJsConfig = fileExists(JSPM_CONFIG_JS, workspace) ?
-                                fileContent(JSPM_CONFIG_JS, workspace) as string :
-                                fileExists(JSPM_CONFIG_JSON, workspace) ?
-                                    `System.config(${fileContent(JSPM_CONFIG_JSON, workspace) as string});${NEWLINE}` :
+                            const systemJsConfig = fileExists(SYSTEM_CONFIG_JS, workspace) ?
+                                fileContent(SYSTEM_CONFIG_JS, workspace) as string :
+                                fileExists(SYSTEM_CONFIG_JSON, workspace) ?
+                                    `System.config(${fileContent(SYSTEM_CONFIG_JSON, workspace) as string});${NEWLINE}` :
                                     `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
 
                             html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));
