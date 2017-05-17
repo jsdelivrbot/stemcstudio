@@ -198,7 +198,6 @@ function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.17';
     const VERSION_ANGULAR = '4.1.0';
-    const VERSION_EIGHT = '6.1.1';
     const VERSION_MONACO = '0.8.3';
 
     return [
@@ -581,52 +580,6 @@ function copies(target) {
         {
             src: "bower_components/underscore/underscore-min.map",
             dest: prepend(target, 'vendor/underscore@1.8.3/underscore-min.map')
-        },
-        {
-            expand: true,
-            cwd: "../davinci-eight/documentation",
-            src: ["**"],
-            dest: prepend(target, 'docs/davinci-eight')
-        },
-        {
-            src: "node_modules/davinci-eight/package.json",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/package.json`)
-        },
-        {
-            src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
-        },
-        {
-            src: "node_modules/davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.js`)
-        },
-        {
-            src: "node_modules/davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.css`)
-        },
-        {
-            src: "node_modules/davinci-eight/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
-        },
-        {
-            src: "../davinci-eight/dist/package.json",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/package.json`)
-        },
-        {
-            src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
-        },
-        {
-            src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.js`)
-        },
-        {
-            src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/davinci-eight.css`)
-        },
-        {
-            src: "../davinci-eight/dist/index.d.ts",
-            dest: prepend(target, `vendor/davinci-eight@${VERSION_EIGHT}/index.d.ts`)
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",

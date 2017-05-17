@@ -41,7 +41,7 @@ const VERSION_DAT_GUI = '0.5.0';
 const VERSION_DECKJS = '1.1.0';
 const VERSION_DOMREADY = '1.0.0';
 const VERSION_D3_V3 = '3.5.17';
-const VERSION_EIGHT = '6.1.1';
+const VERSION_EIGHT = '6.1.2';
 const VERSION_GEOCAS = '1.13.0';
 const VERSION_GLMATRIX = '2.3.2';
 const VERSION_IMMUTABLE = '3.8.1';
@@ -386,13 +386,13 @@ export class OptionManager implements IOptionManager {
                 libraryKind: LibraryKind.UMD,
                 globalName: 'EIGHT',
                 description: "Mathematical Computer Graphics using WebGL.",
-                homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
+                homepage: 'https://geometryzen.github.io/davinci-eight/',
                 version: VERSION_EIGHT,
                 visible: true,
-                css: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.css`],
-                dts: `https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/${INDEX_DTS}`,
-                js: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.js`],
-                minJs: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/dist/davinci-eight.min.js`],
+                css: [],
+                dts: `https://unpkg.com/davinci-eight@${VERSION_EIGHT}/build/browser/${INDEX_DTS}`,
+                js: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/build/browser/index.js`],
+                minJs: [`https://unpkg.com/davinci-eight@${VERSION_EIGHT}/build/browser/index.js`],
                 dependencies: {}
             },
             {
