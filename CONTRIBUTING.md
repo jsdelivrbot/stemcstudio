@@ -99,7 +99,7 @@ git push origin master
 
 ### Upgrading TypeScript (version used at runtime)
 
-1. Grintfile.js
+1. Gruntfile.js
 2. app.ts
 
 ### Tested versions of TypeScript and ace-workers

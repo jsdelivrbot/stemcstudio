@@ -48,7 +48,7 @@ const VERSION_IMMUTABLE = '3.8.1';
 const VERSION_JASMINE = '2.5.2';
 const VERSION_JQUERY = '2.1.4';
 const VERSION_JSXGRAPH = '0.99.5';
-const VERSION_NEWTON = '0.0.40';
+const VERSION_NEWTON = '0.0.42';
 const VERSION_PLOTLY = '1.24.1';
 const VERSION_REACT = '15.4.2';
 const VERSION_REACT_DOM = '15.4.2';
@@ -401,7 +401,7 @@ export class OptionManager implements IOptionManager {
                 libraryKind: LibraryKind.UMD,
                 globalName: 'NEWTON',
                 description: "Physics Engine and Kinematic Graphing.",
-                homepage: 'https://www.stemcstudio.com/docs/davinci-newton/index.html',
+                homepage: 'https://geometryzen.github.io/davinci-newton/',
                 version: VERSION_NEWTON,
                 visible: true,
                 css: [],

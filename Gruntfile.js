@@ -611,28 +611,6 @@ function copies(target) {
         },
         {
             expand: true,
-            cwd: "../davinci-newton/documentation",
-            src: ["**"],
-            dest: prepend(target, 'docs/davinci-newton')
-        },
-        {
-            src: "node_modules/davinci-newton/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.40/index.d.ts')
-        },
-        {
-            src: "node_modules/davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.40/davinci-newton.js')
-        },
-        {
-            src: "../davinci-newton/dist/index.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.40/index.d.ts')
-        },
-        {
-            src: "../davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.40/davinci-newton.js')
-        },
-        {
-            expand: true,
             cwd: "../davinci-units/documentation",
             src: ["**"],
             dest: prepend(target, 'docs/davinci-units')
