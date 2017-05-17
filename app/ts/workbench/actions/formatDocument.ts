@@ -20,7 +20,8 @@ export function formatCodeSettings(indentSize: number): FormatCodeSettings {
     settings.insertSpaceAfterKeywordsInControlFlowStatements = true;
 
     settings.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = false;
-    settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces = false;
+    // The following setting is useful for putting spaces around named imports.
+    settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces = true;
     settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets = false;
     settings.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis = false;
     settings.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces = false;

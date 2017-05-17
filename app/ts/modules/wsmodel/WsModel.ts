@@ -193,8 +193,8 @@ export interface TypesConfigSettings {
     map?: ModuleResolutions;
 }
 
-const JSPM_DOT_CONFIG_DOT_JS = 'jspm.config.js';
-const JSPM_DOT_CONFIG_DOT_JSON = 'jspm.config.json';
+const SYSTEM_DOT_CONFIG_DOT_JS = 'system.config.js';
+const SYSTEM_DOT_CONFIG_DOT_JSON = 'system.config.json';
 
 export interface JspmSettings {
     warnings?: boolean;
@@ -1256,8 +1256,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 else {
                     switch (path) {
                         // I'm assuming that there will not be both kinds of files.
-                        case JSPM_DOT_CONFIG_DOT_JS:
-                        case JSPM_DOT_CONFIG_DOT_JSON: {
+                        case SYSTEM_DOT_CONFIG_DOT_JS:
+                        case SYSTEM_DOT_CONFIG_DOT_JSON: {
                             const monitor = new JspmConfigJsonMonitor(session, this);
                             this.docMonitors[path] = monitor;
                             monitor.beginMonitoring(callback);
