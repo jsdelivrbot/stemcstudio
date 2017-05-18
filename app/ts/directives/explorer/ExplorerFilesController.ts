@@ -1,8 +1,8 @@
 import { ExplorerFilesScope } from './ExplorerFilesScope';
-import ModalDialog from '../../services/modalService/ModalDialog';
-import AlertOptions from '../../services/modalService/AlertOptions';
-import ConfirmOptions from '../../services/modalService/ConfirmOptions';
-import PromptOptions from '../../services/modalService/PromptOptions';
+import { ModalDialog } from '../../services/modalService/ModalDialog';
+import { AlertOptions } from '../../services/modalService/AlertOptions';
+import { ConfirmOptions } from '../../services/modalService/ConfirmOptions';
+import { PromptOptions } from '../../services/modalService/PromptOptions';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
@@ -41,7 +41,7 @@ export class ExplorerFilesController {
         this.modalService.prompt(options)
             .then((path) => {
                 try {
-                    this.wsModel.newFile(path, false);
+                    this.wsModel.newFileUnmonitored(path, false);
                     this.wsModel.beginDocumentMonitoring(path, (monitoringError) => {
                         if (!monitoringError) {
                             this.wsModel.openFile(path);

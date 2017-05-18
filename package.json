@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.85",
+  "version": "2.24.86",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -33,7 +33,7 @@
     "aws-sdk": "2.6.15",
     "baconjs": "^0.7.93",
     "biwascheme": "^0.6.7",
-    "body-parser": "^1.17.1",
+    "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "debug": "^2.6.7",
@@ -41,7 +41,7 @@
     "es6-promise": "^4.1.0",
     "es6-shim": "^0.35.3",
     "express": "^4.15.3",
-    "express-session": "^1.15.2",
+    "express-session": "^1.15.3",
     "lactate": "0.13.12",
     "method-override": "^2.3.8",
     "morgan": "^1.8.1",

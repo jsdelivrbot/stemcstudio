@@ -1,7 +1,7 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import Clipboard from 'clipboard';
 import ShareScope from './ShareScope';
-import ShareOptions from './ShareOptions';
+import { ShareOptions } from './ShareOptions';
 
 export default class ShareController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];

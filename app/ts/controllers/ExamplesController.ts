@@ -3,7 +3,7 @@ import { AbstractPageController } from './AbstractPageController';
 import { ExamplesScope } from '../scopes/ExamplesScope';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
-import ModalDialog from '../services/modalService/ModalDialog';
+import { ModalDialog } from '../services/modalService/ModalDialog';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 //
@@ -62,6 +62,10 @@ export class ExamplesController extends AbstractPageController {
         super($window, authManager, modalDialog, 'auto');
 
         $scope.examples = [
+            //
+            // Too many bugs and too complicated.
+            //
+            /*
             {
                 gistId: '6774d1e77202db783182',
                 title: "Asteroids",
@@ -70,6 +74,7 @@ export class ExamplesController extends AbstractPageController {
                 imageAlt: '',
                 category: 'CompSci'
             },
+            */
             {
                 gistId: '129a4a31fa803df9e4a5',
                 title: "Animating a Scene with EIGHT",
@@ -373,7 +378,11 @@ export class ExamplesController extends AbstractPageController {
                 imageSrc: '/img/examples/plotly-histogram-contours.png',
                 imageAlt: '',
                 category: 'Physics'
-            },
+            }
+            //
+            // 3DMol loads from an HTTP endpoint, which is disallowed from HTTPS.
+            //
+            /*
             {
                 gistId: '8cc0338a0bcb1edf900a2074e9aa9cf2',
                 title: "Molecule Visualization",
@@ -382,6 +391,7 @@ export class ExamplesController extends AbstractPageController {
                 imageAlt: '',
                 category: 'Chemistry'
             }
+            */
         ];
     }
 

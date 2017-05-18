@@ -1,4 +1,4 @@
-import AlertOptions from './AlertOptions';
+import { AlertOptions } from './AlertOptions';
 
 interface AlertScope {
     options: AlertOptions;

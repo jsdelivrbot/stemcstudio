@@ -71,7 +71,7 @@ import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
 import PromptController from './services/modalService/PromptController';
 import ShareController from './services/modalService/ShareController';
-import ModalDialogService from './services/modalService/ModalDialogService';
+import { ModalDialogService } from './services/modalService/modal-dialog.service';
 
 import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
 import ReteFlowService from './services/flow/ReteFlowService';

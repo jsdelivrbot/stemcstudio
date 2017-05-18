@@ -2,7 +2,7 @@ import { IWindowService } from 'angular';
 import { BodyScope } from '../scopes/BodyScope';
 import { AbstractPageController } from './AbstractPageController';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
-import ModalDialog from '../services/modalService/ModalDialog';
+import { ModalDialog } from '../services/modalService/ModalDialog';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 
 /**

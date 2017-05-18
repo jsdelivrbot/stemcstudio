@@ -1,11 +1,11 @@
 import FlowService from '../../services/flow/FlowService';
 import UploadFacts from './UploadFacts';
-import ModalDialog from '../../services/modalService/ModalDialog';
+import { ModalDialog } from '../../services/modalService/ModalDialog';
 import { INavigationService } from '../../modules/navigation/INavigationService';
 import { ICloudService } from '../../services/cloud/ICloudService';
 import GitHubReason from '../../services/github/GitHubReason';
 import { IGitHubRepoService } from '../../services/github/IGitHubRepoService';
-import PromptOptions from '../../services/modalService/PromptOptions';
+import { PromptOptions } from '../../services/modalService/PromptOptions';
 import { RepoData } from '../../services/github/RepoData';
 import isNumber from '../../utils/isNumber';
 import Method from './Method';

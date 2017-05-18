@@ -1,8 +1,6 @@
-import ModalDialogOptions from './ModalDialogOptions';
+import { ModalDialogOptions } from './ModalDialogOptions';
 
-interface ConfirmOptions extends ModalDialogOptions {
+export interface ConfirmOptions extends ModalDialogOptions {
     cancelButtonText?: string;
     actionButtonText?: string;
 }
-
-export default ConfirmOptions;

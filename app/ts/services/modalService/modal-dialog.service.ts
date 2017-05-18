@@ -1,11 +1,11 @@
 import { extend } from 'angular';
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import ModalDialog from './ModalDialog';
-import AlertOptions from './AlertOptions';
-import ConfirmOptions from './ConfirmOptions';
-import PromptOptions from './PromptOptions';
-import ShareOptions from './ShareOptions';
+import { ModalDialog } from './ModalDialog';
+import { AlertOptions } from './AlertOptions';
+import { ConfirmOptions } from './ConfirmOptions';
+import { PromptOptions } from './PromptOptions';
+import { ShareOptions } from './ShareOptions';
 
 const DEFAULT_MODAL_SETTINGS: IModalSettings = {
     backdrop: true,
@@ -44,7 +44,7 @@ const DEFAULT_SHARE_OPTIONS: ShareOptions = {
 /**
  *
  */
-export default class ModalServiceClazz implements ModalDialog {
+export class ModalDialogService implements ModalDialog {
     public static $inject: string[] = ['$uibModal'];
 
     /**

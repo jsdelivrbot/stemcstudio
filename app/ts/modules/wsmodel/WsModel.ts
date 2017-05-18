@@ -2080,13 +2080,31 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     /**
+     * This should become the new public API, replacing newFile.
+     */
+    newFileWithDocumentMonitoring(path: string, isExternal: boolean): Promise<WsFile> {
+        const file = this.newFileUnmonitored(path, isExternal);
+        return new Promise<WsFile>((resolve, reject) => {
+            this.beginDocumentMonitoring(path, (err) => {
+                if (!err) {
+                    resolve(file);
+                }
+                else {
+                    file.release();
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    /**
      * Creates a new file.
      * The file is not yet monitored for changes (affecting the Language Service).
      * The file is synchronized with the remote server if the workspace is being shared.
      * The corresponding document changes are hooked up to the collaboration room.
      * The file is reference counted and must be released.
      */
-    newFile(path: string, isExternal: boolean): WsFile {
+    newFileUnmonitored(path: string, isExternal: boolean): WsFile {
         if (this.traceFileOperations) {
             this.logLifecycle(`newFile(path = "${path}", isExternal = ${JSON.stringify(isExternal)})`);
         }
@@ -2338,7 +2356,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             if (!this.existsFileInTrash(newPath)) {
 
                 // We must create a new file.
-                const newFile = this.newFile(newPath, false);
+                const newFile = this.newFileUnmonitored(newPath, false);
 
                 // Initialize properties.
                 newFile.setText(text);
@@ -2501,7 +2519,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 .then((languageService) => {
                     languageService.getScriptContent(path)
                         .then((text) => {
-                            const file = this.newFile(path, true);
+                            const file = this.newFileUnmonitored(path, true);
                             file.setText(text);
                             resolve(file);
                         })
@@ -3134,7 +3152,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private ensureFile(path: string, content: string, isExternal: boolean): WsFile {
         if (!this.existsFile(path)) {
-            const file = this.newFile(path, isExternal);
+            const file = this.newFileUnmonitored(path, isExternal);
             file.setText(content);
             file.mode = modeFromName(path);
             return file;

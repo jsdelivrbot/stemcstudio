@@ -1,4 +1,4 @@
-import ShareOptions from './ShareOptions';
+import { ShareOptions } from './ShareOptions';
 
 interface ShareScope {
     options: ShareOptions;

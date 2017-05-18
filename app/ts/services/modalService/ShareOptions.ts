@@ -1,9 +1,7 @@
-import ModalDialogOptions from './ModalDialogOptions';
+import { ModalDialogOptions } from './ModalDialogOptions';
 
-interface ShareOptions extends ModalDialogOptions {
+export interface ShareOptions extends ModalDialogOptions {
     text: string;
     actionButtonText?: string;
     closeButtonText?: string;
 }
-
-export default ShareOptions;

@@ -1,6 +1,6 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import PromptScope from './PromptScope';
-import PromptOptions from './PromptOptions';
+import { PromptOptions } from './PromptOptions';
 
 export default class PromptController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];

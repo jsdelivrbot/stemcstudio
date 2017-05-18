@@ -1,7 +1,7 @@
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../../../services/gham/IGitHubAuthManager';
 import RoomAgent from '../RoomAgent';
 import { IRoomsService, RoomParams, ROOMS_SERVICE_UUID } from '../api';
-import ModalDialog from '../../../services/modalService/ModalDialog';
+import { ModalDialog } from '../../../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../../navigation/INavigationService';
 import { WsModel } from '../../wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../wsmodel/IWorkspaceModel';

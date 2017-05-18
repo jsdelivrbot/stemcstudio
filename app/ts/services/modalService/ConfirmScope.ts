@@ -1,4 +1,4 @@
-import ConfirmOptions from './ConfirmOptions';
+import { ConfirmOptions } from './ConfirmOptions';
 
 interface ConfirmScope {
     options: ConfirmOptions;

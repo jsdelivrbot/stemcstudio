@@ -7,7 +7,7 @@ import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/I
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import HomeScope from '../scopes/HomeScope';
 import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
-import ModalDialog from '../services/modalService/ModalDialog';
+import { ModalDialog } from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import NewProjectDialog from '../modules/project/NewProjectDialog';
 import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';

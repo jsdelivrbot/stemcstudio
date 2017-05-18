@@ -23,7 +23,7 @@ import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
-import ModalDialog from '../../services/modalService/ModalDialog';
+import { ModalDialog } from '../../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID } from '../../modules/navigation/INavigationService';
 import { NavigationServiceJS } from '../../modules/navigation/NavigationServiceJS';
 import RenamedFileHandler from './RenamedFileHandler';

@@ -1,6 +1,4 @@
-import ModalDialogOptions from './ModalDialogOptions';
+import { ModalDialogOptions } from './ModalDialogOptions';
 
-interface AlertOptions extends ModalDialogOptions {
+export interface AlertOptions extends ModalDialogOptions {
 }
-
-export default AlertOptions;

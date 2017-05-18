@@ -1,6 +1,6 @@
 import { IWindowService } from 'angular';
 import { IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
-import ModalDialog from '../services/modalService/ModalDialog';
+import { ModalDialog } from '../services/modalService/ModalDialog';
 
 /**
  * This class is intended to serve as an abstract base, not as a concrete controller.
