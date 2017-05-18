@@ -20,28 +20,30 @@ import { module } from 'angular';
 import { IDirectiveFactory } from 'angular';
 import { ILocationProvider } from 'angular';
 
+//
+// AngularJS module for animation.
+// This may not be being used.
+//
+import 'angular-animate';
 // 
 // Module that provides the 'ngMdIcons' module.
 //
 import 'angular-material-icons';
-
 //
-// UI Bootstrap.
-//
-import 'angular-animate';
-
-//
-// Module that provides the 'ui.bootstrap' module.
-//
-import 'angular-bootstrap';
-
-//
-// Module that provides the 'ngSanitize' module.
+// AngularJS module that provides the 'ngSanitize' module.
 //
 import 'angular-sanitize';
-
 //
-// Module that provides the 'ui.router' module.
+// AngularJS module for translation.
+// This may not be being used.
+//
+import 'angular-translate';
+//
+// AngularJS module that provides the 'ui.bootstrap' module.
+//
+import 'angular-ui-bootstrap';
+//
+// AngularJS module that provides the 'ui.router' module.
 //
 import 'angular-ui-router';
 //
@@ -87,19 +89,19 @@ import { logoText } from './directives/logoText/logoText';
 import { packageName } from './directives/packageName/packageName';
 import { pageTitle } from './directives/pageTitle/pageTitle';
 
-import propsFilter from './filters/propsFilter';
+import { propsFilter } from './filters/propsFilter';
 
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
-import preferences from './modules/preferences/index';
-import tslint from './modules/tslint/index';
-import stemcArXiv from './modules/stemcArXiv/index';
-import editors from './modules/editors/index';
+import { editorStorageModule } from './modules/preferences/index';
+import { tslintModule } from './modules/tslint/index';
+import { stemcArXivModule } from './modules/stemcArXiv/index';
+import { editorDialogModule } from './modules/editors/index';
 //
 // Registering the module for translation makes the service and directives available.
 // We also configure the service so that it knows the source language.
 //
-import translate from './modules/translate/index';
+import { translateModule } from './modules/translate/index';
 import { ITranslateGatewayProvider, TRANSLATE_GATEWAY_PROVIDER_UUID } from './modules/translate/api';
 import { ITranslateServiceProvider, TRANSLATE_SERVICE_PROVIDER_UUID } from './modules/translate/api';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from './modules/translate/api';
@@ -119,7 +121,7 @@ import { DOODLE_MANAGER_SERVICE_UUID } from './services/doodles/IDoodleManager';
 //
 //
 //
-import GitHubAuthManager from './services/gham/GitHubAuthManager';
+import { GitHubAuthManager } from './services/gham/GitHubAuthManager';
 import { GITHUB_AUTH_MANAGER_UUID } from './services/gham/IGitHubAuthManager';
 
 //
@@ -174,11 +176,11 @@ export const app = module('app', [
     'ui.bootstrap.modal',
     'ui.router',
     'ui.select',
-    preferences.name,
-    stemcArXiv.name,
-    tslint.name,
-    editors.name,
-    translate.name
+    editorStorageModule.name,
+    stemcArXivModule.name,
+    tslintModule.name,
+    editorDialogModule.name,
+    translateModule.name
 ]);
 
 /**
@@ -200,7 +202,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope when the app.run
-app.constant('version', '2.24.86');
+app.constant('version', '2.24.87');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

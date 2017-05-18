@@ -1,16 +1,14 @@
 import { module } from 'angular';
 import SearchService from './services/SearchService';
 
-const search = module('stemcArXiv', []);
+export const stemcArXivModule = module('stemcArXiv', []);
 
-search.service('stemcArXiv', SearchService);
+stemcArXivModule.service('stemcArXiv', SearchService);
 
-search.config([function () {
+stemcArXivModule.config([function () {
     // console.lg(`${search.name}.config(...)`);
 }]);
 
-search.run([function () {
+stemcArXivModule.run([function () {
     // console.lg(`${search.name}.run(...)`);
 }]);
-
-export default search;

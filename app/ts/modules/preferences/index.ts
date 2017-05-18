@@ -7,16 +7,14 @@ import EditorPreferencesStorageImplementation from './services/EditorPreferences
 // use the name property in the application. It should, however,
 // be reasonably unique. I'm using a reverse-domain convention.
 //
-const m = module(PREFERENCES_MODULE, []);
+export const editorStorageModule = module(PREFERENCES_MODULE, []);
 
-m.service(EDITOR_PREFERENCES_STORAGE, EditorPreferencesStorageImplementation);
+editorStorageModule.service(EDITOR_PREFERENCES_STORAGE, EditorPreferencesStorageImplementation);
 
-m.config([function () {
+editorStorageModule.config([function () {
     // console.lg(`${m.name}.config(...)`);
 }]);
 
-m.run([function () {
+editorStorageModule.run([function () {
     // console.lg(`${m.name}.run(...)`);
 }]);
-
-export default m;

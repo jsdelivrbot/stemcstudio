@@ -1,1 +1,0 @@
-module.exports = require("npm:ui-select@0.17.1/index.js");

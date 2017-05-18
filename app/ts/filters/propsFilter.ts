@@ -6,7 +6,7 @@ import { isArray } from 'angular';
  * performs an AND between 'name: $select.search' and 'age: $select.search'.
  * We want to perform an OR.
  */
-function propsFilter<T>() {
+export function propsFilter<T>() {
     return function (items: T[], props: { [name: string]: string }) {
 
         if (isArray(items)) {
@@ -38,6 +38,4 @@ function propsFilter<T>() {
     };
 }
 
-propsFilter['$inject'] = [];
-
-export default propsFilter;
+propsFilter.$inject = [];

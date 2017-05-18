@@ -6,27 +6,25 @@ import TranslateGatewayProvider from './services/TranslateGatewayProvider';
 import TranslateServiceProvider from './services/TranslateServiceProvider';
 import { TRANSLATE_GATEWAY_UUID, TRANSLATE_SERVICE_UUID } from './api';
 
-const translate = module('translate', []);
+export const translateModule = module('translate', []);
 
 // The controller is used for changing the language.
-translate.controller('translate-controller', TranslateController);
+translateModule.controller('translate-controller', TranslateController);
 
 // The directive provides asynchronous translation.
-translate.directive('translate', translateDirective);
+translateModule.directive('translate', translateDirective);
 
 // The filter provides only synchronous translation.
-translate.filter('translate', translateFilter);
+translateModule.filter('translate', translateFilter);
 
 // The service is made available through a provider, but we must register using the service uuid.
-translate.provider(TRANSLATE_GATEWAY_UUID, new TranslateGatewayProvider());
-translate.provider(TRANSLATE_SERVICE_UUID, new TranslateServiceProvider());
+translateModule.provider(TRANSLATE_GATEWAY_UUID, new TranslateGatewayProvider());
+translateModule.provider(TRANSLATE_SERVICE_UUID, new TranslateServiceProvider());
 
-translate.config([function () {
+translateModule.config([function () {
     // Do nothing.
 }]);
 
-translate.run([function () {
+translateModule.run([function () {
     // Do nothing.
 }]);
-
-export default translate;

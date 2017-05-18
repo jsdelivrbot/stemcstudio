@@ -9,20 +9,18 @@ import EditorPreferencesService from './services/manager/DefaultEditorPreference
 // use the name property in the application. It should, however,
 // be reasonably unique. I'm using a reverse-domain convention.
 //
-const m: IModule = module(EDITORS_MODULE, []);
+export const editorDialogModule: IModule = module(EDITORS_MODULE, []);
 
 // Use a lower-case-dashed name because the controller will be used from HTML.
 // Because this is used from HTML, we don't declare a symbolic constant for it.
-m.controller('editor-preferences-controller', EditorPreferencesController);
-m.service(EDITOR_PREFERENCES_DIALOG, EditorPreferencesDialogService);
-m.service(EDITOR_PREFERENCES_SERVICE, EditorPreferencesService);
+editorDialogModule.controller('editor-preferences-controller', EditorPreferencesController);
+editorDialogModule.service(EDITOR_PREFERENCES_DIALOG, EditorPreferencesDialogService);
+editorDialogModule.service(EDITOR_PREFERENCES_SERVICE, EditorPreferencesService);
 
-m.config([function () {
+editorDialogModule.config([function () {
     // console.lg(`${m.name}.config(...)`);
 }]);
 
-m.run([function () {
+editorDialogModule.run([function () {
     // console.lg(`${m.name}.run(...)`);
 }]);
-
-export default m;

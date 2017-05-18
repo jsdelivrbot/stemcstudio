@@ -11,7 +11,7 @@ const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
 // The name of this cookie must correspond with the cookie sent back from the server.
 const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 
-export default class GitHubAuthManager implements IGitHubAuthManager {
+export class GitHubAuthManager implements IGitHubAuthManager {
     public static $inject: string[] = [
         '$http',
         '$location',

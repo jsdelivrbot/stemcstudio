@@ -11,16 +11,14 @@ import TsLintSettingsJsonFileService from './services/TsLintSettingsJsonFileServ
 /**
  * The module for TypeScript Linting.
  */
-const m = module(TSLINT_MODULE, []);
+export const tslintModule = module(TSLINT_MODULE, []);
 
-m.service(TSLINT_SETTINGS_SERVICE, TsLintSettingsJsonFileService);
+tslintModule.service(TSLINT_SETTINGS_SERVICE, TsLintSettingsJsonFileService);
 
-m.config([function () {
+tslintModule.config([function () {
     // console.lg(`${m.name}.config(...)`);
 }]);
 
-m.run([function () {
+tslintModule.run([function () {
     // console.lg(`${m.name}.run(...)`);
 }]);
-
-export default m;
