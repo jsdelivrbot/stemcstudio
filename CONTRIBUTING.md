@@ -94,6 +94,7 @@ Make sure that the version references are correct in the following files:
 
 If you get errors Running "bundle" task, check version of @angular/upgrade/static.
 This bundle does not have a package.json equivalent entry and so can get left behind.
+The change should be made in jspm.config.js
 
 git push origin master
 

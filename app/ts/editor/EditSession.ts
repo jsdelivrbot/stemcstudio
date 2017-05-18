@@ -7,7 +7,7 @@ import { stringRepeat } from "./lib/lang";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
-import Disposable from '../base/Disposable';
+import { Disposable } from '../base/Disposable';
 import EditorMouseEvent from './EditorMouseEvent';
 import EventBus from "./EventBus";
 import { EventEmitterClass } from "./lib/EventEmitterClass";

@@ -2,7 +2,7 @@ import { IExplorer } from './IExplorer';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 
-export default class ExplorerController implements IExplorer {
+export class ExplorerController implements IExplorer {
 
     public static $inject: string[] = [WORKSPACE_MODEL_UUID];
 

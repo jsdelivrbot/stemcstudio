@@ -1,5 +1,5 @@
 import refChange from './refChange';
-import Shareable from '../base/Shareable';
+import { Shareable } from '../base/Shareable';
 
 /**
  * An experiment in monitoring the setInterval, clearInterval calls
@@ -71,5 +71,3 @@ export class Interval implements Shareable {
         }
     }
 }
-
-export default Interval;

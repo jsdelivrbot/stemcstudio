@@ -1,5 +1,5 @@
 import { IWindowService } from 'angular';
-import app from '../../app';
+import { app } from '../../app';
 
 function twitterFactory(
     $window: IWindowService,

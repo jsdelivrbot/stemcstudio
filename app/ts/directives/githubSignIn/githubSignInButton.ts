@@ -1,5 +1,5 @@
 import { IAttributes, IAugmentedJQuery, IDirective } from 'angular';
-import GitHubSignInScope from './GitHubSignInScope';
+import { GitHubSignInScope } from './GitHubSignInScope';
 
 /**
  * Directive Definition Factory

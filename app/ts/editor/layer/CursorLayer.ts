@@ -3,9 +3,9 @@ import AbstractLayer from './AbstractLayer';
 import CursorConfig from './CursorConfig';
 import Disposable from '../base/Disposable';
 import { EditSession } from '../EditSession';
-import PixelPosition from '../PixelPosition';
+import { PixelPosition } from '../PixelPosition';
 import Position from '../Position';
-import Interval from '../../utils/Interval';
+import { Interval } from '../../utils/Interval';
 import refChange from '../../utils/refChange';
 
 let isIE8: boolean;

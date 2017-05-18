@@ -7,11 +7,9 @@ import { WsFile } from '../../modules/wsmodel/WsFile';
  * e.g.
  * context-menu = 'menu(name, file)'
  */
-interface ExplorerFilesScope extends IScope {
+export interface ExplorerFilesScope extends IScope {
     /**
      * The null entry in the returned array corresponds to a menu divider.
      */
     menu: (name: string, file: WsFile) => (ContextMenuItem | null)[];
 }
-
-export default ExplorerFilesScope;

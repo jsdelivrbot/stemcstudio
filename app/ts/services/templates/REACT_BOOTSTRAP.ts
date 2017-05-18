@@ -4,12 +4,11 @@ export function REACT_BOOTSTRAP(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("import * as React from 'react'");
-    lines.push("import {Component} from 'react'");
-    lines.push("import {render} from 'react-dom'");
+    lines.push("import { Component } from 'react'");
+    lines.push("import { render } from 'react-dom'");
     lines.push("");
     lines.push("interface AppProps {");
     lines.push(_ + "greeting: string");
-    lines.push("");
     lines.push("}");
     lines.push("");
     lines.push("interface AppSpec {");
@@ -19,7 +18,7 @@ export function REACT_BOOTSTRAP(tabString: string): string {
     lines.push("class AppComponent extends Component<AppProps, AppSpec> {");
     lines.push(_ + "constructor(props: AppProps) {");
     lines.push(_ + _ + "super(props)");
-    lines.push(_ + _ + "this.state = {name: 'World'}");
+    lines.push(_ + _ + "this.state = { name: 'World' }");
     lines.push(_ + "}");
     lines.push("");
     lines.push(_ + "render() {");

@@ -1,9 +1,9 @@
-import Shareable from '../base/Shareable';
+import { Shareable } from '../base/Shareable';
 
 /**
  * A map from string to a parameterized type that is shareable.
  */
-export default class StringShareableMap<V extends Shareable> implements Shareable {
+export class StringShareableMap<V extends Shareable> implements Shareable {
 
     private elements: { [key: string]: V };
     private refCount: number;

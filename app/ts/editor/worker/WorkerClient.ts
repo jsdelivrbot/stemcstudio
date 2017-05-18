@@ -3,7 +3,7 @@ import Delta from "../Delta";
 import EventBus from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
 import CallbackManager from './CallbackManager';
-import Disposable from '../../base/Disposable';
+import { Disposable } from '../../base/Disposable';
 //
 // Editor Abstraction Layer
 //

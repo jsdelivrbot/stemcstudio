@@ -10,7 +10,7 @@ import EditorMouseEvent from '../EditorMouseEvent';
 import getCompletionPrefix from './getCompletionPrefix';
 import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import { ListViewPopup } from './ListViewPopup';
-import PixelPosition from '../PixelPosition';
+import { PixelPosition } from '../PixelPosition';
 import Position from '../Position';
 import Range from '../Range';
 // import retrievePrecedingIdentifier from "./retrievePrecedingIdentifier";

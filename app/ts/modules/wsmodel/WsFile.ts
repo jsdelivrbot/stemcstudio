@@ -1,6 +1,6 @@
 import { applyPatchToDocument } from './applyPatchToDocument';
 import { EventBus } from './EventBus';
-import Shareable from '../../base/Shareable';
+import { Shareable } from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
 import Patch from '../../synchronization/Patch';

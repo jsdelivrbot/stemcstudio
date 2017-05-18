@@ -9,7 +9,7 @@ function removeWhitespace(text: string): string {
 /**
  * TODO: applyPatchToDocument should be similar.
  */
-export default function applyTextChanges(edits: TextChange<number>[], session: EditSession): void {
+export function applyTextChanges(edits: TextChange<number>[], session: EditSession): void {
 
     // The text changes are relative to the initial document.
     // We apply them one by one in document order.

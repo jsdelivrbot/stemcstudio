@@ -1,5 +1,5 @@
 import { Editor } from '../Editor';
-import PixelPosition from '../PixelPosition';
+import { PixelPosition } from '../PixelPosition';
 
 const CLASSNAME = 'ace_autocomplete';
 const CLASSNAME_SELECTED = 'ace_autocomplete_selected';

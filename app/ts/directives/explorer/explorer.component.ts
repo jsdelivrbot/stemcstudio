@@ -1,6 +1,6 @@
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITranscludeFunction } from 'angular';
-import controller from './ExplorerController';
-import ExplorerScope from './ExplorerScope';
+import { ExplorerController as controller } from './ExplorerController';
+import { ExplorerScope } from './ExplorerScope';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
@@ -28,8 +28,8 @@ export function createExplorerDirective(): IDirective {
                 /**
                  * The preLink step always takes place from top to bottom in the DOM hierarchy.
                  */
-                pre: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ITranscludeFunction) {
-                    const ngModel: INgModelController = controller[0];
+                pre: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: [INgModelController], transclude: ITranscludeFunction) {
+                    const ngModel = controller[0];
                     ngModel.$formatters.push(function (modelValue: WsModel) {
                         if (modelValue) {
                             if (modelValue instanceof WsModel) {
@@ -57,14 +57,14 @@ export function createExplorerDirective(): IDirective {
                 /**
                  * The postLink step always takes place from bottom to top in the DOM hierarchy.
                  */
-                post: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ITranscludeFunction) {
-                    const ngModel: INgModelController = controller[0];
+                post: function ($scope: ExplorerScope, iElem: IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: [INgModelController], transclude: ITranscludeFunction) {
+                    const ngModel = controller[0];
 
                     // $render is the notification that the model has changed and so the view needs to be rendered.
                     // Furthermore, we are being asked to use $viewValue, which has been passed through our formatters.
                     // Recall the formatters return a $viewValue which is a denormalized $modelValue for easy presentation logic (HTML).
                     ngModel.$render = function () {
-                        $scope.workspace = <WsModel>ngModel.$viewValue;
+                        $scope.workspace = ngModel.$viewValue as WsModel;
                     };
 
                     // When the transclude property is true, we get access to the fifth parameter of the link function.

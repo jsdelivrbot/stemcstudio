@@ -1,4 +1,2 @@
-interface GitHubSignInScope {
+export interface GitHubSignInScope {
 }
-
-export default GitHubSignInScope;

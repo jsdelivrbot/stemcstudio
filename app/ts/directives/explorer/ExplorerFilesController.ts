@@ -1,4 +1,4 @@
-import ExplorerFilesScope from './ExplorerFilesScope';
+import { ExplorerFilesScope } from './ExplorerFilesScope';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import AlertOptions from '../../services/modalService/AlertOptions';
 import ConfirmOptions from '../../services/modalService/ConfirmOptions';
@@ -11,7 +11,7 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
  * This controller is mostly used to define and manage the context menu for the files in the explorer.
  * It also handles a request to create a new file.
  */
-export default class ExplorerFilesController {
+export class ExplorerFilesController {
 
     public static $inject: string[] = ['$scope', 'modalDialog', WORKSPACE_MODEL_UUID];
 

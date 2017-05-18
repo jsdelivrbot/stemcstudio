@@ -1,9 +1,7 @@
 /**
  * Reference counting to manage lifetime of shared objects.
  */
-interface Shareable {
+export interface Shareable {
     addRef(): number;
     release(): number;
 }
-
-export default Shareable;

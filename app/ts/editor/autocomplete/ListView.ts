@@ -1,5 +1,5 @@
 import { Completion } from "../Completion";
-import PixelPosition from "../PixelPosition";
+import { PixelPosition } from "../PixelPosition";
 
 interface ListView {
     isOpen: boolean;

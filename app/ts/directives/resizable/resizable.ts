@@ -10,7 +10,7 @@ import ResizableScope from './ResizableScope';
 // of logic that is superficially similar. For example, try to take advantage of the differences between mouse and
 // touch handling rather than forcing them to do the same thing.
 //
-export default function () {
+export function resizable() {
     let toCall: (() => any) | undefined;
 
     // This function is used to regulate the resizing events that are broadcast.

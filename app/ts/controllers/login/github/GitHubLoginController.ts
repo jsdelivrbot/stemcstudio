@@ -1,6 +1,6 @@
 import { IWindowService } from 'angular';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../../../services/cookie/ICookieService';
-import GitHubLoginScope from './GitHubLoginScope';
+import { GitHubLoginScope } from './GitHubLoginScope';
 import IGitHubItem from '../../../services/gham/IGitHubItem';
 import { UUID_SERVICE_UUID, IUuidService } from '../../../services/uuid/IUuidService';
 import { GITHUB_TOKEN_COOKIE_NAME } from '../../../constants';

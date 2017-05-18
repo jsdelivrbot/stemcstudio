@@ -42,7 +42,7 @@ import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
 import { SnippetCompleter } from '../../editor/SnippetCompleter';
-import StringShareableMap from '../../collections/StringShareableMap';
+import { StringShareableMap } from '../../collections/StringShareableMap';
 import { TextChange } from '../../editor/workspace/TextChange';
 import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
 import { TsConfigJsonMonitor } from './monitors/TsConfigJsonMonitor';

@@ -2,7 +2,7 @@ import { Document } from '../../editor/Document';
 import { Editor } from '../../editor/Editor';
 import { EditSession } from '../../editor/EditSession';
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
-import ProblemsScope from './ProblemsScope';
+import { ProblemsScope } from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
@@ -22,7 +22,7 @@ interface ProblemsAttributes extends IAttributes {
 /**
  * The 'problems' directive.
  */
-function factory($timeout: ITimeoutService, editorPreferencesService: EditorPreferencesService): IDirective {
+export function problems($timeout: ITimeoutService, editorPreferencesService: EditorPreferencesService): IDirective {
     function compile(tElem: IAugmentedJQuery, tAttrs: IAttributes): IDirectivePrePost {
         return {
             /**
@@ -171,6 +171,4 @@ function factory($timeout: ITimeoutService, editorPreferencesService: EditorPref
     return directive;
 }
 
-factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];
-
-export default factory;
+problems.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];

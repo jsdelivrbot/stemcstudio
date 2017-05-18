@@ -1,9 +1,9 @@
-import DoodleRef from './DoodleRef';
-import {OWNER_KEY} from './DoodleRefTable';
-import {RESOURCE_KEY} from './DoodleRefTable';
-import {TITLE} from './DoodleRefTable';
-import {AUTHOR} from './DoodleRefTable';
-import {KEYWORDS} from './DoodleRefTable';
+import { DoodleRef } from './DoodleRef';
+import { OWNER_KEY } from './DoodleRefTable';
+import { RESOURCE_KEY } from './DoodleRefTable';
+import { TITLE } from './DoodleRefTable';
+import { AUTHOR } from './DoodleRefTable';
+import { KEYWORDS } from './DoodleRefTable';
 
 /**
  * We don't want the UI to blow up just because the 
@@ -26,7 +26,7 @@ function extractStringArray(attributeValue: AWS.AttributeValue): string[] {
     }
 }
 
-export default function(query: AWS.QueryResult): DoodleRef[] {
+export function queryToDoodleRef(query: AWS.QueryResult): DoodleRef[] {
     const drs: DoodleRef[] = [];
     const items = query.Items;
     const iLen = items.length;

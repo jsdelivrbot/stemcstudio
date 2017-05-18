@@ -1,5 +1,5 @@
 import { IAttributes, IAugmentedJQuery, IDirective } from 'angular';
-import GoogleSignInScope from './GoogleSignInScope';
+import { GoogleSignInScope } from './GoogleSignInScope';
 
 /**
  * Directive Definition Factory

@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@4.1.2",
-    "@angular/compiler": "npm:@angular/compiler@4.1.2",
-    "@angular/core": "npm:@angular/core@4.1.2",
-    "@angular/forms": "npm:@angular/forms@4.1.2",
-    "@angular/http": "npm:@angular/http@4.1.2",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.1.2",
-    "@angular/router": "npm:@angular/router@4.1.2",
-    "@angular/upgrade": "npm:@angular/upgrade@4.1.2",
-    "@angular/upgrade/static": "npm:@angular/upgrade@4.1.2/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@4.1.3",
+    "@angular/compiler": "npm:@angular/compiler@4.1.3",
+    "@angular/core": "npm:@angular/core@4.1.3",
+    "@angular/forms": "npm:@angular/forms@4.1.3",
+    "@angular/http": "npm:@angular/http@4.1.3",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.1.3",
+    "@angular/router": "npm:@angular/router@4.1.3",
+    "@angular/upgrade": "npm:@angular/upgrade@4.1.3",
+    "@angular/upgrade/static": "npm:@angular/upgrade@4.1.3/bundles/upgrade-static.umd.js",
     "angular": "github:angular/bower-angular@1.5.9",
     "angular-animate": "github:angular/bower-angular-animate@1.5.9",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -117,53 +117,53 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@4.1.2": {
-      "@angular/core": "npm:@angular/core@4.1.2",
+    "npm:@angular/common@4.1.3": {
+      "@angular/core": "npm:@angular/core@4.1.3",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/compiler@4.1.2": {
-      "@angular/core": "npm:@angular/core@4.1.2",
+    "npm:@angular/compiler@4.1.3": {
+      "@angular/core": "npm:@angular/core@4.1.3",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/core@4.1.2": {
+    "npm:@angular/core@4.1.3": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.0",
       "zone.js": "npm:zone.js@0.8.10"
     },
-    "npm:@angular/forms@4.1.2": {
-      "@angular/common": "npm:@angular/common@4.1.2",
-      "@angular/core": "npm:@angular/core@4.1.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2",
+    "npm:@angular/forms@4.1.3": {
+      "@angular/common": "npm:@angular/common@4.1.3",
+      "@angular/core": "npm:@angular/core@4.1.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/http@4.1.2": {
-      "@angular/core": "npm:@angular/core@4.1.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2",
+    "npm:@angular/http@4.1.3": {
+      "@angular/core": "npm:@angular/core@4.1.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3",
       "rxjs": "npm:rxjs@5.4.0"
     },
-    "npm:@angular/platform-browser-dynamic@4.1.2": {
-      "@angular/common": "npm:@angular/common@4.1.2",
-      "@angular/compiler": "npm:@angular/compiler@4.1.2",
-      "@angular/core": "npm:@angular/core@4.1.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2"
+    "npm:@angular/platform-browser-dynamic@4.1.3": {
+      "@angular/common": "npm:@angular/common@4.1.3",
+      "@angular/compiler": "npm:@angular/compiler@4.1.3",
+      "@angular/core": "npm:@angular/core@4.1.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3"
     },
-    "npm:@angular/platform-browser@4.1.2": {
-      "@angular/common": "npm:@angular/common@4.1.2",
-      "@angular/core": "npm:@angular/core@4.1.2",
+    "npm:@angular/platform-browser@4.1.3": {
+      "@angular/common": "npm:@angular/common@4.1.3",
+      "@angular/core": "npm:@angular/core@4.1.3",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/router@4.1.2": {
-      "@angular/common": "npm:@angular/common@4.1.2",
-      "@angular/core": "npm:@angular/core@4.1.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2",
+    "npm:@angular/router@4.1.3": {
+      "@angular/common": "npm:@angular/common@4.1.3",
+      "@angular/core": "npm:@angular/core@4.1.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.0"
     },
-    "npm:@angular/upgrade@4.1.2": {
-      "@angular/compiler": "npm:@angular/compiler@4.1.2",
-      "@angular/core": "npm:@angular/core@4.1.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.2",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.1.2"
+    "npm:@angular/upgrade@4.1.3": {
+      "@angular/compiler": "npm:@angular/compiler@4.1.3",
+      "@angular/core": "npm:@angular/core@4.1.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.1.3",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.1.3"
     },
     "npm:accepts@1.3.1": {
       "mime-types": "npm:mime-types@2.1.11",

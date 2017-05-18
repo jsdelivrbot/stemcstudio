@@ -22,7 +22,7 @@ import { downgradeInjectable } from '@angular/upgrade/static';
 /**
  * app is the top-level AnngularJS module.
  */
-import app from './app';
+import { app } from './app';
 //
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
@@ -63,8 +63,8 @@ import { GitHubAccountController } from './controllers/GitHubAccountController';
 import { HomeController } from './controllers/HomeController';
 import { createEditorDirective } from './directives/editor/editor.directive1x';
 import { createExplorerDirective } from './directives/explorer/explorer.component';
-import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
-import problems from './directives/problems/problems.component';
+import { ExplorerFilesController } from './directives/explorer/ExplorerFilesController';
+import { problems } from './directives/problems/problems.component';
 
 // FIXME: This should be an internal module.
 import AlertController from './services/modalService/AlertController';
@@ -77,7 +77,7 @@ import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
 import ReteFlowService from './services/flow/ReteFlowService';
 import { RepoController } from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
-import resizable from './directives/resizable/resizable';
+import { resizable } from './directives/resizable/resizable';
 import { workspace } from './directives/workspace/workspace.component';
 
 import { templateCache } from './template-cache';

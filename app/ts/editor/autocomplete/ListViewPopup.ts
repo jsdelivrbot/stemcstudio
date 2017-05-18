@@ -5,7 +5,7 @@ import { Document } from "../Document";
 import Renderer from "../Renderer";
 import { Editor } from "../Editor";
 import { EditorEventName } from "../Editor";
-import PixelPosition from "../PixelPosition";
+import { PixelPosition } from "../PixelPosition";
 import Range from "../Range";
 import Token from "../Token";
 import { addListener } from "../lib/event";

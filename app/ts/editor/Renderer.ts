@@ -2,7 +2,7 @@ import { addCssClass, createElement, createHTMLDivElement, removeCssClass, setCs
 import { isIE } from './lib/useragent';
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
 import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
-import Disposable from '../base/Disposable';
+import { Disposable } from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
 import Annotation from './Annotation';
@@ -23,7 +23,7 @@ import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { EditSession } from './EditSession';
 import EventBus from './EventBus';
 import OptionsProvider from "./OptionsProvider";
-import PixelPosition from './PixelPosition';
+import { PixelPosition } from './PixelPosition';
 import Position from './Position';
 import ScreenCoordinates from './ScreenCoordinates';
 import ScrollBarEvent from './events/ScrollBarEvent';

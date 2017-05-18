@@ -1,4 +1,4 @@
-interface DoodleRef {
+export interface DoodleRef {
     owner: string;
     gistId: string;
     title: string;
@@ -6,4 +6,3 @@ interface DoodleRef {
     keywords: string[];
 }
 
-export default DoodleRef;

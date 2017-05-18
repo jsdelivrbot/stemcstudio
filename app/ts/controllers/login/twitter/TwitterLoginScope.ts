@@ -1,10 +1,8 @@
-import AppScope from '../../../scopes/AppScope';
+import { AppScope } from '../../../scopes/AppScope';
 
 /**
- * @class TwitterLoginScope
+ *
  */
-interface TwitterLoginScope extends AppScope {
+export interface TwitterLoginScope extends AppScope {
 
 }
-
-export default TwitterLoginScope;

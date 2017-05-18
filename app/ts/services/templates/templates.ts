@@ -63,14 +63,9 @@ app.factory('templates', [
          */
         const tab = tabString(editorPreferences);
         /**
-         * WARNING! The choice of src for the SystemJS universal module loader is critical.
-         * I have not yet had complete success with CDNJS, and so I am using the experimental
-         * CDN serving the jspm registry.
-         * As of Mar 16 2017, the most current version is 0.20.9
-         * The migration from 0.19.x to 0.20.x requires some care.
-         * The entry below is used on jspm.io and appears to be an alias for 0.19.34
+         * System polyfill.
          */
-        const systemJsUrl = 'https://jspm.io/system@0.19.js';
+        const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
 
         // TODO: The problem here is that the template file content maps to strings,
         // when it should map to functions that create strings. Doing so would allow

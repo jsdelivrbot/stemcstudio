@@ -1,6 +1,6 @@
 import { createElement } from "./lib/dom";
 import { addListener, preventDefault, removeListener } from "./lib/event";
-import Disposable from '../base/Disposable';
+import { Disposable } from '../base/Disposable';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import EventBus from "./EventBus";
 import refChange from '../utils/refChange';

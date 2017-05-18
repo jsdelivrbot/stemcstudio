@@ -1,7 +1,7 @@
 /**
  *
  */
-interface PixelPosition {
+export interface PixelPosition {
 
     /**
      *
@@ -13,5 +13,3 @@ interface PixelPosition {
      */
     top: number;
 }
-
-export default PixelPosition;

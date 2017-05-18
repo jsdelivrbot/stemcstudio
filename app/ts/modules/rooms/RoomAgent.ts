@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { RoomListener } from './RoomListener';
-import Shareable from '../../base/Shareable';
+import { Shareable } from '../../base/Shareable';
 import { SocketZen } from './SocketZen';
 import { MwAction } from '../../synchronization/MwAction';
 import { ACTION_NULLIFY_UPPERCASE } from '../../synchronization/MwAction';
