@@ -27,12 +27,17 @@ const ensurePackageName = function (packageName: string): string {
 const INDEX_DTS = 'index.d.ts';
 //
 // Getting Angular to work in the browser currently requires hand-coding (flattening) the d.ts files.
+// This version is used to reference flattened index.d.ts files specially created as well as to pull
+// JavaScript files from a CDN. Keep this in synch with the value in Gruntfile.js 
 //
 const VERSION_ANGULAR_CORE = '4.1.0';
 const VERSION_ANGULAR_COMMON = '4.1.0';
 const VERSION_ANGULAR_COMPILER = '4.1.0';
 const VERSION_ANGULAR_PLATFORM_BROWSER = '4.1.0';
 const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
+/**
+ * 
+ */
 const VERSION_ANGULARJS = '1.5.3';
 const VERSION_BACONJS = '0.7.89';
 const VERSION_BIWASCHEME = '0.6.6';
@@ -97,8 +102,11 @@ function vendorFolder(packageFolder: string, version: string | undefined, subFol
 }
 
 // Functions defining the name of the folder and version being used.
+/**
+ * AngularJS. Everything goes in the vendor folder.
+ */
 function angularJS(fileName: string): string {
-    return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
+    return vendorFolder('angularJS', VERSION_ANGULARJS, void 0, fileName);
 }
 function angularCore(fileName: string): string {
     return vendorFolder('@angular/core', VERSION_ANGULAR_CORE, void 0, fileName);

@@ -19,12 +19,13 @@ System.config({
     "@angular/router": "npm:@angular/router@4.1.3",
     "@angular/upgrade": "npm:@angular/upgrade@4.1.3",
     "@angular/upgrade/static": "npm:@angular/upgrade@4.1.3/bundles/upgrade-static.umd.js",
-    "angular": "github:angular/bower-angular@1.5.9",
-    "angular-animate": "github:angular/bower-angular-animate@1.5.9",
+    "angular": "npm:angular@1.6.4",
+    "angular-animate": "npm:angular-animate@1.6.4",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
-    "angular-ui-router": "github:angular-ui/ui-router@0.4.2",
+    "angular-sanitize": "npm:angular-sanitize@1.6.4",
+    "angular-translate": "npm:angular-translate@2.15.1",
+    "angular-ui-router": "npm:angular-ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.6.1",
@@ -43,12 +44,6 @@ System.config({
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.10",
-    "github:angular/bower-angular-animate@1.5.9": {
-      "angular": "github:angular/bower-angular@1.5.9"
-    },
-    "github:angular/bower-angular-sanitize@1.5.9": {
-      "angular": "github:angular/bower-angular@1.5.9"
-    },
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
@@ -171,6 +166,14 @@ System.config({
     },
     "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.6.4"
+    },
+    "npm:angular-translate@2.15.1": {
+      "angular": "npm:angular@1.6.4",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:angular-ui-router@0.4.2": {
+      "angular": "npm:angular@1.6.4",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.6",

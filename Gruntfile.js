@@ -197,7 +197,19 @@ function prepend(target, filePath) {
 function copies(target) {
 
     const VERSION_ACE_WORKERS = '2.9.17';
+    /**
+     * Angular
+     * Used only to copy index.d.ts files from museum to vendor.
+     * Keey this value in synch with the option manager.
+     */
     const VERSION_ANGULAR = '4.1.0';
+    /**
+     * AngularJS
+     */
+    const VERSION_ANGULARJS = '1.6.17';
+    /**
+     * 
+     */
     const VERSION_MONACO = '0.8.3';
 
     return [
@@ -342,10 +354,6 @@ function copies(target) {
             dest: prepend(target, 'fonts/glyphicons-halflings-regular.woff2')
         },
         {
-            src: "bower_components/angular/angular.js",
-            dest: prepend(target, 'js/angular.js')
-        },
-        {
             src: `museum/@angular/core@${VERSION_ANGULAR}/index.d.ts`,
             dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
         },
@@ -376,6 +384,18 @@ function copies(target) {
         {
             src: `museum/angular-in-memory-web-api@0.3.2/index.d.ts`,
             dest: prepend(target, `vendor/angular-in-memory-web-api@0.3.2/index.d.ts`)
+        },
+        {
+            // This is currently copying a 1.5.9 version of AngularJS to a location.
+            // This file is needed for the application itself, which is a hybrid AngularJS/Angular application.
+            // TODO: Probably should be using the minified version.
+            src: "node_modules/angular/angular.js",
+            //   "bower_components/angular/angular.js",
+            dest: prepend(target, 'js/angular.js')
+        },
+        {
+            src: "node_modules/@types/angular/index.d.ts",
+            dest: prepend(target, `vendor/angular@${VERSION_ANGULARJS}/index.d.ts`)
         },
         {
             expand: true,

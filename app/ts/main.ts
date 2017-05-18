@@ -6,7 +6,7 @@ import 'reflect-metadata';
 // You may need es6-shim if you get an error relating to list.fill
 
 //
-// I'm not sure why this import is required, but it is.
+// The module 'angular' is mapped by jspm.config.js to jspm_packages ...
 //
 import 'angular';
 
@@ -20,7 +20,7 @@ import { downgradeInjectable } from '@angular/upgrade/static';
 //
 
 /**
- * app is the top-level AnngularJS module.
+ * app is the top-level AngularJS module.
  */
 import { app } from './app';
 //
