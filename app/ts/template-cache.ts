@@ -556,7 +556,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
     "                                <!-- The DoodleRef has the title property -->\n" +
-    "                                <h1 class='title'><a role='button' ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>\n" +
+    "                                <h1 class='title'><a role='button' ng-href='/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>\n" +
     "                                <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>\n" +
     "                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>\n" +
     "                            </header>\n" +
@@ -945,7 +945,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                    </div>\n" +
     "                    <div class='md-docs-section'>\n" +
     "                        <div ng-repeat='doodle in doodleRefs'>\n" +
-    "                            <a ng-href='/#/gists/{{doodle.gistId}}'>{{doodle.title}}</a>\n" +
+    "                            <a ng-href='/gists/{{doodle.gistId}}'>{{doodle.title}}</a>\n" +
     "                            <div>{{doodle.author}}</div>\n" +
     "                            <div>{{doodle.keywords.join(', ')}}</div>\n" +
     "                        </div>\n" +

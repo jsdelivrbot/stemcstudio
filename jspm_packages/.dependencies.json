@@ -931,13 +931,13 @@
   },
   "npm:angular-sanitize@1.6.4": {},
   "npm:angular-animate@1.6.4": {},
-  "npm:angular-ui-router@0.4.2": {
-    "angular": "npm:angular@^1.0.8",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:angular-ui-bootstrap@2.5.0": {},
   "npm:ui-select@0.19.8": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "npm:angular-ui-router@0.4.2": {
+    "angular": "npm:angular@^1.0.8",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }

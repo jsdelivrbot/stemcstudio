@@ -53,7 +53,7 @@
                         <article class="thumbnail" ng-repeat='doodle in doodleRefs'>
                             <header>
                                 <!-- The DoodleRef has the title property -->
-                                <h1 class='title'><a role='button' ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>
+                                <h1 class='title'><a role='button' ng-href='/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>
                                 <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>
                                 <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>
                             </header>

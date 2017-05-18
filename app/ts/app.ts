@@ -201,8 +201,8 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-// This is put on the AppScope when the app.run
-app.constant('version', '2.24.87');
+// This is put on the AppScope.
+app.constant('version', '2.24.88');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -341,7 +341,6 @@ app.config([
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean
     ) {
-        // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
             .state(STATE_HOME, {
                 url: '/',
@@ -353,7 +352,7 @@ app.config([
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
-            // This should be replaced by a modal dialog.
+            // TODO: This should be replaced by a modal dialog.
             .state(STATE_DOWNLOAD, {
                 url: '/download',
                 templateUrl: 'download.html',
@@ -367,9 +366,6 @@ app.config([
                 controller: 'DashboardController'
             });
         }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
 
         if (FEATURE_EXAMPLES_ENABLED) {
             $stateProvider.state(STATE_EXAMPLES, {
@@ -378,12 +374,10 @@ app.config([
                 controller: 'examples-controller'
             });
         }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
 
         if (FEATURE_GIST_ENABLED) {
             $stateProvider.state(STATE_GIST, {
+                // TODO: Is the output parameter being used? If so, document it.
                 url: '/gists/{gistId}?output',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
@@ -400,9 +394,6 @@ app.config([
                 controller: 'DoodleController'
             });
         }
-        else {
-            // TODO: Recognize the url but go to a no droids here.
-        }
 
         $stateProvider.state(STATE_ROOM, {
             url: '/rooms/{roomId}',
@@ -412,6 +403,7 @@ app.config([
 
         $urlRouterProvider.otherwise('/');
 
+        $locationProvider.hashPrefix("");
         $locationProvider.html5Mode(true);
 
         translateGatewayProvider.path = 'translations';
@@ -444,8 +436,6 @@ app.run([
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         GITHUB_LOGIN_COOKIE_NAME: string
     ) {
-        // console.lg(`${app.name}.run(...)`);
-
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 
@@ -456,27 +446,29 @@ app.run([
         // so that you can access them from any scope (HTML template) within the application.
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+
         $rootScope.version = version;
+
         $rootScope.brandPartA = 'STEM';
         $rootScope.brandPartB = 'C';
         $rootScope.brandPartC = 'studio';
         $rootScope.brandPartD = 'com';
 
         // The server drops this cookie so that we can make the GitHub autorization request.
-        $rootScope.clientId = function () {
+        $rootScope.clientId = function clientId(): string | null {
             return cookieService.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
         };
 
-        $rootScope.isGitHubSignedIn = function () {
+        $rootScope.isGitHubSignedIn = function isGitHubSignedIn(): boolean {
             return cookieService.hasItem(GITHUB_TOKEN_COOKIE_NAME);
         };
 
-        $rootScope.userLogin = function () {
+        $rootScope.userLogin = function userLogin(): string | null {
             return cookieService.getItem(GITHUB_LOGIN_COOKIE_NAME);
         };
 
         if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            $rootScope.isGoogleSignedIn = function () {
+            $rootScope.isGoogleSignedIn = function isGoogleSignedIn(): boolean {
                 if (gapi.auth2) {
                     const auth2 = gapi.auth2.getAuthInstance();
                     return auth2.isSignedIn.get();
