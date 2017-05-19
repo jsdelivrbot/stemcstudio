@@ -1,7 +1,7 @@
-import IOption from '../../services/options/IOption';
+import { IOption } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import { packageNamesToOptions } from './packageNamesToOptions';
-import StringSet from '../../utils/StringSet';
+import { StringSet } from '../../utils/StringSet';
 
 /**
  * Compute the closure of the options.

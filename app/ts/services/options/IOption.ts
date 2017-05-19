@@ -112,5 +112,3 @@ export interface IOption {
      */
     dependencies: { [packageName: string]: string };
 }
-
-export default IOption;

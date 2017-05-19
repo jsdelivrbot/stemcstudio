@@ -1,4 +1,4 @@
-import IOption from '../../services/options/IOption';
+import { IOption } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
 
 /**

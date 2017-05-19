@@ -1,7 +1,7 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import { isBoolean } from '../../utils/isBoolean';
 import { isString } from '../../utils/isString';
-import IOption from '../../services/options/IOption';
+import { IOption } from '../../services/options/IOption';
 import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/options/IOptionManager';
 import PropertiesModalScope from './PropertiesModalScope';
 import PropertiesSettings from './PropertiesSettings';
