@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.24.88",
+  "version": "2.24.89",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -107,7 +107,7 @@
     "systemjs-builder": "0.15.35",
     "tslint": "^5.2.0",
     "two.js": "^0.6.0",
-    "typedoc": "^0.7.0",
+    "typedoc": "^0.7.1",
     "typescript": "^2.3.2",
     "typings": "^2.1.1"
   },

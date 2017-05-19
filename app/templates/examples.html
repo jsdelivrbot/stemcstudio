@@ -12,86 +12,12 @@
     <div class='container md-docs-container'>
         <div class='row'>
             <div class='col-md-9' role='main'>
-
                 <div class='md-docs-section'>
-
-                    <!-- Physics -->
-                    <div class='md-docs-section'>
-
-                        <h1 class='page-header'>Physics Modeling</h1>
-
-                        <div ng-repeat='example in examples | filter : {category : "Physics"}'>
+                    <div ng-repeat='category in categories' class='md-docs-section'>
+                        <h1 class='page-header'>{{category}}</h1>
+                        <div ng-repeat='example in examples | filter : {category}'>
                             <p class='lead'>
-                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>
-                            </p>
-                            <p>
-                                <a href='/gists/{{example.gistId}}'>
-                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>
-                                </a>
-                            </p>
-                            <p>{{example.description}}</p>
-                        </div>
-                    </div>
-
-                    <!-- Graphics -->
-                    <div class='md-docs-section'>
-
-                        <h1 class='page-header'>3D Computer Graphics</h1>
-
-                        <div ng-repeat='example in examples | filter : {category : "Graphics"}'>
-                            <p class='lead'>
-                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>
-                            </p>
-                            <p>
-                                <a href='/gists/{{example.gistId}}'>
-                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>
-                                </a>
-                            </p>
-                            <p>{{example.description}}</p>
-                        </div>
-
-                    </div>
-
-                    <!-- Mathematics -->
-                    <div class='md-docs-section'>
-                        <h1 class='page-header'>Mathematics</h1>
-
-                        <div ng-repeat='example in examples | filter : {category : "Mathematics"}'>
-                            <p class='lead'>
-                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>
-                            </p>
-                            <p>
-                                <a href='/gists/{{example.gistId}}'>
-                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>
-                                </a>
-                            </p>
-                            <p>{{example.description}}</p>
-                        </div>
-                    </div>
-
-                    <!-- Chemistry -->
-                    <div class='md-docs-section'>
-                        <h1 class='page-header'>Chemistry</h1>
-
-                        <div ng-repeat='example in examples | filter : {category : "Chemistry"}'>
-                            <p class='lead'>
-                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>
-                            </p>
-                            <p>
-                                <a href='/gists/{{example.gistId}}'>
-                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>
-                                </a>
-                            </p>
-                            <p>{{example.description}}</p>
-                        </div>
-                    </div>
-                    <!-- Computer Science -->
-                    <div class='md-docs-section'>
-                        <h1 class='page-header'>Computer Science</h1>
-
-                        <div ng-repeat='example in examples | filter : {category : "CompSci"}'>
-                            <p class='lead'>
-                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>
+                                <a href='/gists/{{example.gistId}}'>{{example.title}} (Level: {{example.level}})</a>
                             </p>
                             <p>
                                 <a href='/gists/{{example.gistId}}'>

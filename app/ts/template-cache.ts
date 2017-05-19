@@ -353,86 +353,12 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "    <div class='container md-docs-container'>\n" +
     "        <div class='row'>\n" +
     "            <div class='col-md-9' role='main'>\n" +
-    "\n" +
     "                <div class='md-docs-section'>\n" +
-    "\n" +
-    "                    <!-- Physics -->\n" +
-    "                    <div class='md-docs-section'>\n" +
-    "\n" +
-    "                        <h1 class='page-header'>Physics Modeling</h1>\n" +
-    "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"Physics\"}'>\n" +
+    "                    <div ng-repeat='category in categories' class='md-docs-section'>\n" +
+    "                        <h1 class='page-header'>{{category}}</h1>\n" +
+    "                        <div ng-repeat='example in examples | filter : {category}'>\n" +
     "                            <p class='lead'>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
-    "                            </p>\n" +
-    "                            <p>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                                </a>\n" +
-    "                            </p>\n" +
-    "                            <p>{{example.description}}</p>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "\n" +
-    "                    <!-- Graphics -->\n" +
-    "                    <div class='md-docs-section'>\n" +
-    "\n" +
-    "                        <h1 class='page-header'>3D Computer Graphics</h1>\n" +
-    "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"Graphics\"}'>\n" +
-    "                            <p class='lead'>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
-    "                            </p>\n" +
-    "                            <p>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                                </a>\n" +
-    "                            </p>\n" +
-    "                            <p>{{example.description}}</p>\n" +
-    "                        </div>\n" +
-    "\n" +
-    "                    </div>\n" +
-    "\n" +
-    "                    <!-- Mathematics -->\n" +
-    "                    <div class='md-docs-section'>\n" +
-    "                        <h1 class='page-header'>Mathematics</h1>\n" +
-    "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"Mathematics\"}'>\n" +
-    "                            <p class='lead'>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
-    "                            </p>\n" +
-    "                            <p>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                                </a>\n" +
-    "                            </p>\n" +
-    "                            <p>{{example.description}}</p>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "\n" +
-    "                    <!-- Chemistry -->\n" +
-    "                    <div class='md-docs-section'>\n" +
-    "                        <h1 class='page-header'>Chemistry</h1>\n" +
-    "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"Chemistry\"}'>\n" +
-    "                            <p class='lead'>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
-    "                            </p>\n" +
-    "                            <p>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                                </a>\n" +
-    "                            </p>\n" +
-    "                            <p>{{example.description}}</p>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                    <!-- Computer Science -->\n" +
-    "                    <div class='md-docs-section'>\n" +
-    "                        <h1 class='page-header'>Computer Science</h1>\n" +
-    "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"CompSci\"}'>\n" +
-    "                            <p class='lead'>\n" +
-    "                                <a href='/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                                <a href='/gists/{{example.gistId}}'>{{example.title}} (Level: {{example.level}})</a>\n" +
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/gists/{{example.gistId}}'>\n" +
