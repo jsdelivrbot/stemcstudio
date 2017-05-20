@@ -1,4 +1,4 @@
-import FoldMode from "./FoldMode";
+import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
 import FoldWidget from "../../FoldWidget";
@@ -7,7 +7,7 @@ import Range from "../../Range";
 /**
  *
  */
-export default class MixedFoldMode extends FoldMode {
+export class MixedFoldMode extends FoldMode {
     defaultMode: FoldMode;
     subModes: { [name: string]: FoldMode };
 

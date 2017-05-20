@@ -1,8 +1,9 @@
 import { createMap } from "../lib/lang";
-import CssHighlightRules from "./CssHighlightRules";
-import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
-import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
-import XmlHighlightRules from "./XmlHighlightRules";
+import { CssHighlightRules } from "./CssHighlightRules";
+import { POP_STATE } from "./TextHighlightRules";
+import { JavaScriptHighlightRules } from "./JavaScriptHighlightRules";
+import { TypeScriptHighlightRules } from "./TypeScriptHighlightRules";
+import { XmlHighlightRules } from "./XmlHighlightRules";
 
 const tagMap: { [tagName: string]: string } = createMap({
     a: 'anchor',
@@ -27,7 +28,7 @@ const tagMap: { [tagName: string]: string } = createMap({
 /**
  *
  */
-export default class HtmlHighlightRules extends XmlHighlightRules {
+export class HtmlHighlightRules extends XmlHighlightRules {
     /**
      *
      */
@@ -53,12 +54,12 @@ export default class HtmlHighlightRules extends XmlHighlightRules {
                         {
                             token: "string.unquoted.attribute-value.html",
                             regex: "[^<>='\"`\\s]+",
-                            next: "pop"
+                            next: POP_STATE
                         },
                         {
                             token: "empty",
                             regex: "",
-                            next: "pop"
+                            next: POP_STATE
                         }
                     ]
                 },

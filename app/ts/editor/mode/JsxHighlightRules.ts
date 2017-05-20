@@ -1,5 +1,5 @@
-import DocCommentHighlightRules from "./DocCommentHighlightRules";
-import TextHighlightRules from "./TextHighlightRules";
+import { DocCommentHighlightRules } from "./DocCommentHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 import { arrayToMap } from "../lib/lang";
 
 const keywords = arrayToMap(
@@ -24,7 +24,7 @@ const reserved = arrayToMap(
 
 const identifierRe = "[a-zA-Z_][a-zA-Z0-9_]*\\b";
 
-export default class JsxHighlightRules extends TextHighlightRules {
+export class JsxHighlightRules extends TextHighlightRules {
     constructor() {
         super();
 

@@ -1,14 +1,98 @@
 import { Rule, RuleToken } from "./Rule";
-import TokenizedLine from './TokenizedLine';
-import { BasicToken } from './Token';
 
-// tokenizing lines longer than this makes editor very slow
+export const START = 'start';
+export const HTEMP = '#tmp';
+
+/**
+ * The essential structure of the token used by the tokenizer.
+ * Consumers may extend this structure.
+ */
+export interface Token {
+    /**
+     *
+     */
+    type: string;
+
+    /**
+     *
+     */
+    value: string;
+}
+
+/**
+ * Determines whether the token argument has the appropriate string type.
+ * This function provides the typesafe guard.
+ */
+function isToken(token: { type: string | null, value: string }): token is Token {
+    // Checking only that the type is truthy is consistent with the legacy code.
+    // It would probably be more precise to check for a string a string and manage
+    // the case of a zero-length string elsewhere. 
+    if (token.type) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+/**
+ * Verifies that the token has a valid `type` property before pushing.
+ */
+function pushIfValidToken(token: { type: string | null; value: string }, tokens: Token[], trace: boolean): void {
+    const value = token.value;
+    if (isToken(token)) {
+        if (trace) {
+            // Because the push happens after the change of state, this is confusing.
+            // console.log(`token = ${JSON.stringify(token)})`);
+        }
+        tokens.push(token);
+    }
+    else {
+        if (value.length !== 0) {
+            // How often do we end up here.
+            console.warn(`token ${JSON.stringify(token)} does not have a valid type property.`);
+        }
+        else {
+            // Zero length values can't be annotated so maybe this is reasonable.
+        }
+    }
+}
+
+function changeCurrentState(from: string | undefined, to: string, trace: boolean): string {
+    if (trace) {
+        console.log(`currentState: ${JSON.stringify(from)} => ${JSON.stringify(to)})`);
+    }
+    return to;
+}
+
+/**
+ * Consistes of the current state and the tokens for the line.
+ */
+export interface TokenizedLine<E> {
+
+    /**
+     * The case S (stack) happens when the stack has a non-zero length.
+     * TODO: Why is the alternative current state not (string | E) rather than simply string?
+     * If we generalize this it appears to become (string | number) or (string | number)[].
+     * Why don'twe simply use the array representation (and set E to number).
+     */
+    state: string | (string | E)[];
+
+    /**
+     * The tokenizer currently only produces 
+     */
+    tokens: Token[];
+}
+
+/**
+ * tokenizing lines with more tokens than this makes editor very slow
+ */
 let MAX_TOKEN_COUNT = 2000;
 
 /**
  * 
  */
-function $applyToken<T extends BasicToken, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): T[] | undefined {
+function $applyToken<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): T[] | undefined {
     if (typeof this.token === 'function') {
         const tokens: T[] = [];
         if (this.splitRegex) {
@@ -38,7 +122,7 @@ function $applyToken<T extends BasicToken, E, S extends Array<string | E>>(this:
     }
 }
 
-function $arrayTokens<T extends BasicToken, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): 'text' | T[] {
+function $arrayTokens<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): 'text' | T[] {
     if (!str) {
         return [];
     }
@@ -113,54 +197,87 @@ function createSplitterRegexp(src: string, flag?: string): RegExp {
 /**
  * This class takes a set of highlighting rules, and creates a tokenizer out of them.
  * For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
+ * The Tokenizer is used by two clients: TextMode and SnippetManager.
+ * In the former, the token type is not extended. In the latter approx 10 properties are added.
  */
-export default class Tokenizer<T extends BasicToken, E, S extends Array<string | E>> {
-    // Mode wants access to the states (rules)
+export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
     /**
      * 
      */
-    public readonly states: { [stateName: string]: Rule<T, E, S>[] };
+    private trace = false;
+    /**
+     * rules by state name.
+     * 
+     * FIXME: TextMode wants access to the rulesByState.
+     * This is so that it can build completion keywords, not a good coupling.
+     */
+    public readonly rulesByState: { [stateName: string]: Rule<T, E, S>[] };
 
     /**
+     * Each value is a monster; the join of all the regular expressions using |.
+     * Is this for optimization?
+     * Much of the complication of parsing is in determining which rule matched.
      * 
+     * TODO:Rename monsterRegExpByState?
      */
     private readonly regExps: { [stateName: string]: RegExp } = {};
 
     /**
-     * 
+     * What is this used for?
+     * At first sight it seems to only contain fixed entries (defaultToken: "text"),
+     * but on further inspection each matchMapping entry is being used also as a map
+     * from matchTotal: number to rule index.
+     * These values are then used in getLineTokens to access a rule.
      */
     private readonly matchMappings: { [stateName: string]: Rule<T, E, S> } = {};
 
     /**
      * Constructs a new tokenizer based on the given rules and flags.
      *
-     * @param states The highlighting rules for each state (rulesByState).
+     * @param rulesByState The highlighting rules for each state (rulesByState).
      */
     constructor(rulesByState: { [stateName: string]: Rule<T, E, S>[] }) {
-        this.states = rulesByState;
+        this.rulesByState = rulesByState;
 
-        for (const key in this.states) {
-            if (this.states.hasOwnProperty(key)) {
+        for (const stateName in this.rulesByState) {
+            if (this.rulesByState.hasOwnProperty(stateName)) {
 
-                const rules = this.states[key];
+                const rules = this.rulesByState[stateName];
+                /**
+                 * The regular expressions for this rule.
+                 * rule.regex => adjustedregex
+                 */
                 const ruleRegExps: string[] = [];
                 let matchTotal = 0;
-                const mapping: Rule<T, E, S> = this.matchMappings[key] = { defaultToken: "text" };
-                let flag = "g";
+                const mapping: Rule<T, E, S> = this.matchMappings[stateName] = { defaultToken: "text" };
+                let flag: 'g' | 'gi' = "g";
 
+                /**
+                 * What are splitter rules?
+                 */
                 const splitterRules: Rule<T, E, S>[] = [];
+                // This cannot be converted to for-of because we need the index later.
                 for (let i = 0; i < rules.length; i++) {
                     const rule = rules[i];
-                    if (rule.defaultToken)
+                    if (rule.defaultToken) {
                         mapping.defaultToken = rule.defaultToken;
-                    if (rule.caseInsensitive)
+                    }
+                    if (rule.caseInsensitive) {
                         flag = "gi";
-                    if (rule.regex == null)
+                    }
+                    // rule.regex is string | RegExp | undefined, but undefined == null => true.
+                    // 
+                    if (rule.regex == null) {
                         continue;
+                    }
 
                     if (rule.regex instanceof RegExp) {
+                        // The slicing trims of the leading an trailing forward slashes leaving the pattern.
                         rule.regex = rule.regex.toString().slice(1, -1);
                     }
+
+                    // Henceforth, rule.regex must be a string.
+                    // It seems that the reason for starting from a string is to count the matching groups?
 
                     // Count number of matching groups. 2 extra groups from the full match
                     // And the catch-all on the end (used to force a match);
@@ -180,16 +297,19 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
                                 rule.token = rule.token[0];
                             }
                             else {
+                                // string[] | T[]
                                 rule.tokenArray = rule.token;
                                 rule.token = null;
                                 rule.onMatch = $arrayTokens;
                             }
                         }
                         else if (typeof rule.token === "function" && !rule.onMatch) {
-                            if (matchcount > 1)
+                            if (matchcount > 1) {
                                 rule.onMatch = $applyToken;
-                            else
+                            }
+                            else {
                                 rule.onMatch = rule.token;
+                            }
                         }
 
                         if (matchcount > 1) {
@@ -203,8 +323,9 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
                                 matchcount = 1;
                                 adjustedregex = removeCapturingGroups(rule.regex);
                             }
-                            if (!rule.splitRegex && typeof rule.token !== "string")
+                            if (!rule.splitRegex && typeof rule.token !== "string") {
                                 splitterRules.push(rule); // flag will be known only at the very end
+                            }
                         }
 
                         mapping[matchTotal] = i;
@@ -214,8 +335,9 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
                     ruleRegExps.push(adjustedregex);
 
                     // makes property access faster
-                    if (!rule.onMatch)
+                    if (!rule.onMatch) {
                         rule.onMatch = null;
+                    }
                 }
 
                 if (!ruleRegExps.length) {
@@ -234,7 +356,8 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
                     }
                 });
 
-                this.regExps[key] = new RegExp("(" + ruleRegExps.join(")|(") + ")|($)", flag);
+                // These guys are monstrously long.
+                this.regExps[stateName] = new RegExp("(" + ruleRegExps.join(")|(") + ")|($)", flag);
             }
         }
     }
@@ -249,59 +372,76 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
     /**
      * startState is usually undefined.
      */
-    public getLineTokens(line: string, startState: string | E | S | null | undefined): TokenizedLine<T, E, S> {
-
-        let stack: S;
+    public getLineTokens(line: string, startState: string | E | S | null | undefined): TokenizedLine<E> {
+        if (this.trace) {
+            console.log("===========================================================================");
+            console.log(`getLineTokens(line = '${line}', startState = ${JSON.stringify(startState)})`);
+        }
+        /**
+         * Either the `stack` or the `currentState` will be returned
+         */
+        let stack: (string | E)[];
         if (startState && Array.isArray(startState)) {
-            stack = <S>startState.slice(0);
+            // startState has been determined to have type (string | E)[]
+            stack = startState.slice(0);
             startState = stack[0];
-            if (startState === "#tmp") {
+            if (startState === HTEMP) {
                 stack.shift();
                 startState = stack.shift();
             }
         }
         else {
-            stack = <S>[];
+            stack = [];
         }
 
-        let currentState = <string>startState || "start";
-        let rules = this.states[currentState];
+        /**
+         * TODO: Maybe this could be typed as (string | number) (E restricted to number is general enough).
+         */
+        let currentState = changeCurrentState(void 0, <string>startState || START, this.trace);
+        let rules = this.rulesByState[currentState];
         if (!rules) {
-            currentState = "start";
-            rules = this.states[currentState];
+            currentState = changeCurrentState(currentState, START, this.trace);
+            rules = this.rulesByState[currentState];
         }
         let mapping = this.matchMappings[currentState];
+        /**
+         * The regular expression for the current state.
+         */
         let re = this.regExps[currentState];
         re.lastIndex = 0;
 
+        /**
+         * The result of executing the monster RegExp.
+         */
         let match: RegExpExecArray | null;
-        const tokens: T[] = [];
+        const tokens: Token[] = [];
         let lastIndex = 0;
         let matchAttempts = 0;
 
-        let token: T = <T>{ type: null, value: "" };
-
+        // The token begins life in a deficient state without a type.
+        let token: { type: string | null, value: string } = { type: null, value: "" };
         while (match = re.exec(line)) {
-            let type: RuleToken<T, E, S> = mapping.defaultToken;
+            /**
+             * Recall that a RuleToken is a string | string[] | Function.
+             * TODO: This name is a bit confusing because it suggests that the type is a string.
+             */
+            let ruleToken: RuleToken<T, E, S> = mapping.defaultToken;
             let rule: Rule<T, E, S> | null = null;
             const value = match[0];
             const index = re.lastIndex;
 
             if (index - value.length > lastIndex) {
                 const skipped = line.substring(lastIndex, index - value.length);
-                if (token.type === type) {
+                if (token.type === ruleToken) {
                     token.value += skipped;
                 }
                 else {
-                    if (token.type) {
-                        tokens.push(token);
-                    }
-                    // FIXME: Is the cast valid?
-                    if (typeof type === 'string') {
-                        token = <T>{ type: type, value: skipped };
+                    pushIfValidToken(token, tokens, this.trace);
+                    if (typeof ruleToken === 'string') {
+                        token = { type: ruleToken, value: skipped };
                     }
                     else {
-                        console.warn(`Unexpected type => ${type}`);
+                        console.warn(`Unexpected type => ${JSON.stringify(ruleToken)}`);
                     }
                 }
             }
@@ -312,29 +452,46 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
 
                 rule = rules[mapping[i]];
 
-                if (rule.onMatch)
-                    type = rule.onMatch(value, currentState, stack, line);
-                else
-                    type = rule.token;
+                if (rule.onMatch) {
+                    // TODO: May be better to simplify back to a stack being a (number | string)[].
+                    // FIXME: We don't have strong typing here; onMatch return any.
+                    ruleToken = rule.onMatch(value, currentState, stack as S, line);
+                }
+                else {
+                    ruleToken = rule.token;
+                }
+
+                if (this.trace) {
+                    console.log(`ruleToken = ${JSON.stringify(ruleToken)}, value = '${value}'`);
+                }
 
                 if (rule.next) {
                     if (typeof rule.next === "string") {
-                        currentState = rule.next;
+                        currentState = changeCurrentState(currentState, rule.next, this.trace);
                     }
                     else if (Array.isArray(rule.next)) {
                         // This case should not happen because or rule normalization?
                         console.warn("rule.next: Rule[] is not being handled by the Tokenizer.");
                     }
                     else if (typeof rule.next === 'function') {
-                        currentState = <string>rule.next(currentState, stack);
+                        // TODO: May be better to simplify back to a stack being a (number | string)[].
+                        // An example of why we end up here is a POP_STATE.
+                        const nextState = rule.next(currentState, stack as S);
+                        if (typeof nextState === 'string') {
+                            currentState = changeCurrentState(currentState, nextState, this.trace);
+                        }
+                        else {
+                            console.warn(`typeof nextState => ${typeof nextState}`);
+                            currentState = changeCurrentState(currentState, nextState as any, this.trace);
+                        }
                     }
 
-                    rules = this.states[currentState];
+                    rules = this.rulesByState[currentState];
                     if (!rules) {
                         // FIXME: I'm ignoring this for the time being!
                         console.warn("state doesn't exist", currentState);
-                        currentState = "start";
-                        rules = this.states[currentState];
+                        currentState = changeCurrentState(currentState, START, this.trace);
+                        rules = this.rulesByState[currentState];
                     }
                     mapping = this.matchMappings[currentState];
                     lastIndex = index;
@@ -344,60 +501,76 @@ export default class Tokenizer<T extends BasicToken, E, S extends Array<string |
                 break;
             }
 
+            // This block seems to be concerned with pushing a token while the re matches.
             if (value) {
-                if (typeof type === "string") {
-                    if ((!rule || rule.merge !== false) && token.type === type) {
+                if (typeof ruleToken === "string") {
+                    if ((!rule || rule.merge !== false) && token.type === ruleToken) {
                         token.value += value;
                     }
                     else {
-                        if (token.type)
-                            tokens.push(token);
-                        token = <T>{ type: type, value: value };
+                        pushIfValidToken(token, tokens, this.trace);
+                        token = { type: ruleToken, value: value };
                     }
                 }
-                else if (type) {
-                    if (token.type)
-                        tokens.push(token);
-                    token = <T>{ type: null, value: "" };
-                    for (let i = 0; i < type.length; i++)
-                        tokens.push(type[i]);
+                else if (Array.isArray(ruleToken)) {
+                    pushIfValidToken(token, tokens, this.trace);
+                    // Why do we clear the type here...
+                    token = { type: null, value: "" };
+                    for (let i = 0; i < ruleToken.length; i++) {
+                        const mayBeToken = ruleToken[i];
+                        if (typeof mayBeToken === 'object') {
+                            pushIfValidToken(mayBeToken, tokens, this.trace);
+                        }
+                        else {
+                            console.warn(`typeof ruleToken => ${typeof ruleToken}, ruleToken => ${JSON.stringify(ruleToken)}`);
+                        }
+                    }
+                }
+                else {
+                    console.warn(`typeof ruleToken => ${typeof ruleToken} is not being handled.`);
                 }
             }
+            else {
+                // Zero-length strings can happen.
+            }
 
-            if (lastIndex === line.length)
+            if (lastIndex === line.length) {
                 break;
+            }
 
             lastIndex = index;
 
+            // Recover if the number of tokens in a line slows us down.
             if (matchAttempts++ > MAX_TOKEN_COUNT) {
                 if (matchAttempts > 2 * line.length) {
                     console.warn("infinite loop within tokenizer", { startState: startState, line: line });
                 }
-                // chrome doens't show contents of text nodes with very long text
+                // Chrome doesn't show contents of text nodes with very long text.
                 while (lastIndex < line.length) {
-                    if (token.type)
-                        tokens.push(token);
-                    token = <T>{ value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
+                    pushIfValidToken(token, tokens, this.trace);
+                    token = { value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
                 }
-                currentState = "start";
-                stack = <S>[];
+                currentState = changeCurrentState(currentState, START, this.trace);
+                stack = [];
                 break;
             }
         }
 
-        if (token.type) {
-            tokens.push(token);
-        }
+        pushIfValidToken(token, tokens, this.trace);
 
         if (stack.length > 1) {
             if (stack[0] !== currentState) {
-                stack.unshift("#tmp", currentState);
+                stack.unshift(HTEMP, currentState);
             }
         }
 
-        return {
+        const tokenizedLine = {
             tokens: tokens,
             state: stack.length ? stack : currentState
         };
+        if (this.trace) {
+            console.log(`tokenizedLine = '${JSON.stringify(tokenizedLine)}'`);
+        }
+        return tokenizedLine;
     }
 }

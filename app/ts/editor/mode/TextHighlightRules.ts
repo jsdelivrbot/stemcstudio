@@ -1,23 +1,51 @@
 import { deepCopy } from "../lib/lang";
 import { Highlighter, HighlighterRule, HighlighterStack, HighlighterStackElement } from './Highlighter';
-import HighlighterFactory from './HighlighterFactory';
+import { HighlighterFactory } from './HighlighterFactory';
 
-const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement {
+/**
+ * Special value that may be assigned to a rule.next.
+ * When it is encountered by the normalizer, it is replaced by a function that pos the stack.
+ */
+export const POP_STATE = 'pop';
+
+/**
+ * FIXME: typing problem.
+ * A Highlighter stack element is a number | string.
+ * nextState is string | undefined. Should this be a HighlighterStackElement
+ */
+const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement | undefined {
     if (currentState !== "start" || stack.length) {
-        stack.unshift(this.nextState, currentState);
+        // Interesting that pushState pushes two states.
+        // nextState ends up being the topmost element in the stack.
+        // FIXME: The cast is made because Rule appears to mix design-time and run-time semantics.
+        // nextState is optional and implicit at design-time, but is explicit and required at run-time?
+        // This should be enforced in the normalization of the rules.
+        stack.unshift(this.nextState as HighlighterStackElement, currentState);
     }
     return this.nextState;
 };
 
+/**
+ * FIXME: The double-popping of the stack is unexpected.
+ * I'm becoming convinced that the root cause is the redundancy of currentState and a stack taken together.
+ * I expect that the stack was introduced later. The currentState should simply be the top element on the stack.
+ * Does this situation exist so that the highlighter can recover from syntax errors?
+ * Notice also the double-push in the pushState function.
+ */
 const popState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement {
-    stack.shift();
-    return stack.shift() || "start";
+    // Why is shift called twice? Pobably because we push twice in pushState!
+    // console.warn(`(TextHighlightRules) popState(currentState = ${currentState}, stack = ${JSON.stringify(stack)})`);
+    /*const shiftedOne =*/ stack.shift();
+    // console.log(`shiftedOne = ${shiftedOne}, stack = ${JSON.stringify(stack)}`);
+    const shiftedTwo = stack.shift();
+    // console.log(`shiftedTwo = ${shiftedTwo}, stack = ${JSON.stringify(stack)}`);
+    return shiftedTwo || "start";
 };
 
 /**
  *
  */
-export default class TextHighlightRules implements Highlighter {
+export class TextHighlightRules implements Highlighter {
     /**
      * This could be called rulesByStateName.
      */
@@ -50,8 +78,9 @@ export default class TextHighlightRules implements Highlighter {
 
     /**
      * Adds a set of rules, prefixing all state names with the given prefix.
+     * The name(s) of all the added rules will become 'prefix-name'
      */
-    addRules(rules: { [name: string]: HighlighterRule[] }, prefix?: string): void {
+    addRules(rules: { [stateName: string]: HighlighterRule[] }, prefix?: string): void {
         if (!prefix) {
             for (const key in rules) {
                 if (rules.hasOwnProperty(key)) {
@@ -70,8 +99,9 @@ export default class TextHighlightRules implements Highlighter {
                             if (rule.next.indexOf(prefix) !== 0)
                                 rule.next = prefix + rule.next;
                         }
-                        if (rule.nextState && rule.nextState.indexOf(prefix) !== 0)
+                        if (rule.nextState && (typeof rule.nextState === 'string') && rule.nextState.indexOf(prefix) !== 0) {
                             rule.nextState = prefix + rule.nextState;
+                        }
                     }
                 }
                 this.$rules[prefix + key] = state;
@@ -140,7 +170,7 @@ export default class TextHighlightRules implements Highlighter {
             state['processed'] = true;
             for (let i = 0; i < state.length; i++) {
                 let rule = state[i];
-                let toInsert: HighlighterRule[] = null;
+                let toInsert: HighlighterRule[] | null = null;
                 if (Array.isArray(rule)) {
                     toInsert = rule;
                     rule = {};
@@ -150,15 +180,17 @@ export default class TextHighlightRules implements Highlighter {
                     rule.regex = rule['start'];
                     if (!rule.next)
                         rule.next = [];
-                    (<any>rule.next).push({
-                        defaultToken: rule.token
-                    }, {
+                    (<any>rule.next).push(
+                        {
+                            defaultToken: rule.token
+                        },
+                        {
                             token: rule.token + ".end",
                             regex: rule['end'] || rule['start'],
-                            next: "pop"
+                            next: POP_STATE
                         });
                     rule.token = rule.token + ".start";
-                    rule['push'] = <any>true;
+                    rule.push = <any>true;
                 }
                 const next = rule.next || rule.push;
                 if (next && Array.isArray(next)) {
@@ -166,16 +198,18 @@ export default class TextHighlightRules implements Highlighter {
                     if (!stateName) {
                         // FIXME
                         stateName = <string>rule.token;
-                        if (typeof stateName !== "string")
+                        if (typeof stateName !== "string") {
                             stateName = stateName[0] || "";
-                        if (rules[stateName])
+                        }
+                        if (rules[stateName]) {
                             stateName += id++;
+                        }
                     }
                     rules[stateName] = next;
                     rule.next = stateName;
                     processState(stateName);
                 }
-                else if (next === "pop") {
+                else if (next === POP_STATE) {
                     rule.next = popState;
                 }
 

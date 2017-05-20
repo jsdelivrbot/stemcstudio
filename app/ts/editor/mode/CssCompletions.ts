@@ -95,7 +95,7 @@ const propertyMap = {
   "-webkit-transform": { "rotate($00deg)": 1, "skew($00deg)": 1 }
 };
 
-export default class CssCompletions {
+export class CssCompletions {
   public completionsDefined: boolean;
   constructor() {
     this.completionsDefined = false;

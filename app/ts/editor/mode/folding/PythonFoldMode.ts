@@ -1,11 +1,11 @@
 import Range from "../../Range";
-import FoldMode from "./FoldMode";
+import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 
 /**
  *
  */
-export default class PythonFoldMode extends FoldMode {
+export class PythonFoldMode extends FoldMode {
     foldingStartMarker: RegExp;
     constructor(markers: string) {
         super();

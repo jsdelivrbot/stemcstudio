@@ -1,9 +1,9 @@
-import BehaviourCallback from "../BehaviourCallback";
+import { BehaviourCallback } from "../BehaviourCallback";
 
 /**
  *
  */
-export default class Behaviour {
+export class Behaviour {
 
     /**
      * A map from name to a map from action to a BehaviourCallback.

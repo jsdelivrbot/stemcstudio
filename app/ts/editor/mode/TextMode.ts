@@ -3,19 +3,19 @@ import Annotation from "../Annotation";
 import BlockComment from './BlockComment';
 import { Completion } from "../Completion";
 import Position from "../Position";
-import Tokenizer from "../Tokenizer";
-import TextHighlightRules from "./TextHighlightRules";
-import Behaviour from "./Behaviour";
-import CstyleBehaviour from './behaviour/CstyleBehaviour';
+import { Tokenizer } from "../Tokenizer";
+import { TextHighlightRules } from "./TextHighlightRules";
+import { Behaviour } from "./Behaviour";
+import { CstyleBehaviour } from './behaviour/CstyleBehaviour';
 import { packages } from "../unicode";
 import { escapeRegExp } from "../lib/lang";
 import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
-import HighlighterFactory from './HighlighterFactory';
+import { HighlighterFactory } from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
-import WorkerClient from "../worker/WorkerClient";
+import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer
 //
@@ -109,7 +109,7 @@ export function initWorker(worker: WorkerClient, moduleName: string, scriptImpor
 /**
  *
  */
-export default class TextMode implements LanguageMode {
+export class TextMode implements LanguageMode {
     /**
      * Used when loading snippets for zero or more modes?
      */
@@ -533,41 +533,50 @@ export default class TextMode implements LanguageMode {
         const completionKeywords: string[] = [];
         if (!this.completionKeywords) {
 
-            const rulesByState = this.$tokenizer.states;
-            const stateNames = Object.keys(rulesByState);
-            const sLen = stateNames.length;
-            for (let s = 0; s < sLen; s++) {
-                const stateName = stateNames[s];
-                /**
-                 * The rules for this particular state.
-                 */
-                const rules = rulesByState[stateName];
-                for (let r = 0, l = rules.length; r < l; r++) {
-                    const rule = rules[r];
+            const rulesByState = this.$tokenizer.rulesByState;
+            for (const stateName of Object.keys(rulesByState)) {
+                for (const rule of rulesByState[stateName]) {
                     if (typeof rule.token === "string") {
-                        const token = <string>rule.token;
+                        const token = rule.token;
                         if (/keyword|support|storage/.test(token)) {
-                            // FIXME: What if regex is not a string?
-                            completionKeywords.push(<string>rule.regex);
+                            // Following Rule normalization by the Tokenizer constructor,
+                            // the `regex` property should be a string.
+                            if (typeof rule.regex === 'string') {
+                                completionKeywords.push(rule.regex);
+                            }
+                            else {
+                                console.warn(`rule.regex ${JSON.stringify(rule)} in state ${stateName} is not correctly normalized.}`);
+                            }
                         }
                     }
-                    else if (typeof rule.token === "object") {
-                        const tokens = <string[]>rule.token;
-                        for (let a = 0, aLength = tokens.length; a < aLength; a++) {
-                            if (/keyword|support|storage/.test(tokens[a])) {
-                                // drop surrounding parens
-                                if (typeof rule.regex === 'string') {
-                                    const matches = (rule.regex).match(/\(.+?\)/g);
-                                    if (matches) {
-                                        const matched = matches[a];
-                                        completionKeywords.push(matched.substr(1, matched.length - 2));
+                    else if (typeof rule.token === "object" && rule.token !== null && Array.isArray(rule.token)) {
+                        const tokens = rule.token;
+                        // TODO: This cannot be converted to a for-of because of a later use of an index.
+                        // Does this suggest that we should be zipping the tokens and matches?
+                        for (let i = 0, iLength = tokens.length; i < iLength; i++) {
+                            const token = tokens[i];
+                            if (typeof token === 'string') {
+                                if (/keyword|support|storage/.test(token)) {
+                                    // drop surrounding parens
+                                    if (typeof rule.regex === 'string') {
+                                        const matches = rule.regex.match(/\(.+?\)/g);
+                                        if (matches) {
+                                            const matched = matches[i];
+                                            completionKeywords.push(matched.substr(1, matched.length - 2));
+                                        }
                                     }
                                 }
+                            }
+                            else {
+                                // TODO: This looks like dead code. What does this imply for the typing?
+                                console.warn(`(TextMode) token => ${JSON.stringify(token)}`);
                             }
                         }
                     }
                     else {
+                        console.warn(`(TextMode) rule.token => ${JSON.stringify(rule.token)}`);
                         // TODO: What if Rule.tokens is a function?
+                        // rule.token may also be null. What does that mean?
                     }
                 }
             }

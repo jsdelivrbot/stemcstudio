@@ -1,7 +1,7 @@
-import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
+import { JavaScriptHighlightRules } from "./JavaScriptHighlightRules";
 import { HighlighterRule } from './Highlighter';
 
-export default class TypeScriptHighlightRules extends JavaScriptHighlightRules {
+export class TypeScriptHighlightRules extends JavaScriptHighlightRules {
 
     constructor(options?: { jsx?: boolean }) {
         super(options);
@@ -32,7 +32,7 @@ export default class TypeScriptHighlightRules extends JavaScriptHighlightRules {
             },
             {
                 token: ["storage.type.variable.ts"],
-                regex: "(?:\\b(this\\.|string\\b|bool\\b|number)\\b)"
+                regex: "(?:\\b(this\\.|string\\b|boolean\\b|number)\\b)"
             },
             {
                 token: ["keyword.operator.ts", "storage.type.variable.ts", "keyword.operator.ts", "storage.type.variable.ts"],
@@ -44,10 +44,10 @@ export default class TypeScriptHighlightRules extends JavaScriptHighlightRules {
             }
         ];
 
-        const JSRules = new JavaScriptHighlightRules({ jsx: (options && options.jsx) === true }).getRules();
-        const startRules = JSRules['start'];
+        const jsRules = new JavaScriptHighlightRules({ jsx: (options && options.jsx) === true }).getRules();
+        const startRules = jsRules['start'];
 
-        JSRules['start'] = tsRules.concat(startRules);
-        this.$rules = JSRules;
+        jsRules['start'] = tsRules.concat(startRules);
+        this.$rules = jsRules;
     }
 }

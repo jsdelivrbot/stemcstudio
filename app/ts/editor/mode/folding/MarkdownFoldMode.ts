@@ -1,5 +1,5 @@
 import Range from "../../Range";
-import FoldMode from "./FoldMode";
+import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
 import FoldWidget from "../../FoldWidget";
@@ -8,7 +8,7 @@ import Token from "../../Token";
 /**
  *
  */
-export default class MarkdownFoldMode extends FoldMode {
+export class MarkdownFoldMode extends FoldMode {
     /**
      *
      */

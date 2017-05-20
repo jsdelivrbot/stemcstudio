@@ -1,6 +1,6 @@
-import TextHighlightRules from './TextHighlightRules';
+import { TextHighlightRules } from './TextHighlightRules';
 
-export default class HaskellHighlightRules extends TextHighlightRules {
+export class HaskellHighlightRules extends TextHighlightRules {
   constructor() {
     super();
     // regexp must not have capturing parentheses. Use (?:) instead.

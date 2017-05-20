@@ -236,7 +236,7 @@ function findAttributeName(session: EditSession, pos: Position): string | undefi
     return void 0;
 }
 
-export default class HtmlCompletions {
+export class HtmlCompletions {
     /**
      * 
      */

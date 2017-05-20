@@ -1,16 +1,16 @@
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import JavaScriptMode from "./JavaScriptMode";
-import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
-import WorkerClient from "../worker/WorkerClient";
+import { JavaScriptMode } from "./JavaScriptMode";
+import { TypeScriptHighlightRules } from "./TypeScriptHighlightRules";
+import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
+import { WorkerClient } from "../worker/WorkerClient";
 // import { EditSessionEventName } from "../EditSession";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class TypeScriptMode extends JavaScriptMode {
+export class TypeScriptMode extends JavaScriptMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
@@ -18,7 +18,7 @@ export default class TypeScriptMode extends JavaScriptMode {
         this.HighlightRules = TypeScriptHighlightRules;
         this.$highlightRuleConfig = { jsx: false };
         this.$behaviour = new CstyleBehaviour();
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
     }
 
     createWorker(session: EditSession, callback: (err: any | null, worker?: WorkerClient) => any): void {
@@ -33,12 +33,14 @@ export default class TypeScriptMode extends JavaScriptMode {
         //
         // FIXME: Does the TypeScript worker thread really emit this event?
         //
+        /*
         worker.on("getFileNames", function (event) {
             // Dangerous but casting away the problem fo now.
             console.warn("Does the TypeScript worker thread really emit this event?");
-            throw new Error("getDileNames");
+            throw new Error("getFileNames");
             // session._emit("getFileNames" as EditSessionEventName, { data: event.data });
         });
+        */
 
         initWorker(worker, 'TypeScriptWorker', this.scriptImports, session, callback);
     }

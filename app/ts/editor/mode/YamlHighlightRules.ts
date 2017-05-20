@@ -1,7 +1,7 @@
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 import { HighlighterRule, HighlighterStack, HighlighterStackElement } from './Highlighter';
 
-export default class YamlHighlightRules extends TextHighlightRules {
+export class YamlHighlightRules extends TextHighlightRules {
     constructor() {
         super();
         // regexp must not have capturing parentheses. Use (?:) instead.
@@ -52,19 +52,22 @@ export default class YamlHighlightRules extends TextHighlightRules {
                     token: "string", // multi line string start
                     regex: '[|>][-+\\d\\s]*$',
                     onMatch: function (this: HighlighterRule, val: string, state: string, stack: HighlighterStack, line: string) {
-                        const indent = /^\s*(?:[-?]\s)?/.exec(line)[0];
-                        if (stack.length < 1) {
-                            stack.push(<HighlighterStackElement>this.next);
-                        }
-                        else {
-                            stack[0] = "mlString";
-                        }
+                        const regExpArray = /^\s*(?:[-?]\s)?/.exec(line);
+                        if (regExpArray) {
+                            const indent = regExpArray[0];
+                            if (stack.length < 1) {
+                                stack.push(<HighlighterStackElement>this.next);
+                            }
+                            else {
+                                stack[0] = "mlString";
+                            }
 
-                        if (stack.length < 2) {
-                            stack.push(indent.length);
-                        }
-                        else {
-                            stack[1] = indent.length;
+                            if (stack.length < 2) {
+                                stack.push(indent.length);
+                            }
+                            else {
+                                stack[1] = indent.length;
+                            }
                         }
                         return this.token;
                     },

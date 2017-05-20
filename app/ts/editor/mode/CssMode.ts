@@ -1,18 +1,18 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import CssCompletions from './CssCompletions';
-import CssHighlightRules from "./CssHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import WorkerClient from "../worker/WorkerClient";
-import CssBehaviour from "./behaviour/CssBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
+import { CssCompletions } from './CssCompletions';
+import { CssHighlightRules } from "./CssHighlightRules";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
+import { CssBehaviour } from "./behaviour/CssBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 import Position from '../Position';
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class CssMode extends TextMode {
+export class CssMode extends TextMode {
     $outdent: MatchingBraceOutdent;
     $completer: CssCompletions;
 
@@ -24,7 +24,7 @@ export default class CssMode extends TextMode {
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CssBehaviour();
         this.$completer = new CssCompletions();
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
     }
 
     getNextLineIndent(state: string, line: string, tab: string): string {

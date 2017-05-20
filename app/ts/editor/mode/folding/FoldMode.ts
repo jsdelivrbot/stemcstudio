@@ -10,7 +10,7 @@ import { EditSession } from "../../../virtual/editor";
 /**
  *
  */
-export default class FoldMode {
+export class FoldMode {
 
     /**
      *

@@ -1,12 +1,12 @@
-import Completion from "./Completion";
+import { Completion } from "./Completion";
 import { Editor } from "./Editor";
 import { EditSession } from "./EditSession";
 import Position from "./Position";
 import Range from "./Range";
 import TextAndSelection from "./TextAndSelection";
-import Tokenizer from "./Tokenizer";
-// import WorkerClient from "./worker/WorkerClient";
-import FoldMode from "./mode/folding/FoldMode";
+import { Tokenizer } from "./Tokenizer";
+// import { WorkerClient } from "./worker/WorkerClient";
+import { FoldMode } from "./mode/folding/FoldMode";
 import { HighlighterToken, HighlighterStack, HighlighterStackElement } from './mode/Highlighter';
 //
 // Editor Abstraction Layer

@@ -1,10 +1,10 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import WorkerClient from "../worker/WorkerClient";
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
+import { JavaScriptHighlightRules } from "./JavaScriptHighlightRules";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
+import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 //
 // Editor Abstraction Layer
 //
@@ -13,7 +13,7 @@ import { EditSession } from '../../virtual/editor';
 /**
  *
  */
-export default class JavaScriptMode extends TextMode {
+export class JavaScriptMode extends TextMode {
 
     private readonly $outdent = new MatchingBraceOutdent();
 
@@ -26,7 +26,7 @@ export default class JavaScriptMode extends TextMode {
         // The Tokenizer will be built using these rules.
         this.HighlightRules = JavaScriptHighlightRules;
         this.$behaviour = new CstyleBehaviour();
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
         this.lineCommentStart = "//";
         this.blockComment = { start: "/*", end: "*/" };
     }

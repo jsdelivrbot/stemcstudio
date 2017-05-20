@@ -1,13 +1,13 @@
-import FoldMode from "./folding/FoldMode";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import TextMode from "./TextMode";
-import YamlHighlightRules from "./YamlHighlightRules";
+import { FoldMode } from "./folding/FoldMode";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { TextMode } from "./TextMode";
+import { YamlHighlightRules } from "./YamlHighlightRules";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class YamlMode extends TextMode {
+export class YamlMode extends TextMode {
 
     /**
      *

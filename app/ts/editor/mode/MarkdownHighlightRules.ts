@@ -1,9 +1,10 @@
-import {escapeRegExp} from "../lib/lang";
-import JavaScriptHighlightRules from './JavaScriptHighlightRules';
-import TypeScriptHighlightRules from './TypeScriptHighlightRules';
-import XmlHighlightRules from './XmlHighlightRules';
-import HtmlHighlightRules from './HtmlHighlightRules';
-import CssHighlightRules from './CssHighlightRules';
+import { escapeRegExp } from "../lib/lang";
+import { JavaScriptHighlightRules } from './JavaScriptHighlightRules';
+import { TypeScriptHighlightRules } from './TypeScriptHighlightRules';
+import { XmlHighlightRules } from './XmlHighlightRules';
+import { HtmlHighlightRules } from './HtmlHighlightRules';
+import { CssHighlightRules } from './CssHighlightRules';
+import { POP_STATE } from './TextHighlightRules';
 
 const escaped = function (ch: string) {
     return "(?:[^" + escapeRegExp(ch) + "\\\\]|\\\\.)*";
@@ -20,7 +21,7 @@ function github_embed(tag: string, prefix: string) {
 /**
  *
  */
-export default class MarkdownHighlightRules extends HtmlHighlightRules {
+export class MarkdownHighlightRules extends HtmlHighlightRules {
     constructor() {
         super();
         // regexp must not have capturing parentheses
@@ -193,31 +194,31 @@ export default class MarkdownHighlightRules extends HtmlHighlightRules {
         this.embedRules(TypeScriptHighlightRules, "tscode-", [{
             token: "support.function",
             regex: "^\\s*```",
-            next: "pop"
+            next: POP_STATE
         }]);
 
         this.embedRules(JavaScriptHighlightRules, "jscode-", [{
             token: "support.function",
             regex: "^\\s*```",
-            next: "pop"
+            next: POP_STATE
         }]);
 
         this.embedRules(HtmlHighlightRules, "htmlcode-", [{
             token: "support.function",
             regex: "^\\s*```",
-            next: "pop"
+            next: POP_STATE
         }]);
 
         this.embedRules(CssHighlightRules, "csscode-", [{
             token: "support.function",
             regex: "^\\s*```",
-            next: "pop"
+            next: POP_STATE
         }]);
 
         this.embedRules(XmlHighlightRules, "xmlcode-", [{
             token: "support.function",
             regex: "^\\s*```",
-            next: "pop"
+            next: POP_STATE
         }]);
 
         this.normalizeRules();

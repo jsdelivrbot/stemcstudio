@@ -1,15 +1,15 @@
-import TextMode from "./TextMode";
-import JavaScriptMode from "./JavaScriptMode";
-import TypeScriptMode from "./TypeScriptMode";
-import XmlMode from "./XmlMode";
-import HtmlMode from './HtmlMode';
-import MarkdownHighlightRules from './MarkdownHighlightRules';
-import MarkdownFoldMode from './folding/MarkdownFoldMode';
+import { TextMode } from "./TextMode";
+import { JavaScriptMode } from "./JavaScriptMode";
+import { TypeScriptMode } from "./TypeScriptMode";
+import { XmlMode } from "./XmlMode";
+import { HtmlMode } from './HtmlMode';
+import { MarkdownHighlightRules } from './MarkdownHighlightRules';
+import { MarkdownFoldMode } from './folding/MarkdownFoldMode';
 
 /**
  *
  */
-export default class MarkdownMode extends TextMode {
+export class MarkdownMode extends TextMode {
 
     protected type = "text";
     protected blockComment = { start: "<!--", end: "-->" };

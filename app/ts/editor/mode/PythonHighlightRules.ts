@@ -1,6 +1,6 @@
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 
-export default class PythonHighlightRules extends TextHighlightRules {
+export class PythonHighlightRules extends TextHighlightRules {
     constructor() {
         super();
 

@@ -1,8 +1,8 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import ClojureHighlightRules from "./ClojureHighlightRules";
-import MatchingParensOutdent from "./MatchingParensOutdent";
-import WorkerClient from "../worker/WorkerClient";
+import { ClojureHighlightRules } from "./ClojureHighlightRules";
+import { MatchingParensOutdent } from "./MatchingParensOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer
 //
@@ -11,7 +11,7 @@ import { EditSession } from '../../virtual/editor';
 const minorIndentFunctions = ["defn", "defn-", "defmacro", "def", "deftest", "testing"];
 const outdent = new MatchingParensOutdent();
 
-export default class ClojureMode extends TextMode {
+export class ClojureMode extends TextMode {
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
         this.HighlightRules = ClojureHighlightRules;

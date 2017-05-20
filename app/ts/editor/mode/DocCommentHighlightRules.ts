@@ -1,10 +1,10 @@
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 import { HighlighterRule } from './Highlighter';
 
 /**
  * 
  */
-export default class DocCommentHighlightRules extends TextHighlightRules {
+export class DocCommentHighlightRules extends TextHighlightRules {
     /**
      * 
      */

@@ -7,7 +7,7 @@ import { EditSession } from '../../virtual/editor';
 /**
  *
  */
-export default class MatchingBraceOutdent {
+export class MatchingBraceOutdent {
 
     /**
      *

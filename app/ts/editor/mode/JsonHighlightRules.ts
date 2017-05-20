@@ -1,9 +1,9 @@
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 
 /**
  *
  */
-export default class JsonHighlightRules extends TextHighlightRules {
+export class JsonHighlightRules extends TextHighlightRules {
     /**
      *
      */

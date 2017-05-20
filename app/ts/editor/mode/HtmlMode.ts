@@ -2,15 +2,15 @@ import { ACE_WORKER_MODULE_NAME } from '../../constants';
 import { arrayToMap } from "../lib/lang";
 import { Completion } from "../Completion";
 import Position from "../Position";
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate } from './TextMode';
-import JavaScriptMode from "./JavaScriptMode";
-import CssMode from "./CssMode";
-import HtmlHighlightRules from "./HtmlHighlightRules";
-import HtmlBehaviour from "./behaviour/HtmlBehaviour";
-import HtmlFoldMode from "./folding/HtmlFoldMode";
-import HtmlCompletions from "./HtmlCompletions";
-import WorkerClient from "../worker/WorkerClient";
+import { JavaScriptMode } from "./JavaScriptMode";
+import { CssMode } from "./CssMode";
+import { HtmlHighlightRules } from "./HtmlHighlightRules";
+import { HtmlBehaviour } from "./behaviour/HtmlBehaviour";
+import { HtmlFoldMode } from "./folding/HtmlFoldMode";
+import { HtmlCompletions } from "./HtmlCompletions";
+import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer
 //
@@ -27,7 +27,7 @@ interface VoidElementsMap {
 /**
  *
  */
-export default class HtmlMode extends TextMode {
+export class HtmlMode extends TextMode {
     private voidElements: VoidElementsMap = arrayToMap(voidElements, 1) as VoidElementsMap;
 
     /**

@@ -1,4 +1,4 @@
-import Behaviour from "../Behaviour";
+import { Behaviour } from "../Behaviour";
 import TokenIterator from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
@@ -18,7 +18,7 @@ function is(token: Token | undefined | null, type: string): boolean {
 /**
  *
  */
-export default class XmlBehaviour extends Behaviour {
+export class XmlBehaviour extends Behaviour {
 
     /**
      *

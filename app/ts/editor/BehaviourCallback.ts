@@ -21,5 +21,3 @@ export interface BehaviourCallback {
      */
     (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, data: any): any;
 }
-
-export default BehaviourCallback;

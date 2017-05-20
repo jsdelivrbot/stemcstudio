@@ -1,14 +1,14 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import HaskellHighlightRules from "./HaskellHighlightRules";
-import CstyleFoldMode from "./folding/CstyleFoldMode";
-import WorkerClient from "../worker/WorkerClient";
+import { HaskellHighlightRules } from "./HaskellHighlightRules";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
+import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class HaskellMode extends TextMode {
+export class HaskellMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);

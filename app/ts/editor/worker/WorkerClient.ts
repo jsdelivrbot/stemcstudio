@@ -11,7 +11,8 @@ import { EditSession } from "../../virtual/editor";
 
 /**
  * Protocol for the initialization message.
- * Using an interface ensures that we don't accidently pass the wrong data structure. 
+ * Using an interface ensures that we don't accidently pass the wrong data structure.
+ * This interface is only used in this module.
  */
 interface InitRequestMessage {
     init: boolean;
@@ -44,7 +45,7 @@ interface InitRequestMessage {
  * </li>
  * </ul>
  */
-export default class WorkerClient implements EventBus<string, MessageEvent, WorkerClient>, Disposable {
+export class WorkerClient implements EventBus<string, MessageEvent, WorkerClient>, Disposable {
 
     /**
      * The underlying Web Worker.

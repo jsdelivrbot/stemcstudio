@@ -1,6 +1,6 @@
 import { mixin } from "../../lib/oop";
 import Range from "../../Range";
-import FoldMode from "./FoldMode";
+import { FoldMode } from "./FoldMode";
 import Token from '../../Token';
 import TokenIterator from "../../TokenIterator";
 import { EditSession } from "../../EditSession";
@@ -11,7 +11,7 @@ import Position from "../../Position";
 /**
  *
  */
-export default class XmlFoldMode extends FoldMode {
+export class XmlFoldMode extends FoldMode {
     voidElements: { [name: string]: number };
     optionalEndTags: { [name: string]: number };
     /**

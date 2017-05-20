@@ -1,17 +1,16 @@
-import CppMode from './CppMode';
-import CstyleBehaviour from './behaviour/CstyleBehaviour';
-import CstyleFoldMode from './folding/CstyleFoldMode';
-import GlslHighlightRules from './GlslHighlightRules';
+import { CppMode } from './CppMode';
+import { CstyleBehaviour } from './behaviour/CstyleBehaviour';
+import { CstyleFoldMode } from './folding/CstyleFoldMode';
+import { GlslHighlightRules } from './GlslHighlightRules';
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import WorkerClient from "../worker/WorkerClient";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class GlslMode extends CppMode {
-
+export class GlslMode extends CppMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);

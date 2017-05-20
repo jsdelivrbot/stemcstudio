@@ -1,7 +1,7 @@
-import TextMode from './TextMode';
-import XmlHighlightRules from './XmlHighlightRules';
-import XmlBehaviour from './behaviour/XmlBehaviour';
-import XmlFoldMode from './folding/XmlFoldMode';
+import { TextMode } from './TextMode';
+import { XmlHighlightRules } from './XmlHighlightRules';
+import { XmlBehaviour } from './behaviour/XmlBehaviour';
+import { XmlFoldMode } from './folding/XmlFoldMode';
 import { arrayToMap } from '../lib/lang';
 
 const voidElements: string[] = [];
@@ -11,7 +11,7 @@ interface VoidElementsMap {
 }
 
 
-export default class XmlMode extends TextMode {
+export class XmlMode extends TextMode {
 
     protected voidElements: VoidElementsMap;
 

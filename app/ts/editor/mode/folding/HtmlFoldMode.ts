@@ -1,6 +1,6 @@
-import MixedFoldMode from "./MixedFoldMode";
-import XmlFoldMode from "./XmlFoldMode";
-import CStyleFoldMode from "./CstyleFoldMode";
+import { MixedFoldMode } from "./MixedFoldMode";
+import { XmlFoldMode } from "./XmlFoldMode";
+import { CstyleFoldMode } from "./CstyleFoldMode";
 
 export interface HtmlElementsMap {
     [name: string]: number;
@@ -9,12 +9,12 @@ export interface HtmlElementsMap {
 /**
  *
  */
-export default class HtmlFoldMode extends MixedFoldMode {
+export class HtmlFoldMode extends MixedFoldMode {
     /**
      * @param voidElements
      * @param optionalTags
      */
     constructor(voidElements: HtmlElementsMap, optionalTags?: HtmlElementsMap) {
-        super(new XmlFoldMode(voidElements, optionalTags), { "js-": new CStyleFoldMode(), "css-": new CStyleFoldMode() });
+        super(new XmlFoldMode(voidElements, optionalTags), { "js-": new CstyleFoldMode(), "css-": new CstyleFoldMode() });
     }
 }

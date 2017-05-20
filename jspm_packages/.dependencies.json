@@ -780,13 +780,6 @@
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "npm:zone.js@0.8.10": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:monaco-editor@0.8.3": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -939,5 +932,12 @@
   "npm:angular-ui-router@0.4.2": {
     "angular": "npm:angular@^1.0.8",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:zone.js@0.8.11": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

@@ -1,11 +1,11 @@
-import CstyleBehaviour from "./CstyleBehaviour";
+import { CstyleBehaviour } from "./CstyleBehaviour";
 import TokenIterator from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import Range from "../../Range";
 import { isMultiLine } from "../../RangeHelpers";
 
-export default class CssBehavior extends CstyleBehaviour {
+export class CssBehaviour extends CstyleBehaviour {
     constructor() {
         super();
 

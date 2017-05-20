@@ -1,11 +1,11 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import PythonHighlightRules from "./PythonHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import WorkerClient from "../worker/WorkerClient";
+import { PythonHighlightRules } from "./PythonHighlightRules";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
 import Range from '../Range';
 import Token from '../Token';
-import PythonFoldMode from './folding/PythonFoldMode';
+import { PythonFoldMode } from './folding/PythonFoldMode';
 //
 // Editor Abstraction Layer
 //
@@ -19,7 +19,7 @@ const outdents = {
     "continue": 1
 };
 
-export default class PythonMode extends TextMode {
+export class PythonMode extends TextMode {
     $outdent: MatchingBraceOutdent;
     blockComment: { start: string; end: string };
 

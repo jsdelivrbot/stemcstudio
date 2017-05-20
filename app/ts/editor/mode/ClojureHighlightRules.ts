@@ -1,7 +1,7 @@
 
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 
-export default class ClojureHighlightRules extends TextHighlightRules {
+export class ClojureHighlightRules extends TextHighlightRules {
 
     constructor() {
         super();

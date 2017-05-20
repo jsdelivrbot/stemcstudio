@@ -1,8 +1,9 @@
-import HighlighterFactory from './HighlighterFactory';
-import TextHighlightRules from "./TextHighlightRules";
+import { HighlighterFactory } from './HighlighterFactory';
+import { TextHighlightRules } from "./TextHighlightRules";
 import { HighlighterRule, HighlighterStack } from './Highlighter';
+import { POP_STATE } from "./TextHighlightRules";
 
-export default class XmlHighlightRules extends TextHighlightRules {
+export class XmlHighlightRules extends TextHighlightRules {
     constructor(normalize?: boolean) {
         super();
         // http://www.w3.org/TR/REC-xml/#NT-NameChar
@@ -68,27 +69,35 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 { token: "punctuation.int-subset", regex: "\\[", push: "int_subset" }
             ],
 
-            int_subset: [{
-                token: "text.xml",
-                regex: "\\s+"
-            }, {
-                token: "punctuation.int-subset.xml",
-                regex: "]",
-                next: "pop"
-            }, {
-                token: ["punctuation.markup-decl.xml", "keyword.markup-decl.xml"],
-                regex: "(<\\!)(" + tagRegex + ")",
-                push: [{
-                    token: "text",
+            int_subset: [
+                {
+                    token: "text.xml",
                     regex: "\\s+"
                 },
                 {
-                    token: "punctuation.markup-decl.xml",
-                    regex: ">",
-                    next: "pop"
+                    token: "punctuation.int-subset.xml",
+                    regex: "]",
+                    next: POP_STATE
                 },
-                { include: "string" }]
-            }],
+                {
+                    token: ["punctuation.markup-decl.xml", "keyword.markup-decl.xml"],
+                    regex: "(<\\!)(" + tagRegex + ")",
+                    push: [
+                        {
+                            token: "text",
+                            regex: "\\s+"
+                        },
+                        {
+                            token: "punctuation.markup-decl.xml",
+                            regex: ">",
+                            next: POP_STATE
+                        },
+                        {
+                            include: "string"
+                        }
+                    ]
+                }
+            ],
 
             cdata: [
                 { token: "string.cdata.xml", regex: "\\]\\]>", next: "start" },
@@ -135,14 +144,14 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 token: "string.xml",
                 regex: "'",
                 push: [
-                    { token: "string.xml", regex: "'", next: "pop" },
+                    { token: "string.xml", regex: "'", next: POP_STATE },
                     { defaultToken: "string.xml" }
                 ]
             }, {
                 token: "string.xml",
                 regex: '"',
                 push: [
-                    { token: "string.xml", regex: '"', next: "pop" },
+                    { token: "string.xml", regex: '"', next: POP_STATE },
                     { defaultToken: "string.xml" }
                 ]
             }],
@@ -163,7 +172,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 token: "string.attribute-value.xml",
                 regex: "'",
                 push: [
-                    { token: "string.attribute-value.xml", regex: "'", next: "pop" },
+                    { token: "string.attribute-value.xml", regex: "'", next: POP_STATE },
                     { include: "attr_reference" },
                     { defaultToken: "string.attribute-value.xml" }
                 ]
@@ -171,7 +180,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 token: "string.attribute-value.xml",
                 regex: '"',
                 push: [
-                    { token: "string.attribute-value.xml", regex: '"', next: "pop" },
+                    { token: "string.attribute-value.xml", regex: '"', next: POP_STATE },
                     { include: "attr_reference" },
                     { defaultToken: "string.attribute-value.xml" }
                 ]

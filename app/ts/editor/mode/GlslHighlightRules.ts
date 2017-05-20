@@ -1,4 +1,4 @@
-import CppHighlightRules from './CppHighlightRules';
+import { CppHighlightRules } from './CppHighlightRules';
 
 const keywords = (
     "attribute|const|uniform|varying|break|continue|do|for|while|" +
@@ -26,7 +26,7 @@ const buildinConstants = (
     "gl_FragCoord|gl_FrontFacing|gl_PointCoord|gl_FragColor|gl_FragData"
 );
 
-export default class GlslHighlightRules extends CppHighlightRules {
+export class GlslHighlightRules extends CppHighlightRules {
     constructor() {
         super();
 

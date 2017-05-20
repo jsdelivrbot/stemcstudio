@@ -1,5 +1,5 @@
 import Range from "../../Range";
-import FoldMode from "./FoldMode";
+import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import FoldStyle from "../../FoldStyle";
 import { isMultiLine } from "../../RangeHelpers";
@@ -7,7 +7,7 @@ import { isMultiLine } from "../../RangeHelpers";
 /**
  *
  */
-export default class CstyleFoldMode extends FoldMode {
+export class CstyleFoldMode extends FoldMode {
     foldingStartMarker: RegExp = /(\{|\[)[^\}\]]*$|^\s*(\/\*)/;
     foldingStopMarker: RegExp = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
 

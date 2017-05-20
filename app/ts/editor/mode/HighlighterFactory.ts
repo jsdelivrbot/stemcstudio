@@ -1,7 +1,5 @@
-import Highlighter from './Highlighter';
+import { Highlighter } from './Highlighter';
 
 export interface HighlighterFactory {
     new (highlightRuleConfig?: {}): Highlighter;
 }
-
-export default HighlighterFactory;

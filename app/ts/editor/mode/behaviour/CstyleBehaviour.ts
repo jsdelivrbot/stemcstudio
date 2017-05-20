@@ -1,4 +1,4 @@
-import Behaviour from "../Behaviour";
+import { Behaviour } from "../Behaviour";
 import { BehaviorCallbackThis } from '../../BehaviourCallback';
 import TokenIterator from "../../TokenIterator";
 import { stringRepeat } from "../../lib/lang";
@@ -53,7 +53,7 @@ const initContext = function (editor: Editor): void {
 /**
  *
  */
-export default class CstyleBehaviour extends Behaviour {
+export class CstyleBehaviour extends Behaviour {
 
     /**
      *

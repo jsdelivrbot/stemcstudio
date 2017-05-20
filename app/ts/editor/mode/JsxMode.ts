@@ -1,14 +1,14 @@
-import JsxHighlightRules from './JsxHighlightRules';
-import TextMode from './TextMode';
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
+import { JsxHighlightRules } from './JsxHighlightRules';
+import { TextMode } from './TextMode';
+import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class JsxMode extends TextMode {
+export class JsxMode extends TextMode {
     private readonly $outdent = new MatchingBraceOutdent();
 
     constructor(workerUrl: string, scriptImports: string[]) {
@@ -18,7 +18,7 @@ export default class JsxMode extends TextMode {
         this.lineCommentStart = "//";
         this.HighlightRules = JsxHighlightRules;
         this.$behaviour = new CstyleBehaviour();
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
     }
 
     getNextLineIndent(state: string, line: string, tab: string): string {

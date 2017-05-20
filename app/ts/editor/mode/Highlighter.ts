@@ -1,6 +1,6 @@
 import { BasicToken } from '../Token';
-import Rule from '../Rule';
-import HighlighterFactory from './HighlighterFactory';
+import { Rule } from '../Rule';
+import { HighlighterFactory } from './HighlighterFactory';
 
 /**
  * The basic stack element is simply a string.
@@ -37,5 +37,3 @@ export interface Highlighter {
      */
     getKeywords(): string[];
 }
-
-export default Highlighter;

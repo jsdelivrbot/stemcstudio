@@ -1,4 +1,4 @@
-import TypeScriptMode from './TypeScriptMode';
+import { TypeScriptMode } from './TypeScriptMode';
 
 export class TsxMode extends TypeScriptMode {
     constructor(workerUrl: string, scriptImports: string[]) {

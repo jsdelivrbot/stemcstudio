@@ -1,8 +1,8 @@
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { escapeRegExp } from "./lib/lang";
-import Tokenizer from "./Tokenizer";
+import { Tokenizer } from "./Tokenizer";
 import EventBus from './EventBus';
-import Rule from './Rule';
+import { Rule } from './Rule';
 import Snippet from "./Snippet";
 import SnippetOptions from './SnippetOptions';
 import { ChangeCase, ChangeCaseElement, Tabstop, TabstopIndex, TabstopText, TabstopToken, TmFormat, TmFormatPart, TmFormatToken } from "./Tabstop";
@@ -231,6 +231,9 @@ export interface SnippetManagerEditor {
 }
 */
 
+export type TokenizedSnippetPart = (string | ChangeCaseElement | TabstopIndex | TabstopText);
+export type TokenizedSnippet = TokenizedSnippetPart[];
+
 /**
  *
  */
@@ -282,9 +285,10 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
     /**
      * 
      */
-    public tokenizeTmSnippet(str: string, startState?: TokenizerStateName) {
+    public tokenizeTmSnippet(str: string, startState?: TokenizerStateName): TokenizedSnippet {
         return this.getTokenizer().getLineTokens(str, startState).tokens.map(function (tsToken) {
-            return <string>tsToken['value'] || <(string | ChangeCaseElement | TabstopIndex | TabstopText)>tsToken;
+            // TODO: Perhaps the SnippetManager should have a custom tokenizer?
+            return tsToken.value || <TokenizedSnippetPart>(tsToken as any);
         });
     }
 

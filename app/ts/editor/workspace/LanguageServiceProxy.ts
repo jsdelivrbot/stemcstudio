@@ -8,7 +8,7 @@ import { TextChange } from './TextChange';
 import OutputFile from './OutputFile';
 import RuleFailure from './RuleFailure';
 import { QuickInfo } from './QuickInfo';
-import WorkerClient from '../worker/WorkerClient';
+import { WorkerClient } from '../worker/WorkerClient';
 import TsLintSettings from '../../modules/tslint/TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
 import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';

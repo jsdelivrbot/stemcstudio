@@ -4,7 +4,7 @@ import Range from "../Range";
 //
 import { EditSession } from "../../virtual/editor";
 
-export default class MatchingParensOutdent {
+export class MatchingParensOutdent {
 
     constructor() {
         // Do nothing.

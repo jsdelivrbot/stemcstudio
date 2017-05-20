@@ -1,16 +1,16 @@
-import TextMode from "./TextMode";
+import { TextMode } from "./TextMode";
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
-import JsonHighlightRules from "./JsonHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import WorkerClient from "../worker/WorkerClient";
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
+import { JsonHighlightRules } from "./JsonHighlightRules";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { WorkerClient } from "../worker/WorkerClient";
+import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class JsonMode extends TextMode {
+export class JsonMode extends TextMode {
 
     private readonly $outdent = new MatchingBraceOutdent();
 
@@ -19,7 +19,7 @@ export default class JsonMode extends TextMode {
         this.$id = "JSON";
         this.HighlightRules = JsonHighlightRules;
         this.$behaviour = new CstyleBehaviour();
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
     }
 
     getNextLineIndent(state: string, line: string, tab: string) {

@@ -1,14 +1,14 @@
-import TextMode from "./TextMode";
-import CppHighlightRules from "./CppHighlightRules";
-import MatchingBraceOutdent from "./MatchingBraceOutdent";
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
+import { TextMode } from "./TextMode";
+import { CppHighlightRules } from "./CppHighlightRules";
+import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
+import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
+import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 //
 // Editor Abstraction Layer
 //
 import { EditSession } from '../../virtual/editor';
 
-export default class CppMode extends TextMode {
+export class CppMode extends TextMode {
     // FIXME: What is happening here?
     protected $outdent: MatchingBraceOutdent;
 
@@ -21,7 +21,7 @@ export default class CppMode extends TextMode {
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
         // No completer available yet.
-        this.foldingRules = new CStyleFoldMode();
+        this.foldingRules = new CstyleFoldMode();
     }
 
     getNextLineIndent(state: string, line: string, tab: string): string {
