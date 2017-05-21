@@ -3,7 +3,7 @@ import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
 import { IDoodleManager } from './IDoodleManager';
 import IDoodleFile from './IDoodleFile';
-import modeFromName from '../../utils/modeFromName';
+import { modeFromName } from '../../utils/modeFromName';
 import { doodlesToString } from './doodlesToString';
 import { Injectable } from '@angular/core';
 //

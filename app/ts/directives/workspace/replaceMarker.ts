@@ -1,7 +1,7 @@
 import { detectMarker } from './detectMarker';
 import { fileContent } from './fileContent';
-import modeFromName from '../../utils/modeFromName';
-import prefixFromPath from '../../utils/prefixFromPath';
+import { modeFromName } from '../../utils/modeFromName';
+import { prefixFromPath } from '../../utils/prefixFromPath';
 
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
@@ -30,7 +30,7 @@ export function replaceMarker(marker: string, language: string, scriptType: (con
     }
     else {
         if (fileTags.length > 0) {
-            console.warn(`Unable to find marker '${marker}' in ${inFilePath} file.`);
+            console.warn(`Unable to find marker '${marker}' in '${inFilePath}' file.`);
         }
     }
     return html;

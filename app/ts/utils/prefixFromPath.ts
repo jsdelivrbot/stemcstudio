@@ -12,7 +12,7 @@ function getExtension(path: string): string {
     }
 }
 
-export default function prefixFromPath(path: string): string {
+export function prefixFromPath(path: string): string {
     const extension = getExtension(path);
     return path.substring(0, path.length - extension.length - 1);
 }

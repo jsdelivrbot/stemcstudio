@@ -1,5 +1,5 @@
-import stripWS from '../../utils/stripWS';
-import modeFromName from '../../utils/modeFromName';
+import { stripWS } from '../../utils/stripWS';
+import { modeFromName } from '../../utils/modeFromName';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
@@ -9,7 +9,7 @@ import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
 
-export default function ensureFileContent(name: string, content: string): string {
+export function ensureFileContent(name: string, content: string): string {
     const mode = modeFromName(name);
     switch (mode) {
         case LANGUAGE_HTML: {

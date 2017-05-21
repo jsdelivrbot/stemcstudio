@@ -1,6 +1,6 @@
 import DoodleFile from './DoodleFile';
 import { PackageSettings } from '../../modules/wsmodel/WsModel';
-import modeFromName from '../../utils/modeFromName';
+import { modeFromName } from '../../utils/modeFromName';
 import { setOptionalBooleanProperty } from './setOptionalBooleanProperty';
 import { setOptionalStringProperty } from './setOptionalStringProperty';
 import { setOptionalStringArrayProperty } from './setOptionalStringArrayProperty';

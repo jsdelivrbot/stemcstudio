@@ -52,6 +52,7 @@ import { JavaScriptMode } from './mode/JavaScriptMode';
 import { JsxMode } from './mode/JsxMode';
 import { JsonMode } from './mode/JsonMode';
 import { MarkdownMode } from './mode/MarkdownMode';
+import { MatlabMode } from './mode/MatlabMode';
 import { PythonMode } from './mode/PythonMode';
 import { TextMode } from './mode/TextMode';
 import { TypeScriptMode } from './mode/TypeScriptMode';
@@ -68,6 +69,7 @@ import { LANGUAGE_JSX } from '../languages/modes';
 import { LANGUAGE_JSON } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
+import { LANGUAGE_MATLAB } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
@@ -1330,6 +1332,11 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                     this.setUseWrapMode(true);
                     // editor.setWrapBehavioursEnabled(true);
                     this.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_MATLAB: {
+                    this.setUseWorker(false);
+                    this.setLanguageMode(new MatlabMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
                 }
                 case LANGUAGE_CSV:

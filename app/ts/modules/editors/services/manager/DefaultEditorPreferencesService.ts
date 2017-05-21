@@ -7,15 +7,15 @@ import { EDITOR_PREFERENCES_STORAGE } from '../../../preferences/constants';
 import { IDeferred, IPromise, IQService } from 'angular';
 import { EditorPreferencesStorage } from '../../../preferences/EditorPreferencesStorage';
 
-const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
+const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24, 28, 32].map(function (fontSize) { return `${fontSize}px`; });
 const tabSizes: number[] = [2, 3, 4];
 const themeNames: string[] = themes.map(theme => theme.name);
 
-interface EditorPreferencesCallback {
-    (event: EditorPreferencesEvent): any;
+export interface EditorPreferencesCallback {
+    (event: EditorPreferencesEvent): void;
 }
 
-export default class DefaultEditorPreferencesService implements EditorPreferencesService {
+export class DefaultEditorPreferencesService implements EditorPreferencesService {
     public static $inject: string[] = ['$q', EDITOR_PREFERENCES_STORAGE];
     private callbacksByEventName: { [eventName: string]: EditorPreferencesCallback[] } = {};
     private currentTheme: Theme;

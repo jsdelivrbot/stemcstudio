@@ -1,4 +1,4 @@
-import ensureFileContent from './ensureFileContent';
+import { ensureFileContent } from './ensureFileContent';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 
 /**

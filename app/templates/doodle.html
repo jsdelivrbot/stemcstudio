@@ -1,157 +1,158 @@
 <div id='doodle-page'>
-	<!-- The workspace directive has its own implicit controller, WorkspaceController -->
-	<!-- The corresponding scope is WorkspaceScope -->
-	<workspace>
-		<nav id='toolbar' class='navbar navbar-inverse'>
-			<div class='navbar-header'>
-				<a role='button' class='navbar-brand' ng-click='goHome()'>
-					<brand />
-				</a>
-			</div>
-			<div class='ignore-collapse ignore-navbar-collapse'>
-				<ul class='nav navbar-nav'>
-					<li>
-						<a role='button' ng-click='toggleExplorer()'>
-							<ng-md-icon icon="{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}" style="fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}"
-							 size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}" tooltip-placement='bottom'>
-								<ng-md-icon>
-						</a>
-					</li>
-					<li ng-if='htmlFileCount() > 0'>
-						<a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
-							<ng-md-icon icon='launch' style="fill: {{true ? '#00ff00' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Launch Program"
-							 tooltip-placement='bottom'>
-								<ng-md-icon>
-						</a>
-						<a role='button' ng-click='toggleView()' ng-show='isViewVisible'>
-							<ng-md-icon icon='stop' style="fill: {{true ? '#ff9900' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Stop Program"
-							 tooltip-placement='bottom'>
-								<ng-md-icon>
-						</a>
-					</li>
-					<li uib-dropdown ng-if='htmlFileCount() > 1'>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Program Menu" tooltip-placement='bottom'>
-							<ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-						</a>
-						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>
-							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".html") &gt; 0'>
-								<a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;
-                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>
-                                </a>
-							</li>
-						</ul>
-					</li>
-					<li ng-if='markdownFileCount() > 0'>
-						<a role='button' ng-click='toggleMarkdownVisible()'>
-							<ng-md-icon icon='description' style="fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}"
-							 tooltip-placement='bottom'>
-								<ng-md-icon>
-						</a>
-					</li>
-					<li uib-dropdown ng-if='markdownFileCount() > 1'>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Markdown" tooltip-placement='bottom'>
-							<ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-						</a>
-						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>
-							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".md") &gt; 0'>
-								<a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;
-                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>
-                                </a>
-							</li>
-						</ul>
-					</li>
-					<li uib-dropdown>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='bottom'>
-							<ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-									<ng-md-icon icon='arrow_drop_down' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-										<ng-md-icon>
-						</a>
-						<ul uib-dropdown-menu role='menu'>
-							<li>
-								<a role='button' ng-click='doNew()'>New Project</a>
-							</li>
-							<li>
-								<a role='button' ng-click='doOpen()'>Open Project from Local Storage</a>
-							</li>
-							<li>
-								<a role='button' ng-click='doCopy()'>Copy current Project</a>
-							</li>
-						</ul>
-					</li>
-					<li uib-dropdown ng-show='isGitHubSignedIn()'>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Cloud Menu" tooltip-placement='bottom'>
-							<ng-md-icon icon='cloud' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-						</a>
-						<ul uib-dropdown-menu role="menu">
-							<li>
-								<a ng-click='doUpload()' role='button'>Upload to GitHub</a>
-							</li>
-							<li>
-								<a ng-click='doPublish()' role='button'>Publish to arXiv</a>
-							</li>
-							<li>
-								<a ng-click='clickDownload()' role='button'>Download from GitHub</a>
-							</li>
-						</ul>
-					</li>
-					<li ng-hide='isGitHubSignedIn()'>
-						<a role='button'>
-							<ng-md-icon icon='cloud_off' style="fill: #ffffff" size='24' aria-hidden='true' uib-tooltip="" tooltip-placement='bottom'>
-								<ng-md-icon>
-						</a>
-					</li>
-					<li uib-dropdown ng-controller='rooms-controller as rooms'>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Collaboration Menu" tooltip-placement='bottom'>
-							<ng-md-icon icon='group' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-						</a>
-						<ul uib-dropdown-menu role="menu">
-							<li ng-if='rooms.isCreateRoomEnabled()'>
-								<a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>
-							</li>
-							<li ng-if='rooms.isJoinRoomEnabled()'>
-								<a ng-click='rooms.joinRoom()' role='button'>Join Room</a>
-							</li>
-							<li ng-if='rooms.isLeaveRoomEnabled()'>
-								<a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>
-							</li>
-							<li ng-if='rooms.isDestroyRoomEnabled()'>
-								<a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>
-							</li>
-						</ul>
-					</li>
-					<li uib-dropdown>
-						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="More Menu" tooltip-placement='bottom'>
-							<ng-md-icon icon='menu' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
-								<ng-md-icon>
-						</a>
-						<ul uib-dropdown-menu role="menu">
-							<li ng-controller='editor-preferences-controller as controller'>
-								<a ng-click='controller.showEditorPreferences()' role='button'>Editor Preferences</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div class='navbar-header' ng-if='workspace.description && workspace.owner'>
-				<span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>
-			</div>
-			<div class='navbar-header' ng-if='workspace.description && !workspace.owner'>
-				<span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
-			</div>
-		</nav>
-		<div id='doodle-container'>
-			<explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>
-			<div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
-				<!-- We only need the EditSession here. Would passing in the full WsFile be better? -->
-				<div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
-			</div>
-			<div id='output' ng-if='isViewVisible'></div>
-			<div id='readme' ng-if='isMarkdownVisible'></div>
-		</div>
-	</workspace>
+    <!-- The workspace directive has its own implicit controller, WorkspaceController -->
+    <!-- The corresponding scope is WorkspaceScope -->
+    <workspace>
+        <nav id='toolbar' class='navbar navbar-inverse'>
+            <div class='navbar-header'>
+                <a role='button' class='navbar-brand' ng-click='goHome()'>
+                    <brand />
+                </a>
+            </div>
+            <div class='ignore-collapse ignore-navbar-collapse'>
+                <ul class='nav navbar-nav'>
+                    <li>
+                        <a role='button' ng-click='toggleExplorer()'>
+                            <ng-md-icon icon="{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}" style="fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}"
+                                size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}"
+                                tooltip-placement='bottom'>
+                                <ng-md-icon>
+                        </a>
+                    </li>
+                    <li ng-if='htmlFileCount() > 0'>
+                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
+                            <ng-md-icon icon='launch' style="fill: {{true ? '#00ff00' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Launch Program"
+                                tooltip-placement='bottom'>
+                                <ng-md-icon>
+                        </a>
+                        <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>
+                            <ng-md-icon icon='stop' style="fill: {{true ? '#ff9900' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Stop Program"
+                                tooltip-placement='bottom'>
+                                <ng-md-icon>
+                        </a>
+                    </li>
+                    <li uib-dropdown ng-if='htmlFileCount() > 1'>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Program Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".html") &gt; 0'>
+                                <a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;
+<ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>
+</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li ng-if='markdownFileCount() > 0'>
+                        <a role='button' ng-click='toggleMarkdownVisible()'>
+                            <ng-md-icon icon='description' style="fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}"
+                                tooltip-placement='bottom'>
+                                <ng-md-icon>
+                        </a>
+                    </li>
+                    <li uib-dropdown ng-if='markdownFileCount() > 1'>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Markdown" tooltip-placement='bottom'>
+                            <ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".md") &gt; 0'>
+                                <a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;
+<ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>
+</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li uib-dropdown>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                                    <ng-md-icon icon='arrow_drop_down' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                        <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role='menu'>
+                            <li>
+                                <a role='button' ng-click='doNew()'>New Project</a>
+                            </li>
+                            <li>
+                                <a role='button' ng-click='doOpen()'>Open Project from Local Storage</a>
+                            </li>
+                            <li>
+                                <a role='button' ng-click='doCopy()'>Copy current Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li uib-dropdown ng-show='isGitHubSignedIn()'>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Cloud Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='cloud' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li>
+                                <a ng-click='doUpload()' role='button'>Upload to GitHub</a>
+                            </li>
+                            <li>
+                                <a ng-click='doPublish()' role='button'>Publish to arXiv</a>
+                            </li>
+                            <li>
+                                <a ng-click='clickDownload()' role='button'>Download from GitHub</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li ng-hide='isGitHubSignedIn()'>
+                        <a role='button'>
+                            <ng-md-icon icon='cloud_off' style="fill: #ffffff" size='24' aria-hidden='true' uib-tooltip="" tooltip-placement='bottom'>
+                                <ng-md-icon>
+                        </a>
+                    </li>
+                    <li uib-dropdown ng-controller='rooms-controller as rooms'>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Collaboration Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='group' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li ng-if='rooms.isCreateRoomEnabled()'>
+                                <a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>
+                            </li>
+                            <li ng-if='rooms.isJoinRoomEnabled()'>
+                                <a ng-click='rooms.joinRoom()' role='button'>Join Room</a>
+                            </li>
+                            <li ng-if='rooms.isLeaveRoomEnabled()'>
+                                <a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>
+                            </li>
+                            <li ng-if='rooms.isDestroyRoomEnabled()'>
+                                <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li uib-dropdown>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="More Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='menu' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li ng-controller='editor-preferences-controller as controller'>
+                                <a ng-click='controller.showEditorPreferences()' role='button'>Editor Preferences</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class='navbar-header' ng-if='workspace.description && workspace.owner'>
+                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>
+            </div>
+            <div class='navbar-header' ng-if='workspace.description && !workspace.owner'>
+                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
+            </div>
+        </nav>
+        <div id='doodle-container'>
+            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>
+            <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
+                <!-- We only need the EditSession here. Would passing in the full WsFile be better? -->
+                <div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
+            </div>
+            <div id='output' ng-if='isViewVisible'></div>
+            <div id='readme' ng-if='isMarkdownVisible'></div>
+        </div>
+    </workspace>
 </div>

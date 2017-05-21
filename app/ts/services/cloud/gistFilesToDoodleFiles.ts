@@ -1,6 +1,6 @@
 import DoodleFile from '../doodles/DoodleFile';
 import GistFile from '../github/GistFile';
-import modeFromName from '../../utils/modeFromName';
+import { modeFromName } from '../../utils/modeFromName';
 
 /**
  * Maps the GistFile(s) onto the DoodleFile(s).

@@ -19,8 +19,8 @@ import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../../services/gham/IGitHubAuthManager';
 import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/options/IOptionManager';
-import isHtmlFilePath from '../../utils/isHtmlFilePath';
-import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
+import { isHtmlFilePath } from '../../utils/isHtmlFilePath';
+import { isMarkdownFilePath } from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import OutputFileHandler from './OutputFileHandler';
 import { ModalDialog } from '../../services/modalService/ModalDialog';
@@ -51,6 +51,7 @@ import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_JSX } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
+import { LANGUAGE_MATLAB } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
@@ -831,6 +832,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:
+            case LANGUAGE_MATLAB:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:
@@ -1073,6 +1075,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:
+            case LANGUAGE_MATLAB:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:

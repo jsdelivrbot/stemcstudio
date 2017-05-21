@@ -7,7 +7,7 @@ import SubmitResponse from './SubmitResponse';
 /**
  * SDK for the STEMC Archive.
  */
-interface StemcArXiv {
+export interface StemcArXiv {
     search(params: SearchParams): IPromise<SearchResponse>;
     submit(params: SubmitParams): IPromise<SubmitResponse>;
 }

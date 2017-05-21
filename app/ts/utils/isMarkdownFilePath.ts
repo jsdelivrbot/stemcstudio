@@ -1,6 +1,6 @@
-import modeFromName from './modeFromName';
-import {LANGUAGE_MARKDOWN} from '../languages/modes';
+import { modeFromName } from './modeFromName';
+import { LANGUAGE_MARKDOWN } from '../languages/modes';
 
-export default function(path: string): boolean {
+export function isMarkdownFilePath(path: string): boolean {
     return modeFromName(path) === LANGUAGE_MARKDOWN;
 }

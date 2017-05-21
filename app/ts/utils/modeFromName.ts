@@ -10,6 +10,7 @@ import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
 import { LANGUAGE_JSX } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
+import { LANGUAGE_MATLAB } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
@@ -37,6 +38,7 @@ extensionToMode['js'] = LANGUAGE_JAVA_SCRIPT;
 extensionToMode['jsx'] = LANGUAGE_JSX;
 extensionToMode['json'] = LANGUAGE_JSON;
 extensionToMode['less'] = LANGUAGE_LESS;
+extensionToMode['m'] = LANGUAGE_MATLAB;
 extensionToMode['md'] = LANGUAGE_MARKDOWN;
 extensionToMode['py'] = LANGUAGE_PYTHON;
 extensionToMode['scm'] = LANGUAGE_SCHEME;
@@ -55,7 +57,7 @@ fileNameToMode['.gitignore'] = LANGUAGE_TEXT;
  * The mode returned is a string containing the canonical mode name.
  * If the mode cannot be determined, then undefined is returned.
  */
-export default function modeFromName(fileName: string): LanguageModeId | undefined {
+export function modeFromName(fileName: string): LanguageModeId | undefined {
     const period = fileName.lastIndexOf('.');
     if (period >= 0) {
         const extension = fileName.substring(period + 1);
