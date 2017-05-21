@@ -1,5 +1,6 @@
 .tscache
 config.development.json
+coverage/
 generated/
 typings/
 bower_components/
