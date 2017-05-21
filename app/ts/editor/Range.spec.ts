@@ -1,4 +1,4 @@
-import Range from './Range';
+import { Range } from './Range';
 describe("Range", function () {
     const startRow = 1;
     const startColumn = 0;

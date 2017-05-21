@@ -21,7 +21,7 @@ describe("SnippetManager", function () {
         });
     });
     */
-    describe("tokenizeTmSnippet", function () {
+    xdescribe("tokenizeTmSnippet", function () {
         describe("(1)", function () {
             const content = "-\\$$2a${1:x${$2:y$3\\}\\n\\}$TM_SELECTION}";
             const fmtTokens = snippetManager.tokenizeTmSnippet(content);

@@ -57,7 +57,7 @@ import Completion from '../Completion';
 import EditSession from '../EditSession';
 import Editor from '../Editor';
 import Position from "../Position";
-import Range from "../Range";
+import { Range } from "../Range";
 
 /**
  * A map from the word (string) to score (number).

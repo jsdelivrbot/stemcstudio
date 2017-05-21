@@ -5,7 +5,7 @@ import { stringRepeat } from "../../lib/lang";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import Position from "../../Position";
-import Range from "../../Range";
+import { Range } from "../../Range";
 import Token from "../../Token";
 import { isMultiLine } from "../../RangeHelpers";
 

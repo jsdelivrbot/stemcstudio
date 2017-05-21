@@ -115,7 +115,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // Sound.play = function play() {  }
+                    // Identifier '.' Identifier '=' 'function' play '('
                     token: [
                         "storage.type", "punctuation.operator", "entity.name.function", "text",
                         "keyword.operator", "text",
@@ -125,11 +125,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // "function" Identifier "("
-                    //
-                    // A beginning of a standard function declaration.
-                    // There may be whitespace between the identifier and the opening parenthesis.
-                    // "function" Identifier "("
+                    // "function" ws+ Identifier ws* "("
                     token: [
                         "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                     ],
@@ -137,7 +133,15 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // foobar: function() { }
+                    // function(
+                    token: [
+                        "storage.type", "text", "paren.lparen"
+                    ],
+                    regex: "(function)(\\s*)(\\()",
+                    next: "function_arguments"
+                },
+                {
+                    // Identifier: function(
                     token: [
                         "entity.name.function", "text", "punctuation.operator",
                         "text", "storage.type", "text", "paren.lparen"
@@ -186,7 +190,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "start"
                 },
                 {
-                    token: "punctuation.operator.comma",
+                    token: "punctuation.operator",
                     regex: /[,]/,
                     next: POP_STATE
                 },
@@ -344,6 +348,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                 {
                     token: "empty",
                     regex: "",
+                    // DGH (was next)
                     push: "no_regex"
                 }
             ],
@@ -392,7 +397,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                         this.next = value === "{" ? this.nextState : "";
                         if (value === "{" && stack.length) {
                             stack.unshift("start", state);
-                            return "paren";
+                            return "paren.lparen";
                         }
                         else if (value === "}" && stack.length) {
                             stack.shift();

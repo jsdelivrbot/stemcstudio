@@ -13,7 +13,7 @@ import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElemen
 import { HighlighterFactory } from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
 import TokenIterator from "../TokenIterator";
-import Range from "../Range";
+import { Range } from "../Range";
 import TextAndSelection from "../TextAndSelection";
 import { WorkerClient } from "../worker/WorkerClient";
 //

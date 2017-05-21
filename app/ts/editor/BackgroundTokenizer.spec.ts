@@ -1,46 +1,182 @@
 import { Document } from './Document';
 import { EditSession } from './EditSession';
-import Range from './Range';
 
-function forceTokenize(session: EditSession, startLine = 0): void {
-    for (let i = startLine, l = session.getLength(); i < l; i++) {
-        session.getTokens(i);
-    }
-}
+describe("JavaScript", function () {
 
-function testStates(session: EditSession, states: (string | null | undefined)[]) {
-    for (let i = 0, l = session.getLength(); i < l; i++) {
-        expect(session.bgTokenizer.states[i]).toBe(states[i] as string);
-    }
-    // expect(states.length).toBe(1)
-    // assert.ok(l == states.length);
-}
+    describe("Numeric Literal", function () {
+        const doc = new Document([
+            "42"
+        ]);
 
-describe("background tokenizer update on session change", function () {
-    const doc = new Document([
-        "/*",
-        "*/",
-        "var juhu"
-    ]);
-    const session = new EditSession(doc);
-    session.setLanguage('JavaScript');
-    // We are not using the worker, so we don't need to wait on the promise.
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
 
-    // The FSM for the JavaScript mode appears to have changed.
-    xit("", function () {
-        forceTokenize(session);
-        testStates(session, ["comment1", "start", "no_regex"]);
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 1 token", function () {
+                    expect(tokens.length).toBe(1);
+                });
+                it("should have the correct type", function () {
+                    expect(tokens[0].type).toBe('constant.numeric');
+                });
+                it("should have the correct value", function () {
+                    expect(tokens[0].value).toBe('42');
+                });
+            });
+        });
+    });
 
-        doc.remove(new Range(0, 2, 1, 2));
-        testStates(session, [null, "no_regex"]);
+    describe("String Literal (in single quotes)", function () {
 
-        forceTokenize(session);
-        testStates(session, ["comment1", "comment1"]);
+        const doc = new Document([
+            "'Hello'"
+        ]);
 
-        doc.insert({ row: 0, column: 2 }, "\n*/");
-        testStates(session, [undefined, undefined, "comment1"]);
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
 
-        forceTokenize(session);
-        testStates(session, ["comment1", "start", "no_regex"]);
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 1 token", function () {
+                    expect(tokens.length).toBe(1);
+                });
+                it("should have the correct type", function () {
+                    expect(tokens[0].type).toBe('string');
+                });
+                it("should have the correct value", function () {
+                    expect(tokens[0].value).toBe("'Hello'");
+                });
+            });
+        });
+    });
+
+    describe("String Literal (in double quotes)", function () {
+
+        const doc = new Document([
+            '"Hello"'
+        ]);
+
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
+
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 1 token", function () {
+                    expect(tokens.length).toBe(1);
+                });
+                it("should have the correct type", function () {
+                    expect(tokens[0].type).toBe('string');
+                });
+                it("should have the correct value", function () {
+                    expect(tokens[0].value).toBe('"Hello"');
+                });
+            });
+        });
+    });
+
+    describe("String Literal (in back ticks)", function () {
+
+        const doc = new Document([
+            '`Hello`'
+        ]);
+
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
+
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 3 tokens", function () {
+                    expect(tokens.length).toBe(3);
+                });
+                it("should have the correct types", function () {
+                    expect(tokens[0].type).toBe('string.quasi.start');
+                    expect(tokens[1].type).toBe('string.quasi');
+                    expect(tokens[2].type).toBe('string.quasi.end');
+                });
+                it("should have the correct values", function () {
+                    expect(tokens[0].value).toBe('`');
+                    expect(tokens[1].value).toBe('Hello');
+                    expect(tokens[2].value).toBe('`');
+                });
+            });
+        });
+    });
+
+    describe("Boolean Literal true", function () {
+
+        const doc = new Document([
+            'true'
+        ]);
+
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
+
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 1 token", function () {
+                    expect(tokens.length).toBe(1);
+                });
+                it("should have the correct type", function () {
+                    expect(tokens[0].type).toBe('constant.language.boolean');
+                });
+                it("should have the correct value", function () {
+                    expect(tokens[0].value).toBe('true');
+                });
+            });
+        });
+    });
+
+    describe("Boolean Literal false", function () {
+
+        const doc = new Document([
+            'false'
+        ]);
+
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('JavaScript');
+
+        describe("tokens", function () {
+            describe("(0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined", function () {
+                    expect(tokens).toBeDefined();
+                });
+                it("should have 1 token", function () {
+                    expect(tokens.length).toBe(1);
+                });
+                it("should have the correct type", function () {
+                    expect(tokens[0].type).toBe('constant.language.boolean');
+                });
+                it("should have the correct value", function () {
+                    expect(tokens[0].value).toBe('false');
+                });
+            });
+        });
     });
 });

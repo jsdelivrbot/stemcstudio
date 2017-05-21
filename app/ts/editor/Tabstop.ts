@@ -1,6 +1,6 @@
 import { BasicToken } from "./Token";
 import Position from "./Position";
-import Range from './Range';
+import { Range } from './Range';
 
 /**
  * Parameter used when formatting (transforming) snippet text for insertion into the editor.

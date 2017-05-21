@@ -90,9 +90,11 @@ export interface TokenizedLine<E> {
 let MAX_TOKEN_COUNT = 2000;
 
 /**
+ * An `onMatch` function for a Rule.
  * 
+ * TODO: The cast to <T> suggests that parameterization by T is not a good thing.
  */
-function $applyToken<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): T[] | undefined {
+function applyToken<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): T[] | undefined {
     if (typeof this.token === 'function') {
         const tokens: T[] = [];
         if (this.splitRegex) {
@@ -122,7 +124,12 @@ function $applyToken<T extends Token, E, S extends Array<string | E>>(this: Rule
     }
 }
 
-function $arrayTokens<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): 'text' | T[] {
+/**
+ * An `onMatch` function for a Rule.
+ * 
+ * TODO: The cast to <T> suggests that parameterization by T is not a good thing.
+ */
+function arrayTokens<T extends Token, E, S extends Array<string | E>>(this: Rule<T, E, S>, str: string): 'text' | T[] {
     if (!str) {
         return [];
     }
@@ -144,21 +151,35 @@ function $arrayTokens<T extends Token, E, S extends Array<string | E>>(this: Rul
     return tokens;
 }
 
-function removeCapturingGroups(src: string): string {
-    const r = src.replace(
-        /\[(?:\\.|[^\]])*?\]|\\.|\(\?[:=!]|(\()/g,
-        function (x, y) { return y ? "(?:" : x; }
-    );
-    return r;
+/**
+ * Removes capturing by replacing (x) with (?:x).
+ * It's obviously more complicated, but thas the hand-waving idea.
+ * Exported for unit testing.
+ */
+export function removeCapturingGroups(src: string): string {
+    /**
+     * This function's result (return value) will be used as the replacement string.
+     * @param match The matched substring.
+     * @param p1 The nth parenthesized submatch string.
+     * @param offset The offset of the matched substring within the whole string being examined.
+     * @param whole The whole string being examined.
+     */
+    function replacer(match: string, p1: string | undefined, offset: number, whole: string): string {
+        return p1 ? "(?:" : match;
+    }
+    return src.replace(/\[(?:\\.|[^\]])*?\]|\\.|\(\?[:=!]|(\()/g, replacer);
 }
 
-function createSplitterRegexp(src: string, flag?: string): RegExp {
+/**
+ * Exported for unit testing.
+ */
+export function createSplitterRegexp(src: string, flag?: string): RegExp {
     if (src.indexOf("(?=") !== -1) {
         let stack = 0;
         let inChClass = false;
         const lastCapture: { stack?: number, start?: number; end?: number } = {};
-        src.replace(/(\\.)|(\((?:\?[=!])?)|(\))|([\[\]])/g, function (
-            m, esc, parenOpen, parenClose, square, index
+        src.replace(/(\\.)|(\((?:\?[=!])?)|(\))|([\[\]])/g, function replacer(
+            match: string, esc: string, parenOpen: string, parenClose: string, square: string, index: number
         ) {
             if (inChClass) {
                 inChClass = square !== "]";
@@ -180,7 +201,7 @@ function createSplitterRegexp(src: string, flag?: string): RegExp {
                     lastCapture.start = index;
                 }
             }
-            return m;
+            return match;
         });
 
         if (lastCapture.end != null && /^\)*$/.test(src.substr(lastCapture.end)))
@@ -199,12 +220,14 @@ function createSplitterRegexp(src: string, flag?: string): RegExp {
  * For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
  * The Tokenizer is used by two clients: TextMode and SnippetManager.
  * In the former, the token type is not extended. In the latter approx 10 properties are added.
+ * 
+ * TODO: The parameterization by T either needs a factory to promote tokens to T or we should not overwork this class (e.g. snippets).
  */
 export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
     /**
-     * 
+     * Configures tracing to console.
      */
-    private trace = false;
+    public trace = false;
     /**
      * rules by state name.
      * 
@@ -230,6 +253,10 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
      * These values are then used in getLineTokens to access a rule.
      */
     private readonly matchMappings: { [stateName: string]: Rule<T, E, S> } = {};
+
+    public reportError: (message: string, data: any) => void = function (message: string, data: any) {
+        console.warn(message, data);
+    };
 
     /**
      * Constructs a new tokenizer based on the given rules and flags.
@@ -265,8 +292,8 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                     if (rule.caseInsensitive) {
                         flag = "gi";
                     }
-                    // rule.regex is string | RegExp | undefined, but undefined == null => true.
-                    // 
+                    // rule.regex is string | RegExp | undefined, but undefined == null => true,
+                    // so the following test is really a check for undefined!
                     if (rule.regex == null) {
                         continue;
                     }
@@ -290,22 +317,19 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                                 rule.token = rule.token[0];
                             }
                             else if (matchcount - 1 !== rule.token.length) {
-                                console.warn("number of classes and regexp groups doesn't match", {
-                                    rule: rule,
-                                    groupCount: matchcount - 1
-                                });
+                                this.reportError("number of classes and regexp groups doesn't match", { rule: rule, groupCount: matchcount - 1 });
                                 rule.token = rule.token[0];
                             }
                             else {
                                 // string[] | T[]
                                 rule.tokenArray = rule.token;
                                 rule.token = null;
-                                rule.onMatch = $arrayTokens;
+                                rule.onMatch = arrayTokens;
                             }
                         }
                         else if (typeof rule.token === "function" && !rule.onMatch) {
                             if (matchcount > 1) {
-                                rule.onMatch = $applyToken;
+                                rule.onMatch = applyToken;
                             }
                             else {
                                 rule.onMatch = rule.token;
@@ -489,7 +513,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                     rules = this.rulesByState[currentState];
                     if (!rules) {
                         // FIXME: I'm ignoring this for the time being!
-                        console.warn("state doesn't exist", currentState);
+                        this.reportError("state doesn't exist", currentState);
                         currentState = changeCurrentState(currentState, START, this.trace);
                         rules = this.rulesByState[currentState];
                     }
@@ -522,7 +546,9 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                             pushIfValidToken(mayBeToken, tokens, this.trace);
                         }
                         else {
-                            console.warn(`typeof ruleToken => ${typeof ruleToken}, ruleToken => ${JSON.stringify(ruleToken)}`);
+                            // Tests land here with ["$"], ["\\}"], which is the string[] case rather than T[].
+                            // I don't see how these can be pushed as tokens.
+                            // console.warn(`typeof ruleToken => ${typeof ruleToken}, ruleToken => ${JSON.stringify(ruleToken)}`);
                         }
                     }
                 }
@@ -543,7 +569,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
             // Recover if the number of tokens in a line slows us down.
             if (matchAttempts++ > MAX_TOKEN_COUNT) {
                 if (matchAttempts > 2 * line.length) {
-                    console.warn("infinite loop within tokenizer", { startState: startState, line: line });
+                    this.reportError("infinite loop within tokenizer", { startState: startState, line: line });
                 }
                 // Chrome doesn't show contents of text nodes with very long text.
                 while (lastIndex < line.length) {

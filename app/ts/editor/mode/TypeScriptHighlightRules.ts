@@ -5,6 +5,9 @@ export class TypeScriptHighlightRules extends JavaScriptHighlightRules {
 
     constructor(options?: { jsx?: boolean }) {
         super(options);
+        /**
+         * Rules that will be used for the start state and will be combined with JavaScript rules.
+         */
         const tsRules: HighlighterRule[] = [
             // Match stuff like: module name {...}
             {
@@ -45,9 +48,9 @@ export class TypeScriptHighlightRules extends JavaScriptHighlightRules {
         ];
 
         const jsRules = new JavaScriptHighlightRules({ jsx: (options && options.jsx) === true }).getRules();
-        const startRules = jsRules['start'];
+        const jsStartRules = jsRules['start'];
 
-        jsRules['start'] = tsRules.concat(startRules);
+        jsRules['start'] = tsRules.concat(jsStartRules);
         this.$rules = jsRules;
     }
 }

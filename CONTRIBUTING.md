@@ -55,6 +55,16 @@ declare module AngularUiBootstrap {
 
 ## Testing
 
+After building to create `generated`,
+
+change `baseURL` property in `generated/jspm.config.js` to:
+
+```js
+baseURL: "/base/generated/",
+```
+
+How to make this work without messing with this file?
+
 ```
 karma start
 ```
@@ -173,3 +183,15 @@ git push -f heroku master
 
 This application uses JSPM for module loading.
 For AngularJS modules, you must both modify `jspm.config.js` and `app.ts`.
+
+## Highlighters and Regular Expressions
+
+Considerable use is made of regular expressions for syntax highlighting.
+It would be nice if there were a RegExp pre-processor that could convert something
+more human-readable (e.g. railroad diagram, schema, or JSON) into a RegExp.
+
+Until then https://www.debuggex.com provides a nice visualization.
+
+Another approach would be a literate API for building RegExp, but that would impact performance.
+
+e.g. https://github.com/VerbalExpressions/JSVerbalExpressions

@@ -1,4 +1,4 @@
-// import Range from "../Range";
+// import { Range } from "../Range";
 import { Command } from './Command';
 import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
 import { Direction } from '../../virtual/editor';

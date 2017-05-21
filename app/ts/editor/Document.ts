@@ -5,7 +5,7 @@ import { EventEmitterClass } from './lib/EventEmitterClass';
 // import { Observable } from 'rxjs/Observable';
 // import { Observer } from 'rxjs/Observer';
 import Position from './Position';
-import Range from './Range';
+import { Range } from './Range';
 import RangeBasic from './RangeBasic';
 import { isEmptyRange } from './RangeBasic';
 import Shareable from './base/Shareable';

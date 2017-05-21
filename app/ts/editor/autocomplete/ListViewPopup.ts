@@ -1,4 +1,4 @@
-import BackgroundTokenizer from "../BackgroundTokenizer";
+import { BackgroundTokenizer } from "../BackgroundTokenizer";
 import { Completion } from "../Completion";
 import { EditSession } from '../EditSession';
 import { Document } from "../Document";
@@ -6,7 +6,7 @@ import Renderer from "../Renderer";
 import { Editor } from "../Editor";
 import { EditorEventName } from "../Editor";
 import { PixelPosition } from "../PixelPosition";
-import Range from "../Range";
+import { Range } from "../Range";
 import Token from "../Token";
 import { addListener } from "../lib/event";
 import { stringRepeat } from "../lib/lang";

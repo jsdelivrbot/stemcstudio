@@ -3,7 +3,7 @@ import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import { PythonHighlightRules } from "./PythonHighlightRules";
 import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { WorkerClient } from "../worker/WorkerClient";
-import Range from '../Range';
+import { Range } from '../Range';
 import Token from '../Token';
 import { PythonFoldMode } from './folding/PythonFoldMode';
 //

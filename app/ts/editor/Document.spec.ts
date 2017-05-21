@@ -2,7 +2,7 @@
 // import AnchorChangeEvent from './events/AnchorChangeEvent';
 import Delta from './Delta';
 import { Document } from './Document';
-import Range from './Range';
+import { Range } from './Range';
 
 describe("Document", function () {
     describe("insert text in line", function () {

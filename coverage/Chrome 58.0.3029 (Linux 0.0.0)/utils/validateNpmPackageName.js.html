@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for utils/validateNpmPackageName.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">utils/</a> validateNpmPackageName.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">60.38% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>32/53</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.14% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>24/42</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">60.38% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>32/53</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var scopedPackagePattern = new RegExp('^(?:@([^/]+?)[/])?([^/]+?)$');
+var builtins = [];
+var blacklist = [
+    'node_modules',
+    'favicon.ico'
+];
+var done = function (warnings, errors) {
+    var result = {
+        validForNewPackages: errors.length === 0 &amp;&amp; warnings.length === 0,
+        validForOldPackages: errors.length === 0,
+        warnings: warnings,
+        errors: errors
+    };
+    if (result.warnings &amp;&amp; !result.warnings.length)
+        delete result.warnings;
+    if (result.errors &amp;&amp; !result.errors.length)
+        delete result.errors;
+    return result;
+};
+function validate(name) {
+    var warnings = [];
+    var errors = [];
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name === null) {
+<span class="cstat-no" title="statement not covered" >        errors.push('name cannot be null');</span>
+<span class="cstat-no" title="statement not covered" >        return done(warnings, errors);</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name === undefined) {
+<span class="cstat-no" title="statement not covered" >        errors.push('name cannot be undefined');</span>
+<span class="cstat-no" title="statement not covered" >        return done(warnings, errors);</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof name !== 'string') {
+<span class="cstat-no" title="statement not covered" >        errors.push('name must be a string');</span>
+<span class="cstat-no" title="statement not covered" >        return done(warnings, errors);</span>
+    }
+    if (!name.length) {
+        errors.push('name length must be greater than zero');
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name.match(/^\./)) {
+<span class="cstat-no" title="statement not covered" >        errors.push('name cannot start with a period');</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name.match(/^_/)) {
+<span class="cstat-no" title="statement not covered" >        errors.push('name cannot start with an underscore');</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name.trim() !== name) {
+<span class="cstat-no" title="statement not covered" >        errors.push('name cannot contain leading or trailing spaces');</span>
+    }
+    blacklist.forEach(function (blacklistedName) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (name.toLowerCase() === blacklistedName) {
+<span class="cstat-no" title="statement not covered" >            errors.push(blacklistedName + ' is a blacklisted name');</span>
+        }
+    });
+    builtins.forEach(<span class="fstat-no" title="function not covered" >function (builtin) {</span>
+<span class="cstat-no" title="statement not covered" >        if (name.toLowerCase() === builtin) {</span>
+<span class="cstat-no" title="statement not covered" >            warnings.push(builtin + ' is a core module name');</span>
+        }
+    });
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name.length &gt; 214) {
+<span class="cstat-no" title="statement not covered" >        warnings.push('name can no longer contain more than 214 characters');</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (name.toLowerCase() !== name) {
+<span class="cstat-no" title="statement not covered" >        warnings.push('name can no longer contain capital letters');</span>
+    }
+    if (/[~'!()*]/.test(name.split('/').slice(-1)[0])) {
+        warnings.push('name can no longer contain special characters ("~\'!()*")');
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (encodeURIComponent(name) !== name) {
+<span class="cstat-no" title="statement not covered" >        var nameMatch = name.match(scopedPackagePattern);</span>
+<span class="cstat-no" title="statement not covered" >        if (nameMatch) {</span>
+<span class="cstat-no" title="statement not covered" >            var user = nameMatch[1];</span>
+<span class="cstat-no" title="statement not covered" >            var pkg = nameMatch[2];</span>
+<span class="cstat-no" title="statement not covered" >            if (encodeURIComponent(user) === user &amp;&amp; encodeURIComponent(pkg) === pkg) {</span>
+<span class="cstat-no" title="statement not covered" >                return done(warnings, errors);</span>
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        errors.push('name can only contain URL-friendly characters');</span>
+    }
+    return done(warnings, errors);
+}
+exports.validate = validate;
+//# sourceMappingURL=validateNpmPackageName.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat May 20 2017 19:05:34 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

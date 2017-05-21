@@ -1,4 +1,4 @@
-import Range from "../../Range";
+import { Range } from "../../Range";
 import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 

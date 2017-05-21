@@ -3,7 +3,7 @@ import DeltaGroup from './DeltaGroup';
 import { EditSession } from './EditSession';
 import Fold from './Fold';
 import Position from './Position';
-import Range from './Range';
+import { Range } from './Range';
 
 interface DeltaLight {
     action: 'insert' | 'remove';
@@ -23,7 +23,7 @@ function $serializeDelta(delta: Delta): DeltaLight {
         end: delta.end,
         lines: delta.lines ? (delta.lines.length === 1 ? null : delta.lines) : null,
         text: delta.lines ? (delta.lines.length === 1 ? delta.lines[0] : null) : null
-    };
+    } as DeltaLight;
 }
 
 function $deserializeDelta(delta: DeltaLight): Delta {

@@ -1,4 +1,4 @@
-import Range from './Range';
+import { Range } from './Range';
 import { clipRows } from './RangeHelpers';
 
 describe("RangeHelpers", function () {
@@ -8,7 +8,7 @@ describe("RangeHelpers", function () {
         const lastRow = 7;
         const result = clipRows(range, firstRow, lastRow);
         it("should ", function () {
-            expect(result.start.row).toBe(5);
+            expect(result.start.row).toBe(3);
         });
     });
 });

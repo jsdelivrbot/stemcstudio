@@ -22,7 +22,7 @@ export type BackgroundTokenizerEventName = 'update';
  * 
  * If a certain row is changed, everything below that row is re-tokenized.
  */
-export default class BackgroundTokenizer implements EventBus<BackgroundTokenizerEventName, any, BackgroundTokenizer> {
+export class BackgroundTokenizer implements EventBus<BackgroundTokenizerEventName, any, BackgroundTokenizer> {
     /**
      * This is the value returned by setTimeout, so it's really a timer handle.
      * There are some conditionals looking for a falsey value, so we use zero where needed.

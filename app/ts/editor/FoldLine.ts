@@ -1,5 +1,5 @@
 import Position from './Position';
-import Range from "./Range";
+import { Range } from "./Range";
 import Fold from "./Fold";
 import { compareStart, compareEnd } from "./RangeHelpers";
 

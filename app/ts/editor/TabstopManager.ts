@@ -5,7 +5,7 @@ import { Editor } from "./Editor";
 import { Command } from './commands/Command';
 import { KeyboardHandler } from "./keyboard/KeyboardHandler";
 import Position from "./Position";
-import Range from "./Range";
+import { Range } from "./Range";
 import { clone, contains } from "./RangeHelpers";
 import Selection from "./Selection";
 import { Tabstop, TabstopRange } from './Tabstop';

@@ -2,7 +2,7 @@ import { Document } from "./Document";
 import { stringReverse } from "./lib/lang";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import Position from "./Position";
-import Range from "./Range";
+import { Range } from "./Range";
 import RangeBasic from "./RangeBasic";
 import { clone, isEmpty, isEqual, isMultiLine } from "./RangeHelpers";
 import RangeList from "./RangeList";

@@ -2,7 +2,7 @@ import { CstyleBehaviour } from "./CstyleBehaviour";
 import TokenIterator from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
-import Range from "../../Range";
+import { Range } from "../../Range";
 import { isMultiLine } from "../../RangeHelpers";
 
 export class CssBehaviour extends CstyleBehaviour {

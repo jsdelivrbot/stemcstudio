@@ -36,7 +36,7 @@ import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
 import OutputFile from '../../editor/workspace/OutputFile';
 import { PackageJsonMonitor } from './monitors/PackageJsonMonitor';
-import Range from '../../editor/Range';
+import { Range } from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
 import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';

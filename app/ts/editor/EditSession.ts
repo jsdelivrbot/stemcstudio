@@ -22,14 +22,14 @@ import Selection from "./Selection";
 // import LanguageMode from "./LanguageMode";
 import { Marker, MarkerType } from "./Marker";
 import MarkerRenderer from "./layer/MarkerRenderer";
-import Range from "./Range";
+import { Range } from "./Range";
 import RangeBasic from "./RangeBasic";
 import { collapseRows, compareEnd, comparePoint, compareRange, contains, isEmpty, isEnd, isEqual, isPosition, isRange, isMultiLine, isStart, setEnd } from "./RangeHelpers";
 import Shareable from './base/Shareable';
 import { mutateExtendToken } from "./Token";
 import Token from "./Token";
 import { Document, NewLineMode } from "./Document";
-import BackgroundTokenizer from "./BackgroundTokenizer";
+import { BackgroundTokenizer } from "./BackgroundTokenizer";
 import SearchHighlight from "./SearchHighlight";
 import BracketMatch from "./BracketMatch";
 import UndoManager from './UndoManager';
@@ -241,6 +241,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
     private $undoManager: UndoManager;
     private $informUndoManager: DelayedCall;
     public bgTokenizer: BackgroundTokenizer;
+    public traceTokenizer = false;
     public $modified: boolean;
 
     /**
@@ -1296,7 +1297,9 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                     break;
                 }
                 case LANGUAGE_TYPE_SCRIPT: {
-                    this.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    const tsMode = new TypeScriptMode('/js/worker.js', workerImports);
+                    tsMode.getTokenizer().trace = this.traceTokenizer;
+                    this.setLanguageMode(tsMode, onSetLanguageMode);
                     break;
                 }
                 case LANGUAGE_TSX: {

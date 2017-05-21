@@ -3,7 +3,7 @@ import RangeBasic from './RangeBasic';
 import { compareRange, isStart, isEnd, isMultiLine } from './RangeHelpers';
 // import Tabstop from './Tabstop';
 
-export default class Range implements RangeBasic {
+export class Range implements RangeBasic {
 
     /**
      * The starting position of the range.

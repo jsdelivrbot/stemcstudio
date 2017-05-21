@@ -4,7 +4,7 @@ import LineFilter from './LineFilter';
 import MatchHandler from './MatchHandler';
 import MatchOffset from './lib/MatchOffset';
 import Position from './Position';
-import Range from "./Range";
+import { Range } from "./Range";
 import { isEqual } from "./RangeHelpers";
 import RangeBasic from "./RangeBasic";
 import SearchOptions from "./SearchOptions";

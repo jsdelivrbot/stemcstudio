@@ -2,7 +2,7 @@ import AbstractLayer from './AbstractLayer';
 // import { EditSession } from '../EditSession';
 import LayerConfig from "./LayerConfig";
 import MarkerConfig from "./MarkerConfig";
-import Range from "../Range";
+import { Range } from "../Range";
 import RangeBasic from "../RangeBasic";
 import { clipRows, isEmpty, isMultiLine } from "../RangeHelpers";
 import refChange from '../../utils/refChange';

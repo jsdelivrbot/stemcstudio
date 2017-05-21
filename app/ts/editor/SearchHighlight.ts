@@ -1,6 +1,6 @@
 import { getMatchOffsets } from "./lib/lang";
 import { Marker, MarkerType } from "./Marker";
-import Range from "./Range";
+import { Range } from "./Range";
 // import { EditSession } from "./EditSession";
 import { MarkerLayer } from "./layer/MarkerLayer";
 import MarkerConfig from "./layer/MarkerConfig";

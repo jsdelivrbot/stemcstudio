@@ -1,7 +1,7 @@
 import Anchor from './Anchor';
 import AnchorChangeEvent from './events/AnchorChangeEvent';
 import { Document } from './Document';
-import Range from './Range';
+import { Range } from './Range';
 
 describe("Anchor", function () {
     describe("constructor", function () {

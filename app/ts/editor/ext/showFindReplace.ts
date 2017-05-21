@@ -4,7 +4,7 @@ import { setCssClass } from '../lib/dom';
 import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
 import { KeyboardHandler } from '../keyboard/KeyboardHandler';
-import Range from '../Range';
+import { Range } from '../Range';
 //
 // TODO: EditorSearchable?
 //

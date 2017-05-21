@@ -1,4 +1,4 @@
-import Range from "../../Range";
+import { Range } from "../../Range";
 import FoldStyle from '../../FoldStyle';
 import FoldWidget from '../../FoldWidget';
 //
