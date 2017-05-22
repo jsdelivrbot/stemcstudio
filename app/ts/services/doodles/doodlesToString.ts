@@ -1,4 +1,4 @@
-import Doodle from './Doodle';
+import { Doodle } from './Doodle';
 import { doodleToSerializable } from './doodleToSerializable';
 
 export function doodlesToString(doodles: Doodle[]): string {

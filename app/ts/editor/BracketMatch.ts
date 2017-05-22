@@ -3,7 +3,7 @@ import Position from "./Position";
 //
 // Editor Abstraction Layer
 //
-import { EditSession } from "../virtual/editor";
+import { EditSession as EditSession } from "../virtual/editor";
 import { OrientedRange } from "../virtual/editor";
 import { fromPoints } from "./RangeHelpers";
 

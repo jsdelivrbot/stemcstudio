@@ -1,5 +1,5 @@
-import Doodle from '../services/doodles/Doodle';
-import DoodleFile from '../services/doodles/DoodleFile';
+import { Doodle } from '../services/doodles/Doodle';
+import { DoodleFile } from '../services/doodles/DoodleFile';
 import { WsModel } from '../modules/wsmodel/WsModel';
 
 function ensureDoodleFile(doodle: Doodle, path: string): DoodleFile {
@@ -89,4 +89,7 @@ export function copyWorkspaceToDoodle(workspace: WsModel, doodle: Doodle): void 
     doodle.owner = workspace.owner;
     doodle.repo = workspace.repo;
     doodle.updated_at = workspace.updated_at;
+
+    // console.lg(`copyWorkspaceToDoodle`);
+    // console.lg(JSON.stringify(doodle));
 }

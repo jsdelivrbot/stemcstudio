@@ -1,4 +1,4 @@
-import DoodleFile from './DoodleFile';
+import { DoodleFile } from './DoodleFile';
 import { PackageSettings } from '../../modules/wsmodel/WsModel';
 import { modeFromName } from '../../utils/modeFromName';
 import { setOptionalBooleanProperty } from './setOptionalBooleanProperty';
@@ -10,7 +10,7 @@ const PACKAGE_DOT_JSON = 'package.json';
 /**
  * TODO: Eliminate DEAD CODE.
  */
-export default class Doodle {
+export class Doodle {
 
     /**
      * The GitHub Gist identifier.

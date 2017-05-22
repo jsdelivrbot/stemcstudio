@@ -2,7 +2,7 @@ import { IModalServiceInstance } from 'angular-bootstrap';
 import OpenProjectScope from './OpenProjectScope';
 import OpenProjectSettings from './OpenProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
-import Doodle from '../../services/doodles/Doodle';
+import { Doodle } from '../../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
 
 /**

@@ -8,7 +8,7 @@ import CommitKey from '../github/CommitKey';
 import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
 import CommitMessageOptions from './CommitMessageOptions';
 import { ICloudService } from './ICloudService';
-import Doodle from '../doodles/Doodle';
+import { Doodle } from '../doodles/Doodle';
 import { workspaceToGistData } from '../cloud/workspaceToGistData';
 import FlowService from '../flow/FlowService';
 import { Gist } from '../github/Gist';
@@ -267,6 +267,9 @@ export class CloudService implements ICloudService {
         return this.githubGistService.createGist(data);
     }
 
+    /**
+     * Update a Gist from the workspace.
+     */
     updateGist(workspace: WsModel, gistId: string): Promise<Gist> {
         const data: GistData = workspaceToGistData(workspace);
         return this.githubGistService.updateGist(gistId, data);

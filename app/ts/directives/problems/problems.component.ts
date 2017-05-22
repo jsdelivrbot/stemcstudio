@@ -5,8 +5,8 @@ import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelC
 import { ProblemsScope } from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
-import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
-import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
+import { EditorPreferencesService } from '../../modules/editors/EditorPreferencesService';
+import { EditorPreferencesEvent } from '../../modules/editors/EditorPreferencesEvent';
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 

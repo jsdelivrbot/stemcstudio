@@ -1,5 +1,5 @@
 import { BodyScope } from './BodyScope';
-import Doodle from '../services/doodles/Doodle';
+import { Doodle } from '../services/doodles/Doodle';
 import { SearchScope } from './SearchScope';
 import { ThumbnailsScope } from './ThumbnailsScope';
 

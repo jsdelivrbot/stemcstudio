@@ -1,7 +1,7 @@
 /**
  * 
  */
-interface EditorPreferencesEvent {
+export interface EditorPreferencesEvent {
     /**
      * 
      */
@@ -51,7 +51,5 @@ interface EditorPreferencesEvent {
      */
     useSoftTabs: boolean;
 }
-
-export default EditorPreferencesEvent;
 
 export const currentTheme = 'currentTheme';

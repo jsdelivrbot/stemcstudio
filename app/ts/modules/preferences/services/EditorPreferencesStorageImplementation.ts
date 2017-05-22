@@ -67,7 +67,7 @@ const DEFAULTS: Preferences = {
     showLineNumbers: true,
     showPrintMargin: false,
     tabSize: 4,
-    theme: "Eclipse",
+    theme: "STEMCstudio",
     useSoftTabs: true
 };
 

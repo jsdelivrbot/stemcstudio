@@ -1,5 +1,5 @@
-import Doodle from './Doodle';
-import DoodleFile from './DoodleFile';
+import { Doodle } from './Doodle';
+import { DoodleFile } from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
 import { IDoodleManager } from './IDoodleManager';
 import IDoodleFile from './IDoodleFile';

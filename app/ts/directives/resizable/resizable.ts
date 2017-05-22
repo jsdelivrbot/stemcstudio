@@ -1,5 +1,8 @@
 import { IAttributes, IAugmentedJQuery } from 'angular';
-import ResizableScope from './ResizableScope';
+import { ResizableScope } from './ResizableScope';
+
+export type Axis = 'x' | 'y';
+export type Direction = 'bottom' | 'left' | 'right' | 'top';
 
 //
 // TODO: I separated the mouse handling from touch handling in order to avoid the instanceof TouchEvent test.
@@ -70,7 +73,7 @@ export function resizable() {
              */
             let h: number;
 
-            const dir: string[] = scope.rDirections || ['right'];
+            const dir: Direction[] = scope.rDirections || ['right'];
 
             const vx: number = scope.rCenteredX ? 2 : 1; // if centered double velocity
             const vy: number = scope.rCenteredY ? 2 : 1; // if centered double velocity
@@ -89,12 +92,12 @@ export function resizable() {
              * 'top', 'right', 'bottom', or 'left'.
              * Records the dragging direction which is current at dragStart.
              */
-            let dragDir: string;
+            let dragDir: Direction;
 
             /**
              * 'x' or 'y' according to the direction which may be left, right, top or bottom.
              */
-            let axis: string;
+            let axis: Axis;
 
             const info: { id: string | undefined; height: (boolean | number); width: (boolean | number) } = { id: void 0, width: false, height: false };
 
@@ -252,7 +255,7 @@ export function resizable() {
                 element.removeClass('no-transition');
             };
 
-            const dragMouseStart = function (e: MouseEvent, direction: string) {
+            const dragMouseStart = function (e: MouseEvent, direction: Direction) {
                 dragDir = direction;
                 axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
                 start = (axis === 'x') ? e.clientX : e.clientY;
@@ -282,7 +285,7 @@ export function resizable() {
                 scope.$apply();
             };
 
-            const dragTouchStart = function (e: TouchEvent, direction: string) {
+            const dragTouchStart = function (e: TouchEvent, direction: Direction) {
                 dragDir = direction;
                 axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
                 start = (axis === 'x') ? getTouchClientX(e) : getTouchClientY(e);

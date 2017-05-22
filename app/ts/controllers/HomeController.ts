@@ -1,7 +1,7 @@
 import { IWindowService } from 'angular';
 import { AbstractPageController } from './AbstractPageController';
 import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
-import Doodle from '../services/doodles/Doodle';
+import { Doodle } from '../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';

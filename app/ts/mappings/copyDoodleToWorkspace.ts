@@ -1,5 +1,5 @@
-import Doodle from '../services/doodles/Doodle';
-import DoodleFile from '../services/doodles/DoodleFile';
+import { Doodle } from '../services/doodles/Doodle';
+import { DoodleFile } from '../services/doodles/DoodleFile';
 import { WsModel } from '../modules/wsmodel/WsModel';
 
 /**
@@ -62,7 +62,7 @@ function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
  * Copies from the doodle to the workspace.
  * The callback is use to report that monitoring of all files has completed.
  */
-export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel, callback: (reason: Error) => any): void {
+export function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel, callback: (reason: Error) => any): void {
 
     workspace.emptyTrash();
 
@@ -81,4 +81,7 @@ export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel
     workspace.owner = doodle.owner as string;
     workspace.repo = doodle.repo as string;
     workspace.updated_at = doodle.updated_at as string;
+
+    // console.lg(`copyDoodleToWorkspace`);
+    // console.lg(JSON.stringify(doodle));
 }

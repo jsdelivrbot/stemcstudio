@@ -32,6 +32,10 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            themes: {
+                // For development only.
+                files: themes('generated')
+            },
             web: {
                 files: [
                     {
@@ -354,12 +358,16 @@ function copies(target) {
             dest: prepend(target, 'fonts/glyphicons-halflings-regular.woff2')
         },
         {
-            src: `museum/@angular/core@${VERSION_ANGULAR}/index.d.ts`,
-            dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
-        },
-        {
             src: `museum/@angular/common@${VERSION_ANGULAR}/index.d.ts`,
             dest: prepend(target, `vendor/@angular/common@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
+            src: `museum/@angular/compiler@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/compiler@${VERSION_ANGULAR}/index.d.ts`)
+        },
+        {
+            src: `museum/@angular/core@${VERSION_ANGULAR}/index.d.ts`,
+            dest: prepend(target, `vendor/@angular/core@${VERSION_ANGULAR}/index.d.ts`)
         },
         {
             src: `museum/@angular/forms@${VERSION_ANGULAR}/index.d.ts`,
@@ -688,6 +696,20 @@ function copies(target) {
         {
             src: "node_modules/redux/dist/redux.min.js",
             dest: prepend(target, 'vendor/redux@3.6.0/redux.min.js')
+        }
+    ]
+}
+
+/**
+ * Copy themes to the target folder ('generated' for dev, 'dist' for production)
+ */
+function themes(target) {
+    return [
+        {
+            expand: true,
+            cwd: "app/themes",
+            src: ["**"],
+            dest: prepend(target, 'themes')
         }
     ]
 }

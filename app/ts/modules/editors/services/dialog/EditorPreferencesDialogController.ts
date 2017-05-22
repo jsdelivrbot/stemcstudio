@@ -1,7 +1,7 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import EditorPreferencesDialogScope from './EditorPreferencesDialogScope';
 import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
-import EditorPreferencesService from '../../EditorPreferencesService';
+import { EditorPreferencesService } from '../../EditorPreferencesService';
 import { EDITOR_PREFERENCES_SERVICE } from '../../constants';
 
 /**

@@ -1,11 +1,13 @@
 import { IScope } from 'angular';
 
+export type Direction = 'bottom' | 'left' | 'right' | 'top';
+
 /**
  * resizeStart
  * resizing
  * resizeEnd
  */
-interface ResizableScope extends IScope {
+export interface ResizableScope extends IScope {
 
   /**
    * integer or $scope variable
@@ -21,7 +23,7 @@ interface ResizableScope extends IScope {
    * Accepts ['top', 'right', 'bottom', 'left']
    * Default ['right']
    */
-  rDirections: string[];
+  rDirections: Direction[];
 
   /**
    * Default false
@@ -54,5 +56,3 @@ interface ResizableScope extends IScope {
    */
   rNoThrottle: boolean;
 }
-
-export default ResizableScope;

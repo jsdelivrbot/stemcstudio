@@ -1,4 +1,4 @@
-import Theme from '../../Theme';
+import { Theme } from '../../Theme';
 
 /**
  * This is the complete list of (some) really ugly themes!

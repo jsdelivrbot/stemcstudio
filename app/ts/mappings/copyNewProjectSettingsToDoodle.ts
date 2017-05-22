@@ -1,5 +1,5 @@
 import { copyTemplateToDoodle } from './copyTemplateToDoodle';
-import Doodle from '../services/doodles/Doodle';
+import { Doodle } from '../services/doodles/Doodle';
 import { hyphenate } from '../utils/hyphenate';
 import { NewProjectSettings } from '../modules/project/NewProjectSettings';
 

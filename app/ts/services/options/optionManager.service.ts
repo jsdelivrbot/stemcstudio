@@ -30,11 +30,19 @@ const INDEX_DTS = 'index.d.ts';
 // This version is used to reference flattened index.d.ts files specially created as well as to pull
 // JavaScript files from a CDN. Keep this in synch with the value in Gruntfile.js 
 //
-const VERSION_ANGULAR_CORE = '4.1.0';
-const VERSION_ANGULAR_COMMON = '4.1.0';
-const VERSION_ANGULAR_COMPILER = '4.1.0';
-const VERSION_ANGULAR_PLATFORM_BROWSER = '4.1.0';
-const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = '4.1.0';
+const VERSION_ANGULAR = '4.1.0';
+const VERSION_ANGULAR_COMMON = VERSION_ANGULAR;
+const VERSION_ANGULAR_COMPILER = VERSION_ANGULAR;
+const VERSION_ANGULAR_CORE = VERSION_ANGULAR;
+const VERSION_ANGULAR_FORMS = VERSION_ANGULAR;
+const VERSION_ANGULAR_HTTP = VERSION_ANGULAR;
+const VERSION_ANGULAR_PLATFORM_BROWSER = VERSION_ANGULAR;
+const VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC = VERSION_ANGULAR;
+const VERSION_ANGULAR_ROUTER = VERSION_ANGULAR;
+/**
+ * 
+ */
+const VERSION_ANGULAR_IN_MEMORY_WEB_API = '0.3.2';
 /**
  * 
  */
@@ -103,25 +111,40 @@ function vendorFolder(packageFolder: string, version: string | undefined, subFol
 
 // Functions defining the name of the folder and version being used.
 /**
- * AngularJS. Everything goes in the vendor folder.
+ * AngularJS (1.x). Everything goes in the vendor folder.
  */
 function angularJS(fileName: string): string {
     return vendorFolder('angularJS', VERSION_ANGULARJS, void 0, fileName);
 }
-function angularCore(fileName: string): string {
-    return vendorFolder('@angular/core', VERSION_ANGULAR_CORE, void 0, fileName);
-}
+/**
+ * Angular (n.x where n > 1). Everything goes in the vendor folder.
+ */
 function angularCommon(fileName: string): string {
     return vendorFolder('@angular/common', VERSION_ANGULAR_COMMON, void 0, fileName);
 }
 function angularCompiler(fileName: string): string {
     return vendorFolder('@angular/compiler', VERSION_ANGULAR_COMPILER, void 0, fileName);
 }
+function angularCore(fileName: string): string {
+    return vendorFolder('@angular/core', VERSION_ANGULAR_CORE, void 0, fileName);
+}
+function angularForms(fileName: string): string {
+    return vendorFolder('@angular/forms', VERSION_ANGULAR_FORMS, void 0, fileName);
+}
+function angularHttp(fileName: string): string {
+    return vendorFolder('@angular/http', VERSION_ANGULAR_HTTP, void 0, fileName);
+}
 function angularPlatformBrowser(fileName: string): string {
     return vendorFolder('@angular/platform-browser', VERSION_ANGULAR_PLATFORM_BROWSER, void 0, fileName);
 }
 function angularPlatformBrowserDynamic(fileName: string): string {
     return vendorFolder('@angular/platform-browser-dynamic', VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC, void 0, fileName);
+}
+function angularRouter(fileName: string): string {
+    return vendorFolder('@angular/router', VERSION_ANGULAR_ROUTER, void 0, fileName);
+}
+function angularInMemoryWebApi(fileName: string): string {
+    return vendorFolder('angular-in-memory-web-api', VERSION_ANGULAR_IN_MEMORY_WEB_API, void 0, fileName);
 }
 function baconjs(fileName: string): string {
     return vendorFolder('baconjs', VERSION_BACONJS, void 0, fileName);
@@ -209,21 +232,6 @@ export class OptionManager implements IOptionManager {
     constructor() {
         this._options = [
             {
-                packageName: '@angular/core',
-                moduleName: '@angular/core',
-                libraryKind: LibraryKind.Modular,
-                globalName: undefined,
-                description: "Angular Core",
-                homepage: '',
-                version: VERSION_ANGULAR_CORE,
-                visible: true,
-                css: [],
-                dts: angularCore(INDEX_DTS),
-                js: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
-                minJs: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
-                dependencies: {}
-            },
-            {
                 packageName: '@angular/common',
                 moduleName: '@angular/common',
                 libraryKind: LibraryKind.Modular,
@@ -254,6 +262,51 @@ export class OptionManager implements IOptionManager {
                 dependencies: {}
             },
             {
+                packageName: '@angular/core',
+                moduleName: '@angular/core',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
+                description: "Angular Core",
+                homepage: '',
+                version: VERSION_ANGULAR_CORE,
+                visible: true,
+                css: [],
+                dts: angularCore(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.js`],
+                minJs: [`https://unpkg.com/@angular/core@${VERSION_ANGULAR_CORE}/bundles/core.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/forms',
+                moduleName: '@angular/forms',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
+                description: "Angular Forms",
+                homepage: '',
+                version: VERSION_ANGULAR_FORMS,
+                visible: true,
+                css: [],
+                dts: angularForms(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/forms@${VERSION_ANGULAR_FORMS}/bundles/forms.umd.js`],
+                minJs: [`https://unpkg.com/@angular/forms@${VERSION_ANGULAR_FORMS}/bundles/forms.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/http',
+                moduleName: '@angular/http',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
+                description: "Angular Http",
+                homepage: '',
+                version: VERSION_ANGULAR_HTTP,
+                visible: true,
+                css: [],
+                dts: angularHttp(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/http@${VERSION_ANGULAR_HTTP}/bundles/http.umd.js`],
+                minJs: [`https://unpkg.com/@angular/http@${VERSION_ANGULAR_HTTP}/bundles/http.umd.min.js`],
+                dependencies: {}
+            },
+            {
                 packageName: '@angular/platform-browser',
                 moduleName: '@angular/platform-browser',
                 libraryKind: LibraryKind.Modular,
@@ -281,6 +334,36 @@ export class OptionManager implements IOptionManager {
                 dts: angularPlatformBrowserDynamic(INDEX_DTS),
                 js: [`https://unpkg.com/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.js`],
                 minJs: [`https://unpkg.com/@angular/platform-browser-dynamic@${VERSION_ANGULAR_PLATFORM_BROWSER_DYNAMIC}/bundles/platform-browser-dynamic.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: '@angular/router',
+                moduleName: '@angular/router',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
+                description: "Angular Router",
+                homepage: '',
+                version: VERSION_ANGULAR_ROUTER,
+                visible: true,
+                css: [],
+                dts: angularRouter(INDEX_DTS),
+                js: [`https://unpkg.com/@angular/router@${VERSION_ANGULAR_ROUTER}/bundles/router.umd.js`],
+                minJs: [`https://unpkg.com/@angular/router@${VERSION_ANGULAR_ROUTER}/bundles/router.umd.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: 'angular-in-memory-web-api',
+                moduleName: 'angular-in-memory-web-api',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
+                description: "Angular In Memory Web API",
+                homepage: '',
+                version: VERSION_ANGULAR_IN_MEMORY_WEB_API,
+                visible: true,
+                css: [],
+                dts: angularInMemoryWebApi(INDEX_DTS),
+                js: [`https://unpkg.com/angular-in-memory-web-api@${VERSION_ANGULAR_IN_MEMORY_WEB_API}/bundles/in-memory-web-api.umd.js`],
+                minJs: [`https://unpkg.com/angular-in-memory-web-api@${VERSION_ANGULAR_IN_MEMORY_WEB_API}/bundles/in-memory-web-api.umd.js`],
                 dependencies: {}
             },
             {

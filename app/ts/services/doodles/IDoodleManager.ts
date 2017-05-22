@@ -1,4 +1,4 @@
-import Doodle from './Doodle';
+import { Doodle } from './Doodle';
 
 /**
  * API for LocalStorage of Doodle(s).

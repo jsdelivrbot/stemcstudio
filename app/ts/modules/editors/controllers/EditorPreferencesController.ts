@@ -1,6 +1,6 @@
 import EditorPreferencesDialog from '../contracts/EditorPreferencesDialog';
 import EditorPreferencesDialogModel from '../contracts/EditorPreferencesDialogModel';
-import EditorPreferencesService from '../EditorPreferencesService';
+import { EditorPreferencesService } from '../EditorPreferencesService';
 import { EDITOR_PREFERENCES_DIALOG } from '../constants';
 import { EDITOR_PREFERENCES_SERVICE } from '../constants';
 

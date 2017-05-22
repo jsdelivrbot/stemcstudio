@@ -1,13 +1,13 @@
 import themes from './manifest';
-import Theme from '../../Theme';
-import EditorPreferencesService from '../../EditorPreferencesService';
-import EditorPreferencesEvent from '../../EditorPreferencesEvent';
+import { Theme } from '../../Theme';
+import { EditorPreferencesService } from '../../EditorPreferencesService';
+import { EditorPreferencesEvent } from '../../EditorPreferencesEvent';
 import { currentTheme } from '../../EditorPreferencesEvent';
 import { EDITOR_PREFERENCES_STORAGE } from '../../../preferences/constants';
 import { IDeferred, IPromise, IQService } from 'angular';
 import { EditorPreferencesStorage } from '../../../preferences/EditorPreferencesStorage';
 
-const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24, 28, 32].map(function (fontSize) { return `${fontSize}px`; });
+const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24, 28, 32, 36].map(function (fontSize) { return `${fontSize}px`; });
 const tabSizes: number[] = [2, 3, 4];
 const themeNames: string[] = themes.map(theme => theme.name);
 
@@ -245,10 +245,9 @@ export class DefaultEditorPreferencesService implements EditorPreferencesService
      */
     private broadcast() {
         const theme: Theme = this.currentTheme;
-        const cbs = this.ensureCallbacks(currentTheme);
-        for (let i = 0; i < cbs.length; i++) {
-            const cb = cbs[i];
-            cb({
+        const callbacks = this.ensureCallbacks(currentTheme);
+        for (const callback of callbacks) {
+            callback({
                 displayIndentGuides: this.storage.displayIndentGuides,
                 fontSize: this.storage.fontSize,
                 cssClass: theme.cssClass,

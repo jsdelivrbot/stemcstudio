@@ -1,5 +1,5 @@
 import { IPromise } from 'angular';
-import Doodle from '../doodles/Doodle';
+import { Doodle } from '../doodles/Doodle';
 import { Gist } from '../github/Gist';
 import { RepoData } from '../github/RepoData';
 import { RepoKey } from '../github/RepoKey';

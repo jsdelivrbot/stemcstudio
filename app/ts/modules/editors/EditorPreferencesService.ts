@@ -1,8 +1,8 @@
 import { IPromise } from 'angular';
-import Theme from './Theme';
-import EditorPreferencesEvent from './EditorPreferencesEvent';
+import { Theme } from './Theme';
+import { EditorPreferencesEvent } from './EditorPreferencesEvent';
 
-interface EditorPreferencesService {
+export interface EditorPreferencesService {
     /**
      * 
      */
@@ -109,5 +109,3 @@ interface EditorPreferencesService {
      */
     removeEventListener(eventName: string, callback: (event: EditorPreferencesEvent) => any): void;
 }
-
-export default EditorPreferencesService;

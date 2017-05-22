@@ -1,4 +1,4 @@
-import Doodle from '../services/doodles/Doodle';
+import { Doodle } from '../services/doodles/Doodle';
 
 export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle): void {
 

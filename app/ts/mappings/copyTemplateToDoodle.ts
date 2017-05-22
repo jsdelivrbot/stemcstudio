@@ -1,5 +1,5 @@
 import { ITemplate } from '../services/templates/template';
-import Doodle from '../services/doodles/Doodle';
+import { Doodle } from '../services/doodles/Doodle';
 
 export function copyTemplateToDoodle(template: ITemplate, doodle: Doodle): void {
 

@@ -1,4 +1,4 @@
-import DoodleFile from '../doodles/DoodleFile';
+import { DoodleFile } from '../doodles/DoodleFile';
 import GistFile from '../github/GistFile';
 import { modeFromName } from '../../utils/modeFromName';
 

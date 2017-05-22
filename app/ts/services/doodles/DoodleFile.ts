@@ -3,7 +3,7 @@ import { LanguageModeId } from '../../virtual/editor';
 /**
  *
  */
-export default class DoodleFile {
+export class DoodleFile {
 
     /**
      * The text content of the file, unencoded.

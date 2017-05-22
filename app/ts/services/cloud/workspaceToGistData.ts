@@ -1,5 +1,5 @@
 import { GistData } from '../github/GistData';
-import doodleFilesToGistFiles from './doodleFilesToGistFiles';
+import { doodleFilesToGistFiles } from './doodleFilesToGistFiles';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 export function workspaceToGistData(workspace: WsModel): GistData {
@@ -8,5 +8,7 @@ export function workspaceToGistData(workspace: WsModel): GistData {
         public: true,
         files: doodleFilesToGistFiles(workspace.filesByPath, workspace.trashByPath)
     };
+    // console.lg(`workspaceToGistData`);
+    // console.lg(JSON.stringify(gist));
     return gist;
 }

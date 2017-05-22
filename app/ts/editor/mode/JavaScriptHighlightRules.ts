@@ -33,6 +33,9 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
     constructor(options?: { noES6?: boolean; jsx?: boolean }) {
         super();
         // see: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects
+        /**
+         * Categorize keywords according to their use.
+         */
         const keywordMapper = this.createKeywordMapper({
             "variable.language":
             "Array|Boolean|Date|Function|Iterator|Number|Object|RegExp|String|Proxy|" + // Constructors
@@ -46,19 +49,29 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
             "JSON|Math|" + // Other
             "this|arguments|prototype|window|document", // Pseudo
             "keyword":
-            "const|yield|import|get|set|async|await|" +
-            "break|case|catch|continue|default|delete|do|else|finally|for|function|" +
-            "if|in|of|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|" +
+            "await|break|case|catch|continue|debugger|default|get|set|async|" +
+            "delete|do|else|finally|for|" +
+            "if|in|of|instanceof|new|return|switch|throw|try|typeof|while|with|yield|" +
+            "import|as|from|" +
             // invalid or reserved
             "__parent__|__count__|escape|unescape|with|__proto__|" +
-            "class|enum|extends|super|export|implements|private|public|interface|package|protected|static",
-            "storage.type":
-            "const|let|var|function",
-            "constant.language":
-            "null|Infinity|NaN|undefined",
-            "support.function":
-            "alert",
-            "constant.language.boolean": "true|false"
+            "extends|super|export|implements|private|public|package|protected|static",
+            /**
+             * Storage Type are all the kinds of things that can be exported by name.
+             */
+            "storage.type": "class|const|enum|interface|let|function|type|var",
+            /**
+             * 
+             */
+            "constant.language": "null|Infinity|NaN|undefined",
+            /**
+             * 
+             */
+            "constant.language.boolean": "true|false",
+            /**
+             * 
+             */
+            "support.function": "alert",
         }, "identifier");
 
         // regexp must not have capturing parentheses. Use (?:) instead.
@@ -181,7 +194,8 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                 },
                 {
                     token: "keyword.operator",
-                    regex: /--|\+\+|\.{3}|===|==|=|!=|!==|<+=?|>+=?|!|&&|\|\||\?:|[!$%&*+\-~\/^]=?/,
+                    // Because this is a RegExp, only single escapes are required.
+                    regex: /--|\+\+|\.{3}|===|==|=|!=|!==|<+=?|>+=?|!|&&|\|\||\?:|[!$%&*+\-~\/^|]=?/,
                     next: "start"
                 },
                 {

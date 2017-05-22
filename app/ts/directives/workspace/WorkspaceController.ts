@@ -8,7 +8,7 @@ import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/back
 import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
-import Doodle from '../../services/doodles/Doodle';
+import { Doodle } from '../../services/doodles/Doodle';
 import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../../services/github/IGitHubGistService';
 import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';

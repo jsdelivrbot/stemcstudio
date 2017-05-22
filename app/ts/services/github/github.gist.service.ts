@@ -56,14 +56,22 @@ export class GitHubGistService extends AbstractGitHubService implements IGitHubG
             .toPromise();
     }
 
+    /**
+     * Performs a create Gist request with `post` HTTP method.
+     */
     createGist(data: GistData): Promise<Gist> {
         return this.http.post(this.gists(), data, this.options())
             .map(function (response) { return response.json() as Gist; })
             .toPromise();
     }
 
+    /**
+     * Performs an update Gist request with `patch` HTTP method.
+     */
     updateGist(gistId: string, data: GistData): Promise<Gist> {
-        return this.http.post(this.gistURL(gistId), data, this.options())
+        // console.log(`GitHubGistService.updateGist(gistId = ${gistId}, data = ...)`);
+        // console.log(JSON.stringify(data, null, 2));
+        return this.http.patch(this.gistURL(gistId), data, this.options())
             .map(function (response) { return response.json() as Gist; })
             .toPromise();
     }
