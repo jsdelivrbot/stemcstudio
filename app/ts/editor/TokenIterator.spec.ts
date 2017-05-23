@@ -2,7 +2,7 @@ import { Document } from './Document';
 import { EditSession } from './EditSession';
 import { HighlighterToken } from './mode/Highlighter';
 import { JavaScriptMode } from './mode/JavaScriptMode';
-import TokenIterator from './TokenIterator';
+import { TokenIterator } from './TokenIterator';
 
 function expectNotNull<T>(x: T | null): T {
     if (x) {

@@ -1,6 +1,6 @@
 import { Range } from "../../Range";
-import FoldStyle from '../../FoldStyle';
-import FoldWidget from '../../FoldWidget';
+import { FoldStyle } from '../../FoldStyle';
+import { FoldWidget } from '../../FoldWidget';
 //
 // Editor Abstraction Layer
 //

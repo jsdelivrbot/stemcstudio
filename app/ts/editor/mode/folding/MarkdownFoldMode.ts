@@ -1,8 +1,8 @@
 import { Range } from "../../Range";
 import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
-import FoldStyle from "../../FoldStyle";
-import FoldWidget from "../../FoldWidget";
+import { FoldStyle } from "../../FoldStyle";
+import { FoldWidget } from "../../FoldWidget";
 import Token from "../../Token";
 
 /**

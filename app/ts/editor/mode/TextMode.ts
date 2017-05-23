@@ -12,7 +12,7 @@ import { escapeRegExp } from "../lib/lang";
 import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
 import { HighlighterFactory } from './HighlighterFactory';
 import LanguageModeFactory from "../LanguageModeFactory";
-import TokenIterator from "../TokenIterator";
+import { TokenIterator } from "../TokenIterator";
 import { Range } from "../Range";
 import TextAndSelection from "../TextAndSelection";
 import { WorkerClient } from "../worker/WorkerClient";
@@ -425,7 +425,7 @@ export class TextMode implements LanguageMode {
     }
 
     /**
-     *
+     * Derived classes will override this method.
      */
     getNextLineIndent(state: string, line: string, tab: string): string {
         return this.$getIndent(line);
@@ -439,7 +439,11 @@ export class TextMode implements LanguageMode {
         // Do nothing.
     }
 
-    $getIndent(line: string): string {
+    /**
+     * Determines the indentation of the specified line.
+     * FIXME: This function does not use this and so should be standalone.
+     */
+    protected $getIndent(line: string): string {
         const match = line.match(/^\s*/);
         if (match) {
             return match[0];

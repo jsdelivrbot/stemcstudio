@@ -6,7 +6,7 @@ import { EventEmitterClass } from "../lib/EventEmitterClass";
 import Delta from "../Delta";
 import { EditSession } from "../EditSession";
 import EventBus from "../EventBus";
-import FoldWidget from "../FoldWidget";
+import { FoldWidget } from "../FoldWidget";
 import Annotation from "../Annotation";
 import GutterConfig from "./GutterConfig";
 import Padding from './Padding';

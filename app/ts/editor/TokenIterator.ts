@@ -24,7 +24,7 @@ function check<T>(xs: T[], where: string): T[] {
  * Provides methods to iterate over these tokens.
  * The heavy lifting is really being done by the edit session.
  */
-export default class TokenIterator {
+export class TokenIterator {
     private session: EditSession;
     private $row: number;
     private $rowTokens: BasicToken[];

@@ -1,4 +1,4 @@
-import TokenIterator from "./TokenIterator";
+import { TokenIterator } from "./TokenIterator";
 import Position from "./Position";
 //
 // Editor Abstraction Layer

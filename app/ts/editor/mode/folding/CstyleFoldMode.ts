@@ -1,7 +1,7 @@
 import { Range } from "../../Range";
 import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
-import FoldStyle from "../../FoldStyle";
+import { FoldStyle } from "../../FoldStyle";
 import { isMultiLine } from "../../RangeHelpers";
 
 /**

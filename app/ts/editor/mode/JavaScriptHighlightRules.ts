@@ -6,6 +6,11 @@ import { HighlighterRule, HighlighterStack, HighlighterStackElement } from './Hi
 const kwBeforeRe = "case|do|else|finally|in|instanceof|return|throw|try|typeof|yield|void";
 
 // TODO: Unicode escape sequences
+/**
+ * Identifier regular expression.
+ * Usual rules allowing identifiers to begin-with and contain $ (dollar) and _ (underscore).
+ * Identifiers can contain numbers, but cannot begin with a number.
+ */
 const identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*\\b";
 
 const escapedRe = "\\\\(?:x[0-9a-fA-F]{2}|" + // hex
@@ -101,16 +106,17 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     regex: /[+-]?\d[\d_]*(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?\b/
                 },
                 {
-                    // Sound.prototype.play =
+                    // Identifier '.' 'prototype' '.' Identifier '='
                     token: [
                         "storage.type", "punctuation.operator", "support.function",
                         "punctuation.operator", "entity.name.function", "text", "keyword.operator"
                     ],
+                    // TODO: Are we missing something here?
                     regex: "(" + identifierRe + ")(\\.)(prototype)(\\.)(" + identifierRe + ")(\\s*)(=)",
                     next: "function_arguments"
                 },
                 {
-                    // Sound.play = function() {  }
+                    // Identifier '.' Identifier '=' 'function' '('
                     token: [
                         "storage.type", "punctuation.operator", "entity.name.function", "text",
                         "keyword.operator", "text", "storage.type", "text", "paren.lparen"
@@ -119,7 +125,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // play = function() {  }
+                    // Identifier '=' 'function' '('
                     token: [
                         "entity.name.function", "text", "keyword.operator", "text", "storage.type",
                         "text", "paren.lparen"
@@ -128,7 +134,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // Identifier '.' Identifier '=' 'function' play '('
+                    // Identifier '.' Identifier '=' 'function' Word '('
                     token: [
                         "storage.type", "punctuation.operator", "entity.name.function", "text",
                         "keyword.operator", "text",
@@ -138,7 +144,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // "function" ws+ Identifier ws* "("
+                    // 'function' Identifier '('
                     token: [
                         "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                     ],
@@ -146,7 +152,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // function(
+                    // 'function' '('
                     token: [
                         "storage.type", "text", "paren.lparen"
                     ],
@@ -154,7 +160,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // Identifier: function(
+                    // Identifier ':' 'function' '('
                     token: [
                         "entity.name.function", "text", "punctuation.operator",
                         "text", "storage.type", "text", "paren.lparen"
@@ -163,8 +169,9 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     next: "function_arguments"
                 },
                 {
-                    // : function() { } (this is for issues with 'foo': function() { })
+                    // ':' 'function' '(' (this is for issues with 'foo': function() { })
                     token: [
+                        // TODO: Why don't we use "punctuation.operator" for the first token?
                         "text", "text", "storage.type", "text", "paren.lparen"
                     ],
                     regex: "(:)(\\s*)(function)(\\s*)(\\()",
@@ -180,7 +187,9 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     regex: /that\b/
                 },
                 {
+                    // 'console' '.' 'warn' etc...
                     token: ["storage.type", "punctuation.operator", "support.function.firebug"],
+                    // TODO: Shouldn't we allow whitespace around the period punctuation operator?
                     regex: /(console)(\.)(warn|info|log|error|time|trace|timeEnd|assert)\b/
                 },
                 {
@@ -228,12 +237,13 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     regex: "\\s+"
                 },
                 {
-                    // Sound.play = function play() {  }
+                    // Identifier '.' Identifier '=' 'function' [Word] '('
                     token: [
                         "storage.type", "punctuation.operator", "entity.name.function", "text",
                         "keyword.operator", "text",
                         "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                     ],
+                    // TODO: Why do we use a word and not an identifier?
                     regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(?:(\\s+)(\\w+))?(\\s*)(\\()",
                     next: "function_arguments"
                 },
@@ -314,6 +324,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     regex: /\|/
                 },
                 {
+                    // '[' ['^']
                     token: "constant.language.escape",
                     regex: /\[\^?/,
                     next: "regex_character_class"
@@ -331,18 +342,25 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                 {
                     token: "regexp.charclass.keyword.operator",
                     regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
-                }, {
+                },
+                {
                     token: "constant.language.escape",
                     regex: "]",
                     next: "regex"
-                }, {
+                },
+                {
                     token: "constant.language.escape",
                     regex: "-"
-                }, {
+                },
+                {
+                    // Regular expressions can't straddle lines so if we end up here there is a syntax error.
+                    // Why do we go to the "no_regex"" state instead of "start"?
                     token: "empty",
                     regex: "$",
                     next: "no_regex"
-                }, {
+                },
+                {
+                    // TODO: Surely we have a mis-spelling?
                     defaultToken: "string.regexp.charachterclass"
                 }
             ],

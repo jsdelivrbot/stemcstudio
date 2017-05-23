@@ -37,11 +37,12 @@ export interface Rule<T, E, S extends Array<string | E>> {
     stateName?: string;
 
     /**
-     *
+     * Allows the tokenizer to ignore case when matching the rule.
      */
     caseInsensitive?: boolean;
 
     /**
+     * The token returned if nothing matches in the tokenizer.
      * FIXME: Is this too general?
      */
     // defaultToken?: string | string[] | ((value: any, state: string, stack: string[]) => any);

@@ -31,12 +31,15 @@ export class JavaScriptMode extends TextMode {
         this.blockComment = { start: "/*", end: "*/" };
     }
 
+    /**
+     * 
+     */
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
 
         const tokenizedLine = this.getTokenizer().getLineTokens(line, state);
         const tokens = tokenizedLine.tokens;
-        // Looks like we can have a string or string[] here.
+        // Looks like we can have a string or (string | number)[] here.
         const endState = tokenizedLine.state;
 
         // If the type of the last token is a comment, there is no change of indentation.

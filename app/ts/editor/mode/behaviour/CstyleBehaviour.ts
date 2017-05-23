@@ -1,6 +1,6 @@
 import { Behaviour } from "../Behaviour";
 import { BehaviorCallbackThis } from '../../BehaviourCallback';
-import TokenIterator from "../../TokenIterator";
+import { TokenIterator } from "../../TokenIterator";
 import { stringRepeat } from "../../lib/lang";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";

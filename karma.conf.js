@@ -38,11 +38,37 @@ module.exports = function (config) {
       // This file is effectively our bootstrap mechanism.
       'karma-test-shim.js',
 
-      { pattern: 'generated/js/**/*.js', included: false, watched: true },
-      { pattern: 'generated/js/**/*.js.map', included: false, watched: true },
+      // Load all test specifications and their map files.
+      { pattern: 'generated/js/**/*.spec.js', included: false, watched: true },
+      { pattern: 'generated/js/**/*.spec.js.map', included: false, watched: true },
+      // Load tested files as needed to keep resource requirements down.
+      { pattern: 'generated/js/constants.js', included: false, watched: true },
+      { pattern: 'generated/js/constants.js.map', included: false, watched: true },
+      { pattern: 'generated/js/editor/**/*.js', included: false, watched: true },
+      { pattern: 'generated/js/editor/**/*.js.map', included: false, watched: true },
+      { pattern: 'generated/js/languages/**/*.js', included: false, watched: true },
+      { pattern: 'generated/js/languages/**/*.js.map', included: false, watched: true },
+      { pattern: 'generated/js/utils/**/*.js', included: false, watched: true },
+      { pattern: 'generated/js/utils/**/*.js.map', included: false, watched: true },
+      { pattern: 'generated/js/virtual/**/*.js', included: false, watched: true },
+      { pattern: 'generated/js/virtual/**/*.js.map', included: false, watched: true },
+      { pattern: 'generated/js/workbench/**/*.js', included: false, watched: true },
+      { pattern: 'generated/js/workbench/**/*.js.map', included: false, watched: true },
       // Stage in base only what we need.
       { pattern: 'generated/jspm_packages/system.js.map', included: false, watched: false },
-      { pattern: 'generated/jspm_packages/**/!(*.spec).js', included: false, watched: false },
+      // Don't forget to change baseURL in jspm.config.js in generated as per CONTRIBUTING.md
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/symbol/observable.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/symbol/rxSubscriber.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/util/*.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/Observable.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/Observer.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/Subscriber.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/rxjs@5.4.0/Subscription.js', included: false, watched: false },
+      // { pattern: 'generated/jspm_packages/**/!(*.spec).js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/github/jspm/nodelibs-process@0.1.2.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/github/jspm/nodelibs-process@0.1.2/index.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/process@0.11.10.js', included: false, watched: false },
+      { pattern: 'generated/jspm_packages/npm/process@0.11.10/browser.js', included: false, watched: false },
 
       // Karma will load this under /base/node_modules/tslib/tslib.js
       // The following is only needed if we are using the TypeScript runtime library.

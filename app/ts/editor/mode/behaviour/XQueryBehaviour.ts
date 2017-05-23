@@ -1,7 +1,7 @@
-import Behaviour from '../Behaviour';
-import CstyleBehaviour from './CstyleBehaviour';
-import XmlBehaviour from "../behaviour/XmlBehaviour";
-import TokenIterator from "../../TokenIterator";
+import {Behaviour} from '../Behaviour';
+import {CstyleBehaviour} from './CstyleBehaviour';
+import {XmlBehaviour} from "../behaviour/XmlBehaviour";
+import { TokenIterator } from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 
@@ -18,7 +18,7 @@ function hasType(token: { type: string }, type: string) {
     return hasType;
 }
 
-export default class XQueryBehaviour extends Behaviour {
+export class XQueryBehaviour extends Behaviour {
     constructor() {
         super();
         this.inherit(new CstyleBehaviour(), ["braces", "parens", "string_dquotes"]);
