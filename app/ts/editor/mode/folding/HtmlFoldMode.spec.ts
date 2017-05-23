@@ -6,7 +6,7 @@ describe("HtmlFoldMode", function () {
     describe("fold mixed html and javascript", function () {
         const doc = new Document([
             '<script type="text/javascript"> ',
-            'function() foo {',
+            'function foo() {',
             '    var bar = 1;',
             '}',
             '</script>'
@@ -120,8 +120,7 @@ describe("HtmlFoldMode", function () {
             expect(session.getFoldWidget(2)).toBe("end");
         });
 
-        // FIXME: See issue #49
-        xit("should have fold ranges", function () {
+        it("should have fold ranges", function () {
             // assert.range(session.getFoldWidgetRange(0), 0, 6, 2, 0);
             expect(session.getFoldWidgetRange(0).start.row).toBe(0);
             expect(session.getFoldWidgetRange(0).start.column).toBe(6);
@@ -154,8 +153,7 @@ describe("HtmlFoldMode", function () {
             expect(session.getFoldWidget(2)).toBe("end");
         });
 
-        // FIXME: See issue #49
-        xit("should have fold ranges", function () {
+        it("should have fold ranges", function () {
             // assert.range(session.getFoldWidgetRange(0), 0, 6, 2, 0);
             expect(session.getFoldWidgetRange(0).start.row).toBe(0);
             expect(session.getFoldWidgetRange(0).start.column).toBe(6);
@@ -180,6 +178,7 @@ describe("HtmlFoldMode", function () {
         ]);
 
         const session = new EditSession(doc);
+        session.traceTokenizer = true;
         session.setUseWorker(false);
         session.setLanguage('HTML');
 
@@ -194,8 +193,7 @@ describe("HtmlFoldMode", function () {
             expect(session.getFoldWidget(5)).toBe("end");
         });
 
-        // FIXME: See issue #49
-        xit("should have fold ranges", function () {
+        it("should have fold ranges", function () {
             // assert.range(session.getFoldWidgetRange(0), 0, 5, 5, 0);
             expect(session.getFoldWidgetRange(0).start.row).toBe(0);
             expect(session.getFoldWidgetRange(0).start.column).toBe(5);

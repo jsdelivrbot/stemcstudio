@@ -45,25 +45,46 @@ export class MixedFoldMode extends FoldMode {
                 this.defaultMode.getFoldWidget(session, foldStyle, row)
             );
         }
-        else {
+        else if (row === 0) {
             return (
                 this.$tryMode(session.getState(row), session, foldStyle, row) ||
                 this.defaultMode.getFoldWidget(session, foldStyle, row)
             );
         }
+        else {
+            throw new Error(`MixedFoldMode.getFoldWidget(row = ${row})`);
+        }
     }
 
     getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | null | undefined {
-        let mode = this.$getMode(session.getState(row - 1));
+        if (row > 0) {
+            let mode = this.$getMode(session.getState(row - 1));
 
-        if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
-            mode = this.$getMode(session.getState(row));
+            if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
+                mode = this.$getMode(session.getState(row));
+            }
+
+            if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
+                mode = this.defaultMode;
+            }
+
+            return mode.getFoldWidgetRange(session, foldStyle, row);
         }
+        else if (row === 0) {
+            let mode = this.$getMode(session.getState(row));
 
-        if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
-            mode = this.defaultMode;
+            if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
+                mode = this.$getMode(session.getState(row));
+            }
+
+            if (!mode || !mode.getFoldWidget(session, foldStyle, row)) {
+                mode = this.defaultMode;
+            }
+
+            return mode.getFoldWidgetRange(session, foldStyle, row);
         }
-
-        return mode.getFoldWidgetRange(session, foldStyle, row);
+        else {
+            throw new Error(`MixedFoldMode.getFoldWidgetRange(row = ${row})`);
+        }
     }
 }

@@ -136,6 +136,10 @@ export class BackgroundTokenizer implements EventBus<BackgroundTokenizerEventNam
      * Returns the state of tokenization at the end of a row.
      */
     getState(row: number): string {
+        if (row < 0) {
+            console.log(`BackgroundTokenizer.getState(row = ${row})`);
+            console.log(`BackgroundTokenizer (currentLine = ${this.currentLine})`);
+        }
         if (this.currentLine === row) {
             this.tokenizeRow(row);
         }

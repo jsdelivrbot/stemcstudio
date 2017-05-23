@@ -665,7 +665,12 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
      * Returns nothing if there is no background tokenizer.
      */
     public getState(row: number): string {
-        return this.bgTokenizerOrThrow().getState(row);
+        if (row >= 0) {
+            return this.bgTokenizerOrThrow().getState(row);
+        }
+        else {
+            throw new Error("row must be greater than or equal to zero");
+        }
     }
 
     /**
