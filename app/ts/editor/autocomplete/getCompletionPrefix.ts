@@ -1,5 +1,5 @@
 import { Editor } from '../Editor';
-import Position from '../Position';
+import { Position } from '../Position';
 import retrievePrecedingIdentifier from './retrievePrecedingIdentifier';
 
 /**

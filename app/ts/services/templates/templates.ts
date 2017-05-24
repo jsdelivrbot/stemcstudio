@@ -64,8 +64,10 @@ app.factory('templates', [
         const tab = tabString(editorPreferences);
         /**
          * System polyfill.
+         * After some problems with the file at unpkg.com, going back to jspm.io
          */
-        const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
+        const systemJsUrl = 'https://jspm.io/system@0.19.34.js';
+        // const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
 
         // TODO: The problem here is that the template file content maps to strings,
         // when it should map to functions that create strings. Doing so would allow

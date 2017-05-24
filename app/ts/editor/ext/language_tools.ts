@@ -7,7 +7,7 @@
 // import Editor from "../Editor";
 // import EditSession from '../EditSession';
 // import LanguageMode from '../LanguageMode';
-// import Position from '../Position';
+// import {Position} from '../Position';
 // import {COMMAND_NAME_AUTO_COMPLETE} from '../editor_protocol';
 // import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
 // import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';

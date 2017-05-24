@@ -2,7 +2,7 @@ import RangeBasic from "./RangeBasic";
 import { isEmpty } from "./RangeHelpers";
 import { EditSession } from "./EditSession";
 import { comparePositions } from "./Position";
-import Position from "./Position";
+import { Position } from "./Position";
 
 /**
  *

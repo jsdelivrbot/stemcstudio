@@ -21,7 +21,7 @@ import FirstAndLast from "./FirstAndLast";
 import Fold from "./Fold";
 import LineWidget from './LineWidget';
 import LineWidgetManager from './LineWidgetManager';
-import Position from "./Position";
+import { Position } from "./Position";
 import { Range } from "./Range";
 import RangeBasic from "./RangeBasic";
 import { collapseRows, contains, compare, comparePoint, compareRange, insideStart, isEmpty, isEqual, isMultiLine, moveBy, setEnd } from "./RangeHelpers";

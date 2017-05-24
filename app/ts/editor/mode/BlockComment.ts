@@ -1,17 +1,14 @@
 /**
  *
  */
-interface BlockComment {
+export interface BlockComment {
+    /**
+     *
+     */
+    start: '/*' | '<!--' | '%{' | "'''";
 
     /**
      *
      */
-    start: string;
-
-    /**
-     *
-     */
-    end: string;
+    end: '*/' | '-->' | '%}' | "'''";
 }
-
-export default BlockComment;

@@ -21,7 +21,7 @@ import IWorkspaceModel from './IWorkspaceModel';
 import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
-import Position from '../../editor/Position';
+import { Position } from '../../editor/Position';
 import { modeFromName } from '../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';

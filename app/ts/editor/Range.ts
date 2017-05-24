@@ -1,4 +1,4 @@
-import Position from "./Position";
+import { Position } from "./Position";
 import RangeBasic from './RangeBasic';
 import { compareRange, isStart, isEnd, isMultiLine } from './RangeHelpers';
 // import Tabstop from './Tabstop';

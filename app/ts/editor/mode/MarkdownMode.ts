@@ -12,7 +12,6 @@ import { MarkdownFoldMode } from './folding/MarkdownFoldMode';
 export class MarkdownMode extends TextMode {
 
     protected type = "text";
-    protected blockComment = { start: "<!--", end: "-->" };
 
     /**
      *
@@ -21,6 +20,7 @@ export class MarkdownMode extends TextMode {
         super(workerUrl, scriptImports);
         this.$id = "Markdown";
         this.HighlightRules = MarkdownHighlightRules;
+        this.blockComment = { start: "<!--", end: "-->" };
 
         this.createModeDelegates({
             "ts-": TypeScriptMode,

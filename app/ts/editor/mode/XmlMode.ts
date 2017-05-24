@@ -15,8 +15,6 @@ export class XmlMode extends TextMode {
 
     protected voidElements: VoidElementsMap;
 
-    protected blockComment = { start: "<!--", end: "-->" };
-
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
         this.$id = "XML";
@@ -24,5 +22,6 @@ export class XmlMode extends TextMode {
         this.$behaviour = new XmlBehaviour();
         this.foldingRules = new XmlFoldMode();
         this.voidElements = arrayToMap(voidElements, 1) as VoidElementsMap;
+        this.blockComment = { start: "<!--", end: "-->" };
     }
 }

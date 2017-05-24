@@ -2,7 +2,7 @@
  * The zero-based coordinates of a character in the editor.
  * (row,column) => (0,0) is the topmost and leftmost character.
  */
-interface Position {
+export interface Position {
     /**
      * The zero-based row.
      */
@@ -23,5 +23,3 @@ export function comparePositions(p1: Position, p2: Position): number {
 export function equalPositions(p1: Position, p2: Position): boolean {
     return comparePositions(p1, p2) === 0;
 }
-
-export default Position;

@@ -21,7 +21,6 @@ const outdents = {
 
 export class PythonMode extends TextMode {
     $outdent: MatchingBraceOutdent;
-    blockComment: { start: string; end: string };
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
@@ -30,6 +29,7 @@ export class PythonMode extends TextMode {
         this.HighlightRules = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");
         this.$behaviour = this.$defaultBehaviour;
+        this.blockComment = { start: "'''", end: "'''" };
     }
 
     getNextLineIndent(state: string, line: string, tab: string): string {

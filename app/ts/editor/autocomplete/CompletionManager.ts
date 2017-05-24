@@ -11,7 +11,7 @@ import getCompletionPrefix from './getCompletionPrefix';
 import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import { ListViewPopup } from './ListViewPopup';
 import { PixelPosition } from '../PixelPosition';
-import Position from '../Position';
+import { Position } from '../Position';
 import { Range } from '../Range';
 // import retrievePrecedingIdentifier from "./retrievePrecedingIdentifier";
 import { COMMAND_NAME_INSERT_STRING } from '../editor_protocol';

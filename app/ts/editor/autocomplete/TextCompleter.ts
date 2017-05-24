@@ -56,7 +56,7 @@ import Completer from './Completer';
 import Completion from '../Completion';
 import EditSession from '../EditSession';
 import Editor from '../Editor';
-import Position from "../Position";
+import { Position } from "../Position";
 import { Range } from "../Range";
 
 /**

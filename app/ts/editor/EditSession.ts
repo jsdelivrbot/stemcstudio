@@ -37,7 +37,7 @@ import { TokenIterator } from './TokenIterator';
 // import {WorkerClient} from "./worker/WorkerClient";
 import LineWidget from './LineWidget';
 import LineWidgetManager from './LineWidgetManager';
-import Position from './Position';
+import { Position } from './Position';
 import { HighlighterToken } from './mode/Highlighter';
 
 // Built-In Languages.

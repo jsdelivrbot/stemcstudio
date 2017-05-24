@@ -1,5 +1,5 @@
 import Delta from './Delta';
-import Position from './Position';
+import { Position } from './Position';
 
 function throwDeltaError(delta: Delta, errorText: string) {
     throw "Invalid Delta: " + errorText;

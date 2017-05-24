@@ -1,5 +1,5 @@
 import Fold from "./Fold";
-import Position from "./Position";
+import { Position } from "./Position";
 
 /**
  *

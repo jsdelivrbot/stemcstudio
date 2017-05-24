@@ -2,7 +2,7 @@ import Delta from './Delta';
 import DeltaGroup from './DeltaGroup';
 import { EditSession } from './EditSession';
 import Fold from './Fold';
-import Position from './Position';
+import { Position } from './Position';
 import { Range } from './Range';
 
 interface DeltaLight {

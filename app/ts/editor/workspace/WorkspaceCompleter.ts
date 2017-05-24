@@ -1,6 +1,6 @@
 import { Completion } from '../Completion';
 import { CompletionEntry } from './CompletionEntry';
-import Position from "../Position";
+import { Position } from "../Position";
 import { WorkspaceCompleterHost } from './WorkspaceCompleterHost';
 import { Completer } from '../../virtual/editor';
 import { Editor } from '../../virtual/editor';

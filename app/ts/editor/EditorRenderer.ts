@@ -1,5 +1,5 @@
 import Annotation from "./Annotation";
-import Position from "./Position";
+import { Position } from "./Position";
 
 /**
  *

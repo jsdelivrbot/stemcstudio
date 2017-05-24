@@ -1,5 +1,5 @@
 import { BasicToken } from "./Token";
-import Position from "./Position";
+import { Position } from "./Position";
 import { Range } from './Range';
 
 /**

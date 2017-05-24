@@ -6,7 +6,7 @@ import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { WorkerClient } from "../worker/WorkerClient";
 import { CssBehaviour } from "./behaviour/CssBehaviour";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
-import Position from '../Position';
+import { Position } from '../Position';
 //
 // Editor Abstraction Layer
 //

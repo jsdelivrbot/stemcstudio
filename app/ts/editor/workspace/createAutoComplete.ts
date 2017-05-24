@@ -6,7 +6,7 @@ import Delta from '../Delta';
 import Editor from '../Editor';
 import EventEmitterClass from '../lib/EventEmitterClass';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
-import Position from '../Position';
+import { Position } from '../Position';
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 
 /**
