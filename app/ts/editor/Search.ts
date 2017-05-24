@@ -6,7 +6,7 @@ import MatchOffset from './lib/MatchOffset';
 import { Position } from './Position';
 import { Range } from "./Range";
 import { isEqual } from "./RangeHelpers";
-import RangeBasic from "./RangeBasic";
+import { RangeBasic } from "./RangeBasic";
 import SearchOptions from "./SearchOptions";
 // import { EditSession } from "./EditSession";
 //

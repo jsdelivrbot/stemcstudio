@@ -2,9 +2,9 @@ import { createElement } from "./lib/dom";
 import { addListener, preventDefault, removeListener } from "./lib/event";
 import { Disposable } from '../base/Disposable';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
-import EventBus from "./EventBus";
-import refChange from '../utils/refChange';
-import ScrollBarEvent from './events/ScrollBarEvent';
+import { EventBus } from "./EventBus";
+import { refChange } from '../utils/refChange';
+import { ScrollBarEvent } from './events/ScrollBarEvent';
 
 /**
  * The default coefficient.
@@ -100,5 +100,3 @@ export class ScrollBar implements EventBus<ScrollBarEventName, ScrollBarEvent, S
         return this;
     }
 }
-
-export default ScrollBar;

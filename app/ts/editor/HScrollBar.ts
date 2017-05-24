@@ -1,13 +1,13 @@
 import { addListener, removeListener } from "./lib/event";
-import ScrollBar from './ScrollBar';
-import refChange from '../utils/refChange';
-import Renderer from "./Renderer";
-import toPixelString from './dom/toPixelString';
+import { ScrollBar } from './ScrollBar';
+import { refChange } from '../utils/refChange';
+import { Renderer } from "./Renderer";
+import { toPixelString } from './dom/toPixelString';
 
 /**
  * A horizontal scroll bar.
  */
-export default class HScrollBar extends ScrollBar {
+export class HScrollBar extends ScrollBar {
 
     private scrollLeft_ = 0;
     private height_: number;

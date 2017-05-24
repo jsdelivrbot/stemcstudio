@@ -46,5 +46,3 @@ export function mutateExtendToken(basicToken: BasicToken, index: number, start: 
  */
 export interface Token extends BasicToken, Partial<IndexStart> {
 }
-
-export default Token;

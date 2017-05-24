@@ -1,7 +1,7 @@
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { escapeRegExp } from "./lib/lang";
 import { Tokenizer } from "./Tokenizer";
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import { Rule } from './Rule';
 import Snippet from "./Snippet";
 import SnippetOptions from './SnippetOptions';

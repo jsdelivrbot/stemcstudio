@@ -7,7 +7,7 @@ import { EditSession } from '../../virtual/editor';
 import { Document as NativeDocument } from '../../editor/Document';
 import { Editor as NativeEditor } from '../../editor/Editor';
 import { EditSession as NativeEditSession } from '../../editor/EditSession';
-import Renderer from '../../editor/Renderer';
+import { Renderer } from '../../editor/Renderer';
 
 /**
  * AngularJS dependency injection registry identifier.

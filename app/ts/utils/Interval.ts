@@ -1,4 +1,4 @@
-import refChange from './refChange';
+import { refChange } from './refChange';
 import { Shareable } from '../base/Shareable';
 
 /**

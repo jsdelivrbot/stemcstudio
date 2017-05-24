@@ -1,9 +1,9 @@
-import MarkerConfig from "./MarkerConfig";
+import { MarkerConfig } from "./MarkerConfig";
 
 /**
  *
  */
-interface GutterConfig extends MarkerConfig {
+export interface GutterConfig extends MarkerConfig {
 
     /**
      *
@@ -14,7 +14,4 @@ interface GutterConfig extends MarkerConfig {
      *
      */
     gutterOffset: number;
-
 }
-
-export default GutterConfig;

@@ -1,9 +1,9 @@
 import { createElement } from "../lib/dom";
 import { stringRepeat } from "../lib/lang";
 import { isIE } from "../lib/useragent";
-import EventBus from "../EventBus";
+import { EventBus } from "../EventBus";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
-import refChange from '../../utils/refChange';
+import { refChange } from '../../utils/refChange';
 import Shareable from '../base/Shareable';
 
 let CHAR_COUNT = 0;
@@ -18,7 +18,7 @@ export type FontMetricsEventName = 'changeCharacterSize';
  * It raises the event 'changeCharacterSize'.
  * It is used by the Renderer and the TextLayer.
  */
-export default class FontMetrics implements EventBus<FontMetricsEventName, any, FontMetrics>, Shareable {
+export class FontMetrics implements EventBus<FontMetricsEventName, any, FontMetrics>, Shareable {
     private el: HTMLDivElement;
     private $main: HTMLDivElement;
     private $measureNode: HTMLDivElement;

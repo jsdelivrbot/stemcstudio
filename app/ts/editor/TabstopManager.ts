@@ -1,6 +1,6 @@
 import { comparePositions } from "./Position";
 import createDelayedCall from "./lib/lang/createDelayedCall";
-import Delta from "./Delta";
+import { Delta } from "./Delta";
 import { Editor } from "./Editor";
 import { Command } from './commands/Command';
 import { KeyboardHandler } from "./keyboard/KeyboardHandler";

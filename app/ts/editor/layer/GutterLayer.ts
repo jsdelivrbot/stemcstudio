@@ -1,18 +1,18 @@
 import { addCssClass, createElement, removeCssClass } from "../lib/dom";
 
-import AbstractLayer from './AbstractLayer';
-import escapeHTML from "../lib/escapeHTML";
+import { AbstractLayer } from './AbstractLayer';
+import { escapeHTML } from "../lib/escapeHTML";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
-import Delta from "../Delta";
+import { Delta } from "../Delta";
 import { EditSession } from "../EditSession";
-import EventBus from "../EventBus";
+import { EventBus } from "../EventBus";
 import { FoldWidget } from "../FoldWidget";
-import Annotation from "../Annotation";
-import GutterConfig from "./GutterConfig";
+import { Annotation } from "../Annotation";
+import { GutterConfig } from "./GutterConfig";
 import Padding from './Padding';
 import GutterRenderer from './GutterRenderer';
 import GutterCell from './GutterCell';
-import refChange from '../../utils/refChange';
+import { refChange } from '../../utils/refChange';
 
 export const changeGutterWidth = 'changeGutterWidth';
 export type GutterLayerEventName = 'changeGutterWidth';
@@ -20,7 +20,7 @@ export type GutterLayerEventName = 'changeGutterWidth';
 /**
  *
  */
-export default class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEventName, number, GutterLayer> {
+export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEventName, number, GutterLayer> {
 
     /**
      *

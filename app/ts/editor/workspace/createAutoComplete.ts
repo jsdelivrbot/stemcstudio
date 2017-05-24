@@ -2,7 +2,7 @@ import Command from '../commands/Command';
 import CompletionEntry from './CompletionEntry';
 import CompletionService from './CompletionService';
 import AutoCompleteView from './AutoCompleteView';
-import Delta from '../Delta';
+import { Delta } from '../Delta';
 import Editor from '../Editor';
 import EventEmitterClass from '../lib/EventEmitterClass';
 import KeyboardHandler from '../keyboard/KeyboardHandler';

@@ -1,4 +1,4 @@
-import Delta from '../../editor/Delta';
+import { Delta } from '../../editor/Delta';
 import { Document } from '../../editor/Document';
 
 /**

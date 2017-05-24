@@ -1,7 +1,7 @@
 import Editor from './Editor';
 import EditSession from './EditSession';
 import KeyboardHandler from './keyboard/KeyboardHandler';
-import Renderer from './Renderer';
+import { Renderer } from './Renderer';
 import UndoManager from './UndoManager';
 /**
  * FIXME: Cloning appears to be used by the Split feature.

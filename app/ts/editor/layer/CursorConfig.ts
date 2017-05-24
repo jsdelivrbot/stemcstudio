@@ -1,9 +1,9 @@
-import LayerConfig from "./LayerConfig";
+import { LayerConfig } from "./LayerConfig";
 
 /**
  *
  */
-interface CursorConfig extends LayerConfig {
+export interface CursorConfig extends LayerConfig {
 
     /**
      *
@@ -20,5 +20,3 @@ interface CursorConfig extends LayerConfig {
      */
     offset: number;
 }
-
-export default CursorConfig;

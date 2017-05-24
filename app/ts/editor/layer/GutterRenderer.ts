@@ -1,5 +1,5 @@
 import { EditSession } from '../EditSession';
-import GutterConfig from './GutterConfig';
+import { GutterConfig } from './GutterConfig';
 
 interface GutterRenderer {
     getText(session: EditSession, row: number): string;

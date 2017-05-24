@@ -1,5 +1,5 @@
 import { ACE_WORKER_MODULE_NAME } from '../../constants';
-import Annotation from "../Annotation";
+import { Annotation } from "../Annotation";
 import { BlockComment } from './BlockComment';
 import { Completion } from "../Completion";
 import { Position } from "../Position";
@@ -106,6 +106,8 @@ export function initWorker(worker: WorkerClient, moduleName: string, scriptImpor
     }
 }
 
+export type LineCommentStart = '' | ';' | '//' | '--' | '%' | '#';
+
 /**
  *
  */
@@ -149,7 +151,10 @@ export class TextMode implements LanguageMode {
         + packages.Pc + "\\$_]|\\s])+", "g"
     );
 
-    protected lineCommentStart: string | string[] = "";
+    /**
+     * TODO: Why do we allow an array of string?
+     */
+    protected lineCommentStart: LineCommentStart | string[] = "";
     protected blockComment: BlockComment;
     public $id: LanguageModeId = "Text";
     private $tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>;

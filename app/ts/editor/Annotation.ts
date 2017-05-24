@@ -38,5 +38,3 @@ export interface Annotation {
      */
     type: AnnotationType;
 }
-
-export default Annotation;

@@ -1,14 +1,14 @@
 import { addListener, removeListener } from "./lib/event";
 import { COEFF_DEFAULT, MAX_SCROLL_H, ScrollBar } from './ScrollBar';
 import { scrollbarWidth } from "./lib/dom";
-import refChange from '../utils/refChange';
-import Renderer from "./Renderer";
-import toPixelString from './dom/toPixelString';
+import { refChange } from '../utils/refChange';
+import { Renderer } from "./Renderer";
+import { toPixelString } from './dom/toPixelString';
 
 /**
  * A vertical scroll bar.
  */
-export default class VScrollBar extends ScrollBar {
+export class VScrollBar extends ScrollBar {
 
     /**
      * This may get set to null.

@@ -6,7 +6,7 @@ import { compareStart, compareEnd } from "./RangeHelpers";
 /**
  * If an array is passed in, the folds are expected to be sorted already.
  */
-export default class FoldLine {
+export class FoldLine {
     foldData: FoldLine[];
     folds: Fold[];
     range: Range;

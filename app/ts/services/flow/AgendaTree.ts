@@ -1,7 +1,7 @@
 // import Agenda from './Agenda';
 import AVLTree from './trees/AVLTree';
 import Flow from './Flow';
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 
 const DEFAULT_AGENDA_GROUP = "main";
 

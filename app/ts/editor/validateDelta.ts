@@ -1,4 +1,4 @@
-import Delta from './Delta';
+import { Delta } from './Delta';
 import { Position } from './Position';
 
 function throwDeltaError(delta: Delta, errorText: string) {

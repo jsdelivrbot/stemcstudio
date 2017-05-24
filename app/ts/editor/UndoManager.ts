@@ -1,4 +1,4 @@
-import Delta from './Delta';
+import { Delta } from './Delta';
 import DeltaGroup from './DeltaGroup';
 import { EditSession } from './EditSession';
 import Fold from './Fold';

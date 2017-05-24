@@ -8,13 +8,15 @@ import { HighlighterFactory } from './HighlighterFactory';
  */
 export const POP_STATE = 'pop';
 
+export const STATE_START = 'start';
+
 /**
  * FIXME: typing problem.
  * A Highlighter stack element is a number | string.
  * nextState is string | undefined. Should this be a HighlighterStackElement
  */
 const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement | undefined {
-    if (currentState !== "start" || stack.length) {
+    if (currentState !== STATE_START || stack.length) {
         // Interesting that pushState pushes two states.
         // nextState ends up being the topmost element in the stack.
         // FIXME: The cast is made because Rule appears to mix design-time and run-time semantics.
@@ -39,7 +41,7 @@ const popState = function (this: HighlighterRule, currentState: string, stack: H
     // console.log(`shiftedOne = ${shiftedOne}, stack = ${JSON.stringify(stack)}`);
     const shiftedTwo = stack.shift();
     // console.log(`shiftedTwo = ${shiftedTwo}, stack = ${JSON.stringify(stack)}`);
-    return shiftedTwo || "start";
+    return shiftedTwo || STATE_START;
 };
 
 /**
@@ -62,6 +64,18 @@ export class TextHighlightRules implements Highlighter {
 
         // regexp must not have capturing parentheses
         // regexps are ordered -> the first match is used
+
+        this.$rules = {};
+
+        this.$rules[STATE_START] = [
+            {
+                token: "empty_line",
+                regex: '^$'
+            },
+            {
+                defaultToken: "text"
+            }
+        ];
 
         this.$rules = {
             "start": [
@@ -176,7 +190,7 @@ export class TextHighlightRules implements Highlighter {
                     rule = {};
                 }
                 // Possibly dead code...
-                if (!rule.regex && rule['start']) {
+                if (!rule.regex && rule[STATE_START]) {
                     rule.regex = rule['start'];
                     if (!rule.next)
                         rule.next = [];

@@ -1,8 +1,6 @@
-interface ScrollBarEvent {
+export interface ScrollBarEvent {
     /**
      * Either scrollTop or scrollLeft.
      */
     data: number;
 }
-
-export default ScrollBarEvent;

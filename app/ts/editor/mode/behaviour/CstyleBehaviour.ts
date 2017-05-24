@@ -6,7 +6,7 @@ import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import { Position } from "../../Position";
 import { Range } from "../../Range";
-import Token from "../../Token";
+import { Token } from "../../Token";
 import { isMultiLine } from "../../RangeHelpers";
 
 const SAFE_INSERT_IN_TOKENS =

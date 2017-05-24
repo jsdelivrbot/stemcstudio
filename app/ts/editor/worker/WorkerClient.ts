@@ -1,6 +1,6 @@
 import { qualifyURL } from '../lib/net';
-import Delta from "../Delta";
-import EventBus from "../EventBus";
+import { Delta } from "../Delta";
+import { EventBus } from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
 import CallbackManager from './CallbackManager';
 import { Disposable } from '../../base/Disposable';

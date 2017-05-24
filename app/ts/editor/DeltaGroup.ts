@@ -1,6 +1,6 @@
-import Delta from './Delta';
+import { Delta } from './Delta';
 
-interface DeltaGroup {
+export interface DeltaGroup {
     /**
      * FIXME: This might also allow 'fold'?
      */

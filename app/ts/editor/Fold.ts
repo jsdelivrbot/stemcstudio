@@ -1,7 +1,7 @@
-import FoldLine from "./FoldLine";
+import { FoldLine } from "./FoldLine";
 import { clone, compare, containsRange, isEqual } from "./RangeHelpers";
-import RangeBasic from "./RangeBasic";
-import RangeList from "./RangeList";
+import { RangeBasic } from "./RangeBasic";
+import { RangeList } from "./RangeList";
 import { Position } from "./Position";
 
 /**

@@ -1,11 +1,11 @@
 import { createElement, setCssClass } from "../lib/dom";
 import { Disposable } from '../../base/Disposable';
-import refChange from '../../utils/refChange';
+import { refChange } from '../../utils/refChange';
 
 /**
  * 
  */
-export default class AbstractLayer implements Disposable {
+export class AbstractLayer implements Disposable {
 
     /**
      * This is the child of the DOM element that the layer is associated with.

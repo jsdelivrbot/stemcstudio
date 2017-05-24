@@ -4,7 +4,7 @@ import { Position } from "./Position";
 /**
  *
  */
-interface Delta {
+export interface Delta {
 
     /**
      *
@@ -36,5 +36,3 @@ interface Delta {
      */
     folds?: Fold[];
 }
-
-export default Delta;

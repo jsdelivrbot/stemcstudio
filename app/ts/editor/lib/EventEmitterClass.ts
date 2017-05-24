@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import EventBus from "../EventBus";
+import { EventBus } from "../EventBus";
 import { Command } from '../../virtual/editor';
 const stopPropagation = function (this: { propagationStopped: boolean }) { this.propagationStopped = true; };
 const preventDefault = function (this: { defaultPrevented: boolean }) { this.defaultPrevented = true; };

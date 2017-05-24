@@ -1,5 +1,5 @@
-import Delta from '../../editor/Delta';
-import EditSession from '../../editor/EditSession';
+import { Delta } from '../../editor/Delta';
+import { EditSession } from '../../editor/EditSession';
 
 /**
  *

@@ -1,4 +1,4 @@
-import Delta from './Delta';
+import { Delta } from './Delta';
 
 export default function applyDelta(docLines: string[], delta: Delta, doNotValidate?: boolean): void {
 

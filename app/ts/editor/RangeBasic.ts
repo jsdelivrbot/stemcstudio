@@ -21,5 +21,3 @@ export interface RangeBasic {
 export function isEmptyRange(range: RangeBasic): boolean {
     return equalPositions(range.start, range.end);
 }
-
-export default RangeBasic;

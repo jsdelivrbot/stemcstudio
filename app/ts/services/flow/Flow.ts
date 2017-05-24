@@ -1,5 +1,5 @@
 import AgendaTree from './AgendaTree';
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import ExecutionStrategy from './ExecutionStrategy';
 import RootNode from './nodes/RootNode';
 import Session from './Session';

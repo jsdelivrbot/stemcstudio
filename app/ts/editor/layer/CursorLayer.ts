@@ -1,12 +1,12 @@
 import { addCssClass, createElement, removeCssClass, setCssClass } from "../lib/dom";
-import AbstractLayer from './AbstractLayer';
-import CursorConfig from './CursorConfig';
-import Disposable from '../base/Disposable';
+import { AbstractLayer } from './AbstractLayer';
+import { CursorConfig } from './CursorConfig';
+import { Disposable } from '../base/Disposable';
 import { EditSession } from '../EditSession';
 import { PixelPosition } from '../PixelPosition';
 import { Position } from '../Position';
 import { Interval } from '../../utils/Interval';
-import refChange from '../../utils/refChange';
+import { refChange } from '../../utils/refChange';
 
 let isIE8: boolean;
 
@@ -15,7 +15,7 @@ const PIXEL_POSITION_ZERO = { left: 0, top: 0 };
 /**
  * This class is the HTML representation of the CursorLayer.
  */
-export default class CursorLayer extends AbstractLayer implements Disposable {
+export class CursorLayer extends AbstractLayer implements Disposable {
     private session: EditSession;
     private isVisible = false;
     public isBlinking = true;

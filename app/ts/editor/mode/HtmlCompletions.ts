@@ -1,6 +1,6 @@
 import { Completion } from "../Completion";
 import { Position } from "../Position";
-import Token from "../Token";
+import { Token } from "../Token";
 import { TokenIterator } from "../TokenIterator";
 //
 // Editor Abstraction Layer

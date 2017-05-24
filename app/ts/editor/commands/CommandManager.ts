@@ -4,7 +4,7 @@ import { Action } from '../keyboard/Action';
 import { EventEmitterClass } from "../lib/EventEmitterClass";
 import { Command } from './Command';
 import { CommandExecutor } from './CommandExecutor';
-import EventBus from '../EventBus';
+import { EventBus } from '../EventBus';
 import { KeyboardResponse } from '../keyboard/KeyboardResponse';
 
 interface CommandAndArgs<TARGET> {

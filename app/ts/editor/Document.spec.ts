@@ -1,6 +1,4 @@
-// import Anchor from './Anchor';
-// import AnchorChangeEvent from './events/AnchorChangeEvent';
-import Delta from './Delta';
+import { Delta } from './Delta';
 import { Document } from './Document';
 import { Range } from './Range';
 

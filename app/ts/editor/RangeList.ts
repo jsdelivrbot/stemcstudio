@@ -1,4 +1,4 @@
-import RangeBasic from "./RangeBasic";
+import { RangeBasic } from "./RangeBasic";
 import { isEmpty } from "./RangeHelpers";
 import { EditSession } from "./EditSession";
 import { comparePositions } from "./Position";
@@ -7,7 +7,7 @@ import { Position } from "./Position";
 /**
  *
  */
-export default class RangeList<R extends RangeBasic> {
+export class RangeList<R extends RangeBasic> {
 
     /**
      *

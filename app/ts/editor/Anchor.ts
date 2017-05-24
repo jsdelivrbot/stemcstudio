@@ -1,9 +1,9 @@
-import AnchorChangeEvent from './events/AnchorChangeEvent';
-import Delta from "./Delta";
+import { AnchorChangeEvent } from './events/AnchorChangeEvent';
+import { Delta } from "./Delta";
 import { Document } from "./Document";
 import { Position } from "./Position";
 import { EventEmitterClass } from './lib/EventEmitterClass';
-import EventBus from "./EventBus";
+import { EventBus } from "./EventBus";
 
 function pointsInOrder(this: void, point1: Position, point2: Position, equalPointsInOrder: boolean): boolean {
     const bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
@@ -45,7 +45,7 @@ export type AnchorEventName = 'change';
  * Whenever text is inserted or deleted before the cursor,
  * the position of the anchor is updated.
  */
-export default class Anchor implements EventBus<AnchorEventName, AnchorChangeEvent, Anchor>, Position {
+export class Anchor implements EventBus<AnchorEventName, AnchorChangeEvent, Anchor>, Position {
 
     /**
      *

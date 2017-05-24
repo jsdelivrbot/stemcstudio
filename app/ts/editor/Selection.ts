@@ -3,13 +3,13 @@ import { stringReverse } from "./lib/lang";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { Position } from "./Position";
 import { Range } from "./Range";
-import RangeBasic from "./RangeBasic";
+import { RangeBasic } from "./RangeBasic";
 import { clone, isEmpty, isEqual, isMultiLine } from "./RangeHelpers";
-import RangeList from "./RangeList";
+import { RangeList } from "./RangeList";
 import { EditSession } from "./EditSession";
-import Anchor from "./Anchor";
-import AnchorChangeEvent from "./events/AnchorChangeEvent";
-import EventBus from "./EventBus";
+import { Anchor } from "./Anchor";
+import { AnchorChangeEvent } from "./events/AnchorChangeEvent";
+import { EventBus } from "./EventBus";
 import { SelectionAddRangeEvent } from "./events/SelectionAddRangeEvent";
 import { SelectionRemoveRangeEvent } from "./events/SelectionRemoveRangeEvent";
 //

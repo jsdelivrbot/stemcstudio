@@ -1,6 +1,6 @@
-import LayerConfig from "./LayerConfig";
+import { LayerConfig } from "./LayerConfig";
 
-interface TextConfig extends LayerConfig {
+export interface TextConfig extends LayerConfig {
 
     firstRow: number;
 
@@ -8,5 +8,3 @@ interface TextConfig extends LayerConfig {
 
     characterWidth: number;
 }
-
-export default TextConfig;

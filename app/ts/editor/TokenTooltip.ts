@@ -1,7 +1,7 @@
 import { Editor } from './Editor';
 import { Range } from './Range';
-import Renderer from './Renderer';
-import Token from './Token';
+import { Renderer } from './Renderer';
+import { Token } from './Token';
 import { Tooltip } from './Tooltip';
 import { addListener, removeListener } from './lib/event';
 

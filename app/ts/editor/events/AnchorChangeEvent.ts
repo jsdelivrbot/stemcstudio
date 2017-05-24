@@ -3,7 +3,7 @@ import { Position } from '../Position';
 /**
  *
  */
-interface AnchorChangeEvent {
+export interface AnchorChangeEvent {
 
   /**
    *
@@ -15,5 +15,3 @@ interface AnchorChangeEvent {
    */
   position: Position;
 }
-
-export default AnchorChangeEvent;

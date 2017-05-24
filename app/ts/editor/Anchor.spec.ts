@@ -1,5 +1,5 @@
-import Anchor from './Anchor';
-import AnchorChangeEvent from './events/AnchorChangeEvent';
+import { Anchor } from './Anchor';
+import { AnchorChangeEvent } from './events/AnchorChangeEvent';
 import { Document } from './Document';
 import { Range } from './Range';
 

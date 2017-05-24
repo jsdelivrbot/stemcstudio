@@ -17,7 +17,7 @@ import { EditorPreferencesEvent } from '../../modules/editors/EditorPreferencesE
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WorkspaceEditorHost } from '../../directives/editor/WorkspaceEditorHost';
 import { WsFile } from '../../modules/wsmodel/WsFile';
-import refChange from '../../utils/refChange';
+import { refChange } from '../../utils/refChange';
 import { computeContextMenu } from './computeContextMenu';
 import { renderContextMenu } from '../contextMenu/renderContextMenu';
 //

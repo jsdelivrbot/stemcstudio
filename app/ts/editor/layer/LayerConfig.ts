@@ -1,19 +1,6 @@
-/**
- * @class LayerConfig
- */
-interface LayerConfig {
+export interface LayerConfig {
 
-    /**
-     * @property firstRowScreen
-     * @type number
-     */
     firstRowScreen: number;
 
-    /**
-     * @property lineHeight
-     * @type number
-     */
     lineHeight: number;
 }
-
-export default LayerConfig;

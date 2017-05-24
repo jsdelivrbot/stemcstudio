@@ -1,6 +1,6 @@
-import MarkerConfig from './layer/MarkerConfig';
+import { MarkerConfig } from './layer/MarkerConfig';
 import { IMarkerLayer } from './layer/MarkerLayer';
-import MarkerRenderer from './layer/MarkerRenderer';
+import { MarkerRenderer } from './layer/MarkerRenderer';
 
 //
 // Editor Abstraction Layer

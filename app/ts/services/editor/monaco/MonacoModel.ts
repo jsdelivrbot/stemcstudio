@@ -1,4 +1,4 @@
-import Delta from '../../../editor/Delta';
+import { Delta } from '../../../editor/Delta';
 import { EditSession } from '../../../editor/EditSession';
 // import { rowToLineNumber, columnToMonaco } from './virtualToMonaco';
 // import { lineNumberToRow } from './monacoToNative';

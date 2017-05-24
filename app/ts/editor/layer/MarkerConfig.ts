@@ -1,9 +1,9 @@
-import LayerConfig from "./LayerConfig";
+import { LayerConfig } from "./LayerConfig";
 
 /**
  *
  */
-interface MarkerConfig extends LayerConfig {
+export interface MarkerConfig extends LayerConfig {
 
     /**
      * TODO: Is this distinct from firstRowScreen?
@@ -20,5 +20,3 @@ interface MarkerConfig extends LayerConfig {
      */
     characterWidth: number;
 }
-
-export default MarkerConfig;

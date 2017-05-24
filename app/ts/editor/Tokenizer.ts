@@ -243,7 +243,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
      * 
      * TODO:Rename monsterRegExpByState?
      */
-    private readonly regExps: { [stateName: string]: RegExp } = {};
+    protected readonly regExps: { [stateName: string]: RegExp } = {};
 
     /**
      * What is this used for?
@@ -252,7 +252,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
      * from matchTotal: number to rule index.
      * These values are then used in getLineTokens to access a rule.
      */
-    private readonly matchMappings: { [stateName: string]: Rule<T, E, S> } = {};
+    protected readonly matchMappings: { [stateName: string]: Rule<T, E, S> } = {};
 
     public reportError: (message: string, data: any) => void = function (message: string, data: any) {
         console.warn(message, data);

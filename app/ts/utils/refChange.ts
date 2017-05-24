@@ -192,5 +192,3 @@ export function refChange(uuid: string, name?: string, change = 0): number | und
     }
     return void 0;
 }
-
-export default refChange;

@@ -3,7 +3,7 @@ import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import { FoldStyle } from "../../FoldStyle";
 import { FoldWidget } from "../../FoldWidget";
-import Token from "../../Token";
+import { Token } from "../../Token";
 
 /**
  *

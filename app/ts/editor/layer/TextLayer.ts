@@ -1,16 +1,16 @@
 import { createElement } from "../lib/dom";
 import { stringRepeat } from "../lib/lang";
-import AbstractLayer from './AbstractLayer';
-import Disposable from '../base/Disposable';
+import { AbstractLayer } from './AbstractLayer';
+import { Disposable } from '../base/Disposable';
 import { EditSession } from "../EditSession";
-import EventBus from "../EventBus";
+import { EventBus } from "../EventBus";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
-import FoldLine from "../FoldLine";
-import FontMetrics from "../layer/FontMetrics";
+import { FoldLine } from "../FoldLine";
+import { FontMetrics } from "../layer/FontMetrics";
 import { changeCharacterSize } from '../layer/FontMetrics';
-import refChange from '../../utils/refChange';
-import TextConfig from './TextConfig';
-import Token from "../Token";
+import { refChange } from '../../utils/refChange';
+import { TextConfig } from './TextConfig';
+import { Token } from "../Token";
 
 const EOF_CHAR = "\xB6";
 const EOL_CHAR_LF = "\xAC";
@@ -23,7 +23,7 @@ export type TextLayerEventName = 'changeCharacterSize';
 /**
  *
  */
-export default class TextLayer extends AbstractLayer implements Disposable, EventBus<TextLayerEventName, any, TextLayer> {
+export class TextLayer extends AbstractLayer implements Disposable, EventBus<TextLayerEventName, any, TextLayer> {
     public allowBoldFonts = false;
     private $padding = 0;
     private EOL_CHAR: string;

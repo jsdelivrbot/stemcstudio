@@ -1,4 +1,4 @@
-import Anchor from '../Anchor';
+import { Anchor } from '../Anchor';
 import { Action } from '../keyboard/Action';
 import Completer from './Completer';
 import { Completion } from '../Completion';

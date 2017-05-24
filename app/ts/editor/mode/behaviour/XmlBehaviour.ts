@@ -4,7 +4,7 @@ import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
 import { Range } from "../../Range";
 import { isMultiLine } from "../../RangeHelpers";
-import Token from "../../Token";
+import { Token } from "../../Token";
 
 function is(token: Token | undefined | null, type: string): boolean {
     if (token) {

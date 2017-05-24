@@ -5,30 +5,30 @@ import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import { Disposable } from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
-import Annotation from './Annotation';
+import { Annotation } from './Annotation';
 
-import CursorLayer from "./layer/CursorLayer";
-import FontMetrics from "./layer/FontMetrics";
+import { CursorLayer } from "./layer/CursorLayer";
+import { FontMetrics } from "./layer/FontMetrics";
 import { changeCharacterSize } from './layer/FontMetrics';
-import GutterLayer from "./layer/GutterLayer";
+import { GutterLayer } from "./layer/GutterLayer";
 import { MarkerLayer } from "./layer/MarkerLayer";
 // import PrintMarginLayer from "./layer/PrintMarginLayer";
-import TextLayer from "./layer/TextLayer";
+import { TextLayer } from "./layer/TextLayer";
 
-import VScrollBar from "./VScrollBar";
-import HScrollBar from "./HScrollBar";
+import { VScrollBar } from "./VScrollBar";
+import { HScrollBar } from "./HScrollBar";
 
 import RenderLoop from "./RenderLoop";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { EditSession } from './EditSession';
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import OptionsProvider from "./OptionsProvider";
 import { PixelPosition } from './PixelPosition';
 import { Position } from './Position';
 import ScreenCoordinates from './ScreenCoordinates';
-import ScrollBarEvent from './events/ScrollBarEvent';
+import { ScrollBarEvent } from './events/ScrollBarEvent';
 import EditorRenderer from './EditorRenderer';
-import refChange from '../utils/refChange';
+import { refChange } from '../utils/refChange';
 
 // FIXME: The editor.css is crucial to the operation of the renderer.
 // import editorCss = require("./requirejs/text!./css/editor.css");
@@ -2028,5 +2028,3 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
         this.content.style.cursor = cursorStyle;
     }
 }
-
-export default Renderer;

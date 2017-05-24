@@ -3,7 +3,7 @@ import { Editor } from '../../editor/Editor';
 import { EditSession } from '../../editor/EditSession';
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';
 import { ProblemsScope } from './ProblemsScope';
-import Renderer from '../../editor/Renderer';
+import { Renderer } from '../../editor/Renderer';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import { EditorPreferencesService } from '../../modules/editors/EditorPreferencesService';
 import { EditorPreferencesEvent } from '../../modules/editors/EditorPreferencesEvent';
