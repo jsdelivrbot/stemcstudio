@@ -2,7 +2,7 @@ import Editor from './Editor';
 import EditSession from './EditSession';
 import KeyboardHandler from './keyboard/KeyboardHandler';
 import { Renderer } from './Renderer';
-import UndoManager from './UndoManager';
+import { UndoManager } from './UndoManager';
 /**
  * FIXME: Cloning appears to be used by the Split feature.
  * This implementation looks wierd.
@@ -19,7 +19,7 @@ function $cloneFoldData(): FoldLine[] {
     return fd;
 }
 
-export default class Split {
+export class Split {
     private BELOW: number;
     private BESIDE: number;
     private $orientation: number;

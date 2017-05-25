@@ -58,9 +58,20 @@ function pushIfValidToken(token: { type: string | null; value: string }, tokens:
     }
 }
 
-function changeCurrentState(from: string | undefined, to: string, trace: boolean): string {
+/**
+ * Used to report a change in state for debugging purposes.
+ * The stack is only provided so that it can be reported.
+ */
+function changeCurrentState(from: string | undefined, to: string, stack: any[], trace: boolean): string {
     if (trace) {
-        console.log(`currentState: ${JSON.stringify(from)} => ${JSON.stringify(to)})`);
+        console.log(`currentState: ${JSON.stringify(from)} => ${JSON.stringify(to)}`);
+        if (stack.length > 0) {
+            console.log(`stack (${stack.length}):`);
+            console.log(JSON.stringify(stack, null, 2));
+        }
+        else {
+            console.log("stack is empty");
+        }
     }
     return to;
 }
@@ -421,10 +432,10 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
         /**
          * TODO: Maybe this could be typed as (string | number) (E restricted to number is general enough).
          */
-        let currentState = changeCurrentState(void 0, <string>startState || START, this.trace);
+        let currentState = changeCurrentState(void 0, <string>startState || START, stack, this.trace);
         let rules = this.rulesByState[currentState];
         if (!rules) {
-            currentState = changeCurrentState(currentState, START, this.trace);
+            currentState = changeCurrentState(currentState, START, stack, this.trace);
             rules = this.rulesByState[currentState];
         }
         let mapping = this.matchMappings[currentState];
@@ -486,12 +497,17 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                 }
 
                 if (this.trace) {
-                    console.log(`ruleToken = ${JSON.stringify(ruleToken)}, value = '${value}'`);
+                    if (value.length > 0) {
+                        console.log(`ruleToken = ${JSON.stringify(ruleToken)}, value = '${value}'`);
+                    }
+                    else {
+                        console.log(`ruleToken = ${JSON.stringify(ruleToken)}, value is the empty string`);
+                    }
                 }
 
                 if (rule.next) {
                     if (typeof rule.next === "string") {
-                        currentState = changeCurrentState(currentState, rule.next, this.trace);
+                        currentState = changeCurrentState(currentState, rule.next, stack, this.trace);
                     }
                     else if (Array.isArray(rule.next)) {
                         // This case should not happen because or rule normalization?
@@ -502,11 +518,11 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                         // An example of why we end up here is a POP_STATE.
                         const nextState = rule.next(currentState, stack as S);
                         if (typeof nextState === 'string') {
-                            currentState = changeCurrentState(currentState, nextState, this.trace);
+                            currentState = changeCurrentState(currentState, nextState, stack, this.trace);
                         }
                         else {
                             console.warn(`typeof nextState => ${typeof nextState}`);
-                            currentState = changeCurrentState(currentState, nextState as any, this.trace);
+                            currentState = changeCurrentState(currentState, nextState as any, stack, this.trace);
                         }
                     }
 
@@ -514,7 +530,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                     if (!rules) {
                         // FIXME: I'm ignoring this for the time being!
                         this.reportError("state doesn't exist", currentState);
-                        currentState = changeCurrentState(currentState, START, this.trace);
+                        currentState = changeCurrentState(currentState, START, stack, this.trace);
                         rules = this.rulesByState[currentState];
                     }
                     mapping = this.matchMappings[currentState];
@@ -576,7 +592,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                     pushIfValidToken(token, tokens, this.trace);
                     token = { value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
                 }
-                currentState = changeCurrentState(currentState, START, this.trace);
+                currentState = changeCurrentState(currentState, START, stack, this.trace);
                 stack = [];
                 break;
             }

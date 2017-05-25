@@ -15,21 +15,25 @@ export default function validateDelta(docLines: string[], delta: Delta): void {
     const action = delta.action;
 
     // Validate action string.
-    if (action !== "insert" && action !== "remove")
+    if (action !== "insert" && action !== "remove") {
         throwDeltaError(delta, "delta.action must be 'insert' or 'remove'");
+    }
 
     // Validate lines type.
-    if (!(delta.lines instanceof Array))
+    if (!(delta.lines instanceof Array)) {
         throwDeltaError(delta, "delta.lines must be an Array");
+    }
 
     // Validate range type.
-    if (!delta.start || !delta.end)
+    if (!delta.start || !delta.end) {
         throwDeltaError(delta, "delta.start/end must be an present");
+    }
 
     // Validate that the start point is contained in the document.
     const start = delta.start;
-    if (!positionInDocument(docLines, delta.start))
+    if (!positionInDocument(docLines, delta.start)) {
         throwDeltaError(delta, "delta.start must be contained in document");
+    }
 
     // Validate that the end point is contained in the document (remove deltas only).
     const end = delta.end;

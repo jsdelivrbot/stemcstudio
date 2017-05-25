@@ -22,7 +22,7 @@ const $brackets: { [bracket: string]: '(' | ')' | '[' | ']' | '{' | '}' } = {
 /**
  *
  */
-export default class BracketMatch {
+export class BracketMatch {
 
     /**
      *

@@ -3,13 +3,13 @@ import { Delta } from "./Delta";
 import { Editor } from "./Editor";
 import { EditSession } from "./EditSession";
 import { Renderer } from "./Renderer";
-import LineWidget from "./LineWidget";
+import { LineWidget } from "./LineWidget";
 import Change from './Change';
 
 /**
  *
  */
-export default class LineWidgetManager {
+export class LineWidgetManager {
     session: EditSession;
     editor: Editor | null;
     firstRow: number;

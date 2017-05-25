@@ -233,7 +233,6 @@ describe("TypeScript", function () {
         ]);
 
         const session = new EditSession(doc);
-        // session.traceTokenizer = true;
         session.setUseWorker(false);
         session.setLanguage('TypeScript');
 
@@ -268,7 +267,7 @@ describe("TypeScript", function () {
                 // console.lg(JSON.stringify(tokens, null, 2));
                 it("should be defined with correct number of tokens", function () {
                     expect(tokens).toBeDefined();
-                    expect(tokens.length).toBe(8);
+                    expect(tokens.length).toBe(9);
                 });
                 it("should have the correct tokens", function () {
                     expect(tokens[0].type).toBe('text');
@@ -281,15 +280,14 @@ describe("TypeScript", function () {
                     expect(tokens[3].value).toBe('readonly');
                     expect(tokens[4].type).toBe('text');
                     expect(tokens[4].value).toBe(' ');
-                    // FIXME: this is wierd.
-                    expect(tokens[5].type).toBe('variable.parameter.function.ts');
+                    expect(tokens[5].type).toBe('variable.parameter');
                     expect(tokens[5].value).toBe('x');
-                    expect(tokens[6].type).toBe('text');
-                    // FIXME: I don't like the combination.
-                    expect(tokens[6].value).toBe(': ');
-                    // FIXME: Should be storage type?
-                    expect(tokens[7].type).toBe('variable.parameter.function.ts');
-                    expect(tokens[7].value).toBe('number');
+                    expect(tokens[6].type).toBe('punctuation.operator');
+                    expect(tokens[6].value).toBe(':');
+                    expect(tokens[7].type).toBe('text');
+                    expect(tokens[7].value).toBe(' ');
+                    expect(tokens[8].type).toBe('storage.type.variable.ts');
+                    expect(tokens[8].value).toBe('number');
                 });
             });
             describe("(row = 2)", function () {
@@ -297,7 +295,7 @@ describe("TypeScript", function () {
                 // console.lg(JSON.stringify(tokens, null, 2));
                 it("should be defined with correct number of tokens", function () {
                     expect(tokens).toBeDefined();
-                    expect(tokens.length).toBe(8);
+                    expect(tokens.length).toBe(9);
                 });
                 it("should have the correct tokens", function () {
                     expect(tokens[0].type).toBe('text');
@@ -306,19 +304,18 @@ describe("TypeScript", function () {
                     expect(tokens[1].value).toBe('public');
                     expect(tokens[2].type).toBe('text');
                     expect(tokens[2].value).toBe(' ');
-                    // FIXME: should be keyword
                     expect(tokens[3].type).toBe('keyword.operator.ts');
                     expect(tokens[3].value).toBe('readonly');
                     expect(tokens[4].type).toBe('text');
                     expect(tokens[4].value).toBe(' ');
-                    expect(tokens[5].type).toBe('variable.parameter.function.ts');
+                    expect(tokens[5].type).toBe('variable.parameter');
                     expect(tokens[5].value).toBe('y');
-                    expect(tokens[6].type).toBe('text');
-                    // FIXME: I don't like the combination.
-                    expect(tokens[6].value).toBe(': ');
-                    // FIXME: Should be storage type?
-                    expect(tokens[7].type).toBe('variable.parameter.function.ts');
-                    expect(tokens[7].value).toBe('number');
+                    expect(tokens[6].type).toBe('punctuation.operator');
+                    expect(tokens[6].value).toBe(':');
+                    expect(tokens[7].type).toBe('text');
+                    expect(tokens[7].value).toBe(' ');
+                    expect(tokens[8].type).toBe('storage.type.variable.ts');
+                    expect(tokens[8].value).toBe('number');
                 });
             });
             describe("(row = 3)", function () {
@@ -326,7 +323,7 @@ describe("TypeScript", function () {
                 // console.lg(JSON.stringify(tokens, null, 2));
                 it("should be defined with correct number of tokens", function () {
                     expect(tokens).toBeDefined();
-                    expect(tokens.length).toBe(14);
+                    expect(tokens.length).toBe(16);
                 });
                 it("should have the correct tokens", function () {
                     expect(tokens[0].type).toBe('text');
@@ -335,28 +332,32 @@ describe("TypeScript", function () {
                     expect(tokens[1].value).toBe('constructor');
                     expect(tokens[2].type).toBe('paren.lparen');
                     expect(tokens[2].value).toBe('(');
-                    expect(tokens[3].type).toBe('variable.parameter.function.ts');
+                    expect(tokens[3].type).toBe('variable.parameter');
                     expect(tokens[3].value).toBe('x');
-                    expect(tokens[4].type).toBe('text');
-                    expect(tokens[4].value).toBe(': ');
-                    expect(tokens[5].type).toBe('variable.parameter.function.ts');
-                    expect(tokens[5].value).toBe('number');
-                    expect(tokens[6].type).toBe('punctuation.operator');
-                    expect(tokens[6].value).toBe(',');
-                    expect(tokens[7].type).toBe('text');
-                    expect(tokens[7].value).toBe(' ');
-                    expect(tokens[8].type).toBe('variable.parameter.function.ts');
-                    expect(tokens[8].value).toBe('y');
-                    expect(tokens[9].type).toBe('text');
-                    expect(tokens[9].value).toBe(': ');
-                    expect(tokens[10].type).toBe('variable.parameter.function.ts');
-                    expect(tokens[10].value).toBe('number');
-                    expect(tokens[11].type).toBe('paren.rparen');
-                    expect(tokens[11].value).toBe(')');
-                    expect(tokens[12].type).toBe('text');
-                    expect(tokens[12].value).toBe(' ');
-                    expect(tokens[13].type).toBe('paren.lparen');
-                    expect(tokens[13].value).toBe('{');
+                    expect(tokens[4].type).toBe('punctuation.operator');
+                    expect(tokens[4].value).toBe(':');
+                    expect(tokens[5].type).toBe('text');
+                    expect(tokens[5].value).toBe(' ');
+                    expect(tokens[6].type).toBe('storage.type.variable.ts');
+                    expect(tokens[6].value).toBe('number');
+                    expect(tokens[7].type).toBe('punctuation.operator');
+                    expect(tokens[7].value).toBe(',');
+                    expect(tokens[8].type).toBe('text');
+                    expect(tokens[8].value).toBe(' ');
+                    expect(tokens[9].type).toBe('variable.parameter');
+                    expect(tokens[9].value).toBe('y');
+                    expect(tokens[10].type).toBe('punctuation.operator');
+                    expect(tokens[10].value).toBe(':');
+                    expect(tokens[11].type).toBe('text');
+                    expect(tokens[11].value).toBe(' ');
+                    expect(tokens[12].type).toBe('storage.type.variable.ts');
+                    expect(tokens[12].value).toBe('number');
+                    expect(tokens[13].type).toBe('paren.rparen');
+                    expect(tokens[13].value).toBe(')');
+                    expect(tokens[14].type).toBe('text');
+                    expect(tokens[14].value).toBe(' ');
+                    expect(tokens[15].type).toBe('paren.lparen');
+                    expect(tokens[15].value).toBe('{');
                 });
             });
             describe("(row = 4)", function () {
@@ -373,8 +374,7 @@ describe("TypeScript", function () {
                     expect(tokens[1].value).toBe('this');
                     expect(tokens[2].type).toBe('punctuation.operator');
                     expect(tokens[2].value).toBe('.');
-                    // FIXME: should be identifier.
-                    expect(tokens[3].type).toBe('support.constant');
+                    expect(tokens[3].type).toBe('identifier');
                     expect(tokens[3].value).toBe('x');
                     expect(tokens[4].type).toBe('text');
                     expect(tokens[4].value).toBe(' ');
@@ -400,8 +400,7 @@ describe("TypeScript", function () {
                     expect(tokens[1].value).toBe('this');
                     expect(tokens[2].type).toBe('punctuation.operator');
                     expect(tokens[2].value).toBe('.');
-                    // FIXME: should be identifier.
-                    expect(tokens[3].type).toBe('support.constant');
+                    expect(tokens[3].type).toBe('identifier');
                     expect(tokens[3].value).toBe('y');
                     expect(tokens[4].type).toBe('text');
                     expect(tokens[4].value).toBe(' ');
@@ -435,6 +434,79 @@ describe("TypeScript", function () {
                 it("should have the correct tokens", function () {
                     expect(tokens[0].type).toBe('paren.rparen');
                     expect(tokens[0].value).toBe('}');
+                });
+            });
+        });
+    });
+
+
+    describe("Two functions", function () {
+
+        const doc = new Document([
+            'function foo(){baz(x,y)}',
+            'function bar(){}'
+        ]);
+
+        const session = new EditSession(doc);
+        session.setUseWorker(false);
+        session.setLanguage('TypeScript');
+
+        describe("tokens", function () {
+            describe("(row = 0)", function () {
+                const tokens = session.getTokens(0);
+                it("should be defined and have the correct number of tokens", function () {
+                    expect(tokens).toBeDefined();
+                    expect(tokens.length).toBe(12);
+                });
+                it("should have the correct tokens", function () {
+                    expect(tokens[0].type).toBe('storage.type');
+                    expect(tokens[0].value).toBe('function');
+                    expect(tokens[1].type).toBe('text');
+                    expect(tokens[1].value).toBe(' ');
+                    expect(tokens[2].type).toBe('entity.name.function');
+                    expect(tokens[2].value).toBe('foo');
+                    expect(tokens[3].type).toBe('paren.lparen');
+                    expect(tokens[3].value).toBe('(');
+                    expect(tokens[4].type).toBe('paren.rparen');
+                    expect(tokens[4].value).toBe(')');
+                    expect(tokens[5].type).toBe('paren.lparen');
+                    expect(tokens[5].value).toBe('{');
+                    expect(tokens[6].type).toBe('identifier');
+                    expect(tokens[6].value).toBe('baz');
+                    expect(tokens[7].type).toBe('paren.lparen');
+                    expect(tokens[7].value).toBe('(');
+                    expect(tokens[8].type).toBe('identifier');
+                    expect(tokens[8].value).toBe('x');
+                    expect(tokens[9].type).toBe('punctuation.operator');
+                    expect(tokens[9].value).toBe(',');
+                    expect(tokens[10].type).toBe('identifier');
+                    expect(tokens[10].value).toBe('y');
+                    expect(tokens[11].type).toBe('paren.rparen');
+                    expect(tokens[11].value).toBe(')}');
+                });
+            });
+            describe("(row = 1)", function () {
+                const tokens = session.getTokens(1);
+                // console.lg(JSON.stringify(tokens, null, 2));
+                it("should be defined and have the correct number of tokens", function () {
+                    expect(tokens).toBeDefined();
+                    expect(tokens.length).toBe(7);
+                });
+                it("should have the correct tokens", function () {
+                    expect(tokens[0].type).toBe('storage.type');
+                    expect(tokens[0].value).toBe('function');
+                    expect(tokens[1].type).toBe('text');
+                    expect(tokens[1].value).toBe(' ');
+                    expect(tokens[2].type).toBe('entity.name.function');
+                    expect(tokens[2].value).toBe('bar');
+                    expect(tokens[3].type).toBe('paren.lparen');
+                    expect(tokens[3].value).toBe('(');
+                    expect(tokens[4].type).toBe('paren.rparen');
+                    expect(tokens[4].value).toBe(')');
+                    expect(tokens[5].type).toBe('paren.lparen');
+                    expect(tokens[5].value).toBe('{');
+                    expect(tokens[6].type).toBe('paren.rparen');
+                    expect(tokens[6].value).toBe('}');
                 });
             });
         });

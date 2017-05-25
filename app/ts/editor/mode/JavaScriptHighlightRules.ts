@@ -39,6 +39,13 @@ import { STATE_START } from "./TextHighlightRules";
 export { STATE_START } from "./TextHighlightRules";
 export const STATE_NO_REGEXP = 'no_regex';
 export const STATE_REGEXP = 'regex';
+export const STATE_REGEXPCC = 'regexcc';
+export const STATE_PARAMS = 'params';
+export const STATE_PROPERTY = 'property';
+export const STATE_QQSTRING = 'qqstring';
+export const STATE_QSTRING = 'qstring';
+
+export const TOKEN_VARIABLE_PARAMETER = 'variable.parameter';
 
 export class JavaScriptHighlightRules extends TextHighlightRules {
     constructor(options?: { noES6?: boolean; jsx?: boolean }) {
@@ -68,7 +75,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
             "__parent__|__count__|escape|unescape|with|__proto__|" +
             "extends|super|export|implements|private|public|package|protected|static",
             /**
-             * Storage Type are all the kinds of things that can be exported by name.
+             * Storage Type are all the kinds of things which can be exported by name.
              */
             "storage.type": "class|const|enum|interface|let|function|type|var",
             /**
@@ -88,347 +95,346 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
         // regexp must not have capturing parentheses. Use (?:) instead.
         // regexps are ordered -> the first match is used
 
-        this.$rules = {
-            "no_regex": [
-                DocCommentHighlightRules.getStartRule("doc-start"),
-                commentsML("no_regex"),
-                commentsSL("no_regex"),
-                {
-                    token: "string",
-                    regex: "'(?=.)",
-                    next: "qstring"
-                },
-                {
-                    token: "string",
-                    regex: '"(?=.)',
-                    next: "qqstring"
-                },
-                {
-                    token: "constant.numeric", // hex
-                    regex: /0(?:[xX][0-9a-fA-F]+|[bB][01]+)\b/
-                },
-                {
-                    token: "constant.numeric", // float
-                    regex: /[+-]?\d[\d_]*(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?\b/
-                },
-                {
-                    // Identifier '.' 'prototype' '.' Identifier '='
-                    token: [
-                        "storage.type", "punctuation.operator", "support.function",
-                        "punctuation.operator", "entity.name.function", "text", "keyword.operator"
-                    ],
-                    // TODO: Are we missing something here?
-                    regex: "(" + identifierRe + ")(\\.)(prototype)(\\.)(" + identifierRe + ")(\\s*)(=)",
-                    next: "function_arguments"
-                },
-                {
-                    // Identifier '.' Identifier '=' 'function' '('
-                    token: [
-                        "storage.type", "punctuation.operator", "entity.name.function", "text",
-                        "keyword.operator", "text", "storage.type", "text", "paren.lparen"
-                    ],
-                    regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // Identifier '=' 'function' '('
-                    token: [
-                        "entity.name.function", "text", "keyword.operator", "text", "storage.type",
-                        "text", "paren.lparen"
-                    ],
-                    regex: "(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // Identifier '.' Identifier '=' 'function' Word '('
-                    token: [
-                        "storage.type", "punctuation.operator", "entity.name.function", "text",
-                        "keyword.operator", "text",
-                        "storage.type", "text", "entity.name.function", "text", "paren.lparen"
-                    ],
-                    regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s+)(\\w+)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // 'function' Identifier '('
-                    token: [
-                        "storage.type", "text", "entity.name.function", "text", "paren.lparen"
-                    ],
-                    regex: "(function)(\\s+)(" + identifierRe + ")(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // 'function' '('
-                    token: [
-                        "storage.type", "text", "paren.lparen"
-                    ],
-                    regex: "(function)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // Identifier ':' 'function' '('
-                    token: [
-                        "entity.name.function", "text", "punctuation.operator",
-                        "text", "storage.type", "text", "paren.lparen"
-                    ],
-                    regex: "(" + identifierRe + ")(\\s*)(:)(\\s*)(function)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    // ':' 'function' '(' (this is for issues with 'foo': function() { })
-                    token: [
-                        // TODO: Why don't we use "punctuation.operator" for the first token?
-                        "text", "text", "storage.type", "text", "paren.lparen"
-                    ],
-                    regex: "(:)(\\s*)(function)(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    token: "keyword",
-                    regex: "(?:" + kwBeforeRe + ")\\b",
-                    next: "start"
-                },
-                {
-                    token: ["support.constant"],
-                    regex: /that\b/
-                },
-                {
-                    // 'console' '.' 'warn' etc...
-                    token: ["storage.type", "punctuation.operator", "support.function.firebug"],
-                    // TODO: Shouldn't we allow whitespace around the period punctuation operator?
-                    regex: /(console)(\.)(warn|info|log|error|time|trace|timeEnd|assert)\b/
-                },
-                {
-                    token: keywordMapper,
-                    regex: identifierRe
-                },
-                {
-                    // '.' if not folled by '.'
-                    token: "punctuation.operator",
-                    regex: /[.](?![.])/,
-                    next: "property"
-                },
-                {
-                    token: "keyword.operator",
-                    // Because this is a RegExp, only single escapes are required.
-                    regex: /--|\+\+|\.{3}|===|==|=|!=|!==|<+=?|>+=?|!|&&|\|\||\?:|[!$%&*+\-~\/^|]=?/,
-                    next: "start"
-                },
-                {
-                    token: "punctuation.operator",
-                    regex: /[?:;.]/,
-                    next: "start"
-                },
-                {
-                    token: "punctuation.operator",
-                    regex: /[,]/,
-                    next: POP_STATE
-                },
-                {
-                    token: "paren.lparen",
-                    regex: /[\[({]/,
-                    next: "start"
-                },
-                {
-                    token: "paren.rparen",
-                    regex: /[\])}]/
-                },
-                {
-                    token: "comment",
-                    regex: /^#!.*$/
-                }
-            ],
-            "property": [
-                {
-                    token: "text",
-                    regex: "\\s+"
-                },
-                {
-                    // Identifier '.' Identifier '=' 'function' [Word] '('
-                    token: [
-                        "storage.type", "punctuation.operator", "entity.name.function", "text",
-                        "keyword.operator", "text",
-                        "storage.type", "text", "entity.name.function", "text", "paren.lparen"
-                    ],
-                    // TODO: Why do we use a word and not an identifier?
-                    regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(?:(\\s+)(\\w+))?(\\s*)(\\()",
-                    next: "function_arguments"
-                },
-                {
-                    token: "punctuation.operator",
-                    regex: /[.](?![.])/
-                },
-                {
-                    token: "support.function",
-                    // FIXME: This RegExp is completely un-maintainable.
-                    regex: /(s(?:h(?:ift|ow(?:Mod(?:elessDialog|alDialog)|Help))|croll(?:X|By(?:Pages|Lines)?|Y|To)?|t(?:op|rike)|i(?:n|zeToContent|debar|gnText)|ort|u(?:p|b(?:str(?:ing)?)?)|pli(?:ce|t)|e(?:nd|t(?:Re(?:sizable|questHeader)|M(?:i(?:nutes|lliseconds)|onth)|Seconds|Ho(?:tKeys|urs)|Year|Cursor|Time(?:out)?|Interval|ZOptions|Date|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Date|FullYear)|FullYear|Active)|arch)|qrt|lice|avePreferences|mall)|h(?:ome|andleEvent)|navigate|c(?:har(?:CodeAt|At)|o(?:s|n(?:cat|textual|firm)|mpile)|eil|lear(?:Timeout|Interval)?|a(?:ptureEvents|ll)|reate(?:StyleSheet|Popup|EventObject))|t(?:o(?:GMTString|S(?:tring|ource)|U(?:TCString|pperCase)|Lo(?:caleString|werCase))|est|a(?:n|int(?:Enabled)?))|i(?:s(?:NaN|Finite)|ndexOf|talics)|d(?:isableExternalCapture|ump|etachEvent)|u(?:n(?:shift|taint|escape|watch)|pdateCommands)|j(?:oin|avaEnabled)|p(?:o(?:p|w)|ush|lugins.refresh|a(?:ddings|rse(?:Int|Float)?)|r(?:int|ompt|eference))|e(?:scape|nableExternalCapture|val|lementFromPoint|x(?:p|ec(?:Script|Command)?))|valueOf|UTC|queryCommand(?:State|Indeterm|Enabled|Value)|f(?:i(?:nd|le(?:ModifiedDate|Size|CreatedDate|UpdatedDate)|xed)|o(?:nt(?:size|color)|rward)|loor|romCharCode)|watch|l(?:ink|o(?:ad|g)|astIndexOf)|a(?:sin|nchor|cos|t(?:tachEvent|ob|an(?:2)?)|pply|lert|b(?:s|ort))|r(?:ou(?:nd|teEvents)|e(?:size(?:By|To)|calc|turnValue|place|verse|l(?:oad|ease(?:Capture|Events)))|andom)|g(?:o|et(?:ResponseHeader|M(?:i(?:nutes|lliseconds)|onth)|Se(?:conds|lection)|Hours|Year|Time(?:zoneOffset)?|Da(?:y|te)|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Da(?:y|te)|FullYear)|FullYear|A(?:ttention|llResponseHeaders)))|m(?:in|ove(?:B(?:y|elow)|To(?:Absolute)?|Above)|ergeAttributes|a(?:tch|rgins|x))|b(?:toa|ig|o(?:ld|rderWidths)|link|ack))\b(?=\()/
-                },
-                {
-                    token: "support.function.dom",
-                    // FIXME: This RegExp is completely un-maintainable.
-                    regex: /(s(?:ub(?:stringData|mit)|plitText|e(?:t(?:NamedItem|Attribute(?:Node)?)|lect))|has(?:ChildNodes|Feature)|namedItem|c(?:l(?:ick|o(?:se|neNode))|reate(?:C(?:omment|DATASection|aption)|T(?:Head|extNode|Foot)|DocumentFragment|ProcessingInstruction|E(?:ntityReference|lement)|Attribute))|tabIndex|i(?:nsert(?:Row|Before|Cell|Data)|tem)|open|delete(?:Row|C(?:ell|aption)|T(?:Head|Foot)|Data)|focus|write(?:ln)?|a(?:dd|ppend(?:Child|Data))|re(?:set|place(?:Child|Data)|move(?:NamedItem|Child|Attribute(?:Node)?)?)|get(?:NamedItem|Element(?:sBy(?:Name|TagName|ClassName)|ById)|Attribute(?:Node)?)|blur)\b(?=\()/
-                },
-                {
-                    token: "support.constant",
-                    // FIXME: This RegExp is completely un-maintainable.
-                    regex: /(s(?:ystemLanguage|cr(?:ipts|ollbars|een(?:X|Y|Top|Left))|t(?:yle(?:Sheets)?|atus(?:Text|bar)?)|ibling(?:Below|Above)|ource|uffixes|e(?:curity(?:Policy)?|l(?:ection|f)))|h(?:istory|ost(?:name)?|as(?:h|Focus))|y|X(?:MLDocument|SLDocument)|n(?:ext|ame(?:space(?:s|URI)|Prop))|M(?:IN_VALUE|AX_VALUE)|c(?:haracterSet|o(?:n(?:structor|trollers)|okieEnabled|lorDepth|mp(?:onents|lete))|urrent|puClass|l(?:i(?:p(?:boardData)?|entInformation)|osed|asses)|alle(?:e|r)|rypto)|t(?:o(?:olbar|p)|ext(?:Transform|Indent|Decoration|Align)|ags)|SQRT(?:1_2|2)|i(?:n(?:ner(?:Height|Width)|put)|ds|gnoreCase)|zIndex|o(?:scpu|n(?:readystatechange|Line)|uter(?:Height|Width)|p(?:sProfile|ener)|ffscreenBuffering)|NEGATIVE_INFINITY|d(?:i(?:splay|alog(?:Height|Top|Width|Left|Arguments)|rectories)|e(?:scription|fault(?:Status|Ch(?:ecked|arset)|View)))|u(?:ser(?:Profile|Language|Agent)|n(?:iqueID|defined)|pdateInterval)|_content|p(?:ixelDepth|ort|ersonalbar|kcs11|l(?:ugins|atform)|a(?:thname|dding(?:Right|Bottom|Top|Left)|rent(?:Window|Layer)?|ge(?:X(?:Offset)?|Y(?:Offset)?))|r(?:o(?:to(?:col|type)|duct(?:Sub)?|mpter)|e(?:vious|fix)))|e(?:n(?:coding|abledPlugin)|x(?:ternal|pando)|mbeds)|v(?:isibility|endor(?:Sub)?|Linkcolor)|URLUnencoded|P(?:I|OSITIVE_INFINITY)|f(?:ilename|o(?:nt(?:Size|Family|Weight)|rmName)|rame(?:s|Element)|gColor)|E|whiteSpace|l(?:i(?:stStyleType|n(?:eHeight|kColor))|o(?:ca(?:tion(?:bar)?|lName)|wsrc)|e(?:ngth|ft(?:Context)?)|a(?:st(?:M(?:odified|atch)|Index|Paren)|yer(?:s|X)|nguage))|a(?:pp(?:MinorVersion|Name|Co(?:deName|re)|Version)|vail(?:Height|Top|Width|Left)|ll|r(?:ity|guments)|Linkcolor|bove)|r(?:ight(?:Context)?|e(?:sponse(?:XML|Text)|adyState))|global|x|m(?:imeTypes|ultiline|enubar|argin(?:Right|Bottom|Top|Left))|L(?:N(?:10|2)|OG(?:10E|2E))|b(?:o(?:ttom|rder(?:Width|RightWidth|BottomWidth|Style|Color|TopWidth|LeftWidth))|ufferDepth|elow|ackground(?:Color|Image)))\b/
-                },
-                {
-                    token: "identifier",
-                    regex: identifierRe
-                },
-                {
-                    regex: "",
-                    token: "empty",
-                    next: "no_regex"
-                }
-            ],
-            // regular expressions are only allowed after certain tokens. This
-            // makes sure we don't mix up regexps with the divison operator
-            "start": [
-                DocCommentHighlightRules.getStartRule("doc-start"),
-                commentsML("start"),
-                commentsSL("start"),
-                {
-                    token: "string.regexp",
-                    regex: "\\/",
-                    next: "regex"
-                },
-                {
-                    token: "text",
-                    regex: "\\s+|^$",
-                    next: STATE_START
-                },
-                {
-                    // Immediately return to the start mode without matching anything.
-                    token: "empty",
-                    regex: "",
-                    next: STATE_NO_REGEXP
-                }
-            ],
-            "regex": [
-                {
-                    // escapes
-                    token: "regexp.keyword.operator",
-                    regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
-                },
-                {
-                    // flag
-                    token: "string.regexp",
-                    regex: "/[sxngimy]*",
-                    next: "no_regex"
-                },
-                {
-                    // invalid operators
-                    token: "invalid",
-                    regex: /\{\d+\b,?\d*\}[+*]|[+*$^?][+*]|[$^][?]|\?{3,}/
-                },
-                {
-                    // operators
-                    token: "constant.language.escape",
-                    regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?.]/
-                },
-                {
-                    token: "constant.language.delimiter",
-                    regex: /\|/
-                },
-                {
-                    // '[' ['^']
-                    token: "constant.language.escape",
-                    regex: /\[\^?/,
-                    next: "regex_character_class"
-                },
-                {
-                    token: "empty",
-                    regex: "$",
-                    next: "no_regex"
-                },
-                {
-                    defaultToken: "string.regexp"
-                }
-            ],
-            "regex_character_class": [
-                {
-                    token: "regexp.charclass.keyword.operator",
-                    regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
-                },
-                {
-                    token: "constant.language.escape",
-                    regex: "]",
-                    next: "regex"
-                },
-                {
-                    token: "constant.language.escape",
-                    regex: "-"
-                },
-                {
-                    // Regular expressions can't straddle lines so if we end up here there is a syntax error.
-                    // Why do we go to the "no_regex"" state instead of "start"?
-                    token: "empty",
-                    regex: "$",
-                    next: "no_regex"
-                },
-                {
-                    // TODO: Surely we have a mis-spelling?
-                    defaultToken: "string.regexp.charachterclass"
-                }
-            ],
-            "function_arguments": [
-                {
-                    token: "variable.parameter",
-                    regex: identifierRe
-                },
-                {
-                    token: "punctuation.operator",
-                    regex: "[, ]+"
-                },
-                {
-                    token: "punctuation.operator",
-                    regex: "$"
-                },
-                {
-                    token: "empty",
-                    regex: "",
-                    // DGH (was next)
-                    push: "no_regex"
-                }
-            ],
-            "qqstring": [
-                {
-                    token: "constant.language.escape",
-                    regex: escapedRe
-                },
-                {
-                    token: "string",
-                    regex: "\\\\$",
-                    next: "qqstring"
-                },
-                {
-                    token: "string",
-                    regex: '"|$',
-                    next: "no_regex"
-                },
-                {
-                    defaultToken: "string"
-                }
-            ],
-            "qstring": [
-                {
-                    token: "constant.language.escape",
-                    regex: escapedRe
-                }, {
-                    token: "string",
-                    regex: "\\\\$",
-                    next: "qstring"
-                }, {
-                    token: "string",
-                    regex: "'|$",
-                    next: "no_regex"
-                }, {
-                    defaultToken: "string"
-                }
-            ]
-        };
+        this.$rules = {};
+
+        // regular expressions are only allowed after certain tokens. This
+        // makes sure we don't mix up regexps with the divison operator.
+        this.$rules[STATE_START] = [
+            DocCommentHighlightRules.getStartRule("doc-start"),
+            commentsML(STATE_START),
+            commentsSL(STATE_START),
+            {
+                token: "string.regexp",
+                regex: "\\/",
+                next: STATE_REGEXP
+            },
+            whitespaceRule('text'),
+            emptyLineRule('text'),
+            fallbackNext(STATE_NO_REGEXP)
+        ];
+
+        this.$rules[STATE_NO_REGEXP] = [
+            DocCommentHighlightRules.getStartRule("doc-start"),
+            commentsML(STATE_NO_REGEXP),
+            commentsSL(STATE_NO_REGEXP),
+            {
+                token: "string",
+                regex: "'(?=.)",
+                next: STATE_QSTRING
+            },
+            {
+                token: "string",
+                regex: '"(?=.)',
+                next: STATE_QQSTRING
+            },
+            {
+                token: "constant.numeric", // hex
+                regex: /0(?:[xX][0-9a-fA-F]+|[bB][01]+)\b/
+            },
+            {
+                token: "constant.numeric", // float
+                regex: /[+-]?\d[\d_]*(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?\b/
+            },
+            {
+                // FIXME
+                // Identifier '.' 'prototype' '.' Identifier '='
+                token: [
+                    "storage.type", "punctuation.operator", "support.function",
+                    "punctuation.operator", "entity.name.function", "text", "keyword.operator"
+                ],
+                // TODO: Are we missing something here?
+                // We should not enter the parameters state with an opening left paren.
+                regex: "(" + identifierRe + ")(\\.)(prototype)(\\.)(" + identifierRe + ")(\\s*)(=)",
+                next: STATE_PARAMS
+            },
+            {
+                // Identifier '.' Identifier '=' 'function' '('
+                token: [
+                    "storage.type", "punctuation.operator", "entity.name.function", "text",
+                    "keyword.operator", "text", "storage.type", "text", "paren.lparen"
+                ],
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // Identifier '=' 'function' '('
+                token: [
+                    "entity.name.function", "text", "keyword.operator", "text", "storage.type",
+                    "text", "paren.lparen"
+                ],
+                regex: "(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // Identifier '.' Identifier '=' 'function' Word '('
+                token: [
+                    "storage.type", "punctuation.operator", "entity.name.function", "text",
+                    "keyword.operator", "text",
+                    "storage.type", "text", "entity.name.function", "text", "paren.lparen"
+                ],
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s+)(\\w+)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // 'function' Identifier '('
+                token: [
+                    "storage.type", "text", "entity.name.function", "text", "paren.lparen"
+                ],
+                regex: "(function)(\\s+)(" + identifierRe + ")(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // 'function' '('
+                token: [
+                    "storage.type", "text", "paren.lparen"
+                ],
+                regex: "(function)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // Identifier ':' 'function' '('
+                token: [
+                    "entity.name.function", "text", "punctuation.operator",
+                    "text", "storage.type", "text", "paren.lparen"
+                ],
+                regex: "(" + identifierRe + ")(\\s*)(:)(\\s*)(function)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                // ':' 'function' '('
+                token: [
+                    // TODO: Why don't we use "punctuation.operator" for the first token?
+                    "text", "text", "storage.type", "text", "paren.lparen"
+                ],
+                regex: "(:)(\\s*)(function)(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                token: "keyword",
+                regex: "(?:" + kwBeforeRe + ")\\b",
+                next: STATE_START
+            },
+            {
+                // TODO; This looks bogus.
+                token: ["support.constant"],
+                regex: /that\b/
+            },
+            {
+                // 'console' '.' 'warn' etc...
+                token: ["storage.type", "punctuation.operator", "support.function.firebug"],
+                // TODO: Shouldn't we allow whitespace around the period punctuation operator?
+                regex: /(console)(\.)(warn|info|log|error|time|trace|timeEnd|assert)\b/
+            },
+            {
+                token: keywordMapper,
+                regex: identifierRe
+            },
+            {
+                // '.' if not followed by '.'
+                token: "punctuation.operator",
+                regex: /[.](?![.])/,
+                next: STATE_PROPERTY
+            },
+            {
+                token: "keyword.operator",
+                // Because this is a RegExp, only single escapes are required.
+                regex: /--|\+\+|\.{3}|===|==|=|!=|!==|<+=?|>+=?|!|&&|\|\||\?:|[!$%&*+\-~\/^|]=?/,
+                next: STATE_START
+            },
+            {
+                token: "punctuation.operator",
+                regex: /[?:,;.]/,
+                next: STATE_START
+            },
+            /*
+            {
+                token: "punctuation.operator",
+                regex: /[,]/,
+                next: POP_STATE
+            },
+            */
+            {
+                token: "paren.lparen",
+                regex: /[\[({]/,
+                next: STATE_START
+            },
+            {
+                token: "paren.rparen",
+                regex: /[\])}]/
+            },
+            {
+                token: "comment",
+                regex: /^#!.*$/
+            }
+        ];
+
+        // The transition to the function parameters state should only happen if the last token was a left paren.
+        this.$rules[STATE_PARAMS] = [
+            {
+                token: TOKEN_VARIABLE_PARAMETER,
+                regex: identifierRe
+            },
+            {
+                token: "punctuation.operator",
+                regex: "[,]+"
+            },
+            whitespaceRule('text'),
+            {
+                // TODO: Why is this here? $ matches the end of input string.
+                token: "punctuation.operator",
+                regex: "$"
+            },
+            fallbackNext(STATE_NO_REGEXP)
+        ];
+
+        this.$rules[STATE_PROPERTY] = [
+            whitespaceRule('text'),
+            {
+                // Identifier '.' Identifier '=' 'function' [Word] '('
+                token: [
+                    "storage.type", "punctuation.operator", "entity.name.function", "text",
+                    "keyword.operator", "text",
+                    "storage.type", "text", "entity.name.function", "text", "paren.lparen"
+                ],
+                // TODO: Why do we use a word and not an identifier?
+                // Identifier '.' Identifier '=' 'function' Word '('
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(?:(\\s+)(\\w+))?(\\s*)(\\()",
+                next: STATE_PARAMS
+            },
+            {
+                token: "punctuation.operator",
+                regex: /[.](?![.])/
+            },
+            {
+                token: "support.function",
+                // FIXME: This RegExp is completely un-maintainable.
+                regex: /(s(?:h(?:ift|ow(?:Mod(?:elessDialog|alDialog)|Help))|croll(?:X|By(?:Pages|Lines)?|Y|To)?|t(?:op|rike)|i(?:n|zeToContent|debar|gnText)|ort|u(?:p|b(?:str(?:ing)?)?)|pli(?:ce|t)|e(?:nd|t(?:Re(?:sizable|questHeader)|M(?:i(?:nutes|lliseconds)|onth)|Seconds|Ho(?:tKeys|urs)|Year|Cursor|Time(?:out)?|Interval|ZOptions|Date|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Date|FullYear)|FullYear|Active)|arch)|qrt|lice|avePreferences|mall)|h(?:ome|andleEvent)|navigate|c(?:har(?:CodeAt|At)|o(?:s|n(?:cat|textual|firm)|mpile)|eil|lear(?:Timeout|Interval)?|a(?:ptureEvents|ll)|reate(?:StyleSheet|Popup|EventObject))|t(?:o(?:GMTString|S(?:tring|ource)|U(?:TCString|pperCase)|Lo(?:caleString|werCase))|est|a(?:n|int(?:Enabled)?))|i(?:s(?:NaN|Finite)|ndexOf|talics)|d(?:isableExternalCapture|ump|etachEvent)|u(?:n(?:shift|taint|escape|watch)|pdateCommands)|j(?:oin|avaEnabled)|p(?:o(?:p|w)|ush|lugins.refresh|a(?:ddings|rse(?:Int|Float)?)|r(?:int|ompt|eference))|e(?:scape|nableExternalCapture|val|lementFromPoint|x(?:p|ec(?:Script|Command)?))|valueOf|UTC|queryCommand(?:State|Indeterm|Enabled|Value)|f(?:i(?:nd|le(?:ModifiedDate|Size|CreatedDate|UpdatedDate)|xed)|o(?:nt(?:size|color)|rward)|loor|romCharCode)|watch|l(?:ink|o(?:ad|g)|astIndexOf)|a(?:sin|nchor|cos|t(?:tachEvent|ob|an(?:2)?)|pply|lert|b(?:s|ort))|r(?:ou(?:nd|teEvents)|e(?:size(?:By|To)|calc|turnValue|place|verse|l(?:oad|ease(?:Capture|Events)))|andom)|g(?:o|et(?:ResponseHeader|M(?:i(?:nutes|lliseconds)|onth)|Se(?:conds|lection)|Hours|Year|Time(?:zoneOffset)?|Da(?:y|te)|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Da(?:y|te)|FullYear)|FullYear|A(?:ttention|llResponseHeaders)))|m(?:in|ove(?:B(?:y|elow)|To(?:Absolute)?|Above)|ergeAttributes|a(?:tch|rgins|x))|b(?:toa|ig|o(?:ld|rderWidths)|link|ack))\b(?=\()/
+            },
+            {
+                token: "support.function.dom",
+                // FIXME: This RegExp is completely un-maintainable.
+                regex: /(s(?:ub(?:stringData|mit)|plitText|e(?:t(?:NamedItem|Attribute(?:Node)?)|lect))|has(?:ChildNodes|Feature)|namedItem|c(?:l(?:ick|o(?:se|neNode))|reate(?:C(?:omment|DATASection|aption)|T(?:Head|extNode|Foot)|DocumentFragment|ProcessingInstruction|E(?:ntityReference|lement)|Attribute))|tabIndex|i(?:nsert(?:Row|Before|Cell|Data)|tem)|open|delete(?:Row|C(?:ell|aption)|T(?:Head|Foot)|Data)|focus|write(?:ln)?|a(?:dd|ppend(?:Child|Data))|re(?:set|place(?:Child|Data)|move(?:NamedItem|Child|Attribute(?:Node)?)?)|get(?:NamedItem|Element(?:sBy(?:Name|TagName|ClassName)|ById)|Attribute(?:Node)?)|blur)\b(?=\()/
+            },
+            {
+                token: "identifier",
+                regex: identifierRe
+            },
+            {
+                regex: "",
+                token: "empty",
+                next: STATE_NO_REGEXP
+            }
+        ];
+
+        this.$rules[STATE_QQSTRING] = [
+            {
+                token: "constant.language.escape",
+                regex: escapedRe
+            },
+            {
+                token: "string",
+                regex: "\\\\$",
+                next: STATE_QQSTRING
+            },
+            {
+                token: "string",
+                regex: '"|$',
+                next: STATE_NO_REGEXP
+            },
+            {
+                defaultToken: "string"
+            }
+        ];
+
+        this.$rules[STATE_QSTRING] = [
+            {
+                token: "constant.language.escape",
+                regex: escapedRe
+            },
+            {
+                token: "string",
+                regex: "\\\\$",
+                next: STATE_QSTRING
+            },
+            {
+                token: "string",
+                regex: "'|$",
+                next: STATE_NO_REGEXP
+            },
+            {
+                defaultToken: "string"
+            }
+        ];
+
+        this.$rules[STATE_REGEXP] = [
+            {
+                // escapes
+                token: "regexp.keyword.operator",
+                regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
+            },
+            {
+                // flag
+                token: "string.regexp",
+                regex: "/[sxngimy]*",
+                next: STATE_NO_REGEXP
+            },
+            {
+                // invalid operators
+                token: "invalid",
+                regex: /\{\d+\b,?\d*\}[+*]|[+*$^?][+*]|[$^][?]|\?{3,}/
+            },
+            {
+                // operators
+                token: "constant.language.escape",
+                regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?.]/
+            },
+            {
+                token: "constant.language.delimiter",
+                regex: /\|/
+            },
+            {
+                // '[' ['^']
+                token: "constant.language.escape",
+                regex: /\[\^?/,
+                next: STATE_REGEXPCC
+            },
+            {
+                token: "empty",
+                regex: "$",
+                next: STATE_NO_REGEXP
+            },
+            {
+                defaultToken: "string.regexp"
+            }
+        ];
+
+        // This state us entered from the regular expression state upon receipt of a '[' (regular expression character class).
+        this.$rules[STATE_REGEXPCC] = [
+            {
+                token: "regexp.charclass.keyword.operator",
+                regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
+            },
+            {
+                token: "constant.language.escape",
+                regex: "]",
+                next: STATE_REGEXP
+            },
+            {
+                token: "constant.language.escape",
+                regex: "-"
+            },
+            {
+                // Regular expressions can't straddle lines so if we end up here there is a syntax error.
+                // Why do we go to the STATE_NO_REGEXP state instead of "start"?
+                token: "empty",
+                regex: "$",
+                next: STATE_NO_REGEXP
+            },
+            {
+                // TODO: Surely we have a mis-spelling?
+                defaultToken: "string.regexp.charachterclass"
+            }
+        ];
 
         if (!options || !options.noES6) {
             this.$rules['no_regex'].unshift(
@@ -437,7 +443,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                     onMatch: function (this: HighlighterRule, value: string, state: string, stack: HighlighterStack) {
                         this.next = value === "{" ? this.nextState : "";
                         if (value === "{" && stack.length) {
-                            stack.unshift("start", state);
+                            stack.unshift(STATE_START, state);
                             return "paren.lparen";
                         }
                         else if (value === "}" && stack.length) {
@@ -449,7 +455,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                         }
                         return value === "{" ? "paren.lparen" : "paren.rparen";
                     },
-                    nextState: "start"
+                    nextState: STATE_START
                 },
                 {
                     token: "string.quasi.start",
@@ -462,7 +468,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
                         {
                             token: "paren.quasi.start",
                             regex: /\${/,
-                            push: "start"
+                            push: STATE_START
                         },
                         {
                             token: "string.quasi.end",
@@ -480,7 +486,7 @@ export class JavaScriptHighlightRules extends TextHighlightRules {
             JSX.call(this);
         }
 
-        this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("no_regex")]);
+        this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule(STATE_NO_REGEXP)]);
 
         this.normalizeRules();
     }
@@ -527,7 +533,7 @@ function JSX(this: JavaScriptHighlightRules) {
     const jsxJsRule: HighlighterRule = {
         regex: "{",
         token: "paren.quasi.start",
-        push: "start"
+        push: STATE_START
     };
     this.$rules.jsx = [
         jsxJsRule,
@@ -551,7 +557,7 @@ function JSX(this: JavaScriptHighlightRules) {
                         stack.splice(0, 2);
                     }
                 }
-                this.next = stack[0] || "start";
+                this.next = stack[0] || STATE_START;
                 return [{ type: this.token, value: value }];
             },
             nextState: "jsx"
@@ -576,7 +582,11 @@ function JSX(this: JavaScriptHighlightRules) {
             regex: "'",
             stateName: "jsx_attr_q",
             push: [
-                { token: "string.attribute-value.xml", regex: "'", next: POP_STATE },
+                {
+                    token: "string.attribute-value.xml",
+                    regex: "'",
+                    next: POP_STATE
+                },
                 { include: "reference" },
                 { defaultToken: "string.attribute-value.xml" }
             ]
@@ -620,5 +630,27 @@ function commentsSL(next: string): HighlighterRule {
             { token: "comment", regex: "$|^", next: next || POP_STATE },
             { defaultToken: "comment", caseInsensitive: true }
         ]
+    };
+}
+
+/**
+ * Matches one or more whitespace characters, does not change the state.
+ */
+function whitespaceRule(token: 'text'): HighlighterRule {
+    return { token, regex: "\\s+" };
+}
+
+/**
+ * Matches a zero-length line, does not change the state.
+ */
+function emptyLineRule(token: 'text'): HighlighterRule {
+    return { token, regex: "^$" };
+}
+
+function fallbackNext(next: string): HighlighterRule {
+    return {
+        token: "empty",
+        regex: "",
+        next
     };
 }

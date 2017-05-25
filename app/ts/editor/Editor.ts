@@ -18,9 +18,9 @@ import { Action } from "./keyboard/Action";
 import Search from "./Search";
 import { assembleRegExp } from './Search';
 import FirstAndLast from "./FirstAndLast";
-import Fold from "./Fold";
-import LineWidget from './LineWidget';
-import LineWidgetManager from './LineWidgetManager';
+import { Fold } from "./Fold";
+import { LineWidget } from './LineWidget';
+import { LineWidgetManager } from './LineWidgetManager';
 import { Position } from "./Position";
 import { Range } from "./Range";
 import { RangeBasic } from "./RangeBasic";
@@ -58,7 +58,7 @@ import { SelectionAddRangeEvent } from './events/SelectionAddRangeEvent';
 import { SelectionRemoveRangeEvent } from './events/SelectionRemoveRangeEvent';
 import { SelectionMultiSelectEvent } from './events/SelectionMultiSelectEvent';
 import { SelectionSingleSelectEvent } from './events/SelectionSingleSelectEvent';
-import NativeUndoManager from './UndoManager';
+import { UndoManager as NativeUndoManager } from './UndoManager';
 import { QuickInfoTooltip as NativeQuickInfoTooltip } from './workspace/QuickInfoTooltip';
 
 //

@@ -1,4 +1,4 @@
-import Fold from "./Fold";
+import { Fold } from "./Fold";
 import { Position } from "./Position";
 
 /**

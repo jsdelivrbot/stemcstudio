@@ -1,11 +1,11 @@
 import { Editor } from './Editor';
 import { EditSession } from './EditSession';
-import Fold from './Fold';
+import { Fold } from './Fold';
 
 /**
  *
  */
-interface LineWidget {
+export interface LineWidget {
     html?: string;
     row: number;
     rowCount?: number;
@@ -27,5 +27,3 @@ interface LineWidget {
     $fold?: Fold | null;
     destroy?: () => any;
 }
-
-export default LineWidget;

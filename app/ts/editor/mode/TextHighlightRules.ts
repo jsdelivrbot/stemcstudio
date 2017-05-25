@@ -13,9 +13,10 @@ export const STATE_START = 'start';
 /**
  * FIXME: typing problem.
  * A Highlighter stack element is a number | string.
- * nextState is string | undefined. Should this be a HighlighterStackElement
+ * nextState is string | undefined. Should this be a HighlighterStackElement?
  */
 const pushState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement | undefined {
+    // Is this convoluted in order to enable recovery from errors?
     if (currentState !== STATE_START || stack.length) {
         // Interesting that pushState pushes two states.
         // nextState ends up being the topmost element in the stack.
@@ -35,7 +36,7 @@ const pushState = function (this: HighlighterRule, currentState: string, stack: 
  * Notice also the double-push in the pushState function.
  */
 const popState = function (this: HighlighterRule, currentState: string, stack: HighlighterStack): HighlighterStackElement {
-    // Why is shift called twice? Pobably because we push twice in pushState!
+    // Why is shift called twice? Probably because we push twice in pushState!
     // console.warn(`(TextHighlightRules) popState(currentState = ${currentState}, stack = ${JSON.stringify(stack)})`);
     /*const shiftedOne =*/ stack.shift();
     // console.log(`shiftedOne = ${shiftedOne}, stack = ${JSON.stringify(stack)}`);
@@ -76,18 +77,6 @@ export class TextHighlightRules implements Highlighter {
                 defaultToken: "text"
             }
         ];
-
-        this.$rules = {
-            "start": [
-                {
-                    token: "empty_line",
-                    regex: '^$'
-                },
-                {
-                    defaultToken: "text"
-                }
-            ]
-        };
     }
 
     /**

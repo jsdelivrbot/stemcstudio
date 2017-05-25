@@ -1,7 +1,7 @@
 import { Delta } from './Delta';
-import DeltaGroup from './DeltaGroup';
+import { DeltaGroup } from './DeltaGroup';
 import { EditSession } from './EditSession';
-import Fold from './Fold';
+import { Fold } from './Fold';
 import { Position } from './Position';
 import { Range } from './Range';
 
@@ -68,7 +68,7 @@ function deserializeDeltaSets(deltaSets: { group: 'doc', deltas: DeltaLight[] }[
 /**
  * This object maintains the undo stack for an <code>EditSession</code>.
  */
-export default class UndoManager {
+export class UndoManager {
 
     /**
      *

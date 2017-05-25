@@ -183,7 +183,7 @@ describe(LANGUAGE_JS, function () {
         });
     });
 
-    describe("Function declaration", function () {
+    describe("function declaration", function () {
 
         const doc = new Document([
             'function foo(a, b) {}'
@@ -212,7 +212,11 @@ describe(LANGUAGE_JS, function () {
             },
             {
                 "type": "punctuation.operator",
-                "value": ", "
+                "value": ","
+            },
+            {
+                "type": "text",
+                "value": " "
             },
             {
                 "type": "variable.parameter",

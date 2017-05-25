@@ -7,7 +7,7 @@ import { Position } from "./Position";
 /**
  * Simple fold-data struct.
  */
-export default class Fold extends RangeList<RangeBasic> {
+export class Fold extends RangeList<RangeBasic> {
     foldLine: FoldLine | null;
     placeholder: string;
     range: Readonly<RangeBasic>;

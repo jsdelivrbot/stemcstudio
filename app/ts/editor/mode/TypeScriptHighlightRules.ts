@@ -3,6 +3,7 @@ import { HighlighterRule } from './Highlighter';
 
 // It appears that the STATE_SATRT state is simply being used to manage comments.
 import { STATE_NO_REGEXP } from "./JavaScriptHighlightRules";
+import { TOKEN_VARIABLE_PARAMETER } from "./JavaScriptHighlightRules";
 
 /**
  * The basic idea here is that TypeScript is a sup
@@ -32,8 +33,8 @@ export class TypeScriptHighlightRules extends JavaScriptHighlightRules {
             },
             // Match stuff like: (function: return type)
             {
-                token: ["variable.parameter.function.ts", "text", "variable.parameter.function.ts"],
-                regex: "([a-zA-Z0-9_?.$][\\w?.$]*)(\\s*:\\s*)([a-zA-Z0-9_?.$][\\w?.$]*)"
+                token: [TOKEN_VARIABLE_PARAMETER, "text", "punctuation.operator", "text", "storage.type.variable.ts"],
+                regex: "([a-zA-Z0-9_?.$][\\w?.$]*)(\\s*)(:)(\\s*)([a-zA-Z0-9_?.$][\\w?.$]*)"
             },
             {
                 token: ["keyword.operator.ts"],

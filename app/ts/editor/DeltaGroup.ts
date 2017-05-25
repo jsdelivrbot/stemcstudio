@@ -11,5 +11,3 @@ export interface DeltaGroup {
      */
     deltas: Delta[];
 }
-
-export default DeltaGroup;

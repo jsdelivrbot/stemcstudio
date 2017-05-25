@@ -4,7 +4,7 @@ import { applyTextChanges } from './applyTextChanges';
 import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
-import UndoManager from '../../editor/UndoManager';
+import { UndoManager } from '../../editor/UndoManager';
 import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
