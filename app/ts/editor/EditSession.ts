@@ -1285,7 +1285,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                     break;
                 }
                 case LANGUAGE_PYTHON: {
-                    this.setUseWorker(false);
+                    this.setUseWorker(true);
                     this.setLanguageMode(new PythonMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
                 }

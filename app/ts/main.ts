@@ -67,10 +67,10 @@ import { ExplorerFilesController } from './directives/explorer/ExplorerFilesCont
 import { problems } from './directives/problems/problems.component';
 
 // FIXME: This should be an internal module.
-import AlertController from './services/modalService/AlertController';
-import ConfirmController from './services/modalService/ConfirmController';
-import PromptController from './services/modalService/PromptController';
-import ShareController from './services/modalService/ShareController';
+import { AlertController } from './services/modalService/AlertController';
+import { ConfirmController } from './services/modalService/ConfirmController';
+import { PromptController } from './services/modalService/PromptController';
+import { ShareController } from './services/modalService/ShareController';
 import { ModalDialogService } from './services/modalService/modal-dialog.service';
 
 import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';

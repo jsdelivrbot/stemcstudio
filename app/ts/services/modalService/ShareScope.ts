@@ -1,8 +1,6 @@
 import { ShareOptions } from './ShareOptions';
 
-interface ShareScope {
+export interface ShareScope {
     options: ShareOptions;
     close(): void;
 }
-
-export default ShareScope;

@@ -1,8 +1,8 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import ConfirmScope from './ConfirmScope';
+import { ConfirmScope } from './ConfirmScope';
 import { ConfirmOptions } from './ConfirmOptions';
 
-export default class ConfirmController {
+export class ConfirmController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: ConfirmScope, $uibModalInstance: IModalServiceInstance, options: ConfirmOptions) {
 

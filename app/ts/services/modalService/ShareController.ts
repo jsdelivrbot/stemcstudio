@@ -1,9 +1,11 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import Clipboard from 'clipboard';
-import ShareScope from './ShareScope';
+import { ShareScope } from './ShareScope';
 import { ShareOptions } from './ShareOptions';
 
-export default class ShareController {
+// Don't mess with this non-relative import.
+import Clipboard from 'clipboard';
+
+export class ShareController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: ShareScope, $uibModalInstance: IModalServiceInstance, options: ShareOptions) {
 

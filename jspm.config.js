@@ -29,11 +29,11 @@ System.config({
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.6.1",
+    "clipboard": "npm:clipboard@1.7.1",
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.17",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.21",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
@@ -42,11 +42,15 @@ System.config({
     "showdown": "npm:showdown@1.6.4",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
+    "typhon-lang": "npm:typhon-lang@0.9.6",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.11",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
+    },
+    "github:geometryzen/ace-workers@2.9.21": {
+      "typhon-lang": "npm:typhon-lang@0.9.6"
     },
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
@@ -76,6 +80,16 @@ System.config({
     },
     "github:jspm/nodelibs-https@0.1.0": {
       "https-browserify": "npm:https-browserify@0.0.0"
+    },
+    "github:jspm/nodelibs-net@0.1.2": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
+      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
+      "http": "github:jspm/nodelibs-http@1.7.1",
+      "net": "github:jspm/nodelibs-net@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "stream": "github:jspm/nodelibs-stream@0.1.0",
+      "timers": "github:jspm/nodelibs-timers@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "github:jspm/nodelibs-os@0.1.0": {
       "os-browserify": "npm:os-browserify@0.1.2"
@@ -292,10 +306,10 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.6.1": {
+    "npm:clipboard@1.7.1": {
       "good-listener": "npm:good-listener@1.2.2",
       "select": "npm:select@1.1.2",
-      "tiny-emitter": "npm:tiny-emitter@1.2.0"
+      "tiny-emitter": "npm:tiny-emitter@2.0.0"
     },
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.2",
@@ -459,7 +473,7 @@ System.config({
       "pinkie-promise": "npm:pinkie-promise@2.0.1"
     },
     "npm:good-listener@1.2.2": {
-      "delegate": "npm:delegate@3.1.2"
+      "delegate": "npm:delegate@3.1.3"
     },
     "npm:graceful-fs@4.1.11": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -795,6 +809,20 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
+    "npm:source-map-support@0.4.15": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
+      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "module": "github:jspm/nodelibs-module@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "querystring": "github:jspm/nodelibs-querystring@0.1.0",
+      "source-map": "npm:source-map@0.5.6"
+    },
+    "npm:source-map@0.5.6": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:spdx-correct@1.0.2": {
       "spdx-license-ids": "npm:spdx-license-ids@1.2.2"
     },
@@ -828,6 +856,16 @@ System.config({
     },
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
+    },
+    "npm:typescript@2.3.3": {
+      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
+      "net": "github:jspm/nodelibs-net@0.1.2",
+      "os": "github:jspm/nodelibs-os@0.1.0",
+      "source-map-support": "npm:source-map-support@0.4.15"
+    },
+    "npm:typhon-lang@0.9.6": {
+      "tslib": "npm:tslib@1.7.1",
+      "typescript": "npm:typescript@2.3.3"
     },
     "npm:ui-select@0.19.8": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
