@@ -50,7 +50,7 @@ import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
 import { TsLintJsonMonitor } from './monitors/TsLintJsonMonitor';
 import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import { TypesConfigJsonMonitor } from './monitors/TypesConfigJsonMonitor';
-import { TypeScriptMonitor } from './monitors/TypeScriptMonitor';
+import { LanguageServiceScriptMonitor } from './monitors/LanguageServiceScriptMonitor';
 import { WsFile } from './WsFile';
 import { setOptionalBooleanProperty } from '../../services/doodles/setOptionalBooleanProperty';
 import { setOptionalStringProperty } from '../../services/doodles/setOptionalStringProperty';
@@ -362,17 +362,31 @@ function isHtmlScript(path: string): boolean {
     return false;
 }
 
-/**
- * Determines whether the file is appropriate for the language service.
- * All editors (files) are loaded in the workspace but only TypeScript
- * files are offered to the language service.
- */
+function isPython(path: string): boolean {
+    const period = path.lastIndexOf('.');
+    if (period >= 0) {
+        const extension = path.substring(period + 1);
+        switch (extension) {
+            case 'py':
+            case 'pyx': {
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+    console.warn(`isJavaScript('${path}') can't figure that one out.`);
+    return false;
+}
+
 function isJavaScript(path: string): boolean {
     const period = path.lastIndexOf('.');
     if (period >= 0) {
         const extension = path.substring(period + 1);
         switch (extension) {
-            case 'js': {
+            case 'js':
+            case 'jsx': {
                 return true;
             }
             default: {
@@ -400,6 +414,10 @@ function isTypeScript(path: string): boolean {
     }
     console.warn(`isTypeScript('${path}') can't figure that one out.`);
     return false;
+}
+
+function isLanguageServiceScript(fileName: string): boolean {
+    return isTypeScript(fileName) || isJavaScript(fileName) || isPython(fileName);
 }
 
 /**
@@ -1059,7 +1077,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
 
         // This makes more sense; it is editor specific.
-        if (isTypeScript(path)) {
+        if (isLanguageServiceScript(path)) {
             // Enable auto completion using the workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
@@ -1068,25 +1086,15 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             editor.addCompleter(new WorkspaceCompleter(path, this));
             // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
             // editor.completers.push(new SnippetCompleter());
-            editor.registerSnippets(typescriptSnippets);
-
-            // Finally, enable QuickInfo.
-            const quickInfo = editor.createQuickInfoTooltip(path, this);
-            if (quickInfo) {
-                quickInfo.init();
-                this.quickInfo[path] = quickInfo;
+            if (isTypeScript(path)) {
+                editor.registerSnippets(typescriptSnippets);
             }
-        }
-        else if (isJavaScript(path)) {
-            // Enable auto completion using the workspace.
-            // The command seems to be required on order to enable method completion.
-            // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
-            // TODO: How do we remove these later?
-            editor.addCommand(new AutoCompleteCommand());
-            // editor.completers.push(new WorkspaceCompleter(path, this));
-            // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
-            // editor.completers.push(new SnippetCompleter());
-            editor.registerSnippets(javascriptSnippets);
+            else if (isJavaScript(path)) {
+                editor.registerSnippets(javascriptSnippets);
+            }
+            else if (isPython(path)) {
+                // TODO: pythonSnippets
+            }
 
             // Finally, enable QuickInfo.
             const quickInfo = editor.createQuickInfoTooltip(path, this);
@@ -1124,17 +1132,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
             this.setFileEditor(path, void 0);
 
-            if (isTypeScript(path)) {
-                // Remove QuickInfo
-                if (this.quickInfo[path]) {
-                    const quickInfo = this.quickInfo[path];
-                    quickInfo.terminate();
-                    delete this.quickInfo[path];
-                }
-                // TODO: Remove the completer?
-                // TODO: Remove the AutoCompleteCommand:
-            }
-            else if (isJavaScript(path)) {
+            if (isLanguageServiceScript(path)) {
                 // Remove QuickInfo
                 if (this.quickInfo[path]) {
                     const quickInfo = this.quickInfo[path];
@@ -1166,7 +1164,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             return;
         }
 
-        if (isTypeScript(path)) {
+        if (isLanguageServiceScript(path)) {
             if (!this.annotationHandlers[path]) {
 
                 /**
@@ -1218,7 +1216,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             return;
         }
 
-        if (isTypeScript(path)) {
+        if (isLanguageServiceScript(path)) {
             // Remove Annotation Handlers.
             if (this.annotationHandlers[path]) {
                 const annotationHandler = this.annotationHandlers[path];
@@ -1246,10 +1244,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         const session = this.getFileSession(path);
         if (session) {
             try {
-
                 // Monitoring for Language Analysis.
-                if (isTypeScript(path)) {
-                    const monitor = new TypeScriptMonitor(path, session, this);
+                if (isLanguageServiceScript(path)) {
+                    const monitor = new LanguageServiceScriptMonitor(path, session, this);
                     this.docMonitors[path] = monitor;
                     monitor.beginMonitoring(callback);
                 }
@@ -1579,7 +1576,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * TODO: The returned promise is not very useful unless the dianostics can be mapped to each path.
      */
     public refreshDiagnostics(): Promise<Diagnostic[][]> {
-        const paths = this.getFileSessionPaths().filter(isTypeScript);
+        const paths = this.getFileSessionPaths().filter(isLanguageServiceScript);
         const diagnosticPromises: Promise<Diagnostic[]>[] = [];
         for (const path of paths) {
             if (this.deletePending[path]) {
@@ -1728,7 +1725,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     public outputFiles(): void {
         const paths = this.getFileSessionPaths();
         for (const path of paths) {
-            if (isTypeScript(path)) {
+            if (isLanguageServiceScript(path)) {
                 this.outputFilesForPath(path);
             }
         }
@@ -1750,7 +1747,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             // are no output files. Test this by deleting the main.ts file.
         }
         else {
-            if (isTypeScript(path)) {
+            if (isLanguageServiceScript(path)) {
                 checkPath(path);
                 if (this.languageServiceProxy) {
                     this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
@@ -2941,10 +2938,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         const existingFile = this.findFileByPath(TSCONFIG_DOT_JSON);
         if (!existingFile) {
             const configuration: TsConfigSettings = {
-                /**
-                 * Encourage use of TypeScript.
-                 */
-                allowJs: false,
+                allowJs: true,
                 declaration: true,
                 emitDecoratorMetadata: true,
                 experimentalDecorators: true,

@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es5",
+        "outDir": ".",
+        "pretty": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noImplicitThis": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "noLib": true,
+        "removeComments": true,
+        "sourceMap": false,
+        "strictNullChecks": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "moduleResolution": "node"
+    },
+    "files": [
+        "./ace-workers.ts",
+        "./src/worker.ts",
+        "./test/unit/builtins.spec.ts",
+        "./test/unit/LanguageServiceWorker.spec.ts",
+        "./test/unit/literals.spec.ts",
+        "./test/unit/NodeWalker.spec.ts",
+        "./test/unit/parse.spec.ts",
+        "./test/unit/tokenize.spec.ts",
+        "./typings/jasmine.d.ts",
+        "./typings/lib.core.es6.d.ts",
+        "./typings/lib.es2016.array.include.d.ts",
+        "./typings/lib.webworker.es6.d.ts",
+        "./typings/systemjs.d.ts",
+        "./typings/typescriptServices.d.ts"
+    ]
+}

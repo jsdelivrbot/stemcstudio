@@ -55,6 +55,14 @@ function missingCallbackMessage(eventName: string): string {
  */
 export type ScriptTarget = 'es2015' | 'es2016' | 'es2017' | 'es3' | 'es5' | 'esnext' | 'latest';
 
+type CallbackFunction = (err: any, results?: any) => void;
+
+interface CallbackEntry {
+    callback: CallbackFunction;
+    description: string;
+    time: number;
+}
+
 /**
  * This class is consumed by the WsModel.
  */
@@ -68,7 +76,7 @@ export class LanguageServiceProxy {
     /**
      *
      */
-    private readonly callbacks: { [id: number]: (err: any, results?: any) => any } = {};
+    private readonly callbacks: { [id: number]: CallbackEntry } = {};
 
     /**
      * The identifier for the next callback.
@@ -322,7 +330,7 @@ export class LanguageServiceProxy {
                     reject();
                 }
             }
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback("setDefaultLibContent", callback);
             const message = { data: { content, callbackId } };
             this.worker.emit(EVENT_DEFAULT_LIB_CONTENT, message);
         });
@@ -333,10 +341,10 @@ export class LanguageServiceProxy {
      * This token is posted to the worker thread along with the request.
      * When the response arrives, the token is used to find the original callback function.
      */
-    private captureCallback(callback: (err: any, results?: any) => any): number {
+    private captureCallback(description: string, callback: CallbackFunction): number {
         if (callback) {
             const callbackId = this.callbackId++;
-            this.callbacks[callbackId] = callback;
+            this.callbacks[callbackId] = { callback, description, time: Date.now() };
             return callbackId;
         }
         else {
@@ -344,11 +352,12 @@ export class LanguageServiceProxy {
         }
     }
 
-    private releaseCallback(callbackId: number) {
+    private releaseCallback(callbackId: number): CallbackFunction | undefined {
         if (typeof callbackId === 'number') {
-            const callback = this.callbacks[callbackId];
+            const entry = this.callbacks[callbackId];
             delete this.callbacks[callbackId];
-            return callback;
+            // console.log(`${entry.description} took ${Date.now() - entry.time} ms`);
+            return entry.callback;
         }
         else {
             return void 0;
@@ -358,9 +367,9 @@ export class LanguageServiceProxy {
     /**
      * Applies a Delta to the specified file.
      */
-    applyDelta(path: string, delta: Delta, callback: (err: any) => void): void {
-        const callbackId = this.captureCallback(callback);
-        const message = { data: { fileName: path, delta, callbackId } };
+    applyDelta(fileName: string, delta: Delta, callback: (err: any) => void): void {
+        const callbackId = this.captureCallback(`applyDelta(${fileName}, ${delta.action}, ${delta.lines.join('\n')})`, callback);
+        const message = { data: { fileName, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
     }
 
@@ -379,7 +388,7 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             };
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback(`ensureModuleMapping(${moduleName})`, callback);
             const message: { data: EnsureModuleMappingRequest } = { data: { moduleName, fileName, callbackId } };
             this.worker.emit(EVENT_ENSURE_MODULE_MAPPING, message);
         });
@@ -400,13 +409,13 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             };
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback(`removeModuleMapping(${moduleName})`, callback);
             const message: { data: RemoveModuleMappingRequest } = { data: { moduleName, callbackId } };
             this.worker.emit(EVENT_REMOVE_MODULE_MAPPING, message);
         });
     }
 
-    getScriptContent(path: string): Promise<string> {
+    getScriptContent(fileName: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             function callback(err: any, content?: string) {
                 if (!err) {
@@ -416,8 +425,8 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             }
-            const callbackId = this.captureCallback(callback);
-            const message: { data: GetScriptContentRequest } = { data: { fileName: path, callbackId } };
+            const callbackId = this.captureCallback(`getScriptContent(${fileName})`, callback);
+            const message: { data: GetScriptContentRequest } = { data: { fileName, callbackId } };
             this.worker.emit(EVENT_GET_SCRIPT_CONTENT, message);
         });
     }
@@ -426,7 +435,7 @@ export class LanguageServiceProxy {
      * Ensures that there is a mapping from the path to the script content.
      * The return boolean promise indicates whether there was an addition (true) or update (false).
      */
-    setScriptContent(path: string, content: string): Promise<boolean> {
+    setScriptContent(fileName: string, content: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             function callback(err: any, added?: boolean) {
                 if (!err) {
@@ -436,8 +445,8 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             }
-            const callbackId = this.captureCallback(callback);
-            const message: { data: SetScriptContentRequest } = { data: { fileName: path, content, callbackId } };
+            const callbackId = this.captureCallback(`setScriptContent(${fileName})`, callback);
+            const message: { data: SetScriptContentRequest } = { data: { fileName, content, callbackId } };
             this.worker.emit(EVENT_SET_SCRIPT_CONTENT, message);
         });
     }
@@ -446,7 +455,7 @@ export class LanguageServiceProxy {
      * Removes the mapping from the path to a script.
      * The returned promise indicates whether a removal happened (true) or path missing (false).
      */
-    removeScript(path: string): Promise<boolean> {
+    removeScript(fileName: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             const callback = function (err: any, removed?: boolean) {
                 if (!err) {
@@ -456,8 +465,8 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             };
-            const callbackId = this.captureCallback(callback);
-            const message: { data: RemoveScriptRequest } = { data: { fileName: path, callbackId } };
+            const callbackId = this.captureCallback(`removeScript(${fileName})`, callback);
+            const message: { data: RemoveScriptRequest } = { data: { fileName, callbackId } };
             this.worker.emit(EVENT_REMOVE_SCRIPT, message);
         });
     }
@@ -478,7 +487,7 @@ export class LanguageServiceProxy {
                 }
             }
             try {
-                const callbackId = this.captureCallback(callback);
+                const callbackId = this.captureCallback("setOperatorOverloading", callback);
                 const message: { data: SetOperatorOverloadingRequest } = { data: { operatorOverloading, callbackId } };
                 this.worker.emit(EVENT_SET_OPERATOR_OVERLOADING, message);
             }
@@ -502,7 +511,7 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             }
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback("setTrace", callback);
             const message: RequestMessage<SetTraceRequest> = { data: { trace, callbackId } };
             this.worker.emit(EVENT_SET_TRACE, message);
         });
@@ -518,32 +527,32 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             }
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback("setTsConfig", callback);
             const message: RequestMessage<SetTsConfigRequest> = { data: { settings, callbackId } };
             this.worker.emit(EVENT_SET_TS_CONFIG, message);
         });
     }
 
     public getLintErrors(fileName: string, configuration: TsLintSettings, callback: (err: any, results: Diagnostic[]) => void): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getLintErrors(${fileName})`, callback);
         const message = { data: { fileName, configuration, callbackId } };
         this.worker.emit(EVENT_GET_LINT_ERRORS, message);
     }
 
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getSyntaxErrors(${fileName})`, callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SYNTAX_ERRORS, message);
     }
 
     public getSemanticErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getSemanticErrors(${fileName})`, callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SEMANTIC_ERRORS, message);
     }
 
     private _getCompletionsAtPosition(fileName: string, position: number, prefix: string, callback: (err: any, completions: CompletionEntry[]) => void): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getCompletionsAtPosition(${fileName})`, callback);
         const message = { data: { fileName, position, prefix, callbackId } };
         this.worker.emit(EVENT_GET_COMPLETIONS_AT_POSITION, message);
     }
@@ -571,26 +580,26 @@ export class LanguageServiceProxy {
                     reject(err);
                 }
             }
-            const callbackId = this.captureCallback(callback);
+            const callbackId = this.captureCallback(`getDefinitionatPosition(${fileName})`, callback);
             const message: RequestMessage<GetDefinitionAtPositionRequest> = { data: { fileName, position, callbackId } };
             this.worker.emit(EVENT_GET_DEFINITION_AT_POSITION, message);
         });
     }
 
     public getFormattingEditsForDocument(fileName: string, settings: FormatCodeSettings, callback: (err: any, textChanges: TextChange<number>[]) => any): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getFormattingEditsForDocument(${fileName})`, callback);
         const message = { data: { fileName, settings, callbackId } };
         this.worker.emit(EVENT_GET_FORMATTING_EDITS_FOR_DOCUMENT, message);
     }
 
     public getQuickInfoAtPosition(fileName: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getQuickInfoAtPosition(${fileName})`, callback);
         const message = { data: { fileName, position, callbackId } };
         this.worker.emit(EVENT_GET_QUICK_INFO_AT_POSITION, message);
     }
 
     getOutputFiles(fileName: string, callback: (err: any, outputFiles: OutputFile[]) => any): void {
-        const callbackId = this.captureCallback(callback);
+        const callbackId = this.captureCallback(`getOutputFiles(${fileName})`, callback);
         const message: RequestMessage<GetOutputFilesRequest> = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_OUTPUT_FILES, message);
     }

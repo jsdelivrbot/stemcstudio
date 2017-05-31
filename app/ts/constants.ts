@@ -2,7 +2,7 @@
  * The versioning is required for cache busting.
  * It must be synchronized with the build process.
  */
-export const ACE_WORKER_VERSION = '2.9.21';
+export const ACE_WORKER_VERSION = '2.9.30';
 export const ACE_WORKER_MODULE_NAME = 'ace-workers.js';
 export const ACE_WORKER_PATH = `/js/ace-workers@${ACE_WORKER_VERSION}/${ACE_WORKER_MODULE_NAME}`;
 

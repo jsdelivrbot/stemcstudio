@@ -1,0 +1,109 @@
+/**
+ * @license
+ * Copyright 2013 Palantir Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { AbstractRule } from '../language/rule/abstractRule';
+import { IRuleMetadata, RuleFailure } from '../language/rule/rule';
+import { dedent } from '../utils';
+import { RuleWalker } from '../language/walker/ruleWalker';
+
+export class Rule extends AbstractRule {
+    /* tslint:disable:object-literal-sort-keys */
+    public static metadata: IRuleMetadata = {
+        ruleName: "forin",
+        description: "Requires a `for ... in` statement to be filtered with an `if` statement.",
+        rationale: dedent`
+            \`\`\`ts
+            for (let key in someObject) {
+                if (someObject.hasOwnProperty(key)) {
+                    // code here
+                }
+            }
+            \`\`\`
+            Prevents accidental iteration over properties inherited from an object's prototype.
+            See [MDN's \`for...in\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)
+            documentation for more information about \`for...in\` loops.`,
+        optionsDescription: "Not configurable.",
+        options: null,
+        optionExamples: ["true"],
+        type: "functionality",
+        typescriptOnly: false,
+    };
+    /* tslint:enable:object-literal-sort-keys */
+
+    public static FAILURE_STRING = "for (... in ...) statements must be filtered with an if statement";
+
+    public apply(sourceFile: ts.SourceFile): RuleFailure[] {
+        return this.applyWithWalker(new ForInWalker(sourceFile, this.getOptions()));
+    }
+}
+
+class ForInWalker extends RuleWalker {
+    public visitForInStatement(node: ts.ForInStatement) {
+        this.handleForInStatement(node);
+        super.visitForInStatement(node);
+    }
+
+    private handleForInStatement(node: ts.ForInStatement) {
+        const statement = node.statement;
+        const statementKind = node.statement.kind;
+
+        // a direct if statement under a for...in is valid
+        if (statementKind === ts.SyntaxKind.IfStatement) {
+            return;
+        }
+
+        // if there is a block, verify that it has a single if statement or starts with if (..) continue;
+        if (statementKind === ts.SyntaxKind.Block) {
+            const blockNode = statement as ts.Block;
+            const blockStatements = blockNode.statements;
+            if (blockStatements.length >= 1) {
+                const firstBlockStatement = blockStatements[0];
+                if (firstBlockStatement.kind === ts.SyntaxKind.IfStatement) {
+                    // if this "if" statement is the only statement within the block
+                    if (blockStatements.length === 1) {
+                        return;
+                    }
+
+                    // if this "if" statement has a single continue block
+                    const ifStatement = (firstBlockStatement as ts.IfStatement).thenStatement;
+                    if (nodeIsContinue(ifStatement)) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        this.addFailureAtNode(node, Rule.FAILURE_STRING);
+    }
+}
+
+function nodeIsContinue(node: ts.Node) {
+    const kind = node.kind;
+
+    if (kind === ts.SyntaxKind.ContinueStatement) {
+        return true;
+    }
+
+    if (kind === ts.SyntaxKind.Block) {
+        const blockStatements = (node as ts.Block).statements;
+        if (blockStatements.length === 1 && blockStatements[0].kind === ts.SyntaxKind.ContinueStatement) {
+            return true;
+        }
+    }
+
+    return false;
+}

@@ -33,7 +33,7 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.21",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.9.30",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
@@ -42,15 +42,15 @@ System.config({
     "showdown": "npm:showdown@1.6.4",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
-    "typhon-lang": "npm:typhon-lang@0.9.6",
+    "typhon-lang": "npm:typhon-lang@0.9.7",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.11",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
-    "github:geometryzen/ace-workers@2.9.21": {
-      "typhon-lang": "npm:typhon-lang@0.9.6"
+    "github:geometryzen/ace-workers@2.9.30": {
+      "typhon-lang": "npm:typhon-lang@0.9.7"
     },
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
@@ -857,15 +857,15 @@ System.config({
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
     },
-    "npm:typescript@2.3.3": {
+    "npm:typescript@2.3.4": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "net": "github:jspm/nodelibs-net@0.1.2",
       "os": "github:jspm/nodelibs-os@0.1.0",
       "source-map-support": "npm:source-map-support@0.4.15"
     },
-    "npm:typhon-lang@0.9.6": {
+    "npm:typhon-lang@0.9.7": {
       "tslib": "npm:tslib@1.7.1",
-      "typescript": "npm:typescript@2.3.3"
+      "typescript": "npm:typescript@2.3.4"
     },
     "npm:ui-select@0.19.8": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
