@@ -1,0 +1,1 @@
+module.exports = require("npm:path-key@2.0.1/index");

@@ -200,7 +200,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_ACE_WORKERS = '2.9.30';
+    const VERSION_ACE_WORKERS = '2.11.0';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.

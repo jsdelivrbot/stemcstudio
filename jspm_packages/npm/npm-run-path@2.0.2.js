@@ -1,0 +1,1 @@
+module.exports = require("npm:npm-run-path@2.0.2/index");

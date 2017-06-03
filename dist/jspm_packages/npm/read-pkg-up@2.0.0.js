@@ -1,0 +1,1 @@
+module.exports = require("npm:read-pkg-up@2.0.0/index");
