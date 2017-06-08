@@ -6,7 +6,7 @@ import { WorkerCallback } from '../workers/WorkerCallback';
  * Uses postMessage to communicate with a taget window.
  */
 export class Sender extends EventEmitterClass implements WorkerCallback {
-    constructor(private target: WorkerGlobalScope) {
+    constructor(private target: DedicatedWorkerGlobalScope) {
         super();
     }
     // TODO: I'm not sure why we extend EventEmitterClass? Convenience?

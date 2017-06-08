@@ -1,9 +1,9 @@
 //
-// It would be best for this code to be compiled in an environment
-// where WorkerGlobalScope is defined and Window is not defined.
+// It is best for this code to be compiled in an environment
+// where DedicatedWorkerGlobalScope is defined and Window is not defined.
 //
 "use strict";
-(function (scope: WorkerGlobalScope) {
+(function (scope: DedicatedWorkerGlobalScope) {
 
     (<any>scope).console = {};
     (<any>scope).console.log = function () {

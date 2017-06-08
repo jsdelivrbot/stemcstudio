@@ -1,6 +1,6 @@
 {
     "name": "ace-workers",
-    "version": "2.12.1",
+    "version": "2.12.2",
     "description": "Workers for tsCodeHub Editor.",
     "author": {
         "name": "David Holmes",

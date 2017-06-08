@@ -1,6 +1,6 @@
 {
   "name": "ace-workers",
-  "version": "2.12.1",
+  "version": "2.12.2",
   "description": "Workers for tsCodeHub Editor.",
   "directories": {
     "lib": "lib"
@@ -28,6 +28,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/jasmine": "^2.5.51",
+    "concurrently": "^3.4.0",
     "es6-module-loader": "^0.17.11",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
@@ -41,9 +43,12 @@
     "jasmine-core": "^2.6.3",
     "jspm": "0.16.53",
     "karma": "^1.7.0",
-    "karma-chrome-launcher": "^1.0.1",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-cli": "^1.0.1",
+    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.4",
     "karma-systemjs": "^0.8.0",
     "phantomjs": "^2.1.7",
     "phantomjs-polyfill": "0.0.2",

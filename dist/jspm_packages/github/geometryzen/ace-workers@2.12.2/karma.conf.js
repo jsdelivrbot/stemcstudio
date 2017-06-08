@@ -5,38 +5,41 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['systemjs', 'jasmine'],
+        frameworks: ['jasmine'],
 
-        systemjs: {
-            configFile: 'config.js',
-            config: {
-                paths: {
-                    // Required when running PhantomJS.
-                    'typescript': "node_modules/typescript/lib/typescript.js",
-                    // Required when running PhantomJS.
-                    'phantomjs-polyfill': 'node_modules/phantomjs-polyfill/bind-polyfill.js',
-                    'systemjs': "node_modules/systemjs/dist/system.js",
-                    'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
-                    'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js'
-                },
-                packages: {
-                    'test/unit': {
-                        defaultExtension: 'ts'
-                    },
-                    'src': {
-                        defaultExtension: 'ts'
-                    }
-                },
-                transpiler: 'typescript'
-            },
-            serveFiles: [
-                'src/**/*.ts'
-            ]
-        },
+
+        // Karma auto loads plugins unless you specify a plugins config.
+        plugins: [
+            require('karma-coverage'),
+            require('karma-jasmine'),
+            require('karma-chrome-launcher'),
+            require('karma-phantomjs-launcher'),
+            require('karma-jasmine-html-reporter')
+        ],
 
         // list of files / patterns to load in the browser
+        // These files are loaded using <script> tags so it's a good place to put polyfill files.
         files: [
-            'test/unit/*.spec.ts'
+            // Polyfills.
+            'node_modules/core-js/client/shim.min.js',
+
+            // Include this with a <script> tag so that System is defined.
+            'node_modules/systemjs/dist/system.src.js',
+
+            //
+            { pattern: 'systemjs.config.js', included: false, watched: false },
+
+            'node_modules/typescript/lib/typescript.js',
+
+            'karma-test-shim.js',
+
+            { pattern: 'src/**/*.js', included: false, watched: true },
+            { pattern: 'test/**/*.js', included: false, watched: true },
+
+            // Karma will load these under /base/node_modules/...
+            { pattern: 'node_modules/tslib/tslib.js', included: false, watched: false },
+            { pattern: 'node_modules/generic-rbtree/build/browser/index.js', included: false, watched: false },
+            { pattern: 'node_modules/typhon-lang/build/browser/index.js', included: false, watched: false }
         ],
 
 
@@ -48,13 +51,14 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'test/**/!(*spec).js': ['coverage']
         },
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage', 'kjhtml'],
 
 
         // web server port

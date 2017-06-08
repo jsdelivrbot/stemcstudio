@@ -34,7 +34,7 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.12.1",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.12.2",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
@@ -50,7 +50,7 @@ System.config({
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
-    "github:geometryzen/ace-workers@2.12.1": {
+    "github:geometryzen/ace-workers@2.12.2": {
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "typhon-lang": "npm:typhon-lang@0.10.0"
     },

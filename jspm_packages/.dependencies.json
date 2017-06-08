@@ -1055,7 +1055,7 @@
     "typescript": "npm:typescript@^2.3.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.12.1": {
+  "github:geometryzen/ace-workers@2.12.2": {
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "typhon-lang": "npm:typhon-lang@0.10.0"
   }
