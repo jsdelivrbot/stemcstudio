@@ -1,0 +1,1 @@
+module.exports = require("npm:generic-rbtree@1.1.1/build/browser/index.js");

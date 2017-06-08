@@ -841,13 +841,6 @@
     "angular": "npm:angular@^1.0.8",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:zone.js@0.8.11": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:tslib@1.7.1": {},
   "npm:source-map-support@0.4.15": {
     "source-map": "npm:source-map@^0.5.6",
@@ -886,12 +879,6 @@
     "os": "github:jspm/nodelibs-os@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
     "net": "github:jspm/nodelibs-net@^0.1.0"
-  },
-  "npm:randombytes@2.0.4": {
-    "safe-buffer": "npm:safe-buffer@^5.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
   "npm:read-pkg-up@2.0.0": {
     "find-up": "npm:find-up@^2.0.0",
@@ -990,11 +977,6 @@
     "events": "github:jspm/nodelibs-events@^0.1.1"
   },
   "npm:p-limit@1.1.0": {},
-  "npm:lru-cache@4.0.2": {
-    "pseudomap": "npm:pseudomap@^1.0.1",
-    "yallist": "npm:yallist@^2.0.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0"
-  },
   "npm:which@1.2.14": {
     "isexe": "npm:isexe@^2.0.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
@@ -1045,12 +1027,36 @@
   "npm:safe-buffer@5.1.0": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:typhon-lang@0.9.11": {
+  "npm:generic-rbtree@1.1.1": {
+    "tslib": "npm:tslib@^1.7.1",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:lru-cache@4.1.0": {
+    "pseudomap": "npm:pseudomap@^1.0.1",
+    "yallist": "npm:yallist@^2.0.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:randombytes@2.0.5": {
+    "safe-buffer": "npm:safe-buffer@^5.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:zone.js@0.8.12": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:typhon-lang@0.10.0": {
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
     "tslib": "npm:tslib@^1.7.1",
     "typescript": "npm:typescript@^2.3.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.11.1": {
-    "typhon-lang": "npm:typhon-lang@0.9.11"
+  "github:geometryzen/ace-workers@2.12.1": {
+    "generic-rbtree": "npm:generic-rbtree@1.1.1",
+    "typhon-lang": "npm:typhon-lang@0.10.0"
   }
 }

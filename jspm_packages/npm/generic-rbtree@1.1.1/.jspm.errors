@@ -1,0 +1,15 @@
+MultipleErrors: /home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBNode.js:38:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBNode.js:38:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBTree.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBTree.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBTree.js:1:24: Semi-colon expected
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBTree.js:230:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/RBTree.js:230:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:1:24: Semi-colon expected
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:2:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/generic-rbtree@1.1.1/build/module/index.js:2:24: Semi-colon expected

@@ -1,1 +1,0 @@
-module.exports = require("npm:randombytes@2.0.4/browser.js");
