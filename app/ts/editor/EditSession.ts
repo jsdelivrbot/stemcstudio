@@ -41,7 +41,7 @@ import { Position } from './Position';
 import { HighlighterToken } from './mode/Highlighter';
 
 // Built-In Languages.
-import { ACE_WORKER_PATH } from '../constants';
+import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../constants';
 import { ClojureMode } from './mode/ClojureMode';
 import { CssMode } from './mode/CssMode';
@@ -1269,7 +1269,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
      */
     public setLanguage(mode: LanguageModeId): Promise<void> {
         const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
-        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
+        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([STEMCSTUDIO_WORKERS_PATH]);
 
         return new Promise<void>((resolve, reject) => {
             function onSetLanguageMode(err: any) {

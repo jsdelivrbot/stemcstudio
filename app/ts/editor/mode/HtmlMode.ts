@@ -1,4 +1,4 @@
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
+import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { arrayToMap } from "../lib/lang";
 import { Completion } from "../Completion";
 import { Position } from "../Position";
@@ -68,9 +68,9 @@ export class HtmlMode extends TextMode {
         const worker = new WorkerClient(this.workerUrl);
         const tearDown = hookAnnotations(worker, session, true);
         hookTerminate(worker, session, tearDown);
-        // We have a slight exception here die to the setOptions call.
+        // We have a slight exception here due to the setOptions call.
         try {
-            worker.init(this.scriptImports, ACE_WORKER_MODULE_NAME, 'HtmlWorker', (err: any) => {
+            worker.init(this.scriptImports, STEMCSTUDIO_WORKERS_MODULE_NAME, 'HtmlWorker', (err: any) => {
                 if (!err) {
                     if (session) {
                         worker.attachToSession(session);

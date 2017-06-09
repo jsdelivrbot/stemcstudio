@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.26.0",
+  "version": "2.26.1",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -59,7 +59,7 @@
     "showdown": "^1.7.1",
     "socket.io": "^1.7.4",
     "systemjs": "0.20.4",
-    "typhon-lang": "^0.10.0",
+    "typhon-lang": "^0.10.1",
     "ui-select": "^0.19.8",
     "zone.js": "^0.8.12"
   },
@@ -144,14 +144,14 @@
       "core-js": "npm:core-js@^2.4.1",
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
       "generic-rbtree": "npm:generic-rbtree@^1.1.1",
-      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.12.2",
+      "geometryzen/ace-workers": "github:geometryzen/ace-workers@^2.12.3",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",
       "rxjs": "npm:rxjs@^5.4.0",
       "showdown": "npm:showdown@^1.6.4",
       "socket.io-client": "npm:socket.io-client@^1.7.4",
-      "typhon-lang": "npm:typhon-lang@^0.10.0",
+      "typhon-lang": "npm:typhon-lang@^0.10.1",
       "ui-select": "npm:ui-select@^0.19.8",
       "underscore": "npm:underscore@^1.8.3",
       "zone.js": "npm:zone.js@^0.8.11"

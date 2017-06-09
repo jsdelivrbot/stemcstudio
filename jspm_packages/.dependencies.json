@@ -1007,10 +1007,6 @@
     "typescript": "npm:typescript@^2.3.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:geometryzen/ace-workers@2.12.2": {
-    "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "typhon-lang": "npm:typhon-lang@0.10.0"
-  },
   "npm:@angular/platform-browser-dynamic@4.2.0": {
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.2.0",
@@ -1067,5 +1063,15 @@
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.2.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:code-writer@0.1.1": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:typhon-lang@0.10.1": {
+    "code-writer": "npm:code-writer@^0.1.1",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
+  },
+  "github:geometryzen/ace-workers@2.12.13": {
+    "typhon-lang": "npm:typhon-lang@0.10.0"
   }
 }

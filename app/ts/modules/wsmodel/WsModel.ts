@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ACE_WORKER_PATH } from '../../constants';
+import { STEMCSTUDIO_WORKERS_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
 import { AutoCompleteCommand } from '../../editor/autocomplete/AutoCompleteCommand';
@@ -239,7 +239,7 @@ const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
  * The script imports for initializing the LanguageServiceProxy.
  * The ordering is important because of dependencies.
  */
-const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([ACE_WORKER_PATH]);
+const scriptImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([STEMCSTUDIO_WORKERS_PATH]);
 
 /**
  * The worker implementation for the LanguageServiceProxy.

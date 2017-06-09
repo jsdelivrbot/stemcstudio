@@ -83,14 +83,6 @@ Update versions in
 2. optionManager.service.ts - update the version
 3. Gruntfile.js - update the version
 
-
-### Upgrading ace
-
-1. tsconfig.json
-2. Gruntfile.js
-3. package.json
-4. jspm.config.js
-
 ### Upgrading ace-workers
 
 Make sure that the version references are correct in the following files:

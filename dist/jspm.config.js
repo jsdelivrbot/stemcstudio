@@ -34,7 +34,7 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.12.2",
+    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.12.13",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
@@ -43,15 +43,14 @@ System.config({
     "showdown": "npm:showdown@1.7.1",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
-    "typhon-lang": "npm:typhon-lang@0.10.0",
+    "typhon-lang": "npm:typhon-lang@0.10.1",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.12",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
-    "github:geometryzen/ace-workers@2.12.2": {
-      "generic-rbtree": "npm:generic-rbtree@1.1.1",
+    "github:geometryzen/ace-workers@2.12.13": {
       "typhon-lang": "npm:typhon-lang@0.10.0"
     },
     "github:geometryzen/davinci-mathscript@1.2.2": {
@@ -326,6 +325,9 @@ System.config({
       "string-width": "npm:string-width@1.0.2",
       "strip-ansi": "npm:strip-ansi@3.0.1",
       "wrap-ansi": "npm:wrap-ansi@2.1.0"
+    },
+    "npm:code-writer@0.1.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -944,6 +946,10 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1",
       "typescript": "npm:typescript@2.3.4"
+    },
+    "npm:typhon-lang@0.10.1": {
+      "code-writer": "npm:code-writer@0.1.1",
+      "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },
     "npm:ui-select@0.19.8": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

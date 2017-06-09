@@ -1,4 +1,4 @@
-import { ACE_WORKER_MODULE_NAME } from '../../constants';
+import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { Annotation } from "../Annotation";
 import { BlockComment } from './BlockComment';
 import { Completion } from "../Completion";
@@ -82,7 +82,7 @@ export function hookTerminate(worker: WorkerClient, session: EditSession, tearDo
  */
 export function initWorker(worker: WorkerClient, moduleName: string, scriptImports: string[], session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
     try {
-        worker.init(scriptImports, ACE_WORKER_MODULE_NAME, moduleName, function (err: any) {
+        worker.init(scriptImports, STEMCSTUDIO_WORKERS_MODULE_NAME, moduleName, function (err: any) {
             if (!err) {
                 if (session) {
                     worker.attachToSession(session);
