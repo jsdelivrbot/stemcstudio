@@ -12,6 +12,7 @@ export const LANGUAGE_JSON = 'JSON';
 export const LANGUAGE_LESS = 'LESS';
 export const LANGUAGE_MATLAB = 'MATLAB';
 export const LANGUAGE_MARKDOWN = 'Markdown';
+export const LANGUAGE_PURE_SCRIPT = 'PureScript';
 export const LANGUAGE_PYTHON = 'Python';
 export const LANGUAGE_SCHEME = 'Scheme';
 export const LANGUAGE_TEXT = 'Text';

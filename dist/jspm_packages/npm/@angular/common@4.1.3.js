@@ -1,1 +1,0 @@
-module.exports = require("npm:@angular/common@4.1.3/bundles/common.umd.js");

@@ -53,6 +53,7 @@ import { JsxMode } from './mode/JsxMode';
 import { JsonMode } from './mode/JsonMode';
 import { MarkdownMode } from './mode/MarkdownMode';
 import { MatlabMode } from './mode/MatlabMode';
+import { PureScriptMode } from './mode/PureScriptMode';
 import { PythonMode } from './mode/PythonMode';
 import { TextMode } from './mode/TextMode';
 import { TypeScriptMode } from './mode/TypeScriptMode';
@@ -70,6 +71,7 @@ import { LANGUAGE_JSON } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
 import { LANGUAGE_MATLAB } from '../languages/modes';
+import { LANGUAGE_PURE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
@@ -1301,6 +1303,11 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                 }
                 case LANGUAGE_JSX: {
                     this.setLanguageMode(new JsxMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_PURE_SCRIPT: {
+                    this.setUseWorker(false);
+                    this.setLanguageMode(new PureScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
                 }
                 case LANGUAGE_TYPE_SCRIPT: {

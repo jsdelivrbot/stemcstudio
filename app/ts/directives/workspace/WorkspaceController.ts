@@ -52,6 +52,7 @@ import { LANGUAGE_JSX } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { LANGUAGE_MATLAB } from '../../languages/modes';
+import { LANGUAGE_PURE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
@@ -833,6 +834,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:
             case LANGUAGE_MATLAB:
+            case LANGUAGE_PURE_SCRIPT:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:
@@ -1076,6 +1078,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:
             case LANGUAGE_MATLAB:
+            case LANGUAGE_PURE_SCRIPT:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_TSX:

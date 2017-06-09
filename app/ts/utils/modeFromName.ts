@@ -11,6 +11,7 @@ import { LANGUAGE_JSX } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
 import { LANGUAGE_MATLAB } from '../languages/modes';
+import { LANGUAGE_PURE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
@@ -40,6 +41,7 @@ extensionToMode['json'] = LANGUAGE_JSON;
 extensionToMode['less'] = LANGUAGE_LESS;
 extensionToMode['m'] = LANGUAGE_MATLAB;
 extensionToMode['md'] = LANGUAGE_MARKDOWN;
+extensionToMode['purs'] = LANGUAGE_PURE_SCRIPT;
 extensionToMode['py'] = LANGUAGE_PYTHON;
 extensionToMode['scm'] = LANGUAGE_SCHEME;
 // extensionToMode['sass'] = 'SASS'
