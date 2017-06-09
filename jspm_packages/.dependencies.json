@@ -1027,12 +1027,17 @@
     "@angular/core": "npm:@angular/core@4.2.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:code-writer@0.1.1": {
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:typhon-lang@0.10.1": {
+  "npm:typhon-lang@0.10.7": {
     "code-writer": "npm:code-writer@^0.1.1",
     "generic-rbtree": "npm:generic-rbtree@^1.1.1"
+  },
+  "npm:code-writer@0.1.2": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:typhon-typescript@0.1.1": {
+    "code-writer": "npm:code-writer@^0.1.2",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "typhon-lang": "npm:typhon-lang@^0.10.7"
   },
   "github:geometryzen/stemcstudio-workers@0.1.70": {}
 }

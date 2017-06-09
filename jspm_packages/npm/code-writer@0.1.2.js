@@ -1,0 +1,1 @@
+module.exports = require("npm:code-writer@0.1.2/build/browser/index.js");

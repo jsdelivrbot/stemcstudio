@@ -2,7 +2,7 @@
  * The versioning is required for cache busting.
  * It must be synchronized with the build process.
  */
-const STEMCSTUDIO_WORKERS_VERSION = '0.1.2';
+const STEMCSTUDIO_WORKERS_VERSION = '0.1.3';
 export const STEMCSTUDIO_WORKERS_MODULE_NAME = 'stemcstudio-workers.js';
 export const STEMCSTUDIO_WORKERS_PATH = `/js/stemcstudio-workers@${STEMCSTUDIO_WORKERS_VERSION}/${STEMCSTUDIO_WORKERS_MODULE_NAME}`;
 
