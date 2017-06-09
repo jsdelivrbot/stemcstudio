@@ -1,5 +1,5 @@
 //
-// This file is shared between ace-workers and any consumer (such as STEMCstudio).
+// This file is shared between stemcstudio-workers and any consumer (such as STEMCstudio).
 //
 export const EVENT_APPLY_DELTA = 'applyDelta';
 export const EVENT_DEFAULT_LIB_CONTENT = 'defaultLibContent';

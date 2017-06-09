@@ -200,7 +200,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_ACE_WORKERS = '2.12.3';
+    const VERSION_STEMCSTUDIO_WORKERS = '0.1.2';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
@@ -254,16 +254,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.promise.d.ts')
         },
         {
-            src: `jspm_packages/github/geometryzen/ace-workers@${VERSION_ACE_WORKERS}/src/worker.js`,
+            src: `jspm_packages/github/geometryzen/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/src/worker.js`,
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: `jspm_packages/github/geometryzen/ace-workers@${VERSION_ACE_WORKERS}/dist/ace-workers.js`,
-            dest: prepend(target, `js/ace-workers@${VERSION_ACE_WORKERS}/ace-workers.js`)
+            src: `jspm_packages/github/geometryzen/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/dist/stemcstudio-workers.js`,
+            dest: prepend(target, `js/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/stemcstudio-workers.js`)
         },
         {
-            src: "../ace-workers/dist/ace-workers.js",
-            dest: prepend(target, `js/ace-workers@${VERSION_ACE_WORKERS}/ace-workers.js`)
+            src: "../stemcstudio-workers/dist/stemcstudio-workers.js",
+            dest: prepend(target, `js/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/stemcstudio-workers.js`)
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',

@@ -83,14 +83,14 @@ Update versions in
 2. optionManager.service.ts - update the version
 3. Gruntfile.js - update the version
 
-### Upgrading ace-workers
+### Upgrading stemcstudio-workers
 
 Make sure that the version references are correct in the following files:
 
 1. package.json
 2. Gruntfile.js
 3. jspm.config.js
-4. constants.ts (ACE_WORKER_VERSION)
+4. constants.ts (STEMCSTUDIO_WORKERS_VERSION)
 
 ### Upgrading @angular/upgrade/static
 
@@ -105,13 +105,11 @@ git push origin master
 1. Gruntfile.js
 2. app.ts
 
-### Tested versions of TypeScript and ace-workers
+### Tested versions of TypeScript and stemcstudio-workers
 
-|TypeScript|ace-workers|
-------------------------
-|1.8.0     |1.x        |
-|2.2.0     |2.x        |
-|2.3.1     |2.9.3      | (Operator Overloading)
+|TypeScript|stemcstudio-workers|
+--------------------------------
+|2.3.1     |2.9.3              | (Operator Overloading)
 
 ```
 npm install

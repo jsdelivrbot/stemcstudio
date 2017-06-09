@@ -34,8 +34,8 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "geometryzen/ace-workers": "github:geometryzen/ace-workers@2.12.13",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@0.1.70",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -49,9 +49,6 @@ System.config({
     "zone.js": "npm:zone.js@0.8.12",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
-    },
-    "github:geometryzen/ace-workers@2.12.13": {
-      "typhon-lang": "npm:typhon-lang@0.10.0"
     },
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
@@ -81,16 +78,6 @@ System.config({
     },
     "github:jspm/nodelibs-https@0.1.0": {
       "https-browserify": "npm:https-browserify@0.0.0"
-    },
-    "github:jspm/nodelibs-net@0.1.2": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "http": "github:jspm/nodelibs-http@1.7.1",
-      "net": "github:jspm/nodelibs-net@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "timers": "github:jspm/nodelibs-timers@0.1.0",
-      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "github:jspm/nodelibs-os@0.1.0": {
       "os-browserify": "npm:os-browserify@0.1.2"
@@ -887,20 +874,6 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
-    "npm:source-map-support@0.4.15": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "module": "github:jspm/nodelibs-module@0.1.0",
-      "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "querystring": "github:jspm/nodelibs-querystring@0.1.0",
-      "source-map": "npm:source-map@0.5.6"
-    },
-    "npm:source-map@0.5.6": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:spdx-correct@1.0.2": {
       "spdx-license-ids": "npm:spdx-license-ids@1.2.2"
     },
@@ -934,18 +907,6 @@ System.config({
     },
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
-    },
-    "npm:typescript@2.3.4": {
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "net": "github:jspm/nodelibs-net@0.1.2",
-      "os": "github:jspm/nodelibs-os@0.1.0",
-      "source-map-support": "npm:source-map-support@0.4.15"
-    },
-    "npm:typhon-lang@0.10.0": {
-      "generic-rbtree": "npm:generic-rbtree@1.1.1",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.7.1",
-      "typescript": "npm:typescript@2.3.4"
     },
     "npm:typhon-lang@0.10.1": {
       "code-writer": "npm:code-writer@0.1.1",
