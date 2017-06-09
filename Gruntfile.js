@@ -254,11 +254,11 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.promise.d.ts')
         },
         {
-            src: `jspm_packages/github/geometryzen/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/src/worker.js`,
+            src: `node_modules/stemcstudio-workers/src/worker.js`,
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: `jspm_packages/github/geometryzen/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/dist/stemcstudio-workers.js`,
+            src: `node_modules/stemcstudio-workers/dist/stemcstudio-workers.js`,
             dest: prepend(target, `js/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/stemcstudio-workers.js`)
         },
         {
