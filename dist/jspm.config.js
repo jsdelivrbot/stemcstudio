@@ -43,7 +43,7 @@ System.config({
     "showdown": "npm:showdown@1.7.1",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
-    "typhon-lang": "npm:typhon-lang@0.10.7",
+    "typhon-lang": "npm:typhon-lang@0.10.8",
     "typhon-typescript": "npm:typhon-typescript@0.1.1",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
@@ -909,14 +909,14 @@ System.config({
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
     },
-    "npm:typhon-lang@0.10.7": {
+    "npm:typhon-lang@0.10.8": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },
     "npm:typhon-typescript@0.1.1": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
-      "typhon-lang": "npm:typhon-lang@0.10.7"
+      "typhon-lang": "npm:typhon-lang@0.10.8"
     },
     "npm:ui-select@0.19.8": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

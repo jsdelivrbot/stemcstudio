@@ -970,10 +970,6 @@
     "timers": "github:jspm/nodelibs-timers@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:typhon-lang@0.10.7": {
-    "code-writer": "npm:code-writer@^0.1.1",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
-  },
   "npm:code-writer@0.1.2": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
@@ -1039,5 +1035,9 @@
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.2.1",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:typhon-lang@0.10.8": {
+    "code-writer": "npm:code-writer@^0.1.1",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
   }
 }
