@@ -75,7 +75,9 @@ Update versions in
 
 1. package.json
 2. bower.json
-3. app/ts/app.ts
+3. app/ts/constants.ts
+
+The version is important for cache busting.
 
 ### Upgrading a library dependency such as davinci-csv, davinci-eight, or davinci-newton.
 

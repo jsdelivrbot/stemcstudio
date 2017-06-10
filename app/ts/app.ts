@@ -4,6 +4,7 @@
 import { downgradeComponent } from '@angular/upgrade/static';
 import { downgradeInjectable } from '@angular/upgrade/static';
 
+import { APP_VERSION } from './constants';
 import { GITHUB_TOKEN_COOKIE_NAME } from './constants';
 
 //
@@ -202,7 +203,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 
 // The application version.
 // This is put on the AppScope.
-app.constant('version', '2.26.4');
+app.constant('version', APP_VERSION);
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

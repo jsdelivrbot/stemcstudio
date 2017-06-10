@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { APP_VERSION } from '../../constants';
 import { STEMCSTUDIO_WORKERS_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
@@ -234,7 +235,7 @@ const TSLINT_DOT_JSON = 'tslint.json';
 
 // The order of importing is important.
 // Loading of scripts is synchronous.
-const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
+const systemImports: string[] = ['/jspm_packages/system.js', `/jspm.config.js?version=${APP_VERSION}`];
 /**
  * The script imports for initializing the LanguageServiceProxy.
  * The ordering is important because of dependencies.
