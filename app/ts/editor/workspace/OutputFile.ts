@@ -1,7 +1,7 @@
 /**
  *
  */
-interface OutputFile {
+export interface OutputFile {
 
     /**
      *
@@ -18,5 +18,3 @@ interface OutputFile {
      */
     text: string;
 }
-
-export default OutputFile;

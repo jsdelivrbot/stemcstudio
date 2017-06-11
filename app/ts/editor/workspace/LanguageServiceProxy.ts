@@ -5,7 +5,7 @@ import { Delta } from '../Delta';
 import { Diagnostic } from './Diagnostic';
 import { FormatCodeSettings } from './FormatCodeSettings';
 import { TextChange } from './TextChange';
-import OutputFile from './OutputFile';
+import { OutputFile } from './OutputFile';
 import RuleFailure from './RuleFailure';
 import { QuickInfo } from './QuickInfo';
 import { WorkerClient } from '../worker/WorkerClient';

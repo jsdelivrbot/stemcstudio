@@ -1,5 +1,5 @@
 // FIXME: Wierd coupling.
-import OutputFile from '../../editor/workspace/OutputFile';
+import { OutputFile } from '../../editor/workspace/OutputFile';
 
 export interface IWorkspaceModel {
 

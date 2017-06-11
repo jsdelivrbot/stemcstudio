@@ -3,7 +3,7 @@ import { IStateParamsService, IStateService } from 'angular-ui-router';
 import { CATEGORY_WORKSPACE } from '../../modules/navigation/NavigationServiceJS';
 import { CREDENTIALS_SERVICE_UUID, ICredentialsService } from '../../services/credentials/ICredentialsService';
 import { Delta } from '../../editor/Delta';
-import OutputFile from '../../editor/workspace/OutputFile';
+import { OutputFile } from '../../editor/workspace/OutputFile';
 import { BACKGROUND_SERVICE_UUID, IBackgroundService } from '../../services/background/IBackgroundService';
 import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '../../modules/wsmodel/IWorkspaceModel';
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';

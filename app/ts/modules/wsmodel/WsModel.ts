@@ -39,7 +39,7 @@ import { isTypeScript } from '../../utils/isTypeScript';
 import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
-import OutputFile from '../../editor/workspace/OutputFile';
+import { OutputFile } from '../../editor/workspace/OutputFile';
 import { PackageJsonMonitor } from './monitors/PackageJsonMonitor';
 import { Range } from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
@@ -1697,8 +1697,15 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             if (isLanguageServiceScript(path)) {
                 checkPath(path);
                 if (this.languageServiceProxy) {
+                    if (this.traceFileOperations) {
+                        this.logLifecycle(`getOutputFiles(path = "${path}")`);
+                    }
                     this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
                         if (!err) {
+                            if (this.traceFileOperations) {
+                                const names = outputFiles.map(function (outputFile) { return outputFile.name; });
+                                this.logLifecycle(`received response to getOutputFiles(path = "${path}") names = ${JSON.stringify(names)}`);
+                            }
                             this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
                         }
                         else {
@@ -2302,7 +2309,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 // We must create a new file.
                 const newFile = this.newFileUnmonitored(newPath, false);
 
-                // Initialize properties.
                 newFile.setText(text);
                 newFile.isOpen = isOpen;
                 newFile.selected = selected;
@@ -2310,7 +2316,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 // Make it clear that this file did not come from GitHub.
                 newFile.existsInGitHub = false;
 
-                // Initialize properties that depend upon the new path.
                 newFile.mode = mode;
 
                 if (this.files) {
@@ -2322,7 +2327,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 this.restoreFileFromTrash(newPath);
                 if (this.files) {
                     const theFile = this.files.getWeakRef(newPath);
-                    // Initialize properties that depend upon the new path.
+                    theFile.setText(text);
+                    theFile.isOpen = isOpen;
+                    theFile.selected = selected;
                     theFile.mode = mode;
                 }
             }
@@ -2338,6 +2345,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * TODO: Better that this be a private method and that the workspace does the right thing.
      */
     private renameUnmonitoredFile(oldPath: string, newPath: string): Promise<void> {
+        if (this.traceFileOperations) {
+            this.logLifecycle(`renameUnmonitoredFile(oldPath = ${oldPath}, newPath = ${newPath})`);
+        }
         return new Promise<void>((resolve, reject) => {
             const mode = modeFromName(newPath);
             if (mode) {
@@ -3157,7 +3167,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private restoreFileFromTrash(path: string): void {
         if (this.traceFileOperations) {
-            this.logLifecycle(`restoreFromTrash(path = ${path}`);
+            this.logLifecycle(`restoreFromTrash(path = ${path})`);
         }
         const trash = this.trash;
         const files = this.files;
