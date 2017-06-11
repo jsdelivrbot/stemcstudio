@@ -2,6 +2,8 @@ import { Command } from '../../editor/commands/Command';
 import { COMMAND_NAME_FORMAT_DOCUMENT } from '../../editor/editor_protocol';
 import { formatDocument, FormatDocumentController } from '../actions/formatDocument';
 import { EditSession } from '../../virtual/editor';
+import { isJavaScript } from '../../utils/isJavaScript';
+import { isTypeScript } from '../../utils/isTypeScript';
 
 export function createFormatDocumentCommand(path: string, indentSize: number, controller: FormatDocumentController, session: EditSession): Command<any> {
     return {
@@ -11,27 +13,9 @@ export function createFormatDocumentCommand(path: string, indentSize: number, co
             formatDocument(path, indentSize, controller, session);
         },
         isAvailable(target: any): boolean {
-            return isTypeScript(path);
+            return isTypeScript(path) || isJavaScript(path);
         },
         scrollIntoView: 'animate',
         readOnly: true
     };
-}
-
-function isTypeScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'ts':
-            case 'tsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isTypeScript('${path}') can't figure that one out.`);
-    return false;
 }

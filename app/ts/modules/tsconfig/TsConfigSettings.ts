@@ -7,6 +7,7 @@ export type ModuleKind = 'amd' | 'commonjs' | 'es2015' | 'none' | 'system' | 'um
  */
 export interface TsConfigSettings {
     allowJs: boolean;
+    checkJs: boolean;
     declaration: boolean;
     emitDecoratorMetadata: boolean;
     experimentalDecorators: boolean;
@@ -18,7 +19,8 @@ export interface TsConfigSettings {
     noUnusedLocals: boolean;
     noUnusedParameters: boolean;
     preserveConstEnums: boolean;
-    removeComments: false;
+    removeComments: boolean;
+    skipLibCheck: boolean;
     sourceMap: boolean;
     strictNullChecks: boolean;
     suppressImplicitAnyIndexErrors: boolean;

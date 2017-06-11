@@ -33,6 +33,10 @@ import MwUnit from '../../synchronization/MwUnit';
 import { MwWorkspace } from '../../synchronization/MwWorkspace';
 import { IOption, LibraryKind } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
+import { isJavaScript } from '../../utils/isJavaScript';
+import { isPython } from '../../utils/isPython';
+import { isTypeScript } from '../../utils/isTypeScript';
+import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
 import OutputFile from '../../editor/workspace/OutputFile';
@@ -361,64 +365,6 @@ function isHtmlScript(path: string): boolean {
     }
     console.warn(`isHtmlScript('${path}') can't figure that one out.`);
     return false;
-}
-
-function isPython(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'py':
-            case 'pyx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isJavaScript('${path}') can't figure that one out.`);
-    return false;
-}
-
-function isJavaScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'js':
-            case 'jsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isJavaScript('${path}') can't figure that one out.`);
-    return false;
-}
-
-function isTypeScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'ts':
-            case 'tsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isTypeScript('${path}') can't figure that one out.`);
-    return false;
-}
-
-function isLanguageServiceScript(fileName: string): boolean {
-    return isTypeScript(fileName) || isJavaScript(fileName) || isPython(fileName);
 }
 
 /**
@@ -2940,6 +2886,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         if (!existingFile) {
             const configuration: TsConfigSettings = {
                 allowJs: true,
+                checkJs: true,
                 declaration: true,
                 emitDecoratorMetadata: true,
                 experimentalDecorators: true,
@@ -2953,6 +2900,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                 // operatorOverloading: true,
                 preserveConstEnums: true,
                 removeComments: false,
+                skipLibCheck: true,
                 sourceMap: true,
                 strictNullChecks: true,
                 suppressImplicitAnyIndexErrors: true,

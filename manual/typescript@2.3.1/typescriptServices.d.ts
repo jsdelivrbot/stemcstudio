@@ -41,9 +41,9 @@ declare namespace ts {
             value: T;
             done: false;
         } | {
-            value: never;
-            done: true;
-        };
+                value: never;
+                done: true;
+            };
     }
     type Path = string & {
         __pathBrand: any;
@@ -2073,6 +2073,7 @@ declare namespace ts {
     type CompilerOptionsValue = string | number | boolean | (string | number)[] | string[] | MapLike<string[]> | PluginImport[];
     interface CompilerOptions {
         allowJs?: boolean;
+        checkJs?: boolean;
         allowSyntheticDefaultImports?: boolean;
         allowUnreachableCode?: boolean;
         allowUnusedLabels?: boolean;

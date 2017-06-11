@@ -15,6 +15,7 @@ import { createFormatDocumentCommand } from '../../workbench/commands/formatDocu
 // import { createCutCommand } from '../../workbench/commands/cut';
 // import { createCopyCommand } from '../../workbench/commands/copy';
 // import { createPasteCommand } from '../../workbench/commands/paste';
+import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 
 export interface ContextMenuController extends FormatDocumentController {
 
@@ -30,7 +31,7 @@ export interface ContextMenuController extends FormatDocumentController {
  */
 export function computeContextMenu(path: string, editor: EditorMinimal, indentSize: number, controller: ContextMenuController, session: EditSession): (ContextMenuItem | null)[] {
     const menuItems: (ContextMenuItem | null)[] = [];
-    if (isTypeScript(path)) {
+    if (isLanguageServiceScript(path)) {
         menuItems.push(menuItemFromCommand(createGotoDefinitionCommand()));
         /*
         menuItems.push({
@@ -55,7 +56,7 @@ export function computeContextMenu(path: string, editor: EditorMinimal, indentSi
         });
         */
     }
-    if (isTypeScript(path)) {
+    if (isLanguageServiceScript(path)) {
         if (menuItems.length > 0) {
             menuItems.push(CONTEXT_MENU_ITEM_DIVIDER);
         }
@@ -131,24 +132,6 @@ function menuItemFromEditorChangeableCommand(command: Command<EditorChangeable>,
     };
 }
 */
-
-function isTypeScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'ts':
-            case 'tsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isTypeScript('${path}') can't figure that one out.`);
-    return false;
-}
 
 /**
  * TODO: Make this asynchronous.

@@ -5460,6 +5460,7 @@ declare module monaco.languages.typescript {
     type CompilerOptionsValue = string | number | boolean | (string | number)[] | string[];
     interface CompilerOptions {
         allowJs?: boolean;
+        checkJs?: boolean;
         allowSyntheticDefaultImports?: boolean;
         allowUnreachableCode?: boolean;
         allowUnusedLabels?: boolean;

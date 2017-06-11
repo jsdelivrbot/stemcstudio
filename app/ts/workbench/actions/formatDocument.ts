@@ -2,6 +2,7 @@ import { EditSession } from '../../virtual/editor';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { TextChange } from '../../editor/workspace/TextChange';
 import { IndentStyle } from '../../editor/workspace/IndentStyle';
+import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 
 export interface FormatDocumentController {
     getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]>;
@@ -35,7 +36,7 @@ export function formatCodeSettings(indentSize: number): FormatCodeSettings {
 }
 
 export function formatDocument(path: string, indentSize: number, controller: FormatDocumentController, session: EditSession) {
-    if (isTypeScript(path)) {
+    if (isLanguageServiceScript(path)) {
         const settings = formatCodeSettings(indentSize);
         controller.getFormattingEditsForDocument(path, settings)
             .then(function (textChanges) {
@@ -50,23 +51,3 @@ export function formatDocument(path: string, indentSize: number, controller: For
         console.warn(`Ignoring format document because '${path}' is not a TypeScript file.`);
     }
 }
-
-function isTypeScript(path: string): boolean {
-    const period = path.lastIndexOf('.');
-    if (period >= 0) {
-        const extension = path.substring(period + 1);
-        switch (extension) {
-            case 'ts':
-            case 'tsx': {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
-    }
-    console.warn(`isTypeScript('${path}') can't figure that one out.`);
-    return false;
-}
-
-
