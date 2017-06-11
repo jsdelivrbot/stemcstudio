@@ -91,7 +91,7 @@ Make sure that the version references are correct in the following files:
 
 1. package.json
 2. Gruntfile.js
-3. jspm.config.js
+3. [jspm.config.js] (this will be updated by jspm install and jspm update).
 4. constants.ts (STEMCSTUDIO_WORKERS_VERSION)
 
 ### Upgrading @angular/upgrade/static

@@ -227,7 +227,7 @@ export class LanguageServiceDispatcher {
                 return [];
             }
         }
-        return this.getAtPosition<ts.CompletionEntry[]>(fileName, position, 'getCompletionsAtPosition', callback);
+        return this.getAtPosition<ts.CompletionEntry[]>(fileName, position, [], 'getCompletionsAtPosition', callback);
     }
     getDefinitionAtPosition(fileName: string, position: number): ts.DefinitionInfo[] {
         const tsLS = this.ensureTypeScriptLanguageService();
@@ -240,7 +240,7 @@ export class LanguageServiceDispatcher {
                 return [];
             }
         }
-        return this.getAtPosition<ts.DefinitionInfo[]>(fileName, position, 'getDefinitionAtPosition', callback);
+        return this.getAtPosition<ts.DefinitionInfo[]>(fileName, position, [], 'getDefinitionAtPosition', callback);
     }
     getFormattingEditsForDocument(fileName: string, settings: ts.FormatCodeSettings): ts.TextChange[] {
         return this.ensureTypeScriptLanguageService().getFormattingEditsForDocument(fileName, settings);
@@ -260,7 +260,7 @@ export class LanguageServiceDispatcher {
         function callback(tsFileName: string, tsPosition: number): ts.QuickInfo {
             return tsLS.getQuickInfoAtPosition(tsFileName, tsPosition);
         }
-        return this.getAtPosition<ts.QuickInfo>(fileName, position, 'getQuickInfoAtPosition', callback);
+        return this.getAtPosition<ts.QuickInfo>(fileName, position, void 0, 'getQuickInfoAtPosition', callback);
     }
     /**
      * A helper method for implementing functions requiring fileName and position.
@@ -269,7 +269,7 @@ export class LanguageServiceDispatcher {
      * @param alias The name of the function that we provide the framework.
      * @param callback The callback function that takes a TypeScript fileName and postion index.
      */
-    private getAtPosition<T>(fileName: string, position: number, alias: string, callback: (tsFileName: string, tsPosition: number) => T): T {
+    private getAtPosition<T>(fileName: string, position: number, noMappingValue: T, alias: string, callback: (tsFileName: string, tsPosition: number) => T): T {
 
         this.synchronizeFiles();
 
@@ -297,7 +297,7 @@ export class LanguageServiceDispatcher {
                         }
                     }
                     else {
-                        throw new Error(`${alias}('${fileName}') failed to map from Python to TypeScript.`);
+                        return noMappingValue;
                     }
                 }
                 else {

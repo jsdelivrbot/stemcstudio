@@ -1039,7 +1039,7 @@
     "yallist": "npm:yallist@^2.1.2",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "github:geometryzen/stemcstudio-workers@2.12.15": {
+  "github:geometryzen/stemcstudio-workers@2.12.16": {
     "generic-rbtree": "npm:generic-rbtree@^1.1.1",
     "typhon-lang": "npm:typhon-lang@^0.10.8",
     "typhon-typescript": "npm:typhon-typescript@^0.1.1"

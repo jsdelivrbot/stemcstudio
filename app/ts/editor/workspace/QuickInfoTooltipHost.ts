@@ -1,7 +1,5 @@
 import { QuickInfo } from './QuickInfo';
 
-interface QuickInfoTooltipHost {
+export interface QuickInfoTooltipHost {
     getQuickInfoAtPosition(path: string, position: number): Promise<QuickInfo>;
 }
-
-export default QuickInfoTooltipHost;

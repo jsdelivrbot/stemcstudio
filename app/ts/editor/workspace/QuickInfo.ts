@@ -1,4 +1,4 @@
-import SymbolDisplayPart from './SymbolDisplayPart';
+import { SymbolDisplayPart } from './SymbolDisplayPart';
 import { TextSpan } from './TextSpan';
 
 /**

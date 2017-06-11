@@ -290,7 +290,7 @@ System.register(["./DocumentRegistryInspector", "./fileExtensionIs", "./Language
                             return [];
                         }
                     }
-                    return this.getAtPosition(fileName, position, 'getCompletionsAtPosition', callback);
+                    return this.getAtPosition(fileName, position, [], 'getCompletionsAtPosition', callback);
                 };
                 LanguageServiceDispatcher.prototype.getDefinitionAtPosition = function (fileName, position) {
                     var tsLS = this.ensureTypeScriptLanguageService();
@@ -303,7 +303,7 @@ System.register(["./DocumentRegistryInspector", "./fileExtensionIs", "./Language
                             return [];
                         }
                     }
-                    return this.getAtPosition(fileName, position, 'getDefinitionAtPosition', callback);
+                    return this.getAtPosition(fileName, position, [], 'getDefinitionAtPosition', callback);
                 };
                 LanguageServiceDispatcher.prototype.getFormattingEditsForDocument = function (fileName, settings) {
                     return this.ensureTypeScriptLanguageService().getFormattingEditsForDocument(fileName, settings);
@@ -318,9 +318,9 @@ System.register(["./DocumentRegistryInspector", "./fileExtensionIs", "./Language
                     function callback(tsFileName, tsPosition) {
                         return tsLS.getQuickInfoAtPosition(tsFileName, tsPosition);
                     }
-                    return this.getAtPosition(fileName, position, 'getQuickInfoAtPosition', callback);
+                    return this.getAtPosition(fileName, position, void 0, 'getQuickInfoAtPosition', callback);
                 };
-                LanguageServiceDispatcher.prototype.getAtPosition = function (fileName, position, alias, callback) {
+                LanguageServiceDispatcher.prototype.getAtPosition = function (fileName, position, noMappingValue, alias, callback) {
                     this.synchronizeFiles();
                     var pyLS = this.ensurePythonLanguageService();
                     var tsHost = this.tsLanguageServiceHost;
@@ -345,7 +345,7 @@ System.register(["./DocumentRegistryInspector", "./fileExtensionIs", "./Language
                                     }
                                 }
                                 else {
-                                    throw new Error(alias + "('" + fileName + "') failed to map from Python to TypeScript.");
+                                    return noMappingValue;
                                 }
                             }
                             else {

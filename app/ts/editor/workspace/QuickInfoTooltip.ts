@@ -1,8 +1,8 @@
-import displayPartsToHtml from './displayPartsToHtml';
+import { displayPartsToHtml } from './displayPartsToHtml';
 import { Editor } from '../Editor';
 import { Tooltip } from '../Tooltip';
 import { Position } from '../Position';
-import QuickInfoTooltipHost from './QuickInfoTooltipHost';
+import { QuickInfoTooltipHost } from './QuickInfoTooltipHost';
 
 /**
  * Returns the document position based upon the MouseEvent offset.
@@ -102,8 +102,8 @@ export class QuickInfoTooltip extends Tooltip {
                                             }
                                         }
                                     })
-                                    .catch((err) => {
-                                        console.warn(`Unable to get quick information for '${this.path}' at position ${JSON.stringify(documentPosition)}`);
+                                    .catch((reason) => {
+                                        console.warn(`Unable to get quick information for '${this.path}' at position ${JSON.stringify(documentPosition)}. Reason: ${reason}`);
                                     });
                             }
                         }

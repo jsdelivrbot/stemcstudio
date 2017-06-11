@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio-workers",
-  "version": "2.12.15",
+  "version": "2.12.16",
   "description": "Web Workers for STEMCstudio.",
   "directories": {
     "lib": "lib"
