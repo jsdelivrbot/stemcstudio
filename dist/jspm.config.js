@@ -35,7 +35,7 @@ System.config({
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@0.1.70",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.12.15",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -53,6 +53,11 @@ System.config({
     },
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
+    },
+    "github:geometryzen/stemcstudio-workers@2.12.15": {
+      "generic-rbtree": "npm:generic-rbtree@1.1.1",
+      "typhon-lang": "npm:typhon-lang@0.10.8",
+      "typhon-typescript": "npm:typhon-typescript@0.1.1"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -357,7 +362,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "lru-cache": "npm:lru-cache@4.1.0",
+      "lru-cache": "npm:lru-cache@4.1.1",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "which": "npm:which@1.2.14"
@@ -575,7 +580,7 @@ System.config({
       "path-exists": "npm:path-exists@3.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lru-cache@4.1.0": {
+    "npm:lru-cache@4.1.1": {
       "pseudomap": "npm:pseudomap@1.0.2",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "yallist": "npm:yallist@2.1.2"

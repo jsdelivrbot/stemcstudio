@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es5",
+        "outDir": ".",
+        "pretty": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noImplicitThis": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "noLib": true,
+        "removeComments": true,
+        "sourceMap": false,
+        "strictNullChecks": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "moduleResolution": "node"
+    },
+    "files": [
+        "./stemcstudio-workers.ts",
+        "./src/worker.ts",
+        "./test/unit/builtins.spec.ts",
+        "./test/unit/LanguageServiceWorker.spec.ts",
+        "./test/unit/literals.spec.ts",
+        "./test/unit/NodeWalker.spec.ts",
+        "./test/unit/parse.spec.ts",
+        "./test/unit/tokenize.spec.ts",
+        "./node_modules/typescript/lib/lib.es5.d.ts",
+        "./node_modules/typescript/lib/lib.es2015.core.d.ts",
+        "./node_modules/typescript/lib/lib.es2015.collection.d.ts",
+        "./node_modules/typescript/lib/lib.webworker.d.ts",
+        "./typings/systemjs.d.ts",
+        "./typings/typescriptServices.d.ts"
+    ]
+}
