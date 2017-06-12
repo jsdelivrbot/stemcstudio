@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.27.1",
+  "version": "2.28.0",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -58,7 +58,7 @@
     "serve-favicon": "^2.4.3",
     "showdown": "^1.7.1",
     "socket.io": "^1.7.4",
-    "stemcstudio-workers": "^2.12.16",
+    "stemcstudio-workers": "^2.12.17",
     "systemjs": "0.20.4",
     "typhon-lang": "^0.10.8",
     "typhon-typescript": "^0.1.1",
@@ -147,7 +147,7 @@
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
       "generic-rbtree": "npm:generic-rbtree@^1.1.1",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.2.2",
-      "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@^2.12.16",
+      "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@^2.12.17",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",
       "rxjs": "npm:rxjs@^5.4.0",
