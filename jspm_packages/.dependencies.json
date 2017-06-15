@@ -944,15 +944,6 @@
   "npm:code-writer@0.1.2": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:typhon-typescript@0.1.1": {
-    "code-writer": "npm:code-writer@^0.1.2",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
-    "typhon-lang": "npm:typhon-lang@^0.10.7"
-  },
-  "npm:typhon-lang@0.10.8": {
-    "code-writer": "npm:code-writer@^0.1.1",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
-  },
   "npm:lru-cache@4.1.1": {
     "pseudomap": "npm:pseudomap@^1.0.2",
     "yallist": "npm:yallist@^2.1.2",
@@ -960,12 +951,6 @@
   },
   "npm:stemcstudio-json@1.0.1": {
     "tslib": "npm:tslib@^1.7.1"
-  },
-  "github:geometryzen/stemcstudio-workers@2.12.18": {
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
-    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
-    "typhon-lang": "npm:typhon-lang@^0.10.8",
-    "typhon-typescript": "npm:typhon-typescript@^0.1.1"
   },
   "npm:@angular/platform-browser-dynamic@4.2.2": {
     "tslib": "npm:tslib@^1.7.1",
@@ -1047,5 +1032,20 @@
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:typhon-lang@0.11.2": {
+    "code-writer": "npm:code-writer@^0.1.1",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
+  },
+  "npm:typhon-typescript@0.2.2": {
+    "code-writer": "npm:code-writer@^0.1.2",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "typhon-lang": "npm:typhon-lang@^0.11.1"
+  },
+  "github:geometryzen/stemcstudio-workers@2.12.19": {
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
+    "typhon-lang": "npm:typhon-lang@^0.11.2",
+    "typhon-typescript": "npm:typhon-typescript@^0.2.2"
   }
 }

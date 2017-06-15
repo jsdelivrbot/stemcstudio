@@ -200,7 +200,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_STEMCSTUDIO_WORKERS = '2.12.18';
+    const VERSION_STEMCSTUDIO_WORKERS = '2.12.19';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
