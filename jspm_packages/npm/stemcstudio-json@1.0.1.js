@@ -1,0 +1,1 @@
+module.exports = require("npm:stemcstudio-json@1.0.1/build/browser/index.js");

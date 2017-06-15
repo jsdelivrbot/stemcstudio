@@ -104,14 +104,8 @@ git push origin master
 
 ### Upgrading TypeScript (version used at runtime)
 
-1. Gruntfile.js
-2. app.ts
-
-### Tested versions of TypeScript and stemcstudio-workers
-
-|TypeScript|stemcstudio-workers|
---------------------------------
-|2.3.1     |2.9.3              | (Operator Overloading)
+1. Gruntfile.js (VERSION_TYPESCRIPT_SERVICES)
+2. constants.ts (TYPESCRIPT_SERVICES_VERSION)
 
 ```
 npm install

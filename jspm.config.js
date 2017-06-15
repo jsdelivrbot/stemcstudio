@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@4.2.1",
-    "@angular/compiler": "npm:@angular/compiler@4.2.1",
-    "@angular/core": "npm:@angular/core@4.2.1",
-    "@angular/forms": "npm:@angular/forms@4.2.1",
-    "@angular/http": "npm:@angular/http@4.2.1",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.1",
-    "@angular/router": "npm:@angular/router@4.2.1",
-    "@angular/upgrade": "npm:@angular/upgrade@4.2.1",
-    "@angular/upgrade/static": "npm:@angular/upgrade@4.2.1/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@4.2.2",
+    "@angular/compiler": "npm:@angular/compiler@4.2.2",
+    "@angular/core": "npm:@angular/core@4.2.2",
+    "@angular/forms": "npm:@angular/forms@4.2.2",
+    "@angular/http": "npm:@angular/http@4.2.2",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.2",
+    "@angular/router": "npm:@angular/router@4.2.2",
+    "@angular/upgrade": "npm:@angular/upgrade@4.2.2",
+    "@angular/upgrade/static": "npm:@angular/upgrade@4.2.2/bundles/upgrade-static.umd.js",
     "angular": "npm:angular@1.6.4",
     "angular-animate": "npm:angular-animate@1.6.4",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -35,14 +35,15 @@ System.config({
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.12.17",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.12.18",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
-    "rxjs": "npm:rxjs@5.4.0",
+    "rxjs": "npm:rxjs@5.4.1",
     "showdown": "npm:showdown@1.7.1",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
+    "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
     "typhon-lang": "npm:typhon-lang@0.10.8",
     "typhon-typescript": "npm:typhon-typescript@0.1.1",
     "ui-select": "npm:ui-select@0.19.8",
@@ -54,8 +55,9 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.12.17": {
+    "github:geometryzen/stemcstudio-workers@2.12.18": {
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
+      "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
       "typhon-lang": "npm:typhon-lang@0.10.8",
       "typhon-typescript": "npm:typhon-typescript@0.1.1"
     },
@@ -121,61 +123,61 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@4.2.1": {
-      "@angular/core": "npm:@angular/core@4.2.1",
+    "npm:@angular/common@4.2.2": {
+      "@angular/core": "npm:@angular/core@4.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/compiler@4.2.1": {
-      "@angular/core": "npm:@angular/core@4.2.1",
+    "npm:@angular/compiler@4.2.2": {
+      "@angular/core": "npm:@angular/core@4.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/core@4.2.1": {
+    "npm:@angular/core@4.2.2": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.4.0",
+      "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1",
       "zone.js": "npm:zone.js@0.8.12"
     },
-    "npm:@angular/forms@4.2.1": {
-      "@angular/common": "npm:@angular/common@4.2.1",
-      "@angular/core": "npm:@angular/core@4.2.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
+    "npm:@angular/forms@4.2.2": {
+      "@angular/common": "npm:@angular/common@4.2.2",
+      "@angular/core": "npm:@angular/core@4.2.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/http@4.2.1": {
-      "@angular/core": "npm:@angular/core@4.2.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
-      "rxjs": "npm:rxjs@5.4.0",
+    "npm:@angular/http@4.2.2": {
+      "@angular/core": "npm:@angular/core@4.2.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+      "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser-dynamic@4.2.1": {
-      "@angular/common": "npm:@angular/common@4.2.1",
-      "@angular/compiler": "npm:@angular/compiler@4.2.1",
-      "@angular/core": "npm:@angular/core@4.2.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
+    "npm:@angular/platform-browser-dynamic@4.2.2": {
+      "@angular/common": "npm:@angular/common@4.2.2",
+      "@angular/compiler": "npm:@angular/compiler@4.2.2",
+      "@angular/core": "npm:@angular/core@4.2.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser@4.2.1": {
-      "@angular/common": "npm:@angular/common@4.2.1",
-      "@angular/core": "npm:@angular/core@4.2.1",
+    "npm:@angular/platform-browser@4.2.2": {
+      "@angular/common": "npm:@angular/common@4.2.2",
+      "@angular/core": "npm:@angular/core@4.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/router@4.2.1": {
-      "@angular/common": "npm:@angular/common@4.2.1",
-      "@angular/core": "npm:@angular/core@4.2.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
+    "npm:@angular/router@4.2.2": {
+      "@angular/common": "npm:@angular/common@4.2.2",
+      "@angular/core": "npm:@angular/core@4.2.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.4.0",
+      "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/upgrade@4.2.1": {
-      "@angular/compiler": "npm:@angular/compiler@4.2.1",
-      "@angular/core": "npm:@angular/core@4.2.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.1",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.1",
+    "npm:@angular/upgrade@4.2.2": {
+      "@angular/compiler": "npm:@angular/compiler@4.2.2",
+      "@angular/core": "npm:@angular/core@4.2.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.2",
       "tslib": "npm:tslib@1.7.1"
     },
     "npm:accepts@1.3.1": {
@@ -778,7 +780,7 @@ System.config({
       "hash-base": "npm:hash-base@2.0.2",
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:rxjs@5.4.0": {
+    "npm:rxjs@5.4.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
@@ -802,7 +804,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
-      "yargs": "npm:yargs@8.0.1"
+      "yargs": "npm:yargs@8.0.2"
     },
     "npm:signal-exit@3.0.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -890,6 +892,9 @@ System.config({
     },
     "npm:spdx-license-ids@1.2.2": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:stemcstudio-json@1.0.1": {
+      "tslib": "npm:tslib@1.7.1"
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
@@ -994,7 +999,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:yargs@8.0.1": {
+    "npm:yargs@8.0.2": {
       "camelcase": "npm:camelcase@4.1.0",
       "cliui": "npm:cliui@3.2.0",
       "decamelize": "npm:decamelize@1.2.0",

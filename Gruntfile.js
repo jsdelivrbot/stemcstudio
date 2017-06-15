@@ -200,7 +200,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_STEMCSTUDIO_WORKERS = '2.12.17';
+    const VERSION_STEMCSTUDIO_WORKERS = '2.12.18';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
@@ -215,6 +215,10 @@ function copies(target) {
      * 
      */
     const VERSION_MONACO = '0.8.3';
+    /**
+     * 
+     */
+    const VERSION_TYPESCRIPT_SERVICES = '2.3.4';
 
     return [
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
@@ -230,31 +234,33 @@ function copies(target) {
             dest: prepend(target, `js/monaco-editor@${VERSION_MONACO}`)
         },
         {
-            src: 'manual/typescript@2.3.1/typescriptServices.js',
-            dest: prepend(target, 'js/typescript@2.3.1/typescriptServices.js')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`,
+            dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`)
         },
         {
-            src: 'manual/typescript@2.3.1/typescriptServices.js.map',
-            dest: prepend(target, 'js/typescript@2.3.1/typescriptServices.js.map')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js.map`,
+            dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js.map`)
         },
         {
-            src: 'manual/typescript@2.3.1/lib.es6.d.ts',
-            dest: prepend(target, 'typings/lib.es6.d.ts')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es6.d.ts`,
+            // FIXME: Should be cache busting.
+            dest: prepend(target, `typings/lib.es6.d.ts`)
         },
         {
-            src: 'manual/typescript@2.3.1/lib.d.ts',
-            dest: prepend(target, 'vendor/typescript@2.3.1/lib.d.ts')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.d.ts`,
+            dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.d.ts`)
         },
         {
-            src: 'manual/typescript@2.3.1/lib.es2015.core.d.ts',
-            dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.core.d.ts')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es2015.core.d.ts`,
+            dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es2015.core.d.ts`)
         },
         {
-            src: 'manual/typescript@2.3.1/lib.es2015.promise.d.ts',
-            dest: prepend(target, 'vendor/typescript@2.3.1/lib.es2015.promise.d.ts')
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es2015.promise.d.ts`,
+            dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es2015.promise.d.ts`)
         },
         {
             src: `node_modules/stemcstudio-workers/src/worker.js`,
+            // FIXME: Should be cache busting.
             dest: prepend(target, 'js/worker.js')
         },
         {
