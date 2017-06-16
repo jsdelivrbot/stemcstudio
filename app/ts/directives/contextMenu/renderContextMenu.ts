@@ -23,7 +23,7 @@ function processLabel($q: IQService, menuItem: ContextMenuItem, promises: IPromi
 
 function registerEventHandler($scope: IScope, enabled: boolean, menuItem: ContextMenuItem, li: IAugmentedJQuery, contextMenuEvent: PointerEvent, removeContextMenus: () => void) {
     if (enabled) {
-        li.on('click', function (clickEvent: JQueryMouseEventObject) {
+        li.on('click', function (clickEvent: JQueryEventObject) {
             // WARNING: href='#' will drive us back to the home page if we don't prevent the default action for click.
             clickEvent.preventDefault();
             $scope.$apply(function () {
@@ -39,7 +39,7 @@ function registerEventHandler($scope: IScope, enabled: boolean, menuItem: Contex
         });
     }
     else {
-        li.on('click', function (clickEvent: JQueryMouseEventObject) {
+        li.on('click', function (clickEvent: JQueryEventObject) {
             clickEvent.preventDefault();
         });
         li.addClass('disabled');

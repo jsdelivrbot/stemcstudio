@@ -1033,10 +1033,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:typhon-lang@0.11.2": {
-    "code-writer": "npm:code-writer@^0.1.1",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
-  },
   "npm:typhon-typescript@0.2.2": {
     "code-writer": "npm:code-writer@^0.1.2",
     "generic-rbtree": "npm:generic-rbtree@^1.1.1",
@@ -1047,5 +1043,9 @@
     "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
     "typhon-lang": "npm:typhon-lang@^0.11.2",
     "typhon-typescript": "npm:typhon-typescript@^0.2.2"
+  },
+  "npm:typhon-lang@0.11.3": {
+    "code-writer": "npm:code-writer@^0.1.1",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1"
   }
 }

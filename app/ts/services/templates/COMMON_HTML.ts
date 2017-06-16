@@ -34,7 +34,37 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + "<body>");
 
     // The "console-to-page" handling may be useful but creates a bad impression.
-    lines.push(_ + _ + "<!--");
+    // Disable the code, allowing the 
+    consoleToPage(lines, tabString, false);
+
+    if (typeof options.canvasId === 'string') {
+        lines.push(_ + _ + `<canvas id='${options.canvasId}'></canvas>`);
+    }
+
+    if (typeof options.containerId === 'string') {
+        lines.push(_ + _ + `<div id='${options.containerId}'></div>`);
+    }
+
+    lines.push(_ + _ + "<script>");
+    lines.push(_ + _ + "// CODE-MARKER");
+    lines.push(_ + _ + "</script>");
+    lines.push(_ + _ + "<script>");
+    lines.push(_ + _ + `System.import('${bootstrap}').catch((e) => {/* console.error(e) */})`);
+    lines.push(_ + _ + "</script>");
+    lines.push(_ + "</body>");
+    lines.push("</html>");
+    return lines.join(NEWLINE).concat(NEWLINE);
+}
+
+/**
+ * Hooks the console and directs the output.
+ */
+export function consoleToPage(lines: string[], tabString: string, enabled: boolean): void {
+    const _ = tabString;
+
+    if (!enabled) {
+        lines.push(_ + _ + "<!--");
+    }
 
     lines.push(_ + _ + "<div id='errors' style='display: none;'></div>");
     lines.push(_ + _ + "<div id='warnings' style='display: none;'></div>");
@@ -89,23 +119,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + _ + "}");
     lines.push(_ + _ + "</script>");
 
-    lines.push(_ + _ + "-->");
-
-    if (typeof options.canvasId === 'string') {
-        lines.push(_ + _ + `<canvas id='${options.canvasId}'></canvas>`);
+    if (!enabled) {
+        lines.push(_ + _ + "-->");
     }
-
-    if (typeof options.containerId === 'string') {
-        lines.push(_ + _ + `<div id='${options.containerId}'></div>`);
-    }
-
-    lines.push(_ + _ + "<script>");
-    lines.push(_ + _ + "// CODE-MARKER");
-    lines.push(_ + _ + "</script>");
-    lines.push(_ + _ + "<script>");
-    lines.push(_ + _ + `System.import('${bootstrap}').catch((e) => {console.error(e)})`);
-    lines.push(_ + _ + "</script>");
-    lines.push(_ + "</body>");
-    lines.push("</html>");
-    return lines.join(NEWLINE).concat(NEWLINE);
 }
