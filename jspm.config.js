@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@4.2.2",
-    "@angular/compiler": "npm:@angular/compiler@4.2.2",
-    "@angular/core": "npm:@angular/core@4.2.2",
-    "@angular/forms": "npm:@angular/forms@4.2.2",
-    "@angular/http": "npm:@angular/http@4.2.2",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.2",
-    "@angular/router": "npm:@angular/router@4.2.2",
-    "@angular/upgrade": "npm:@angular/upgrade@4.2.2",
-    "@angular/upgrade/static": "npm:@angular/upgrade@4.2.2/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@4.2.3",
+    "@angular/compiler": "npm:@angular/compiler@4.2.3",
+    "@angular/core": "npm:@angular/core@4.2.3",
+    "@angular/forms": "npm:@angular/forms@4.2.3",
+    "@angular/http": "npm:@angular/http@4.2.3",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.3",
+    "@angular/router": "npm:@angular/router@4.2.3",
+    "@angular/upgrade": "npm:@angular/upgrade@4.2.3",
+    "@angular/upgrade/static": "npm:@angular/upgrade@4.2.3/bundles/upgrade-static.umd.js",
     "angular": "npm:angular@1.6.4",
     "angular-animate": "npm:angular-animate@1.6.4",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -45,7 +45,7 @@ System.config({
     "socket.io-client": "npm:socket.io-client@1.7.4",
     "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
     "typhon-lang": "npm:typhon-lang@0.11.3",
-    "typhon-typescript": "npm:typhon-typescript@0.2.2",
+    "typhon-typescript": "npm:typhon-typescript@0.2.3",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.12",
@@ -59,7 +59,7 @@ System.config({
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
       "typhon-lang": "npm:typhon-lang@0.11.3",
-      "typhon-typescript": "npm:typhon-typescript@0.2.2"
+      "typhon-typescript": "npm:typhon-typescript@0.2.3"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -123,61 +123,61 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@4.2.2": {
-      "@angular/core": "npm:@angular/core@4.2.2",
+    "npm:@angular/common@4.2.3": {
+      "@angular/core": "npm:@angular/core@4.2.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/compiler@4.2.2": {
-      "@angular/core": "npm:@angular/core@4.2.2",
+    "npm:@angular/compiler@4.2.3": {
+      "@angular/core": "npm:@angular/core@4.2.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/core@4.2.2": {
+    "npm:@angular/core@4.2.3": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1",
       "zone.js": "npm:zone.js@0.8.12"
     },
-    "npm:@angular/forms@4.2.2": {
-      "@angular/common": "npm:@angular/common@4.2.2",
-      "@angular/core": "npm:@angular/core@4.2.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+    "npm:@angular/forms@4.2.3": {
+      "@angular/common": "npm:@angular/common@4.2.3",
+      "@angular/core": "npm:@angular/core@4.2.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/http@4.2.2": {
-      "@angular/core": "npm:@angular/core@4.2.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+    "npm:@angular/http@4.2.3": {
+      "@angular/core": "npm:@angular/core@4.2.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
       "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser-dynamic@4.2.2": {
-      "@angular/common": "npm:@angular/common@4.2.2",
-      "@angular/compiler": "npm:@angular/compiler@4.2.2",
-      "@angular/core": "npm:@angular/core@4.2.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+    "npm:@angular/platform-browser-dynamic@4.2.3": {
+      "@angular/common": "npm:@angular/common@4.2.3",
+      "@angular/compiler": "npm:@angular/compiler@4.2.3",
+      "@angular/core": "npm:@angular/core@4.2.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser@4.2.2": {
-      "@angular/common": "npm:@angular/common@4.2.2",
-      "@angular/core": "npm:@angular/core@4.2.2",
+    "npm:@angular/platform-browser@4.2.3": {
+      "@angular/common": "npm:@angular/common@4.2.3",
+      "@angular/core": "npm:@angular/core@4.2.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/router@4.2.2": {
-      "@angular/common": "npm:@angular/common@4.2.2",
-      "@angular/core": "npm:@angular/core@4.2.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
+    "npm:@angular/router@4.2.3": {
+      "@angular/common": "npm:@angular/common@4.2.3",
+      "@angular/core": "npm:@angular/core@4.2.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.1",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/upgrade@4.2.2": {
-      "@angular/compiler": "npm:@angular/compiler@4.2.2",
-      "@angular/core": "npm:@angular/core@4.2.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.2",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.2",
+    "npm:@angular/upgrade@4.2.3": {
+      "@angular/compiler": "npm:@angular/compiler@4.2.3",
+      "@angular/core": "npm:@angular/core@4.2.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.2.3",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.2.3",
       "tslib": "npm:tslib@1.7.1"
     },
     "npm:accepts@1.3.1": {
@@ -923,7 +923,7 @@ System.config({
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },
-    "npm:typhon-typescript@0.2.2": {
+    "npm:typhon-typescript@0.2.3": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "typhon-lang": "npm:typhon-lang@0.11.3"

@@ -1,11 +1,11 @@
 import { IPromise } from 'angular';
-import Flow from './Flow';
-import RootNode from './nodes/RootNode';
+import { Flow } from './Flow';
+import { RootNode } from './nodes/RootNode';
 
 /**
  *
  */
-export default class ExecutionStrategy<T> {
+export class ExecutionStrategy<T> {
     flow: Flow<T>;
     flowAltered: boolean;
     looping: boolean;

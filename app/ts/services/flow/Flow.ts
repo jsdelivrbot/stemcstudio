@@ -1,11 +1,11 @@
-import AgendaTree from './AgendaTree';
+import { AgendaTree } from './AgendaTree';
 import { EventBus } from './EventBus';
-import ExecutionStrategy from './ExecutionStrategy';
-import RootNode from './nodes/RootNode';
-import Session from './Session';
-import WorkingMemory from './WorkingMemory';
+import { ExecutionStrategy } from './ExecutionStrategy';
+import { RootNode } from './nodes/RootNode';
+import { Session } from './Session';
+import { WorkingMemory } from './WorkingMemory';
 
-export default class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
+export class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
     agenda: AgendaTree;
     executionStrategy: ExecutionStrategy<T>;
     rootNode: RootNode;

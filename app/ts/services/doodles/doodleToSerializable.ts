@@ -1,7 +1,7 @@
 import { Doodle } from './Doodle';
 import { DoodleFile } from './DoodleFile';
-import IDoodleDS from './IDoodleDS';
-import IDoodleFile from './IDoodleFile';
+import { IDoodleDS } from './IDoodleDS';
+import { IDoodleFile } from './IDoodleFile';
 
 function mapDoodleFileToIDoodleFile(doodleFile: DoodleFile): IDoodleFile {
     const result: IDoodleFile = {

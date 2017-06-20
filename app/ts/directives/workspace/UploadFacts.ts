@@ -1,8 +1,8 @@
-import Method from './Method';
-import Fuzzy from '../../utils/Fuzzy';
+import { Method } from './Method';
+import { Fuzzy } from '../../utils/Fuzzy';
 import { RepoData } from '../../services/github/RepoData';
 
-export default class UploadFacts {
+export class UploadFacts {
 
     /**
      * The commit message for a Repository commit.

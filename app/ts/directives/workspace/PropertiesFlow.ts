@@ -1,8 +1,8 @@
 import { IHttpService, ILocationService } from 'angular';
-import FlowService from '../../services/flow/FlowService';
-import PropertiesDialog from '../../modules/properties/PropertiesDialog';
-import PropertiesFacts from './PropertiesFacts';
-import PropertiesSettings from '../../modules/properties/PropertiesSettings';
+import { FlowService } from '../../services/flow/FlowService';
+import { PropertiesDialog } from '../../modules/properties/PropertiesDialog';
+import { PropertiesFacts } from './PropertiesFacts';
+import { PropertiesSettings } from '../../modules/properties/PropertiesSettings';
 import { IOptionManager } from '../../services/options/IOptionManager';
 import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import { WsModel } from '../../modules/wsmodel/WsModel';
@@ -12,7 +12,7 @@ import { dependencyNames } from './dependencyNames';
 /**
  * 
  */
-export default class PropertiesFlow {
+export class PropertiesFlow {
     constructor(
         private optionManager: IOptionManager,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
@@ -38,6 +38,7 @@ export default class PropertiesFlow {
                 const defaults: PropertiesSettings = {
                     name: this.wsModel.name as string,
                     version: this.wsModel.version as string,
+                    hideConfigFiles: this.wsModel.hideConfigFiles,
                     linting: this.wsModel.linting,
                     noLoopCheck: this.wsModel.noLoopCheck,
                     operatorOverloading: this.wsModel.isOperatorOverloadingEnabled(),
@@ -64,6 +65,7 @@ export default class PropertiesFlow {
                 if (value) {
                     this.wsModel.name = value.name;
                     this.wsModel.version = value.version;
+                    this.wsModel.hideConfigFiles = value.hideConfigFiles;
                     this.wsModel.linting = value.linting;
                     this.wsModel.noLoopCheck = value.noLoopCheck;
                     this.wsModel.setOperatorOverloading(value.operatorOverloading);

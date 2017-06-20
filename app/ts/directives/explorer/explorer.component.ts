@@ -1,5 +1,5 @@
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITranscludeFunction } from 'angular';
-import { ExplorerController as controller } from './ExplorerController';
+import { ExplorerController } from './ExplorerController';
 import { ExplorerScope } from './ExplorerScope';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
@@ -17,7 +17,7 @@ export function createExplorerDirective(): IDirective {
         restrict: 'E',
         bindToController: {
         },
-        controller,
+        controller: ExplorerController,
         controllerAs: '$ctrl',
         templateUrl: 'explorer.html',
         /**

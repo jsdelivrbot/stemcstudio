@@ -1,14 +1,14 @@
 import { IHttpService, IPromise, IQService } from 'angular';
-import ISearchParams from '../SearchParams';
-import ISearchResponse from '../SearchResponse';
-import IStemcArXiv from '../StemcArXiv';
-import ISubmitParams from '../SubmitParams';
-import ISubmitResponse from '../SubmitResponse';
+import { SearchParams as ISearchParams } from '../SearchParams';
+import { SearchResponse as ISearchResponse } from '../SearchResponse';
+import { StemcArXiv as IStemcArXiv } from '../StemcArXiv';
+import { SubmitParams as ISubmitParams } from '../SubmitParams';
+import { SubmitResponse as ISubmitResponse } from '../SubmitResponse';
 
 /**
  * TODO: Migrate from AngularJS to Angular.
  */
-export default class SearchService implements IStemcArXiv {
+export class SearchService implements IStemcArXiv {
 
     public static $inject: string[] = ['$q', '$http'];
 

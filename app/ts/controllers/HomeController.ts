@@ -10,7 +10,7 @@ import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
 import { ModalDialog } from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import NewProjectDialog from '../modules/project/NewProjectDialog';
-import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
+import { StemcArXiv } from '../modules/stemcArXiv/StemcArXiv';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**

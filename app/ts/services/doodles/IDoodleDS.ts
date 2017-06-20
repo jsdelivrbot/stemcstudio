@@ -1,6 +1,6 @@
-import IDoodleFile from './IDoodleFile';
+import { IDoodleFile } from './IDoodleFile';
 
-interface IDoodleDS {
+export interface IDoodleDS {
 
     /**
      * The owner login.
@@ -44,5 +44,3 @@ interface IDoodleDS {
      */
     updated_at: string;
 }
-
-export default IDoodleDS;

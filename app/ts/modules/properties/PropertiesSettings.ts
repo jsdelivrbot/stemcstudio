@@ -1,7 +1,7 @@
 /**
  * 
  */
-interface PropertiesSettings {
+export interface PropertiesSettings {
     /**
      * project name (a packageName).
      * TODO: Rename.
@@ -11,6 +11,10 @@ interface PropertiesSettings {
      * project version.
      */
     version: string;
+    /**
+     * hide configuration files such as package.json, tsconfig.json, and tslint.json.
+     */
+    hideConfigFiles: boolean;
     /**
      * disable infinite looping detection.
      */
@@ -28,5 +32,3 @@ interface PropertiesSettings {
      */
     dependencies: string[];
 }
-
-export default PropertiesSettings;

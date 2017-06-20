@@ -21,6 +21,7 @@ export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle):
 
     doodleOut.description = doodleIn.description;
     doodleOut.dependencies = doodleIn.dependencies;
+    doodleOut.hideConfigFiles = doodleIn.hideConfigFiles;
     doodleOut.linting = doodleIn.linting;
     doodleOut.noLoopCheck = doodleIn.noLoopCheck;
     doodleOut.operatorOverloading = doodleIn.operatorOverloading;

@@ -1,6 +1,6 @@
-import Match from '../Match';
+import { Match } from '../Match';
 
-export default function factRecency<T>(a: Match<T>, b: Match<T>): number {
+export function factRecency<T>(a: Match<T>, b: Match<T>): number {
     let i = 0;
     const aMatchRecency = a.match.recency;
     const bMatchRecency = b.match.recency;

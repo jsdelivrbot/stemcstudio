@@ -1,6 +1,6 @@
-import isUndefined from '../utils/isUndefined';
+import { isUndefined } from '../utils/isUndefined';
 
-export default class Fuzzy<T> {
+export class Fuzzy<T> {
     private _value: T | undefined;
     private _reason: any;
     reset(): void {

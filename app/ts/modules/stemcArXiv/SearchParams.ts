@@ -1,5 +1,3 @@
-interface SearchParams {
+export interface SearchParams {
     query: string;
 }
-
-export default SearchParams;

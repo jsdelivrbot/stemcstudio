@@ -1,5 +1,5 @@
-import Match from '../Match';
+import { Match } from '../Match';
 
-export default function activationRecency<T>(a: Match<T>, b: Match<T>): number {
+export function activationRecency<T>(a: Match<T>, b: Match<T>): number {
     return a.recency - b.recency;
 }

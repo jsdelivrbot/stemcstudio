@@ -3,13 +3,13 @@ import { isBoolean } from '../../utils/isBoolean';
 import { isString } from '../../utils/isString';
 import { IOption } from '../../services/options/IOption';
 import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/options/IOptionManager';
-import PropertiesModalScope from './PropertiesModalScope';
-import PropertiesSettings from './PropertiesSettings';
+import { PropertiesModalScope } from './PropertiesModalScope';
+import { PropertiesSettings } from './PropertiesSettings';
 
 /**
  * The controller for the PropertiesModalScope.
  */
-export default class PropertiesModalController {
+export class PropertiesModalController {
     public static $inject: string[] = [
         '$scope',
         '$uibModalInstance',
@@ -24,6 +24,7 @@ export default class PropertiesModalController {
         $scope.f = {
             n: isString(pkgInfo.name) ? pkgInfo.name : "",
             v: isString(pkgInfo.version) ? pkgInfo.version : "",
+            hideConfigFiles: isBoolean(pkgInfo.hideConfigFiles) ? pkgInfo.hideConfigFiles : true,
             linting: isBoolean(pkgInfo.linting) ? pkgInfo.linting : false,
             loopCheck: isBoolean(pkgInfo.noLoopCheck) ? !pkgInfo.noLoopCheck : true,
             o: isBoolean(pkgInfo.operatorOverloading) ? pkgInfo.operatorOverloading : false,
@@ -50,6 +51,7 @@ export default class PropertiesModalController {
         $scope.ok = function () {
             pkgInfo.name = $scope.f.n;
             pkgInfo.version = $scope.f.v;
+            pkgInfo.hideConfigFiles = $scope.f.hideConfigFiles;
             pkgInfo.linting = $scope.f.linting;
             pkgInfo.noLoopCheck = !$scope.f.loopCheck;
             pkgInfo.operatorOverloading = $scope.f.o;

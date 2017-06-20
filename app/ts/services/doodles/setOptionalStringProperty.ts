@@ -1,5 +1,5 @@
 import { isString } from '../../utils/isString';
-import isUndefined from '../../utils/isUndefined';
+import { isUndefined } from '../../utils/isUndefined';
 
 /**
  * Sets a string property on a target object.

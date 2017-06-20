@@ -1,6 +1,6 @@
-import Rule from './Rule';
+import { Rule } from './Rule';
 
-interface Match<T> {
+export interface Match<T> {
     name: string;
     hashCode: number;
     rule: Rule<T>;
@@ -10,5 +10,3 @@ interface Match<T> {
         recency: number[];
     };
 }
-
-export default Match;

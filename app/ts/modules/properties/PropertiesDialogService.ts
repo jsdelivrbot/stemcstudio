@@ -1,8 +1,8 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import PropertiesDialog from './PropertiesDialog';
-import PropertiesSettings from './PropertiesSettings';
-import PropertiesModalController from './PropertiesModalController';
+import { PropertiesDialog } from './PropertiesDialog';
+import { PropertiesSettings } from './PropertiesSettings';
+import { PropertiesModalController } from './PropertiesModalController';
 
 /**
  * The implementation that is registered with the application module.

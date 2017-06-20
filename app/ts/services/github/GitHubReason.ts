@@ -1,4 +1,4 @@
-interface GitHubReason {
+export interface GitHubReason {
     data: {
         message: string;
         documentation_ul: string;
@@ -6,5 +6,3 @@ interface GitHubReason {
     status: number;
     statusText: string;
 }
-
-export default GitHubReason;

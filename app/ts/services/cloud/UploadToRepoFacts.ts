@@ -1,4 +1,4 @@
-import Fuzzy from '../../utils/Fuzzy';
+import { Fuzzy } from '../../utils/Fuzzy';
 // FIXME: These s/b the same.
 import Commit from '../github/Commit';
 import CommitKey from '../github/CommitKey';

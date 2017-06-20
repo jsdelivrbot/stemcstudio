@@ -84,6 +84,7 @@ app.factory('templates', [
             description: "Minimal Program",
             files: {},
             dependencies: dependenciesMap(['DomReady']),
+            hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
             operatorOverloading: true
@@ -98,6 +99,7 @@ app.factory('templates', [
             description: "EIGHT WebGL 3D Graphics",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
+            hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
             operatorOverloading: true
@@ -115,6 +117,7 @@ app.factory('templates', [
             description: "React UI Component Framework",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine', 'react', 'react-dom']),
+            hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
             operatorOverloading: true
@@ -132,6 +135,7 @@ app.factory('templates', [
             description: "Jasmine Testing Framework",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine']),
+            hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
             operatorOverloading: true

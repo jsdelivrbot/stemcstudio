@@ -1,5 +1,3 @@
-interface Agenda {
+export interface Agenda {
 
 }
-
-export default Agenda;

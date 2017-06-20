@@ -1,4 +1,4 @@
-interface SubmitParams {
+export interface SubmitParams {
 
     /**
      * The owner of the GitHub Gist or Repository.
@@ -20,5 +20,3 @@ interface SubmitParams {
     credentials: { [identityProviderName: string]: string };
 
 }
-
-export default SubmitParams;

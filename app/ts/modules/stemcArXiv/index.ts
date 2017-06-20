@@ -1,5 +1,5 @@
 import { module } from 'angular';
-import SearchService from './services/SearchService';
+import { SearchService } from './services/SearchService';
 
 export const stemcArXivModule = module('stemcArXiv', []);
 

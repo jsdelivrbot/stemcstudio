@@ -1,6 +1,6 @@
-import FlowService from './FlowService';
-import FlowContainer from './FlowContainer';
-import FlowSessionService from './FlowSessionService';
+import { FlowService } from './FlowService';
+import { FlowContainer } from './FlowContainer';
+import { FlowSessionService } from './FlowSessionService';
 
 export default class ReteFlowService implements FlowService {
     public static $inject: string[] = ['flowSessionService'];

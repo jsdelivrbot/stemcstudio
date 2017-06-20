@@ -1,7 +1,7 @@
-import AgendaTree from '../AgendaTree';
-import WorkingMemory from '../WorkingMemory';
+import { AgendaTree } from '../AgendaTree';
+import { WorkingMemory } from '../WorkingMemory';
 
-export default class RootNode {
+export class RootNode {
     constructor(workingMemory: WorkingMemory, agenda: AgendaTree) {
         throw new Error('RootNode.constructor');
     }

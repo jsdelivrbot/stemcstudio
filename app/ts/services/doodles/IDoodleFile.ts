@@ -6,7 +6,7 @@ import { LanguageModeId } from '../../virtual/editor';
 /**
  *
  */
-interface IDoodleFile {
+export interface IDoodleFile {
     /**
      * (Gist)
      */
@@ -50,5 +50,3 @@ interface IDoodleFile {
      */
     selected?: boolean;
 }
-
-export default IDoodleFile;

@@ -1,7 +1,5 @@
-import FlowContainer from './FlowContainer';
+import { FlowContainer } from './FlowContainer';
 
-interface FlowService {
+export interface FlowService {
     createFlow<T>(name: string): FlowContainer<T>;
 }
-
-export default FlowService;

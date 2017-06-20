@@ -13,10 +13,10 @@ import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../../services/git
 import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
 import { LabelDialog } from '../../modules/labelsAndTags/LabelDialog';
-import LabelFlow from './LabelFlow';
-import PropertiesDialog from '../../modules/properties/PropertiesDialog';
-import PropertiesFlow from './PropertiesFlow';
-import PublishFlow from './PublishFlow';
+import { LabelFlow } from './LabelFlow';
+import { PropertiesDialog } from '../../modules/properties/PropertiesDialog';
+import { PropertiesFlow } from './PropertiesFlow';
+import { PublishFlow } from './PublishFlow';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../../services/gham/IGitHubAuthManager';
 import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/options/IOptionManager';
 import { isHtmlFilePath } from '../../utils/isHtmlFilePath';
@@ -31,9 +31,9 @@ import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWor
 import { STATE_GIST } from '../../modules/navigation/NavigationServiceJS';
 import { STATE_REPO } from '../../modules/navigation/NavigationServiceJS';
 import { STATE_ROOM } from '../../modules/navigation/NavigationServiceJS';
-import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
-import FlowService from '../../services/flow/FlowService';
-import UploadFlow from './UploadFlow';
+import { StemcArXiv } from '../../modules/stemcArXiv/StemcArXiv';
+import { FlowService } from '../../services/flow/FlowService';
+import { UploadFlow } from './UploadFlow';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';

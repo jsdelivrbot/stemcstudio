@@ -1,15 +1,15 @@
 import { ICredentialsService } from '../../services/credentials/ICredentialsService';
-import FlowService from '../../services/flow/FlowService';
-import PublishFacts from './PublishFacts';
+import { FlowService } from '../../services/flow/FlowService';
+import { PublishFacts } from './PublishFacts';
 import { ModalDialog } from '../../services/modalService/ModalDialog';
-import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
-import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
+import { StemcArXiv } from '../../modules/stemcArXiv/StemcArXiv';
+import { SubmitParams } from '../../modules/stemcArXiv/SubmitParams';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
  *
  */
-export default class PublishFlow {
+export class PublishFlow {
     constructor(
         // FIXME: Make this a service.
         private owner: string | null | undefined,

@@ -1,18 +1,13 @@
-import Session from './Session';
+import { Session } from './Session';
 
 /**
- * @class Rule
+ *
  */
-export default class Rule<T> {
+export class Rule<T> {
     public priority: number;
 
     /**
-     * @class Rule
-     * @constructor
-     * @param name {string}
-     * @param options
-     * @param pattern
-     * @param action
+     *
      */
     constructor(
         public name: string,

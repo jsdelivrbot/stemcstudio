@@ -20,6 +20,7 @@ export function copyTemplateToDoodle(template: ITemplate, doodle: Doodle): void 
 
     doodle.description = template.description;
     doodle.dependencies = template.dependencies;
+    doodle.hideConfigFiles = template.hideConfigFiles;
     doodle.linting = template.linting;
     doodle.noLoopCheck = template.noLoopCheck;
     doodle.operatorOverloading = template.operatorOverloading;

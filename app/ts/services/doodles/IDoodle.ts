@@ -1,6 +1,6 @@
-import IDoodleFile from './IDoodleFile';
+import { IDoodleFile } from './IDoodleFile';
 
-interface IDoodle {
+export interface IDoodle {
 
     /**
      *
@@ -74,90 +74,62 @@ interface IDoodle {
     updated_at?: string;
 
     /**
-     * @method closeFile
-     * @param name {string}
-     * @return {void}
+     *
      */
     closeFile(name: string): void;
 
     /**
-     * @method deleteFile
-     * @param name {string}
-     * @return {void}
+     *
      */
     deleteFile(name: string): void;
 
     /**
      * Empties the map containing Gist files that are marked for deletion.
-     * 
-     * @method emtyTrash
-     * @return {void}
      */
     emptyTrash(): void;
 
     /**
-     * @method existsFile
-     * @param name {string}
-     * @return {boolean}
+     *
      */
     existsFile(name: string): boolean;
 
     /**
-     * @method existsFileInTrash
-     * @param name {string}
-     * @return {boolean}
+     *
      */
     existsFileInTrash(name: string): boolean;
 
     /**
-     * @method getPreviewFile
-     * @return {string}
+     *
      */
     getPreviewFile(): string;
 
     /**
      * Makes a best attempt to return a file that can be rendered for preview.
-     * 
-     * @method getPreviewFileOrBestAvailable
-     * @return {string}
      */
     getPreviewFileOrBestAvailable(): string;
 
     /**
-     * @method newFile
-     * @param name {string}
-     * @return {IDoodleFile}
+     *
      */
     newFile(name: string): IDoodleFile;
 
     /**
-     * @method openFile
-     * @param name {string}
-     * @return {void}
+     *
      */
     openFile(name: string): void;
 
     /**
-     * @method renameFile
-     * @param oldName {string}
-     * @param newName {string}
-     * @return {void}
+     *
      */
     renameFile(oldName: string, newName: string): void;
 
     /**
-     * @method selectFile
-     * @param name {string}
-     * @return {void}
+     *
      */
     selectFile(name: string): void;
 
     /**
-     * @method setPreviewFile
-     * @param name {string}
-     * @return {void}
+     *
      */
     setPreviewFile(name: string): void;
 }
-
-export default IDoodle;

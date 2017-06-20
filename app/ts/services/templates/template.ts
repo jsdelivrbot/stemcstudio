@@ -29,9 +29,19 @@ export interface ITemplate {
      */
     dependencies: { [packageName: string]: string };
     /**
+     * Determines whether configuration files will be hidden by default.
+     */
+    hideConfigFiles: boolean;
+    /**
      * Determines whether Linting will be enabled by default.
      */
     linting: boolean;
+    /**
+     * 
+     */
     noLoopCheck: boolean;
+    /**
+     * 
+     */
     operatorOverloading: boolean;
 }

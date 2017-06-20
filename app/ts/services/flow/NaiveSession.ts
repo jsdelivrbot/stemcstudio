@@ -1,9 +1,9 @@
-import ConflictResolutionStrategy from './ConflictResolutionStrategy';
-import Match from './Match';
-import Rule from './Rule';
-import Session from './Session';
+import { ConflictResolutionStrategy } from './ConflictResolutionStrategy';
+import { Match } from './Match';
+import { Rule } from './Rule';
+import { Session } from './Session';
 
-export default class NaiveSession<T> implements Session<T> {
+export class NaiveSession<T> implements Session<T> {
     constructor(
         private rules: Rule<T>[],
         private conflictResolutionStrategy: ConflictResolutionStrategy<T>,

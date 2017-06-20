@@ -218,6 +218,7 @@ export interface PackageSettings {
     description?: string;
     author?: string;
     dependencies: { [key: string]: string };
+    hideConfigFiles: boolean;
     noLoopCheck: boolean;
     /**
      * operatorOverloading is a custom property in the package.json.
@@ -1902,25 +1903,25 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
     }
 
-    get noLoopCheck(): boolean {
+    get hideConfigFiles(): boolean {
         const pkg = this.getPackageSettings();
         if (pkg) {
-            return pkg.noLoopCheck ? true : false;
+            return pkg.hideConfigFiles ? true : false;
         }
         else {
             return false;
         }
     }
 
-    set noLoopCheck(noLoopCheck: boolean) {
+    set hideConfigFiles(hideConfigFiles: boolean) {
         const file = this.ensurePackageJson();
         try {
             const metaInfo: PackageSettings = JSON.parse(file.getText());
-            setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
+            setOptionalBooleanProperty('hideConfigFiles', hideConfigFiles, metaInfo);
             file.setText(stringifyFileContent(metaInfo));
         }
         catch (e) {
-            console.warn(`Unable to set noLoopCheck property in file '${PACKAGE_DOT_JSON}'.`);
+            console.warn(`Unable to set hideConfigFiles property in file '${PACKAGE_DOT_JSON}'.`);
         }
         finally {
             file.release();
@@ -1995,6 +1996,31 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             finally {
                 file.release();
             }
+        }
+    }
+
+    get noLoopCheck(): boolean {
+        const pkg = this.getPackageSettings();
+        if (pkg) {
+            return pkg.noLoopCheck ? true : false;
+        }
+        else {
+            return false;
+        }
+    }
+
+    set noLoopCheck(noLoopCheck: boolean) {
+        const file = this.ensurePackageJson();
+        try {
+            const metaInfo: PackageSettings = JSON.parse(file.getText());
+            setOptionalBooleanProperty('noLoopCheck', noLoopCheck, metaInfo);
+            file.setText(stringifyFileContent(metaInfo));
+        }
+        catch (e) {
+            console.warn(`Unable to set noLoopCheck property in file '${PACKAGE_DOT_JSON}'.`);
+        }
+        finally {
+            file.release();
         }
     }
 

@@ -1,4 +1,4 @@
-export default class WorkingMemory {
+export class WorkingMemory {
     constructor() {
         // TODO
     }

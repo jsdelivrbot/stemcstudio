@@ -10,6 +10,8 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 /**
  * This controller is mostly used to define and manage the context menu for the files in the explorer.
  * It also handles a request to create a new file.
+ * It is registered as `ExplorerFilesController` with the AngularJS application so that it can
+ * be referenced from explorer.html using the ngController syntax.
  */
 export class ExplorerFilesController {
 

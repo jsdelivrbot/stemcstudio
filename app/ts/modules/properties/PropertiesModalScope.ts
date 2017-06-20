@@ -1,6 +1,6 @@
 import { IOption } from '../../services/options/IOption';
 
-interface PropertiesModalScope {
+export interface PropertiesModalScope {
 
     /**
      * form
@@ -14,6 +14,10 @@ interface PropertiesModalScope {
          * project version.
          */
         v: string;
+        /**
+         * hide configuration files such as package.json, tsconfig.json, tslint.json.
+         */
+        hideConfigFiles: boolean;
         /**
          * enable linting.
          */
@@ -37,5 +41,3 @@ interface PropertiesModalScope {
     submit(): void;
     cancel(): void;
 }
-
-export default PropertiesModalScope;

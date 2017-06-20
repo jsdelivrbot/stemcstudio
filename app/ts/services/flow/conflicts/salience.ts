@@ -1,5 +1,5 @@
-import Match from '../Match';
+import { Match } from '../Match';
 
-export default function salience<T>(a: Match<T>, b: Match<T>): number {
+export function salience<T>(a: Match<T>, b: Match<T>): number {
     return a.rule.priority - b.rule.priority;
 }

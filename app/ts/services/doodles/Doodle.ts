@@ -195,6 +195,33 @@ export class Doodle {
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
+    get hideConfigFiles(): boolean {
+        if (this.existsPackageJson()) {
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.hideConfigFiles ? true : false;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    set hideConfigFiles(hideConfigFiles: boolean) {
+        try {
+            const file = this.ensurePackageJson();
+            const metaInfo: PackageSettings = JSON.parse(file.content);
+            setOptionalBooleanProperty('hideConfigFiles', hideConfigFiles, metaInfo);
+            file.content = JSON.stringify(metaInfo, null, 2);
+        }
+        catch (e) {
+            console.warn(`Unable to set hideConfigFiles property in file '${PACKAGE_DOT_JSON}'.`);
+        }
+    }
+
     get linting(): boolean {
         if (this.existsPackageJson()) {
             const pkgInfo = this.packageInfo;
@@ -221,6 +248,7 @@ export class Doodle {
             console.warn(`Unable to set linting property in file '${PACKAGE_DOT_JSON}'.`);
         }
     }
+
 
     get noLoopCheck(): boolean {
         if (this.existsPackageJson()) {

@@ -1,15 +1,15 @@
-import ConflictResolutionStrategy from './ConflictResolutionStrategy';
-import Session from './Session';
-import FlowSessionService from './FlowSessionService';
-import Rule from './Rule';
-import strategy from './conflicts/strategy';
+import { ConflictResolutionStrategy } from './ConflictResolutionStrategy';
+import { Session } from './Session';
+import { FlowSessionService } from './FlowSessionService';
+import { Rule } from './Rule';
+import { strategy } from './conflicts/strategy';
 
 const conflictResolution = strategy(["salience", "activationRecency"]);
 
 /**
  * This is a Flow builder because I can define rules then create a Session.
  */
-export default class FlowContainer<T> {
+export class FlowContainer<T> {
     private conflictResolutionStrategy: ConflictResolutionStrategy<T>;
     private rules: Rule<T>[] = [];
     constructor(private flowSessionService: FlowSessionService) {

@@ -1,4 +1,4 @@
-export default class AVLTree {
+export class AVLTree {
     constructor(options: { compare: any }) {
         // TODO
     }

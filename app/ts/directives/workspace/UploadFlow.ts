@@ -1,14 +1,14 @@
-import FlowService from '../../services/flow/FlowService';
-import UploadFacts from './UploadFacts';
+import { FlowService } from '../../services/flow/FlowService';
+import { UploadFacts } from './UploadFacts';
 import { ModalDialog } from '../../services/modalService/ModalDialog';
 import { INavigationService } from '../../modules/navigation/INavigationService';
 import { ICloudService } from '../../services/cloud/ICloudService';
-import GitHubReason from '../../services/github/GitHubReason';
+import { GitHubReason } from '../../services/github/GitHubReason';
 import { IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import { PromptOptions } from '../../services/modalService/PromptOptions';
 import { RepoData } from '../../services/github/RepoData';
-import isNumber from '../../utils/isNumber';
-import Method from './Method';
+import { isNumber } from '../../utils/isNumber';
+import { Method } from './Method';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 const FEATURE_GIST_ENABLED = true;
@@ -17,7 +17,7 @@ const FEATURE_REPO_ENABLED = false;
 /**
  * TODO: Avoid asymmetry in use of cloud service versus GitHub Repo service.
  */
-export default class UploadFlow {
+export class UploadFlow {
     constructor(
         private owner: string | null | undefined,
         private flowService: FlowService,
