@@ -3,7 +3,7 @@ import { Tooltip } from './Tooltip';
 /**
  *
  */
-export default class GutterTooltip extends Tooltip {
+export class GutterTooltip extends Tooltip {
 
     /**
      *

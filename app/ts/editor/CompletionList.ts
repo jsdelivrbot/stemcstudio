@@ -3,7 +3,7 @@ import { Completion } from "./Completion";
 /**
  *
  */
-export default class CompletionList {
+export class CompletionList {
 
     /**
      *

@@ -1,6 +1,6 @@
 import { Delta } from './Delta';
 
-export default function applyDelta(docLines: string[], delta: Delta, doNotValidate?: boolean): void {
+export function applyDelta(docLines: string[], delta: Delta, doNotValidate?: boolean): void {
 
     // Disabled validation since it breaks autocompletion popup.
     /*

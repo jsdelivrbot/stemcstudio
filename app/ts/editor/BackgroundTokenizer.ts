@@ -2,7 +2,7 @@ import { Delta } from './Delta';
 import { EventBus } from './EventBus';
 import { Document } from './Document';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
-import FirstAndLast from "./FirstAndLast";
+import { FirstAndLast } from "./FirstAndLast";
 //
 // Editor Abstraction Layer
 //

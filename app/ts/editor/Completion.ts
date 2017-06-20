@@ -1,4 +1,4 @@
-import Completer from './autocomplete/Completer';
+import { Completer } from './autocomplete/Completer';
 
 /**
  * TODO: Why do we have caption, value, and name? caption should be enough?

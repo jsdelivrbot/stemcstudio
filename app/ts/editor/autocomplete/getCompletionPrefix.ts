@@ -1,6 +1,6 @@
 import { Editor } from '../Editor';
 import { Position } from '../Position';
-import retrievePrecedingIdentifier from './retrievePrecedingIdentifier';
+import { retrievePrecedingIdentifier } from './retrievePrecedingIdentifier';
 
 /**
  * Computes the (auto)completion prefix based upon the current cursor position of the editor.
@@ -9,7 +9,7 @@ import retrievePrecedingIdentifier from './retrievePrecedingIdentifier';
  * If a prefix is not determined by the specialized completers, then a generic function is
  * called to guess the preceding identifier.
  */
-export default function getCompletionPrefix(this: void, editor: Editor): string {
+export function getCompletionPrefix(this: void, editor: Editor): string {
     const pos: Position = editor.getCursorPosition();
     const line: string = editor.sessionOrThrow().getLine(pos.row);
     let prefix: string | undefined;

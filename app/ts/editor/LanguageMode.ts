@@ -20,7 +20,7 @@ export interface Disposable {
 /**
  *
  */
-interface LanguageMode {
+export interface LanguageMode {
     /**
      *
      */
@@ -108,5 +108,3 @@ interface LanguageMode {
      */
     transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | Range): TextAndSelection | Range | undefined;
 }
-
-export default LanguageMode;

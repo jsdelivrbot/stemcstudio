@@ -3,8 +3,6 @@ import { RenamedFileMessage } from '../../modules/wsmodel/IWorkspaceModel';
 /**
  *
  */
-interface RenamedFileHandler<T> {
+export interface RenamedFileHandler<T> {
     (message: RenamedFileMessage, source: T): any;
 }
-
-export default RenamedFileHandler;

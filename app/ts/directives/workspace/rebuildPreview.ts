@@ -68,7 +68,7 @@ interface SystemJsConfigArg {
     warnings?: boolean;
 }
 
-export default function rebuildPreview(
+export function rebuildPreview(
     workspace: WsModel,
     optionManager: IOptionManager,
     $scope: WorkspaceScope,

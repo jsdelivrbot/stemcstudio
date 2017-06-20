@@ -9,9 +9,9 @@ import { EventBus } from "../EventBus";
 import { FoldWidget } from "../FoldWidget";
 import { Annotation } from "../Annotation";
 import { GutterConfig } from "./GutterConfig";
-import Padding from './Padding';
-import GutterRenderer from './GutterRenderer';
-import GutterCell from './GutterCell';
+import { Padding } from './Padding';
+import { GutterRenderer } from './GutterRenderer';
+import { GutterCell } from './GutterCell';
 import { refChange } from '../../utils/refChange';
 
 export const changeGutterWidth = 'changeGutterWidth';

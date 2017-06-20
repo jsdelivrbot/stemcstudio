@@ -3,7 +3,7 @@ import { Range } from '../virtual/editor';
 /**
  *
  */
-interface SearchOptions {
+export interface SearchOptions {
 
     /**
      * The string or regular expression you're looking for.
@@ -73,5 +73,3 @@ interface SearchOptions {
      */
     preventScroll?: boolean;
 }
-
-export default SearchOptions;

@@ -8,7 +8,7 @@ export interface CompleterEditor {
 /**
  *
  */
-interface Completer {
+export interface Completer {
 
     /**
      *
@@ -36,5 +36,3 @@ interface Completer {
      */
     getDocTooltip?(completion: Completion): any;
 }
-
-export default Completer;

@@ -1,7 +1,7 @@
 /**
  *
  */
-interface FirstAndLast {
+export interface FirstAndLast {
 
     /**
      *
@@ -13,5 +13,3 @@ interface FirstAndLast {
      */
     last: number;
 }
-
-export default FirstAndLast;

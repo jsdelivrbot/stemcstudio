@@ -1,9 +1,9 @@
-import DelayedCall from './DelayedCall';
+import { DelayedCall } from './DelayedCall';
 
 /**
  *
  */
-export default function createDelayedCall(fcn: () => any, defaultTimeout?: number): DelayedCall {
+export function createDelayedCall(fcn: () => any, defaultTimeout?: number): DelayedCall {
 
     let timer: number | null = null;
 

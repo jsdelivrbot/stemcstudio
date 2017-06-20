@@ -3,7 +3,7 @@ import { EditSession } from '../EditSession';
 /**
  *
  */
-interface SessionChangeEvent {
+export interface EditorChangeSessionEvent {
 
     /**
      *
@@ -15,5 +15,3 @@ interface SessionChangeEvent {
      */
     oldSession: EditSession | undefined;
 }
-
-export default SessionChangeEvent;

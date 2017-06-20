@@ -11,10 +11,10 @@ import { packages } from "../unicode";
 import { escapeRegExp } from "../lib/lang";
 import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElement } from './Highlighter';
 import { HighlighterFactory } from './HighlighterFactory';
-import LanguageModeFactory from "../LanguageModeFactory";
+import { LanguageModeFactory } from "../LanguageModeFactory";
 import { TokenIterator } from "../TokenIterator";
 import { Range } from "../Range";
-import TextAndSelection from "../TextAndSelection";
+import { TextAndSelection } from "../TextAndSelection";
 import { WorkerClient } from "../worker/WorkerClient";
 //
 // Editor Abstraction Layer

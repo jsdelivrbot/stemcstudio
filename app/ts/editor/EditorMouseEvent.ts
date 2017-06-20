@@ -116,5 +116,3 @@ export class EditorMouseEvent {
 
     getAccelKey = isMac ? () => { return this.domEvent.metaKey; } : () => { return this.domEvent.ctrlKey; };
 }
-
-export default EditorMouseEvent;

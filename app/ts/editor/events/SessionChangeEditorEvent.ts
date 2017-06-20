@@ -3,7 +3,7 @@ import { Editor } from '../Editor';
 /**
  * 'changeEditor' event emitted by a Session.
  */
-interface SessionChangeEditorEvent {
+export interface SessionChangeEditorEvent {
 
     /**
      *
@@ -15,5 +15,3 @@ interface SessionChangeEditorEvent {
      */
     editor?: Editor;
 }
-
-export default SessionChangeEditorEvent;

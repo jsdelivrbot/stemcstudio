@@ -1048,36 +1048,8 @@
   "npm:inherits@2.0.3": {
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:hash.js@1.1.0": {
+  "npm:hash.js@1.1.1": {
     "inherits": "npm:inherits@^2.0.3",
-    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
-    "mocha": "npm:mocha@^3.4.2"
-  },
-  "npm:lodash.create@3.1.1": {
-    "lodash._baseassign": "npm:lodash._baseassign@^3.0.0",
-    "lodash._basecreate": "npm:lodash._basecreate@^3.0.0",
-    "lodash._isiterateecall": "npm:lodash._isiterateecall@^3.0.0"
-  },
-  "npm:lodash._baseassign@3.2.0": {
-    "lodash._basecopy": "npm:lodash._basecopy@^3.0.0",
-    "lodash.keys": "npm:lodash.keys@^3.0.0"
-  },
-  "npm:lodash._isiterateecall@3.0.9": {},
-  "npm:lodash._basecreate@3.0.3": {},
-  "npm:mocha@3.4.2": {
-    "css": "jspm:css",
-    "debug": "jspm:debug@^2.2.0",
-    "json3": "npm:json3@3.3.2",
-    "lodash.create": "npm:lodash.create@3.1.1"
-  },
-  "npm:lodash.keys@3.1.2": {
-    "lodash._getnative": "npm:lodash._getnative@^3.0.0",
-    "lodash.isarguments": "npm:lodash.isarguments@^3.0.0",
-    "lodash.isarray": "npm:lodash.isarray@^3.0.0"
-  },
-  "npm:lodash._basecopy@3.0.1": {},
-  "npm:lodash.isarguments@3.1.0": {},
-  "npm:lodash._getnative@3.9.1": {},
-  "npm:lodash.isarray@3.0.4": {},
-  "github:systemjs/plugin-css@0.1.35": {}
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
+  }
 }

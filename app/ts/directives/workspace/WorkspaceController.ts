@@ -22,11 +22,11 @@ import { OPTION_MANAGER_SERVICE_UUID, IOptionManager } from '../../services/opti
 import { isHtmlFilePath } from '../../utils/isHtmlFilePath';
 import { isMarkdownFilePath } from '../../utils/isMarkdownFilePath';
 import { OutputFilesMessage, outputFilesTopic } from '../../modules/wsmodel/IWorkspaceModel';
-import OutputFileHandler from './OutputFileHandler';
+import { OutputFileHandler } from './OutputFileHandler';
 import { ModalDialog } from '../../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID } from '../../modules/navigation/INavigationService';
 import { NavigationServiceJS } from '../../modules/navigation/NavigationServiceJS';
-import RenamedFileHandler from './RenamedFileHandler';
+import { RenamedFileHandler } from './RenamedFileHandler';
 import { RenamedFileMessage, renamedFileTopic } from '../../modules/wsmodel/IWorkspaceModel';
 import { STATE_GIST } from '../../modules/navigation/NavigationServiceJS';
 import { STATE_REPO } from '../../modules/navigation/NavigationServiceJS';
@@ -61,8 +61,8 @@ import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_XML } from '../../languages/modes';
 import { LANGUAGE_YAML } from '../../languages/modes';
 import { updateWorkspaceTypes } from './updateWorkspaceTypes';
-import rebuildPreview from './rebuildPreview';
-import rebuildMarkdownView from './rebuildMarkdownView';
+import { rebuildPreview } from './rebuildPreview';
+import { rebuildMarkdownView } from './rebuildMarkdownView';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 //
 // Editor Abstraction Layer

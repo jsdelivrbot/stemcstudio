@@ -1,13 +1,13 @@
 import { copyObject, escapeRegExp, getMatchOffsets } from "./lib/lang";
 import { mixin } from "./lib/oop";
-import LineFilter from './LineFilter';
-import MatchHandler from './MatchHandler';
-import MatchOffset from './lib/MatchOffset';
+import { LineFilter } from './LineFilter';
+import { MatchHandler } from './MatchHandler';
+import { MatchOffset } from './lib/MatchOffset';
 import { Position } from './Position';
 import { Range } from "./Range";
 import { isEqual } from "./RangeHelpers";
 import { RangeBasic } from "./RangeBasic";
-import SearchOptions from "./SearchOptions";
+import { SearchOptions } from "./SearchOptions";
 // import { EditSession } from "./EditSession";
 //
 // Editor Abstraction Layer
@@ -28,7 +28,7 @@ export interface EditSession {
 /**
  * A class designed to handle all sorts of text searches within a [[Document `Document`]].
  */
-export default class Search {
+export class Search {
 
     /**
      *

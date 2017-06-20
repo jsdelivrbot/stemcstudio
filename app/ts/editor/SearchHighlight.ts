@@ -14,7 +14,7 @@ const MAX_RANGES = 500;
 /**
  *
  */
-export default class SearchHighlight implements Marker {
+export class SearchHighlight implements Marker {
     private regExp: RegExp | null | undefined;
     public clazz: string;
     public type: MarkerType;

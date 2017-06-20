@@ -1,6 +1,6 @@
 import { Fold } from './Fold';
 
-interface FoldEvent {
+export interface FoldEvent {
     /**
      *
      */
@@ -11,5 +11,3 @@ interface FoldEvent {
      */
     data: Fold;
 }
-
-export default FoldEvent;

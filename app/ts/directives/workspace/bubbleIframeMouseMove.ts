@@ -2,7 +2,8 @@
 // resize the output widow. This function
 export function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
     // Save any previous onmousemove handler.
-    // We're taking abit of a chance here by casting away the requirement that this ave type Window.
+    // We're taking a bit of a chance here by casting away the requirement that `this` have type Window.
+    // It means that we aren't properly calling the existing handler.
     const existingOnMouseMove: (this: void, event: MouseEvent) => any = <any>iframe.contentWindow.onmousemove;
 
     // Attach a new onmousemove listener.

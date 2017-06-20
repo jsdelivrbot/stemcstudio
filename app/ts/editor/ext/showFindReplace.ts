@@ -1,5 +1,5 @@
-import createDelayedCall from '../lib/lang/createDelayedCall';
-import DelayedCall from '../lib/lang/DelayedCall';
+import { createDelayedCall } from '../lib/lang/createDelayedCall';
+import { DelayedCall } from '../lib/lang/DelayedCall';
 import { setCssClass } from '../lib/dom';
 import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';

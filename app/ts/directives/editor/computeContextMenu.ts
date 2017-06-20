@@ -5,16 +5,11 @@ import { COMMAND_NAME_CUT } from '../../editor/editor_protocol';
 import { COMMAND_NAME_COPY } from '../../editor/editor_protocol';
 import { COMMAND_NAME_PASTE } from '../../editor/editor_protocol';
 import { ContextMenuItem, CONTEXT_MENU_ITEM_DIVIDER } from '../contextMenu/ContextMenuItem';
-// import { Editor } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 import { EditorMinimal } from '../../virtual/EditorMinimal';
-// import { EditorChangeable, isEditorChangeable } from '../../virtual/EditorChangeable';
 import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefinition';
 import { FormatDocumentController } from '../../workbench/actions/formatDocument';
 import { createFormatDocumentCommand } from '../../workbench/commands/formatDocument';
-// import { createCutCommand } from '../../workbench/commands/cut';
-// import { createCopyCommand } from '../../workbench/commands/copy';
-// import { createPasteCommand } from '../../workbench/commands/paste';
 import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 
 export interface ContextMenuController extends FormatDocumentController {

@@ -1,11 +1,9 @@
 /**
  *
  */
-interface SessionChangeCursorEvent {
+export interface SessionChangeCursorEvent {
     /**
      * 'changeCursor'
      */
     type: 'changeCursor';
 }
-
-export default SessionChangeCursorEvent;

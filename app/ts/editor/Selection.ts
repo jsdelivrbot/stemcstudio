@@ -42,7 +42,7 @@ export type SelectionEventName = 'addRange'
  * The row/columns used in the selection are in document coordinates representing
  * the coordinates as they appear in the document before applying soft wrap and folding.
  */
-export default class Selection implements EventBus<SelectionEventName, any, Selection> {
+export class Selection implements EventBus<SelectionEventName, any, Selection> {
     private session: EditSession | null;
     private doc: Document | null | undefined;
 

@@ -1,5 +1,5 @@
 import { comparePositions } from "./Position";
-import createDelayedCall from "./lib/lang/createDelayedCall";
+import { createDelayedCall } from "./lib/lang/createDelayedCall";
 import { Delta } from "./Delta";
 import { Editor } from "./Editor";
 import { Command } from './commands/Command';
@@ -7,7 +7,7 @@ import { KeyboardHandler } from "./keyboard/KeyboardHandler";
 import { Position } from "./Position";
 import { Range } from "./Range";
 import { clone, contains } from "./RangeHelpers";
-import Selection from "./Selection";
+import { Selection } from "./Selection";
 import { Tabstop, TabstopRange } from './Tabstop';
 //
 // Editor Abstraction Layer
@@ -33,7 +33,7 @@ enum Direction { FORWARD = +1, BACKWARD = -1 }
 /**
  *
  */
-export default class TabstopManager {
+export class TabstopManager {
     /**
      * The current tabstop index.
      */

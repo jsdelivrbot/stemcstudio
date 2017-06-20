@@ -476,7 +476,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            <h1>\n" +
     "                <logo-text version='{{version}}' />\n" +
     "            </h1>\n" +
-    "            <p>Live [Collaborative] JavaScript|TypeScript|Python Coding in a Gist</p>\n" +
+    "            <p>Live Coding in a Gist</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +

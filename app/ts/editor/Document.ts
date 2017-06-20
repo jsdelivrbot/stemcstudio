@@ -1,14 +1,12 @@
-import applyDelta from './applyDelta';
+import { applyDelta } from './applyDelta';
 import { equalPositions } from './Position';
 import { Delta } from './Delta';
 import { EventEmitterClass } from './lib/EventEmitterClass';
-// import { Observable } from 'rxjs/Observable';
-// import { Observer } from 'rxjs/Observer';
 import { Position } from './Position';
 import { Range } from './Range';
 import { RangeBasic } from './RangeBasic';
 import { isEmptyRange } from './RangeBasic';
-import Shareable from './base/Shareable';
+import { Shareable } from './base/Shareable';
 
 /**
  * Copies a Position.

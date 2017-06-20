@@ -1,7 +1,7 @@
 /**
  * FIXME: Change so that properties are required and use Partial<Padding> where needed.
  */
-interface Padding {
+export interface Padding {
 
     /**
      *
@@ -13,5 +13,3 @@ interface Padding {
      */
     right: number;
 }
-
-export default Padding;

@@ -1,7 +1,7 @@
 /**
  * A possible return value from transformAction.
  */
-interface TextAndSelection {
+export interface TextAndSelection {
 
     /**
      *
@@ -13,5 +13,3 @@ interface TextAndSelection {
      */
     selection: number[];
 }
-
-export default TextAndSelection;

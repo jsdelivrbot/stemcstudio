@@ -1,8 +1,7 @@
-import MatchOffset from './MatchOffset';
+import { MatchOffset } from './MatchOffset';
 
 /**
  * Returns the last element in an array.
- * @param {T[]} a
  */
 export function last<T>(a: T[]): T {
     return a[a.length - 1];

@@ -1,8 +1,8 @@
 import { addCommandKeyListener, addListener, capture, preventDefault } from "../lib/event";
 import { isChrome, isGecko, isIE, isMac, isTouchPad, isWebKit, isWin } from "../lib/useragent";
 import { createElement } from "../lib/dom";
-import createDelayedCall from "../lib/lang/createDelayedCall";
-import DelayedCall from "../lib/lang/DelayedCall";
+import { createDelayedCall } from "../lib/lang/createDelayedCall";
+import { DelayedCall } from "../lib/lang/DelayedCall";
 import { Editor } from "../Editor";
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
@@ -16,7 +16,7 @@ const PLACEHOLDER_CHAR_FIRST = PLACEHOLDER.charAt(0);
 /**
  *
  */
-export default class TextInput {
+export class TextInput {
 
     /**
      *

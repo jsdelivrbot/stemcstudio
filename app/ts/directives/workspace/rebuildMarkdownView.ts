@@ -13,7 +13,7 @@ const STAR_FSLASH = '*/';
 /**
  * 
  */
-export default function rebuildMarkdownView(
+export function rebuildMarkdownView(
     workspace: WsModel,
     $scope: WorkspaceScope,
     $window: IWindowService

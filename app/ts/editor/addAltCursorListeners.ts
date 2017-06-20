@@ -1,7 +1,7 @@
 import { Editor } from './Editor';
 import { addListener } from "./lib/event";
 
-export default function addAltCursorListeners(this: void, editor: Editor) {
+export function addAltCursorListeners(this: void, editor: Editor) {
     const el: HTMLTextAreaElement = editor.textInput.getElement();
     let altCursor = false;
     addListener(el, "keydown", function (e: KeyboardEvent) {
