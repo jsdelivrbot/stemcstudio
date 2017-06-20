@@ -28,17 +28,10 @@
             </div>
         </div>
         <ul class='files'>
-            <!-- workspace.filesByPath exits because workspace is set on the scope by the explorer component -->
-            <li ng-repeat='(path, file) in $ctrl.filesByPath()' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'
-                context-menu='menu(path, file)'>
-                <a href ng-click='$ctrl.openFile(path)'>{{path}}</a>
+            <li ng-repeat='file in $ctrl.files track by file.path' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'
+                context-menu='menu(file.path)'>
+                <a href ng-click='$ctrl.openFile(file.path)'>{{file.path}}</a>
             </li>
         </ul>
-        <!--
-        <ul class='files'>
-            <li ng-repeat='file in $ctrl.filesList() track by file.path'>{{file.path}}</li>
-        </ul>
-        -->
-        <!-- problems ng-model='workspace' class='problems' ng-show='isProblemsVisible'></problems -->
     </div>
 </div>

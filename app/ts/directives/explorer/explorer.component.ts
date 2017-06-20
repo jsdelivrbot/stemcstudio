@@ -44,15 +44,17 @@ export function createExplorerDirective(): IDirective {
                             return {};
                         }
                     });
+                    /*
                     ngModel.$parsers.push(function (viewValue: WsModel) {
-                        ngModel.$setValidity('yadda', true); // We passed the yadda test.
+                        ngModel.$setValidity('(validationErrorKey)', true);
                         return viewValue;
                     });
                     // In Angular 1.3+ we have the $validators pipeline.
                     // We don't need to set validation states because we have an object, not an array.
-                    ngModel.$validators['foo'] = function (modelValue: WsModel, viewValue: WsModel): boolean {
+                    ngModel.$validators['(index)'] = function (modelValue: WsModel, viewValue: WsModel): boolean {
                         return true;
                     };
+                    */
                 },
                 /**
                  * The postLink step always takes place from bottom to top in the DOM hierarchy.

@@ -2,10 +2,12 @@ import { ExplorerFilesScope } from './ExplorerFilesScope';
 import { ModalDialog } from '../../services/modalService/ModalDialog';
 import { AlertOptions } from '../../services/modalService/AlertOptions';
 import { ConfirmOptions } from '../../services/modalService/ConfirmOptions';
+import { ContextMenuItem, CONTEXT_MENU_ITEM_DIVIDER } from '../contextMenu/ContextMenuItem';
 import { PromptOptions } from '../../services/modalService/PromptOptions';
-import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
+
+type ContextMenu = (ContextMenuItem | null)[];
 
 /**
  * This controller is mostly used to define and manage the context menu for the files in the explorer.
@@ -19,13 +21,16 @@ export class ExplorerFilesController {
 
     constructor($scope: ExplorerFilesScope, private modalService: ModalDialog, private wsModel: WsModel) {
         // Define the context menu used by the files.
-        $scope.menu = (path: string, file: WsFile) => {
-            return [
-                { label: file.isOpen ? "Close" : "Open", action: () => { file.isOpen ? this.closeFile(path) : this.openFile(path); } },
-                null,   // divider
-                { label: "Rename", action: () => { this.renameFile(path); } },
-                { label: "Delete", action: () => { this.deleteFile(path); } },
-            ];
+        $scope.menu = (path: string) => {
+            const file = wsModel.getFileWeakRef(path);
+            const menu: ContextMenu = [];
+            if (file) {
+                menu.push({ label: file.isOpen ? "Close" : "Open", action: () => { file.isOpen ? this.closeFile(path) : this.openFile(path); } });
+                menu.push(CONTEXT_MENU_ITEM_DIVIDER);
+            }
+            menu.push({ label: "Rename", action: () => { this.renameFile(path); } });
+            menu.push({ label: "Delete", action: () => { this.deleteFile(path); } });
+            return menu;
         };
     }
 

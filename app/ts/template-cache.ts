@@ -416,18 +416,11 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            </div>\n" +
     "        </div>\n" +
     "        <ul class='files'>\n" +
-    "            <!-- workspace.filesByPath exits because workspace is set on the scope by the explorer component -->\n" +
-    "            <li ng-repeat='(path, file) in $ctrl.filesByPath()' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'\n" +
-    "                context-menu='menu(path, file)'>\n" +
-    "                <a href ng-click='$ctrl.openFile(path)'>{{path}}</a>\n" +
+    "            <li ng-repeat='file in $ctrl.files track by file.path' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'\n" +
+    "                context-menu='menu(file.path)'>\n" +
+    "                <a href ng-click='$ctrl.openFile(file.path)'>{{file.path}}</a>\n" +
     "            </li>\n" +
     "        </ul>\n" +
-    "        <!--\n" +
-    "        <ul class='files'>\n" +
-    "            <li ng-repeat='file in $ctrl.filesList() track by file.path'>{{file.path}}</li>\n" +
-    "        </ul>\n" +
-    "        -->\n" +
-    "        <!-- problems ng-model='workspace' class='problems' ng-show='isProblemsVisible'></problems -->\n" +
     "    </div>\n" +
     "</div>"
   );

@@ -1,0 +1,1 @@
+module.exports = require("npm:mocha@3.4.2/mocha.js");

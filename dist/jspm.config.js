@@ -198,7 +198,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.6",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -393,7 +393,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -407,7 +407,7 @@ System.config({
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.6",
       "brorand": "npm:brorand@1.1.0",
-      "hash.js": "npm:hash.js@1.0.3",
+      "hash.js": "npm:hash.js@1.1.0",
       "hmac-drbg": "npm:hmac-drbg@1.0.1",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
@@ -533,14 +533,16 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:hash.js@1.0.3": {
-      "inherits": "npm:inherits@2.0.1"
+    "npm:hash.js@1.1.0": {
+      "inherits": "npm:inherits@2.0.3",
+      "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
+      "mocha": "npm:mocha@3.4.2"
     },
     "npm:hmac-drbg@1.0.1": {
-      "hash.js": "npm:hash.js@1.0.3",
+      "hash.js": "npm:hash.js@1.1.0",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -553,6 +555,9 @@ System.config({
       "http": "github:jspm/nodelibs-http@1.7.1"
     },
     "npm:inherits@2.0.1": {
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:inherits@2.0.3": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:is-builtin-module@1.0.0": {
@@ -582,6 +587,20 @@ System.config({
       "path-exists": "npm:path-exists@3.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:lodash._baseassign@3.2.0": {
+      "lodash._basecopy": "npm:lodash._basecopy@3.0.1",
+      "lodash.keys": "npm:lodash.keys@3.1.2"
+    },
+    "npm:lodash.create@3.1.1": {
+      "lodash._baseassign": "npm:lodash._baseassign@3.2.0",
+      "lodash._basecreate": "npm:lodash._basecreate@3.0.3",
+      "lodash._isiterateecall": "npm:lodash._isiterateecall@3.0.9"
+    },
+    "npm:lodash.keys@3.1.2": {
+      "lodash._getnative": "npm:lodash._getnative@3.9.1",
+      "lodash.isarguments": "npm:lodash.isarguments@3.1.0",
+      "lodash.isarray": "npm:lodash.isarray@3.0.4"
+    },
     "npm:lru-cache@4.1.1": {
       "pseudomap": "npm:pseudomap@1.0.2",
       "util": "github:jspm/nodelibs-util@0.1.0",
@@ -600,6 +619,12 @@ System.config({
     "npm:mime-types@2.1.11": {
       "mime-db": "npm:mime-db@1.23.0",
       "path": "github:jspm/nodelibs-path@0.1.0"
+    },
+    "npm:mocha@3.4.2": {
+      "css": "github:systemjs/plugin-css@0.1.35",
+      "debug": "npm:debug@2.3.3",
+      "json3": "npm:json3@3.3.2",
+      "lodash.create": "npm:lodash.create@3.1.1"
     },
     "npm:monaco-editor@0.8.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
@@ -750,7 +775,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
