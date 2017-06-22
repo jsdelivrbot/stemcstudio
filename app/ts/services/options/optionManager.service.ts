@@ -62,7 +62,7 @@ const VERSION_JASMINE = '2.5.2';
 const VERSION_JQUERY = '2.1.4';
 const VERSION_JSXGRAPH = '0.99.5';
 const VERSION_NEWTON = '0.0.43';
-const VERSION_PLOTLY = '1.24.1';
+const VERSION_PLOTLY = '1.28.2';
 const VERSION_REACT = '15.4.2';
 const VERSION_REACT_DOM = '15.4.2';
 const VERSION_REDUX = '3.6.0';
@@ -629,16 +629,46 @@ export class OptionManager implements IOptionManager {
             {
                 packageName: ensurePackageName('plot.ly'),
                 moduleName: 'plotly',
-                libraryKind: LibraryKind.UMD,
-                globalName: 'Plotly',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
                 description: "JavaScript graphing library that powers plotly.",
                 homepage: 'https://plot.ly/javascript/',
                 version: VERSION_PLOTLY,
                 visible: true,
                 css: [],
                 dts: plotly(INDEX_DTS),
-                js: [plotly('plotly.js')],
-                minJs: [plotly('plotly.min.js')],
+                js: [`https://cdn.plot.ly/plotly-${VERSION_PLOTLY}.min.js`],
+                minJs: [`https://cdn.plot.ly/plotly-${VERSION_PLOTLY}.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: ensurePackageName('plotly-basic'),
+                moduleName: 'plotly',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
+                description: "Contains the scatter, bar, and pie modules.",
+                homepage: 'https://plot.ly/javascript/',
+                version: VERSION_PLOTLY,
+                visible: true,
+                css: [],
+                dts: plotly(INDEX_DTS),
+                js: [`https://cdn.plot.ly/plotly-basic-${VERSION_PLOTLY}.min.js`],
+                minJs: [`https://cdn.plot.ly/plotly-basic-${VERSION_PLOTLY}.min.js`],
+                dependencies: {}
+            },
+            {
+                packageName: ensurePackageName('plotly-cartesian'),
+                moduleName: 'plotly',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
+                description: "Contains the scatter, bar, pie, heatmap, histogram, and contour modules.",
+                homepage: 'https://plot.ly/javascript/',
+                version: VERSION_PLOTLY,
+                visible: true,
+                css: [],
+                dts: plotly(INDEX_DTS),
+                js: [`https://cdn.plot.ly/plotly-cartesian-${VERSION_PLOTLY}.min.js`],
+                minJs: [`https://cdn.plot.ly/plotly-cartesian-${VERSION_PLOTLY}.min.js`],
                 dependencies: {}
             },
             {

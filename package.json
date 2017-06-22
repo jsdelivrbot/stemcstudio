@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.31.0",
+  "version": "2.31.1",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -29,7 +29,7 @@
     "angular-animate": "^1.6.4",
     "angular-material-icons": "^0.7.1",
     "angular-sanitize": "^1.6.4",
-    "angular-translate": "^2.15.1",
+    "angular-translate": "^2.15.2",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "0.4.2",
     "angular-uuid4": "^0.3.1",
@@ -139,7 +139,7 @@
       "angular-animate": "npm:angular-animate@^1.6.4",
       "angular-material-icons": "npm:angular-material-icons@^0.7.1",
       "angular-sanitize": "npm:angular-sanitize@^1.6.4",
-      "angular-translate": "npm:angular-translate@^2.15.1",
+      "angular-translate": "npm:angular-translate@^2.15.2",
       "angular-ui-bootstrap": "npm:angular-ui-bootstrap@^2.5.0",
       "angular-ui-router": "npm:angular-ui-router@0.4.2",
       "bootstrap-dialog": "npm:bootstrap-dialog@^1.34.6",

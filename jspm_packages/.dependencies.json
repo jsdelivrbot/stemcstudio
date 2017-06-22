@@ -766,10 +766,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:angular-translate@2.15.1": {
-    "angular": "npm:angular@~1.6.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:angular-sanitize@1.6.4": {},
   "npm:angular-animate@1.6.4": {},
   "npm:angular-ui-bootstrap@2.5.0": {},
@@ -1061,5 +1057,9 @@
     "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
     "typhon-lang": "npm:typhon-lang@^0.12.1",
     "typhon-typescript": "npm:typhon-typescript@^0.2.3"
+  },
+  "npm:angular-translate@2.15.2": {
+    "angular": "npm:angular@~1.6.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }

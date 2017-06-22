@@ -14,10 +14,10 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<!--");
-    lines.push(_ + "The marker below comments define the locations for CSS, CSV, GLSL,");
+    lines.push(_ + "The marker comments define the locations for CSS, CSV, GLSL,");
     lines.push(_ + "JavaScript and transpiled TypeScript insertion.");
-    lines.push(_ + "You may make changes to this file, but these markers should be preseved.");
-    lines.push(_ + "Please refer to the User Guide for more details.");
+    lines.push(_ + "You may make changes to this file, but these markers should be preserved.");
+    lines.push(_ + "Please refer to the User Guide on the Wiki for more details.");
     lines.push("-->");
     lines.push("<html>");
     lines.push(_ + "<head>");
@@ -35,7 +35,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
 
     // The "console-to-page" handling may be useful but creates a bad impression.
     // Disable the code, allowing the 
-    consoleToPage(lines, tabString, false);
+    // consoleToPage(lines, tabString, false);
 
     if (typeof options.canvasId === 'string') {
         lines.push(_ + _ + `<canvas id='${options.canvasId}'></canvas>`);
@@ -59,6 +59,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
 /**
  * Hooks the console and directs the output.
  */
+/*
 export function consoleToPage(lines: string[], tabString: string, enabled: boolean): void {
     const _ = tabString;
 
@@ -123,3 +124,4 @@ export function consoleToPage(lines: string[], tabString: string, enabled: boole
         lines.push(_ + _ + "-->");
     }
 }
+*/

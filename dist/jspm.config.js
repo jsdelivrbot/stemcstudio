@@ -24,7 +24,7 @@ System.config({
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "npm:angular-sanitize@1.6.4",
-    "angular-translate": "npm:angular-translate@2.15.1",
+    "angular-translate": "npm:angular-translate@2.15.2",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.0",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -189,7 +189,7 @@ System.config({
     "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.6.4"
     },
-    "npm:angular-translate@2.15.1": {
+    "npm:angular-translate@2.15.2": {
       "angular": "npm:angular@1.6.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -200,7 +200,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },

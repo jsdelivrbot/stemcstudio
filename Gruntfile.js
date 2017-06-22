@@ -218,6 +218,10 @@ function copies(target) {
     /**
      * 
      */
+    const VERSION_PLOTLY = '1.28.2';
+    /**
+     * 
+     */
     const VERSION_TYPESCRIPT_SERVICES = '2.3.4';
 
     return [
@@ -516,16 +520,16 @@ function copies(target) {
             dest: prepend(target, 'vendor/jsxgraph@0.99.5/index.d.ts')
         },
         {
-            src: "museum/plotly@1.24.1/index.d.ts",
-            dest: prepend(target, 'vendor/plotly@1.24.1/index.d.ts')
+            src: `museum/plotly@${VERSION_PLOTLY}/index.d.ts`,
+            dest: prepend(target, `vendor/plotly@${VERSION_PLOTLY}/index.d.ts`)
         },
         {
-            src: "museum/plotly@1.24.1/plotly.js",
-            dest: prepend(target, 'vendor/plotly@1.24.1/plotly.js')
+            src: `museum/plotly@${VERSION_PLOTLY}/plotly.js`,
+            dest: prepend(target, `vendor/plotly@${VERSION_PLOTLY}/plotly.js`)
         },
         {
-            src: "museum/plotly@1.24.1/plotly.min.js",
-            dest: prepend(target, 'vendor/plotly@1.24.1/plotly.min.js')
+            src: `museum/plotly@${VERSION_PLOTLY}/plotly.min.js`,
+            dest: prepend(target, `vendor/plotly@${VERSION_PLOTLY}/plotly.min.js`)
         },
         {
             expand: true,
