@@ -126,10 +126,10 @@
 }
 
 /**
- * Number Literal
+ * Numeric Literal
  */
 .ace-stemcstudio .ace_constant.ace_numeric {
-  color: rgb(51, 255, 187)
+  color: rgb(205, 168, 105)
 /*  color: rgb(255, 102, 153) */
 }
 

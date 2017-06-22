@@ -1,0 +1,27 @@
+MultipleErrors: /home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:1:29: Unexpected reserved word import
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:1:36: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:1:54: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:2:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:2:37: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:111:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:111:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:196:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:196:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:267:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSV.js:267:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSVError.js:11:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/CSVError.js:11:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/messages.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/messages.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/messages.js:28:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/lib/messages.js:28:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:1:48: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:2:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/davinci-csv@0.9.12/build/module/index.js:2:26: Semi-colon expected

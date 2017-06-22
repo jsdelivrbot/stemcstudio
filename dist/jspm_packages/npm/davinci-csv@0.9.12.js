@@ -1,0 +1,1 @@
+module.exports = require("npm:davinci-csv@0.9.12/build/browser/index.js");

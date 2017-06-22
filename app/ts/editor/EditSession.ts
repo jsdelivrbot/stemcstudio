@@ -44,6 +44,7 @@ import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../constants';
 import { ClojureMode } from './mode/ClojureMode';
 import { CssMode } from './mode/CssMode';
+import { CsvMode } from './mode/CsvMode';
 import { GlslMode } from './mode/GlslMode';
 import { HaskellMode } from './mode/HaskellMode';
 import { HtmlMode } from './mode/HtmlMode';
@@ -1350,7 +1351,10 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                     this.setLanguageMode(new MatlabMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
                 }
-                case LANGUAGE_CSV:
+                case LANGUAGE_CSV: {
+                    this.setLanguageMode(new CsvMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
                 case LANGUAGE_TEXT: {
                     this.setLanguageMode(new TextMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
