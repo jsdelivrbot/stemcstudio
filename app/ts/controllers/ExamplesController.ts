@@ -158,6 +158,24 @@ export class ExamplesController extends AbstractPageController {
                 level: 'Beginner'
             },
             {
+                gistId: '20040a2f087e7c66fe72d87e0017b509',
+                title: "Differentiation",
+                description: "Demonstrates the approximation of the derivative.",
+                imageSrc: '/img/examples/differentiation.png',
+                imageAlt: 'Graphs of the 0th, 1st and 2nd derivatives of a function.',
+                category: 'Mathematics',
+                level: 'Intermediate'
+            },
+            {
+                gistId: 'b197467076ccccb1afc996b3b70747b9',
+                title: "Gradient Descent Algorithm",
+                description: "The gradient descent algorithm is used to fit a model to some data.",
+                imageSrc: '/img/examples/gradient-descent.png',
+                imageAlt: 'Graph of the cost function decreasing per iteration.',
+                category: 'Mathematics',
+                level: 'Intermediate'
+            },
+            {
                 gistId: '1bf1ccdd7abd613b12bb792f48e36d4e',
                 title: "Homogeneous Model and Geometric Algebra",
                 description: "Demonstrates Geometric Algebra in arbitrary higher dimensions using the Multivector type.",
