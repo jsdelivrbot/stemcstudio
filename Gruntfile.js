@@ -200,7 +200,7 @@ function prepend(target, filePath) {
  */
 function copies(target) {
 
-    const VERSION_STEMCSTUDIO_WORKERS = '2.13.2';
+    const VERSION_STEMCSTUDIO_WORKERS = '2.14.0';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
@@ -211,6 +211,10 @@ function copies(target) {
      * AngularJS
      */
     const VERSION_ANGULARJS = '1.6.17';
+    /**
+     * 
+     */
+    const VERSION_MATHSCRIPT = '1.2.3';
     /**
      * 
      */
@@ -621,31 +625,31 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.d.ts')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.d.ts`)
         },
         {
             // This version is bundled for transpile.
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.js')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.js`)
         },
         {
             // This version is loaded into iframe for the runtime.
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.min.js')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.min.js`)
         },
         {
             src: "../davinci-mathscript/dist/davinci-mathscript.d.ts",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.d.ts')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.d.ts`)
         },
         {
             // This version is bundled for transpile.
             src: "../davinci-mathscript/dist/davinci-mathscript.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.js')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.js`)
         },
         {
             // This version is loaded into iframe for the runtime.
             src: "../davinci-mathscript/dist/davinci-mathscript.min.js",
-            dest: prepend(target, 'vendor/davinci-mathscript@1.2.2/dist/davinci-mathscript.min.js')
+            dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.min.js`)
         },
         {
             expand: true,

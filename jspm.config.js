@@ -35,8 +35,8 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.13.2",
+    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.3",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.14.0",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -45,8 +45,8 @@ System.config({
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
     "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
-    "typhon-lang": "npm:typhon-lang@0.11.3",
-    "typhon-typescript": "npm:typhon-typescript@0.2.3",
+    "typhon-lang": "npm:typhon-lang@0.12.9",
+    "typhon-typescript": "npm:typhon-typescript@0.3.0",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
     "zone.js": "npm:zone.js@0.8.12",
@@ -56,12 +56,15 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.13.2": {
+    "github:geometryzen/davinci-mathscript@1.2.3": {
+      "ts": "github:frankwallis/plugin-typescript@2.6.0"
+    },
+    "github:geometryzen/stemcstudio-workers@2.14.0": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
-      "typhon-lang": "npm:typhon-lang@0.12.5",
-      "typhon-typescript": "npm:typhon-typescript@0.2.3"
+      "typhon-lang": "npm:typhon-lang@0.12.9",
+      "typhon-typescript": "npm:typhon-typescript@0.3.0"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -400,7 +403,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -540,7 +543,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.1": {
@@ -930,18 +933,14 @@ System.config({
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
     },
-    "npm:typhon-lang@0.11.3": {
+    "npm:typhon-lang@0.12.9": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },
-    "npm:typhon-lang@0.12.5": {
-      "code-writer": "npm:code-writer@0.1.2",
-      "generic-rbtree": "npm:generic-rbtree@1.1.1"
-    },
-    "npm:typhon-typescript@0.2.3": {
+    "npm:typhon-typescript@0.3.0": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
-      "typhon-lang": "npm:typhon-lang@0.11.3"
+      "typhon-lang": "npm:typhon-lang@0.12.9"
     },
     "npm:ui-select@0.19.8": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

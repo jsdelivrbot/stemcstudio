@@ -1,1 +1,0 @@
-module.exports = require("npm:typhon-lang@0.11.3/build/browser/index.js");
