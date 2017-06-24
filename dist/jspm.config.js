@@ -36,7 +36,7 @@ System.config({
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.13.1",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.13.2",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -56,11 +56,11 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.2": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.13.1": {
+    "github:geometryzen/stemcstudio-workers@2.13.2": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
-      "typhon-lang": "npm:typhon-lang@0.12.1",
+      "typhon-lang": "npm:typhon-lang@0.12.5",
       "typhon-typescript": "npm:typhon-typescript@0.2.3"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -200,7 +200,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -400,7 +400,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -540,7 +540,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.1": {
@@ -934,7 +934,7 @@ System.config({
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },
-    "npm:typhon-lang@0.12.1": {
+    "npm:typhon-lang@0.12.5": {
       "code-writer": "npm:code-writer@0.1.2",
       "generic-rbtree": "npm:generic-rbtree@1.1.1"
     },

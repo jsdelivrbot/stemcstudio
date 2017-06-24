@@ -2,13 +2,13 @@
  * The application version is used for cache busting the jspm.config.js file.
  * This files is used to load the application and the workers.
  */
-export const APP_VERSION = '2.31.2';
+export const APP_VERSION = '2.31.3';
 
 /**
  * The versioning is required for cache busting.
  * It must be synchronized with the build process.
  */
-const STEMCSTUDIO_WORKERS_VERSION = '2.13.1';
+const STEMCSTUDIO_WORKERS_VERSION = '2.13.2';
 export const STEMCSTUDIO_WORKERS_MODULE_NAME = 'stemcstudio-workers.js';
 export const STEMCSTUDIO_WORKERS_PATH = `/js/stemcstudio-workers@${STEMCSTUDIO_WORKERS_VERSION}/${STEMCSTUDIO_WORKERS_MODULE_NAME}`;
 
