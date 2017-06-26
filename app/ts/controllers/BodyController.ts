@@ -34,7 +34,7 @@ export class BodyController {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
                         // FIXME: Why does jQuery get defined globally and does a module import fail?
-                        title: $("<h3>Download failed</h3>"),
+                        title: "Download failed",
                         message: `Unable to download Gists. Cause: ${reason} ${status}`,
                         buttons: [{
                             label: "Close",

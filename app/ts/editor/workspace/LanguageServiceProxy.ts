@@ -1,15 +1,15 @@
 import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { CompletionEntry } from './CompletionEntry';
 import { DefinitionInfo } from './DefinitionInfo';
-import { Delta } from '../Delta';
+import { Delta } from 'editor-document';
 import { Diagnostic } from './Diagnostic';
 import { FormatCodeSettings } from './FormatCodeSettings';
 import { TextChange } from './TextChange';
 import { OutputFile } from './OutputFile';
-import RuleFailure from './RuleFailure';
+import { RuleFailure } from './RuleFailure';
 import { QuickInfo } from './QuickInfo';
 import { WorkerClient } from '../worker/WorkerClient';
-import TsLintSettings from '../../modules/tslint/TsLintSettings';
+import { TsLintSettings } from '../../modules/tslint/TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
 import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';
 import { EVENT_ENSURE_MODULE_MAPPING } from './LanguageServiceEvents';

@@ -33,10 +33,12 @@ System.config({
     "core-js": "npm:core-js@2.4.1",
     "davinci-csv": "npm:davinci-csv@0.9.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
+    "editor-document": "npm:editor-document@0.0.5",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.3",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.14.0",
+    "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.14.1",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -59,8 +61,9 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.3": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.14.0": {
+    "github:geometryzen/stemcstudio-workers@2.14.1": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
+      "editor-document": "npm:editor-document@0.0.3",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
       "typhon-lang": "npm:typhon-lang@0.12.9",
@@ -403,7 +406,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -413,6 +416,16 @@ System.config({
       "miller-rabin": "npm:miller-rabin@4.0.0",
       "randombytes": "npm:randombytes@2.0.5",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:editor-document@0.0.3": {
+      "code-writer": "npm:code-writer@0.1.2",
+      "generic-rbtree": "npm:generic-rbtree@1.1.1",
+      "typhon-lang": "npm:typhon-lang@0.12.9"
+    },
+    "npm:editor-document@0.0.5": {
+      "code-writer": "npm:code-writer@0.1.2",
+      "generic-rbtree": "npm:generic-rbtree@1.1.1",
+      "typhon-lang": "npm:typhon-lang@0.12.9"
     },
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.7",
@@ -543,7 +556,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.1": {
@@ -920,15 +933,18 @@ System.config({
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@1.0.0",
       "strip-ansi": "npm:strip-ansi@3.0.1"
     },
-    "npm:string-width@2.0.0": {
+    "npm:string-width@2.1.0": {
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@2.0.0",
-      "strip-ansi": "npm:strip-ansi@3.0.1"
+      "strip-ansi": "npm:strip-ansi@4.0.0"
     },
     "npm:string_decoder@0.10.31": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
     },
     "npm:strip-ansi@3.0.1": {
       "ansi-regex": "npm:ansi-regex@2.1.1"
+    },
+    "npm:strip-ansi@4.0.0": {
+      "ansi-regex": "npm:ansi-regex@3.0.0"
     },
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.10"
@@ -1026,7 +1042,7 @@ System.config({
       "require-directory": "npm:require-directory@2.1.1",
       "require-main-filename": "npm:require-main-filename@1.0.1",
       "set-blocking": "npm:set-blocking@2.0.0",
-      "string-width": "npm:string-width@2.0.0",
+      "string-width": "npm:string-width@2.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "which-module": "npm:which-module@2.0.0",
       "y18n": "npm:y18n@3.2.1",

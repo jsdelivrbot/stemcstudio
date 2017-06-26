@@ -6,7 +6,7 @@ import { EditSession } from '../../virtual/editor';
 
 import { MonacoEditor } from './monaco/MonacoEditor';
 
-import { Document as NativeDocument } from '../../editor/Document';
+import { Document as NativeDocument } from 'editor-document';
 import { EditSession as NativeEditSession } from '../../editor/EditSession';
 
 /**

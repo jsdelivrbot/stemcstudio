@@ -4,7 +4,7 @@ import { TokenIterator } from "../../TokenIterator";
 import { stringRepeat } from "../../lib/lang";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
-import { Position } from "../../Position";
+import { Position } from "editor-document";
 import { Range } from "../../Range";
 import { Token } from "../../Token";
 import { isMultiLine } from "../../RangeHelpers";

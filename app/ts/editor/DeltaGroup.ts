@@ -1,4 +1,4 @@
-import { Delta } from './Delta';
+import { DeltaWithFolds } from './DeltaWithFolds';
 
 export interface DeltaGroup {
     /**
@@ -9,5 +9,5 @@ export interface DeltaGroup {
     /**
      * 
      */
-    deltas: Delta[];
+    deltas: DeltaWithFolds[];
 }

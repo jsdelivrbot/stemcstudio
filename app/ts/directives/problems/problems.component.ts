@@ -1,4 +1,4 @@
-import { Document } from '../../editor/Document';
+import { Document } from 'editor-document';
 import { Editor } from '../../editor/Editor';
 import { EditSession } from '../../editor/EditSession';
 import { IAttributes, IAugmentedJQuery, IDirective, IDirectivePrePost, INgModelController, ITimeoutService, ITranscludeFunction } from 'angular';

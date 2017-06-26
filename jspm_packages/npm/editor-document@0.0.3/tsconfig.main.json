@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "outDir": "build/main",
+        "module": "commonjs",
+        "declaration": true
+    },
+    "exclude": [
+        "src/**/*.spec.ts",
+        "src/py-to-ts-runtime/*.ts"
+    ]
+}

@@ -1,4 +1,4 @@
-import { Position } from "./Position";
+import { Position } from "editor-document";
 import { RangeBasic } from './RangeBasic';
 import { compareRange, isStart, isEnd, isMultiLine } from './RangeHelpers';
 

@@ -1,5 +1,4 @@
-import { Position } from './Position';
-import { equalPositions } from './Position';
+import { Position, equalPositions } from 'editor-document';
 
 /**
  * 

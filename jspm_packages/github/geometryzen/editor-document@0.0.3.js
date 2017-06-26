@@ -1,0 +1,1 @@
+module.exports = require("github:geometryzen/editor-document@0.0.3/build/main/index.js");

@@ -1,5 +1,5 @@
 import { TokenIterator } from "./TokenIterator";
-import { Position } from "./Position";
+import { Position } from "editor-document";
 //
 // Editor Abstraction Layer
 //

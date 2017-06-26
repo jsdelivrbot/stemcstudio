@@ -3,7 +3,7 @@ import { addCssClass, createElement, removeCssClass } from "../lib/dom";
 import { AbstractLayer } from './AbstractLayer';
 import { escapeHTML } from "../lib/escapeHTML";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
-import { Delta } from "../Delta";
+import { Delta } from "editor-document";
 import { EditSession } from "../EditSession";
 import { EventBus } from "../EventBus";
 import { FoldWidget } from "../FoldWidget";

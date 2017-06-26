@@ -1,0 +1,75 @@
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/applyDelta.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/applyDelta.js:1:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:1:28: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:2:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:2:32: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:3:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:3:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:3:35: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:4:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:4:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:4:26: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:5:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:5:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:5:37: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:636:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Document.js:636:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/EventEmitterClass.js:215:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/EventEmitterClass.js:215:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:7:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:26:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Position.js:26:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:1:32: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:2:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:8:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/Range.js:8:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:1:17: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:1:22: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:2:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:2:20: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:2:25: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:3:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:3:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:3:14: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:3:19: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:8:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:8:8: Unexpected reserved word default
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:8:16: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:10:14: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:10:14: Unexpected token :
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:10:16: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:11:13: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:11:13: Unexpected token :
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:12:12: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/rollup.config.js:12:12: Unexpected token :
+
+MultipleErrors: /home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:1:28: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:2:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:2:26: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:3:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:3:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:3:60: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:4:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:4:8: Semi-colon expected
+/home/david/.jspm/packages/npm/editor-document@0.0.5/build/module/index.js:4:37: Semi-colon expected

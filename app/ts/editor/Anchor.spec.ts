@@ -1,6 +1,6 @@
 import { Anchor } from './Anchor';
 import { AnchorChangeEvent } from './events/AnchorChangeEvent';
-import { Document } from './Document';
+import { Document } from 'editor-document';
 import { Range } from './Range';
 
 describe("Anchor", function () {

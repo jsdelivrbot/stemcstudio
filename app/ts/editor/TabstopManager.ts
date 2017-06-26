@@ -1,10 +1,10 @@
-import { comparePositions } from "./Position";
+import { comparePositions } from "editor-document";
 import { createDelayedCall } from "./lib/lang/createDelayedCall";
-import { Delta } from "./Delta";
+import { Delta } from "editor-document";
 import { Editor } from "./Editor";
 import { Command } from './commands/Command';
 import { KeyboardHandler } from "./keyboard/KeyboardHandler";
-import { Position } from "./Position";
+import { Position } from "editor-document";
 import { Range } from "./Range";
 import { clone, contains } from "./RangeHelpers";
 import { Selection } from "./Selection";

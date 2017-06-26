@@ -27,7 +27,7 @@ import { SnippetOptions } from '../../virtual/editor';
 import { TabstopManager } from '../../virtual/editor';
 import { UndoManager } from '../../virtual/editor';
 
-import { Document as NativeDocument } from '../../editor/Document';
+import { Document as NativeDocument } from 'editor-document';
 // import { Editor as NativeEditor } from '../../editor/Editor';
 import { EditSession as NativeEditSession } from '../../editor/EditSession';
 

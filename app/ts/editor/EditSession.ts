@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { equalPositions } from './Position';
+import { equalPositions } from 'editor-document';
 import { createDelayedCall } from './lib/lang/createDelayedCall';
 import { DelayedCall } from './lib/lang/DelayedCall';
 import { stringRepeat } from "./lib/lang";
 import { Annotation } from './Annotation';
-import { Delta } from "./Delta";
+import { Delta } from "editor-document";
+import { DeltaIgnorable } from "./DeltaIgnorable";
 import { DeltaGroup } from './DeltaGroup';
 import { Disposable } from '../base/Disposable';
 import { EditorMouseEvent } from './EditorMouseEvent';
@@ -27,7 +28,7 @@ import { collapseRows, compareEnd, comparePoint, compareRange, contains, isEmpty
 import { Shareable } from './base/Shareable';
 import { mutateExtendToken } from "./Token";
 import { Token } from "./Token";
-import { Document, NewLineMode } from "./Document";
+import { Document, NewLineMode } from "editor-document";
 import { BackgroundTokenizer } from "./BackgroundTokenizer";
 import { SearchHighlight } from "./SearchHighlight";
 import { BracketMatch } from "./BracketMatch";
@@ -35,7 +36,7 @@ import { UndoManager } from './UndoManager';
 import { TokenIterator } from './TokenIterator';
 import { LineWidget } from './LineWidget';
 import { LineWidgetManager } from './LineWidgetManager';
-import { Position } from './Position';
+import { Position } from 'editor-document';
 import { HighlighterToken } from './mode/Highlighter';
 
 // Built-In Languages.
@@ -554,7 +555,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
         this.$resetRowCache(fold.start.row);
     }
 
-    private onChange(delta: Delta, doc: Document): void {
+    private onChange(delta: DeltaIgnorable, doc: Document): void {
 
         this.$modified = true;
 

@@ -1,5 +1,3 @@
-interface RuleFailure {
+export interface RuleFailure {
 
 }
-
-export default RuleFailure;

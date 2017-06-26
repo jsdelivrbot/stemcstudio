@@ -1,6 +1,5 @@
-import { Delta } from './Delta';
 import { EventBus } from './EventBus';
-import { Document } from './Document';
+import { Delta, Document } from 'editor-document';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { FirstAndLast } from "./FirstAndLast";
 //

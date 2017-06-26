@@ -1,5 +1,5 @@
 import { qualifyURL } from '../lib/net';
-import { Delta } from "../Delta";
+import { Delta } from "editor-document";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
 import CallbackManager from './CallbackManager';

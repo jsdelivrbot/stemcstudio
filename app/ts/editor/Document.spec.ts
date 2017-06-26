@@ -1,5 +1,5 @@
-import { Delta } from './Delta';
-import { Document } from './Document';
+import { Delta } from 'editor-document';
+import { Document } from 'editor-document';
 import { Range } from './Range';
 
 describe("Document", function () {

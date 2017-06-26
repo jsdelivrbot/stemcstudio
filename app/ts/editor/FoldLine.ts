@@ -1,4 +1,4 @@
-import { Position } from './Position';
+import { Position } from 'editor-document';
 import { Range } from "./Range";
 import { Fold } from "./Fold";
 import { compareStart, compareEnd } from "./RangeHelpers";

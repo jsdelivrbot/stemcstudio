@@ -2,7 +2,7 @@ import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { Annotation } from "../Annotation";
 import { BlockComment } from './BlockComment';
 import { Completion } from "../Completion";
-import { Position } from "../Position";
+import { Position } from "editor-document";
 import { Tokenizer } from "../Tokenizer";
 import { TextHighlightRules } from "./TextHighlightRules";
 import { Behaviour } from "./Behaviour";

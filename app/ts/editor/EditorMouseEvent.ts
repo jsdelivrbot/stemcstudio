@@ -1,7 +1,7 @@
 import { Editor } from './Editor';
 import { getButton, preventDefault, stopPropagation } from "./lib/event";
 import { isMac } from "./lib/useragent";
-import { Position } from "./Position";
+import { Position } from "editor-document";
 import { contains, isEmpty } from './RangeHelpers';
 
 /**
@@ -70,7 +70,7 @@ export class EditorMouseEvent {
     /**
      * Get the document position below the mouse cursor.
      */
-    getDocumentPosition(): Position {
+    getDocumentPosition(): Position | null {
         if (!this.$pos) {
             this.$pos = this.editor.renderer.screenToTextCoordinates(this.clientX, this.clientY);
         }
@@ -93,7 +93,12 @@ export class EditorMouseEvent {
         }
         else {
             const pos = this.getDocumentPosition();
-            this.$inSelection = contains(selectionRange, pos.row, pos.column);
+            if (pos) {
+                this.$inSelection = contains(selectionRange, pos.row, pos.column);
+            }
+            else {
+                this.$inSelection = false;
+            }
         }
         return this.$inSelection;
     }

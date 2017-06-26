@@ -1,0 +1,1 @@
+module.exports = require("npm:editor-document@0.0.5/build/browser/index.js");

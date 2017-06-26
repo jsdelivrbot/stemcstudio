@@ -1,4 +1,4 @@
-import { Position } from '../Position';
+import { Position } from 'editor-document';
 
 export interface DocumentWithLines {
     getAllLines(): string[];

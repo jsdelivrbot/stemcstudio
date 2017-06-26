@@ -1,8 +1,8 @@
-import { Delta } from './Delta';
+import { Delta } from 'editor-document';
 import { DeltaGroup } from './DeltaGroup';
 import { EditSession } from './EditSession';
 import { Fold } from './Fold';
-import { Position } from './Position';
+import { Position } from 'editor-document';
 import { Range } from './Range';
 
 interface DeltaLight {

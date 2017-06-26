@@ -1,6 +1,6 @@
 //// <reference path="../../../typings/main/ambient/jasmine/index.d.ts" />
 
-import { Document } from './Document';
+import { Document } from 'editor-document';
 import { Editor } from './Editor';
 import { EditSession } from './EditSession';
 import { SnippetManager } from './SnippetManager';

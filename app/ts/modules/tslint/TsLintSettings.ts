@@ -12,5 +12,3 @@ export interface TsLintSettings {
     rulesDirectory?: string | string[];
     rules?: { [name: string]: boolean | RuleArgumentType[] };
 }
-
-export default TsLintSettings;

@@ -1,4 +1,4 @@
-import { Document } from './Document';
+import { Document } from 'editor-document';
 import { EditSession } from './EditSession';
 import { HighlighterToken } from './mode/Highlighter';
 import { JavaScriptMode } from './mode/JavaScriptMode';

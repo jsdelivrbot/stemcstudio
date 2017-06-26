@@ -4,7 +4,7 @@ import { Editor } from '../../virtual/editor';
 import { EditorService } from '../../virtual/editor';
 import { EditSession } from '../../virtual/editor';
 
-import { Document as NativeDocument } from '../../editor/Document';
+import { Document as NativeDocument } from 'editor-document';
 import { Editor as NativeEditor } from '../../editor/Editor';
 import { EditSession as NativeEditSession } from '../../editor/EditSession';
 import { Renderer } from '../../editor/Renderer';
