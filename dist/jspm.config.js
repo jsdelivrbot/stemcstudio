@@ -430,7 +430,7 @@ System.config({
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.7",
       "brorand": "npm:brorand@1.1.0",
-      "hash.js": "npm:hash.js@1.1.1",
+      "hash.js": "npm:hash.js@1.1.2",
       "hmac-drbg": "npm:hmac-drbg@1.0.1",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
@@ -559,17 +559,17 @@ System.config({
       "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:hash.js@1.1.1": {
+    "npm:hash.js@1.1.2": {
       "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:hmac-drbg@1.0.1": {
-      "hash.js": "npm:hash.js@1.1.1",
+      "hash.js": "npm:hash.js@1.1.2",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:hosted-git-info@2.4.2": {
+    "npm:hosted-git-info@2.5.0": {
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
@@ -642,8 +642,8 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:normalize-package-data@2.3.8": {
-      "hosted-git-info": "npm:hosted-git-info@2.4.2",
+    "npm:normalize-package-data@2.4.0": {
+      "hosted-git-info": "npm:hosted-git-info@2.5.0",
       "is-builtin-module": "npm:is-builtin-module@1.0.0",
       "semver": "npm:semver@5.3.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -769,7 +769,7 @@ System.config({
     },
     "npm:read-pkg@2.0.0": {
       "load-json-file": "npm:load-json-file@2.0.0",
-      "normalize-package-data": "npm:normalize-package-data@2.3.8",
+      "normalize-package-data": "npm:normalize-package-data@2.4.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "path-type": "npm:path-type@2.0.0"
     },

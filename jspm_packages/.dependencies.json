@@ -667,19 +667,6 @@
     "base64-js": "npm:base64-js@^1.0.2",
     "ieee754": "npm:ieee754@^1.1.4"
   },
-  "npm:hosted-git-info@2.4.2": {
-    "util": "github:jspm/nodelibs-util@^0.1.0",
-    "url": "github:jspm/nodelibs-url@^0.1.0"
-  },
-  "npm:normalize-package-data@2.3.8": {
-    "hosted-git-info": "npm:hosted-git-info@^2.1.4",
-    "is-builtin-module": "npm:is-builtin-module@^1.0.0",
-    "semver": "npm:semver@^5.0.0",
-    "validate-npm-package-license": "npm:validate-npm-package-license@^3.0.1",
-    "url": "github:jspm/nodelibs-url@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0"
-  },
   "npm:process@0.11.10": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
@@ -961,10 +948,6 @@
   "npm:inherits@2.0.3": {
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:hash.js@1.1.1": {
-    "inherits": "npm:inherits@^2.0.3",
-    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
-  },
   "npm:bn.js@4.11.7": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
@@ -1076,5 +1059,22 @@
     "code-writer": "npm:code-writer@^0.1.2",
     "generic-rbtree": "npm:generic-rbtree@^1.1.1",
     "typhon-lang": "npm:typhon-lang@^0.12.9"
+  },
+  "npm:hosted-git-info@2.5.0": {
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "url": "github:jspm/nodelibs-url@^0.1.0"
+  },
+  "npm:normalize-package-data@2.4.0": {
+    "hosted-git-info": "npm:hosted-git-info@^2.1.4",
+    "is-builtin-module": "npm:is-builtin-module@^1.0.0",
+    "semver": "npm:semver@^5.0.0",
+    "validate-npm-package-license": "npm:validate-npm-package-license@^3.0.1",
+    "url": "github:jspm/nodelibs-url@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:hash.js@1.1.2": {
+    "inherits": "npm:inherits@^2.0.3",
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
   }
 }
