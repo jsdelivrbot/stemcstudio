@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.32.2",
+  "version": "2.32.3",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -84,7 +84,7 @@
     "codemirror": "^5.27.2",
     "concurrently": "^3.5.0",
     "davinci-csv": "^0.9.12",
-    "davinci-eight": "^6.1.4",
+    "davinci-eight": "^7.0.0",
     "davinci-newton": "0.0.43",
     "grunt": "^1.0.1",
     "grunt-angular-templates": "^1.1.0",
