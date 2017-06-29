@@ -82,6 +82,7 @@ const RELEASE_THREEJS = 'r82';
 const VERSION_TWO = '0.6.1';
 const VERSION_UNITS = '1.5.5';
 // const VERSION_UNDERSCORE = '1.8.3';
+const VERSION_WEBGL_CORE = '1.0.0';
 
 // FIXME: DRY This function is defined in constants.ts?
 /**
@@ -474,8 +475,8 @@ export class OptionManager implements IOptionManager {
             {
                 packageName: 'davinci-eight',
                 moduleName: 'davinci-eight',
-                libraryKind: LibraryKind.UMD,
-                globalName: 'EIGHT',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
                 description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'https://geometryzen.github.io/davinci-eight/',
                 version: VERSION_EIGHT,
@@ -825,7 +826,7 @@ export class OptionManager implements IOptionManager {
                 js: [two('two.js')],
                 minJs: [two('two.min.js')],
                 dependencies: {}
-            }
+            },
             /*
             {
                 name: 'underscore',
@@ -841,6 +842,21 @@ export class OptionManager implements IOptionManager {
                 dependencies: {}
             }
             */
+            {
+                packageName: 'webgl-core',
+                moduleName: 'webgl-core',
+                libraryKind: LibraryKind.Modular,
+                globalName: '',
+                description: "WebGL library with shareable resources and context recovery.",
+                homepage: 'https://geometryzen.github.io/webgl-core/',
+                version: VERSION_WEBGL_CORE,
+                visible: true,
+                css: [],
+                dts: `https://unpkg.com/webgl-core@${VERSION_WEBGL_CORE}/build/browser/${INDEX_DTS}`,
+                js: [`https://unpkg.com/webgl-core@${VERSION_WEBGL_CORE}/build/browser/index.js`],
+                minJs: [`https://unpkg.com/webgl-core@${VERSION_WEBGL_CORE}/build/browser/index.js`],
+                dependencies: {}
+            }
         ];
     }
 
