@@ -1,3 +1,4 @@
+import { LANGUAGE_ASCIIDOC } from '../languages/modes';
 import { LANGUAGE_C } from '../languages/modes';
 import { LANGUAGE_CPP } from '../languages/modes';
 import { LANGUAGE_CSS } from '../languages/modes';
@@ -27,6 +28,8 @@ import { LanguageModeId } from '../virtual/editor';
 const extensionToMode: { [ext: string]: LanguageModeId } = {};
 const fileNameToMode: { [fileName: string]: LanguageModeId } = {};
 
+extensionToMode['adoc'] = LANGUAGE_ASCIIDOC;
+extensionToMode['asciidoc'] = LANGUAGE_ASCIIDOC;
 extensionToMode['c'] = LANGUAGE_C;
 extensionToMode['cpp'] = LANGUAGE_CPP;
 extensionToMode['css'] = LANGUAGE_CSS;

@@ -380,7 +380,7 @@ export interface KeyboardHandler<TARGET> {
 /**
  * 
  */
-export type LanguageModeId = 'C' | 'C++' | 'Clojure' | 'CSS' | 'CSV' | 'GLSL' | 'Haskell' | 'HTML' | 'JavaScript' | 'JSX' | 'JSON' | 'LESS' | 'Markdown' | 'MATLAB' | 'PureScript' | 'Python' | 'Scheme' | 'Text' | 'TypeScript' | 'TSX' | 'XML' | 'YAML';
+export type LanguageModeId = 'AsciiDoc' | 'C' | 'C++' | 'Clojure' | 'CSS' | 'CSV' | 'GLSL' | 'Haskell' | 'HTML' | 'JavaScript' | 'JSX' | 'JSON' | 'LESS' | 'Markdown' | 'MATLAB' | 'PureScript' | 'Python' | 'Scheme' | 'Text' | 'TypeScript' | 'TSX' | 'XML' | 'YAML';
 
 export interface LanguageModeWorker {
     dispose(): void;

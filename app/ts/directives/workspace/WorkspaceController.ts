@@ -41,6 +41,7 @@ import { TextChange } from '../../editor/workspace/TextChange';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
+import { LANGUAGE_ASCIIDOC } from '../../languages/modes';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -855,6 +856,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                 editor.sessionOrThrow().on('change', this.createLiveCodeChangeHandler(path));
                 break;
             }
+            case LANGUAGE_ASCIIDOC:
             case LANGUAGE_MARKDOWN: {
                 break;
             }
@@ -1108,6 +1110,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                 }
                 break;
             }
+            case LANGUAGE_ASCIIDOC:
             case LANGUAGE_MARKDOWN: {
                 break;
             }

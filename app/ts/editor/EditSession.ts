@@ -43,6 +43,7 @@ import { HighlighterToken } from './mode/Highlighter';
 import { APP_VERSION } from '../constants';
 import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../constants';
+import { AsciiDocMode } from './mode/AsciiDocMode';
 import { ClojureMode } from './mode/ClojureMode';
 import { CssMode } from './mode/CssMode';
 import { CsvMode } from './mode/CsvMode';
@@ -61,6 +62,7 @@ import { TypeScriptMode } from './mode/TypeScriptMode';
 import { TsxMode } from './mode/TsxMode';
 import { XmlMode } from './mode/XmlMode';
 import { YamlMode } from './mode/YamlMode';
+import { LANGUAGE_ASCIIDOC } from '../languages/modes';
 import { LANGUAGE_CSS } from '../languages/modes';
 import { LANGUAGE_CSV } from '../languages/modes';
 import { LANGUAGE_GLSL } from '../languages/modes';
@@ -1282,6 +1284,12 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                 }
             }
             switch (mode) {
+                case LANGUAGE_ASCIIDOC: {
+                    this.setUseWrapMode(true);
+                    // editor.setWrapBehavioursEnabled(true);
+                    this.setLanguageMode(new AsciiDocMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
                 case LANGUAGE_HASKELL: {
                     this.setUseWorker(false);
                     this.setLanguageMode(new HaskellMode('/js/worker.js', workerImports), onSetLanguageMode);

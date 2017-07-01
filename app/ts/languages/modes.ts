@@ -1,4 +1,5 @@
 // TODO: Move this to the editor/mode folder and consolidate the identifiers? 
+export const LANGUAGE_ASCIIDOC = 'AsciiDoc';
 export const LANGUAGE_C = 'C';
 export const LANGUAGE_CPP = 'C++';
 export const LANGUAGE_CSS = 'CSS';
