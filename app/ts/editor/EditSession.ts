@@ -53,6 +53,7 @@ import { HtmlMode } from './mode/HtmlMode';
 import { JavaScriptMode } from './mode/JavaScriptMode';
 import { JsxMode } from './mode/JsxMode';
 import { JsonMode } from './mode/JsonMode';
+import { LatexMode } from './mode/LatexMode';
 import { MarkdownMode } from './mode/MarkdownMode';
 import { MatlabMode } from './mode/MatlabMode';
 import { PureScriptMode } from './mode/PureScriptMode';
@@ -71,6 +72,7 @@ import { LANGUAGE_HTML } from '../languages/modes';
 import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
 import { LANGUAGE_JSX } from '../languages/modes';
 import { LANGUAGE_JSON } from '../languages/modes';
+import { LANGUAGE_LATEX } from '../languages/modes';
 import { LANGUAGE_LESS } from '../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../languages/modes';
 import { LANGUAGE_MATLAB } from '../languages/modes';
@@ -1347,6 +1349,12 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                     // If we don't use the worker then we don't get a confirmation.
                     this.setUseWorker(false);
                     this.setLanguageMode(new CssMode('/js/worker.js', workerImports), onSetLanguageMode);
+                    break;
+                }
+                case LANGUAGE_LATEX: {
+                    this.setUseWrapMode(true);
+                    // editor.setWrapBehavioursEnabled(true);
+                    this.setLanguageMode(new LatexMode('/js/worker.js', workerImports), onSetLanguageMode);
                     break;
                 }
                 case LANGUAGE_MARKDOWN: {

@@ -50,6 +50,7 @@ import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_JSON } from '../../languages/modes';
 import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_JSX } from '../../languages/modes';
+import { LANGUAGE_LATEX } from '../../languages/modes';
 import { LANGUAGE_LESS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { LANGUAGE_MATLAB } from '../../languages/modes';
@@ -857,6 +858,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                 break;
             }
             case LANGUAGE_ASCIIDOC:
+            case LANGUAGE_LATEX:
             case LANGUAGE_MARKDOWN: {
                 break;
             }
@@ -1111,6 +1113,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                 break;
             }
             case LANGUAGE_ASCIIDOC:
+            case LANGUAGE_LATEX:
             case LANGUAGE_MARKDOWN: {
                 break;
             }
