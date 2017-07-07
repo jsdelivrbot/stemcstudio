@@ -2,7 +2,7 @@
  * The application version is used for cache busting the jspm.config.js file.
  * This files is used to load the application and the workers.
  */
-export const APP_VERSION = '2.35.0';
+export const APP_VERSION = '2.35.1';
 
 /**
  * The versioning is required for cache busting.

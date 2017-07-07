@@ -42,7 +42,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
-    "rxjs": "npm:rxjs@5.4.1",
+    "rxjs": "npm:rxjs@5.4.2",
     "showdown": "npm:showdown@1.7.1",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
@@ -143,7 +143,7 @@ System.config({
     },
     "npm:@angular/core@4.2.5": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.4.1",
+      "rxjs": "npm:rxjs@5.4.2",
       "tslib": "npm:tslib@1.7.1",
       "zone.js": "npm:zone.js@0.8.12"
     },
@@ -157,7 +157,7 @@ System.config({
     "npm:@angular/http@4.2.5": {
       "@angular/core": "npm:@angular/core@4.2.5",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.2.5",
-      "rxjs": "npm:rxjs@5.4.1",
+      "rxjs": "npm:rxjs@5.4.2",
       "tslib": "npm:tslib@1.7.1"
     },
     "npm:@angular/platform-browser-dynamic@4.2.5": {
@@ -178,7 +178,7 @@ System.config({
       "@angular/core": "npm:@angular/core@4.2.5",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.2.5",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.4.1",
+      "rxjs": "npm:rxjs@5.4.2",
       "tslib": "npm:tslib@1.7.1"
     },
     "npm:@angular/upgrade@4.2.5": {
@@ -206,7 +206,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -322,7 +322,7 @@ System.config({
     "npm:clipboard@1.7.1": {
       "good-listener": "npm:good-listener@1.2.2",
       "select": "npm:select@1.1.2",
-      "tiny-emitter": "npm:tiny-emitter@2.0.0"
+      "tiny-emitter": "npm:tiny-emitter@2.0.1"
     },
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.2",
@@ -406,7 +406,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -556,7 +556,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.3": {
@@ -807,7 +807,7 @@ System.config({
       "hash-base": "npm:hash-base@2.0.2",
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:rxjs@5.4.1": {
+    "npm:rxjs@5.4.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"

@@ -204,9 +204,10 @@ function copies(target) {
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
-     * Keey this value in synch with the option manager.
+     * Keep this value in synch with the option manager and the museum folder names.
+     * (The JavaScript files are pulled from a CDN).
      */
-    const VERSION_ANGULAR = '4.1.0';
+    const VERSION_ANGULAR = '4.2.5';
     /**
      * AngularJS
      */

@@ -30,7 +30,7 @@ const INDEX_DTS = 'index.d.ts';
 // This version is used to reference flattened index.d.ts files specially created as well as to pull
 // JavaScript files from a CDN. Keep this in synch with the value in Gruntfile.js 
 //
-const VERSION_ANGULAR = '4.1.0';
+const VERSION_ANGULAR = '4.2.5';
 const VERSION_ANGULAR_COMMON = VERSION_ANGULAR;
 const VERSION_ANGULAR_COMPILER = VERSION_ANGULAR;
 const VERSION_ANGULAR_CORE = VERSION_ANGULAR;

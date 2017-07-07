@@ -767,7 +767,6 @@
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^2.0.0"
   },
-  "npm:tiny-emitter@2.0.0": {},
   "npm:delegate@3.1.3": {},
   "npm:read-pkg-up@2.0.0": {
     "find-up": "npm:find-up@^2.0.0",
@@ -937,11 +936,6 @@
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:rxjs@5.4.1": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
   "npm:inherits@2.0.3": {
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
@@ -1076,5 +1070,11 @@
   "npm:hash.js@1.1.3": {
     "inherits": "npm:inherits@^2.0.3",
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
+  },
+  "npm:tiny-emitter@2.0.1": {},
+  "npm:rxjs@5.4.2": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
