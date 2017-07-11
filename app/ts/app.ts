@@ -134,7 +134,6 @@ import { NAVIGATION_SERVICE_UUID } from './modules/navigation/INavigationService
 //
 //
 //
-import { MONACO_EDITOR_SERVICE_UUID, MonacoEditorService } from './services/editor/monaco-editor.service';
 import { NATIVE_EDITOR_SERVICE_UUID, NativeEditorService } from './services/editor/native-editor.service';
 
 //
@@ -311,7 +310,6 @@ app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
 app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
 app.service(NAVIGATION_SERVICE_UUID, NavigationServiceJS);
-app.factory(MONACO_EDITOR_SERVICE_UUID, downgradeInjectable(MonacoEditorService));
 app.factory(NATIVE_EDITOR_SERVICE_UUID, downgradeInjectable(NativeEditorService));
 app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));
 app.factory(ROOMS_SERVICE_UUID, downgradeInjectable(RoomsService));

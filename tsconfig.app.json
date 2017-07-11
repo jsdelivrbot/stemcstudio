@@ -45,7 +45,6 @@
         "app/ts/editor/Tokenizer.spec.ts",
         "app/ts/editor/snippets/parseSnippetFile.spec.ts",
         "app/ts/fugly/ga/ga.ts",
-        "app/ts/services/editor/monaco-editor.service.ts",
         "app/ts/services/editor/native-editor.service.ts",
         "app/ts/services/gham/GitHubAuthManager.ts",
         "app/ts/services/templates/templates.ts",
