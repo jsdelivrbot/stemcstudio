@@ -1,10 +1,8 @@
 import { Range } from "../../Range";
+import { RangeBasic } from "../../RangeBasic";
 import { FoldStyle } from '../../FoldStyle';
 import { FoldWidget } from '../../FoldWidget';
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from "../../../virtual/editor";
+import { EditSession } from "../../EditSession";
 
 
 /**
@@ -50,7 +48,7 @@ export class FoldMode {
     /**
      *
      */
-    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | null | undefined {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): RangeBasic | null | undefined {
         return null;
     }
 

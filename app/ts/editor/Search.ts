@@ -8,11 +8,7 @@ import { Range } from "./Range";
 import { isEqual } from "./RangeHelpers";
 import { RangeBasic } from "./RangeBasic";
 import { SearchOptions } from "./SearchOptions";
-// import { EditSession } from "./EditSession";
-//
-// Editor Abstraction Layer
-//
-import { Selection } from '../virtual/editor';
+import { Selection } from './Selection';
 
 /**
  * The contract for the Search class.
@@ -26,7 +22,7 @@ export interface EditSession {
 }
 
 /**
- * A class designed to handle all sorts of text searches within a [[Document `Document`]].
+ * A class designed to handle all sorts of text searches within a Document.
  */
 export class Search {
 

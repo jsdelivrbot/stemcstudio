@@ -3,7 +3,6 @@ import { mixin } from "./lib/oop";
 import { computedStyle, hasCssClass } from "./lib/dom";
 import { createDelayedCall } from './lib/lang/createDelayedCall';
 import { DelayedCall } from './lib/lang/DelayedCall';
-import { Disposable } from './base/Disposable';
 import { stringRepeat } from "./lib/lang";
 import { isIE, isMac, isWebKit, isMozilla } from "./lib/useragent";
 import { EditorMouseEvent } from './EditorMouseEvent';
@@ -27,7 +26,6 @@ import { RangeBasic } from "./RangeBasic";
 import { collapseRows, contains, compare, comparePoint, compareRange, insideStart, isEmpty, isEqual, isMultiLine, moveBy, setEnd } from "./RangeHelpers";
 import { RangeList } from './RangeList';
 import { TextAndSelection } from "./TextAndSelection";
-import { EventBus } from "./EventBus";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { Command } from "./commands/Command";
 import { CommandManager } from "./commands/CommandManager";
@@ -41,7 +39,7 @@ import { COMMAND_NAME_DEL } from './editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from './editor_protocol';
 import { COMMAND_NAME_PASTE } from './editor_protocol';
 import { Renderer } from './Renderer';
-import { Completer } from "./autocomplete/Completer";
+import { Completer } from "./Completer";
 import { CompletionManager } from "./autocomplete/CompletionManager";
 import { refChange } from '../utils/refChange';
 import { SearchOptions } from './SearchOptions';
@@ -64,21 +62,22 @@ import { QuickInfoTooltip as NativeQuickInfoTooltip } from './workspace/QuickInf
 //
 // Editor Abstraction Layer
 //
-import { Annotation } from '../virtual/editor';
-import { EditorMaximal } from '../virtual/EditorMaximal';
-import { EditSession } from '../virtual/editor';
-import { Direction } from '../virtual/editor';
-import { KeyboardHandler } from '../virtual/editor';
-import { MarkerType, MarkerRenderer } from '../virtual/editor';
-import { OrientedRange } from '../virtual/editor';
-import { PixelPosition } from '../virtual/editor';
-import { QuickInfoTooltip, QuickInfoTooltipHost } from '../virtual/editor';
-import { RangeWithCollapseChildren } from '../virtual/editor';
-import { RangeSelectionMarker } from '../virtual/editor';
-import { Snippet } from '../virtual/editor';
-import { SnippetOptions } from '../virtual/editor';
-import { TokenWithIndex } from '../virtual/editor';
-import { UndoManager } from '../virtual/editor';
+import { Annotation } from './Annotation';
+import { EditSession } from './EditSession';
+import { Direction } from '../editor/Direction';
+import { KeyboardHandler } from '../editor/keyboard/KeyboardHandler';
+import { MarkerType } from '../editor/Marker';
+import { MarkerRenderer } from '../editor/layer/MarkerRenderer';
+import { OrientedRange } from './RangeBasic';
+import { PixelPosition } from './PixelPosition';
+import { QuickInfoTooltip } from '../editor/workspace/QuickInfoTooltip';
+import { QuickInfoTooltipHost } from '../editor/workspace/QuickInfoTooltipHost';
+import { RangeWithCollapseChildren } from '../editor/RangeBasic';
+import { RangeSelectionMarker } from '../editor/RangeBasic';
+import { Snippet } from './Snippet';
+import { SnippetOptions } from './SnippetOptions';
+import { TokenWithIndex } from './Token';
+import { UndoManager } from './UndoManager';
 
 const search = new Search();
 const DRAG_OFFSET = 0; // pixels
@@ -101,11 +100,15 @@ function isRangeSelectionMarker(orientedRange: OrientedRange): orientedRange is 
     }
 }
 
-function comparePoints(p1: Annotation, p2: Annotation): number {
+function compareAnnotations(p1: Annotation, p2: Annotation): number {
     return p1.row - p2.row || (p1.column as number) - (p2.column as number);
 }
 
-function binarySearch(annotations: Annotation[], needle: { row: number; column: number }, comparator: (lhs: Annotation, rhs: Annotation) => number) {
+function comparePoints(p1: { row: number; column: number }, p2: Annotation): number {
+    return p1.row - p2.row || (p1.column as number) - (p2.column as number);
+}
+
+function binarySearch(annotations: Annotation[], needle: { row: number; column: number }, comparator: (lhs: { row: number; column: number }, rhs: Annotation) => number) {
     let first = 0;
     let last = annotations.length - 1;
 
@@ -177,10 +180,14 @@ export type EditorEventName = 'blur'
 
 // const DragdropHandler = require("./mouse/dragdrop_handler").DragdropHandler;
 
+export interface EditorEventHandler {
+    (event: any, editor: Editor): void;
+}
+
 /**
  * The `Editor` acts as a controller, mediating between the session and renderer.
  */
-export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventName, any, Editor> {
+export class Editor {
 
     /**
      *
@@ -205,7 +212,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     /**
      * The command manager.
      */
-    public readonly commands = new CommandManager<EditorMaximal>(isMac ? "mac" : "win", defaultCommands);
+    public readonly commands = new CommandManager<Editor>(isMac ? "mac" : "win", defaultCommands);
 
     /**
      *
@@ -288,13 +295,13 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      */
     private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
-    private curOp: { command?: Command<EditorMaximal>; args?: any; scrollTop?: number; docChanged?: boolean; selectionChanged?: boolean } | null;
-    private prevOp: { command?: Command<EditorMaximal>; args?: any };
+    private curOp: { command?: Command<Editor>; args?: any; scrollTop?: number; docChanged?: boolean; selectionChanged?: boolean } | null;
+    private prevOp: { command?: Command<Editor>; args?: any };
     private lastFileJumpPos: Range | null;
     /**
      * FIXME: Dead code?
      */
-    private previousCommand: Command<EditorMaximal> | null;
+    private previousCommand: Command<Editor> | null;
     private $mergeableCommands: string[];
     private mergeNextCommand: boolean;
     private $mergeNextCommand: boolean;
@@ -419,13 +426,13 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
                 }
             };
 
-            const keyboardMultiSelect = new KeyboardHandlerClazz<EditorMaximal>([{
+            const keyboardMultiSelect = new KeyboardHandlerClazz<Editor>([{
                 name: "singleSelection",
                 bindKey: "esc",
-                exec: function (editor: EditorMaximal) { editor.exitMultiSelectMode(); },
+                exec: function (editor: Editor) { editor.exitMultiSelectMode(); },
                 scrollIntoView: "cursor",
                 readOnly: true,
-                isAvailable: function (editor: EditorMaximal) { return editor && editor.inMultiSelectMode; }
+                isAvailable: function (editor: Editor) { return editor && editor.inMultiSelectMode; }
             }]);
 
             const onMultiSelectExec = function (e: { command: Command<Editor>, editor: Editor, args: any }) {
@@ -575,7 +582,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         return this.sessionOrThrow().getTextRange(range);
     }
 
-    addCommand(command: Command<EditorMaximal>): void {
+    addCommand(command: Command<Editor>): void {
         this.commands.addCommand(command);
     }
 
@@ -597,7 +604,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
             session.widgetManager.attach(this);
         }
     }
-    getCommandByName(commandName: string): Command<EditorMaximal> {
+    getCommandByName(commandName: string): Command<Editor> {
         return this.commands.getCommandByName(commandName);
     }
     getCursorPixelPosition(pos?: Position): PixelPosition {
@@ -792,7 +799,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
 
     findAnnotations(row: number, direction: Direction): Annotation[] | undefined {
         const session = this.sessionOrThrow();
-        const annotations = session.getAnnotations().sort(comparePoints);
+        const annotations = session.getAnnotations().sort(compareAnnotations);
         if (!annotations.length) {
             return void 0;
         }
@@ -1245,7 +1252,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         function last<T>(a: T[]): T { return a[a.length - 1]; }
 
         this.selectionRanges_.length = 0;
-        this.commands.on("exec", (e: { command: Command<EditorMaximal> }) => {
+        this.commands.on("exec", (e: { command: Command<Editor> }) => {
             this.startOperation(e);
 
             const command = e.command;
@@ -1260,7 +1267,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
             }
         }, true);
 
-        this.commands.on("afterExec", (e: { command: Command<EditorMaximal> }, cm: CommandManager<EditorMaximal>) => {
+        this.commands.on("afterExec", (e: { command: Command<Editor> }, cm: CommandManager<Editor>) => {
             const command = e.command;
 
             if (command.group === "fileJump") {
@@ -1297,7 +1304,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     /**
      * By the end of this method, the curOp property should be defined.
      */
-    private startOperation(commandEvent?: { command?: Command<EditorMaximal>; args?: any }): void {
+    private startOperation(commandEvent?: { command?: Command<Editor>; args?: any }): void {
         if (this.curOp) {
             if (!commandEvent || this.curOp.command) {
                 return;
@@ -1328,7 +1335,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
         }
     }
 
-    private endOperation(unused?: { command: Command<EditorMaximal> }): void {
+    private endOperation(unused?: { command: Command<Editor> }): void {
         if (this.curOp) {
             const command = this.curOp.command;
             if (command && command.scrollIntoView) {
@@ -1377,7 +1384,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * The method is used to listen for 'exec' events from the command manager.
      * A fat arrow is used so that the `this` context is correct without the need for binding.
      */
-    private $historyTracker = (e: { command: Command<EditorMaximal>; args?: any }): void => {
+    private $historyTracker = (e: { command: Command<Editor>; args?: any }): void => {
         if (!this.$mergeUndoDeltas) {
             // false and 'always'
             return;
@@ -1423,7 +1430,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      *
      * @param keyboardHandler The new key handler.
      */
-    setKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): void {
+    setKeyboardHandler(keyboardHandler: KeyboardHandler<Editor>): void {
         if (!keyboardHandler) {
             this.keyBinding.setKeyboardHandler(null);
         }
@@ -1436,7 +1443,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     /**
      * Returns the keyboard handler, such as "vim" or "windows".
      */
-    getKeyboardHandler(): KeyboardHandler<EditorMaximal> {
+    getKeyboardHandler(): KeyboardHandler<Editor> {
         return this.keyBinding.getKeyboardHandler();
     }
 
@@ -2358,7 +2365,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     /**
      * Executes the specified command using the editor's command manager.
      */
-    execCommand(command: Command<EditorMaximal>, args?: any): void {
+    execCommand(command: Command<Editor>, args?: any): void {
         this.commands.exec(command, this, args);
     }
 
@@ -2556,17 +2563,17 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
     // EditorKeyable
     //
 
-    createKeyboardHandler(): KeyboardHandler<EditorMaximal> {
-        return new KeyboardHandlerClazz<EditorMaximal>();
+    createKeyboardHandler(): KeyboardHandler<Editor> {
+        return new KeyboardHandlerClazz<Editor>();
     }
-    addKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): void {
-        return this.keyBinding.addKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorMaximal>);
+    addKeyboardHandler(keyboardHandler: KeyboardHandler<Editor>): void {
+        return this.keyBinding.addKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<Editor>);
     }
-    getKeyboardHandlers(): KeyboardHandler<EditorMaximal>[] {
+    getKeyboardHandlers(): KeyboardHandler<Editor>[] {
         return this.keyBinding.$handlers;
     }
-    removeKeyboardHandler(keyboardHandler: KeyboardHandler<EditorMaximal>): boolean {
-        return this.keyBinding.removeKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<EditorMaximal>);
+    removeKeyboardHandler(keyboardHandler: KeyboardHandler<Editor>): boolean {
+        return this.keyBinding.removeKeyboardHandler(keyboardHandler as KeyboardHandlerClazz<Editor>);
     }
 
     /**
@@ -3178,7 +3185,7 @@ export class Editor implements EditorMaximal, Disposable, EventBus<EditorEventNa
      * Given the currently selected range, this function either comments all the lines, or uncomments all of them.
      */
     toggleCommentLines(): void {
-        const session = this.sessionOrThrow();
+        const session: EditSession = this.sessionOrThrow();
         const state = session.getState(this.getCursorPosition().row);
         const rows = this.$getSelectedRows();
         session.modeOrThrow().toggleCommentLines(state, session, rows.first, rows.last);

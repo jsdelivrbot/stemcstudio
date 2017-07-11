@@ -1,5 +1,5 @@
-import { EditorMinimal } from '../../virtual/EditorMinimal';
-import { LanguageModeId } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
+import { LanguageModeId } from '../../editor/LanguageMode';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { TextChange } from '../../editor/workspace/TextChange';
 
@@ -18,7 +18,7 @@ export interface WorkspaceEditorHost {
      * There is no explicit detachEditor because we use the returned detaching
      * function instead for that purpose.
      */
-    attachEditor(path: string, mode: LanguageModeId, editor: EditorMinimal): () => void;
+    attachEditor(path: string, mode: LanguageModeId, editor: Editor): () => void;
 
     /**
      * Used to obtain formatting edits for an editor.

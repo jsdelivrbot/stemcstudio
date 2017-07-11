@@ -1,8 +1,8 @@
-import { Completer } from '../../virtual/editor';
-import { Completion } from '../../virtual/editor';
-import { Editor } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { Position } from '../../virtual/editor';
+import { Completer } from '../../editor/Completer';
+import { Completion } from '../../editor/Completion';
+import { Editor } from '../../editor/Editor';
+import { EditSession } from '../../editor/EditSession';
+import { Position } from 'editor-document';
 
 export interface KeywordCompleterEditor extends Editor {
     getSession(): EditSession | undefined;
@@ -11,7 +11,7 @@ export interface KeywordCompleterEditor extends Editor {
 /**
  * Provides completions for a language mode.
  */
-export default class KeywordCompleter implements Completer<KeywordCompleterEditor> {
+export default class KeywordCompleter implements Completer {
 
     getCompletionsAtPosition(editor: KeywordCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
 

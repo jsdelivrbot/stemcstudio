@@ -2,10 +2,7 @@ import { FoldMode } from "./folding/FoldMode";
 import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { TextMode } from "./TextMode";
 import { YamlHighlightRules } from "./YamlHighlightRules";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class YamlMode extends TextMode {
 

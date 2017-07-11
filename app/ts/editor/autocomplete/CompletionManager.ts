@@ -1,6 +1,6 @@
 import { Anchor } from '../Anchor';
 import { Action } from '../keyboard/Action';
-import { Completer } from './Completer';
+import { Completer } from '../Completer';
 import { Completion } from '../Completion';
 import { CompletionList } from '../CompletionList';
 import { createDelayedCall } from '../lib/lang/createDelayedCall';
@@ -62,7 +62,7 @@ export class CompletionManager {
     /**
      * The completion manager
      */
-    private readonly keyboardHandler = new KeyboardHandler();
+    private readonly keyboardHandler = new KeyboardHandler<Editor>();
 
     /**
      * The completion manager is activated when the attach(editor) method is invoked and remains

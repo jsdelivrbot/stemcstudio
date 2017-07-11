@@ -2,10 +2,7 @@ import { Completion } from "../Completion";
 import { Position } from "editor-document";
 import { Token } from "../Token";
 import { TokenIterator } from "../TokenIterator";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from "../../virtual/editor";
+import { EditSession } from "../EditSession";
 
 const commonAttributes = [
     "accesskey",

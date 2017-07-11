@@ -1,4 +1,4 @@
-import { LanguageModeId } from '../../virtual/editor';
+import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**
  * 

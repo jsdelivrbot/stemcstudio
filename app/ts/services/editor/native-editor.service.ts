@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { Editor } from '../../virtual/editor';
-import { EditorService } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
+import { EditorService } from '../../editor/EditorService';
+import { EditSession } from '../../editor/EditSession';
 
 import { Document as NativeDocument } from 'editor-document';
 import { Editor as NativeEditor } from '../../editor/Editor';

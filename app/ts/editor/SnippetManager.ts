@@ -3,8 +3,8 @@ import { escapeRegExp } from "./lib/lang";
 import { Tokenizer } from "./Tokenizer";
 import { EventBus } from './EventBus';
 import { Rule } from './Rule';
-import Snippet from "./Snippet";
-import SnippetOptions from './SnippetOptions';
+import { Snippet } from "./Snippet";
+import { SnippetOptions } from './SnippetOptions';
 import { ChangeCase, ChangeCaseElement, Tabstop, TabstopIndex, TabstopText, TabstopToken, TmFormat, TmFormatPart, TmFormatToken } from "./Tabstop";
 import { UPPERCASE_NEXT_LETTER } from "./Tabstop";
 import { LOWERCASE_NEXT_LETTER } from "./Tabstop";
@@ -14,8 +14,8 @@ import { END_CHANGE_CASE } from "./Tabstop";
 //
 // Editor Abstraction Layer
 //
-import { Position } from '../virtual/editor';
-import { EditorMaximal as Editor } from '../virtual/EditorMaximal';
+import { Position } from 'editor-document';
+import { Editor } from '../editor/Editor';
 
 /**
  * This hack is used by the velocity language only.
@@ -372,7 +372,8 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
             // Instead, we use a standard function and capture this in the self variable.
             self.variables['__'] = <any>arguments;
             // FIXME: Why is editor a required parameter in this method call?
-            const fmtParts = self.resolveVariables(fmtTokens, editor);
+            // FIXME: Problem with typing here.
+            const fmtParts = self.resolveVariables(fmtTokens as any, editor);
             /**
              * Global change case state.
              */
@@ -508,7 +509,8 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
             indentString = indentString.slice(0, cursor.column);
 
         let fmtTokens = this.tokenizeTmSnippet(snippetText);
-        let fmtParts = this.resolveVariables(fmtTokens, editor);
+        // FIXME: Problem wuth typing.
+        let fmtParts = this.resolveVariables(fmtTokens as any, editor);
         // indent
         fmtParts = fmtParts.map(function (x) {
             if (x === "\n") {
@@ -586,7 +588,7 @@ export class SnippetManager implements EventBus<SnippetManagerEventName, any, Sn
             }
 
             const ts = tabstops[id];
-            const arg: (string | TmFormatPart)[] = (typeof ts.value === "string") ? [ts.value] : copyValue(ts.value);
+            const arg: (string | number | TmFormatPart)[] = (typeof ts.value === "string") ? [ts.value] : copyValue(ts.value);
             arg.unshift(i + 1, Math.max(0, i1 - i));
             arg.push(p);
             expanding[id] = p;

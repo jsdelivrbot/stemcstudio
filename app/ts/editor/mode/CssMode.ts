@@ -7,10 +7,7 @@ import { WorkerClient } from "../worker/WorkerClient";
 import { CssBehaviour } from "./behaviour/CssBehaviour";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 import { Position } from 'editor-document';
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../../editor/EditSession';
 
 export class CssMode extends TextMode {
     $outdent: MatchingBraceOutdent;

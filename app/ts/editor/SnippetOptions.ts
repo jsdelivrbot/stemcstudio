@@ -1,7 +1,7 @@
 /**
  *
  */
-interface SnippetOptions {
+export interface SnippetOptions {
 
     /**
      * Determines whether the snipet manager simply finds the snippet (true),
@@ -9,5 +9,3 @@ interface SnippetOptions {
      */
     dryRun?: boolean;
 }
-
-export default SnippetOptions;

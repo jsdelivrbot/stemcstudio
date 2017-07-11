@@ -21,13 +21,13 @@ function processLabel($q: IQService, menuItem: ContextMenuItem, promises: IPromi
     return anchor;
 }
 
-function registerEventHandler($scope: IScope, enabled: boolean, menuItem: ContextMenuItem, li: IAugmentedJQuery, contextMenuEvent: PointerEvent, removeContextMenus: () => void) {
+function registerEventHandler($scope: IScope, enabled: boolean, menuItem: ContextMenuItem, li: JQuery, contextMenuEvent: PointerEvent, removeContextMenus: () => void) {
     if (enabled) {
         li.on('click', function (clickEvent: JQueryEventObject) {
             // WARNING: href='#' will drive us back to the home page if we don't prevent the default action for click.
             clickEvent.preventDefault();
             $scope.$apply(function () {
-                element(contextMenuEvent.currentTarget).removeClass('context');
+                element(contextMenuEvent.currentTarget as Element).removeClass('context');
                 removeContextMenus();
                 if (isFunction(menuItem.action)) {
                     menuItem.action();
@@ -49,9 +49,9 @@ function registerEventHandler($scope: IScope, enabled: boolean, menuItem: Contex
 /**
  *
  */
-function renderContextMenuItem($q: IQService, $scope: IScope, contextMenuEvent: PointerEvent, li: IAugmentedJQuery, menuItem: ContextMenuItem, promises: IPromise<string>[], removeContextMenu: () => void): void {
+function renderContextMenuItem($q: IQService, $scope: IScope, contextMenuEvent: PointerEvent, li: JQuery, menuItem: ContextMenuItem, promises: IPromise<string>[], removeContextMenu: () => void): void {
     const label: IAugmentedJQuery = processLabel($q, menuItem, promises);
-    li.append(label);
+    li.append(label as JQuery);
 
     registerEventHandler($scope, true, menuItem, li, contextMenuEvent, removeContextMenu);
 }
@@ -114,7 +114,7 @@ export function renderContextMenu($q: IQService, $scope: IScope, contextMenuEven
      */
     const promises: IPromise<string>[] = [];
 
-    element(contextMenuEvent.currentTarget).addClass('context');
+    element(contextMenuEvent.currentTarget as Element).addClass('context');
     const contextMenu: IAugmentedJQuery = element('<div>');
     contextMenu.addClass('dropdown clearfix');
     const ul: IAugmentedJQuery = element('<ul>');
@@ -129,7 +129,7 @@ export function renderContextMenu($q: IQService, $scope: IScope, contextMenuEven
     });
 
     forEach(menu, function (menuItem: ContextMenuItem) {
-        const li: IAugmentedJQuery = element('<li>');
+        const li = element('<li>') as JQuery;
         ul.append(li);
         if (menuItem === CONTEXT_MENU_ITEM_DIVIDER) {
             li.addClass('divider');
@@ -139,7 +139,7 @@ export function renderContextMenu($q: IQService, $scope: IScope, contextMenuEven
         }
     });
 
-    contextMenu.append(ul);
+    contextMenu.append(ul as JQuery);
     const height = Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
         document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -153,7 +153,7 @@ export function renderContextMenu($q: IQService, $scope: IScope, contextMenuEven
         left: 0,
         zIndex: 9999
     });
-    element(document).find('body').append(contextMenu);
+    element(document).find('body').append(contextMenu as JQuery);
 
     // Now that the menu has been built, we make some adjustments to the dimensions.
     resizeMenuWhenLabelsResolve($q, ul, contextMenuEvent, promises);

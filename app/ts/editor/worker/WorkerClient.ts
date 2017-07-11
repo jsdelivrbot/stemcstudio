@@ -2,12 +2,12 @@ import { qualifyURL } from '../lib/net';
 import { Delta } from "editor-document";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
-import CallbackManager from './CallbackManager';
+import { CallbackManager } from './CallbackManager';
 import { Disposable } from '../../base/Disposable';
 //
 // Editor Abstraction Layer
 //
-import { EditSession } from "../../virtual/editor";
+import { EditSession } from "../../editor/EditSession";
 
 /**
  * Protocol for the initialization message.

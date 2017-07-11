@@ -1,6 +1,6 @@
 import { Command } from '../../editor/commands/Command';
 import { COMMAND_NAME_PASTE } from '../../editor/editor_protocol';
-import { EditorChangeable } from '../../virtual/EditorChangeable';
+import { Editor } from '../../editor/Editor';
 
 /*
 function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
@@ -8,13 +8,13 @@ function bindKey(win: string | null, mac: string | null): { win: string | null; 
 }
 */
 
-export function createPasteCommand(): Command<EditorChangeable> {
+export function createPasteCommand(): Command<Editor> {
     return {
         name: COMMAND_NAME_PASTE,
         // Providing the bindKey will disable the default action.
         // TODO: We'd like to specify the keys but not forfit the native handling. 
         // bindKey: bindKey("Ctrl-V", "Command-V"),
-        exec: function (editor: EditorChangeable, args: { text: string }) {
+        exec: function (editor: Editor, args: { text: string }) {
             editor.paste(args);
         },
         scrollIntoView: 'cursor'

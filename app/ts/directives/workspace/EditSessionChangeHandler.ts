@@ -1,11 +1,9 @@
-import { Delta } from '../../editor/Delta';
+import { Delta } from 'editor-document';
 import { EditSession } from '../../editor/EditSession';
 
 /**
  *
  */
-interface EditSessionChangeHandler {
+export interface EditSessionChangeHandler {
     (delta: Delta, source: EditSession): any;
 }
-
-export default EditSessionChangeHandler;

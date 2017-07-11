@@ -1,5 +1,5 @@
 import { createHTMLDivElement } from "../../lib/dom";
-import { EditorFocusable as Editor } from '../../../virtual/EditorFocusable';
+import { Editor } from '../../../editor/Editor';
 // cssText = require("../../requirejs/text!./settings_menu.css");
 // dom.importCssString(cssText);
 

@@ -1,4 +1,4 @@
-import { Action } from '../../virtual/editor';
+import { Action } from '../../editor/keyboard/Action';
 
 /**
  * Associates an action function (the `exec` property) with a specification of key bindings.

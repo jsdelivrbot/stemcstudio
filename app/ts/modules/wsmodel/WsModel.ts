@@ -69,15 +69,15 @@ import { WorkspaceCompleterHost } from '../../editor/workspace/WorkspaceComplete
 // implementation to be changed using adapters. Over time we can reduce the surface area
 // of the bootstrapping API then use dynamic discovery of capabilities.
 //
-import { Delta } from '../../virtual/editor';
-import { Editor } from '../../virtual/editor';
-import { EditorService } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { LanguageModeId } from '../../virtual/editor';
-import { Marker } from '../../virtual/editor';
-import { QuickInfo } from '../../virtual/editor';
-import { QuickInfoTooltip } from '../../virtual/editor';
-import { QuickInfoTooltipHost } from '../../virtual/editor';
+import { Delta } from 'editor-document';
+import { Editor } from '../../editor/Editor';
+import { EditorService } from '../../editor/EditorService';
+import { EditSession } from '../../editor/EditSession';
+import { LanguageModeId } from '../../editor/LanguageMode';
+import { Marker } from '../../editor/Marker';
+import { QuickInfo } from '../../editor/workspace/QuickInfo';
+import { QuickInfoTooltip } from '../../editor/workspace/QuickInfoTooltip';
+import { QuickInfoTooltipHost } from '../../editor/workspace/QuickInfoTooltipHost';
 //
 // Choose EditorService implementation (Angular).
 // See also editor.directive1x.ts for AngularJS.

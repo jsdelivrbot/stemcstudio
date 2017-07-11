@@ -20,7 +20,7 @@ var dmp = new DMP_1.default();
 var client;
 if (process.env.REDISTOGO_URL) {
     var rtg = url.parse(process.env.REDISTOGO_URL);
-    var port = rtg.port;
+    var port = parseInt(rtg.port, 10);
     client = redis.createClient(port, rtg.hostname);
     var auth = rtg.auth;
     client.auth(auth.split(":")[1]);

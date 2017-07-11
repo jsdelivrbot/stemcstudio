@@ -1,21 +1,21 @@
 import { Completion } from "./Completion";
 import { Editor } from "./Editor";
 import { EditSession } from "./EditSession";
-import { Position } from "./Position";
+import { Position } from "editor-document";
 import { Range } from "./Range";
-import TextAndSelection from "./TextAndSelection";
+import { RangeBasic } from "./RangeBasic";
+import { TextAndSelection } from "./TextAndSelection";
 import { Tokenizer } from "./Tokenizer";
-// import { WorkerClient } from "./worker/WorkerClient";
 import { FoldMode } from "./mode/folding/FoldMode";
 import { HighlighterToken, HighlighterStack, HighlighterStackElement } from './mode/Highlighter';
-//
-// Editor Abstraction Layer
-//
-import { LanguageModeId } from '../virtual/editor';
 
 export interface Disposable {
     dispose(): void;
 }
+/**
+ * 
+ */
+export type LanguageModeId = 'AsciiDoc' | 'C' | 'C++' | 'Clojure' | 'CSS' | 'CSV' | 'GLSL' | 'Haskell' | 'HTML' | 'JavaScript' | 'JSX' | 'JSON' | 'LaTeX' | 'LESS' | 'Markdown' | 'MATLAB' | 'PureScript' | 'Python' | 'Scheme' | 'Text' | 'TypeScript' | 'TSX' | 'XML' | 'YAML';
 
 /**
  *
@@ -101,10 +101,10 @@ export interface LanguageMode {
     /**
      *
      */
-    toggleBlockComment(state: string, session: EditSession, range: Range, cursor: Position): void;
+    toggleBlockComment(state: string, session: EditSession, range: RangeBasic, cursor: Position): void;
 
     /**
      *
      */
-    transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | Range): TextAndSelection | Range | undefined;
+    transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | RangeBasic): TextAndSelection | Range | undefined;
 }

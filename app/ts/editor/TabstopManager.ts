@@ -12,7 +12,7 @@ import { Tabstop, TabstopRange } from './Tabstop';
 //
 // Editor Abstraction Layer
 //
-import { OrientedRange } from '../virtual/editor';
+import { OrientedRange } from '../editor/RangeBasic';
 
 function movePoint(point: Position, diff: Position) {
     if (point.row === 0) {

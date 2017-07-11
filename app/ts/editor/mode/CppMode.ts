@@ -3,10 +3,7 @@ import { CppHighlightRules } from "./CppHighlightRules";
 import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class CppMode extends TextMode {
     // FIXME: What is happening here?

@@ -5,10 +5,7 @@ import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { WorkerClient } from "../worker/WorkerClient";
 import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class JsonMode extends TextMode {
 

@@ -30,17 +30,10 @@ import { TextChange } from '../../editor/workspace/TextChange';
 //
 // Editor Abstraction Layer
 //
-import { Editor } from '../../virtual/editor';
-// import { EditorMinimal } from '../../virtual/EditorMinimal';
-import { EditorMaximal } from '../../virtual/EditorMaximal';
-import { /*EditorCommandable,*/ isEditorCommandable } from '../../virtual/EditorCommandable';
-import { isEditorConfigurable } from '../../virtual/EditorConfigurable';
-import { isEditorFocusable } from '../../virtual/EditorFocusable';
-import { EditorSearchable, isEditorSearchable } from '../../virtual/EditorSearchable';
-import { isEditorUndoable } from '../../virtual/EditorUndoable';
-import { EditorService } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { LanguageModeId } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
+import { EditorService } from '../../editor/EditorService';
+import { EditSession } from '../../editor/EditSession';
+import { LanguageModeId } from '../../editor/LanguageMode';
 //
 // Choose EditorService implementation (AngularJS).
 // See also WsModel for Angular.
@@ -55,7 +48,7 @@ const BOGUS_HACK = false;
 const FIND_REPLACE_COMMAND = {
     name: COMMAND_NAME_FIND,
     bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
-    exec: function (editor: EditorSearchable) {
+    exec: function (editor: Editor) {
         showFindReplace(editor, false);
     },
     readOnly: true // false if this command should not apply in readOnly mode
@@ -113,21 +106,19 @@ export function createEditorDirective(
         let removeEditor: EditorDetacher | undefined;
 
         const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
-            if (isEditorConfigurable(editor)) {
-                setTimeout(function () {
-                    editor.setFontSize(event.fontSize);
-                    editor.setThemeCss(event.cssClass, event.href);
-                    editor.setThemeDark(event.isDark);
-                    editor.setShowFoldWidgets(event.showFoldWidgets);
-                    editor.setShowGutter(event.showGutter);
-                    editor.setDisplayIndentGuides(event.displayIndentGuides);
-                    editor.setShowInvisibles(event.showInvisibles);
-                    editor.setShowLineNumbers(event.showLineNumbers);
-                    editor.setShowPrintMargin(event.showPrintMargin);
-                    editor.setTabSize(event.tabSize);
-                    editor.setUseSoftTabs(event.useSoftTabs);
-                }, 0);
-            }
+            setTimeout(function () {
+                editor.setFontSize(event.fontSize);
+                editor.setThemeCss(event.cssClass, event.href);
+                editor.setThemeDark(event.isDark);
+                editor.setShowFoldWidgets(event.showFoldWidgets);
+                editor.setShowGutter(event.showGutter);
+                editor.setDisplayIndentGuides(event.displayIndentGuides);
+                editor.setShowInvisibles(event.showInvisibles);
+                editor.setShowLineNumbers(event.showLineNumbers);
+                editor.setShowPrintMargin(event.showPrintMargin);
+                editor.setTabSize(event.tabSize);
+                editor.setUseSoftTabs(event.useSoftTabs);
+            }, 0);
         };
         // This event listener gets removed in onDestroyScope
         editorPreferencesService.addEventListener(currentTheme, editorPreferencesEventListener);
@@ -136,7 +127,7 @@ export function createEditorDirective(
         // Don't set session attributes here!
         editor.setPadding(4);
 
-        const changeAnnotationHandler = function (data: any, editor: EditorMaximal) {
+        const changeAnnotationHandler = function (data: any, editor: Editor) {
             // Asynchronously trigger Angular digest loop so that files in explorer are updated.
             $scope.$applyAsync(function () {
                 // Nothing to see here.
@@ -187,13 +178,9 @@ export function createEditorDirective(
                         // TODO: Crush this code down into an extensible mode-handling and session initializer?
                         // Maybe the WsFile can do some of the work?
                         editor.setSession(session);
-                        if (isEditorUndoable(editor)) {
-                            const undoManager = new UndoManager();
-                            editor.setUndoManager(undoManager);
-                        }
-                        if (isEditorCommandable(editor)) {
-                            addCommands($scope.path, editor, session, wsController, editorPreferencesService);
-                        }
+                        const undoManager = new UndoManager();
+                        editor.setUndoManager(undoManager);
+                        addCommands($scope.path, editor, session, wsController, editorPreferencesService);
 
                         // We must wait for the $render function to be called so that we have a session.
                         const mode = file.mode;
@@ -384,17 +371,15 @@ export function createEditorDirective(
  * TODO: The directive should not be able to add commands that the editor cannot fulfil.
  */
 function addCommands(path: string, editor: Editor, session: EditSession, wsController: WorkspaceEditorHost, editorPreferencesService: EditorPreferencesService): void {
-    if (isEditorSearchable(editor)) {
-        editor.addCommand(FIND_REPLACE_COMMAND);
-        editor.addCommand({
-            name: 'Replace',
-            bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
-            exec: function () {
-                showFindReplace(editor, true);
-            },
-            readOnly: true // false if this command should not apply in readOnly mode
-        });
-    }
+    editor.addCommand(FIND_REPLACE_COMMAND);
+    editor.addCommand({
+        name: 'Replace',
+        bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
+        exec: function () {
+            showFindReplace(editor, true);
+        },
+        readOnly: true // false if this command should not apply in readOnly mode
+    });
     editor.addCommand({
         name: 'goToNextError',
         bindKey: { win: 'Alt-E', mac: 'F4' },
@@ -413,15 +398,13 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         scrollIntoView: 'animate',
         readOnly: true
     });
-    if (isEditorFocusable(editor)) {
-        editor.addCommand({
-            name: "showGreekKeyboard",
-            bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
-            exec: function () {
-                showGreekKeyboard(editor);
-            }
-        });
-    }
+    editor.addCommand({
+        name: "showGreekKeyboard",
+        bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
+        exec: function () {
+            showGreekKeyboard(editor);
+        }
+    });
     editor.addCommand({
         name: "showKeyboardShortcuts",
         bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },

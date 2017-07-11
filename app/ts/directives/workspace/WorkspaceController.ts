@@ -69,9 +69,9 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 //
 // Editor Abstraction Layer
 //
-import { Editor } from '../../virtual/editor';
-import { EditSessionChangeHandler } from '../../virtual/editor';
-import { LanguageModeId } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
+import { EditSessionChangeHandler } from './EditSessionChangeHandler';
+import { LanguageModeId } from '../../editor/LanguageMode';
 
 //
 // RxJS

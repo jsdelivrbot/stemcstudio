@@ -1,7 +1,7 @@
 //// <reference path="../../../../typings/main/ambient/jasmine/index.d.ts" />
 
 import parseSnippetFile from './parseSnippetFile';
-import Snippet from '../Snippet';
+import { Snippet } from '../Snippet';
 
 describe("parseSnippetFile", function () {
     const expected: Snippet[] = [

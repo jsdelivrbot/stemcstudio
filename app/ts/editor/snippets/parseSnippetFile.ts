@@ -1,4 +1,4 @@
-import Snippet from '../Snippet';
+import { Snippet } from '../Snippet';
 /**
  * Note: The format of the string is critical (tabs, newlines, etc).
  */
@@ -16,7 +16,7 @@ export function parseSnippetFile(str: string): Snippet[] {
     // Group 4 is like \n \t .
     const re: RegExp = /^#.*|^({[\s\S]*})\s*$|^(\S+) (.*)$|^((?:\n*\t.*)+)/gm;
 
-    let m: RegExpExecArray;
+    let m: RegExpExecArray | null;
 
     while (m = re.exec(str)) {
 
@@ -40,13 +40,13 @@ export function parseSnippetFile(str: string): Snippet[] {
             if (typeof key === 'string') {
                 if (key === "regex") {
                     const guardRe = /\/((?:[^\/\\]|\\.)*)|$/g;
-                    snippet.guard = guardRe.exec(val)[1];
-                    snippet.trigger = guardRe.exec(val)[1];
-                    snippet.endTrigger = guardRe.exec(val)[1];
-                    snippet.endGuard = guardRe.exec(val)[1];
+                    snippet.guard = (guardRe.exec(val) as RegExpExecArray)[1];
+                    snippet.trigger = (guardRe.exec(val) as RegExpExecArray)[1];
+                    snippet.endTrigger = (guardRe.exec(val) as RegExpExecArray)[1];
+                    snippet.endGuard = (guardRe.exec(val) as RegExpExecArray)[1];
                 }
                 else if (key === "snippet") {
-                    snippet.tabTrigger = val.match(/^\S*/)[0];
+                    snippet.tabTrigger = (val.match(/^\S*/) as RegExpExecArray)[0];
                     if (!snippet.name) {
                         snippet.name = val;
                     }

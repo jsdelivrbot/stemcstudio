@@ -8,10 +8,10 @@ import { WsModel } from './WsModel';
 //
 // Editor Abstraction Layer.
 //
-import { Editor } from '../../virtual/editor';
-import { EditorService } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { LanguageModeId } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
+import { EditorService } from '../../editor/EditorService';
+import { EditSession } from '../../editor/EditSession';
+import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**
  * This class corresponds to a file at a particular path in a workspace.

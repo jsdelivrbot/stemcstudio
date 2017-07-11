@@ -1,12 +1,12 @@
 /**
  *
  */
-interface Snippet {
+export interface Snippet {
 
     /**
      * 
      */
-    content: string;
+    content?: string;
 
     /**
      *
@@ -83,5 +83,3 @@ interface Snippet {
      */
     triggerRe?: RegExp;
 }
-
-export default Snippet;

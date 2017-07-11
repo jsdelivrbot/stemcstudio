@@ -1,9 +1,9 @@
+import { HighlighterToken } from './mode/Highlighter';
 //
 // Editor Abstraction Layer
 //
-import { EditSession } from '../virtual/editor';
-import { BasicToken } from '../virtual/editor';
-import { TokenWithIndex } from '../virtual/editor';
+import { BasicToken } from '../editor/Token';
+import { TokenWithIndex } from '../editor/Token';
 
 /**
  * Temporary check for undefined token values. 
@@ -19,13 +19,19 @@ function check<T>(xs: T[], where: string): T[] {
 }
 */
 
+export interface TokenIteratorEditSession {
+    getLength(): number;
+    getTokens(row: number): HighlighterToken[];
+    getTokenAt(row: number, column?: number): TokenWithIndex | null | undefined;
+}
+
 /**
  * This class provides an easy way to treat the document as a stream of tokens.
  * Provides methods to iterate over these tokens.
  * The heavy lifting is really being done by the edit session.
  */
 export class TokenIterator {
-    private session: EditSession;
+    private session: TokenIteratorEditSession;
     private $row: number;
     private $rowTokens: BasicToken[];
     private $tokenIndex: number;
@@ -38,7 +44,7 @@ export class TokenIterator {
      * @param initialColumn The column to start the tokenizing at
      *
      */
-    constructor(session: EditSession, initialRow: number, initialColumn: number) {
+    constructor(session: TokenIteratorEditSession, initialRow: number, initialColumn: number) {
         this.session = session;
         this.$row = initialRow;
         this.$rowTokens = session.getTokens(initialRow);

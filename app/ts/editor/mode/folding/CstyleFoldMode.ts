@@ -1,4 +1,5 @@
 import { Range } from "../../Range";
+import { RangeBasic } from "../../RangeBasic";
 import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import { FoldStyle } from "../../FoldStyle";
@@ -32,7 +33,7 @@ export class CstyleFoldMode extends FoldMode {
      * @param row zero-based row number.
      * @param forceMultiline
      */
-    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number, forceMultiline?: boolean): Range | null | undefined {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number, forceMultiline?: boolean): RangeBasic | null | undefined {
         /**
          * The text on the line where the folding was requested.
          */
@@ -44,7 +45,7 @@ export class CstyleFoldMode extends FoldMode {
                 return this.openingBracketBlock(session, match[1], row, <number>match.index);
             }
 
-            let range: Range | null | undefined = session.getCommentFoldRange(row, <number>match.index + match[0].length, 1);
+            let range: RangeBasic | null | undefined = session.getCommentFoldRange(row, <number>match.index + match[0].length, 1);
 
             if (range && !isMultiLine(range)) {
                 if (forceMultiline) {

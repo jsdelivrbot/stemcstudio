@@ -1,8 +1,5 @@
 import { Range } from "../Range";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 /**
  *

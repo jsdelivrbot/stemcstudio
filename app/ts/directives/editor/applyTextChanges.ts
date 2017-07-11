@@ -1,5 +1,5 @@
-import { EditSession } from '../../virtual/editor';
-import { Position } from '../../virtual/editor';
+import { EditSession } from '../../editor/EditSession';
+import { Position } from 'editor-document';
 import { TextChange } from '../../editor/workspace/TextChange';
 
 function removeWhitespace(text: string): string {

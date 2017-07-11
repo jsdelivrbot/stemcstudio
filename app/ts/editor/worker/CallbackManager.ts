@@ -3,7 +3,7 @@ const INITIAL_CALLBACK_ID = 1;
 /**
  * Manage a cache of callback functions by trading for a generated numeric callback identifier.
  */
-export default class CallbackManager {
+export class CallbackManager {
     private callbacks: { [id: number]: (data: any) => any } = {};
     private callbackId: number = INITIAL_CALLBACK_ID;
 

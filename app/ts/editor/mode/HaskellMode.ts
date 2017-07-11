@@ -3,10 +3,7 @@ import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import { HaskellHighlightRules } from "./HaskellHighlightRules";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 import { WorkerClient } from "../worker/WorkerClient";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class HaskellMode extends TextMode {
 

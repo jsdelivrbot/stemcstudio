@@ -1,4 +1,4 @@
-import { OrientedRange as Range } from '../../virtual/editor';
+import { OrientedRange as Range } from '../../editor/RangeBasic';
 
 /**
  *

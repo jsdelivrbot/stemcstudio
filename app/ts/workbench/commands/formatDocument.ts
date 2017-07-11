@@ -1,7 +1,7 @@
 import { Command } from '../../editor/commands/Command';
 import { COMMAND_NAME_FORMAT_DOCUMENT } from '../../editor/editor_protocol';
 import { formatDocument, FormatDocumentController } from '../actions/formatDocument';
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../../editor/EditSession';
 import { isJavaScript } from '../../utils/isJavaScript';
 import { isTypeScript } from '../../utils/isTypeScript';
 

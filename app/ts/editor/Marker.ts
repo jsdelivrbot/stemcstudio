@@ -5,8 +5,8 @@ import { MarkerRenderer } from './layer/MarkerRenderer';
 //
 // Editor Abstraction Layer
 //
-import { EditSession } from '../virtual/editor';
-import { OrientedRange as Range } from '../virtual/editor';
+import { EditSession } from '../editor/EditSession';
+import { OrientedRange as Range } from '../editor/RangeBasic';
 
 export type MarkerType = 'fullLine' | 'line' | 'text' | 'screenLine';
 

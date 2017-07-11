@@ -2,12 +2,8 @@ import { EventBus } from './EventBus';
 import { Delta, Document } from 'editor-document';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { FirstAndLast } from "./FirstAndLast";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from "../virtual/editor";
-import { Tokenizer } from "../virtual/editor";
-import { HighlighterStackElement, HighlighterStack, HighlighterToken } from '../virtual/editor';
+import { Tokenizer } from "./Tokenizer";
+import { HighlighterStackElement, HighlighterStack, HighlighterToken } from '../editor/mode/Highlighter';
 
 /**
  * Symbolic constant for the timer handle.
@@ -15,6 +11,10 @@ import { HighlighterStackElement, HighlighterStack, HighlighterToken } from '../
 const NOT_RUNNING = 0;
 
 export type BackgroundTokenizerEventName = 'update';
+
+export interface BackgroundTokenizerEditSession {
+
+}
 
 /**
  * Tokenizes an Document in the background, and caches the tokenized rows for future use. 
@@ -54,7 +54,7 @@ export class BackgroundTokenizer implements EventBus<BackgroundTokenizerEventNam
     /**
      * Creates a new background tokenizer object using a tokenizer supplied by the language mode.
      */
-    constructor(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>, unused?: EditSession) {
+    constructor(tokenizer: Tokenizer<HighlighterToken, HighlighterStackElement, HighlighterStack>, unused?: BackgroundTokenizerEditSession) {
         this.eventBus = new EventEmitterClass<BackgroundTokenizerEventName, any, BackgroundTokenizer>(this);
         this.tokenizer = tokenizer;
 

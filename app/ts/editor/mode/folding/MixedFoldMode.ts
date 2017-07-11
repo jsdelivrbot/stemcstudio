@@ -2,7 +2,8 @@ import { FoldMode } from "./FoldMode";
 import { EditSession } from "../../EditSession";
 import { FoldStyle } from "../../FoldStyle";
 import { FoldWidget } from "../../FoldWidget";
-import { Range } from "../../Range";
+// import { Range } from "../../Range";
+import { RangeBasic } from "../../RangeBasic";
 
 /**
  *
@@ -56,7 +57,7 @@ export class MixedFoldMode extends FoldMode {
         }
     }
 
-    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | null | undefined {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): RangeBasic | null | undefined {
         if (row > 0) {
             let mode = this.$getMode(session.getState(row - 1));
 

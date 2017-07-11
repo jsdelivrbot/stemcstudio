@@ -39,7 +39,7 @@ const dmp = new DMP();
 let client: redis.RedisClient;
 if (process.env.REDISTOGO_URL) {
     const rtg = url.parse(process.env.REDISTOGO_URL);
-    const port = rtg.port as string;
+    const port = parseInt(rtg.port, 10);
     client = redis.createClient(port, rtg.hostname);
     const auth = rtg.auth as string;
     client.auth(auth.split(":")[1]);

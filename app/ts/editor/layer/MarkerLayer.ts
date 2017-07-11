@@ -5,11 +5,8 @@ import { Range } from "../Range";
 import { RangeBasic } from "../RangeBasic";
 import { clipRows, isEmpty, isMultiLine } from "../RangeHelpers";
 import { refChange } from '../../utils/refChange';
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
-import { Marker } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
+import { Marker } from '../Marker';
 
 export interface IMarkerLayer {
 

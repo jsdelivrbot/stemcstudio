@@ -3,7 +3,7 @@ import { WsModel } from '.././WsModel';
 //
 // Editor Abstraction Layer
 //
-import { EditSession } from '../../../virtual/editor';
+import { EditSession } from '../../../editor/EditSession';
 
 //
 // RxJS imports

@@ -3,10 +3,7 @@ import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import { ClojureHighlightRules } from "./ClojureHighlightRules";
 import { MatchingParensOutdent } from "./MatchingParensOutdent";
 import { WorkerClient } from "../worker/WorkerClient";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 const minorIndentFunctions = ["defn", "defn-", "defmacro", "def", "deftest", "testing"];
 const outdent = new MatchingParensOutdent();

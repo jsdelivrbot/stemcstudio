@@ -5,12 +5,7 @@ import { keyCodeToString } from '../lib/keys';
 import { addListener, addCommandKeyListener, stopEvent, stopPropagation } from '../lib/event';
 import { KeyboardHandler } from '../keyboard/KeyboardHandler';
 import { Range } from '../Range';
-//
-// TODO: EditorSearchable?
-//
-// import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
-import { /*EditorChangeable,*/ isEditorChangeable } from '../../virtual/EditorChangeable';
-import { EditorSearchable as Editor } from '../../virtual/EditorSearchable';
+import { Editor } from '../../editor/Editor';
 
 // TODO: Need to negotiate with Editor to install (disposable) extension.
 const SEARCH_EXTENSION = "searchBox";
@@ -267,33 +262,25 @@ class SearchBox {
         this.hide();
     }
     replace() {
-        if (isEditorChangeable(this.editor)) {
-            if (!this.editor.readOnly) {
-                this.editor.replace(this.replaceInput.value);
-            }
+        if (!this.editor.readOnly) {
+            this.editor.replace(this.replaceInput.value);
         }
     }
     replaceAndFindPrev() {
-        if (isEditorChangeable(this.editor)) {
-            if (!this.editor.readOnly) {
-                this.editor.replace(this.replaceInput.value);
-                this.findPrev();
-            }
+        if (!this.editor.readOnly) {
+            this.editor.replace(this.replaceInput.value);
+            this.findPrev();
         }
     }
     replaceAndFindNext() {
-        if (isEditorChangeable(this.editor)) {
-            if (!this.editor.readOnly) {
-                this.editor.replace(this.replaceInput.value);
-                this.findNext();
-            }
+        if (!this.editor.readOnly) {
+            this.editor.replace(this.replaceInput.value);
+            this.findNext();
         }
     }
     replaceAll() {
-        if (isEditorChangeable(this.editor)) {
-            if (!this.editor.readOnly) {
-                this.editor.replaceAll(this.replaceInput.value);
-            }
+        if (!this.editor.readOnly) {
+            this.editor.replaceAll(this.replaceInput.value);
         }
     }
     hide() {

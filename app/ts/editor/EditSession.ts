@@ -10,7 +10,6 @@ import { DeltaIgnorable } from "./DeltaIgnorable";
 import { DeltaGroup } from './DeltaGroup';
 import { Disposable } from '../base/Disposable';
 import { EditorMouseEvent } from './EditorMouseEvent';
-import { EventBus } from "./EventBus";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { FirstAndLast } from "./FirstAndLast";
 import { FoldLine } from "./FoldLine";
@@ -25,7 +24,6 @@ import { MarkerRenderer } from "./layer/MarkerRenderer";
 import { Range } from "./Range";
 import { RangeBasic } from "./RangeBasic";
 import { collapseRows, compareEnd, comparePoint, compareRange, contains, isEmpty, isEnd, isEqual, isPosition, isRange, isMultiLine, isStart, setEnd } from "./RangeHelpers";
-import { Shareable } from './base/Shareable';
 import { mutateExtendToken } from "./Token";
 import { Token } from "./Token";
 import { Document, NewLineMode } from "editor-document";
@@ -87,15 +85,13 @@ import { LANGUAGE_YAML } from '../languages/modes';
 //
 // Editor Abstraction Layer
 //
-import { EditSession as AbstractEditSession } from '../virtual/editor';
-import { EditorControllerEditSession } from '../virtual/editor';
-import { FoldMode } from '../virtual/editor';
-import { LanguageModeId } from '../virtual/editor';
-import { LanguageMode } from '../virtual/editor';
-import { RangeWithCollapseChildren } from '../virtual/editor';
-import { OrientedRange } from '../virtual/editor';
-import { RangeSelectionMarker } from '../virtual/editor';
-import { TokenWithIndex } from '../virtual/editor';
+import { FoldMode } from '../editor/mode/folding/FoldMode';
+import { LanguageModeId } from '../editor/LanguageMode';
+import { LanguageMode } from '../editor/LanguageMode';
+import { RangeWithCollapseChildren } from '../editor/RangeBasic';
+import { OrientedRange } from '../editor/RangeBasic';
+import { RangeSelectionMarker } from '../editor/RangeBasic';
+import { TokenWithIndex } from '../editor/Token';
 
 
 // "Tokens"
@@ -188,7 +184,7 @@ export type EditSessionEventName =
 /**
  *
  */
-export class EditSession implements EditorControllerEditSession, AbstractEditSession, EventBus<EditSessionEventName, any, EditSession>, Shareable {
+export class EditSession {
     private firstLineNumber_ = 1;
     public gutterRenderer: GutterRenderer;
     public $breakpoints: string[] = [];
@@ -442,14 +438,14 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
     /**
      * 
      */
-    on(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): () => void {
+    on(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => void): () => void {
         return this.eventBus.on(eventName, callback, false);
     }
 
     /**
      *
      */
-    off(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => any): void {
+    off(eventName: EditSessionEventName, callback: (event: any, session: EditSession) => void): void {
         this.eventBus.off(eventName, callback);
     }
 
@@ -2975,11 +2971,9 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
     }
 
     /**
-     * @method documentToScreenRange
-     * @param range {Range}
-     * @returns {Range}
+     *
      */
-    public documentToScreenRange(range: Range): Range {
+    public documentToScreenRange(range: RangeBasic): Range {
         const screenPosStart = this.documentToScreenPosition(range.start.row, range.start.column);
         const screenPosEnd = this.documentToScreenPosition(range.end.row, range.end.column);
         return new Range(screenPosStart.row, screenPosStart.column, screenPosEnd.row, screenPosEnd.column);
@@ -3618,7 +3612,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
     toggleFold(tryToUnfold: boolean): void {
         const selection = this.selection;
         if (selection) {
-            let range = selection.getRange();
+            let range: RangeWithCollapseChildren = selection.getRange();
             let fold: Fold | null | undefined;
             let bracketPos: Position | null;
 
@@ -3632,19 +3626,22 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
                 } else if (bracketPos = this.findMatchingBracket(cursor)) {
                     if (comparePoint(range, bracketPos) === 1) {
                         range.end = bracketPos;
-                    } else {
+                    }
+                    else {
                         range.start = bracketPos;
                         range.start.column++;
                         range.end.column--;
                     }
-                } else if (bracketPos = this.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 })) {
+                }
+                else if (bracketPos = this.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 })) {
                     if (comparePoint(range, bracketPos) === 1)
                         range.end = bracketPos;
                     else
                         range.start = bracketPos;
 
                     range.start.column++;
-                } else {
+                }
+                else {
                     range = this.getCommentFoldRange(cursor.row, cursor.column) || range;
                 }
             }
@@ -3680,7 +3677,7 @@ export class EditSession implements EditorControllerEditSession, AbstractEditSes
         }
     }
 
-    getCommentFoldRange(row: number, column: number, dir?: number): Range | undefined {
+    getCommentFoldRange(row: number, column: number, dir?: number): RangeWithCollapseChildren | undefined {
         const startTokens = new TokenIterator(this, row, column);
         let token: Token | null = startTokens.getCurrentToken();
         if (token) {

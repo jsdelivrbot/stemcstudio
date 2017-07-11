@@ -13,17 +13,15 @@ import { Highlighter, HighlighterToken, HighlighterStack, HighlighterStackElemen
 import { HighlighterFactory } from './HighlighterFactory';
 import { LanguageModeFactory } from "../LanguageModeFactory";
 import { TokenIterator } from "../TokenIterator";
+import { RangeBasic } from "../RangeBasic";
 import { Range } from "../Range";
 import { TextAndSelection } from "../TextAndSelection";
 import { WorkerClient } from "../worker/WorkerClient";
-//
-// Editor Abstraction Layer
-//
-import { LanguageModeId } from '../../virtual/editor';
-import { LanguageMode } from '../../virtual/editor';
-import { EditSession } from '../../virtual/editor';
-import { Editor } from '../../virtual/editor';
-import { FoldMode } from '../../virtual/editor';
+import { LanguageModeId } from '../LanguageMode';
+import { LanguageMode } from '../LanguageMode';
+import { EditSession } from '../EditSession';
+import { Editor } from '../Editor';
+import { FoldMode } from '../mode/folding/FoldMode';
 
 /**
  * Standard hook of 'annotations' event.
@@ -351,7 +349,7 @@ export class TextMode implements LanguageMode {
     /**
      *
      */
-    toggleBlockComment(state: string, session: EditSession, range: Range, cursor: Position): void {
+    toggleBlockComment(state: string, session: EditSession, range: RangeBasic, cursor: Position): void {
         let comment = this.blockComment;
         if (!comment)
             return;
@@ -519,7 +517,7 @@ export class TextMode implements LanguageMode {
     // TODO: May be able to make this type-safe by separating cases where param is string from Range.
     // string => {text: string; selection: number[]} (This corresponds to the insert operation)
     // Range  => Range                               (This corresponds to the remove operation)
-    transformAction(state: string, action: string, editor: Editor, session: EditSession, param: string | Range): TextAndSelection | Range | undefined {
+    transformAction(state: string, action: string, editor: Editor, session: EditSession, param: string | RangeBasic): TextAndSelection | Range | undefined {
         if (this.$behaviour) {
             const behaviours = this.$behaviour.getBehaviours();
             for (let key in behaviours) {

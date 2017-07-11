@@ -5,10 +5,7 @@ import { GlslHighlightRules } from './GlslHighlightRules';
 import { hookAnnotations, hookTerminate, initWorker } from './TextMode';
 import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { WorkerClient } from "../worker/WorkerClient";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class GlslMode extends CppMode {
 

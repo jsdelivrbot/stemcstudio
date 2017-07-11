@@ -4,10 +4,7 @@ import { TypeScriptHighlightRules } from "./TypeScriptHighlightRules";
 import { CstyleBehaviour } from "./behaviour/CstyleBehaviour";
 import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 import { WorkerClient } from "../worker/WorkerClient";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 export class TypeScriptMode extends JavaScriptMode {
 

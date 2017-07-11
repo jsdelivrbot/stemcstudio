@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 //
 // Editor Abstraction Layer
 //
-import { LanguageModeId } from '../../virtual/editor';
+import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**
  * The key in local storage for doodles.

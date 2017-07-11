@@ -1,8 +1,5 @@
-//
-// Editor Abstraction Layer
-//
-import { LanguageMode } from '../virtual/editor';
+import { LanguageMode } from './LanguageMode';
 
 export interface LanguageModeFactory {
-    new (workerUrl: string, scriptImports: string[], options?: {}): LanguageMode;
+    new(workerUrl: string, scriptImports: string[], options?: {}): LanguageMode;
 }

@@ -6,12 +6,19 @@ import { DelayedCall } from "../lib/lang/DelayedCall";
 import { Editor } from "../Editor";
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
-import { OrientedRange } from '../../virtual/editor';
+import { RangeBasic } from '../../editor/RangeBasic';
 
 const BROKEN_SETDATA = <number>isChrome < 18;
 const USE_IE_MIME_TYPE = isIE;
 const PLACEHOLDER = "\u2028\u2028";
 const PLACEHOLDER_CHAR_FIRST = PLACEHOLDER.charAt(0);
+
+interface InComposition {
+    range?: RangeBasic;
+    lastValue?: string;
+    canUndo?: boolean;
+}
+
 
 /**
  *
@@ -37,7 +44,7 @@ export class TextInput {
 
     private afterContextMenu: boolean;
 
-    private inComposition: { range?: OrientedRange; lastValue?: string; canUndo?: boolean };
+    private inComposition: InComposition | boolean;
 
     private inputHandler: ((data: string) => string) | null;
 
@@ -161,24 +168,29 @@ export class TextInput {
                 return;
             }
             const val = this.text.value.replace(/\x01/g, "");
-            if (this.inComposition.lastValue === val) return;
+            if (typeof this.inComposition !== 'boolean') {
+                if (this.inComposition.lastValue === val) return;
 
-            editor.onCompositionUpdate(val);
-            if (this.inComposition.lastValue) {
-                editor.undo();
-            }
-            if (this.inComposition.canUndo) {
-                this.inComposition.lastValue = val;
-            }
-            if (this.inComposition.lastValue) {
-                if (editor.selection) {
-                    const r = editor.selection.getRange();
-                    editor.insert(this.inComposition.lastValue, false);
-                    editor.sessionOrThrow().markUndoGroup();
-                    this.inComposition.range = editor.selection.getRange();
-                    editor.selection.setRange(r);
-                    editor.selection.clearSelection();
+                editor.onCompositionUpdate(val);
+                if (this.inComposition.lastValue) {
+                    editor.undo();
                 }
+                if (this.inComposition.canUndo) {
+                    this.inComposition.lastValue = val;
+                }
+                if (this.inComposition.lastValue) {
+                    if (editor.selection) {
+                        const r = editor.selection.getRange();
+                        editor.insert(this.inComposition.lastValue, false);
+                        editor.sessionOrThrow().markUndoGroup();
+                        this.inComposition.range = editor.selection.getRange();
+                        editor.selection.setRange(r);
+                        editor.selection.clearSelection();
+                    }
+                }
+            }
+            else {
+                editor.onCompositionUpdate(val);
             }
         };
 
@@ -201,7 +213,7 @@ export class TextInput {
                 return;
             }
 
-            const c = this.inComposition;
+            const c = this.inComposition as InComposition;
             this.inComposition = false;
             let timer: number | null = window.setTimeout(() => {
                 timer = null;

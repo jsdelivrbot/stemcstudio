@@ -1,11 +1,9 @@
 import { TokenIterator } from "./TokenIterator";
+import { HighlighterToken } from './mode/Highlighter';
 import { Position } from "editor-document";
-//
-// Editor Abstraction Layer
-//
-import { EditSession as EditSession } from "../virtual/editor";
-import { OrientedRange } from "../virtual/editor";
+import { OrientedRange } from "../editor/RangeBasic";
 import { fromPoints } from "./RangeHelpers";
+import { TokenWithIndex } from '../editor/Token';
 
 /**
  * Maps an opening(closing) bracket string to the corresponding closing(opening) bracket.
@@ -19,6 +17,13 @@ const $brackets: { [bracket: string]: '(' | ')' | '[' | ']' | '{' | '}' } = {
     "}": "{"
 };
 
+export interface BracketMatchEditSession {
+    getLength(): number;
+    getLine(row: number): string;
+    getTokens(row: number): HighlighterToken[];
+    getTokenAt(row: number, column?: number): TokenWithIndex | null | undefined;
+}
+
 /**
  *
  */
@@ -27,12 +32,12 @@ export class BracketMatch {
     /**
      *
      */
-    private editSession: EditSession;
+    private editSession: BracketMatchEditSession;
 
     /**
      * @param editSession
      */
-    constructor(editSession: EditSession) {
+    constructor(editSession: BracketMatchEditSession) {
         this.editSession = editSession;
     }
 

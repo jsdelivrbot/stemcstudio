@@ -191,11 +191,12 @@ export class AsciiDocHighlightRules extends TextHighlightRules {
                     const rule = stateRules[i];
                     if (rule.include || typeof rule === "string") {
                         const stateName = (rule.include || rule) as string;
-                        let args: HighlighterRule[] = [i, 1];
+                        // TODO: What is going on here?
+                        let args: (HighlighterRule | number)[] = [i, 1];
                         args = args.concat(this.$rules[stateName]);
                         if (rule.noEscape) {
                             args = args.filter(function (x) {
-                                return !x.next;
+                                return !(x as HighlighterRule).next;
                             });
                         }
                         stateRules.splice.apply(stateRules, args);

@@ -24,7 +24,7 @@ import { LANGUAGE_YAML } from '../languages/modes';
 //
 // Editor Abstraction Layer
 //
-import { LanguageModeId } from '../virtual/editor';
+import { LanguageModeId } from '../editor/LanguageMode';
 
 const extensionToMode: { [ext: string]: LanguageModeId } = {};
 const fileNameToMode: { [fileName: string]: LanguageModeId } = {};

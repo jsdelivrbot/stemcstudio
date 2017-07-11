@@ -157,7 +157,7 @@ Email: geometryzen@gmail.com, R...
 
 ### Remote
 ```
-git remote add heroku git@heroku.com:STEMCstudio.git
+git remote add heroku git@heroku.com:stemcstudio.git
 ```
 
 ### Push

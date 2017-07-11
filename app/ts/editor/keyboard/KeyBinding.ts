@@ -2,11 +2,8 @@ import { keyCodeToString } from "../lib/keys";
 import { stopEvent } from "../lib/event";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 import { CommandExecutor } from '../commands/CommandExecutor';
-//
-// Editor Abstraction Layer
-//
-import { KeyboardHandler } from "../../virtual/editor";
-import { KeyboardResponse } from "../../virtual/editor";
+import { KeyboardHandler } from "./KeyboardHandler";
+import { KeyboardResponse } from "./KeyboardResponse";
 
 export interface TargetWithCommands<TARGET> {
     commands: CommandExecutor<TARGET>;

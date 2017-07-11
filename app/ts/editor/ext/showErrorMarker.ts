@@ -1,11 +1,11 @@
 import { createHTMLDivElement } from '../lib/dom';
-import { EditorEventHandler } from '../../virtual/editor';
-import { LineWidget } from '../../virtual/editor';
-import { KeyboardResponse } from '../../virtual/editor';
+import { EditorEventHandler } from '../../editor/Editor';
+import { LineWidget } from '../../editor/LineWidget';
+import { KeyboardResponse } from '../../editor/keyboard/KeyboardResponse';
 //
 // TODO: Less restrictive dependency.
 //
-import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
+import { Editor } from '../../editor/Editor';
 
 /**
  * The purpose of this function is to scroll the editor such that it displays the next or previous error marker.

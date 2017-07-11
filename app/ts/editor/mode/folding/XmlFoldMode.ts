@@ -1,5 +1,6 @@
 import { mixin } from "../../lib/oop";
 import { Range } from "../../Range";
+import { RangeBasic } from "../../RangeBasic";
 import { FoldMode } from "./FoldMode";
 import { Token } from '../../Token';
 import { TokenIterator } from "../../TokenIterator";
@@ -189,7 +190,7 @@ export class XmlFoldMode extends FoldMode {
         return null;
     }
 
-    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): Range | undefined {
+    getFoldWidgetRange(session: EditSession, foldStyle: FoldStyle, row: number): RangeBasic | undefined {
         const firstTag = this._getFirstTagInLine(session, row);
 
         if (!firstTag) {

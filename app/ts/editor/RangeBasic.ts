@@ -14,6 +14,23 @@ export interface RangeBasic {
     end: Position;
 }
 
+export interface RangeWithCollapseChildren extends RangeBasic {
+    collapseChildren: number;
+}
+
+export interface RangeWithMarkerId extends RangeBasic {
+    markerId: number;
+}
+
+export interface OrientedRange extends RangeWithCollapseChildren {
+    cursor: Position;
+    desiredColumn: number | null;
+    isBackwards: boolean;
+}
+
+export interface RangeSelectionMarker extends OrientedRange, RangeWithMarkerId {
+}
+
 /**
  * The range is empty if the start and end position coincide.
  */

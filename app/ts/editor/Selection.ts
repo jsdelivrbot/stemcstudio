@@ -11,17 +11,7 @@ import { AnchorChangeEvent } from "./events/AnchorChangeEvent";
 import { EventBus } from "./EventBus";
 import { SelectionAddRangeEvent } from "./events/SelectionAddRangeEvent";
 import { SelectionRemoveRangeEvent } from "./events/SelectionRemoveRangeEvent";
-//
-// Editor Abstraction Layer
-//
-import { OrientedRange } from '../virtual/editor';
-// import { RangeSelectionMarker } from '../virtual/editor';
-
-/*
-export interface EditSession {
-    $undoSelect: boolean;
-}
-*/
+import { OrientedRange } from '../editor/RangeBasic';
 
 /**
  * Nothing (void 0).

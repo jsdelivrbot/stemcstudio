@@ -7,11 +7,7 @@ import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefini
 import { createCutCommand } from '../../workbench/commands/cut';
 import { createCopyCommand } from '../../workbench/commands/copy';
 import { createPasteCommand } from '../../workbench/commands/paste';
-
-//
-// TODO: Use EditorMinimal as the baseline and check for capabilities.
-//
-import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
+import { Editor } from '../../editor/Editor';
 import { Command } from './Command';
 
 function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {

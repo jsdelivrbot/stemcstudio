@@ -4,7 +4,7 @@ import { overlayPage } from '../ext/menu_tools/overlayPage';
 //
 // Editor Abstraction Layer
 //
-import { Editor } from '../../virtual/editor';
+import { Editor } from '../../editor/Editor';
 
 const ID_CONTENT_ELEMENT = 'kbshortcutmenu';
 

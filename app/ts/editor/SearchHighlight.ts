@@ -3,10 +3,7 @@ import { Marker, MarkerType } from "./Marker";
 import { Range } from "./Range";
 import { MarkerLayer } from "./layer/MarkerLayer";
 import { MarkerConfig } from "./layer/MarkerConfig";
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from "../virtual/editor";
+import { EditSession } from "../editor/EditSession";
 
 // needed to prevent long lines from freezing the browser
 const MAX_RANGES = 500;

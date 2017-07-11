@@ -297,6 +297,7 @@ export interface EditSession extends EditorControllerEditSession {
      * These lines do not include the line terminator.
      */
     getAllLines(): string[];
+    getCommentFoldRange(row: number, column: number, dir?: number): Range | undefined;
     getFoldWidget: (row: number) => FoldWidget;
     getLength(): number;
     getLine(row: number): string;
@@ -336,8 +337,8 @@ export interface EditSession extends EditorControllerEditSession {
      */
     insertInLine(position: Readonly<Position>, text: string): Position;
     modeOrThrow(): LanguageMode;
-    on(eventName: EditSessionEventType, callback: EditSessionEventHandler<any>): () => void;
-    off(eventName: EditSessionEventType, callback: EditSessionEventHandler<any>): void;
+    on(eventName: EditSessionEventType, callback: (event: any, session: EditSession) => void): void;
+    off(eventName: EditSessionEventType, callback: (event: any, session: EditSession) => void): void;
     positionToIndex(position: Position): number;
     release(): number;
     removeMarker(markerId: number): void;
@@ -437,6 +438,10 @@ export interface TransformHost {
 
 }
 
+export interface WorkerEditSession {
+
+}
+
 export interface LanguageMode {
     /**
      *
@@ -488,7 +493,7 @@ export interface LanguageMode {
      * Called to create a worker which can perform analysis in the background.
      * This analysis is usually for detecting syntax errors.
      */
-    createWorker(session: EditSession, callback: (err: any, worker?: LanguageModeWorker) => void): void;
+    createWorker(session: WorkerEditSession, callback: (err: any, worker?: LanguageModeWorker) => void): void;
 
     /**
      *

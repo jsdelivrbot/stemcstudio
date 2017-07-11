@@ -1,4 +1,4 @@
-import { Range } from '../virtual/editor';
+import { RangeBasic as Range } from '../editor/RangeBasic';
 
 /**
  *

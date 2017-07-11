@@ -6,7 +6,7 @@ import { Range } from '../../editor/Range';
 //
 // Editor AbstractionLayer
 //
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../../editor/EditSession';
 
 /**
  * Applies a patch to a document.

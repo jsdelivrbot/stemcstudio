@@ -1,4 +1,4 @@
-import { Editor } from '../../../virtual/editor';
+import { Editor } from '../../../editor/Editor';
 import { KEY_MODS } from '../../lib/keys';
 /**
  * Gets a map of keyboard shortcuts to command names for the current platform.

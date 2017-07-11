@@ -2,16 +2,13 @@ import { Completion } from '../Completion';
 import { CompletionEntry } from './CompletionEntry';
 import { Position } from "editor-document";
 import { WorkspaceCompleterHost } from './WorkspaceCompleterHost';
-import { Completer } from '../../virtual/editor';
-import { Editor } from '../../virtual/editor';
-
-export interface WorkspaceCompleterEditor extends Editor {
-}
+import { Completer } from '../../editor/Completer';
+import { Editor } from '../../editor/Editor';
 
 /**
  *
  */
-export class WorkspaceCompleter implements Completer<WorkspaceCompleterEditor> {
+export class WorkspaceCompleter implements Completer {
 
     private workspace: WorkspaceCompleterHost;
     private fileName: string;
@@ -24,7 +21,7 @@ export class WorkspaceCompleter implements Completer<WorkspaceCompleterEditor> {
     /**
      *
      */
-    getCompletionsAtPosition(editor: WorkspaceCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
+    getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
         return new Promise<Completion[]>((resolve: (completions: Completion[]) => any, reject: (err: any) => any) => {
             const session = editor.getSession();
             if (session) {
@@ -49,7 +46,7 @@ export class WorkspaceCompleter implements Completer<WorkspaceCompleterEditor> {
         });
     }
 
-    getCompletions(editor: WorkspaceCompleterEditor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
+    getCompletions(editor: Editor, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void): void {
         this.getCompletionsAtPosition(editor, position, prefix)
             .then(function (completions) {
                 callback(void 0, completions);

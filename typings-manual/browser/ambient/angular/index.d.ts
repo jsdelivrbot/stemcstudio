@@ -28,7 +28,7 @@ declare namespace angular {
 
     // not directly implemented, but ensures that constructed class implements $get
     interface IServiceProviderClass {
-        new (...args: any[]): IServiceProvider;
+        new(...args: any[]): IServiceProvider;
     }
 
     interface IServiceProviderFactory {
@@ -1839,18 +1839,18 @@ declare namespace angular {
         // TODO: events, how to define?
         //$destroy
 
-        find(selector: string): IAugmentedJQuery;
-        find(element: any): IAugmentedJQuery;
-        find(obj: JQuery): IAugmentedJQuery;
-        controller(): any;
-        controller(name: string): any;
-        injector(): any;
-        scope(): IScope;
-        isolateScope(): IScope;
+        // find(selector: string): IAugmentedJQuery;
+        // find(element: any): IAugmentedJQuery;
+        // find(obj: JQuery): IAugmentedJQuery;
+        // controller(): any;
+        // controller(name: string): any;
+        // injector(): any;
+        // scope(): IScope;
+        // isolateScope(): IScope;
 
-        inheritedData(key: string, value: any): JQuery;
-        inheritedData(obj: { [key: string]: any; }): JQuery;
-        inheritedData(key?: string): any;
+        // inheritedData(key: string, value: any): JQuery;
+        // inheritedData(obj: { [key: string]: any; }): JQuery;
+        // inheritedData(key?: string): any;
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -6,10 +6,7 @@ import { WorkerClient } from "../worker/WorkerClient";
 import { Range } from '../Range';
 import { Token } from '../Token';
 import { PythonFoldMode } from './folding/PythonFoldMode';
-//
-// Editor Abstraction Layer
-//
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../EditSession';
 
 const outdents = {
     "pass": 1,

@@ -1,4 +1,4 @@
-import { EditSession } from '../../virtual/editor';
+import { EditSession } from '../../editor/EditSession';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { TextChange } from '../../editor/workspace/TextChange';
 import { IndentStyle } from '../../editor/workspace/IndentStyle';

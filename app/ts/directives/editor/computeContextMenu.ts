@@ -5,8 +5,8 @@ import { COMMAND_NAME_CUT } from '../../editor/editor_protocol';
 import { COMMAND_NAME_COPY } from '../../editor/editor_protocol';
 import { COMMAND_NAME_PASTE } from '../../editor/editor_protocol';
 import { ContextMenuItem, CONTEXT_MENU_ITEM_DIVIDER } from '../contextMenu/ContextMenuItem';
-import { EditSession } from '../../virtual/editor';
-import { EditorMinimal } from '../../virtual/EditorMinimal';
+import { EditSession } from '../../editor/EditSession';
+import { Editor } from '../../editor/Editor';
 import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefinition';
 import { FormatDocumentController } from '../../workbench/actions/formatDocument';
 import { createFormatDocumentCommand } from '../../workbench/commands/formatDocument';
@@ -24,7 +24,7 @@ export interface ContextMenuController extends FormatDocumentController {
 /**
  * 
  */
-export function computeContextMenu(path: string, editor: EditorMinimal, indentSize: number, controller: ContextMenuController, session: EditSession): (ContextMenuItem | null)[] {
+export function computeContextMenu(path: string, editor: Editor, indentSize: number, controller: ContextMenuController, session: EditSession): (ContextMenuItem | null)[] {
     const menuItems: (ContextMenuItem | null)[] = [];
     if (isLanguageServiceScript(path)) {
         menuItems.push(menuItemFromCommand(createGotoDefinitionCommand()));

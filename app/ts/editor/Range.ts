@@ -42,41 +42,6 @@ export class Range implements RangeBasic {
     public desiredColumn: number | null;
 
     /**
-     * Used by the TabstopManager.
-     */
-    // public tabstop?: Tabstop;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public original?: Range;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public linked: boolean;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public fmtString: string;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public guard: string;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public fmt: string;
-
-    /**
-     * Used by the TabstopManager.
-     */
-    // public flag: string;
-
-    /**
      * Creates a new `EditorRange` object with the given starting and ending row and column points.
      */
     constructor(startRow = 0, startColumn = 0, endRow = 0, endColumn = 0) {
