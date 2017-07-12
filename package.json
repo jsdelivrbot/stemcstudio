@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.35.4",
+  "version": "2.35.5",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -153,7 +153,7 @@
       "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@^2.14.3",
       "jquery": "npm:jquery@^2.2.4",
       "reflect-metadata": "npm:reflect-metadata@^0.1.10",
-      "rxjs": "npm:rxjs@^5.4.1",
+      "rxjs": "npm:rxjs@^5.4.2",
       "showdown": "npm:showdown@^1.7.1",
       "socket.io-client": "npm:socket.io-client@^1.7.4",
       "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",

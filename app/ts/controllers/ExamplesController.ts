@@ -77,6 +77,15 @@ export class ExamplesController extends AbstractPageController {
             },
             */
             {
+                gistId: '0100337c6f05e65bceda326a5fe011ed',
+                title: "Conway's Game of Life",
+                description: "The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.",
+                imageSrc: '/img/examples/conway-game-of-life.png',
+                imageAlt: 'A grid of colured square cells.',
+                category: 'Programming',
+                level: 'Beginner'
+            },
+            {
                 gistId: 'bd18ec9bbb0e5367d734c7d549a216f3',
                 title: "w3schools: Canvas Clock",
                 description: "A clock that renders to the HTML canvas element.",

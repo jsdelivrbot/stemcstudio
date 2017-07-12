@@ -146,18 +146,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:after@0.8.1": {},
-  "npm:crypto-browserify@3.11.0": {
-    "browserify-cipher": "npm:browserify-cipher@^1.0.0",
-    "browserify-sign": "npm:browserify-sign@^4.0.0",
-    "create-ecdh": "npm:create-ecdh@^4.0.0",
-    "create-hash": "npm:create-hash@^1.1.0",
-    "create-hmac": "npm:create-hmac@^1.1.0",
-    "diffie-hellman": "npm:diffie-hellman@^5.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "pbkdf2": "npm:pbkdf2@^3.0.3",
-    "public-encrypt": "npm:public-encrypt@^4.0.0",
-    "randombytes": "npm:randombytes@^2.0.0"
-  },
   "npm:arraybuffer.slice@0.0.6": {},
   "npm:has-cors@1.1.0": {},
   "npm:bufferutil@1.2.1": {
@@ -1072,5 +1060,17 @@
     "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
     "typhon-lang": "npm:typhon-lang@^0.12.9",
     "typhon-typescript": "npm:typhon-typescript@^0.3.0"
+  },
+  "npm:crypto-browserify@3.11.1": {
+    "browserify-cipher": "npm:browserify-cipher@^1.0.0",
+    "browserify-sign": "npm:browserify-sign@^4.0.0",
+    "create-ecdh": "npm:create-ecdh@^4.0.0",
+    "create-hash": "npm:create-hash@^1.1.0",
+    "create-hmac": "npm:create-hmac@^1.1.0",
+    "diffie-hellman": "npm:diffie-hellman@^5.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "pbkdf2": "npm:pbkdf2@^3.0.3",
+    "public-encrypt": "npm:public-encrypt@^4.0.0",
+    "randombytes": "npm:randombytes@^2.0.0"
   }
 }
