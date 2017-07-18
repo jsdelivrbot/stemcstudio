@@ -105,6 +105,9 @@ function endsWith(str: string, suffix: string): boolean {
     return expectedPos >= 0 && str.indexOf(suffix, expectedPos) === expectedPos;
 }
 
+/**
+ * Determines whether the path ends with the extension.
+ */
 function fileExtensionIs(path: string, extension: string): boolean {
     return path.length > extension.length && endsWith(path, extension);
 }
@@ -823,11 +826,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
                     if (Array.isArray(definitions) && definitions.length > 0) {
                         // TODO: Why do we receive a list of definitions?
                         const definition = definitions[0];
-                        console.log(`definitions => ${JSON.stringify(definitions)}`);
+                        console.warn(`definitions => ${JSON.stringify(definitions)}`);
                         this.wsModel.navigateToFileAndPosition(definition.fileName, definition.textSpan.start);
                     }
                 }).catch((err) => {
-                    console.log(`definition => ${JSON.stringify(err)}`);
+                    console.warn(`definition => ${JSON.stringify(err)}`);
                 });
         });
 

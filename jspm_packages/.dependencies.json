@@ -943,10 +943,6 @@
     "ts": "github:frankwallis/plugin-typescript@^2.6.0"
   },
   "github:geometryzen/editor-document@0.0.3": {},
-  "npm:string-width@2.1.0": {
-    "is-fullwidth-code-point": "npm:is-fullwidth-code-point@^2.0.0",
-    "strip-ansi": "npm:strip-ansi@^4.0.0"
-  },
   "npm:strip-ansi@4.0.0": {
     "ansi-regex": "npm:ansi-regex@^3.0.0"
   },
@@ -988,14 +984,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "string_decoder": "github:jspm/nodelibs-string_decoder@^0.1.0"
-  },
-  "github:geometryzen/stemcstudio-workers@2.14.3": {
-    "davinci-csv": "npm:davinci-csv@^0.9.12",
-    "editor-document": "npm:editor-document@^0.0.5",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
-    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
-    "typhon-lang": "npm:typhon-lang@^0.12.9",
-    "typhon-typescript": "npm:typhon-typescript@^0.3.0"
   },
   "npm:crypto-browserify@3.11.1": {
     "browserify-cipher": "npm:browserify-cipher@^1.0.0",
@@ -1072,5 +1060,17 @@
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.3.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:string-width@2.1.1": {
+    "is-fullwidth-code-point": "npm:is-fullwidth-code-point@^2.0.0",
+    "strip-ansi": "npm:strip-ansi@^4.0.0"
+  },
+  "github:geometryzen/stemcstudio-workers@2.15.0": {
+    "davinci-csv": "npm:davinci-csv@^0.9.12",
+    "editor-document": "npm:editor-document@^0.0.5",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
+    "typhon-lang": "npm:typhon-lang@^0.12.9",
+    "typhon-typescript": "npm:typhon-typescript@^0.3.0"
   }
 }

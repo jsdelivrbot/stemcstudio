@@ -38,7 +38,7 @@ System.config({
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.3",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.14.3",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.0",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -61,7 +61,7 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.3": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.14.3": {
+    "github:geometryzen/stemcstudio-workers@2.15.0": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
       "editor-document": "npm:editor-document@0.0.5",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
@@ -921,7 +921,7 @@ System.config({
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string-width@1.0.2": {
@@ -929,7 +929,7 @@ System.config({
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@1.0.0",
       "strip-ansi": "npm:strip-ansi@3.0.1"
     },
-    "npm:string-width@2.1.0": {
+    "npm:string-width@2.1.1": {
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@2.0.0",
       "strip-ansi": "npm:strip-ansi@4.0.0"
     },
@@ -1038,7 +1038,7 @@ System.config({
       "require-directory": "npm:require-directory@2.1.1",
       "require-main-filename": "npm:require-main-filename@1.0.1",
       "set-blocking": "npm:set-blocking@2.0.0",
-      "string-width": "npm:string-width@2.1.0",
+      "string-width": "npm:string-width@2.1.1",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "which-module": "npm:which-module@2.0.0",
       "y18n": "npm:y18n@3.2.1",
