@@ -1024,13 +1024,6 @@
     "@angular/platform-browser": "npm:@angular/platform-browser@4.3.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:zone.js@0.8.13": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:@angular/router@4.3.0": {
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.3.0",
@@ -1072,5 +1065,12 @@
     "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
     "typhon-lang": "npm:typhon-lang@^0.12.9",
     "typhon-typescript": "npm:typhon-typescript@^0.3.0"
+  },
+  "npm:zone.js@0.8.14": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

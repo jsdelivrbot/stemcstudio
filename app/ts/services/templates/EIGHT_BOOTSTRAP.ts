@@ -3,11 +3,11 @@ const NEWLINE = '\n';
 export function EIGHT_BOOTSTRAP(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
-    lines.push("import {Geometric3, Color} from 'davinci-eight'");
-    lines.push("import {Engine, Capability, Scene} from 'davinci-eight'");
-    lines.push("import {Facet, PerspectiveCamera, DirectionalLight} from 'davinci-eight'");
-    lines.push("import {TrackballControls} from 'davinci-eight'");
-    lines.push("import {Box} from 'davinci-eight'");
+    lines.push("import { Geometric3, Color } from 'davinci-eight'");
+    lines.push("import { Engine, Capability, Scene } from 'davinci-eight'");
+    lines.push("import { Facet, PerspectiveCamera, DirectionalLight } from 'davinci-eight'");
+    lines.push("import { TrackballControls } from 'davinci-eight'");
+    lines.push("import { Box } from 'davinci-eight'");
     lines.push("");
     lines.push("const e2 = Geometric3.e2(true)");
     lines.push("const e3 = Geometric3.e3(true)");
@@ -31,7 +31,7 @@ export function EIGHT_BOOTSTRAP(tabString: string): string {
     lines.push("const trackball = new TrackballControls(camera)");
     lines.push("trackball.subscribe(engine.canvas)");
     lines.push("");
-    lines.push("const box = new Box(engine, {color: Color.blue})");
+    lines.push("const box = new Box(engine, { color: Color.blue })");
     lines.push("scene.add(box)");
     lines.push("");
     lines.push("const animate = function(timestamp: number) {");

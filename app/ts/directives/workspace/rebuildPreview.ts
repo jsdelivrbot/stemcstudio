@@ -20,7 +20,7 @@ import { shaderTypeFromContent } from './shaderTypeFromContent';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
-import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
+import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER, SYSTEM_SHIM_MARKER } from '../../features/preview/index';
 
 const NEWLINE = '\n';
 
@@ -165,6 +165,13 @@ export function rebuildPreview(
                             if (scriptTags.length > 0) {
                                 console.warn(`Unable to find '${SCRIPTS_MARKER}' in ${bestFile} file.`);
                             }
+                        }
+                        if (detectMarker(SYSTEM_SHIM_MARKER, workspace, bestFile)) {
+                            const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
+                            html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
+                        }
+                        else {
+                            console.warn(`Unable to find '${SYSTEM_SHIM_MARKER}' in ${bestFile} file.`);
                         }
 
                         html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, workspace, bestFile);
