@@ -8,6 +8,7 @@ export function MINIMAL_CSS(tabString: string): string {
     lines.push(_ + "font-family: Roboto, Arial, sans-serif;");
     lines.push(_ + "color: #333333;");
     lines.push("}");
+    /*
     lines.push("");
     lines.push("h1 {");
     lines.push(_ + "font-family: Arial, sans-serif;");
@@ -33,6 +34,8 @@ export function MINIMAL_CSS(tabString: string): string {
     lines.push(_ + "font-family: Arial, sans-serif;");
     lines.push(_ + "color: #333333;");
     lines.push("}");
+    */
+    /*
     lines.push("");
     lines.push("#errors {");
     lines.push(_ + "background: #ff99bb;");
@@ -60,5 +63,6 @@ export function MINIMAL_CSS(tabString: string): string {
     lines.push(_ + "padding: 20px;");
     lines.push(_ + "white-space: 'pre-wrap';");
     lines.push("}");
+    */
     return lines.join(NEWLINE).concat(NEWLINE);
 }

@@ -37,7 +37,16 @@ const SYSTEM_CONFIG_JSON = 'system.config.json';
 function systemConfigArg(closureOpts: IOption[], vendorFolderMarker: string): SystemJsConfigArg {
     // Build the System.config for libraries that should be loaded as modules.
     // Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
-    const config: SystemJsConfigArg = { warnings: false };
+    const config: SystemJsConfigArg = {
+        /*
+        packages: {
+            './': {
+                defaultExtension: 'js'
+            }
+        },
+        */
+        warnings: false
+    };
     const importModules = closureOpts.filter(isModularOrUMDLibrary);
     config.map = {};
     for (const importModule of importModules) {
@@ -62,6 +71,11 @@ interface SystemJsConfigArg {
      * A mapping from the module name to the URL of the JavaScript library.
      */
     map?: { [moduleName: string]: string };
+    /**
+     * https://github.com/systemjs/systemjs/issues/812
+     * An alternative is `System.defaultJSExtensions = true`.
+     */
+    packages?: { [folder: string]: { defaultExtension?: string } };
     /**
      * Use to discover deprecation warnings.
      */
@@ -170,6 +184,7 @@ export function rebuildPreview(
                             const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
                             html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
                         }
+                        // The following line may be omitted when System is natively supported in browsers.
                         else {
                             console.warn(`Unable to find '${SYSTEM_SHIM_MARKER}' in ${bestFile} file.`);
                         }

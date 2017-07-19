@@ -8,6 +8,7 @@ export interface HtmlOptions {
 /**
  * tabString is supplied from the editor settings.
  * bootstrap is the System.import method argument, usually './index.js' for the 'index.ts' entry point.
+ * Note that with the `defaultJsExtensions` option, './index' will suffice.
  */
 export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, options: Partial<HtmlOptions> = {}): string {
     const _ = tabString;
@@ -49,6 +50,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + _ + "// CODE-MARKER");
     lines.push(_ + _ + "</script>");
     lines.push(_ + _ + "<script>");
+    lines.push(_ + _ + "System.defaultJSExtensions = true");
     lines.push(_ + _ + `System.import('${bootstrap}').catch((e) => {/* console.error(e) */})`);
     lines.push(_ + _ + "</script>");
     lines.push(_ + "</body>");
