@@ -38,7 +38,6 @@ import { LanguageModeId } from '../../editor/LanguageMode';
 // Choose EditorService implementation (AngularJS).
 // See also WsModel for Angular.
 //
-// import { MONACO_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/monaco-editor.service';
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
 
 const BOGUS_WIDTH = 600;

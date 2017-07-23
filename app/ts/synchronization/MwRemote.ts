@@ -1,23 +1,23 @@
-import Diff from './Diff';
+import { Diff } from './Diff';
 import DMP from './DMP';
 import isChanged from './isChanged';
 import { ACTION_RAW_OVERWRITE } from './MwAction';
 import { ACTION_DELTA_OVERWRITE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE } from './MwAction';
 import { MwActionType } from './MwAction';
-import MwBroadcast from './MwBroadcast';
-import MwChange from './MwChange';
+import { MwBroadcast } from './MwBroadcast';
+import { MwChange } from './MwChange';
 import { MwDocument } from './MwDocument';
-import MwEdits from './MwEdits';
+import { MwEdits } from './MwEdits';
 import { MwOptions } from './MwOptions';
-import MwShadow from './MwShadow';
+import { MwShadow } from './MwShadow';
 
 const dmp = new DMP();
 
 /**
  * Maintains a snapshot of remote documents
  */
-export default class MwRemote {
+export class MwRemote {
     /**
      * Every node (client or server) will have a shadow document.
      */

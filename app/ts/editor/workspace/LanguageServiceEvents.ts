@@ -1,3 +1,4 @@
+import { OutputFile } from './OutputFile';
 //
 // This file is shared between stemcstudio-workers and any consumer (such as STEMCstudio).
 //
@@ -56,6 +57,12 @@ export interface GetDefinitionAtPositionRequest {
 export interface GetOutputFilesRequest {
     fileName: string;
     callbackId: number;
+}
+
+export interface GetOutputFilesResponse {
+    fileName: string;
+    version: number;
+    outputFiles: OutputFile[];
 }
 
 export interface SetOperatorOverloadingRequest {

@@ -48,7 +48,7 @@ export interface ChangedOperatorOverloadingHandler<T> {
  * 
  */
 export class OutputFilesMessage {
-    constructor(public files: OutputFile[]) {
+    constructor(public fileName: string, public version: number, public files: OutputFile[]) {
     }
 }
 

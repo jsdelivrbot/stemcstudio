@@ -1,0 +1,1 @@
+module.exports = require("npm:get-stream@3.0.0/index");

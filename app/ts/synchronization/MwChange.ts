@@ -1,9 +1,9 @@
-import MwAction from './MwAction';
+import { MwAction } from './MwAction';
 
 /**
  * The actions to be applied to a particular file.
  */
-interface MwChange {
+export interface MwChange {
 
     /**
      * remote version, if we know it from last receive.
@@ -15,5 +15,3 @@ interface MwChange {
      */
     a: MwAction;
 }
-
-export default MwChange;

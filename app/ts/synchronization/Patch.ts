@@ -1,7 +1,7 @@
 import DIFF_DELETE from './DIFF_DELETE';
 import DIFF_INSERT from './DIFF_INSERT';
 import DIFF_EQUAL from './DIFF_EQUAL';
-import Diff from './Diff';
+import { Diff } from './Diff';
 
 /**
  * Sentinel value for an undefined start property.
@@ -12,7 +12,7 @@ export const UNDEFINED_START = Math.random();
 /**
  * Class representing one patch operation.
  */
-export default class Patch {
+export class Patch {
 
     /**
      * The first element of Diff is a number indicating DELETE, INSERT, EQUAL.

@@ -51,5 +51,3 @@ export interface MwAction {
      */
     x?: string | string[];
 }
-
-export default MwAction;

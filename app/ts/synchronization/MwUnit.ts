@@ -1,19 +1,19 @@
-import MwBroadcast from './MwBroadcast';
+import { MwBroadcast } from './MwBroadcast';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from './MwAction';
-import MwChange from './MwChange';
+import { MwChange } from './MwChange';
 import { MwDocument } from './MwDocument';
-import MwEdits from './MwEdits';
+import { MwEdits } from './MwEdits';
 import { MwOptions } from './MwOptions';
-import MwRemote from './MwRemote';
-import MwShadow from './MwShadow';
+import { MwRemote } from './MwRemote';
+import { MwShadow } from './MwShadow';
 import { MwWorkspace } from './MwWorkspace';
 
 /**
  * The smallest level of synchronization (a file).
  */
-export default class MwUnit {
+export class MwUnit {
     /**
      * 
      */

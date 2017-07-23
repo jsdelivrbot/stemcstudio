@@ -4,7 +4,7 @@ import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudSe
 import { copyDoodleToWorkspace } from '../../mappings/copyDoodleToWorkspace';
 import { Doodle } from '../../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
-import MwEdits from '../../synchronization/MwEdits';
+import { MwEdits } from '../../synchronization/MwEdits';
 import RoomAgent from '../../modules/rooms/RoomAgent';
 import { IRoomsService, ROOMS_SERVICE_UUID } from '../../modules/rooms/api';
 import { WsModel } from '../../modules/wsmodel/WsModel';

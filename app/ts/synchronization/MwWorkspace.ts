@@ -1,4 +1,4 @@
-import MwChange from './MwChange';
+import { MwChange } from './MwChange';
 import { MwDocument } from './MwDocument';
 
 /**

@@ -151,6 +151,12 @@ import { UUID_SERVICE_UUID } from './services/uuid/IUuidService';
 //
 //
 //
+import { JsModel } from './modules/jsmodel/JsModel';
+import { JAVASCRIPT_MODEL_UUID } from './modules/jsmodel/IJavaScriptModel';
+
+//
+//
+//
 import { WsModel } from './modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from './modules/wsmodel/IWorkspaceModel';
 
@@ -309,6 +315,7 @@ app.service(BACKGROUND_SERVICE_UUID, BackgroundService);
 app.factory(CREDENTIALS_SERVICE_UUID, downgradeInjectable(CredentialsService));
 app.factory(DOODLE_MANAGER_SERVICE_UUID, downgradeInjectable(DoodleManager));
 app.service(GITHUB_AUTH_MANAGER_UUID, GitHubAuthManager);
+app.factory(JAVASCRIPT_MODEL_UUID, downgradeInjectable(JsModel));
 app.service(NAVIGATION_SERVICE_UUID, NavigationServiceJS);
 app.factory(NATIVE_EDITOR_SERVICE_UUID, downgradeInjectable(NativeEditorService));
 app.factory(OPTION_MANAGER_SERVICE_UUID, downgradeInjectable(OptionManager));

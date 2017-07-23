@@ -1,0 +1,1 @@
+module.exports = require("npm:execa@0.7.0/index");

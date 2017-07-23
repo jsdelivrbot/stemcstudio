@@ -1,5 +1,5 @@
-import Diff from './Diff';
-import Patch from './Patch';
+import { Diff } from './Diff';
+import { Patch } from './Patch';
 
 /**
  * The adapter on the user's document (editor).

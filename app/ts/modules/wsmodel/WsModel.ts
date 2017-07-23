@@ -18,7 +18,7 @@ import { get } from '../../editor/lib/net';
 import { getPosition, DocumentWithLines } from '../../editor/workspace/getPosition';
 import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
-import IWorkspaceModel from './IWorkspaceModel';
+import { IWorkspaceModel } from './IWorkspaceModel';
 import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
@@ -26,10 +26,10 @@ import { Position } from 'editor-document';
 import { modeFromName } from '../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
-import MwChange from '../../synchronization/MwChange';
-import MwEdits from '../../synchronization/MwEdits';
+import { MwChange } from '../../synchronization/MwChange';
+import { MwEdits } from '../../synchronization/MwEdits';
 import { MwOptions } from '../../synchronization/MwOptions';
-import MwUnit from '../../synchronization/MwUnit';
+import { MwUnit } from '../../synchronization/MwUnit';
 import { MwWorkspace } from '../../synchronization/MwWorkspace';
 import { IOption, LibraryKind } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
@@ -110,7 +110,7 @@ export interface AmbientResolutions {
 }
 
 /**
- * Mirros the state of the Language Service cache for ambients or modules.
+ * Mirrors the state of the Language Service cache for ambients or modules.
  */
 export class LanguageServiceMirror<T> {
     /**
@@ -423,6 +423,7 @@ const changedJspmSettingsEventName = 'changedJspmSettings';
 const changedLintSettingsEventName = 'changedLintSettings';
 const changedPackageSettingsEventName = 'changedPackageSettings';
 const changedTypesSettingsEventName = 'changedTypesSettings';
+const appliedDeltaEventName = 'appliedDelta';
 
 export type WsModelEventName = 'changedLinting'
     | 'changedOperatorOverloading'
@@ -618,6 +619,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * TODO: Move workspace controller functionality into some sort of pipeline or transformer.
      */
     public readonly changedTypesSettings = new EventHub<'changedTypesSettings', TypesConfigSettings, WsModel>([changedTypesSettingsEventName], this);
+
+    public readonly deltaAppliedEventHub = new EventHub<'appliedDelta', { path: string; delta: Delta; version: number }, WsModel>([appliedDeltaEventName], this);
 
     /**
      * 'added' means that the file has been added to the language service and is being monitored.
@@ -1683,7 +1686,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * Requests the output files (JavaScript and source maps) for the specified file.
      * The response is published on the outputFilesTopic.
      */
-    private outputFilesForPath(path: string): void {
+    public outputFilesForPath(path: string): void {
         if (this.traceFileOperations) {
             this.logLifecycle(`outputFilesForPath(path = "${path}")`);
         }
@@ -1701,13 +1704,16 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                     if (this.traceFileOperations) {
                         this.logLifecycle(`getOutputFiles(path = "${path}")`);
                     }
-                    this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
+                    this.languageServiceProxy.getOutputFiles(path, (err: any, data: { fileName: string, version: number, outputFiles: OutputFile[] }) => {
                         if (!err) {
+                            const fileName = data.fileName;
+                            const version = data.version;
+                            const outputFiles = data.outputFiles;
                             if (this.traceFileOperations) {
                                 const names = outputFiles.map(function (outputFile) { return outputFile.name; });
                                 this.logLifecycle(`received response to getOutputFiles(path = "${path}") names = ${JSON.stringify(names)}`);
                             }
-                            this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(outputFiles));
+                            this.eventBus.emitAsync(outputFilesTopic, new OutputFilesMessage(fileName, version, outputFiles));
                         }
                         else {
                             // TODO: Why do we get...
@@ -3409,14 +3415,14 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * 2. Update file editor front markers.
      * 3. Requests output files for the specified file.
      * 
-     * This is called by the TypeScriptMonitor in response to Document 'change' events.
+     * This is called by the LanguageServiceScriptMonitor in response to Document 'change' events.
      */
     public applyDelta(path: string, delta: Delta): void {
         if (this.traceFileOperations) {
             this.logLifecycle(`applyDelta(path = "${path}")`);
         }
         if (this.languageServiceProxy) {
-            this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
+            this.languageServiceProxy.applyDelta(path, delta, (err: any, version: number) => {
                 if (!err) {
                     // Update the model.
                     this.updateFileSessionMarkerModels(path, delta);
@@ -3426,7 +3432,9 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                     // TODO: We request output files
                     // 1. How is a compile initiated?
                     // 2. Do we need the output files anyway?
-                    this.outputFilesForPath(path);
+                    // TODO: How does it perform when we don't request outpit files?
+                    // this.outputFilesForPath(path);
+                    this.deltaAppliedEventHub.emitAsync(appliedDeltaEventName, { path, delta, version });
                 }
                 else {
                     console.warn(LANGUAGE_SERVICE_NOT_AVAILABLE);

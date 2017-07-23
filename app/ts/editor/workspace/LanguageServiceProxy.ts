@@ -5,7 +5,6 @@ import { Delta } from 'editor-document';
 import { Diagnostic } from './Diagnostic';
 import { FormatCodeSettings } from './FormatCodeSettings';
 import { TextChange } from './TextChange';
-import { OutputFile } from './OutputFile';
 import { RuleFailure } from './RuleFailure';
 import { QuickInfo } from './QuickInfo';
 import { WorkerClient } from '../worker/WorkerClient';
@@ -32,6 +31,7 @@ import { EnsureModuleMappingRequest, RemoveModuleMappingRequest } from './Langua
 import { GetScriptContentRequest, SetScriptContentRequest, RemoveScriptRequest } from './LanguageServiceEvents';
 import { GetDefinitionAtPositionRequest } from './LanguageServiceEvents';
 import { GetOutputFilesRequest } from './LanguageServiceEvents';
+import { GetOutputFilesResponse } from './LanguageServiceEvents';
 import { SetOperatorOverloadingRequest } from './LanguageServiceEvents';
 import { SetTraceRequest } from './LanguageServiceEvents';
 import { SetTsConfigRequest, TsConfigSettings } from './LanguageServiceEvents';
@@ -93,7 +93,8 @@ export class LanguageServiceProxy {
 
         this.worker = new WorkerClient(workerUrl);
 
-        this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<any> }) => {
+        this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<number> }) => {
+            // The value is the version number of the document after the delta has been applied.
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
@@ -259,7 +260,7 @@ export class LanguageServiceProxy {
             }
         });
 
-        this.worker.on(EVENT_GET_OUTPUT_FILES, (response: { data: WorkerClientData<OutputFile[]> }) => {
+        this.worker.on(EVENT_GET_OUTPUT_FILES, (response: { data: WorkerClientData<GetOutputFilesResponse> }) => {
             const { err, value, callbackId } = response.data;
             const callback = this.releaseCallback(callbackId);
             if (callback) {
@@ -367,7 +368,7 @@ export class LanguageServiceProxy {
     /**
      * Applies a Delta to the specified file.
      */
-    applyDelta(fileName: string, delta: Delta, callback: (err: any) => void): void {
+    applyDelta(fileName: string, delta: Delta, callback: (err: any, version: number) => void): void {
         const callbackId = this.captureCallback(`applyDelta(${fileName}, ${delta.action}, ${delta.lines.join('\n')})`, callback);
         const message = { data: { fileName, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
@@ -598,7 +599,7 @@ export class LanguageServiceProxy {
         this.worker.emit(EVENT_GET_QUICK_INFO_AT_POSITION, message);
     }
 
-    getOutputFiles(fileName: string, callback: (err: any, outputFiles: OutputFile[]) => any): void {
+    getOutputFiles(fileName: string, callback: (err: any, data: GetOutputFilesResponse) => any): void {
         const callbackId = this.captureCallback(`getOutputFiles(${fileName})`, callback);
         const message: RequestMessage<GetOutputFilesRequest> = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_OUTPUT_FILES, message);

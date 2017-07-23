@@ -72,6 +72,11 @@ import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
 import { Editor } from '../../editor/Editor';
 import { EditSessionChangeHandler } from './EditSessionChangeHandler';
 import { LanguageModeId } from '../../editor/LanguageMode';
+//
+// JavaScript (transpiled) temporal model.
+//
+import { JsModel } from '../../modules/jsmodel/JsModel';
+import { JAVASCRIPT_MODEL_UUID } from '../../modules/jsmodel/IJavaScriptModel';
 
 //
 // RxJS
@@ -140,6 +145,10 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * A subscription to lint settings change events.
      */
     private changedTypesSettingsSubscription: Subscription | undefined;
+    /**
+     * 
+     */
+    private deltaAppliedSubscription: Subscription | undefined;
 
     /**
      * 
@@ -193,6 +202,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
         GOOGLE_ANALYTICS_UUID,
         'labelDialog',
         'modalDialog',
+        JAVASCRIPT_MODEL_UUID,
         NAVIGATION_SERVICE_UUID,
         OPTION_MANAGER_SERVICE_UUID,
         'propertiesDialog',
@@ -236,6 +246,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,
         private modalDialog: ModalDialog,
+        private jsModel: JsModel,
         private navigation: NavigationServiceJS,
         private optionManager: IOptionManager,
         private propertiesDialog: PropertiesDialog,
@@ -260,6 +271,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             rebuildPromise = $timeout(() => {
                 rebuildPreview(
                     this.wsModel,
+                    this.jsModel,
                     this.optionManager,
                     this.$scope,
                     this.$location,
@@ -537,6 +549,24 @@ export class WorkspaceController implements WorkspaceEditorHost {
                         console.warn(`Unable to recompile following change in compiler settings. Cause: ${reason}`);
                     });
 
+                this.deltaAppliedSubscription = this.wsModel.deltaAppliedEventHub.events
+                    .debounceTime(1000)
+                    .filter((event) => { return event.type === 'appliedDelta'; })
+                    .subscribe((event) => {
+                        const data = event.data;
+                        const path = data.path;
+                        const version = data.version;
+                        this.jsModel.sourceChanged(path, version);
+                        // TODO: We only want to do this if Live Editing is in progress.
+                        // If Live Editing is not in progress, set a flag that the path needs to be transpiled.
+                        if (this.$scope.isViewVisible) {
+                            this.wsModel.outputFilesForPath(path);
+                        }
+                    }, (error) => {
+                        console.warn(`Unable to transpile file due to change in document. Cause: ${error}`);
+                    });
+
+
                 //
                 // Only trigger a compile when files are removed from the Language Service.
                 // Triggering on additions to the Language Service causes too much flicker.
@@ -637,6 +667,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.changedTypesSettingsSubscription = void 0;
         }
 
+        if (this.deltaAppliedSubscription) {
+            this.deltaAppliedSubscription.unsubscribe();
+            this.deltaAppliedSubscription = void 0;
+        }
+
         if (this.monitoringSubscription) {
             this.monitoringSubscription.unsubscribe();
             this.monitoringSubscription = void 0;
@@ -658,6 +693,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         // This method is called BEFORE the child directives make their detachEditor calls!
         this.wsModel.dispose();
+        this.jsModel.dispose();
     }
 
     /**
@@ -892,27 +928,32 @@ export class WorkspaceController implements WorkspaceEditorHost {
      */
     private createOutputFilesEventHandler(): OutputFileHandler<WsModel> {
         const handler = (message: OutputFilesMessage, unused: WsModel) => {
+            const sourceFileName = message.fileName;
+            const version = message.version;
             const outputFiles = message.files;
             outputFiles.forEach((outputFile: OutputFile) => {
                 if (this.wsModel.isZombie()) {
                     return;
                 }
-                const path = outputFile.name;
-                if (fileExtensionIs(path, '.js')) {
+                const outputFileName = outputFile.name;
+                if (fileExtensionIs(outputFileName, '.js')) {
+
+                    this.jsModel.outputChanged(sourceFileName, outputFileName, outputFile.text, version);
+
                     if (typeof this.wsModel.lastKnownJs !== 'object') {
                         this.wsModel.lastKnownJs = {};
                     }
-                    if (this.wsModel.lastKnownJs[path] !== outputFile.text) {
-                        this.wsModel.lastKnownJs[path] = outputFile.text;
+                    if (this.wsModel.lastKnownJs[outputFileName] !== outputFile.text) {
+                        this.wsModel.lastKnownJs[outputFileName] = outputFile.text;
                         this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                     }
                 }
-                else if (fileExtensionIs(path, '.js.map')) {
+                else if (fileExtensionIs(outputFileName, '.js.map')) {
                     if (typeof this.wsModel.lastKnownJsMap !== 'object') {
                         this.wsModel.lastKnownJsMap = {};
                     }
-                    if (this.wsModel.lastKnownJsMap[path] !== outputFile.text) {
-                        this.wsModel.lastKnownJsMap[path] = outputFile.text;
+                    if (this.wsModel.lastKnownJsMap[outputFileName] !== outputFile.text) {
+                        this.wsModel.lastKnownJsMap[outputFileName] = outputFile.text;
                         this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                     }
                 }

@@ -1,5 +1,5 @@
 import DIFF_EQUAL from '../DIFF_EQUAL';
-import Patch from '../Patch';
+import { Patch } from '../Patch';
 
 /**
  * Add some padding on start of first diff.

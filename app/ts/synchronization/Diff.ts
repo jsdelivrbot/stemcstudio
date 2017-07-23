@@ -17,5 +17,3 @@ export enum DiffOperation {
  */
 
 export type Diff = [DiffOperation, string];
-
-export default Diff;

@@ -1,9 +1,9 @@
 import { applyPatchToDocument } from './applyPatchToDocument';
 import { EventBus } from './EventBus';
 import { Shareable } from '../../base/Shareable';
-import MwUnit from '../../synchronization/MwUnit';
+import { MwUnit } from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
-import Patch from '../../synchronization/Patch';
+import { Patch } from '../../synchronization/Patch';
 import { WsModel } from './WsModel';
 //
 // Editor Abstraction Layer.

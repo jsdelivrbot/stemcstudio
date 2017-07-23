@@ -31,10 +31,10 @@ import addTrailingPadding from './dmp/addTrailingPadding';
  * [[DIFF_DELETE, 'Hello'], [DIFF_INSERT, 'Goodbye'], [DIFF_EQUAL, ' world.']]
  * which means: delete 'Hello', add 'Goodbye' and keep ' world.'
  */
-import Diff from './Diff';
+import { Diff } from './Diff';
 import { DiffOperation } from './Diff';
-import LinesToCharsResult from './LinesToCharsResult';
-import Patch from './Patch';
+import { LinesToCharsResult } from './LinesToCharsResult';
+import { Patch } from './Patch';
 import DIFF_DELETE from './DIFF_DELETE';
 // import DIFF_INSERT from './DIFF_INSERT';
 import DIFF_EQUAL from './DIFF_EQUAL';

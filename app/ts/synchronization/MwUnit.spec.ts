@@ -1,10 +1,10 @@
 import Diff from './Diff';
 import DMP from './DMP';
-import Patch from './Patch';
+import { Patch } from './Patch';
 import { ACTION_RAW_OVERWRITE } from './MwAction';
-import MwEditor from './MwEditor';
-import MwWorkspace from './MwWorkspace';
-import MwUnit from './MwUnit';
+import { MwEditor } from './MwEditor';
+import { MwWorkspace } from './MwWorkspace';
+import { MwUnit } from './MwUnit';
 import ServerObj from './ServerObj';
 
 function inspect<T>(message: string, value: T): T { console.log(`${message}\n${JSON.stringify(value, null, 2)}`); return value; }

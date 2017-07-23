@@ -4,6 +4,7 @@ import { closure } from './closure';
 import { csvTypeFromContent } from './csvTypeFromContent';
 import { fileContent } from './fileContent';
 import { fileExists } from './fileExists';
+import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
@@ -18,6 +19,7 @@ import { scriptURL } from './scriptURL';
 import { schemeTypeFromContent } from './schemeTypeFromContent';
 import { shaderTypeFromContent } from './shaderTypeFromContent';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
+import { JsModel } from '../../modules/jsmodel/JsModel';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
 import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER, SYSTEM_SHIM_MARKER } from '../../features/preview/index';
@@ -83,7 +85,8 @@ interface SystemJsConfigArg {
 }
 
 export function rebuildPreview(
-    workspace: WsModel,
+    wsModel: WsModel,
+    jsModel: JsModel,
     optionManager: IOptionManager,
     $scope: WorkspaceScope,
     $location: ILocationService,
@@ -96,6 +99,19 @@ export function rebuildPreview(
     STYLES_MARKER: string,
     VENDOR_FOLDER_MARKER: string
 ) {
+    // Synchronize the JavaScript model (transpile status) with the workspace (source) model.
+    jsModel.watchFiles(wsModel.getFileSessionPaths().filter(isLanguageServiceScript));
+    // If any Language Service source files have changed but not yet transpiled, initiate a refresh of the output files.
+    const dirtyFiles = jsModel.dirtyFiles();
+    if (dirtyFiles.length > 0) {
+        for (const dirtyFile of dirtyFiles) {
+            wsModel.outputFilesForPath(dirtyFile);
+        }
+        // We could put up a spinner here instead of presenting a dirty file.
+        // Experiment with returning to see if it improves apparent performance.
+        return;
+    }
+
     /**
      * The domain on which we are running. e.g., `https://www.stemcstudio.com` or `localhost:8080`.
      * We determine the domain dynamically in order to access files in known locations on our server.
@@ -115,11 +131,11 @@ export function rebuildPreview(
                     preview.removeChild(preview.firstChild);
                 }
             }
-            if (workspace && !workspace.isZombie()) {
+            if (wsModel && !wsModel.isZombie()) {
                 /**
                  * The HTML file that will be used for insertion.
                  */
-                const bestFile = workspace.getHtmlFileChoiceOrBestAvailable();
+                const bestFile = wsModel.getHtmlFileChoiceOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 
                     $scope.previewIFrame = document.createElement('iframe');
@@ -136,11 +152,11 @@ export function rebuildPreview(
                     /**
                      * The string that becomes the content of the IFrame's HTML file.
                      */
-                    let html = fileContent(bestFile, workspace);
+                    let html = fileContent(bestFile, wsModel);
                     if (isString(html)) {
 
                         const selOpts: IOption[] = optionManager.filter((option: IOption, index: number, array: IOption[]) => {
-                            return workspace.getPackageDependencies().hasOwnProperty(option.packageName);
+                            return wsModel.getPackageDependencies().hasOwnProperty(option.packageName);
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, optionManager);
@@ -150,7 +166,7 @@ export function rebuildPreview(
                             return `<link rel='stylesheet' href='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></link>${NEWLINE}`;
                         });
 
-                        if (detectMarker(STYLES_MARKER, workspace, bestFile)) {
+                        if (detectMarker(STYLES_MARKER, wsModel, bestFile)) {
                             html = html.replace(STYLES_MARKER, stylesTags.join(""));
                         }
                         else {
@@ -166,13 +182,13 @@ export function rebuildPreview(
                         const globalJsFileNames: string[] = closureOpts.filter(isGlobalOrUMDLibrary).map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
 
-                        const scriptFileNames: string[] = workspace.isOperatorOverloadingEnabled() ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
+                        const scriptFileNames: string[] = wsModel.isOperatorOverloadingEnabled() ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
                             return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>${NEWLINE}`;
                         });
 
-                        if (detectMarker(SCRIPTS_MARKER, workspace, bestFile)) {
+                        if (detectMarker(SCRIPTS_MARKER, wsModel, bestFile)) {
                             html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
                         }
                         else {
@@ -180,7 +196,7 @@ export function rebuildPreview(
                                 console.warn(`Unable to find '${SCRIPTS_MARKER}' in ${bestFile} file.`);
                             }
                         }
-                        if (detectMarker(SYSTEM_SHIM_MARKER, workspace, bestFile)) {
+                        if (detectMarker(SYSTEM_SHIM_MARKER, wsModel, bestFile)) {
                             const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
                             html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
                         }
@@ -189,48 +205,48 @@ export function rebuildPreview(
                             console.warn(`Unable to find '${SYSTEM_SHIM_MARKER}' in ${bestFile} file.`);
                         }
 
-                        html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, workspace, bestFile);
-                        html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, workspace, bestFile);
-                        html = replaceMarker(SCHEMES_MARKER, LANGUAGE_SCHEME, schemeTypeFromContent, html, workspace, bestFile);
+                        html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
+                        html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
+                        html = replaceMarker(SCHEMES_MARKER, LANGUAGE_SCHEME, schemeTypeFromContent, html, wsModel, bestFile);
 
                         // TODO: It would be nice to have a more flexible way to define stylesheet imports.
                         // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
-                        if (fileExists('style.css', workspace)) {
-                            if (detectMarker(STYLE_MARKER, workspace, bestFile)) {
-                                html = html.replace(STYLE_MARKER, [fileContent('style.css', workspace)].join(""));
+                        if (fileExists('style.css', wsModel)) {
+                            if (detectMarker(STYLE_MARKER, wsModel, bestFile)) {
+                                html = html.replace(STYLE_MARKER, [fileContent('style.css', wsModel)].join(""));
                             }
                             else {
                                 console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
                             }
                         }
-                        else if (fileExists(FILENAME_LESS, workspace)) {
-                            if (detectMarker(STYLE_MARKER, workspace, bestFile)) {
-                                html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, workspace)].join(""));
+                        else if (fileExists(FILENAME_LESS, wsModel)) {
+                            if (detectMarker(STYLE_MARKER, wsModel, bestFile)) {
+                                html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, wsModel)].join(""));
                             }
                             else {
                                 console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
                             }
                         }
 
-                        if (detect1x(workspace)) {
+                        if (detect1x(wsModel)) {
                             // code is for backwards compatibility only, now that we support ES6 modules.
                             console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.");
-                            html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS, workspace));
-                            html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE, workspace));
+                            html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS, wsModel));
+                            html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE, wsModel));
                             // For backwards compatibility (less than 1.x) ...
-                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, workspace), '</style>'].join(""));
-                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, workspace));
+                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, wsModel), '</style>'].join(""));
+                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, wsModel));
                         }
-                        else if (detectMarker(CODE_MARKER, workspace, bestFile)) {
+                        else if (detectMarker(CODE_MARKER, wsModel, bestFile)) {
                             const modulesJs: string[] = [];
-                            const paths: string[] = Object.keys(workspace.lastKnownJs);
+                            const paths: string[] = Object.keys(wsModel.lastKnownJs);
                             for (const path of paths) {
-                                const moduleJs = workspace.lastKnownJs[path];
+                                const moduleJs = wsModel.lastKnownJs[path];
                                 try {
                                     const options: mathscript.TranspileOptions = {
                                         timeout: 1000,
-                                        noLoopCheck: workspace.noLoopCheck,
-                                        operatorOverloading: workspace.isOperatorOverloadingEnabled()
+                                        noLoopCheck: wsModel.noLoopCheck,
+                                        operatorOverloading: wsModel.isOperatorOverloadingEnabled()
                                     };
                                     /**
                                      * The JavaScript code with operators replaced by function calls and infinite loop detection.
@@ -249,10 +265,10 @@ export function rebuildPreview(
                              * In time we will deprecate the sythesis approach in favor of explicit specification
                              * through the jspm.config.js file as this opens up the use of external modules.
                              */
-                            const systemJsConfig = fileExists(SYSTEM_CONFIG_JS, workspace) ?
-                                fileContent(SYSTEM_CONFIG_JS, workspace) as string :
-                                fileExists(SYSTEM_CONFIG_JSON, workspace) ?
-                                    `System.config(${fileContent(SYSTEM_CONFIG_JSON, workspace) as string});${NEWLINE}` :
+                            const systemJsConfig = fileExists(SYSTEM_CONFIG_JS, wsModel) ?
+                                fileContent(SYSTEM_CONFIG_JS, wsModel) as string :
+                                fileExists(SYSTEM_CONFIG_JSON, wsModel) ?
+                                    `System.config(${fileContent(SYSTEM_CONFIG_JSON, wsModel) as string});${NEWLINE}` :
                                     `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
 
                             html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));

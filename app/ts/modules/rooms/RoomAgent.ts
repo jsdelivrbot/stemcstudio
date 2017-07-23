@@ -4,8 +4,8 @@ import { Shareable } from '../../base/Shareable';
 import { SocketZen } from './SocketZen';
 import { MwAction } from '../../synchronization/MwAction';
 import { ACTION_NULLIFY_UPPERCASE } from '../../synchronization/MwAction';
-import MwChange from '../../synchronization/MwChange';
-import MwEdits from '../../synchronization/MwEdits';
+import { MwChange } from '../../synchronization/MwChange';
+import { MwEdits } from '../../synchronization/MwEdits';
 import uniqueId from '../../synchronization/uniqueId';
 
 const SOCKET_EVENT_DOWNLOAD = 'download';

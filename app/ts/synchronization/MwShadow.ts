@@ -1,15 +1,15 @@
 import DMP from './DMP';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
-import MwAction from './MwAction';
-import MwChange from './MwChange';
+import { MwAction } from './MwAction';
+import { MwChange } from './MwChange';
 import { MwOptions } from './MwOptions';
 
 const INITIAL_VERSION = 1;
 
 const dmp = new DMP();
 
-export default class MwShadow {
+export class MwShadow {
 
     /**
      * The local version number of the shadow document.

@@ -12,6 +12,7 @@ import { DoodleManager } from './services/doodles/doodleManager.service';
 import { GitHubGistService } from './services/github/github.gist.service';
 import { GitHubRepoService } from './services/github/github.repo.service';
 import { GitHubUserService } from './services/github/github.user.service';
+import { JsModel } from './modules/jsmodel/JsModel';
 import { NativeEditorService } from './services/editor/native-editor.service';
 import { OptionManager } from './services/options/optionManager.service';
 import { RoomsService } from './modules/rooms/services/rooms.service';
@@ -43,6 +44,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         GitHubGistService,
         GitHubRepoService,
         GitHubUserService,
+        JsModel,
         NativeEditorService,
         OptionManager,
         RoomsService,

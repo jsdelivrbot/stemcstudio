@@ -38,7 +38,7 @@ System.config({
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.3",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.0",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.3",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -61,7 +61,7 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.2.3": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.15.0": {
+    "github:geometryzen/stemcstudio-workers@2.15.3": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
       "editor-document": "npm:editor-document@0.0.5",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
@@ -369,13 +369,14 @@ System.config({
       "safe-buffer": "npm:safe-buffer@5.1.1",
       "sha.js": "npm:sha.js@2.4.8"
     },
-    "npm:cross-spawn@4.0.2": {
+    "npm:cross-spawn@5.1.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "lru-cache": "npm:lru-cache@4.1.1",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
+      "shebang-command": "npm:shebang-command@1.2.0",
       "which": "npm:which@1.2.14"
     },
     "npm:crypto-browserify@3.11.1": {
@@ -503,10 +504,10 @@ System.config({
       "create-hash": "npm:create-hash@1.1.3",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
     },
-    "npm:execa@0.5.1": {
+    "npm:execa@0.7.0": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
-      "cross-spawn": "npm:cross-spawn@4.0.2",
-      "get-stream": "npm:get-stream@2.3.1",
+      "cross-spawn": "npm:cross-spawn@5.1.0",
+      "get-stream": "npm:get-stream@3.0.0",
       "is-stream": "npm:is-stream@1.1.0",
       "npm-run-path": "npm:npm-run-path@2.0.2",
       "p-finally": "npm:p-finally@1.0.0",
@@ -523,10 +524,8 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:get-stream@2.3.1": {
+    "npm:get-stream@3.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "object-assign": "npm:object-assign@4.1.1",
-      "pinkie-promise": "npm:pinkie-promise@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:good-listener@1.2.2": {
@@ -658,8 +657,8 @@ System.config({
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"
     },
-    "npm:os-locale@2.0.0": {
-      "execa": "npm:execa@0.5.1",
+    "npm:os-locale@2.1.0": {
+      "execa": "npm:execa@0.7.0",
       "lcid": "npm:lcid@1.0.0",
       "mem": "npm:mem@1.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -726,9 +725,6 @@ System.config({
     },
     "npm:pify@2.3.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:pinkie-promise@2.0.1": {
-      "pinkie": "npm:pinkie@2.0.4"
     },
     "npm:process-nextick-args@1.0.7": {
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -822,6 +818,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:shebang-command@1.2.0": {
+      "shebang-regex": "npm:shebang-regex@1.0.0"
     },
     "npm:showdown@1.7.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -1031,7 +1030,7 @@ System.config({
       "decamelize": "npm:decamelize@1.2.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "get-caller-file": "npm:get-caller-file@1.0.2",
-      "os-locale": "npm:os-locale@2.0.0",
+      "os-locale": "npm:os-locale@2.1.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "read-pkg-up": "npm:read-pkg-up@2.0.0",

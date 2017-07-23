@@ -1,4 +1,4 @@
-import Diff from './Diff';
+import { Diff } from './Diff';
 import DIFF_EQUAL from './DIFF_EQUAL';
 
 /**

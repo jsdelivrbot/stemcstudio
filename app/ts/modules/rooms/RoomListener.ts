@@ -1,4 +1,4 @@
-import MwEdits from '../../synchronization/MwEdits';
+import { MwEdits } from '../../synchronization/MwEdits';
 
 /**
  * A room listener can be notified of changes to any file.

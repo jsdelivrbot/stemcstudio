@@ -533,16 +533,12 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "path": "github:jspm/nodelibs-path@^0.1.0"
   },
-  "npm:pinkie-promise@2.0.1": {
-    "pinkie": "npm:pinkie@^2.0.0"
-  },
   "npm:pify@2.3.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:is-builtin-module@1.0.0": {
     "builtin-modules": "npm:builtin-modules@^1.0.0"
   },
-  "npm:pinkie@2.0.4": {},
   "npm:validate-npm-package-license@3.0.1": {
     "spdx-correct": "npm:spdx-correct@~1.0.0",
     "spdx-expression-parse": "npm:spdx-expression-parse@~1.0.0"
@@ -755,12 +751,6 @@
     "read-pkg": "npm:read-pkg@^2.0.0"
   },
   "npm:camelcase@4.1.0": {},
-  "npm:os-locale@2.0.0": {
-    "execa": "npm:execa@^0.5.0",
-    "lcid": "npm:lcid@^1.0.0",
-    "mem": "npm:mem@^1.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:which-module@2.0.0": {},
   "npm:is-fullwidth-code-point@2.0.0": {},
   "npm:find-up@2.1.0": {
@@ -809,18 +799,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:strip-bom@3.0.0": {},
-  "npm:execa@0.5.1": {
-    "cross-spawn": "npm:cross-spawn@^4.0.0",
-    "get-stream": "npm:get-stream@^2.2.0",
-    "is-stream": "npm:is-stream@^1.1.0",
-    "npm-run-path": "npm:npm-run-path@^2.0.0",
-    "p-finally": "npm:p-finally@^1.0.0",
-    "signal-exit": "npm:signal-exit@^3.0.0",
-    "strip-eof": "npm:strip-eof@^1.0.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "child_process": "github:jspm/nodelibs-child_process@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0"
-  },
   "npm:p-locate@2.0.0": {
     "p-limit": "npm:p-limit@^1.1.0"
   },
@@ -830,13 +808,6 @@
   "npm:path-key@2.0.1": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:get-stream@2.3.1": {
-    "object-assign": "npm:object-assign@^4.0.1",
-    "pinkie-promise": "npm:pinkie-promise@^2.0.0",
-    "stream": "github:jspm/nodelibs-stream@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
-  "npm:object-assign@4.1.1": {},
   "npm:signal-exit@3.0.2": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
@@ -847,15 +818,6 @@
     "isexe": "npm:isexe@^2.0.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:cross-spawn@4.0.2": {
-    "lru-cache": "npm:lru-cache@^4.0.1",
-    "which": "npm:which@^1.2.9",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "path": "github:jspm/nodelibs-path@^0.1.0",
-    "child_process": "github:jspm/nodelibs-child_process@^0.1.0"
   },
   "npm:yallist@2.1.2": {},
   "npm:isexe@2.0.0": {
@@ -1001,14 +963,6 @@
     "is-fullwidth-code-point": "npm:is-fullwidth-code-point@^2.0.0",
     "strip-ansi": "npm:strip-ansi@^4.0.0"
   },
-  "github:geometryzen/stemcstudio-workers@2.15.0": {
-    "davinci-csv": "npm:davinci-csv@^0.9.12",
-    "editor-document": "npm:editor-document@^0.0.5",
-    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
-    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
-    "typhon-lang": "npm:typhon-lang@^0.12.9",
-    "typhon-typescript": "npm:typhon-typescript@^0.3.0"
-  },
   "npm:zone.js@0.8.14": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -1072,5 +1026,49 @@
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.3.1",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:os-locale@2.1.0": {
+    "execa": "npm:execa@^0.7.0",
+    "lcid": "npm:lcid@^1.0.0",
+    "mem": "npm:mem@^1.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:execa@0.7.0": {
+    "cross-spawn": "npm:cross-spawn@^5.0.1",
+    "get-stream": "npm:get-stream@^3.0.0",
+    "is-stream": "npm:is-stream@^1.1.0",
+    "npm-run-path": "npm:npm-run-path@^2.0.0",
+    "p-finally": "npm:p-finally@^1.0.0",
+    "signal-exit": "npm:signal-exit@^3.0.0",
+    "strip-eof": "npm:strip-eof@^1.0.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "child_process": "github:jspm/nodelibs-child_process@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:get-stream@3.0.0": {
+    "stream": "github:jspm/nodelibs-stream@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:shebang-command@1.2.0": {
+    "shebang-regex": "npm:shebang-regex@^1.0.0"
+  },
+  "npm:shebang-regex@1.0.0": {},
+  "npm:cross-spawn@5.1.0": {
+    "lru-cache": "npm:lru-cache@^4.0.1",
+    "shebang-command": "npm:shebang-command@^1.2.0",
+    "which": "npm:which@^1.2.9",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "child_process": "github:jspm/nodelibs-child_process@^0.1.0"
+  },
+  "github:geometryzen/stemcstudio-workers@2.15.3": {
+    "davinci-csv": "npm:davinci-csv@^0.9.12",
+    "editor-document": "npm:editor-document@^0.0.5",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
+    "typhon-lang": "npm:typhon-lang@^0.12.9",
+    "typhon-typescript": "npm:typhon-typescript@^0.3.0"
   }
 }
