@@ -84,7 +84,7 @@ const VERSION_THREEJS = '0.86.0';
  * Notice that r84 and r85 are missing and that the `r` has been dropped!
  */
 const RELEASE_THREEJS = '86';
-const VERSION_TWO = '0.6.1';
+const VERSION_TWO = '0.6.0.1';
 const VERSION_UNITS = '1.5.5';
 // const VERSION_UNDERSCORE = '1.8.3';
 const VERSION_WEBGL_CORE = '1.0.0';

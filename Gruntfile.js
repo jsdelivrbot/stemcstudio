@@ -228,6 +228,10 @@ function copies(target) {
      */
     const VERSION_THREE = '0.86.0';
     /**
+     *
+     */
+    const VERSION_TWO = '0.6.0.1';
+    /**
      * 
      */
     const VERSION_TYPESCRIPT_SERVICES = '2.3.4';
@@ -588,16 +592,16 @@ function copies(target) {
             dest: prepend(target, `vendor/threejs@${VERSION_THREE}`)
         },
         {
-            src: "museum/two@0.6.1/two.d.ts",
-            dest: prepend(target, 'vendor/two@0.6.1/two.d.ts')
+            src: `museum/two@${VERSION_TWO}/two.d.ts`,
+            dest: prepend(target, `vendor/two@${VERSION_TWO}/two.d.ts`)
         },
         {
-            src: "museum/two@0.6.1/two.js",
-            dest: prepend(target, 'vendor/two@0.6.1/two.js')
+            src: `museum/two@${VERSION_TWO}/two.js`,
+            dest: prepend(target, `vendor/two@${VERSION_TWO}/two.js`)
         },
         {
-            src: "museum/two@0.6.1/two.min.js",
-            dest: prepend(target, 'vendor/two@0.6.1/two.min.js')
+            src: `museum/two@${VERSION_TWO}/two.min.js`,
+            dest: prepend(target, `vendor/two@${VERSION_TWO}/two.min.js`)
         },
         {
             expand: true,

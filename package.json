@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.36.4",
+  "version": "2.36.5",
   "private": true,
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "engines": {
@@ -106,7 +106,7 @@
     "karma-jspm": "^2.2.3",
     "karma-phantomjs-launcher": "^1.0.4",
     "lite-server": "^2.3.0",
-    "plotly.js": "^1.29.0",
+    "plotly.js": "^1.29.1",
     "protractor": "^3.3.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
