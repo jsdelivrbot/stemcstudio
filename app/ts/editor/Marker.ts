@@ -1,10 +1,6 @@
 import { MarkerConfig } from './layer/MarkerConfig';
 import { IMarkerLayer } from './layer/MarkerLayer';
 import { MarkerRenderer } from './layer/MarkerRenderer';
-
-//
-// Editor Abstraction Layer
-//
 import { EditSession } from '../editor/EditSession';
 import { OrientedRange as Range } from '../editor/RangeBasic';
 

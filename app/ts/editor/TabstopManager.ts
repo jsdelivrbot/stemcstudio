@@ -9,19 +9,16 @@ import { Range } from "./Range";
 import { clone, contains } from "./RangeHelpers";
 import { Selection } from "./Selection";
 import { Tabstop, TabstopRange } from './Tabstop';
-//
-// Editor Abstraction Layer
-//
 import { OrientedRange } from '../editor/RangeBasic';
 
-function movePoint(point: Position, diff: Position) {
+function movePoint(point: Position, diff: Position): void {
     if (point.row === 0) {
         point.column += diff.column;
     }
     point.row += diff.row;
 }
 
-function moveRelative(point: Position, start: Position) {
+function moveRelative(point: Position, start: Position): void {
     if (point.row === start.row) {
         point.column -= start.column;
     }

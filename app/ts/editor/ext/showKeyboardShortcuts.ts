@@ -1,9 +1,6 @@
 import { KeyboardShortcut } from '../ext/menu_tools/getEditorKeyboardShortcuts';
 import { getEditorKeyboardShortcuts } from '../ext/menu_tools/getEditorKeyboardShortcuts';
 import { overlayPage } from '../ext/menu_tools/overlayPage';
-//
-// Editor Abstraction Layer
-//
 import { Editor } from '../../editor/Editor';
 
 const ID_CONTENT_ELEMENT = 'kbshortcutmenu';

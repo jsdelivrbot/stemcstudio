@@ -215,15 +215,18 @@ function copies(target) {
     /**
      * 
      */
-    const VERSION_MATHSCRIPT = '1.2.3';
-    /**
-     * 
-     */
-    const VERSION_MONACO = '0.8.3';
+    const VERSION_MATHSCRIPT = '1.3.1';
     /**
      * 
      */
     const VERSION_PLOTLY = '1.28.2';
+    /**
+     * three.js has its own non-standard version number.
+     * The three.js release number is mapped to the minor semantic version.
+     * This constant is only used to copy the d.ts file.
+     * It must be kept synchronized with the three.js option.
+     */
+    const VERSION_THREE = '0.86.0';
     /**
      * 
      */
@@ -233,15 +236,6 @@ function copies(target) {
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
         { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
         { src: 'app/stemcstudio-overview-2017-03-24.pdf', dest: prepend(target, 'stemcstudio-overview-2017-03-24.pdf') },
-        /*
-        { src: 'app/index.html', dest: prepend(target, 'index.html') },
-        */
-        {
-            expand: true,
-            cwd: `manual/monaco-editor@${VERSION_MONACO}`,
-            src: ["**"],
-            dest: prepend(target, `js/monaco-editor@${VERSION_MONACO}`)
-        },
         {
             src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`,
             dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`)
@@ -413,7 +407,6 @@ function copies(target) {
             // This file is needed for the application itself, which is a hybrid AngularJS/Angular application.
             // TODO: Probably should be using the minified version.
             src: "node_modules/angular/angular.js",
-            //   "bower_components/angular/angular.js",
             dest: prepend(target, 'js/angular.js')
         },
         {
@@ -590,9 +583,9 @@ function copies(target) {
         },
         {
             expand: true,
-            cwd: "museum/threejs@0.82.0",
+            cwd: `museum/threejs@${VERSION_THREE}`,
             src: ["**"],
-            dest: prepend(target, 'vendor/threejs@0.82.0')
+            dest: prepend(target, `vendor/threejs@${VERSION_THREE}`)
         },
         {
             src: "museum/two@0.6.1/two.d.ts",
@@ -625,17 +618,17 @@ function copies(target) {
             dest: prepend(target, 'vendor/underscore@1.8.3/underscore-min.map')
         },
         {
-            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
+            src: "node_modules/davinci-mathscript/dist/davinci-mathscript.d.ts",
             dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.d.ts`)
         },
         {
             // This version is bundled for transpile.
-            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
+            src: "node_modules/davinci-mathscript/dist/davinci-mathscript.js",
             dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.js`)
         },
         {
             // This version is loaded into iframe for the runtime.
-            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
+            src: "node_modules/davinci-mathscript/dist/davinci-mathscript.min.js",
             dest: prepend(target, `vendor/davinci-mathscript@${VERSION_MATHSCRIPT}/dist/davinci-mathscript.min.js`)
         },
         {

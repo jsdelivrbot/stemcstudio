@@ -1,8 +1,5 @@
 import { DocumentMonitor } from '../monitoring.service';
 import { WsModel } from '.././WsModel';
-//
-// Editor Abstraction Layer
-//
 import { EditSession } from '../../../editor/EditSession';
 
 export class LanguageServiceScriptMonitor implements DocumentMonitor {

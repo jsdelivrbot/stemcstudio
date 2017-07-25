@@ -26,18 +26,10 @@ import { renderContextMenu } from '../contextMenu/renderContextMenu';
 import { formatCodeSettings } from '../../workbench/actions/formatDocument';
 import { createFormatDocumentCommand } from '../../workbench/commands/formatDocument';
 import { TextChange } from '../../editor/workspace/TextChange';
-
-//
-// Editor Abstraction Layer
-//
 import { Editor } from '../../editor/Editor';
 import { EditorService } from '../../editor/EditorService';
 import { EditSession } from '../../editor/EditSession';
 import { LanguageModeId } from '../../editor/LanguageMode';
-//
-// Choose EditorService implementation (AngularJS).
-// See also WsModel for Angular.
-//
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
 
 const BOGUS_WIDTH = 600;

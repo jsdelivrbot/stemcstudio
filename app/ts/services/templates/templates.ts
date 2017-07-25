@@ -99,7 +99,7 @@ app.factory('templates', [
             name: "EIGHT",
             description: "EIGHT WebGL 3D Graphics",
             files: {},
-            dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
+            dependencies: dependenciesMap([/*'DomReady', 'jasmine',*/ 'davinci-eight']),
             hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
@@ -109,9 +109,9 @@ app.factory('templates', [
         EIGHT.files[INDEX_DOT_TS] = { content: EIGHT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         EIGHT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
-        EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
-        EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        // EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
+        // EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
+        // EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const REACT: ITemplate = {
             name: "React",

@@ -5,6 +5,11 @@ export interface HtmlOptions {
     containerId?: string;
 }
 
+function stripExtension(path: string): string {
+    const pos = path.lastIndexOf('.');
+    return path.substring(0, pos);
+}
+
 /**
  * tabString is supplied from the editor settings.
  * bootstrap is the System.import method argument, usually './index.js' for the 'index.ts' entry point.
@@ -51,7 +56,7 @@ export function HTML(tabString: string, bootstrap: string, systemJsUrl: string, 
     lines.push(_ + _ + "</script>");
     lines.push(_ + _ + "<script>");
     lines.push(_ + _ + "System.defaultJSExtensions = true");
-    lines.push(_ + _ + `System.import('${bootstrap}').catch((e) => {/* console.error(e) */})`);
+    lines.push(_ + _ + `System.import('${stripExtension(bootstrap)}')`);
     lines.push(_ + _ + "</script>");
     lines.push(_ + "</body>");
     lines.push("</html>");

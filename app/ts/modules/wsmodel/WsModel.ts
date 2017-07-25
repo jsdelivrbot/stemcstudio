@@ -63,12 +63,6 @@ import { setOptionalStringArrayProperty } from '../../services/doodles/setOption
 import { WorkspaceRoomListener } from './WorkspaceRoomListener';
 import { WorkspaceCompleter } from '../../editor/workspace/WorkspaceCompleter';
 import { WorkspaceCompleterHost } from '../../editor/workspace/WorkspaceCompleterHost';
-//
-// Editor Abstraction Layer.
-// The workspace knows about the editor through a well-defined API allowing the editor
-// implementation to be changed using adapters. Over time we can reduce the surface area
-// of the bootstrapping API then use dynamic discovery of capabilities.
-//
 import { Delta } from 'editor-document';
 import { Editor } from '../../editor/Editor';
 import { EditorService } from '../../editor/EditorService';

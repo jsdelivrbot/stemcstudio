@@ -66,9 +66,6 @@ import { updateWorkspaceTypes } from './updateWorkspaceTypes';
 import { rebuildPreview } from './rebuildPreview';
 import { rebuildMarkdownView } from './rebuildMarkdownView';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
-//
-// Editor Abstraction Layer
-//
 import { Editor } from '../../editor/Editor';
 import { EditSessionChangeHandler } from './EditSessionChangeHandler';
 import { LanguageModeId } from '../../editor/LanguageMode';
@@ -77,7 +74,6 @@ import { LanguageModeId } from '../../editor/LanguageMode';
 //
 import { JsModel } from '../../modules/jsmodel/JsModel';
 import { JAVASCRIPT_MODEL_UUID } from '../../modules/jsmodel/IJavaScriptModel';
-
 //
 // RxJS
 //

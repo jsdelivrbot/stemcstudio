@@ -5,9 +5,6 @@ import { MwUnit } from '../../synchronization/MwUnit';
 import { MwDocument } from '../../synchronization/MwDocument';
 import { Patch } from '../../synchronization/Patch';
 import { WsModel } from './WsModel';
-//
-// Editor Abstraction Layer.
-//
 import { Editor } from '../../editor/Editor';
 import { EditorService } from '../../editor/EditorService';
 import { EditSession } from '../../editor/EditSession';

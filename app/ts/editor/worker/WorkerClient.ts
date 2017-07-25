@@ -4,9 +4,6 @@ import { EventBus } from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
 import { CallbackManager } from './CallbackManager';
 import { Disposable } from '../../base/Disposable';
-//
-// Editor Abstraction Layer
-//
 import { EditSession } from "../../editor/EditSession";
 
 /**

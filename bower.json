@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.36.3",
+  "version": "2.36.4",
   "description": "Live Collaborative TypeScript Coding in a Gist",
   "homepage": "https://github.com/geometryzen/STEMCstudio",
   "authors": [
@@ -28,7 +28,6 @@
     "bootstrap": "^3.3.7",
     "bootstrap3-dialog": "^1.35.3",
     "dat-gui": "^0.6.4",
-    "davinci-mathscript": "^1.2.3",
     "davinci-units": "^1.5.5",
     "deck.js": "^1.1.0",
     "dialog-polyfill": "^0.4.7",

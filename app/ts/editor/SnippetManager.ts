@@ -11,9 +11,6 @@ import { LOWERCASE_NEXT_LETTER } from "./Tabstop";
 import { UPPERCASE_UNTIL_CHANGE } from "./Tabstop";
 import { LOWERCASE_UNTIL_CHANGE } from "./Tabstop";
 import { END_CHANGE_CASE } from "./Tabstop";
-//
-// Editor Abstraction Layer
-//
 import { Position } from 'editor-document';
 import { Editor } from '../editor/Editor';
 

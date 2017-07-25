@@ -58,10 +58,6 @@ import { SelectionMultiSelectEvent } from './events/SelectionMultiSelectEvent';
 import { SelectionSingleSelectEvent } from './events/SelectionSingleSelectEvent';
 import { UndoManager as NativeUndoManager } from './UndoManager';
 import { QuickInfoTooltip as NativeQuickInfoTooltip } from './workspace/QuickInfoTooltip';
-
-//
-// Editor Abstraction Layer
-//
 import { Annotation } from './Annotation';
 import { EditSession } from './EditSession';
 import { Direction } from '../editor/Direction';

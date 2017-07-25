@@ -32,11 +32,11 @@ System.config({
     "clipboard": "npm:clipboard@1.7.1",
     "core-js": "npm:core-js@2.4.1",
     "davinci-csv": "npm:davinci-csv@0.9.12",
-    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.2",
+    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "editor-document": "npm:editor-document@0.0.5",
     "es6-shim": "github:es-shims/es6-shim@0.35.3",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
-    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.2.3",
+    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
     "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.3",
     "jquery": "npm:jquery@2.2.4",
@@ -55,10 +55,7 @@ System.config({
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
-    "github:geometryzen/davinci-mathscript@1.2.2": {
-      "ts": "github:frankwallis/plugin-typescript@2.6.0"
-    },
-    "github:geometryzen/davinci-mathscript@1.2.3": {
+    "github:geometryzen/davinci-mathscript@1.3.1": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
     "github:geometryzen/stemcstudio-workers@2.15.3": {
@@ -408,7 +405,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -551,7 +548,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.3": {
@@ -640,7 +637,7 @@ System.config({
     "npm:normalize-package-data@2.4.0": {
       "hosted-git-info": "npm:hosted-git-info@2.5.0",
       "is-builtin-module": "npm:is-builtin-module@1.0.0",
-      "semver": "npm:semver@5.3.0",
+      "semver": "npm:semver@5.4.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0",
@@ -807,7 +804,7 @@ System.config({
     "npm:safe-buffer@5.1.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
     },
-    "npm:semver@5.3.0": {
+    "npm:semver@5.4.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:set-blocking@2.0.0": {
@@ -920,7 +917,7 @@ System.config({
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string-width@1.0.2": {

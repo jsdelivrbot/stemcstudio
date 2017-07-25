@@ -6,9 +6,6 @@ import { IDoodleFile } from './IDoodleFile';
 import { modeFromName } from '../../utils/modeFromName';
 import { doodlesToString } from './doodlesToString';
 import { Injectable } from '@angular/core';
-//
-// Editor Abstraction Layer
-//
 import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**

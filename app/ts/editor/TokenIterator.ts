@@ -1,7 +1,4 @@
 import { HighlighterToken } from './mode/Highlighter';
-//
-// Editor Abstraction Layer
-//
 import { BasicToken } from '../editor/Token';
 import { TokenWithIndex } from '../editor/Token';
 

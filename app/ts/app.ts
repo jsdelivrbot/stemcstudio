@@ -269,7 +269,7 @@ app.constant('FILENAME_TYPESCRIPT_PROMISE_LIB_DTS', vendorPath(`typescript@${TYP
 
 // The MathScript js library provides operator overloading at runtime.
 // The version should match the value in the Gruntfile.js
-app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.2.3', 'dist/davinci-mathscript.min.js'));
+app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.3.1', 'dist/davinci-mathscript.min.js'));
 
 /**
  * The BodyController exists for the lifetime of the application.

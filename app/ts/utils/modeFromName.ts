@@ -21,9 +21,6 @@ import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_TSX } from '../languages/modes';
 import { LANGUAGE_XML } from '../languages/modes';
 import { LANGUAGE_YAML } from '../languages/modes';
-//
-// Editor Abstraction Layer
-//
 import { LanguageModeId } from '../editor/LanguageMode';
 
 const extensionToMode: { [ext: string]: LanguageModeId } = {};

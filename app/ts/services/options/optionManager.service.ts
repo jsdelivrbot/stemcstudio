@@ -77,8 +77,13 @@ const VERSION_RXJS_RX = '5.3.3';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 // const VERSION_SYSTEMJS = '0.19.37';
-const VERSION_THREEJS = '0.82.0';
-const RELEASE_THREEJS = 'r82';
+const VERSION_THREEJS = '0.86.0';
+/**
+ * Caution: The progression on cdnjs is...
+ * r80, r81, r82, r83, 86
+ * Notice that r84 and r85 are missing and that the `r` has been dropped!
+ */
+const RELEASE_THREEJS = '86';
 const VERSION_TWO = '0.6.1';
 const VERSION_UNITS = '1.5.5';
 // const VERSION_UNDERSCORE = '1.8.3';

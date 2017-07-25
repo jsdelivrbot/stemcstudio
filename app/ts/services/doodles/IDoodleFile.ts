@@ -1,6 +1,3 @@
-//
-// Editor Abstraction Layer
-//
 import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**

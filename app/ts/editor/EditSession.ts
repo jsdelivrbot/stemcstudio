@@ -82,9 +82,6 @@ import { LANGUAGE_TSX } from '../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_XML } from '../languages/modes';
 import { LANGUAGE_YAML } from '../languages/modes';
-//
-// Editor Abstraction Layer
-//
 import { FoldMode } from '../editor/mode/folding/FoldMode';
 import { LanguageModeId } from '../editor/LanguageMode';
 import { LanguageMode } from '../editor/LanguageMode';
