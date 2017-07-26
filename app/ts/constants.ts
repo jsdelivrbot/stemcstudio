@@ -2,7 +2,16 @@
  * The application version is used for cache busting the jspm.config.js file.
  * This files is used to load the application and the workers.
  */
-export const APP_VERSION = '2.36.6';
+export const APP_VERSION = '2.36.7';
+
+/**
+ * Web Worker supporting TypeScript Mode.
+ * The versioning is required for cache busting.
+ * It must be synchronized with the build process.
+ */
+const STEMCSTUDIO_WORKER_TS_VERSION = '1.0.0';
+const STEMCSTUDIO_WORKER_TS_MODULE_NAME = 'stemcstudio-worker-ts.js';
+export const STEMCSTUDIO_WORKER_TS_PATH = `/js/stemcstudio-worker-ts@${STEMCSTUDIO_WORKER_TS_VERSION}/${STEMCSTUDIO_WORKER_TS_MODULE_NAME}`;
 
 /**
  * Web Workers supporting Language Modes.
@@ -10,7 +19,7 @@ export const APP_VERSION = '2.36.6';
  * It must be synchronized with the build process.
  */
 const STEMCSTUDIO_WORKERS_VERSION = '2.15.4';
-export const STEMCSTUDIO_WORKERS_MODULE_NAME = 'stemcstudio-workers.js';
+const STEMCSTUDIO_WORKERS_MODULE_NAME = 'stemcstudio-workers.js';
 export const STEMCSTUDIO_WORKERS_PATH = `/js/stemcstudio-workers@${STEMCSTUDIO_WORKERS_VERSION}/${STEMCSTUDIO_WORKERS_MODULE_NAME}`;
 
 /**

@@ -24,6 +24,6 @@ export class TypeScriptMode extends JavaScriptMode {
         // Instead, the session update is bypassed and the session forwards the event.
         const tearDown = hookAnnotations(worker, session, false);
         hookTerminate(worker, session, tearDown);
-        initWorker(worker, 'TypeScriptWorker', this.scriptImports, session, callback);
+        initWorker(worker, 'stemcstudio-worker-ts.js', 'TypeScriptWorker', this.scriptImports, session, callback);
     }
 }

@@ -1,4 +1,3 @@
-import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { arrayToMap } from "../lib/lang";
 import { Completion } from "../Completion";
 import { Position } from "editor-document";
@@ -67,7 +66,7 @@ export class HtmlMode extends TextMode {
         hookTerminate(worker, session, tearDown);
         // We have a slight exception here due to the setOptions call.
         try {
-            worker.init(this.scriptImports, STEMCSTUDIO_WORKERS_MODULE_NAME, 'HtmlWorker', (err: any) => {
+            worker.init(this.scriptImports, 'stemcstudio-workers.js', 'HtmlWorker', (err: any) => {
                 if (!err) {
                     if (session) {
                         worker.attachToSession(session);

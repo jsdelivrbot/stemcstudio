@@ -200,6 +200,10 @@ function prepend(target, filePath) {
  */
 function copies(target) {
     /**
+     * Web Worker for TypeScript Mode.
+     */
+    const VERSION_STEMCSTUDIO_WORKER_TS = '1.0.0';
+    /**
      * Web Workers for Language Modes.
      */
     const VERSION_STEMCSTUDIO_WORKERS = '2.15.4';
@@ -276,6 +280,14 @@ function copies(target) {
             // FIXME: Should be cache busting.
             // The same worker is used for the workspace worker.
             dest: prepend(target, 'js/worker.js')
+        },
+        {
+            src: `node_modules/stemcstudio-worker-ts/dist/stemcstudio-worker-ts.js`,
+            dest: prepend(target, `js/stemcstudio-worker-ts@${VERSION_STEMCSTUDIO_WORKER_TS}/stemcstudio-worker-ts.js`)
+        },
+        {
+            src: "../stemcstudio-worker-ts/dist/stemcstudio-worker-ts.js",
+            dest: prepend(target, `js/stemcstudio-worker-ts@${VERSION_STEMCSTUDIO_WORKER_TS}/stemcstudio-worker-ts.js`)
         },
         {
             src: `node_modules/stemcstudio-workers/dist/stemcstudio-workers.js`,

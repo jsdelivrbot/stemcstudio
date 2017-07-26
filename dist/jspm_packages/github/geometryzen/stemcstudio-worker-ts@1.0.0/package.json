@@ -1,0 +1,80 @@
+{
+  "name": "stemcstudio-worker-ts",
+  "version": "1.0.0",
+  "description": "Web Worker for STEMCstudio TypeScript.",
+  "directories": {
+    "lib": "lib"
+  },
+  "main": "dist/stemcstudio-worker-ts.js",
+  "homepage": "https://github.com/geometryzen/stemcstudio-worker-ts",
+  "author": "david.geo.holmes@gmail.com",
+  "keywords": [
+    "editor",
+    "browser",
+    "ACE",
+    "systemjs",
+    "STEMCstudio",
+    "es6",
+    "typescript",
+    "ts"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/geometryzen/stemcstudio-worker-ts.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.5.53",
+    "code-writer": "^0.1.2",
+    "concurrently": "^3.5.0",
+    "es6-module-loader": "^0.17.11",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-complexity": "^0.3.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^1.0.2",
+    "grunt-exec": "~0.4.7",
+    "grunt-jasmine-task": "^0.2.3",
+    "grunt-tslint": "^5.0.1",
+    "jasmine-core": "^2.6.4",
+    "jspm": "0.16.53",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^1.0.1",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-systemjs": "^0.8.0",
+    "phantomjs": "^2.1.7",
+    "phantomjs-polyfill": "0.0.2",
+    "q": "~1.4.1",
+    "servedir": "^1.0.0",
+    "systemjs": "0.19.46",
+    "systemjs-builder": "^0.16.9",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "editor-document": "^0.0.5"
+  },
+  "jspm": {
+    "directories": {
+      "lib": "lib"
+    },
+    "dependencies": {
+      "editor-document": "npm:editor-document@^0.0.5"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.38",
+      "babel-runtime": "npm:babel-runtime@^5.8.38",
+      "core-js": "npm:core-js@^1.2.7",
+      "typescript": "npm:typescript@^2.4.2"
+    }
+  }
+}

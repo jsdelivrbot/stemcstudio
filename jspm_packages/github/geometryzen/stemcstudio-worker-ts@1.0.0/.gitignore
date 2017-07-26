@@ -1,0 +1,8 @@
+*.log
+amd/
+contributing/
+system/
+documentation/
+jspm_packages/
+node_modules/
+vendor/

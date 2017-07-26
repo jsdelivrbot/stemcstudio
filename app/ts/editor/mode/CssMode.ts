@@ -57,6 +57,6 @@ export class CssMode extends TextMode {
         const worker = new WorkerClient(this.workerUrl);
         const tearDown = hookAnnotations(worker, session, true);
         hookTerminate(worker, session, tearDown);
-        initWorker(worker, 'CssWorker', this.scriptImports, session, callback);
+        initWorker(worker, 'stemcstudio-workers.js', 'CssWorker', this.scriptImports, session, callback);
     }
 }

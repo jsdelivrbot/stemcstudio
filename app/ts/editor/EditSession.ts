@@ -39,6 +39,7 @@ import { HighlighterToken } from './mode/Highlighter';
 
 // Built-In Languages.
 import { APP_VERSION } from '../constants';
+import { STEMCSTUDIO_WORKER_TS_PATH } from '../constants';
 import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
 import { AsciiDocMode } from './mode/AsciiDocMode';
 import { ClojureMode } from './mode/ClojureMode';
@@ -1314,7 +1315,7 @@ export class EditSession {
                     break;
                 }
                 case LANGUAGE_TYPE_SCRIPT: {
-                    const tsMode = new TypeScriptMode('/js/worker.js', workerImports);
+                    const tsMode = new TypeScriptMode('/js/worker.js', systemImports.concat([STEMCSTUDIO_WORKER_TS_PATH]));
                     tsMode.getTokenizer().trace = this.traceTokenizer;
                     this.setLanguageMode(tsMode, onSetLanguageMode);
                     break;

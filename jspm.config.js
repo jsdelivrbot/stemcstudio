@@ -38,6 +38,7 @@ System.config({
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
+    "geometryzen/stemcstudio-worker-ts": "github:geometryzen/stemcstudio-worker-ts@1.0.0",
     "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.4",
     "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@1.0.0",
     "jquery": "npm:jquery@2.2.4",
@@ -58,6 +59,9 @@ System.config({
     },
     "github:geometryzen/davinci-mathscript@1.3.1": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
+    },
+    "github:geometryzen/stemcstudio-worker-ts@1.0.0": {
+      "editor-document": "npm:editor-document@0.0.5"
     },
     "github:geometryzen/stemcstudio-workers@2.15.4": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
@@ -212,7 +216,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -414,7 +418,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -557,7 +561,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.3": {

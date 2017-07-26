@@ -1075,5 +1075,8 @@
     "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
     "typhon-lang": "npm:typhon-lang@^0.12.9",
     "typhon-typescript": "npm:typhon-typescript@^0.3.0"
+  },
+  "github:geometryzen/stemcstudio-worker-ts@1.0.0": {
+    "editor-document": "npm:editor-document@^0.0.5"
   }
 }

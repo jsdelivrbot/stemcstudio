@@ -80,6 +80,6 @@ export class JavaScriptMode extends TextMode {
         const worker = new WorkerClient(this.workerUrl);
         const tearDown = hookAnnotations(worker, session, true);
         hookTerminate(worker, session, tearDown);
-        initWorker(worker, 'JavaScriptWorker', this.scriptImports, session, callback);
+        initWorker(worker, 'stemcstudio-workers.js', 'JavaScriptWorker', this.scriptImports, session, callback);
     }
 }

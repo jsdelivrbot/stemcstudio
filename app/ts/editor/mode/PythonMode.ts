@@ -89,6 +89,6 @@ export class PythonMode extends TextMode {
         const tearDown = hookAnnotations(worker, session, true);
         hookTerminate(worker, session, tearDown);
 
-        initWorker(worker, 'PythonWorker', this.scriptImports, session, callback);
+        initWorker(worker, 'stemcstudio-workers.js', 'PythonWorker', this.scriptImports, session, callback);
     }
 }

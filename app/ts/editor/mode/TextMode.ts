@@ -1,4 +1,3 @@
-import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
 import { Annotation } from "../Annotation";
 import { BlockComment } from './BlockComment';
 import { Completion } from "../Completion";
@@ -72,28 +71,29 @@ export function hookTerminate(worker: WorkerClient, session: EditSession, tearDo
 
 /**
  * Standard implementation for initializing an editor worker thread.
- * @param worker 
- * @param moduleName 
+ * @param worker
+ * @param moduleName The name of the module containing the className.
+ * @param className The name of the constructor function.
  * @param scriptImports 
  * @param session 
  * @param callback 
  */
-export function initWorker(worker: WorkerClient, moduleName: string, scriptImports: string[], session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
+export function initWorker(worker: WorkerClient, moduleName: string, className: string, scriptImports: string[], session: EditSession, callback: (err: any, worker?: WorkerClient) => void): void {
     try {
-        worker.init(scriptImports, STEMCSTUDIO_WORKERS_MODULE_NAME, moduleName, function (err: any) {
+        worker.init(scriptImports, moduleName, className, function (err: any) {
             if (!err) {
                 if (session) {
                     worker.attachToSession(session);
                     callback(void 0, worker);
                 }
                 else {
-                    const msg = `${moduleName} init fail. Cause: session does not have an associated document.`;
+                    const msg = `${className} init fail. Cause: session does not have an associated document.`;
                     console.warn(msg);
                     callback(new Error(msg));
                 }
             }
             else {
-                const msg = `${moduleName} init fail. Cause: ${err}`;
+                const msg = `${className} init fail. Cause: ${err}`;
                 console.warn(msg);
                 callback(new Error(msg));
             }

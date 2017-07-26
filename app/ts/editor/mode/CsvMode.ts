@@ -44,6 +44,6 @@ export class CsvMode extends TextMode {
         const worker = new WorkerClient(this.workerUrl);
         const tearDown = hookAnnotations(worker, session, true);
         hookTerminate(worker, session, tearDown);
-        initWorker(worker, 'CsvWorker', this.scriptImports, session, callback);
+        initWorker(worker, 'stemcstudio-workers.js', 'CsvWorker', this.scriptImports, session, callback);
     }
 }
