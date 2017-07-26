@@ -40,7 +40,6 @@ import { HighlighterToken } from './mode/Highlighter';
 // Built-In Languages.
 import { APP_VERSION } from '../constants';
 import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
-import { TYPESCRIPT_SERVICES_PATH } from '../constants';
 import { AsciiDocMode } from './mode/AsciiDocMode';
 import { ClojureMode } from './mode/ClojureMode';
 import { CssMode } from './mode/CssMode';
@@ -1267,7 +1266,7 @@ export class EditSession {
      */
     public setLanguage(mode: LanguageModeId): Promise<void> {
         const systemImports: string[] = ['/jspm_packages/system.js', `/jspm.config.js?version=${APP_VERSION}`];
-        const workerImports: string[] = systemImports.concat(TYPESCRIPT_SERVICES_PATH).concat([STEMCSTUDIO_WORKERS_PATH]);
+        const workerImports: string[] = systemImports.concat([STEMCSTUDIO_WORKERS_PATH]);
 
         return new Promise<void>((resolve, reject) => {
             function onSetLanguageMode(err: any) {

@@ -1,4 +1,4 @@
-import { STEMCSTUDIO_WORKERS_MODULE_NAME } from '../../constants';
+import { STEMCSTUDIO_WORKSPACE_MODULE_NAME } from '../../constants';
 import { CompletionEntry } from './CompletionEntry';
 import { DefinitionInfo } from './DefinitionInfo';
 import { Delta } from 'editor-document';
@@ -306,7 +306,7 @@ export class LanguageServiceProxy {
     }
 
     initialize(scriptImports: string[], callback: (err: any) => any): void {
-        this.worker.init(scriptImports, STEMCSTUDIO_WORKERS_MODULE_NAME, 'LanguageServiceWorker', function (err: any) {
+        this.worker.init(scriptImports, STEMCSTUDIO_WORKSPACE_MODULE_NAME, 'LanguageServiceWorker', function (err: any) {
             if (err) {
                 console.warn(`worker.init() failed ${err}`);
             }

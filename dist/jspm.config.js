@@ -38,7 +38,8 @@ System.config({
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
-    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.3",
+    "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.4",
+    "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@1.0.0",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
@@ -58,7 +59,15 @@ System.config({
     "github:geometryzen/davinci-mathscript@1.3.1": {
       "ts": "github:frankwallis/plugin-typescript@2.6.0"
     },
-    "github:geometryzen/stemcstudio-workers@2.15.3": {
+    "github:geometryzen/stemcstudio-workers@2.15.4": {
+      "davinci-csv": "npm:davinci-csv@0.9.12",
+      "editor-document": "npm:editor-document@0.0.5",
+      "generic-rbtree": "npm:generic-rbtree@1.1.1",
+      "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
+      "typhon-lang": "npm:typhon-lang@0.12.9",
+      "typhon-typescript": "npm:typhon-typescript@0.3.0"
+    },
+    "github:geometryzen/stemcstudio-workspace@1.0.0": {
       "davinci-csv": "npm:davinci-csv@0.9.12",
       "editor-document": "npm:editor-document@0.0.5",
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
@@ -203,7 +212,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },

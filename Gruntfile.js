@@ -199,8 +199,14 @@ function prepend(target, filePath) {
  * Files that are copied to the target folder ('generated' for dev, 'dist' for production)
  */
 function copies(target) {
-
-    const VERSION_STEMCSTUDIO_WORKERS = '2.15.3';
+    /**
+     * Web Workers for Language Modes.
+     */
+    const VERSION_STEMCSTUDIO_WORKERS = '2.15.4';
+    /**
+     * Web Worker for the Workspace (Language Service).
+     */
+    const VERSION_STEMCSTUDIO_WORKSPACE = '1.0.0';
     /**
      * Angular
      * Used only to copy index.d.ts files from museum to vendor.
@@ -268,6 +274,7 @@ function copies(target) {
         {
             src: `node_modules/stemcstudio-workers/src/worker.js`,
             // FIXME: Should be cache busting.
+            // The same worker is used for the workspace worker.
             dest: prepend(target, 'js/worker.js')
         },
         {
@@ -277,6 +284,14 @@ function copies(target) {
         {
             src: "../stemcstudio-workers/dist/stemcstudio-workers.js",
             dest: prepend(target, `js/stemcstudio-workers@${VERSION_STEMCSTUDIO_WORKERS}/stemcstudio-workers.js`)
+        },
+        {
+            src: `node_modules/stemcstudio-workspace/dist/stemcstudio-workspace.js`,
+            dest: prepend(target, `js/stemcstudio-workspace@${VERSION_STEMCSTUDIO_WORKSPACE}/stemcstudio-workspace.js`)
+        },
+        {
+            src: "../stemcstudio-workspace/dist/stemcstudio-workspace.js",
+            dest: prepend(target, `js/stemcstudio-workspace@${VERSION_STEMCSTUDIO_WORKSPACE}/stemcstudio-workspace.js`)
         },
         {
             src: 'manual/aws/js/aws-sdk-2.3.12.min.js',

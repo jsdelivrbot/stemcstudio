@@ -85,7 +85,7 @@ The version is important for cache busting.
 2. optionManager.service.ts - update the version
 3. Gruntfile.js - update the version
 
-### Upgrading stemcstudio-workers
+### Upgrading stemcstudio-workers or stemcstudio-workspace
 
 Make sure that the version references are correct in the following files:
 

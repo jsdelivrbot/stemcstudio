@@ -1054,7 +1054,13 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "child_process": "github:jspm/nodelibs-child_process@^0.1.0"
   },
-  "github:geometryzen/stemcstudio-workers@2.15.3": {
+  "npm:semver@5.4.1": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "github:geometryzen/davinci-mathscript@1.3.1": {
+    "ts": "github:frankwallis/plugin-typescript@^2.6.0"
+  },
+  "github:geometryzen/stemcstudio-workspace@1.0.0": {
     "davinci-csv": "npm:davinci-csv@^0.9.12",
     "editor-document": "npm:editor-document@^0.0.5",
     "generic-rbtree": "npm:generic-rbtree@^1.1.1",
@@ -1062,10 +1068,12 @@
     "typhon-lang": "npm:typhon-lang@^0.12.9",
     "typhon-typescript": "npm:typhon-typescript@^0.3.0"
   },
-  "npm:semver@5.4.1": {
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "github:geometryzen/davinci-mathscript@1.3.1": {
-    "ts": "github:frankwallis/plugin-typescript@^2.6.0"
+  "github:geometryzen/stemcstudio-workers@2.15.4": {
+    "davinci-csv": "npm:davinci-csv@^0.9.12",
+    "editor-document": "npm:editor-document@^0.0.5",
+    "generic-rbtree": "npm:generic-rbtree@^1.1.1",
+    "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
+    "typhon-lang": "npm:typhon-lang@^0.12.9",
+    "typhon-typescript": "npm:typhon-typescript@^0.3.0"
   }
 }
