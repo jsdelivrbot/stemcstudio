@@ -18,5 +18,4 @@ export interface SubmitParams {
      * 
      */
     credentials: { [identityProviderName: string]: string };
-
 }

@@ -20,6 +20,7 @@ block content
         return address + System.cacheBust;
       });
     };
-    System.cacheBust = '?bust=' + Date.now();
+    System.cacheBust = '?bust=2.36.8';
+    System.defaultJSExtensions = true;
     System.import('js/main.js');
   div(ui-view) Please standby while we download version #{version}
