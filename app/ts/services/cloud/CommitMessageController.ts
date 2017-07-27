@@ -1,8 +1,8 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import CommitMessageScope from './CommitMessageScope';
-import CommitMessageOptions from './CommitMessageOptions';
+import { CommitMessageScope } from './CommitMessageScope';
+import { CommitMessageOptions } from './CommitMessageOptions';
 
-export default class CommitMessageModalController {
+export class CommitMessageController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: CommitMessageScope, $uibModalInstance: IModalServiceInstance, options: CommitMessageOptions) {
 

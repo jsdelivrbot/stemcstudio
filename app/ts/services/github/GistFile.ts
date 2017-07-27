@@ -1,4 +1,4 @@
-interface GistFile {
+export interface GistFile {
     filename: string;
     type: string;
     language: string;
@@ -10,5 +10,3 @@ interface GistFile {
      */
     content: string;
 }
-
-export default GistFile;

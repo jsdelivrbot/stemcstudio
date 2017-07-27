@@ -1,4 +1,4 @@
-interface GitHubOwner {
+export interface GitHubOwner {
     login: string;
     id: number;
     avatar_url: string;
@@ -20,5 +20,3 @@ interface GitHubOwner {
     type: string;
     site_admin: boolean;
 }
-
-export default GitHubOwner;

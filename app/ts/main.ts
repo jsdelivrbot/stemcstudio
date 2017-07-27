@@ -51,10 +51,10 @@ import { GitHubRepoService } from './services/github/github.repo.service';
 import { GITHUB_USER_SERVICE_UUID } from './services/github/IGitHubUserService';
 import { GitHubUserService } from './services/github/github.user.service';
 
-import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
-import CommitMessageController from './services/cloud/CommitMessageController';
+import { ChooseGistOrRepoController } from './services/cloud/ChooseGistOrRepoController';
+import { CommitMessageController } from './services/cloud/CommitMessageController';
 import { contextMenu } from './directives/contextMenu/contextMenu.directive';
-import contiguous from './filters/contiguous';
+import { contiguous } from './filters/contiguous';
 import { DashboardController } from './controllers/DashboardController';
 import { DoodleController } from './controllers/DoodleController';
 import { DownloadController } from './controllers/DownloadController';
@@ -73,10 +73,10 @@ import { PromptController } from './services/modalService/PromptController';
 import { ShareController } from './services/modalService/ShareController';
 import { ModalDialogService } from './services/modalService/modal-dialog.service';
 
-import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
-import ReteFlowService from './services/flow/ReteFlowService';
+import { NaiveFlowSessionService } from './services/flow/NaiveFlowSessionService';
+import { ReteFlowService } from './services/flow/ReteFlowService';
 import { RepoController } from './controllers/RepoController';
-import RepoDataController from './services/cloud/RepoDataController';
+import { RepoDataController } from './services/cloud/RepoDataController';
 import { resizable } from './directives/resizable/resizable';
 import { workspace } from './directives/workspace/workspace.component';
 

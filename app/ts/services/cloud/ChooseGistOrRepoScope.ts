@@ -1,10 +1,8 @@
-import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
+import { ChooseGistOrRepoOptions } from './ChooseGistOrRepoOptions';
 
-interface CommitMessageScope {
+export interface ChooseGistOrRepoScope {
     options: ChooseGistOrRepoOptions;
     gist(): void;
     repo(): void;
     cancel(): void;
 }
-
-export default CommitMessageScope;

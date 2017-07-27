@@ -1,4 +1,4 @@
-interface Tree {
+export interface Tree {
     sha: string;
     url: string;
     tree: {
@@ -17,5 +17,3 @@ interface Tree {
     }[];
     truncated: boolean;
 }
-
-export default Tree;

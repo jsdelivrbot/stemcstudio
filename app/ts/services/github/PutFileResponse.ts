@@ -1,4 +1,4 @@
-interface PutFileResponse {
+export interface PutFileResponse {
     content: {
         name: string;
         path: string;
@@ -41,5 +41,3 @@ interface PutFileResponse {
         }[];
     };
 }
-
-export default PutFileResponse;

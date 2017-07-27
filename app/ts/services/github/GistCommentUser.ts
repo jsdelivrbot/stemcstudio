@@ -1,7 +1,7 @@
 /**
  * A lightweight (slice) of a full GitHub User.
  */
-interface GistCommentUser {
+export interface GistCommentUser {
     avatar_url: string;
     events_url: string;
     followers_url: string;
@@ -20,5 +20,3 @@ interface GistCommentUser {
     type: string;
     url: string;
 }
-
-export default GistCommentUser;

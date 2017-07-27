@@ -1,4 +1,4 @@
-interface CommitMessageOptions {
+export interface CommitMessageOptions {
     title: string;
     message: string;
     text: string;
@@ -6,5 +6,3 @@ interface CommitMessageOptions {
     cancelButtonText: string;
     actionButtonText: string;
 }
-
-export default CommitMessageOptions;

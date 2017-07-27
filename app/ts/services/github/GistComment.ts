@@ -1,4 +1,4 @@
-import GistCommentUser from './GistCommentUser';
+import { GistCommentUser } from './GistCommentUser';
 
 export interface GistComment {
     id: number;

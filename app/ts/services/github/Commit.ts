@@ -1,4 +1,4 @@
-interface Commit {
+export interface Commit {
     sha: string;
     url: string;
     html_url: string;
@@ -23,5 +23,3 @@ interface Commit {
         html_url: string;
     }[];
 }
-
-export default Commit;

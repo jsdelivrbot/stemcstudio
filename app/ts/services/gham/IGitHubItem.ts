@@ -5,7 +5,7 @@
  * By looking at the `pending` property, we can check that the authentication request has not been spoofed.
  * This approach is recommended by GitHub.
  */
-interface IGitHubItem {
+export interface IGitHubItem {
     oauth: {
         /**
          * A generated-per-login-request UUID-4 used to improve security.
@@ -21,5 +21,3 @@ interface IGitHubItem {
         state?: string;
     };
 }
-
-export default IGitHubItem;

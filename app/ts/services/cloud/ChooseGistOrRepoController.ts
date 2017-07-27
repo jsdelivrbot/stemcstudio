@@ -1,8 +1,8 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import ChooseGistOrRepoScope from './ChooseGistOrRepoScope';
-import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
+import { ChooseGistOrRepoScope } from './ChooseGistOrRepoScope';
+import { ChooseGistOrRepoOptions } from './ChooseGistOrRepoOptions';
 
-export default class ChooseGistOrRepoController {
+export class ChooseGistOrRepoController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: ChooseGistOrRepoScope, $uibModalInstance: IModalServiceInstance, options: ChooseGistOrRepoOptions) {
         $scope.options = options;

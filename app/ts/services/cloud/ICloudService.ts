@@ -3,7 +3,7 @@ import { Doodle } from '../doodles/Doodle';
 import { Gist } from '../github/Gist';
 import { RepoData } from '../github/RepoData';
 import { RepoKey } from '../github/RepoKey';
-import UploadToRepoFacts from './UploadToRepoFacts';
+import { UploadToRepoFacts } from './UploadToRepoFacts';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**

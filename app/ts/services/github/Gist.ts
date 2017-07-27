@@ -1,5 +1,5 @@
-import GistFile from './GistFile';
-import GitHubOwner from './GitHubOwner';
+import { GistFile } from './GistFile';
+import { GitHubOwner } from './GitHubOwner';
 
 export interface Gist {
     url: string;

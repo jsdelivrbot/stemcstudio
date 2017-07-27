@@ -5,7 +5,7 @@ const hypen = '-';
 /**
  * A filter for replacing hyphens and spaces with nothing.
  */
-function contiguous() {
+export function contiguous() {
     return function filter(input: string): string {
         if (input) {
             return input.replace(hypen, nothing).replace(space, nothing);
@@ -17,5 +17,3 @@ function contiguous() {
 }
 
 contiguous['$inject'] = [];
-
-export default contiguous;

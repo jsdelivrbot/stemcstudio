@@ -1,21 +1,21 @@
 import { IHttpPromise } from 'angular';
-import Blob from './Blob';
-import BlobData from './BlobData';
-import BlobKey from './BlobKey';
+import { Blob } from './Blob';
+import { BlobData } from './BlobData';
+import { BlobKey } from './BlobKey';
 
-import Commit from './Commit';
-import CommitData from './CommitData';
-import CommitKey from './CommitKey';
+import { Commit } from './Commit';
+import { CommitData } from './CommitData';
+import { CommitKey } from './CommitKey';
 
-import PutFileResponse from './PutFileResponse';
+import { PutFileResponse } from './PutFileResponse';
 
-import Reference from './Reference';
-import ReferenceCreateData from './ReferenceCreateData';
-import ReferenceUpdateData from './ReferenceUpdateData';
+import { Reference } from './Reference';
+import { ReferenceCreateData } from './ReferenceCreateData';
+import { ReferenceUpdateData } from './ReferenceUpdateData';
 
-import Tree from './Tree';
-import TreeData from './TreeData';
-import TreeKey from './TreeKey';
+import { Tree } from './Tree';
+import { TreeData } from './TreeData';
+import { TreeKey } from './TreeKey';
 
 // import GitHubUser from './GitHubUser';
 // import { IGitHubUserService } from './IGitHubUserService';

@@ -1,4 +1,4 @@
-interface ReferenceCreateData {
+export interface ReferenceCreateData {
 
     /**
      * The name of the fully qualified reference (ie: refs/heads/master).
@@ -11,5 +11,3 @@ interface ReferenceCreateData {
      */
     sha: string;
 }
-
-export default ReferenceCreateData;

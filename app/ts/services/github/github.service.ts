@@ -1,20 +1,20 @@
 import { IHttpPromise, IHttpService, IQService } from 'angular';
 import { AbstractGitHubService } from './AbstractGitHubService';
-import Blob from './Blob';
-import BlobData from './BlobData';
-import BlobKey from './BlobKey';
-import Commit from './Commit';
-import CommitData from './CommitData';
-import CommitKey from './CommitKey';
+import { Blob } from './Blob';
+import { BlobData } from './BlobData';
+import { BlobKey } from './BlobKey';
+import { Commit } from './Commit';
+import { CommitData } from './CommitData';
+import { CommitKey } from './CommitKey';
 import { IGitHubService } from './IGitHubService';
 import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
-import PutFileResponse from './PutFileResponse';
-import Reference from './Reference';
-import ReferenceCreateData from './ReferenceCreateData';
-import ReferenceUpdateData from './ReferenceUpdateData';
-import Tree from './Tree';
-import TreeData from './TreeData';
-import TreeKey from './TreeKey';
+import { PutFileResponse } from './PutFileResponse';
+import { Reference } from './Reference';
+import { ReferenceCreateData } from './ReferenceCreateData';
+import { ReferenceUpdateData } from './ReferenceUpdateData';
+import { Tree } from './Tree';
+import { TreeData } from './TreeData';
+import { TreeKey } from './TreeKey';
 
 /**
  * All access is over HTTPS, and accessed from https://api/github.com

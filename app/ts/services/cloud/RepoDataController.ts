@@ -1,9 +1,9 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import { RepoData } from '../github/RepoData';
-import RepoDataScope from './RepoDataScope';
-import RepoDataOptions from './RepoDataOptions';
+import { RepoDataScope } from './RepoDataScope';
+import { RepoDataOptions } from './RepoDataOptions';
 
-export default class RepoDataController {
+export class RepoDataController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options', 'data'];
     constructor($scope: RepoDataScope, $uibModalInstance: IModalServiceInstance, options: RepoDataOptions, data: RepoData) {
 

@@ -118,11 +118,9 @@ module.exports = function (grunt) {
                 "app/ts/modules/**/*.ts",
                 "app/ts/scopes/**/*.ts",
                 "app/ts/services/**/*.ts",
-                "app/ts/stemcArXiv/**/*.ts",
                 "app/ts/synchronization/**/*.ts",
-                "app/ts/translate/**/*.ts",
                 "app/ts/utils/**/*.ts",
-                "app/ts/wsmodel/**/*.ts",
+                "app/ts/workbench/**/*.ts",
                 "app/ts/*.ts",
                 "server/**/*.ts",
                 "./sockets.ts"
@@ -230,6 +228,10 @@ function copies(target) {
      * 
      */
     const VERSION_PLOTLY = '1.28.2';
+    /**
+     * 
+     */
+    const VERSION_SNAPSVG = '0.5.0';
     /**
      * three.js has its own non-standard version number.
      * The three.js release number is mapped to the minor semantic version.
@@ -559,6 +561,18 @@ function copies(target) {
         {
             src: `museum/plotly@${VERSION_PLOTLY}/plotly.min.js`,
             dest: prepend(target, `vendor/plotly@${VERSION_PLOTLY}/plotly.min.js`)
+        },
+        {
+            src: `museum/snapsvg@${VERSION_SNAPSVG}/index.d.ts`,
+            dest: prepend(target, `vendor/snapsvg@${VERSION_SNAPSVG}/index.d.ts`)
+        },
+        {
+            src: `museum/snapsvg@${VERSION_SNAPSVG}/snap.svg.js`,
+            dest: prepend(target, `vendor/snapsvg@${VERSION_SNAPSVG}/snap.svg.js`)
+        },
+        {
+            src: `museum/snapsvg@${VERSION_SNAPSVG}/snap.svg-min.js`,
+            dest: prepend(target, `vendor/snapsvg@${VERSION_SNAPSVG}/snap.svg-min.js`)
         },
         {
             expand: true,

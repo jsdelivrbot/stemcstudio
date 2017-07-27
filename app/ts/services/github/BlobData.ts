@@ -1,7 +1,7 @@
 /**
  * The payload for a request to POST a Blob.
  */
-interface BlobData {
+export interface BlobData {
     /**
      * The new blob's content.
      */
@@ -13,5 +13,3 @@ interface BlobData {
      */
     encoding?: string;
 }
-
-export default BlobData;

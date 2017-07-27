@@ -1,11 +1,10 @@
 import { Fuzzy } from '../../utils/Fuzzy';
-// FIXME: These s/b the same.
-import Commit from '../github/Commit';
-import CommitKey from '../github/CommitKey';
-import Reference from '../github/Reference';
-import TreeKey from '../github/TreeKey';
+import { Commit } from '../github/Commit';
+import { CommitKey } from '../github/CommitKey';
+import { Reference } from '../github/Reference';
+import { TreeKey } from '../github/TreeKey';
 
-export default class UploadToRepoFacts {
+export class UploadToRepoFacts {
     /**
      * The initial reference that we will finally update.
      * This may not exist if the repository is empty and has no commits.

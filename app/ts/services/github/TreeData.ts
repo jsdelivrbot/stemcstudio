@@ -1,4 +1,4 @@
-interface TreeData {
+export interface TreeData {
     /**
      * The SHA1 of the tree you want to update with new data.
      * If you don't set this, the commit will be created on top of everything.
@@ -43,5 +43,3 @@ interface TreeData {
         content?: string;
     }[];
 }
-
-export default TreeData;

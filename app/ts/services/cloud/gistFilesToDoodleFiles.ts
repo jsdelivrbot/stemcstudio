@@ -1,5 +1,5 @@
 import { DoodleFile } from '../doodles/DoodleFile';
-import GistFile from '../github/GistFile';
+import { GistFile } from '../github/GistFile';
 import { modeFromName } from '../../utils/modeFromName';
 
 /**
@@ -7,7 +7,7 @@ import { modeFromName } from '../../utils/modeFromName';
  * 
  * This is an opportunity to add, remove, rename or transform files.
  */
-export default function gistFilesToDoodleFiles(gFiles: { [gName: string]: GistFile }, excludes: string[]): { [dName: string]: DoodleFile } {
+export function gistFilesToDoodleFiles(gFiles: { [gName: string]: GistFile }, excludes: string[]): { [dName: string]: DoodleFile } {
     const dFiles: { [dName: string]: DoodleFile } = {};
     const gNames = Object.keys(gFiles);
     const iLen = gNames.length;

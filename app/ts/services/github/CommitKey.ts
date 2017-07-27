@@ -1,4 +1,4 @@
-interface CommitKey {
+export interface CommitKey {
     sha: string;
     url: string;
     html_url: string;
@@ -23,5 +23,3 @@ interface CommitKey {
         html_url: string;
     }[];
 }
-
-export default CommitKey;

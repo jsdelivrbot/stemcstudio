@@ -3,6 +3,10 @@ import { IOption, LibraryKind } from './IOption';
 import { IOptionManager } from './IOptionManager';
 import { validate } from '../../utils/validateNpmPackageName';
 
+/**
+ * It's a passthru if the package name is valid.
+ * Otherwise, it blows up in your face. Nice!
+ */
 const ensurePackageName = function (packageName: string): string {
     const result = validate(packageName);
     if (result.validForNewPackages && result.validForOldPackages) {
@@ -74,6 +78,7 @@ const VERSION_RXJS = '5.0.1';
  * Works for standalone RxJS.
  */
 const VERSION_RXJS_RX = '5.3.3';
+const VERSION_SNAPSVG = '0.5.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 // const VERSION_SYSTEMJS = '0.19.37';
@@ -202,6 +207,9 @@ function redux(fileName: string): string {
 }
 function rxjsRx(fileName: string): string {
     return vendorFolder('RxJS', VERSION_RXJS_RX, void 0, fileName);
+}
+function snapsvg(fileName: string): string {
+    return vendorFolder('snapsvg', VERSION_SNAPSVG, void 0, fileName);
 }
 function socketIoClient(fileName: string): string {
     return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
@@ -751,6 +759,21 @@ export class OptionManager implements IOptionManager {
                 dts: rxjsRx(INDEX_DTS),
                 js: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RXJS_RX}/dist/global/Rx.js`],
                 minJs: [`https://unpkg.com/@reactivex/rxjs@${VERSION_RXJS_RX}/dist/global/Rx.js`],
+                dependencies: {}
+            },
+            {
+                packageName: ensurePackageName('snapsvg'),
+                moduleName: 'snapsvg',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Snap',
+                description: "The JavaScript SVG library for the modern web.",
+                homepage: 'snapsvg.io',
+                version: VERSION_SNAPSVG,
+                visible: true,
+                css: [],
+                dts: snapsvg(INDEX_DTS),
+                js: [snapsvg('snap.svg.js')],
+                minJs: [snapsvg('snap.svg-min.js')],
                 dependencies: {}
             },
             {

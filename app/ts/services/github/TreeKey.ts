@@ -1,4 +1,4 @@
-interface TreeKey {
+export interface TreeKey {
     sha: string;
     url: string;
     tree: {
@@ -10,5 +10,3 @@ interface TreeKey {
         url: string;
     }[];
 }
-
-export default TreeKey;

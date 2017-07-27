@@ -1,4 +1,4 @@
-interface ReferenceUpdateData {
+export interface ReferenceUpdateData {
     /**
      * The SHA1 value to set this reference to.
      */
@@ -11,5 +11,3 @@ interface ReferenceUpdateData {
      */
     force?: boolean;
 }
-
-export default ReferenceUpdateData;

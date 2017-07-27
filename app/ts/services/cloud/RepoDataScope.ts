@@ -1,11 +1,9 @@
 import { RepoData } from '../github/RepoData';
-import RepoDataOptions from './RepoDataOptions';
+import { RepoDataOptions } from './RepoDataOptions';
 
-interface RepoDataScope {
+export interface RepoDataScope {
     data: RepoData;
     options: RepoDataOptions;
     ok(): void;
     cancel(): void;
 }
-
-export default RepoDataScope;

@@ -76,6 +76,7 @@ Update versions in
 1. package.json
 2. bower.json
 3. app/ts/constants.ts
+4. views/index.pug
 
 The version is important for cache busting.
 

@@ -1,4 +1,4 @@
-interface Blob {
+export interface Blob {
     sha: string;
     size: number;
     url: string;
@@ -8,5 +8,3 @@ interface Blob {
      */
     encoding: 'base64';
 }
-
-export default Blob;

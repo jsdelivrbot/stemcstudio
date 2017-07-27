@@ -1,4 +1,4 @@
-interface CommitData {
+export interface CommitData {
     message: string;
     author?: {
         name: string;
@@ -13,5 +13,3 @@ interface CommitData {
     parents: string[];
     tree: string;
 }
-
-export default CommitData;

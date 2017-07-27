@@ -3,7 +3,7 @@
  * 
  * Most of the time, a reference will be used to identify a Commit object.
  */
-interface Reference {
+export interface Reference {
     ref: string;
     url: string;
     object: {
@@ -12,5 +12,3 @@ interface Reference {
         url: string;
     };
 }
-
-export default Reference;

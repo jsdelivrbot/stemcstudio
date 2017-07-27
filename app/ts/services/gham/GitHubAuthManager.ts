@@ -3,7 +3,7 @@ import { COOKIE_SERVICE_UUID, ICookieService } from '../cookie/ICookieService';
 import { GITHUB_USER_SERVICE_UUID, IGitHubUserService } from '../github/IGitHubUserService';
 import { GitHubUser } from '../github/GitHubUser';
 import { IGitHubAuthManager } from './IGitHubAuthManager';
-import IGitHubItem from './IGitHubItem';
+import { IGitHubItem } from './IGitHubItem';
 
 const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
