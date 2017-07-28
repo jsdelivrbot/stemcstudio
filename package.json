@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.36.14",
+  "version": "2.36.15",
   "private": true,
   "description": "Live Coding in a Gist",
   "engines": {
@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@reactivex/rxjs": "^5.4.2",
-    "@types/angular": "^1.6.27",
+    "@types/angular": "^1.6.28",
     "@types/angular-animate": "^1.5.8",
     "@types/angular-cookies": "^1.4.4",
     "@types/angular-mocks": "1.5.10",

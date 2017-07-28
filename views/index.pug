@@ -5,6 +5,9 @@ block content
   script(src=jspmSystemJs)
   script(src=jspmConfigJs)
   script.
+    // Used by prerender.io to determine when page is ready to be cached.
+    window.prerenderReady = false;
+  script.
     if ('serviceWorker'in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
@@ -20,7 +23,7 @@ block content
         return address + System.cacheBust;
       });
     };
-    System.cacheBust = '?version=2.36.14';
+    System.cacheBust = '?version=2.36.15';
     System.defaultJSExtensions = true;
     System.import('js/main.js');
   div(ui-view) Please standby while we download version #{version}

@@ -172,6 +172,10 @@ export class HomeController extends AbstractPageController {
      */
     $onInit(): void {
         // This is being called, every time I go to or return to the home page.
+        console.warn("HomeController.$onInit()");
+
+        // Use to indicater to prerender.io that it can take an HTML snapshot.
+        window['prerenderReady'] = true;
     }
 
     /**
