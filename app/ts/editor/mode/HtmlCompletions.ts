@@ -291,7 +291,6 @@ export class HtmlCompletions {
         return attributes.map(function (attribute: string) {
             return {
                 caption: attribute,
-                snippet: attribute + '="$0"',
                 meta: "attribute",
                 score: Number.MAX_VALUE
             };
@@ -317,7 +316,6 @@ export class HtmlCompletions {
         return values.map(function (value) {
             return {
                 caption: value,
-                snippet: value,
                 meta: "attribute value",
                 score: Number.MAX_VALUE
             };
@@ -330,7 +328,6 @@ export class HtmlCompletions {
         return values.map(function (value) {
             return {
                 caption: value,
-                snippet: value,
                 meta: "html entity",
                 score: Number.MAX_VALUE
             };

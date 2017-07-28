@@ -1,5 +1,5 @@
-import { Delta } from './Delta';
-import { Position } from './Position';
+import { Delta } from 'editor-document';
+import { Position } from 'editor-document';
 
 function throwDeltaError(delta: Delta, errorText: string) {
     throw "Invalid Delta: " + errorText;

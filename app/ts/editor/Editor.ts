@@ -44,10 +44,8 @@ import { CompletionManager } from "./autocomplete/CompletionManager";
 import { refChange } from '../utils/refChange';
 import { SearchOptions } from './SearchOptions';
 import { Selection } from './Selection';
-import { SnippetManager } from './SnippetManager';
 import { stringTrimLeft, stringTrimRight } from "./lib/lang";
 import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, preventDefault, stopEvent } from "./lib/event";
-import { TabstopManager } from './TabstopManager';
 import { EditorChangeSessionEvent } from './events/EditorChangeSessionEvent';
 import { SessionChangeEditorEvent } from './events/SessionChangeEditorEvent';
 import { SessionChangeCursorEvent } from './events/SessionChangeCursorEvent';
@@ -70,8 +68,6 @@ import { QuickInfoTooltip } from '../editor/workspace/QuickInfoTooltip';
 import { QuickInfoTooltipHost } from '../editor/workspace/QuickInfoTooltipHost';
 import { RangeWithCollapseChildren } from '../editor/RangeBasic';
 import { RangeSelectionMarker } from '../editor/RangeBasic';
-import { Snippet } from './Snippet';
-import { SnippetOptions } from './SnippetOptions';
 import { TokenWithIndex } from './Token';
 import { UndoManager } from './UndoManager';
 
@@ -328,15 +324,6 @@ export class Editor {
      */
     public exitMultiSelectMode: () => void;
 
-    /**
-     *
-     */
-    public readonly snippetManager = new SnippetManager();
-
-    /**
-     * 
-     */
-    public tabstopManager: TabstopManager | null;
     /**
      * 
      */
@@ -627,18 +614,6 @@ export class Editor {
             return selection.moveToPosition(pos);
         }
     }
-    registerSnippets(snippets: Snippet[]): void {
-        return this.snippetManager.register(snippets);
-    }
-
-    /*
-    addCommand(keybinding: number, handler: any, context: string): void {
-        const command: Command = {
-
-        };
-        this.commands.addCommand(command);
-    }
-    */
 
     addPlaceholderFold(placeholder: string, range: RangeWithCollapseChildren): Fold | undefined {
         return this.sessionOrThrow().addPlaceholderFold(placeholder, range);
@@ -692,10 +667,7 @@ export class Editor {
     }
 
     tabNext(direction?: number) {
-        const tabstopManager = this.tabstopManager;
-        if (tabstopManager) {
-            tabstopManager.tabNext(direction);
-        }
+        // Do nothing.
     }
 
     selectionOrThrow(): Selection {
@@ -1745,34 +1717,6 @@ export class Editor {
      */
     setFontSize(fontSize: string | null): void {
         this.renderer.setFontSize(fontSize);
-    }
-
-    isSnippetSelectionMode(): boolean {
-        return this.inVirtualSelectionMode;
-    }
-
-    enableTabStops(): TabstopManager {
-        return this.tabstopManager ? this.tabstopManager : new TabstopManager(this);
-    }
-
-    /**
-     * Handles a request to insert a snippet from a completion manager.
-     */
-    insertSnippet(content: string, options?: SnippetOptions): void {
-        return this.snippetManager.insertSnippet(this, content, options);
-    }
-
-    /**
-     * Handles request to expand a snippet (is the fact that a tab was used important?).
-     * The editor will attempt to find a snippet that is appropriate for the trigger and scope.
-     */
-    expandSnippetWithTab(options?: SnippetOptions): boolean {
-        if (this.snippetManager) {
-            return this.snippetManager.expandWithTab(this, options);
-        }
-        else {
-            return false;
-        }
     }
 
     /**

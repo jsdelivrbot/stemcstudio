@@ -124,7 +124,7 @@ export class CompletionManager {
             "Shift-Return": (editor: Editor) => { this.insertMatch(null, { deleteSuffix: true }); },
             "Tab": (editor: Editor) => {
                 const result = this.insertMatch();
-                if (!result && !editor.tabstopManager) {
+                if (!result) {
                     this.goTo("down");
                 }
                 else {
@@ -242,13 +242,8 @@ export class CompletionManager {
                 }
             }
 
-            if (data.snippet) {
-                this.editor.insertSnippet(data.snippet);
-            }
-            else {
-                const insertstringCommand = this.editor.commands.getCommandByName(COMMAND_NAME_INSERT_STRING);
-                this.editor.execCommand(insertstringCommand, data.value || data);
-            }
+            const insertstringCommand = this.editor.commands.getCommandByName(COMMAND_NAME_INSERT_STRING);
+            this.editor.execCommand(insertstringCommand, data.value || data);
         }
         this.detach();
     }
@@ -340,7 +335,7 @@ export class CompletionManager {
             if (!this.completions.filtered.length)
                 return this.detach();
 
-            if (this.completions.filtered.length === 1 && this.completions.filtered[0].value === prefix && !this.completions.filtered[0].snippet) {
+            if (this.completions.filtered.length === 1 && this.completions.filtered[0].value === prefix) {
                 return this.detach();
             }
 
@@ -386,7 +381,7 @@ export class CompletionManager {
                         return detachIfFinished();
 
                     // One result equal to the prefix.
-                    if (filtered.length === 1 && filtered[0].value === prefix && !filtered[0].snippet)
+                    if (filtered.length === 1 && filtered[0].value === prefix)
                         return detachIfFinished();
 
                     // Autoinsert if one result

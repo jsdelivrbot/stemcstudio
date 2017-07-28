@@ -3,7 +3,6 @@ import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IQServic
 import { applyTextChanges } from './applyTextChanges';
 import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
-import { COMMAND_NAME_INDENT } from '../../editor/editor_protocol';
 import { UndoManager } from '../../editor/UndoManager';
 import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
@@ -401,17 +400,6 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
         exec: function () {
             showKeyboardShortcuts(editor);
-        }
-    });
-    editor.addCommand({
-        name: 'expandSnippet',
-        bindKey: 'Tab',
-        exec: function () {
-            const success = editor.expandSnippetWithTab({ dryRun: false });
-            if (!success) {
-                const indentCommand = editor.getCommandByName(COMMAND_NAME_INDENT);
-                editor.execCommand(indentCommand);
-            }
         }
     });
     // Format Document

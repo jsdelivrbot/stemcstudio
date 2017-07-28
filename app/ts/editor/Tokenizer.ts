@@ -229,10 +229,6 @@ export function createSplitterRegexp(src: string, flag?: string): RegExp {
 /**
  * This class takes a set of highlighting rules, and creates a tokenizer out of them.
  * For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
- * The Tokenizer is used by two clients: TextMode and SnippetManager.
- * In the former, the token type is not extended. In the latter approx 10 properties are added.
- * 
- * TODO: The parameterization by T either needs a factory to promote tokens to T or we should not overwork this class (e.g. snippets).
  */
 export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
     /**

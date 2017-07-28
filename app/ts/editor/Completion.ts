@@ -23,11 +23,6 @@ export interface Completion {
     /**
      *
      */
-    snippet?: string;
-
-    /**
-     *
-     */
     matchMask?: number;
 
     /**

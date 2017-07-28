@@ -65,7 +65,7 @@ export class CompletionList {
         // make unique
         let prev: string | null | undefined = null;
         matches = matches.filter(function (item: Completion) {
-            const caption = item.value || item.caption || item.snippet;
+            const caption = item.value || item.caption;
             if (caption === prev) return false;
             prev = caption;
             return true;
@@ -86,7 +86,7 @@ export class CompletionList {
 
         loop: for (let i = 0, length = items.length; i < length; i++) {
             const item: Completion = items[i];
-            const caption = item.value || item.caption || item.snippet;
+            const caption = item.value || item.caption;
             if (!caption) continue;
             let lastIndex = -1;
             let matchMask = 0;

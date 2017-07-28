@@ -19,7 +19,6 @@ import { getPosition, DocumentWithLines } from '../../editor/workspace/getPositi
 import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProxy';
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import { IWorkspaceModel } from './IWorkspaceModel';
-import javascriptSnippets from '../../editor/snippets/javascriptSnippets';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
 import { Position } from 'editor-document';
@@ -33,9 +32,6 @@ import { MwUnit } from '../../synchronization/MwUnit';
 import { MwWorkspace } from '../../synchronization/MwWorkspace';
 import { IOption, LibraryKind } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
-import { isJavaScript } from '../../utils/isJavaScript';
-import { isPython } from '../../utils/isPython';
-import { isTypeScript } from '../../utils/isTypeScript';
 import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { OptionManager } from '../../services/options/optionManager.service';
 import { OutputFilesMessage, outputFilesTopic } from './IWorkspaceModel';
@@ -46,14 +42,12 @@ import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
 import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
 import RoomAgent from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
-import { SnippetCompleter } from '../../editor/SnippetCompleter';
 import { StringShareableMap } from '../../collections/StringShareableMap';
 import { TextChange } from '../../editor/workspace/TextChange';
 import { TsConfigSettings } from '../tsconfig/TsConfigSettings';
 import { TsConfigJsonMonitor } from './monitors/TsConfigJsonMonitor';
 import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
 import { TsLintJsonMonitor } from './monitors/TsLintJsonMonitor';
-import typescriptSnippets from '../../editor/snippets/typescriptSnippets';
 import { TypesConfigJsonMonitor } from './monitors/TypesConfigJsonMonitor';
 import { LanguageServiceScriptMonitor } from './monitors/LanguageServiceScriptMonitor';
 import { WsFile } from './WsFile';
@@ -1030,17 +1024,6 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             // TODO: How do we remove these later?
             editor.addCommand(new AutoCompleteCommand());
             editor.addCompleter(new WorkspaceCompleter(path, this));
-            // Not using the SnippetCompleter because it makes Ctrl-Space on imports less ergonomic.
-            // editor.completers.push(new SnippetCompleter());
-            if (isTypeScript(path)) {
-                editor.registerSnippets(typescriptSnippets);
-            }
-            else if (isJavaScript(path)) {
-                editor.registerSnippets(javascriptSnippets);
-            }
-            else if (isPython(path)) {
-                // TODO: pythonSnippets
-            }
 
             // Finally, enable QuickInfo.
             const quickInfo = editor.createQuickInfoTooltip(path, this);
@@ -1052,12 +1035,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         else if (isHtmlScript(path)) {
             editor.addCommand(new AutoCompleteCommand());
             editor.addCompleter(new KeywordCompleter());
-            editor.addCompleter(new SnippetCompleter());
         }
         else {
             editor.addCommand(new AutoCompleteCommand());
             editor.addCompleter(new KeywordCompleter());
-            editor.addCompleter(new SnippetCompleter());
         }
 
         this.attachSession(path, editor.getSession());

@@ -111,7 +111,7 @@ export type LineCommentStart = '' | ';' | '//' | '--' | '%' | '#';
  */
 export class TextMode implements LanguageMode {
     /**
-     * Used when loading snippets for zero or more modes?
+     *
      */
     public modes: LanguageMode[];
 

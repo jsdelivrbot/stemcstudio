@@ -145,7 +145,6 @@ export class CssCompletions {
     return properties.map(function (property) {
       return {
         caption: property,
-        snippet: property + ': $0',
         meta: "property",
         score: Number.MAX_VALUE
       };
@@ -165,7 +164,6 @@ export class CssCompletions {
     return values.map(function (value) {
       return {
         caption: value,
-        snippet: value,
         meta: "property value",
         score: Number.MAX_VALUE
       };
