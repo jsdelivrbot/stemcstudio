@@ -251,6 +251,7 @@ function copies(target) {
     return [
         { src: 'app/favicon.ico', dest: prepend(target, 'favicon.ico') },
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
+        { src: 'app/sitemap.xml', dest: prepend(target, 'sitemap.xml') },
         { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
         { src: 'app/stemcstudio-overview-2017-03-24.pdf', dest: prepend(target, 'stemcstudio-overview-2017-03-24.pdf') },
         {

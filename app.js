@@ -37,6 +37,7 @@ app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride());
+app.use(require('prerender-node').set('prerenderToken', 'sS0E4UAJN4GidsdVwMD9'));
 var folder = "" + (isProductionMode() ? 'dist' : 'generated');
 app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
 app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));

@@ -52,7 +52,10 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride());
-// TODO session
+//
+// Using https://prerender.io for Cached Pages.
+//
+app.use(require('prerender-node').set('prerenderToken', 'sS0E4UAJN4GidsdVwMD9'));
 
 // Serve out of dist or generated, depending upon the environment.
 const folder = `${isProductionMode() ? 'dist' : 'generated'}`;
