@@ -172,10 +172,15 @@ export class HomeController extends AbstractPageController {
      */
     $onInit(): void {
         // This is being called, every time I go to or return to the home page.
-        console.warn("HomeController.$onInit()");
+        const READY = 'prerenderReady';
+        console.warn(`HomeController.$onInit() window.${READY} => ${window[READY]}`);
 
         // Use to indicater to prerender.io that it can take an HTML snapshot.
-        window['prerenderReady'] = true;
+        // It's a bit hacky to wait for one second. Maybe there is a better lifecycle event?
+        window.setTimeout(function () {
+            window[READY] = true;
+            console.warn(`HomeController.$onInit() window.${READY} => ${window[READY]}`);
+        }, 1000);
     }
 
     /**
