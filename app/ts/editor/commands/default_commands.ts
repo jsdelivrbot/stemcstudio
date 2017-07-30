@@ -2,6 +2,7 @@ import { stringRepeat } from "../lib/lang";
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 import { COMMAND_NAME_DEL } from '../editor_protocol';
 import { COMMAND_NAME_INDENT } from "../editor_protocol";
+import { COMMAND_NAME_OUTDENT } from "../editor_protocol";
 import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefinition';
 import { createCutCommand } from '../../workbench/commands/cut';
@@ -544,7 +545,7 @@ export const commands: Command<Editor>[] = [
         scrollIntoView: "cursor"
     },
     {
-        name: "blockOutdent",
+        name: COMMAND_NAME_OUTDENT,
         bindKey: bindKey("Shift-Tab", "Shift-Tab"),
         exec: function (editor: Editor) { editor.blockOutdent(); },
         multiSelectAction: "forEach",

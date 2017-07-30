@@ -19,6 +19,10 @@ export const COMMAND_NAME_GOTO_DEFINITION = 'gotoDefinition';
  */
 export const COMMAND_NAME_INDENT = 'indent';
 /**
+ * 'outdent'
+ */
+export const COMMAND_NAME_OUTDENT = 'outdent';
+/**
  * 'insertstring'
  */
 export const COMMAND_NAME_INSERT_STRING = 'insertstring';
