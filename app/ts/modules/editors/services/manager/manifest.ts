@@ -1,6 +1,10 @@
 import { Theme } from '../../Theme';
 
-const themes: Theme[] = [
+const STEMCSTUDIO_DARK = "STEMCstudio Dark";
+// const STEMCSTUDIO_LIGHT = "STEMCstudio Light";
+export const DEFAULT_THEME_NAME = STEMCSTUDIO_DARK;
+
+export const themes: Theme[] = [
     {
         name: "Chrome",
         isDark: false,
@@ -38,11 +42,19 @@ const themes: Theme[] = [
         fileName: 'monokai.css'
     },
     {
-        name: "STEMCstudio",
+        name: STEMCSTUDIO_DARK,
         isDark: true,
-        cssClass: 'ace-stemcstudio',
-        fileName: 'stemcstudio.css'
+        cssClass: 'ace-stemcstudio-dark',
+        fileName: 'stemcstudio_dark.css'
     },
+    /*
+    {
+        name: STEMCSTUDIO_LIGHT,
+        isDark: false,
+        cssClass: 'ace-stemcstudio-light',
+        fileName: 'stemcstudio_light.css'
+    },
+    */
     {
         name: "TextMate",
         isDark: false,
@@ -74,5 +86,3 @@ const themes: Theme[] = [
         fileName: 'xcode.css'
     },
 ];
-
-export default themes;

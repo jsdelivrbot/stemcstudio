@@ -1,4 +1,4 @@
-import themes from './manifest';
+import { themes, DEFAULT_THEME_NAME } from './manifest';
 import { Theme } from '../../Theme';
 import { EditorPreferencesService } from '../../EditorPreferencesService';
 import { EditorPreferencesEvent } from '../../EditorPreferencesEvent';
@@ -20,7 +20,6 @@ export class DefaultEditorPreferencesService implements EditorPreferencesService
     private callbacksByEventName: { [eventName: string]: EditorPreferencesCallback[] } = {};
     private currentTheme: Theme;
     constructor(private $q: IQService, private storage: EditorPreferencesStorage) {
-        // Do nothing yet.
         this.currentTheme = getThemeByName(storage.theme);
     }
     addEventListener(eventName: string, callback: EditorPreferencesCallback) {
@@ -276,12 +275,16 @@ export class DefaultEditorPreferencesService implements EditorPreferencesService
     }
 }
 
+/**
+ * Returns the theme for the specified themeName.
+ * Returns the default theme if the themeName does not exist as a theme.
+ */
 function getThemeByName(themeName: string): Theme {
     const index = themeNames.indexOf(themeName);
     if (index >= 0) {
         return themes[index];
     }
     else {
-        throw new Error(`themeName => ${themeName}`);
+        return getThemeByName(DEFAULT_THEME_NAME);
     }
 }

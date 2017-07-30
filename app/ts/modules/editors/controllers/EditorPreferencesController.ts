@@ -1,5 +1,5 @@
-import EditorPreferencesDialog from '../contracts/EditorPreferencesDialog';
-import EditorPreferencesDialogModel from '../contracts/EditorPreferencesDialogModel';
+import { EditorPreferencesDialog } from '../contracts/EditorPreferencesDialog';
+import { EditorPreferencesDialogModel } from '../contracts/EditorPreferencesDialogModel';
 import { EditorPreferencesService } from '../EditorPreferencesService';
 import { EDITOR_PREFERENCES_DIALOG } from '../constants';
 import { EDITOR_PREFERENCES_SERVICE } from '../constants';
@@ -8,7 +8,7 @@ import { EDITOR_PREFERENCES_SERVICE } from '../constants';
  * This controller is responsible for handling the request from the UI
  * to show the editor preferences dialog.
  */
-export default class EditorPreferencesController {
+export class EditorPreferencesController {
     public static $inject: string[] = [
         EDITOR_PREFERENCES_DIALOG,
         EDITOR_PREFERENCES_SERVICE

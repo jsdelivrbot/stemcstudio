@@ -1,13 +1,13 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import EditorPreferencesDialog from '../../contracts/EditorPreferencesDialog';
-import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
-import EditorPreferencesDialogController from './EditorPreferencesDialogController';
+import { EditorPreferencesDialog } from '../../contracts/EditorPreferencesDialog';
+import { EditorPreferencesDialogModel } from '../../contracts/EditorPreferencesDialogModel';
+import { EditorPreferencesDialogController } from './EditorPreferencesDialogController';
 
 /**
  * The (service) implementation of the ThemesDialog interface.
  */
-export default class ThemesDialogService implements EditorPreferencesDialog {
+export class EditorPreferencesDialogService implements EditorPreferencesDialog {
     public static $inject: string[] = ['$uibModal'];
     constructor(private $uibModal: IModalService) {
         // Do nothing.

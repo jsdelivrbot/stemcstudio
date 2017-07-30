@@ -3,7 +3,7 @@ import { Theme } from '../../Theme';
 /**
  * 
  */
-interface EditorPreferencesDialogScope {
+export interface EditorPreferencesDialogScope {
 
     /**
      * 
@@ -124,5 +124,3 @@ interface EditorPreferencesDialogScope {
     submit(): void;
     cancel(): void;
 }
-
-export default EditorPreferencesDialogScope;

@@ -1,13 +1,13 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
-import EditorPreferencesDialogScope from './EditorPreferencesDialogScope';
-import EditorPreferencesDialogModel from '../../contracts/EditorPreferencesDialogModel';
+import { EditorPreferencesDialogScope } from './EditorPreferencesDialogScope';
+import { EditorPreferencesDialogModel } from '../../contracts/EditorPreferencesDialogModel';
 import { EditorPreferencesService } from '../../EditorPreferencesService';
 import { EDITOR_PREFERENCES_SERVICE } from '../../constants';
 
 /**
  * 
  */
-export default class EditorPreferencesDialogController {
+export class EditorPreferencesDialogController {
     public static $inject: string[] = [
         '$scope',
         '$uibModalInstance',

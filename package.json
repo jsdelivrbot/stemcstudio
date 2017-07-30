@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.36.17",
+  "version": "2.36.18",
   "private": true,
   "description": "Live Coding in a Gist",
   "engines": {

@@ -1,5 +1,6 @@
 import { IWindowService } from 'angular';
 import { EditorPreferencesStorage } from '../EditorPreferencesStorage';
+import { DEFAULT_THEME_NAME } from '../../editors/services/manager/manifest';
 
 /**
  * 
@@ -67,7 +68,7 @@ const DEFAULTS: Preferences = {
     showLineNumbers: true,
     showPrintMargin: false,
     tabSize: 4,
-    theme: "STEMCstudio",
+    theme: DEFAULT_THEME_NAME,
     useSoftTabs: true
 };
 

@@ -3,7 +3,7 @@ import { Theme } from '../../Theme';
 /**
  * This is the complete list of (some) really ugly themes!
  */
-const themes: Theme[] = [
+export const themes: Theme[] = [
     {
         name: "Ambiance",
         isDark: true,
@@ -209,5 +209,3 @@ const themes: Theme[] = [
         fileName: 'xcode.css'
     },
 ];
-
-export default themes;

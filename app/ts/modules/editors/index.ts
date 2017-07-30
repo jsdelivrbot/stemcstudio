@@ -1,7 +1,7 @@
 import { IModule, module } from 'angular';
 import { EDITOR_PREFERENCES_DIALOG, EDITOR_PREFERENCES_SERVICE, EDITORS_MODULE } from './constants';
-import EditorPreferencesController from './controllers/EditorPreferencesController';
-import EditorPreferencesDialogService from './services/dialog/EditorPreferencesDialogService';
+import { EditorPreferencesController } from './controllers/EditorPreferencesController';
+import { EditorPreferencesDialogService } from './services/dialog/EditorPreferencesDialogService';
 import { DefaultEditorPreferencesService } from './services/manager/DefaultEditorPreferencesService';
 
 //
