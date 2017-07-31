@@ -1,7 +1,7 @@
 {
   "name": "stemcstudio",
-  "version": "2.37.0",
-  "description": "Live Coding in a Gist",
+  "version": "2.37.1",
+  "description": "Live TypeScript Coding in a Gist",
   "homepage": "https://github.com/geometryzen/STEMCstudio",
   "authors": [
     "David Holmes <david.geo.holmes@gmail.com>",

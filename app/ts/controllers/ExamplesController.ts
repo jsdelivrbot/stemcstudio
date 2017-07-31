@@ -95,24 +95,6 @@ export class ExamplesController extends AbstractPageController {
                 level: 'Beginner'
             },
             {
-                gistId: 'c4230c7f11bc29f60418f2282ad81ad1',
-                title: "React: tic-tac-toe",
-                description: "Demonstrates the use of the React library with TypeScript and tsx. Based on the official Facebook tutorial.",
-                imageSrc: '/img/examples/react-logo.svg',
-                imageAlt: 'React Logo',
-                category: 'Programming',
-                level: 'Intermediate'
-            },
-            {
-                gistId: '2029526c7d3b5010dbcccaad9ebd64c8',
-                title: "Angular: Tour of Heroes",
-                description: "Demonstrates the use of the Angular library. Based on the official Google tutorial.",
-                imageSrc: '/img/examples/angular-logo.svg',
-                imageAlt: 'Angular Logo',
-                category: 'Programming',
-                level: 'Advanced'
-            },
-            {
                 gistId: '129a4a31fa803df9e4a5',
                 title: "Animating a Scene with EIGHT",
                 description: "Demonstrates high-level 3D graphics and Geometric Algebra computations using the the EIGHT library.",
