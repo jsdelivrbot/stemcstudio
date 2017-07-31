@@ -26,6 +26,8 @@ export class ExplorerFilesController {
             const menu: ContextMenu = [];
             if (file) {
                 menu.push({ label: file.isOpen ? "Close" : "Open", action: () => { file.isOpen ? this.closeFile(path) : this.openFile(path); } });
+                menu.push({ label: "Close Others", action: () => { this.closeOthers(path); } });
+                menu.push({ label: "Close All", action: () => { this.closeAll(); } });
                 menu.push(CONTEXT_MENU_ITEM_DIVIDER);
             }
             menu.push({ label: "Rename", action: () => { this.renameFile(path); } });
@@ -85,6 +87,22 @@ export class ExplorerFilesController {
      */
     public closeFile(path: string): void {
         this.wsModel.closeFile(path);
+        this.wsModel.updateStorage();
+    }
+
+    /**
+     * Handler for the context menu "Close Others" menu item.
+     */
+    public closeOthers(path: string): void {
+        this.wsModel.closeOthers(path);
+        this.wsModel.updateStorage();
+    }
+
+    /**
+     * Handler for the context menu "Close All" menu item.
+     */
+    public closeAll(): void {
+        this.wsModel.closeAll();
         this.wsModel.updateStorage();
     }
 

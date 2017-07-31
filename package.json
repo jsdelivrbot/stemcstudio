@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.37.1",
+  "version": "2.37.2",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -34,8 +34,6 @@
     "angular-ui-router": "0.4.2",
     "angular-uuid4": "^0.3.1",
     "aws-sdk": "2.6.15",
-    "baconjs": "^0.7.94",
-    "biwascheme": "^0.6.7",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
@@ -84,6 +82,8 @@
     "@types/react": "^15.6.0",
     "@types/react-dom": "^0.14.23",
     "@types/snapsvg": "^0.4.29",
+    "baconjs": "^0.7.95",
+    "biwascheme": "^0.6.7",
     "bootstrap": "^3.3.7",
     "concurrently": "^3.5.0",
     "davinci-csv": "^0.9.12",

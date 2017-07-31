@@ -2517,9 +2517,12 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
     }
 
-    closeFile(pathToClose: string): void {
+    /**
+     * Closes the specified file and selects some other file that is open.
+     */
+    closeFile(path: string): void {
         if (this.files) {
-            const file = this.files.getWeakRef(pathToClose);
+            const file = this.files.getWeakRef(path);
             if (file) {
                 // The user interface responds to the isOpen flag.
                 file.isOpen = false;
@@ -2530,8 +2533,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
                     // Select the first open file that we find.
                     const paths = this.files.keys;
-                    for (const path of paths) {
-                        const file = this.files.getWeakRef(path);
+                    for (const pathToSelect of paths) {
+                        const file = this.files.getWeakRef(pathToSelect);
                         if (file.isOpen) {
                             file.selected = true;
                             return;
@@ -2539,6 +2542,40 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
                     }
                 }
                 this.updateStorage();
+            }
+        }
+    }
+
+    /**
+     * The implication is that the specified file should be open and selected.
+     * Closes all files exluding the specified file, which becomes open and selected.
+     */
+    closeOthers(path: string): void {
+        if (this.files) {
+            const file = this.files.getWeakRef(path);
+            if (file) {
+                const paths = this.files.keys.filter((fileName) => { return fileName !== path; });
+                this.closePaths(paths);
+                file.isOpen = true;
+                file.selected = true;
+                // FIXME: This should emit an event that is throttled that leads to an update of Local Storage.
+                this.updateStorage();
+            }
+        }
+    }
+
+    closeAll(): void {
+        this.closePaths(this.files.keys);
+        // FIXME: This should emit an event that is throttled that leads to an update of Local Storage.
+        this.updateStorage();
+    }
+
+    private closePaths(paths: string[]): void {
+        for (const path of paths) {
+            const fileToClose = this.files.getWeakRef(path);
+            if (fileToClose.isOpen) {
+                fileToClose.isOpen = false;
+                fileToClose.selected = false;
             }
         }
     }
