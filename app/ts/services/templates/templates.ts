@@ -1,5 +1,9 @@
 import { app } from '../../app';
 import { ITemplate } from './template';
+import { CANVAS_MAIN } from './CANVAS_MAIN';
+import { CANVAS_MODEL } from './CANVAS_MODEL';
+import { CANVAS_README } from './CANVAS_README';
+import { CANVAS_VIEW } from './CANVAS_VIEW';
 import { EIGHT_MAIN } from './EIGHT_MAIN';
 import { EIGHT_MODEL } from './EIGHT_MODEL';
 import { EIGHT_README } from './EIGHT_README';
@@ -18,10 +22,13 @@ import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { EDITOR_PREFERENCES_STORAGE } from '../../modules/preferences/constants';
 import { EditorPreferencesStorage } from '../../modules/preferences/EditorPreferencesStorage';
 import { TemplateOptions } from './template';
+import { VECTOR_2D_SPEC } from './VECTOR_2D_SPEC';
+import { VECTOR_2D } from './VECTOR_2D';
+import { VECTOR_3D_SPEC } from './VECTOR_3D_SPEC';
+import { VECTOR_3D } from './VECTOR_3D';
 
-const INDEX_DOT_JS = `main.js`;
-const INDEX_DOT_TS = 'main.ts';
-const INDEX_DOT_TSX = 'main.tsx';
+const MAIN_DOT_JS = `main.js`;
+const MAIN_DOT_TS = 'main.ts';
 
 /**
  * Computes the string to use for a single tab based upon the current editor preferences.
@@ -67,7 +74,6 @@ app.factory('templates', [
         const tab = tabString(editorPreferences);
         /**
          * System polyfill.
-         * After some problems with the file at unpkg.com, going back to jspm.io
          */
         const systemJsUrl = 'https://www.stemcstudio.com/jspm_packages/system.js';
         // const systemJsUrl = 'https://jspm.io/system@0.19.34.js';
@@ -78,8 +84,8 @@ app.factory('templates', [
         // the contents of the template files to be determined AFTER the user has
         // entered their customizations.
         const options: TemplateOptions = {
-            mainJs: INDEX_DOT_JS,
-            mainTs: INDEX_DOT_TS,
+            mainJs: MAIN_DOT_JS,
+            mainTs: MAIN_DOT_TS,
             tab: tabString(editorPreferences)
         };
 
@@ -93,14 +99,35 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        BASIC.files[FILENAME_HTML] = { content: HTML(tab, `./${INDEX_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
-        BASIC.files[INDEX_DOT_TS] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
-        BASIC.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        BASIC.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
+        BASIC.files['main.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
         BASIC.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
+        BASIC.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+
+        const CANVAS: ITemplate = {
+            name: "Model View 2D",
+            description: "Model View Canvas (2D Graphics)",
+            files: {},
+            dependencies: dependenciesMap(['DomReady', 'jasmine']),
+            hideConfigFiles: true,
+            linting: true,
+            noLoopCheck: false,
+            operatorOverloading: true
+        };
+        CANVAS.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
+        CANVAS.files['main.ts'] = { content: CANVAS_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['model.ts'] = { content: CANVAS_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['README.md'] = { content: CANVAS_README(options), language: LANGUAGE_MARKDOWN };
+        CANVAS.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        CANVAS.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
+        CANVAS.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['vector.spec.ts'] = { content: VECTOR_2D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['vector.ts'] = { content: VECTOR_2D(tab), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['view.ts'] = { content: CANVAS_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const EIGHT: ITemplate = {
             name: "Model View 3D",
-            description: "Model View WebGL 3D Graphics",
+            description: "Model View WebGL (3D Graphics)",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
             hideConfigFiles: true,
@@ -108,15 +135,16 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        EIGHT.files[FILENAME_HTML] = { content: HTML(tab, `./${INDEX_DOT_JS}`, systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
-        EIGHT.files[INDEX_DOT_TS] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
+        EIGHT.files['main.ts'] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['view.ts'] = { content: EIGHT_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         EIGHT.files['README.md'] = { content: EIGHT_README(options), language: LANGUAGE_MARKDOWN };
+        EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
-        EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['vector.spec.ts'] = { content: VECTOR_3D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['vector.ts'] = { content: VECTOR_3D(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['view.ts'] = { content: EIGHT_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const REACT: ITemplate = {
             name: "React",
@@ -128,13 +156,13 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        REACT.files[FILENAME_HTML] = { content: HTML(tab, `./${INDEX_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
-        REACT.files[INDEX_DOT_TSX] = { content: REACT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
-        REACT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        REACT.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
+        REACT.files['example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        REACT.files['main.tsx'] = { content: REACT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         REACT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
+        REACT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         REACT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
-        REACT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        REACT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        REACT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
 
         const JASMINE: ITemplate = {
             name: "JASMINE",
@@ -146,13 +174,13 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        JASMINE.files[FILENAME_HTML] = { content: HTML(tab, `./${INDEX_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
-        JASMINE.files[INDEX_DOT_TS] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
-        JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
+        JASMINE.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
+        JASMINE.files['example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['main.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
         JASMINE.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
+        JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
         JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
-        JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        JASMINE.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
 
-        return [BASIC, EIGHT, REACT, JASMINE];
+        return [BASIC, CANVAS, EIGHT, REACT, JASMINE];
     }]);

@@ -5,7 +5,7 @@ export function MINIMAL_EXAMPLE_SPEC(tabString: string): string {
     const lines: string[] = [];
     lines.push("// Run these specifications by selecting 'tests.html' from the 'Choose Program' toolbar menu.");
     lines.push('// For a complete list of examples, please see the Jasmine DOCS.');
-    lines.push('export default function() {');
+    lines.push('export function exampleSpec() {');
     lines.push(_ + 'describe("A suite", function() {');
     lines.push(_ + _ + 'it("contains spec with an expectation", function() {');
     lines.push(_ + _ + _ + 'expect(true).toBe(true)');

@@ -1,6 +1,11 @@
 const NEWLINE = '\n';
 
-export function MINIMAL_SPEC_RUNNER(tabString: string): string {
+/**
+ * 
+ * @param tabString 
+ * @param className The name of the class being tested.
+ */
+export function MINIMAL_SPEC_RUNNER(tabString: string, className: string, specFunctionName: string, specModuleName: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("//");
@@ -22,7 +27,7 @@ export function MINIMAL_SPEC_RUNNER(tabString: string): string {
     lines.push("// The convention is to name the spec for xyz.ts as xyz.spec.ts");
     lines.push("// Then, when importing here, drop the spec in the variable name.");
     lines.push("// This makes the code here a bit cleaner.");
-    lines.push("import Example from './Example.spec'");
+    lines.push(`import { ${specFunctionName} } from '${specModuleName}'`);
     lines.push("");
     lines.push("(<any>window)['jasmine'] = jasmineRequire.core(jasmineRequire)");
     lines.push("");
@@ -63,7 +68,7 @@ export function MINIMAL_SPEC_RUNNER(tabString: string): string {
     lines.push(_ + "htmlReporter.initialize()");
     lines.push("");
     lines.push(_ + "// describe each of your spec modules here...");
-    lines.push(_ + 'describe("Example", Example)');
+    lines.push(_ + `describe("${className}", ${specFunctionName})`);
     lines.push("");
     lines.push(_ + "env.execute()");
     lines.push("})");
