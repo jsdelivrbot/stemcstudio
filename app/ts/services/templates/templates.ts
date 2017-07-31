@@ -1,6 +1,9 @@
 import { app } from '../../app';
 import { ITemplate } from './template';
-import { EIGHT_BOOTSTRAP } from './EIGHT_BOOTSTRAP';
+import { EIGHT_MAIN } from './EIGHT_MAIN';
+import { EIGHT_MODEL } from './EIGHT_MODEL';
+import { EIGHT_README } from './EIGHT_README';
+import { EIGHT_VIEW } from './EIGHT_VIEW';
 import { HTML } from './COMMON_HTML';
 import { MINIMAL_BOOTSTRAP } from './MINIMAL_BOOTSTRAP';
 import { MINIMAL_CSS } from './MINIMAL_CSS';
@@ -96,22 +99,24 @@ app.factory('templates', [
         BASIC.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
 
         const EIGHT: ITemplate = {
-            name: "EIGHT",
-            description: "EIGHT WebGL 3D Graphics",
+            name: "Model View 3D",
+            description: "Model View WebGL 3D Graphics",
             files: {},
-            dependencies: dependenciesMap([/*'DomReady', 'jasmine',*/ 'davinci-eight']),
+            dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
             hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
             operatorOverloading: true
         };
         EIGHT.files[FILENAME_HTML] = { content: HTML(tab, `./${INDEX_DOT_JS}`, systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
-        EIGHT.files[INDEX_DOT_TS] = { content: EIGHT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files[INDEX_DOT_TS] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['view.ts'] = { content: EIGHT_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab), language: LANGUAGE_CSS };
-        EIGHT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
-        // EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
-        // EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
-        // EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['README.md'] = { content: EIGHT_README(options), language: LANGUAGE_MARKDOWN };
+        EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
+        EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const REACT: ITemplate = {
             name: "React",
