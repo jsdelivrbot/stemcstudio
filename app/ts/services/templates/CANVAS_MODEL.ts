@@ -8,11 +8,10 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push("/**");
     lines.push(" *");
     lines.push(" */");
-    lines.push("export class Rectangle {");
-    lines.push(_ + "pos = new Vector(0, 0)");
+    lines.push("export class Box {");
+    lines.push(_ + "readonly pos = new Vector(0, 0)");
     lines.push(_ + "width: number");
     lines.push(_ + "height: number");
-    lines.push(_ + "fillStyle: string");
     lines.push(_ + "constructor(width: number, height: number) {");
     lines.push(_ + _ + "this.width = width");
     lines.push(_ + _ + "this.height = height");
@@ -23,8 +22,7 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push(" *");
     lines.push(" */");
     lines.push("export class Model {");
-    lines.push(_ + "rectangle = new Rectangle(16, 10)");
-    lines.push(_ + "square = new Rectangle(10, 10)");
+    lines.push(_ + "readonly box = new Box(20, 20)");
     lines.push(_ + "constructor() {");
     lines.push(_ + "}");
     lines.push("}");

@@ -1,1 +1,0 @@
-module.exports = require("npm:which@1.2.14/which.js");

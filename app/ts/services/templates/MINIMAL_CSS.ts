@@ -1,12 +1,15 @@
 const NEWLINE = '\n';
 
-export function MINIMAL_CSS(tabString: string): string {
+export function MINIMAL_CSS(tabString: string, options: { hideOverflow: boolean }): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("body {");
     lines.push(_ + "background-color: white;");
     lines.push(_ + "font-family: Roboto, Arial, sans-serif;");
     lines.push(_ + "color: #333333;");
+    if (options.hideOverflow) {
+        lines.push(_ + "overflow: hidden;");
+    }
     lines.push("}");
     /*
     lines.push("");
