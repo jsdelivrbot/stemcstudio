@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.39.2",
+  "version": "2.39.3",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -15,15 +15,15 @@
   "author": "David Geo Holmes",
   "license": "MIT",
   "dependencies": {
-    "@angular/common": "^4.3.2",
-    "@angular/compiler": "^4.3.2",
-    "@angular/core": "^4.3.2",
-    "@angular/forms": "^4.3.2",
-    "@angular/http": "^4.3.2",
-    "@angular/platform-browser": "^4.3.2",
-    "@angular/platform-browser-dynamic": "^4.3.2",
-    "@angular/router": "^4.3.2",
-    "@angular/upgrade": "^4.3.2",
+    "@angular/common": "^4.3.3",
+    "@angular/compiler": "^4.3.3",
+    "@angular/core": "^4.3.3",
+    "@angular/forms": "^4.3.3",
+    "@angular/http": "^4.3.3",
+    "@angular/platform-browser": "^4.3.3",
+    "@angular/platform-browser-dynamic": "^4.3.3",
+    "@angular/router": "^4.3.3",
+    "@angular/upgrade": "^4.3.3",
     "@google-cloud/translate": "^0.8.2",
     "angular": "^1.6.5",
     "angular-animate": "^1.6.5",
@@ -133,15 +133,15 @@
   "jspm": {
     "configFile": "jspm.config.js",
     "dependencies": {
-      "@angular/common": "npm:@angular/common@^4.3.2",
-      "@angular/compiler": "npm:@angular/compiler@^4.3.2",
-      "@angular/core": "npm:@angular/core@^4.3.2",
-      "@angular/forms": "npm:@angular/forms@^4.3.2",
-      "@angular/http": "npm:@angular/http@^4.3.2",
-      "@angular/platform-browser": "npm:@angular/platform-browser@^4.3.2",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^4.3.2",
-      "@angular/router": "npm:@angular/router@^4.3.2",
-      "@angular/upgrade": "npm:@angular/upgrade@^4.3.2",
+      "@angular/common": "npm:@angular/common@^4.3.3",
+      "@angular/compiler": "npm:@angular/compiler@^4.3.3",
+      "@angular/core": "npm:@angular/core@^4.3.3",
+      "@angular/forms": "npm:@angular/forms@^4.3.3",
+      "@angular/http": "npm:@angular/http@^4.3.3",
+      "@angular/platform-browser": "npm:@angular/platform-browser@^4.3.3",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^4.3.3",
+      "@angular/router": "npm:@angular/router@^4.3.3",
+      "@angular/upgrade": "npm:@angular/upgrade@^4.3.3",
       "angular": "npm:angular@^1.6.5",
       "angular-animate": "npm:angular-animate@^1.6.5",
       "angular-material-icons": "npm:angular-material-icons@^0.7.1",
@@ -170,7 +170,7 @@
       "typhon-typescript": "npm:typhon-typescript@^0.3.0",
       "ui-select": "npm:ui-select@^0.19.8",
       "underscore": "npm:underscore@^1.8.3",
-      "zone.js": "npm:zone.js@^0.8.14"
+      "zone.js": "npm:zone.js@^0.8.16"
     },
     "devDependencies": {}
   }

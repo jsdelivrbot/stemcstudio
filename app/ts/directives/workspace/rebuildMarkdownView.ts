@@ -21,7 +21,7 @@ export function rebuildMarkdownView(
     workspace: WsModel,
     $scope: WorkspaceScope,
     $window: IWindowService
-) {
+): HTMLIFrameElement | undefined {
     try {
         const elementId = 'readme';
         // Kill any existing frames.
@@ -62,14 +62,21 @@ export function rebuildMarkdownView(
                 content.close();
 
                 bubbleIframeMouseMove(iframe);
+
+                return iframe;
+            }
+            else {
+                return void 0;
             }
         }
         else {
             // can happen if we use ng-if to kill the element entirely, which we do.
             // console.warn(`There is no element with id '${elementId}'.`)
+            return void 0;
         }
     }
     catch (e) {
         console.warn(e);
     }
+    return void 0;
 }

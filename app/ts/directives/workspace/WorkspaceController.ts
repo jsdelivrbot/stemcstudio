@@ -163,6 +163,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
      */
     private readmePromise: IPromise<void> | undefined;
     /**
+     * The currently active iframe.
+     * Used to synchronize
+     */
+    private readmeIFrameElement: HTMLIFrameElement | undefined;
+    /**
      * Keep track of the README handlers that are registered for cleanup.
      */
     private readonly markdownChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
@@ -1032,12 +1037,19 @@ export class WorkspaceController implements WorkspaceEditorHost {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
         this.readmePromise = this.$timeout(() => {
-            rebuildMarkdownView(
+            this.readmeIFrameElement = rebuildMarkdownView(
                 this.wsModel,
                 this.$scope,
                 this.$window
             );
             this.readmePromise = undefined;
+            if (this.readmeIFrameElement) {
+                // console.warn("Scrolling the Markdown...");
+                // this.readmeIFrameElement.contentWindow.scrollTo(1000, 1000);
+            }
+            else {
+                // console.warn("Unable to scroll the Markdown!");
+            }
         }, delay);
     }
 
