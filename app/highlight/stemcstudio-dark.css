@@ -37,7 +37,10 @@
 .hljs-number {
     color: rgb(205, 168, 105)
 }
-.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title {
+.hljs-meta {
+    color: rgb(96, 96, 96);  
+}
+.hljs-symbol, .hljs-bullet, .hljs-link, .hljs-selector-id, .hljs-title {
     color: #61aeee
 }
 .hljs-emphasis {
