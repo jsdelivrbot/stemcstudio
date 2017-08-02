@@ -14,7 +14,6 @@
   var checkParameters = require('./precondition');
   var defaultEncoding = require('./default-encoding');
   var Buffer = require('safe-buffer').Buffer;
-  module.exports = pbkdf2;
   function pbkdf2(password, salt, iterations, keylen, digest) {
     if (!Buffer.isBuffer(password))
       password = Buffer.from(password, defaultEncoding);
@@ -25,27 +24,22 @@
     var DK = Buffer.allocUnsafe(keylen);
     var block1 = Buffer.allocUnsafe(salt.length + 4);
     salt.copy(block1, 0, 0, salt.length);
-    var U,
-        j,
-        destPos,
-        len;
+    var destPos = 0;
     var hLen = sizes[digest];
-    var T = Buffer.allocUnsafe(hLen);
     var l = Math.ceil(keylen / hLen);
-    var r = keylen - (l - 1) * hLen;
     for (var i = 1; i <= l; i++) {
       block1.writeUInt32BE(i, salt.length);
-      U = createHmac(digest, password).update(block1).digest();
-      U.copy(T, 0, 0, hLen);
-      for (j = 1; j < iterations; j++) {
+      var T = createHmac(digest, password).update(block1).digest();
+      var U = T;
+      for (var j = 1; j < iterations; j++) {
         U = createHmac(digest, password).update(U).digest();
         for (var k = 0; k < hLen; k++)
           T[k] ^= U[k];
       }
-      destPos = (i - 1) * hLen;
-      len = (i === l ? r : hLen);
-      T.copy(DK, destPos, 0, len);
+      T.copy(DK, destPos);
+      destPos += hLen;
     }
     return DK;
   }
+  module.exports = pbkdf2;
 })(require('buffer').Buffer);

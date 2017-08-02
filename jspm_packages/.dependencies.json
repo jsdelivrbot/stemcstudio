@@ -714,16 +714,6 @@
     "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:pbkdf2@3.0.12": {
-    "create-hash": "npm:create-hash@^1.1.2",
-    "create-hmac": "npm:create-hmac@^1.1.4",
-    "ripemd160": "npm:ripemd160@^2.0.1",
-    "safe-buffer": "npm:safe-buffer@^5.0.1",
-    "sha.js": "npm:sha.js@^2.4.8",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:angular-ui-bootstrap@2.5.0": {},
   "npm:ui-select@0.19.8": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -1078,5 +1068,15 @@
     "isexe": "npm:isexe@^2.0.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:pbkdf2@3.0.13": {
+    "create-hash": "npm:create-hash@^1.1.2",
+    "create-hmac": "npm:create-hmac@^1.1.4",
+    "ripemd160": "npm:ripemd160@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.0.1",
+    "sha.js": "npm:sha.js@^2.4.8",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

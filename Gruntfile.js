@@ -371,6 +371,12 @@ function copies(target) {
         },
         {
             expand: true,
+            cwd: "app/highlight",
+            src: ["**"],
+            dest: prepend(target, 'highlight')
+        },
+        {
+            expand: true,
             cwd: "app/themes",
             src: ["**"],
             dest: prepend(target, 'themes')

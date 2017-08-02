@@ -9,6 +9,10 @@ import { WsModel } from '../../modules/wsmodel/WsModel';
 
 const FSLASH_STAR = '/*';
 const STAR_FSLASH = '*/';
+/**
+ * The indent string is not crucial, but helps with readability of the README HTML template. 
+ */
+const INDENT_STRING = '  ';
 
 /**
  * 
@@ -37,7 +41,7 @@ export function rebuildMarkdownView(
 
                 hostElement.appendChild(iframe);
 
-                let html = readMeHTML({});
+                let html = readMeHTML(INDENT_STRING, {});
 
                 const content = iframe.contentDocument || iframe.contentWindow.document;
 

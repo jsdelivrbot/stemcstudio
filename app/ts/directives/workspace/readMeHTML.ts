@@ -1,29 +1,40 @@
 const NEWLINE = '\n';
 
 /**
+ * The version of highlight.js on cdnjs.
+ */
+const MATHJAX_CDNJS_VERSION = '2.7.1';
+/**
+ * The version of highlight.js on cdnjs.
+ */
+const HIGHLIGHTJS_CDNJS_VERSION = '9.12.0';
+
+/**
  * The template used for creating the README.html for the README.md
  */
-export function readMeHTML(options: {} = {}): string {
+export function readMeHTML(tabString: string, options: {} = {}): string {
+    const _ = tabString;
     const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<html>");
-    lines.push("  <head>");
+    lines.push(_ + "<head>");
 
     githubStyle(lines);
-
-    lines.push("    <style>");
-    lines.push("/* README.css */");
-    lines.push("    </style>");
 
     mathJax(lines);
     highlightJs(lines);
 
-    lines.push("  </head>");
-    lines.push("  <body>");
-    lines.push("    <article class='markdown-body'>");
+    // README.css comes below so that it can override previous styles.
+    lines.push(_ + _ + "<style>");
+    lines.push("/* README.css */");
+    lines.push(_ + _ + "</style>");
+
+    lines.push(_ + "</head>");
+    lines.push(_ + "<body>");
+    lines.push(_ + _ + "<article class='markdown-body'>");
     lines.push("// README.md");
-    lines.push("    </article>");
-    lines.push("  </body>");
+    lines.push(_ + _ + "</article>");
+    lines.push(_ + "</body>");
     lines.push("</html>");
     return lines.join(NEWLINE).concat(NEWLINE);
 }
@@ -87,9 +98,16 @@ function githubStyle(lines: string[]): void {
     lines.push("    </style>");
 }
 
+/**
+ * 
+ */
 function highlightJs(lines: string[]): void {
-    lines.push('    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css">');
-    lines.push('    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>');
+    // TODO: There are other CSS styles on cdnjs.
+    // lines.push(`    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/${HIGHLIGHTJS_CDNJS_VERSION}/styles/default.min.css">`);
+    lines.push(`    <link rel="stylesheet" href="https://www.stemcstudio.com/highlight/stemcstudio-dark.css">`);
+    lines.push(`    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/${HIGHLIGHTJS_CDNJS_VERSION}/highlight.min.js"></script>`);
+    lines.push(`    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/${HIGHLIGHTJS_CDNJS_VERSION}/languages/typescript.min.js"></script>`);
+    // TODO: We can do other customization of highlight.js beyond this...
     lines.push('    <script>hljs.initHighlightingOnLoad();</script>');
 }
 
@@ -111,5 +129,5 @@ function mathJax(lines: string[]): void {
     lines.push('      }');
     lines.push('    });');
     lines.push('    </script>');
-    lines.push("    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
+    lines.push(`    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/${MATHJAX_CDNJS_VERSION}/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>`);
 }

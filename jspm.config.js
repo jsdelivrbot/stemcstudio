@@ -216,7 +216,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -397,7 +397,7 @@ System.config({
       "create-hmac": "npm:create-hmac@1.1.6",
       "diffie-hellman": "npm:diffie-hellman@5.0.2",
       "inherits": "npm:inherits@2.0.1",
-      "pbkdf2": "npm:pbkdf2@3.0.12",
+      "pbkdf2": "npm:pbkdf2@3.0.13",
       "public-encrypt": "npm:public-encrypt@4.0.0",
       "randombytes": "npm:randombytes@2.0.5"
     },
@@ -418,7 +418,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -561,7 +561,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash.js@1.1.3": {
@@ -686,7 +686,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "create-hash": "npm:create-hash@1.1.3",
       "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
-      "pbkdf2": "npm:pbkdf2@3.0.12",
+      "pbkdf2": "npm:pbkdf2@3.0.13",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:parse-json@2.2.0": {
@@ -723,7 +723,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "pify": "npm:pify@2.3.0"
     },
-    "npm:pbkdf2@3.0.12": {
+    "npm:pbkdf2@3.0.13": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "create-hash": "npm:create-hash@1.1.3",
       "create-hmac": "npm:create-hmac@1.1.6",
