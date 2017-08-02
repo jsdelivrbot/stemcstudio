@@ -24,9 +24,8 @@ import { EDITOR_PREFERENCES_STORAGE } from '../../modules/preferences/constants'
 import { EditorPreferencesStorage } from '../../modules/preferences/EditorPreferencesStorage';
 import { TemplateOptions } from './template';
 import { VECTOR_2D_SPEC } from './VECTOR_2D_SPEC';
-import { VECTOR_2D } from './VECTOR_2D';
 import { VECTOR_3D_SPEC } from './VECTOR_3D_SPEC';
-import { VECTOR_3D } from './VECTOR_3D';
+import { VECTOR } from './VECTOR';
 
 const MAIN_DOT_JS = `main.js`;
 const MAIN_DOT_TS = 'main.ts';
@@ -124,7 +123,7 @@ app.factory('templates', [
         CANVAS.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         CANVAS.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['vector.spec.ts'] = { content: VECTOR_2D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
-        CANVAS.files['vector.ts'] = { content: VECTOR_2D(tab), language: LANGUAGE_TYPE_SCRIPT };
+        CANVAS.files['vector.ts'] = { content: VECTOR(tab, 2), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['view.ts'] = { content: CANVAS_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const EIGHT: ITemplate = {
@@ -138,6 +137,7 @@ app.factory('templates', [
             operatorOverloading: true
         };
         EIGHT.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
+        EIGHT.files['keyboard.ts'] = { content: KEYBOARD(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['main.ts'] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['README.md'] = { content: EIGHT_README(options), language: LANGUAGE_MARKDOWN };
@@ -145,7 +145,7 @@ app.factory('templates', [
         EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['vector.spec.ts'] = { content: VECTOR_3D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['vector.ts'] = { content: VECTOR_3D(tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['vector.ts'] = { content: VECTOR(tab, 3), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['view.ts'] = { content: EIGHT_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const REACT: ITemplate = {

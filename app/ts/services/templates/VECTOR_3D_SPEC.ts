@@ -22,6 +22,28 @@ export function VECTOR_3D_SPEC(tabString: string): string {
     lines.push(_ + _ + _ + 'expect(v.z).toBe(z)');
     lines.push(_ + _ + '})');
     lines.push(_ + '})');
+    lines.push(_ + 'describe("add", function() {');
+    lines.push(_ + _ + 'const a = new Vector(1, 2, 3)');
+    lines.push(_ + _ + 'const b = new Vector(4, 5, 6)');
+    lines.push(_ + _ + 'const c = a.add(b)');
+    lines.push(_ + _ + 'it("should compute the x coordinate", function() {');
+    lines.push(_ + _ + _ + 'expect(c.x).toBe(5)');
+    lines.push(_ + _ + '})');
+    lines.push(_ + _ + 'it("should compute the y coordinate", function() {');
+    lines.push(_ + _ + _ + 'expect(c.y).toBe(7)');
+    lines.push(_ + _ + '})');
+    lines.push(_ + _ + 'it("should compute the z coordinate", function() {');
+    lines.push(_ + _ + _ + 'expect(c.z).toBe(9)');
+    lines.push(_ + _ + '})');
+    lines.push(_ + _ + 'it("should return this", function() {');
+    lines.push(_ + _ + _ + 'expect(c === a).toBe(true)');
+    lines.push(_ + _ + '})');
+    lines.push(_ + _ + 'it("should leave rhs unchanged", function() {');
+    lines.push(_ + _ + _ + 'expect(b.x).toBe(4)');
+    lines.push(_ + _ + _ + 'expect(b.y).toBe(5)');
+    lines.push(_ + _ + _ + 'expect(b.z).toBe(6)');
+    lines.push(_ + _ + '})');
+    lines.push(_ + '})');
     lines.push('}');
     return lines.join(NEWLINE).concat(NEWLINE);
 }

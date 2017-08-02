@@ -27,7 +27,7 @@ export function CANVAS_VIEW(tabString: string): string {
     lines.push(_ + "draw(): void {");
     lines.push(_ + _ + "this.clearCanvas()");
     lines.push(_ + _ + "this.drawBackground()");
-    lines.push(_ + _ + "this.drawBox()");
+    lines.push(_ + _ + "this.drawBody()");
     lines.push(_ + "}");
     lines.push(_ + "/**");
     lines.push(_ + " *");
@@ -48,11 +48,11 @@ export function CANVAS_VIEW(tabString: string): string {
     lines.push(_ + "/**");
     lines.push(_ + " *");
     lines.push(_ + " */");
-    lines.push(_ + "private drawBox(): void {");
-    lines.push(_ + _ + "const box = this.model.box");
+    lines.push(_ + "private drawBody(): void {");
+    lines.push(_ + _ + "const body = this.model.body");
     lines.push(_ + _ + "const context = this.context");
     lines.push(_ + _ + "context.fillStyle = 'red'");
-    lines.push(_ + _ + "context.fillRect(box.pos.x, box.pos.y, box.width, box.height)");
+    lines.push(_ + _ + "context.fillRect(body.position.x, body.position.y, body.width, body.height)");
     lines.push(_ + "}");
     lines.push("}");
     return lines.join(NEWLINE).concat(NEWLINE);

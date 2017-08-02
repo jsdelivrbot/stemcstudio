@@ -47,13 +47,14 @@ export function EIGHT_VIEW(tabString: string): string {
     lines.push(_ + "/**");
     lines.push(_ + " *");
     lines.push(_ + " */");
-    lines.push(_ + "render() {");
+    lines.push(_ + "draw() {");
     lines.push(_ + _ + "this.engine.clear()");
     lines.push("");
     lines.push(_ + _ + "this.trackball.update()");
     lines.push("");
     lines.push(_ + _ + "this.dirLight.direction.copyVector(this.camera.look).subVector(this.camera.eye)");
     lines.push("");
+    lines.push(_ + _ + "this.box.position.copyVector(this.model.body.position)");
     lines.push(_ + _ + "this.box.attitude.rotorFromAxisAngle(e2, this.model.timestamp * 0.001)");
     lines.push("");
     lines.push(_ + _ + "this.box.render(this.ambients)");

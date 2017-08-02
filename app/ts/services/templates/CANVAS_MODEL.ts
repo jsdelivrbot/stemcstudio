@@ -8,8 +8,8 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push("/**");
     lines.push(" *");
     lines.push(" */");
-    lines.push("export class Box {");
-    lines.push(_ + "readonly pos = new Vector(0, 0)");
+    lines.push("export class Body {");
+    lines.push(_ + "readonly position = new Vector(0, 0)");
     lines.push(_ + "width: number");
     lines.push(_ + "height: number");
     lines.push(_ + "constructor(width: number, height: number) {");
@@ -22,7 +22,7 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push(" *");
     lines.push(" */");
     lines.push("export class Model {");
-    lines.push(_ + "readonly box = new Box(20, 20)");
+    lines.push(_ + "readonly body = new Body(20, 20)");
     lines.push(_ + "constructor() {");
     lines.push(_ + "}");
     lines.push("}");
