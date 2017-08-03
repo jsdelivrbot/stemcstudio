@@ -20,5 +20,3 @@ export interface NewProjectScope extends IRootScopeService {
     cancel(): void;
     ok(): void;
 }
-
-export default NewProjectScope;

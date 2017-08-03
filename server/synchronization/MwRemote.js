@@ -6,7 +6,7 @@ var MwAction_1 = require("./MwAction");
 var MwAction_2 = require("./MwAction");
 var MwAction_3 = require("./MwAction");
 var MwShadow_1 = require("./MwShadow");
-var dmp = new DMP_1.default();
+var dmp = new DMP_1.DMP();
 var MwRemote = (function () {
     function MwRemote() {
         this.edits = {};
@@ -47,14 +47,14 @@ var MwRemote = (function () {
         return value;
     };
     MwRemote.prototype.rehydrate = function (value) {
-        this.shadow = value.s ? new MwShadow_1.default().rehydrate(value.s) : void 0;
-        this.backup = value.b ? new MwShadow_1.default().rehydrate(value.b) : void 0;
+        this.shadow = value.s ? new MwShadow_1.MwShadow().rehydrate(value.s) : void 0;
+        this.backup = value.b ? new MwShadow_1.MwShadow().rehydrate(value.b) : void 0;
         this.edits = value.e;
     };
     MwRemote.prototype.ensureShadow = function () {
         if (!this.shadow) {
-            this.shadow = new MwShadow_1.default();
-            this.backup = new MwShadow_1.default();
+            this.shadow = new MwShadow_1.MwShadow();
+            this.backup = new MwShadow_1.MwShadow();
         }
         return this.shadow;
     };
@@ -115,7 +115,7 @@ var MwRemote = (function () {
                 console.warn('Delta mismatch.\n' + encodeURI(shadow.text));
             }
             if (diffs) {
-                if (isChanged_1.default(diffs)) {
+                if (isChanged_1.isChanged(diffs)) {
                     if (code === MwAction_2.ACTION_DELTA_OVERWRITE) {
                         shadow.text = dmp.resultText(diffs);
                         editor.setText(shadow.text, function (err) {
@@ -163,5 +163,5 @@ var MwRemote = (function () {
     };
     return MwRemote;
 }());
-exports.default = MwRemote;
+exports.MwRemote = MwRemote;
 //# sourceMappingURL=MwRemote.js.map

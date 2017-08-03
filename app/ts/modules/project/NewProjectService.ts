@@ -1,9 +1,9 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import NewProjectDialog from './NewProjectDialog';
-import NewProjectDefaults from './NewProjectDefaults';
+import { NewProjectDialog } from './NewProjectDialog';
+import { NewProjectDefaults } from './NewProjectDefaults';
 import { NewProjectSettings } from './NewProjectSettings';
-import NewProjectController from './NewProjectController';
+import { NewProjectController } from './NewProjectController';
 
 /**
  * The implementation that is registered with the application module.

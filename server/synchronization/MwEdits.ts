@@ -1,10 +1,8 @@
-import MwChange from './MwChange';
+import { MwChange } from './MwChange';
 
-interface MwEdits {
+export interface MwEdits {
     /**
      * The changes to this file.
      */
     x: MwChange[];
 }
-
-export default MwEdits;

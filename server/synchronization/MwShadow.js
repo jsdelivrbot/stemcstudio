@@ -4,7 +4,7 @@ var DMP_1 = require("./DMP");
 var MwAction_1 = require("./MwAction");
 var MwAction_2 = require("./MwAction");
 var INITIAL_VERSION = 1;
-var dmp = new DMP_1.default();
+var dmp = new DMP_1.DMP();
 var MwShadow = (function () {
     function MwShadow() {
         this.happy = false;
@@ -96,5 +96,5 @@ var MwShadow = (function () {
     };
     return MwShadow;
 }());
-exports.default = MwShadow;
+exports.MwShadow = MwShadow;
 //# sourceMappingURL=MwShadow.js.map

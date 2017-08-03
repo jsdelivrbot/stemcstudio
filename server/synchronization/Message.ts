@@ -1,7 +1,6 @@
 import Edit from './Edit';
-interface Message {
+
+export interface Message {
     edits: Edit[];
     collabShadowVersion: number;
 }
-
-export default Edit;

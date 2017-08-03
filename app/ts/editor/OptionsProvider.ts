@@ -1,5 +1,3 @@
-interface OptionsProvider {
+export interface OptionsProvider {
 
 }
-
-export default OptionsProvider;

@@ -2,7 +2,7 @@ import { IFormController } from 'angular';
 import { IModalServiceInstance } from 'angular-bootstrap';
 import { isString } from '../../utils/isString';
 import { ITemplate } from '../../services/templates/template';
-import NewProjectScope from './NewProjectScope';
+import { NewProjectScope } from './NewProjectScope';
 import { NewProjectSettings } from './NewProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 
@@ -21,7 +21,7 @@ function defaultTemplate(template: ITemplate, templates: ITemplate[]): ITemplate
 /**
  * The controller for the NewProjectScope.
  */
-export default class NewProjectController {
+export class NewProjectController {
 
     public static $inject: string[] = [
         '$scope',
@@ -40,7 +40,7 @@ export default class NewProjectController {
         $scope.project = {
             description: isString(pkgInfo.description) ? pkgInfo.description : "",
             template: defaultTemplate(pkgInfo.template, templates),
-            version: isString(pkgInfo.version) ? pkgInfo.version : "0.9.0"
+            version: isString(pkgInfo.version) ? pkgInfo.version : "1.0.0"
         };
         $scope.templates = templates;
 

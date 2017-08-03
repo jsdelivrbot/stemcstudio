@@ -4,7 +4,7 @@
  * Link := '<' href '>' ';' S 'rel="' rel '"'
  * Link := Link [',' S Link]
  */
-export default function linkToMap(links: string | null): { [rel: string]: string } {
+export function linkToMap(links: string | null): { [rel: string]: string } {
     const map: { [rel: string]: string } = {};
     // Not sure how we are getting null for links.
     if (typeof links === 'string') {

@@ -11,7 +11,7 @@ import { Token } from "../Token";
 import { addListener } from "../lib/event";
 import { stringRepeat } from "../lib/lang";
 import { addCssClass, createElement, removeCssClass } from "../lib/dom";
-import ListView from "./ListView";
+import { ListView } from "./ListView";
 
 const noop = function () { /* Do nothing. */ };
 

@@ -1,1 +1,1 @@
-{"version":3,"file":"isNumber.js","sourceRoot":"","sources":["isNumber.ts"],"names":[],"mappings":";;AAAA,kBAAiC,KAAU;IACvC,MAAM,CAAC,OAAO,KAAK,KAAK,QAAQ,CAAC;AACrC,CAAC;AAFD,2BAEC"}
+{"version":3,"file":"isNumber.js","sourceRoot":"","sources":["isNumber.ts"],"names":[],"mappings":";;AAAA,kBAAyB,KAAU;IAC/B,MAAM,CAAC,OAAO,KAAK,KAAK,QAAQ,CAAC;AACrC,CAAC;AAFD,4BAEC"}

@@ -46,5 +46,3 @@ export interface Marker {
      */
     update?: (html: (number | string)[], markerLayer: IMarkerLayer, session: EditSession, config: MarkerConfig) => void;
 }
-
-export default Marker;

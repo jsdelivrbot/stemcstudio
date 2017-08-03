@@ -1,12 +1,12 @@
-import DIFF_DELETE from './DIFF_DELETE';
-import DIFF_INSERT from './DIFF_INSERT';
-import DIFF_EQUAL from './DIFF_EQUAL';
-import Diff from './Diff';
+import { DIFF_DELETE } from './DIFF_DELETE';
+import { DIFF_INSERT } from './DIFF_INSERT';
+import { DIFF_EQUAL } from './DIFF_EQUAL';
+import { Diff } from './Diff';
 
 /**
  * Class representing one patch operation.
  */
-export default class Patch {
+export class Patch {
 
     /**
      * The first element of Diff is a number indicating DELETE, INSERT, EQUAL.

@@ -1,4 +1,4 @@
-export default function hasHTMLLinkElement(id: string, doc: Document) {
+export function hasHTMLLinkElement(id: string, doc: Document) {
     let index = 0;
     const links = doc.getElementsByTagName('link');
 

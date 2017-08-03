@@ -57,7 +57,7 @@ export interface WorkspaceScope extends DoodleScope {
     /**
      * Label the project with a title, description, keywords, and license.
      */
-    doLabel(): void;
+    doLabelsAndTags(): void;
 
     /**
      * 

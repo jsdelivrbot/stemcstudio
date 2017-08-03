@@ -1,3 +1,3 @@
-export default function(value: any): boolean {
+export function isUndefined(value: any): boolean {
     return typeof value === 'undefined';
 }

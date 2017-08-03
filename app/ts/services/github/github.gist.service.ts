@@ -6,7 +6,7 @@ import { IGitHubGistService } from './IGitHubGistService';
 import { Gist } from './Gist';
 import { GistComment } from './GistComment';
 import { GistData } from './GistData';
-import linkToMap from '../../utils/linkToMap';
+import { linkToMap } from '../../utils/linkToMap';
 import { Links } from './Links';
 
 //

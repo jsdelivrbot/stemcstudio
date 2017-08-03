@@ -1,9 +1,9 @@
-import MwEditor from './MwEditor';
+import { MwEditor } from './MwEditor';
 
 /**
  * The adapter on the user's workspace.
  */
-interface MwWorkspace {
+export interface MwWorkspace {
     /**
      *
      */
@@ -14,5 +14,3 @@ interface MwWorkspace {
      */
     deleteEditor(editor: MwEditor);
 }
-
-export default MwWorkspace;

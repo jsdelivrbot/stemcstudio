@@ -7,8 +7,6 @@ export interface IWorkspaceModel {
 
 export const WORKSPACE_MODEL_UUID = 'workspaceModel';
 
-export default IWorkspaceModel;
-
 export const changedLinting = 'changedLinting';
 export const changedOperatorOverloading = 'changedOperatorOverloading';
 export const outputFilesTopic = 'outputFiles';

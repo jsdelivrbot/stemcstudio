@@ -1,12 +1,12 @@
-import CompletionEntry from './CompletionEntry';
-import Editor from '../Editor';
-import { Position } from '../Position';
-import retrievePrecedingIdentifier from '../autocomplete/retrievePrecedingIdentifier';
+import { CompletionEntry } from './CompletionEntry';
+import { Editor } from '../Editor';
+import { Position } from 'editor-document';
+import { retrievePrecedingIdentifier } from '../autocomplete/retrievePrecedingIdentifier';
 
 /**
  * This is DEAD code.
  */
-export default class CompletionService {
+export class CompletionService {
 
     private editor: Editor;
 

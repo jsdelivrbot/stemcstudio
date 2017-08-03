@@ -38,7 +38,7 @@ const isProductionMode = () => {
     }
 };
 
-const app = express();
+export const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -164,5 +164,3 @@ app.get("/*", (req: Request, res: Response, next: Function) => {
 
 // error handling middleware should be loaded after loading the routes
 app.use(errorHandler());
-
-export default app;

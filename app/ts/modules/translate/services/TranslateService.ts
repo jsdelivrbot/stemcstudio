@@ -5,7 +5,7 @@ import { ITranslateService } from '../api';
 /**
  *
  */
-export default class TranslateService implements ITranslateService {
+export class TranslateService implements ITranslateService {
 
     private directivePriority_ = 0;
     private readonly sourceLanguage_: string;

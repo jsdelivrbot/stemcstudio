@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import * as AWS from 'aws-sdk';
-import ISearchParams from './SearchParams';
-import ISearchResponse from './SearchResponse';
-import ISubmitParams from './SubmitParams';
-import ISubmitResponse from './SubmitResponse';
-import putDoodleRef from './aws/dynamodb/putDoodleRef';
+import { SearchParams as ISearchParams } from './SearchParams';
+import { SearchResponse as ISearchResponse } from './SearchResponse';
+import { SubmitParams as ISubmitParams } from './SubmitParams';
+import { SubmitResponse as ISubmitResponse } from './SubmitResponse';
+import { putDoodleRef } from './aws/dynamodb/putDoodleRef';
 
 AWS.config.region = 'us-east-1';
 

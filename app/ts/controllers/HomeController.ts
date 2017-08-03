@@ -5,11 +5,11 @@ import { Doodle } from '../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
-import HomeScope from '../scopes/HomeScope';
-import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
+import { HomeScope } from '../scopes/HomeScope';
+import { initNewProjectDefaults } from '../mappings/initNewProjectDefaults';
 import { ModalDialog } from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
-import NewProjectDialog from '../modules/project/NewProjectDialog';
+import { NewProjectDialog } from '../modules/project/NewProjectDialog';
 import { StemcArXiv } from '../modules/stemcArXiv/StemcArXiv';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 

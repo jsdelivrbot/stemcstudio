@@ -1,4 +1,4 @@
-import DIFF_EQUAL from '../DIFF_EQUAL';
+import { DIFF_EQUAL } from '../DIFF_EQUAL';
 import { Patch } from '../Patch';
 
 /**
@@ -6,7 +6,7 @@ import { Patch } from '../Patch';
  * 
  * This is a helper function for the full add Padding
  */
-export default function addTrailingPadding(patches: Patch[], paddingLength: number, nullPadding: string): void {
+export function addTrailingPadding(patches: Patch[], paddingLength: number, nullPadding: string): void {
     const patch = patches[patches.length - 1];
     const diffs = patch.diffs;
     if (diffs.length === 0 || diffs[diffs.length - 1][0] !== DIFF_EQUAL) {

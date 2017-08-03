@@ -1,5 +1,5 @@
 import { IPromise } from 'angular';
-import OpenProjectSettings from './OpenProjectSettings';
+import { OpenProjectSettings } from './OpenProjectSettings';
 
 /**
  * Provides the capability to open projects in local storage.
@@ -10,5 +10,3 @@ export interface OpenProjectDialog {
      */
     open(defaults: OpenProjectSettings): IPromise<OpenProjectSettings>;
 }
-
-export default OpenProjectDialog;

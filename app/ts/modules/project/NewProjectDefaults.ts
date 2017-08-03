@@ -3,7 +3,7 @@ import { ITemplate } from '../../services/templates/template';
 /**
  * The defaults for creating a new project.
  */
-interface NewProjectDefaults {
+export interface NewProjectDefaults {
     /**
      * The description suggested to the user.
      */
@@ -17,5 +17,3 @@ interface NewProjectDefaults {
      */
     version?: string;
 }
-
-export default NewProjectDefaults;

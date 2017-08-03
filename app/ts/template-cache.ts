@@ -247,10 +247,14 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class='navbar-header' ng-if='workspace.description && workspace.owner'>\n" +
-    "                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>\n" +
+    "                <a role='button' ng-click='doLabelsAndTags()'>\n" +
+    "                    <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>\n" +
+    "                </a>\n" +
     "            </div>\n" +
     "            <div class='navbar-header' ng-if='workspace.description && !workspace.owner'>\n" +
-    "                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>\n" +
+    "                <a role='button' ng-click='doLabelsAndTags()'>\n" +
+    "                    <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>\n" +
+    "                </a>\n" +
     "            </div>\n" +
     "        </nav>\n" +
     "        <div id='doodle-container'>\n" +
@@ -399,7 +403,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li>\n" +
-    "                        <a role='button' ng-click='doLabel()'>\n" +
+    "                        <a role='button' ng-click='doLabelsAndTags()'>\n" +
     "                            <ng-md-icon icon='label' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Labels and Tags\"\n" +
     "                                tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +

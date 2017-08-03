@@ -1,6 +1,6 @@
-import TextHighlightRules from "./TextHighlightRules";
+import { TextHighlightRules } from "./TextHighlightRules";
 
-export default class LispHighlightRules extends TextHighlightRules {
+export class LispHighlightRules extends TextHighlightRules {
     constructor() {
         super();
 

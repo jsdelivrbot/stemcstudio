@@ -1,12 +1,12 @@
 import { IQService } from 'angular';
 import { ITranslateServiceProvider, ITranslateService, ITranslationTable } from '../api';
 import { ITranslateGateway, TRANSLATE_GATEWAY_UUID } from '../api';
-import TranslateService from './TranslateService';
+import { TranslateService } from './TranslateService';
 
 /**
  * Using a provider allows us to externally configure a service.
  */
-export default class TranslateServiceProvider implements ITranslateServiceProvider {
+export class TranslateServiceProvider implements ITranslateServiceProvider {
     public $inject: string[] = [];
     /**
      * The language from which we translate.

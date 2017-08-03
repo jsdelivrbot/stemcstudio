@@ -1,8 +1,8 @@
-import {createHTMLDivElement} from '../lib/dom';
-import createDelayedCall from '../lib/lang/createDelayedCall';
-import Editor from '../Editor';
+import { createHTMLDivElement } from '../lib/dom';
+import { createDelayedCall } from '../lib/lang/createDelayedCall';
+import { Editor } from '../Editor';
 
-export default class StatusBar {
+export class StatusBar {
     private element: HTMLDivElement;
     constructor(editor: Editor, parentNode: HTMLElement) {
         this.element = createHTMLDivElement();

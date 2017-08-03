@@ -2,8 +2,8 @@ import { Server } from "http";
 import { Express } from 'express';
 import * as sio from 'socket.io';
 import { getEdits, setEdits } from './server/routes/rooms/index';
-import MwBroadcast from './server/synchronization/MwBroadcast';
-import MwEdits from './server/synchronization/MwEdits';
+import { MwBroadcast } from './server/synchronization/MwBroadcast';
+import { MwEdits } from './server/synchronization/MwEdits';
 
 /**
  * A request from a client to emit 'edits'.
@@ -35,7 +35,7 @@ const verbose = false;
  * The initialization code for the sockets part of this application.
  * Just trying to keep stuff out of the top level web.ts file.
  */
-export default function sockets(app: Express, server: Server) {
+export function sockets(app: Express, server: Server) {
 
     //
     // The name is arbitrary, the point is that it is a (server) => io

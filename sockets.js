@@ -88,5 +88,5 @@ function sockets(app, server) {
         });
     });
 }
-exports.default = sockets;
+exports.sockets = sockets;
 //# sourceMappingURL=sockets.js.map

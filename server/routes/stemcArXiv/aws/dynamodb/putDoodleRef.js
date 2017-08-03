@@ -17,15 +17,15 @@ function putDoodleRef(doodle, next) {
     Item[DoodleRefTable_3.RESOURCE_KEY] = { S: doodle.gistId };
     Item[DoodleRefTable_4.TYPE] = { S: 'Gist' };
     var title = doodle.title;
-    if (isString_1.default(title)) {
+    if (isString_1.isString(title)) {
         Item[DoodleRefTable_5.TITLE] = { S: title };
     }
     var author = doodle.author;
-    if (isString_1.default(author)) {
+    if (isString_1.isString(author)) {
         Item[DoodleRefTable_6.AUTHOR] = { S: author };
     }
     var keywords = doodle.keywords;
-    if (isArray_1.default(keywords)) {
+    if (isArray_1.isArray(keywords)) {
         Item[DoodleRefTable_7.KEYWORDS] = { SS: keywords };
     }
     var params = { TableName: DoodleRefTable_1.TableName, Item: Item };
@@ -40,5 +40,5 @@ function putDoodleRef(doodle, next) {
         }
     });
 }
-exports.default = putDoodleRef;
+exports.putDoodleRef = putDoodleRef;
 //# sourceMappingURL=putDoodleRef.js.map

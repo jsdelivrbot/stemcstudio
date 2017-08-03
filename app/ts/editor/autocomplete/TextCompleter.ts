@@ -52,10 +52,10 @@
  * ***** END LICENSE BLOCK ***** */
 "use strict";
 
-import Completer from './Completer';
-import Completion from '../Completion';
-import EditSession from '../EditSession';
-import Editor from '../Editor';
+import { Completer } from './Completer';
+import { Completion } from '../Completion';
+import { EditSession } from '../EditSession';
+import { Editor } from '../Editor';
 import { Position } from "../Position";
 import { Range } from "../Range";
 
@@ -101,7 +101,7 @@ function wordDistance(position: Position, session: EditSession): WordScores {
 /**
  * Provides completions based upon nearby words.
  */
-export default class TextCompleter implements Completer {
+export class TextCompleter implements Completer {
 
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 

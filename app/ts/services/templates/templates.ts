@@ -46,7 +46,7 @@ function tabString(editorPreferences: EditorPreferencesStorage): string {
         return "\t";
     }
 }
-export default function dependenciesMap(packageNames: string[]): { [packageName: string]: string } {
+export function dependenciesMap(packageNames: string[]): { [packageName: string]: string } {
     function version(packageName: string): string {
         return 'latest';
     }

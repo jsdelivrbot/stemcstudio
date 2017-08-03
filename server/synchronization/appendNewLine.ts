@@ -1,3 +1,3 @@
-export default function appendNewLine(text: string): string {
+export function appendNewLine(text: string): string {
     return `${text}\n`;
 }

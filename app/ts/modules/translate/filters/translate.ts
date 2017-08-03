@@ -5,7 +5,7 @@ import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../api';
  * A filter allowing text to be translated synchronously.
  * This is deprecated because translation must operate asynchronously.
  */
-function translateFilterFactory($parse: IParseService, $translate: ITranslateService) {
+export function translateFilterFactory($parse: IParseService, $translate: ITranslateService) {
 
 
     const translateFilter = function (this: any, input: string) {
@@ -16,5 +16,3 @@ function translateFilterFactory($parse: IParseService, $translate: ITranslateSer
 }
 
 translateFilterFactory['$inject'] = ['$parse', TRANSLATE_SERVICE_UUID];
-
-export default translateFilterFactory;

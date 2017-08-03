@@ -1,13 +1,13 @@
 import { IFormController } from 'angular';
 import { IModalServiceInstance } from 'angular-bootstrap';
 import { isString } from '../../utils/isString';
-import CopyProjectScope from './CopyProjectScope';
-import CopyProjectSettings from './CopyProjectSettings';
+import { CopyProjectScope } from './CopyProjectScope';
+import { CopyProjectSettings } from './CopyProjectSettings';
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 
 function copySettingsToScope(settings: CopyProjectSettings, $scope: CopyProjectScope): void {
     const oldDescription = isString(settings.description) ? settings.description : "";
-    const oldVersion = isString(settings.version) ? settings.version : "0.9.0";
+    const oldVersion = isString(settings.version) ? settings.version : "1.0.0";
     $scope.project = {
         newDescription: oldDescription,
         oldDescription,
@@ -19,7 +19,7 @@ function copySettingsToScope(settings: CopyProjectSettings, $scope: CopyProjectS
 /**
  * The controller for the CopyProjectScope.
  */
-export default class CopyProjectController {
+export class CopyProjectController {
 
     public static $inject: string[] = [
         '$scope',

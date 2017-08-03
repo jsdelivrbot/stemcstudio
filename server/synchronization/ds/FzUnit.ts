@@ -1,10 +1,10 @@
-import FzEditor from './FzEditor';
-import FzRemote from './FzRemote';
+import { FzEditor } from './FzEditor';
+import { FzRemote } from './FzRemote';
 
 /**
  * 
  */
-interface FzUnit {
+export interface FzUnit {
 
     /**
      * The editor, in dehydrated form.
@@ -16,5 +16,3 @@ interface FzUnit {
      */
     k: { [nodeId: string]: FzRemote };
 }
-
-export default FzUnit;

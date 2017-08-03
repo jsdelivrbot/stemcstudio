@@ -8,7 +8,7 @@ interface TranslationResponse {
 /**
  *
  */
-export default class TranslateGateway implements ITranslateGateway {
+export class TranslateGateway implements ITranslateGateway {
 
     /**
      * 

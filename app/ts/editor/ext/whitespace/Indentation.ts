@@ -1,7 +1,7 @@
 /**
  *
  */
-interface Indentation {
+export interface Indentation {
 
   /**
    *
@@ -13,5 +13,3 @@ interface Indentation {
    */
   length?: number;
 }
-
-export default Indentation;

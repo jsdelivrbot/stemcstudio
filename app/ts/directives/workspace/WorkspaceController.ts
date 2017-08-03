@@ -418,7 +418,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.updateMarkdownView(WAIT_NO_MORE);
         };
 
-        $scope.doLabel = (label?: string, value?: number) => {
+        $scope.doLabelsAndTags = (label?: string, value?: number) => {
             if (wsModel.isZombie()) {
                 return;
             }

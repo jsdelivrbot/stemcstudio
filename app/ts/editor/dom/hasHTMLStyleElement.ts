@@ -1,4 +1,4 @@
-export default function hasHTMLStyleElement(id: string, doc: Document) {
+export function hasHTMLStyleElement(id: string, doc: Document) {
     let index = 0;
     const styles = doc.getElementsByTagName('style');
 

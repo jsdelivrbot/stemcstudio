@@ -1,6 +1,6 @@
-import DMP from '../../synchronization/DMP';
-import Patch from '../../synchronization/Patch';
-import MwEditor from '../../synchronization/MwEditor';
+import { DMP } from '../../synchronization/DMP';
+import { Patch } from '../../synchronization/Patch';
+import { MwEditor } from '../../synchronization/MwEditor';
 
 const dmp = new DMP();
 
@@ -8,7 +8,7 @@ const dmp = new DMP();
  * The server does not maintain a real editor.
  * FIXME: This does not implement the asynchronous contract of MwEditor.
  */
-export default class ServerEditor implements MwEditor {
+export class ServerEditor implements MwEditor {
     private _text = "";
     /**
      * We'll use DMP to convert patchhes into a full text replacement.

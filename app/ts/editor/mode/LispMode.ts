@@ -1,7 +1,7 @@
-import LispHighlightRules from './LispHighlightRules';
-import TextMode from './TextMode';
+import { LispHighlightRules } from './LispHighlightRules';
+import { TextMode } from './TextMode';
 
-export default class LispMode extends TextMode {
+export class LispMode extends TextMode {
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
         this.HighlightRules = LispHighlightRules;

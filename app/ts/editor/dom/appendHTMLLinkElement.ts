@@ -1,6 +1,6 @@
-import getDocumentHead from './getDocumentHead';
+import { getDocumentHead } from './getDocumentHead';
 
-export default function appendHTMLLinkElement(id: string, rel: string, type: string, href: string, doc: Document) {
+export function appendHTMLLinkElement(id: string, rel: string, type: string, href: string, doc: Document) {
     const link = doc.createElement('link');
     link.id = id;
     link.rel = rel;

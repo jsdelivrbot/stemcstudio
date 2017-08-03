@@ -1,6 +1,6 @@
-import DIFF_DELETE from './DIFF_DELETE';
-import DIFF_INSERT from './DIFF_INSERT';
-import DIFF_EQUAL from './DIFF_EQUAL';
+import { DIFF_DELETE } from './DIFF_DELETE';
+import { DIFF_INSERT } from './DIFF_INSERT';
+import { DIFF_EQUAL } from './DIFF_EQUAL';
 import { Diff } from './Diff';
 
 /**

@@ -1,6 +1,6 @@
 import { Diff } from './Diff';
-import DMP from './DMP';
-import isChanged from './isChanged';
+import { DMP } from './DMP';
+import { isChanged } from './isChanged';
 import { ACTION_RAW_OVERWRITE } from './MwAction';
 import { ACTION_DELTA_OVERWRITE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE } from './MwAction';

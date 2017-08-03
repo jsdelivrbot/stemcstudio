@@ -6,5 +6,3 @@ export interface OpenProjectSettings {
      */
     doodle?: Doodle;
 }
-
-export default OpenProjectSettings;

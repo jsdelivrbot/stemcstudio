@@ -1,18 +1,18 @@
 import * as AWS from 'aws-sdk';
-import {TableName} from './DoodleRefTable';
-import {OWNER_KEY} from './DoodleRefTable';
-import {RESOURCE_KEY} from './DoodleRefTable';
-import {TYPE} from './DoodleRefTable';
-import {TITLE} from './DoodleRefTable';
-import {AUTHOR} from './DoodleRefTable';
-import {KEYWORDS} from './DoodleRefTable';
-import isArray from '../../../../utils/isArray';
-import isString from '../../../../utils/isString';
+import { TableName } from './DoodleRefTable';
+import { OWNER_KEY } from './DoodleRefTable';
+import { RESOURCE_KEY } from './DoodleRefTable';
+import { TYPE } from './DoodleRefTable';
+import { TITLE } from './DoodleRefTable';
+import { AUTHOR } from './DoodleRefTable';
+import { KEYWORDS } from './DoodleRefTable';
+import { isArray } from '../../../../utils/isArray';
+import { isString } from '../../../../utils/isString';
 
 /**
  * 
  */
-export default function putDoodleRef(doodle: { owner: string, gistId: string, title: string, author: string, keywords: string[] }, next: (err: AWS.Reason, data: any) => any) {
+export function putDoodleRef(doodle: { owner: string, gistId: string, title: string, author: string, keywords: string[] }, next: (err: AWS.Reason, data: any) => any) {
     const db = new AWS.DynamoDB();
     // Define an Item object so that we can make use of the symbolic attribute names.
     const Item: { [name: string]: AWS.AttributeValue } = {};
@@ -32,7 +32,7 @@ export default function putDoodleRef(doodle: { owner: string, gistId: string, ti
         Item[KEYWORDS] = { SS: keywords };
     }
     const params = { TableName, Item };
-    db.putItem(params, function(err: AWS.Reason, data: any) {
+    db.putItem(params, function (err: AWS.Reason, data: any) {
         if (!err) {
             // There is nothing to see in the data, but we return it anyway.
             next(void 0, data);

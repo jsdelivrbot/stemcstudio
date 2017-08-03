@@ -3,7 +3,7 @@ import { requestAnimationFrame } from './lib/event';
 /**
  * Batches changes (that force something to be redrawn) in the background.
  */
-export default class RenderLoop {
+export class RenderLoop {
     public pending = false;
     private onRender: (changes: number) => void;
     private changes = 0;

@@ -1,5 +1,3 @@
-interface SubmitResponse {
+export interface SubmitResponse {
 
 }
-
-export default SubmitResponse;

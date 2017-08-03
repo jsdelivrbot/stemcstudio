@@ -1,9 +1,9 @@
 import { module } from 'angular';
-import TranslateController from './controllers/TranslateController';
-import translateDirective from './directives/translate';
-import translateFilter from './filters/translate';
-import TranslateGatewayProvider from './services/TranslateGatewayProvider';
-import TranslateServiceProvider from './services/TranslateServiceProvider';
+import { TranslateController } from './controllers/TranslateController';
+import { factory as translateDirective } from './directives/translate';
+import { translateFilterFactory as translateFilter } from './filters/translate';
+import { TranslateGatewayProvider } from './services/TranslateGatewayProvider';
+import { TranslateServiceProvider } from './services/TranslateServiceProvider';
 import { TRANSLATE_GATEWAY_UUID, TRANSLATE_SERVICE_UUID } from './api';
 
 export const translateModule = module('translate', []);

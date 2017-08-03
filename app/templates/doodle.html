@@ -139,10 +139,14 @@
                 </ul>
             </div>
             <div class='navbar-header' ng-if='workspace.description && workspace.owner'>
-                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>
+                <a role='button' ng-click='doLabelsAndTags()'>
+                    <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>
+                </a>
             </div>
             <div class='navbar-header' ng-if='workspace.description && !workspace.owner'>
-                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
+                <a role='button' ng-click='doLabelsAndTags()'>
+                    <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
+                </a>
             </div>
         </nav>
         <div id='doodle-container'>

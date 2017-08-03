@@ -1,4 +1,4 @@
-import DIFF_EQUAL from '../DIFF_EQUAL';
+import { DIFF_EQUAL } from '../DIFF_EQUAL';
 import { Patch } from '../Patch';
 
 /**
@@ -6,7 +6,7 @@ import { Patch } from '../Patch';
  * 
  * This is a helper function for the full add Padding
  */
-export default function addLeadingPadding(patches: Patch[], paddingLength: number, nullPadding: string): void {
+export function addLeadingPadding(patches: Patch[], paddingLength: number, nullPadding: string): void {
     const patch = patches[0];
     const diffs = patch.diffs;
     if (diffs.length === 0 || diffs[0][0] !== DIFF_EQUAL) {

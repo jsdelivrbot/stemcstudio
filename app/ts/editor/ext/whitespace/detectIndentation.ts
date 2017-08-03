@@ -1,5 +1,5 @@
-import EditSession from '../../EditSession';
-import Indentation from './Indentation';
+import { EditSession } from '../../EditSession';
+import { Indentation } from './Indentation';
 
 // based on http://www.freehackers.org/Indent_Finder
 function $detectIndentation(lines: string[], fallback?: any): Indentation {
@@ -69,7 +69,7 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
         return { ch: " ", length: tabLength };
 }
 
-export default function detectIndentation(session: EditSession) {
+export function detectIndentation(session: EditSession) {
     const lines: string[] = session.getLines(0, 1000);
     const indent: Indentation = $detectIndentation(lines) || {};
 

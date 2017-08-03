@@ -1,8 +1,8 @@
 import { stringRepeat } from "../../lib/lang";
-import Document from '../../Document';
-import EditSession from '../../EditSession';
+import { Document } from 'editor-document';
+import { EditSession } from '../../EditSession';
 
-export default function convertIndentation(session: EditSession, ch: string, len: number): void {
+export function convertIndentation(session: EditSession, ch: string, len: number): void {
     const oldCh = session.getTabString()[0];
     const oldLen = session.getTabSize();
     if (!len) len = oldLen;

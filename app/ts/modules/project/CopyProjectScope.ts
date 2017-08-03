@@ -17,5 +17,3 @@ export interface CopyProjectScope extends IRootScopeService {
     cancel(): void;
     ok(): void;
 }
-
-export default CopyProjectScope;

@@ -1,7 +1,7 @@
 /**
  *
  */
-interface ScreenCoordinates {
+export interface ScreenCoordinates {
 
     /**
      *
@@ -13,5 +13,3 @@ interface ScreenCoordinates {
      */
     pageY: number;
 }
-
-export default ScreenCoordinates;

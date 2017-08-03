@@ -1,5 +1,4 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DIFF_INSERT = +1;
-exports.default = DIFF_INSERT;
+exports.DIFF_INSERT = +1;
 //# sourceMappingURL=DIFF_INSERT.js.map

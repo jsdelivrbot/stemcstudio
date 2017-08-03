@@ -1,7 +1,7 @@
 /**
  *
  */
-export default class ThemeLink {
+export class ThemeLink {
 
     /**
      *

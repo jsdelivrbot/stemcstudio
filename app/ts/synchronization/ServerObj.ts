@@ -1,7 +1,7 @@
-import Diff from './Diff';
-import DMP from './DMP';
-import Patch from './Patch';
-import MwEditor from './MwEditor';
+import { Diff } from './Diff';
+import { DMP } from './DMP';
+import { Patch } from './Patch';
+import { MwEditor } from './MwEditor';
 
 const dmp = new DMP();
 
@@ -9,7 +9,7 @@ const dmp = new DMP();
  * The server does not maintain a real editor.
  * It may be interesting to consider the benefits of more functionality.
  */
-export default class ServerObj implements MwEditor {
+export class ServerObj implements MwEditor {
     private _text = "";
     /**
      * We'll use DMP to convert patchhes into a full text replacement.

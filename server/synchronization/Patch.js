@@ -36,13 +36,13 @@ var Patch = (function () {
         var op;
         for (var x = 0; x < this.diffs.length; x++) {
             switch (this.diffs[x][0]) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     op = '+';
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     op = '-';
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     op = ' ';
                     break;
                 default: {
@@ -54,5 +54,5 @@ var Patch = (function () {
     };
     return Patch;
 }());
-exports.default = Patch;
+exports.Patch = Patch;
 //# sourceMappingURL=Patch.js.map

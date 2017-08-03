@@ -1,10 +1,10 @@
-import getDocumentHead from './getDocumentHead';
-import hasHTMLStyleElement from './hasHTMLStyleElement';
+import { getDocumentHead } from './getDocumentHead';
+import { hasHTMLStyleElement } from './hasHTMLStyleElement';
 
 /**
  *
  */
-export default function ensureHTMLStyleElement(cssText: string, id: string, doc: Document): void {
+export function ensureHTMLStyleElement(cssText: string, id: string, doc: Document): void {
     // If style is already imported return immediately.
     if (id && hasHTMLStyleElement(id, doc)) {
         return;

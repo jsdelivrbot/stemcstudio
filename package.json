@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.39.4",
+  "version": "2.39.5",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -43,7 +43,7 @@
     "es6-promise": "^4.1.1",
     "es6-shim": "^0.35.3",
     "express": "^4.15.3",
-    "express-session": "^1.15.4",
+    "express-session": "^1.15.5",
     "generic-rbtree": "^1.1.1",
     "lactate": "0.13.12",
     "method-override": "^2.3.9",

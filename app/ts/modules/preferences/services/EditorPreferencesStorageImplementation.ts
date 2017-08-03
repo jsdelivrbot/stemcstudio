@@ -72,7 +72,7 @@ const DEFAULTS: Preferences = {
     useSoftTabs: true
 };
 
-export default class PreferencesManagerService implements EditorPreferencesStorage {
+export class PreferencesManagerService implements EditorPreferencesStorage {
     public static $inject: string[] = ['$window'];
     private cache: Partial<Preferences> = {};
     constructor(private $window: IWindowService) {

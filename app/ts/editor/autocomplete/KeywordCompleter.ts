@@ -11,7 +11,7 @@ export interface KeywordCompleterEditor extends Editor {
 /**
  * Provides completions for a language mode.
  */
-export default class KeywordCompleter implements Completer {
+export class KeywordCompleter implements Completer {
 
     getCompletionsAtPosition(editor: KeywordCompleterEditor, position: Position, prefix: string): Promise<Completion[]> {
 

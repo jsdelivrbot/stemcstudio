@@ -13,7 +13,7 @@ function bindKey(win: string, mac: string) {
 */
 
 // commands to enter multiselect mode
-const commands: Command<Editor>[] = [{
+export const commands: Command<Editor>[] = [{
     name: "addCursorAbove",
     exec: function (editor: Editor) { editor.selectMoreLines(Direction.BACKWARD); },
     bindKey: { win: "Ctrl-Alt-Up", mac: "Ctrl-Alt-Up" },
@@ -68,8 +68,6 @@ const commands: Command<Editor>[] = [{
     bindKey: { win: "Ctrl-Alt-K", mac: "Ctrl-Alt-K" },
     readOnly: true
 }];
-
-export default commands;
 
 /*
 // commands active only in multiselect mode

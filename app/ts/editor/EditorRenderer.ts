@@ -5,7 +5,7 @@ import { Position } from "editor-document";
  *
  */
 // TODO: The HTML nature is leaky.
-interface EditorRenderer {
+export interface EditorRenderer {
     /**
      * 
      */
@@ -73,5 +73,3 @@ interface EditorRenderer {
      */
     scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void;
 }
-
-export default EditorRenderer;

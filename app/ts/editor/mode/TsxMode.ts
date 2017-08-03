@@ -7,5 +7,3 @@ export class TsxMode extends TypeScriptMode {
         this.$highlightRuleConfig = { jsx: true };
     }
 }
-
-export default TsxMode;

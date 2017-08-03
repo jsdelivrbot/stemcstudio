@@ -10,7 +10,7 @@ function positionInDocument(docLines: string[], position: Position): boolean {
         position.column >= 0 && position.column <= docLines[position.row].length;
 }
 
-export default function validateDelta(docLines: string[], delta: Delta): void {
+export function validateDelta(docLines: string[], delta: Delta): void {
 
     const action = delta.action;
 

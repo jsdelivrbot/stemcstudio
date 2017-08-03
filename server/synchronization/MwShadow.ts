@@ -1,16 +1,16 @@
-import DMP from './DMP';
+import { DMP } from './DMP';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
-import MwAction from './MwAction';
-import MwChange from './MwChange';
-import FzSerializable from './ds/FzSerializable';
-import FzShadow from './ds/FzShadow';
+import { MwAction } from './MwAction';
+import { MwChange } from './MwChange';
+import { FzSerializable } from './ds/FzSerializable';
+import { FzShadow } from './ds/FzShadow';
 
 const INITIAL_VERSION = 1;
 
 const dmp = new DMP();
 
-export default class MwShadow implements FzSerializable<FzShadow> {
+export class MwShadow implements FzSerializable<FzShadow> {
 
     /**
      * The local version number of the shadow document.

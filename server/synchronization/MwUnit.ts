@@ -1,17 +1,17 @@
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from './MwAction';
-import MwChange from './MwChange';
-import MwEdits from './MwEdits';
-import MwEditor from './MwEditor';
-import MwRemote from './MwRemote';
-import MwShadow from './MwShadow';
-import MwWorkspace from './MwWorkspace';
+import { MwChange } from './MwChange';
+import { MwEdits } from './MwEdits';
+import { MwEditor } from './MwEditor';
+import { MwRemote } from './MwRemote';
+import { MwShadow } from './MwShadow';
+import { MwWorkspace } from './MwWorkspace';
 
 /**
  * The smallest level of synchronization (a file).
  */
-export default class MwUnit {
+export class MwUnit {
     private editor: MwEditor;
     private remotes: { [nodeId: string]: MwRemote } = {};
     constructor(private workspace: MwWorkspace) {

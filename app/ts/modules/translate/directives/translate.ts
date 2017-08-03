@@ -2,13 +2,13 @@ import { equals, isArray, isDefined } from 'angular';
 import { IAttributes, IAugmentedJQuery, ICompileService, IDirective, IInterpolateService, IParseService, IRootScopeService } from 'angular';
 
 import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../api';
-import TranslateScope from '../scopes/TranslateScope';
+import { TranslateScope } from '../scopes/TranslateScope';
 
 /**
  * Directive Definition Factory
  * Usage <div translate>Hello</div> or <translate>Hello</translate>
  */
-function factory(
+export function factory(
     $interpolate: IInterpolateService,
     $rootScope: IRootScopeService,
     $parse: IParseService,
@@ -195,5 +195,3 @@ function factory(
 }
 
 factory.$inject = ['$interpolate', '$rootScope', '$parse', '$compile', TRANSLATE_SERVICE_UUID];
-
-export default factory;

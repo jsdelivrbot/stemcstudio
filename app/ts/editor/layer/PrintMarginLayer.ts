@@ -1,7 +1,7 @@
 import { AbstractLayer } from './AbstractLayer';
 import { refChange } from '../../utils/refChange';
 
-export default class PrintMarginLayer extends AbstractLayer {
+export class PrintMarginLayer extends AbstractLayer {
 
     /**
      * 

@@ -1,5 +1,5 @@
 import { IStateOptions, IStateService } from 'angular-ui-router';
-import INavigationService from './INavigationService';
+import { INavigationService } from './INavigationService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
 // Names of routing states.
 // WARNING: Changing state names can break ui-sref directives.

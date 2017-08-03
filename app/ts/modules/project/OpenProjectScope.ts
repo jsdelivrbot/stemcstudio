@@ -27,5 +27,3 @@ export interface OpenProjectScope extends IRootScopeService {
      */
     cancel(): void;
 }
-
-export default OpenProjectScope;

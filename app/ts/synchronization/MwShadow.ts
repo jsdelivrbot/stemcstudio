@@ -1,4 +1,4 @@
-import DMP from './DMP';
+import { DMP } from './DMP';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from './MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from './MwAction';
 import { MwAction } from './MwAction';

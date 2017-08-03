@@ -1,7 +1,7 @@
-import FzShadow from './FzShadow';
-import MwBroadcast from '../MwBroadcast';
+import { FzShadow } from './FzShadow';
+import { MwBroadcast } from '../MwBroadcast';
 
-interface FzRemote {
+export interface FzRemote {
     /**
      * The dehydrated shadow.
      */
@@ -15,5 +15,3 @@ interface FzRemote {
      */
     e: MwBroadcast;
 }
-
-export default FzRemote;

@@ -48,7 +48,7 @@ var DMP = (function () {
         }
         if (text1 === text2) {
             if (text1) {
-                return [[DIFF_EQUAL_1.default, text1]];
+                return [[DIFF_EQUAL_1.DIFF_EQUAL, text1]];
             }
             return [];
         }
@@ -66,35 +66,35 @@ var DMP = (function () {
         text2 = text2.substring(0, text2.length - commonlength);
         var diffs = this.diff_compute_(text1, text2, checklines, deadline);
         if (commonprefix) {
-            diffs.unshift([DIFF_EQUAL_1.default, commonprefix]);
+            diffs.unshift([DIFF_EQUAL_1.DIFF_EQUAL, commonprefix]);
         }
         if (commonsuffix) {
-            diffs.push([DIFF_EQUAL_1.default, commonsuffix]);
+            diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, commonsuffix]);
         }
         this.diff_cleanupMerge(diffs);
         return diffs;
     };
     DMP.prototype.diff_compute_ = function (text1, text2, checklines, deadline) {
         if (!text1) {
-            return [[DIFF_INSERT_1.default, text2]];
+            return [[DIFF_INSERT_1.DIFF_INSERT, text2]];
         }
         if (!text2) {
-            return [[DIFF_DELETE_1.default, text1]];
+            return [[DIFF_DELETE_1.DIFF_DELETE, text1]];
         }
         var longtext = text1.length > text2.length ? text1 : text2;
         var shorttext = text1.length > text2.length ? text2 : text1;
         var i = longtext.indexOf(shorttext);
         if (i !== -1) {
-            var diffs = [[DIFF_INSERT_1.default, longtext.substring(0, i)],
-                [DIFF_EQUAL_1.default, shorttext],
-                [DIFF_INSERT_1.default, longtext.substring(i + shorttext.length)]];
+            var diffs = [[DIFF_INSERT_1.DIFF_INSERT, longtext.substring(0, i)],
+                [DIFF_EQUAL_1.DIFF_EQUAL, shorttext],
+                [DIFF_INSERT_1.DIFF_INSERT, longtext.substring(i + shorttext.length)]];
             if (text1.length > text2.length) {
-                diffs[0][0] = diffs[2][0] = DIFF_DELETE_1.default;
+                diffs[0][0] = diffs[2][0] = DIFF_DELETE_1.DIFF_DELETE;
             }
             return diffs;
         }
         if (shorttext.length === 1) {
-            return [[DIFF_DELETE_1.default, text1], [DIFF_INSERT_1.default, text2]];
+            return [[DIFF_DELETE_1.DIFF_DELETE, text1], [DIFF_INSERT_1.DIFF_INSERT, text2]];
         }
         var hm = this.diff_halfMatch_(text1, text2);
         var diffs_a;
@@ -107,7 +107,7 @@ var DMP = (function () {
             var mid_common = hm[4];
             diffs_a = this.diff_main(text1_a, text2_a, checklines, deadline);
             diffs_b = this.diff_main(text1_b, text2_b, checklines, deadline);
-            return diffs_a.concat([[DIFF_EQUAL_1.default, mid_common]], diffs_b);
+            return diffs_a.concat([[DIFF_EQUAL_1.DIFF_EQUAL, mid_common]], diffs_b);
         }
         if (checklines && text1.length > 100 && text2.length > 100) {
             return this.diff_lineMode_(text1, text2, deadline);
@@ -121,7 +121,7 @@ var DMP = (function () {
         var diffs = this.diff_main(text1, text2, false, deadline);
         this.diff_charsToLines_(diffs, a.lineArray);
         this.diff_cleanupSemantic(diffs);
-        diffs.push([DIFF_EQUAL_1.default, ""]);
+        diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, ""]);
         var pointer = 0;
         var count_delete = 0;
         var count_insert = 0;
@@ -129,15 +129,15 @@ var DMP = (function () {
         var text_insert = "";
         while (pointer < diffs.length) {
             switch (diffs[pointer][0]) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     count_insert++;
                     text_insert += diffs[pointer][1];
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     count_delete++;
                     text_delete += diffs[pointer][1];
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     if (count_delete >= 1 && count_insert >= 1) {
                         diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert);
                         pointer = pointer - count_delete - count_insert;
@@ -252,7 +252,7 @@ var DMP = (function () {
                 }
             }
         }
-        return [[DIFF_DELETE_1.default, text1], [DIFF_INSERT_1.default, text2]];
+        return [[DIFF_DELETE_1.DIFF_DELETE, text1], [DIFF_INSERT_1.DIFF_INSERT, text2]];
     };
     DMP.prototype.diff_bisectSplit_ = function (text1, text2, x, y, deadline) {
         var text1a = text1.substring(0, x);
@@ -429,38 +429,38 @@ var DMP = (function () {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
                     (v_map[d][(x - 1) + ',' + y] !== undefined)) {
                     x--;
-                    if (last_op === DIFF_DELETE_1.default) {
+                    if (last_op === DIFF_DELETE_1.DIFF_DELETE) {
                         path[0][1] = text1.charAt(x) + path[0][1];
                     }
                     else {
-                        path.unshift([DIFF_DELETE_1.default, text1.charAt(x)]);
+                        path.unshift([DIFF_DELETE_1.DIFF_DELETE, text1.charAt(x)]);
                     }
-                    last_op = DIFF_DELETE_1.default;
+                    last_op = DIFF_DELETE_1.DIFF_DELETE;
                     break;
                 }
                 else if (v_map[d].hasOwnProperty ?
                     v_map[d].hasOwnProperty(x + ',' + (y - 1)) :
                     (v_map[d][x + ',' + (y - 1)] !== undefined)) {
                     y--;
-                    if (last_op === DIFF_INSERT_1.default) {
+                    if (last_op === DIFF_INSERT_1.DIFF_INSERT) {
                         path[0][1] = text2.charAt(y) + path[0][1];
                     }
                     else {
-                        path.unshift([DIFF_INSERT_1.default, text2.charAt(y)]);
+                        path.unshift([DIFF_INSERT_1.DIFF_INSERT, text2.charAt(y)]);
                     }
-                    last_op = DIFF_INSERT_1.default;
+                    last_op = DIFF_INSERT_1.DIFF_INSERT;
                     break;
                 }
                 else {
                     x--;
                     y--;
-                    if (last_op === DIFF_EQUAL_1.default) {
+                    if (last_op === DIFF_EQUAL_1.DIFF_EQUAL) {
                         path[0][1] = text1.charAt(x) + path[0][1];
                     }
                     else {
-                        path.unshift([DIFF_EQUAL_1.default, text1.charAt(x)]);
+                        path.unshift([DIFF_EQUAL_1.DIFF_EQUAL, text1.charAt(x)]);
                     }
-                    last_op = DIFF_EQUAL_1.default;
+                    last_op = DIFF_EQUAL_1.DIFF_EQUAL;
                 }
             }
         }
@@ -477,41 +477,41 @@ var DMP = (function () {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
                     (v_map[d][(x - 1) + ',' + y] !== undefined)) {
                     x--;
-                    if (last_op === DIFF_DELETE_1.default) {
+                    if (last_op === DIFF_DELETE_1.DIFF_DELETE) {
                         path[pathLength - 1][1] += text1.charAt(text1.length - x - 1);
                     }
                     else {
                         path[pathLength++] =
-                            [DIFF_DELETE_1.default, text1.charAt(text1.length - x - 1)];
+                            [DIFF_DELETE_1.DIFF_DELETE, text1.charAt(text1.length - x - 1)];
                     }
-                    last_op = DIFF_DELETE_1.default;
+                    last_op = DIFF_DELETE_1.DIFF_DELETE;
                     break;
                 }
                 else if (v_map[d].hasOwnProperty ?
                     v_map[d].hasOwnProperty(x + ',' + (y - 1)) :
                     (v_map[d][x + ',' + (y - 1)] !== undefined)) {
                     y--;
-                    if (last_op === DIFF_INSERT_1.default) {
+                    if (last_op === DIFF_INSERT_1.DIFF_INSERT) {
                         path[pathLength - 1][1] += text2.charAt(text2.length - y - 1);
                     }
                     else {
                         path[pathLength++] =
-                            [DIFF_INSERT_1.default, text2.charAt(text2.length - y - 1)];
+                            [DIFF_INSERT_1.DIFF_INSERT, text2.charAt(text2.length - y - 1)];
                     }
-                    last_op = DIFF_INSERT_1.default;
+                    last_op = DIFF_INSERT_1.DIFF_INSERT;
                     break;
                 }
                 else {
                     x--;
                     y--;
-                    if (last_op === DIFF_EQUAL_1.default) {
+                    if (last_op === DIFF_EQUAL_1.DIFF_EQUAL) {
                         path[pathLength - 1][1] += text1.charAt(text1.length - x - 1);
                     }
                     else {
                         path[pathLength++] =
-                            [DIFF_EQUAL_1.default, text1.charAt(text1.length - x - 1)];
+                            [DIFF_EQUAL_1.DIFF_EQUAL, text1.charAt(text1.length - x - 1)];
                     }
-                    last_op = DIFF_EQUAL_1.default;
+                    last_op = DIFF_EQUAL_1.DIFF_EQUAL;
                 }
             }
         }
@@ -673,7 +673,7 @@ var DMP = (function () {
         var length_insertions2 = 0;
         var length_deletions2 = 0;
         while (pointer < diffs.length) {
-            if (diffs[pointer][0] === DIFF_EQUAL_1.default) {
+            if (diffs[pointer][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                 equalities[equalitiesLength++] = pointer;
                 length_insertions1 = length_insertions2;
                 length_deletions1 = length_deletions2;
@@ -682,7 +682,7 @@ var DMP = (function () {
                 lastequality = diffs[pointer][1];
             }
             else {
-                if (diffs[pointer][0] === DIFF_INSERT_1.default) {
+                if (diffs[pointer][0] === DIFF_INSERT_1.DIFF_INSERT) {
                     length_insertions2 += diffs[pointer][1].length;
                 }
                 else {
@@ -691,8 +691,8 @@ var DMP = (function () {
                 if (lastequality && (lastequality.length <=
                     Math.max(length_insertions1, length_deletions1)) &&
                     (lastequality.length <= Math.max(length_insertions2, length_deletions2))) {
-                    diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE_1.default, lastequality]);
-                    diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT_1.default;
+                    diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE_1.DIFF_DELETE, lastequality]);
+                    diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT_1.DIFF_INSERT;
                     equalitiesLength--;
                     equalitiesLength--;
                     pointer = equalitiesLength > 0 ? equalities[equalitiesLength - 1] : -1;
@@ -712,8 +712,8 @@ var DMP = (function () {
         this.diff_cleanupSemanticLossless(diffs);
         pointer = 1;
         while (pointer < diffs.length) {
-            if (diffs[pointer - 1][0] === DIFF_DELETE_1.default &&
-                diffs[pointer][0] === DIFF_INSERT_1.default) {
+            if (diffs[pointer - 1][0] === DIFF_DELETE_1.DIFF_DELETE &&
+                diffs[pointer][0] === DIFF_INSERT_1.DIFF_INSERT) {
                 var deletion = diffs[pointer - 1][1];
                 var insertion = diffs[pointer][1];
                 var overlap_length1 = this.diff_commonOverlap_(deletion, insertion);
@@ -721,7 +721,7 @@ var DMP = (function () {
                 if (overlap_length1 >= overlap_length2) {
                     if (overlap_length1 >= deletion.length / 2 ||
                         overlap_length1 >= insertion.length / 2) {
-                        diffs.splice(pointer, 0, [DIFF_EQUAL_1.default, insertion.substring(0, overlap_length1)]);
+                        diffs.splice(pointer, 0, [DIFF_EQUAL_1.DIFF_EQUAL, insertion.substring(0, overlap_length1)]);
                         diffs[pointer - 1][1] = deletion.substring(0, deletion.length - overlap_length1);
                         diffs[pointer + 1][1] = insertion.substring(overlap_length1);
                         pointer++;
@@ -730,10 +730,10 @@ var DMP = (function () {
                 else {
                     if (overlap_length2 >= deletion.length / 2 ||
                         overlap_length2 >= insertion.length / 2) {
-                        diffs.splice(pointer, 0, [DIFF_EQUAL_1.default, deletion.substring(0, overlap_length2)]);
-                        diffs[pointer - 1][0] = DIFF_INSERT_1.default;
+                        diffs.splice(pointer, 0, [DIFF_EQUAL_1.DIFF_EQUAL, deletion.substring(0, overlap_length2)]);
+                        diffs[pointer - 1][0] = DIFF_INSERT_1.DIFF_INSERT;
                         diffs[pointer - 1][1] = insertion.substring(0, insertion.length - overlap_length2);
-                        diffs[pointer + 1][0] = DIFF_DELETE_1.default;
+                        diffs[pointer + 1][0] = DIFF_DELETE_1.DIFF_DELETE;
                         diffs[pointer + 1][1] = deletion.substring(overlap_length2);
                         pointer++;
                     }
@@ -777,8 +777,8 @@ var DMP = (function () {
         }
         var pointer = 1;
         while (pointer < diffs.length - 1) {
-            if (diffs[pointer - 1][0] === DIFF_EQUAL_1.default &&
-                diffs[pointer + 1][0] === DIFF_EQUAL_1.default) {
+            if (diffs[pointer - 1][0] === DIFF_EQUAL_1.DIFF_EQUAL &&
+                diffs[pointer + 1][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                 var equality1 = diffs[pointer - 1][1];
                 var edit = diffs[pointer][1];
                 var equality2 = diffs[pointer + 1][1];
@@ -837,7 +837,7 @@ var DMP = (function () {
         var post_ins = false;
         var post_del = false;
         while (pointer < diffs.length) {
-            if (diffs[pointer][0] === DIFF_EQUAL_1.default) {
+            if (diffs[pointer][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                 if (diffs[pointer][1].length < this.Diff_EditCost &&
                     (post_ins || post_del)) {
                     equalities[equalitiesLength++] = pointer;
@@ -852,7 +852,7 @@ var DMP = (function () {
                 post_ins = post_del = false;
             }
             else {
-                if (diffs[pointer][0] === DIFF_DELETE_1.default) {
+                if (diffs[pointer][0] === DIFF_DELETE_1.DIFF_DELETE) {
                     post_del = true;
                 }
                 else {
@@ -861,8 +861,8 @@ var DMP = (function () {
                 if (lastequality && ((pre_ins && pre_del && post_ins && post_del) ||
                     ((lastequality.length < this.Diff_EditCost / 2) &&
                         (pre_ins + pre_del + post_ins + post_del) === 3))) {
-                    diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE_1.default, lastequality]);
-                    diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT_1.default;
+                    diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE_1.DIFF_DELETE, lastequality]);
+                    diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT_1.DIFF_INSERT;
                     equalitiesLength--;
                     lastequality = '';
                     if (pre_ins && pre_del) {
@@ -885,7 +885,7 @@ var DMP = (function () {
         }
     };
     DMP.prototype.diff_cleanupMerge = function (diffs) {
-        diffs.push([DIFF_EQUAL_1.default, '']);
+        diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, '']);
         var pointer = 0;
         var count_delete = 0;
         var count_insert = 0;
@@ -894,29 +894,29 @@ var DMP = (function () {
         var commonlength;
         while (pointer < diffs.length) {
             switch (diffs[pointer][0]) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     count_insert++;
                     text_insert += diffs[pointer][1];
                     pointer++;
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     count_delete++;
                     text_delete += diffs[pointer][1];
                     pointer++;
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     if (count_delete !== 0 || count_insert !== 0) {
                         if (count_delete !== 0 && count_insert !== 0) {
                             commonlength = this.diff_commonPrefix(text_insert, text_delete);
                             if (commonlength !== 0) {
                                 if ((pointer - count_delete - count_insert) > 0 &&
                                     diffs[pointer - count_delete - count_insert - 1][0] ===
-                                        DIFF_EQUAL_1.default) {
+                                        DIFF_EQUAL_1.DIFF_EQUAL) {
                                     diffs[pointer - count_delete - count_insert - 1][1] +=
                                         text_insert.substring(0, commonlength);
                                 }
                                 else {
-                                    diffs.splice(0, 0, [DIFF_EQUAL_1.default,
+                                    diffs.splice(0, 0, [DIFF_EQUAL_1.DIFF_EQUAL,
                                         text_insert.substring(0, commonlength)]);
                                     pointer++;
                                 }
@@ -934,18 +934,18 @@ var DMP = (function () {
                             }
                         }
                         if (count_delete === 0) {
-                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_INSERT_1.default, text_insert]);
+                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_INSERT_1.DIFF_INSERT, text_insert]);
                         }
                         else if (count_insert === 0) {
-                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_DELETE_1.default, text_delete]);
+                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_DELETE_1.DIFF_DELETE, text_delete]);
                         }
                         else {
-                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_DELETE_1.default, text_delete], [DIFF_INSERT_1.default, text_insert]);
+                            diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_DELETE_1.DIFF_DELETE, text_delete], [DIFF_INSERT_1.DIFF_INSERT, text_insert]);
                         }
                         pointer = pointer - count_delete - count_insert +
                             (count_delete ? 1 : 0) + (count_insert ? 1 : 0) + 1;
                     }
-                    else if (pointer !== 0 && diffs[pointer - 1][0] === DIFF_EQUAL_1.default) {
+                    else if (pointer !== 0 && diffs[pointer - 1][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                         diffs[pointer - 1][1] += diffs[pointer][1];
                         diffs.splice(pointer, 1);
                     }
@@ -965,8 +965,8 @@ var DMP = (function () {
         var changes = false;
         pointer = 1;
         while (pointer < diffs.length - 1) {
-            if (diffs[pointer - 1][0] === DIFF_EQUAL_1.default &&
-                diffs[pointer + 1][0] === DIFF_EQUAL_1.default) {
+            if (diffs[pointer - 1][0] === DIFF_EQUAL_1.DIFF_EQUAL &&
+                diffs[pointer + 1][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                 if (diffs[pointer][1].substring(diffs[pointer][1].length -
                     diffs[pointer - 1][1].length) === diffs[pointer - 1][1]) {
                     diffs[pointer][1] = diffs[pointer - 1][1] +
@@ -999,10 +999,10 @@ var DMP = (function () {
         var last_chars2 = 0;
         var x;
         for (x = 0; x < diffs.length; x++) {
-            if (diffs[x][0] !== DIFF_INSERT_1.default) {
+            if (diffs[x][0] !== DIFF_INSERT_1.DIFF_INSERT) {
                 chars1 += diffs[x][1].length;
             }
-            if (diffs[x][0] !== DIFF_DELETE_1.default) {
+            if (diffs[x][0] !== DIFF_DELETE_1.DIFF_DELETE) {
                 chars2 += diffs[x][1].length;
             }
             if (chars1 > loc) {
@@ -1011,7 +1011,7 @@ var DMP = (function () {
             last_chars1 = chars1;
             last_chars2 = chars2;
         }
-        if (diffs.length !== x && diffs[x][0] === DIFF_DELETE_1.default) {
+        if (diffs.length !== x && diffs[x][0] === DIFF_DELETE_1.DIFF_DELETE) {
             return last_chars2;
         }
         return last_chars2 + (loc - last_chars1);
@@ -1028,13 +1028,13 @@ var DMP = (function () {
             var text = data.replace(pattern_amp, "&amp;").replace(pattern_lt, "&lt;")
                 .replace(pattern_gt, "&gt;").replace(pattern_para, "&para;<br>");
             switch (op) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     html[x] = "<ins style=\"background:#e6ffe6;\">" + text + "</ins>";
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     html[x] = "<del style=\"background:#ffe6e6;\">" + text + "</del>";
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     html[x] = "<span>" + text + "</span>";
                     break;
                 default:
@@ -1050,7 +1050,7 @@ var DMP = (function () {
             var diff = diffs[x];
             var kind = diff[0];
             var text = diff[1];
-            if (kind !== DIFF_INSERT_1.default) {
+            if (kind !== DIFF_INSERT_1.DIFF_INSERT) {
                 texts[x] = text;
             }
         }
@@ -1063,7 +1063,7 @@ var DMP = (function () {
             var diff = diffs[x];
             var kind = diff[0];
             var text = diff[1];
-            if (kind !== DIFF_DELETE_1.default) {
+            if (kind !== DIFF_DELETE_1.DIFF_DELETE) {
                 texts[x] = text;
             }
         }
@@ -1077,13 +1077,13 @@ var DMP = (function () {
             var op = diffs[x][0];
             var data = diffs[x][1];
             switch (op) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     insertions += data.length;
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     deletions += data.length;
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     levenshtein += Math.max(insertions, deletions);
                     insertions = 0;
                     deletions = 0;
@@ -1101,13 +1101,13 @@ var DMP = (function () {
             var kind = diff[0];
             var text = diff[1];
             switch (kind) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     texts[x] = '+' + encodeURI(text);
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     texts[x] = '-' + text.length;
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     texts[x] = '=' + text.length;
                     break;
             }
@@ -1127,7 +1127,7 @@ var DMP = (function () {
             switch (tokens[x].charAt(0)) {
                 case '+':
                     try {
-                        diffs[diffsLength++] = [DIFF_INSERT_1.default, decodeURI(param)];
+                        diffs[diffsLength++] = [DIFF_INSERT_1.DIFF_INSERT, decodeURI(param)];
                     }
                     catch (ex) {
                         throw new Error('Illegal escape in deltaToDiffs: ' + param);
@@ -1141,10 +1141,10 @@ var DMP = (function () {
                     }
                     var text = baseText.substring(pointer, pointer += n);
                     if (tokens[x].charAt(0) === '=') {
-                        diffs[diffsLength++] = [DIFF_EQUAL_1.default, text];
+                        diffs[diffsLength++] = [DIFF_EQUAL_1.DIFF_EQUAL, text];
                     }
                     else {
-                        diffs[diffsLength++] = [DIFF_DELETE_1.default, text];
+                        diffs[diffsLength++] = [DIFF_DELETE_1.DIFF_DELETE, text];
                     }
                     break;
                 default:
@@ -1279,11 +1279,11 @@ var DMP = (function () {
         padding += this.Patch_Margin;
         var prefix = text.substring(patch.start2 - padding, patch.start2);
         if (prefix) {
-            patch.diffs.unshift([DIFF_EQUAL_1.default, prefix]);
+            patch.diffs.unshift([DIFF_EQUAL_1.DIFF_EQUAL, prefix]);
         }
         var suffix = text.substring(patch.start2 + patch.length1, patch.start2 + patch.length1 + padding);
         if (suffix) {
-            patch.diffs.push([DIFF_EQUAL_1.default, suffix]);
+            patch.diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, suffix]);
         }
         patch.start1 -= prefix.length;
         patch.start2 -= prefix.length;
@@ -1327,7 +1327,7 @@ var DMP = (function () {
     };
     DMP.prototype.computePatches = function (text1, diffs) {
         var patches = [];
-        var patch = new Patch_1.default();
+        var patch = new Patch_1.Patch();
         var patchDiffLength = 0;
         var char_count1 = 0;
         var char_count2 = 0;
@@ -1336,25 +1336,25 @@ var DMP = (function () {
         for (var x = 0; x < diffs.length; x++) {
             var diff_type = diffs[x][0];
             var diff_text = diffs[x][1];
-            if (!patchDiffLength && diff_type !== DIFF_EQUAL_1.default) {
+            if (!patchDiffLength && diff_type !== DIFF_EQUAL_1.DIFF_EQUAL) {
                 patch.start1 = char_count1;
                 patch.start2 = char_count2;
             }
             switch (diff_type) {
-                case DIFF_INSERT_1.default:
+                case DIFF_INSERT_1.DIFF_INSERT:
                     patch.diffs[patchDiffLength++] = diffs[x];
                     patch.length2 += diff_text.length;
                     postpatch_text = postpatch_text.substring(0, char_count2) + diff_text +
                         postpatch_text.substring(char_count2);
                     break;
-                case DIFF_DELETE_1.default:
+                case DIFF_DELETE_1.DIFF_DELETE:
                     patch.length1 += diff_text.length;
                     patch.diffs[patchDiffLength++] = diffs[x];
                     postpatch_text = postpatch_text.substring(0, char_count2) +
                         postpatch_text.substring(char_count2 +
                             diff_text.length);
                     break;
-                case DIFF_EQUAL_1.default:
+                case DIFF_EQUAL_1.DIFF_EQUAL:
                     if (diff_text.length <= 2 * this.Patch_Margin &&
                         patchDiffLength && diffs.length !== x + 1) {
                         patch.diffs[patchDiffLength++] = diffs[x];
@@ -1365,7 +1365,7 @@ var DMP = (function () {
                         if (patchDiffLength) {
                             this.patch_addContext_(patch, prepatch_text);
                             patches.push(patch);
-                            patch = new Patch_1.default();
+                            patch = new Patch_1.Patch();
                             patchDiffLength = 0;
                             prepatch_text = postpatch_text;
                             char_count1 = char_count2;
@@ -1373,10 +1373,10 @@ var DMP = (function () {
                     }
                     break;
             }
-            if (diff_type !== DIFF_INSERT_1.default) {
+            if (diff_type !== DIFF_INSERT_1.DIFF_INSERT) {
                 char_count1 += diff_text.length;
             }
-            if (diff_type !== DIFF_DELETE_1.default) {
+            if (diff_type !== DIFF_DELETE_1.DIFF_DELETE) {
                 char_count2 += diff_text.length;
             }
         }
@@ -1390,7 +1390,7 @@ var DMP = (function () {
         var patchesCopy = [];
         for (var x = 0; x < patches.length; x++) {
             var patch = patches[x];
-            var patchCopy = new Patch_1.default();
+            var patchCopy = new Patch_1.Patch();
             patchCopy.diffs = [];
             for (var y = 0; y < patch.diffs.length; y++) {
                 patchCopy.diffs[y] = patch.diffs[y].slice();
@@ -1462,18 +1462,18 @@ var DMP = (function () {
                         var index2 = void 0;
                         for (var y = 0; y < patches[x].diffs.length; y++) {
                             var mod = patches[x].diffs[y];
-                            if (mod[0] !== DIFF_EQUAL_1.default) {
+                            if (mod[0] !== DIFF_EQUAL_1.DIFF_EQUAL) {
                                 index2 = this.diff_xIndex(diffs, index1);
                             }
-                            if (mod[0] === DIFF_INSERT_1.default) {
+                            if (mod[0] === DIFF_INSERT_1.DIFF_INSERT) {
                                 text = text.substring(0, start_loc + index2) + mod[1] +
                                     text.substring(start_loc + index2);
                             }
-                            else if (mod[0] === DIFF_DELETE_1.default) {
+                            else if (mod[0] === DIFF_DELETE_1.DIFF_DELETE) {
                                 text = text.substring(0, start_loc + index2) +
                                     text.substring(start_loc + this.diff_xIndex(diffs, index1 + mod[1].length));
                             }
-                            if (mod[0] !== DIFF_DELETE_1.default) {
+                            if (mod[0] !== DIFF_DELETE_1.DIFF_DELETE) {
                                 index1 += mod[1].length;
                             }
                         }
@@ -1498,8 +1498,8 @@ var DMP = (function () {
             patches[x].start1 += paddingLength;
             patches[x].start2 += paddingLength;
         }
-        addLeadingPadding_1.default(patches, paddingLength, nullPadding);
-        addTrailingPadding_1.default(patches, paddingLength, nullPadding);
+        addLeadingPadding_1.addLeadingPadding(patches, paddingLength, nullPadding);
+        addTrailingPadding_1.addTrailingPadding(patches, paddingLength, nullPadding);
         return nullPadding;
     };
     DMP.prototype.patch_splitMax = function (patches) {
@@ -1512,26 +1512,26 @@ var DMP = (function () {
                 var start2 = bigpatch.start2;
                 var precontext = '';
                 while (bigpatch.diffs.length !== 0) {
-                    var patch = new Patch_1.default();
+                    var patch = new Patch_1.Patch();
                     var empty = true;
                     patch.start1 = start1 - precontext.length;
                     patch.start2 = start2 - precontext.length;
                     if (precontext !== '') {
                         patch.length1 = patch.length2 = precontext.length;
-                        patch.diffs.push([DIFF_EQUAL_1.default, precontext]);
+                        patch.diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, precontext]);
                     }
                     while (bigpatch.diffs.length !== 0 &&
                         patch.length1 < patch_size - this.Patch_Margin) {
                         var diff_type = bigpatch.diffs[0][0];
                         var diff_text = bigpatch.diffs[0][1];
-                        if (diff_type === DIFF_INSERT_1.default) {
+                        if (diff_type === DIFF_INSERT_1.DIFF_INSERT) {
                             patch.length2 += diff_text.length;
                             start2 += diff_text.length;
                             patch.diffs.push(bigpatch.diffs.shift());
                             empty = false;
                         }
-                        else if (diff_type === DIFF_DELETE_1.default && patch.diffs.length === 1 &&
-                            patch.diffs[0][0] === DIFF_EQUAL_1.default &&
+                        else if (diff_type === DIFF_DELETE_1.DIFF_DELETE && patch.diffs.length === 1 &&
+                            patch.diffs[0][0] === DIFF_EQUAL_1.DIFF_EQUAL &&
                             diff_text.length > 2 * patch_size) {
                             patch.length1 += diff_text.length;
                             start1 += diff_text.length;
@@ -1544,7 +1544,7 @@ var DMP = (function () {
                                 this.Patch_Margin);
                             patch.length1 += diff_text.length;
                             start1 += diff_text.length;
-                            if (diff_type === DIFF_EQUAL_1.default) {
+                            if (diff_type === DIFF_EQUAL_1.DIFF_EQUAL) {
                                 patch.length2 += diff_text.length;
                                 start2 += diff_text.length;
                             }
@@ -1569,11 +1569,11 @@ var DMP = (function () {
                         patch.length1 += postcontext.length;
                         patch.length2 += postcontext.length;
                         if (patch.diffs.length !== 0 &&
-                            patch.diffs[patch.diffs.length - 1][0] === DIFF_EQUAL_1.default) {
+                            patch.diffs[patch.diffs.length - 1][0] === DIFF_EQUAL_1.DIFF_EQUAL) {
                             patch.diffs[patch.diffs.length - 1][1] += postcontext;
                         }
                         else {
-                            patch.diffs.push([DIFF_EQUAL_1.default, postcontext]);
+                            patch.diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, postcontext]);
                         }
                     }
                     if (!empty) {
@@ -1603,7 +1603,7 @@ var DMP = (function () {
             if (!m) {
                 throw new Error('Invalid patch string: ' + text[textPointer]);
             }
-            var patch = new Patch_1.default();
+            var patch = new Patch_1.Patch();
             patches.push(patch);
             patch.start1 = parseInt(m[1], 10);
             if (m[2] === '') {
@@ -1640,13 +1640,13 @@ var DMP = (function () {
                     throw new Error('Illegal escape in patch_fromText: ' + line);
                 }
                 if (sign === '-') {
-                    patch.diffs.push([DIFF_DELETE_1.default, line]);
+                    patch.diffs.push([DIFF_DELETE_1.DIFF_DELETE, line]);
                 }
                 else if (sign === '+') {
-                    patch.diffs.push([DIFF_INSERT_1.default, line]);
+                    patch.diffs.push([DIFF_INSERT_1.DIFF_INSERT, line]);
                 }
                 else if (sign === ' ') {
-                    patch.diffs.push([DIFF_EQUAL_1.default, line]);
+                    patch.diffs.push([DIFF_EQUAL_1.DIFF_EQUAL, line]);
                 }
                 else if (sign === '@') {
                     break;
@@ -1663,5 +1663,5 @@ var DMP = (function () {
     };
     return DMP;
 }());
-exports.default = DMP;
+exports.DMP = DMP;
 //# sourceMappingURL=DMP.js.map

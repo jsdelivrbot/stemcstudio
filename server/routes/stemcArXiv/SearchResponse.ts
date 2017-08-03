@@ -1,4 +1,4 @@
-interface SearchResponse {
+export interface SearchResponse {
     found: number;
     start: number;
     refs: {
@@ -10,6 +10,3 @@ interface SearchResponse {
         keywords: string[];
     }[];
 }
-
-export default SearchResponse;
-

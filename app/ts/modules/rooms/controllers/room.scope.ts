@@ -1,4 +1,4 @@
-import WorkspaceScope from '../../../scopes/WorkspaceScope';
+import { WorkspaceScope } from '../../../scopes/WorkspaceScope';
 
 export interface RoomScope extends WorkspaceScope {
     isCreateRoomEnabled(): boolean;
@@ -6,5 +6,3 @@ export interface RoomScope extends WorkspaceScope {
     isLeaveRoomEnabled(): boolean;
     isDestroyRoomEnabled(): boolean;
 }
-
-export default RoomScope;

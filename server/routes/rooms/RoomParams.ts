@@ -1,4 +1,4 @@
-interface RoomParams {
+export interface RoomParams {
     owner: string;
     description?: string;
     public?: boolean;
@@ -7,5 +7,3 @@ interface RoomParams {
      */
     expire?: number;
 }
-
-export default RoomParams;

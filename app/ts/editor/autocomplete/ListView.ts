@@ -1,7 +1,7 @@
 import { Completion } from "../Completion";
 import { PixelPosition } from "../PixelPosition";
 
-interface ListView {
+export interface ListView {
     isOpen: boolean;
     container: HTMLElement;
     on(eventName: string, callback: Function, capturing?: boolean): void;
@@ -19,5 +19,3 @@ interface ListView {
     setFontSize(fontSize: string): void;
     getLength(): number;
 }
-
-export default ListView;

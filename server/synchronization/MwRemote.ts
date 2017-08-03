@@ -1,23 +1,23 @@
-import Diff from './Diff';
-import DMP from './DMP';
-import isChanged from './isChanged';
+import { Diff } from './Diff';
+import { DMP } from './DMP';
+import { isChanged } from './isChanged';
 import { ACTION_RAW_OVERWRITE } from './MwAction';
 import { ACTION_DELTA_OVERWRITE } from './MwAction';
 import { ACTION_NULLIFY_UPPERCASE } from './MwAction';
-import MwBroadcast from './MwBroadcast';
-import MwChange from './MwChange';
-import MwEdits from './MwEdits';
-import MwEditor from './MwEditor';
-import MwShadow from './MwShadow';
-import FzRemote from './ds/FzRemote';
-import FzSerializable from './ds/FzSerializable';
+import { MwBroadcast } from './MwBroadcast';
+import { MwChange } from './MwChange';
+import { MwEdits } from './MwEdits';
+import { MwEditor } from './MwEditor';
+import { MwShadow } from './MwShadow';
+import { FzRemote } from './ds/FzRemote';
+import { FzSerializable } from './ds/FzSerializable';
 
 const dmp = new DMP();
 
 /**
  * A remote consists of one shadow and one backup document along with the stack of edits by destination node.
  */
-export default class MwRemote implements FzSerializable<FzRemote> {
+export class MwRemote implements FzSerializable<FzRemote> {
     /**
      * 
      */

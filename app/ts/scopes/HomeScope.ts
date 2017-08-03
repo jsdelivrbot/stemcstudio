@@ -50,5 +50,3 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
      */
     doSearch(): void;
 }
-
-export default HomeScope;

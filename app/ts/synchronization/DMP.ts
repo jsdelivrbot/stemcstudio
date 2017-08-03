@@ -1,5 +1,5 @@
-import addLeadingPadding from './dmp/addLeadingPadding';
-import addTrailingPadding from './dmp/addTrailingPadding';
+import { addLeadingPadding } from './dmp/addLeadingPadding';
+import { addTrailingPadding } from './dmp/addTrailingPadding';
 
 /**
  * Diff Match and Patch
@@ -35,9 +35,8 @@ import { Diff } from './Diff';
 import { DiffOperation } from './Diff';
 import { LinesToCharsResult } from './LinesToCharsResult';
 import { Patch } from './Patch';
-import DIFF_DELETE from './DIFF_DELETE';
-// import DIFF_INSERT from './DIFF_INSERT';
-import DIFF_EQUAL from './DIFF_EQUAL';
+import { DIFF_DELETE } from './DIFF_DELETE';
+import { DIFF_EQUAL } from './DIFF_EQUAL';
 
 const DIFF_INSERT = DiffOperation.DIFF_INSERT;
 
@@ -69,7 +68,7 @@ function mustBeNotNull<T>(varName: string, x: T | null): T {
 /**
  * Class containing the diff, match and patch methods.
  */
-export default class DMP {
+export class DMP {
     Diff_Timeout: number;
     Diff_EditCost: number;
     Diff_DualThreshold: number;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs, Response } from '@angular/http';
 import { IRoomsService, Room, RoomParams } from '../api';
-import RoomAgent from '../RoomAgent';
+import { RoomAgent } from '../RoomAgent';
 //
 // Funky stuff to get Observable typing and for map, toPromise methods to be defined.
 //

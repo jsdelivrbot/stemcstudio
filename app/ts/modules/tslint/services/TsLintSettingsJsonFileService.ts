@@ -1,6 +1,6 @@
-import TsLintSettingsService from '../TsLintSettingsService';
+import { TsLintSettingsService } from '../TsLintSettingsService';
 import { WORKSPACE_MODEL_UUID } from '../../wsmodel/IWorkspaceModel';
-import IWorkspaceModel from '../../wsmodel/IWorkspaceModel';
+import { IWorkspaceModel } from '../../wsmodel/IWorkspaceModel';
 
 export class TsLintSettingsJsonFileService implements TsLintSettingsService {
     public static $inject: string[] = [
@@ -10,5 +10,3 @@ export class TsLintSettingsJsonFileService implements TsLintSettingsService {
         // Do nothing yet.
     }
 }
-
-export default TsLintSettingsJsonFileService;

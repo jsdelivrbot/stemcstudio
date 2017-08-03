@@ -1,9 +1,9 @@
-import NewProjectDefaults from '../modules/project/NewProjectDefaults';
+import { NewProjectDefaults } from '../modules/project/NewProjectDefaults';
 
-export default function initNewProjectDefaults(description: string): NewProjectDefaults {
+export function initNewProjectDefaults(description: string): NewProjectDefaults {
     const defaults: NewProjectDefaults = {
         description,
-        version: "0.9.0"
+        version: "1.0.0"
     };
     return defaults;
 }

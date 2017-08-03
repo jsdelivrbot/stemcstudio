@@ -1,3 +1,1 @@
-const DIFF_EQUAL = 0;
-
-export default DIFF_EQUAL;
+export const DIFF_EQUAL = 0;

@@ -16,7 +16,7 @@ var EXPIRE_DURATION_IN_SECONDS = 3600;
 var ROOM_NODES_PROPERTY_NAME = 'nodes';
 var ROOM_PATHS_PROPERTY_NAME = 'paths';
 var ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
-var dmp = new DMP_1.default();
+var dmp = new DMP_1.DMP();
 var client;
 if (process.env.REDISTOGO_URL) {
     var rtg = url.parse(process.env.REDISTOGO_URL);
@@ -98,10 +98,10 @@ function existsKey(key) {
 }
 function createRoom(request, response) {
     var params = request.body;
-    params.description = isString_1.default(params.description) ? params.description : "";
-    params.public = isBoolean_1.default(params.public) ? params.public : true;
-    params.expire = isNumber_1.default(params.expire) ? params.expire : EXPIRE_DURATION_IN_SECONDS;
-    var roomId = uniqueId_1.default();
+    params.description = isString_1.isString(params.description) ? params.description : "";
+    params.public = isBoolean_1.isBoolean(params.public) ? params.public : true;
+    params.expire = isNumber_1.isNumber(params.expire) ? params.expire : EXPIRE_DURATION_IN_SECONDS;
+    var roomId = uniqueId_1.uniqueId();
     var roomKey = createRoomKey(roomId);
     var value = {
         owner: params.owner,
@@ -164,7 +164,7 @@ function ensureNodeIdInRoom(nodeId, roomId) {
         var roomNodesKey = createRoomPropertyKey(roomId, ROOM_NODES_PROPERTY_NAME);
         client.sismember([roomNodesKey, nodeId], function (reason, exists) {
             if (!reason) {
-                asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
+                asserts_1.mustBeTruthy(isNumber_1.isNumber(exists), "exists must be a number");
                 if (exists > 0) {
                     resolve();
                 }
@@ -192,7 +192,7 @@ function ensureFileIdInRoom(fileId, roomId) {
         var roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
         client.sismember([roomPathsKey, fileId], function (reason, exists) {
             if (!reason) {
-                asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
+                asserts_1.mustBeTruthy(isNumber_1.isNumber(exists), "exists must be a number");
                 if (exists > 0) {
                     resolve();
                 }
@@ -225,7 +225,7 @@ function getRemote(roomId, path, nodeId) {
         var remoteKey = createRemoteKey(roomId, path, nodeId);
         client.get(remoteKey, function (err, remoteText) {
             if (!err) {
-                var remote = new MwRemote_1.default();
+                var remote = new MwRemote_1.MwRemote();
                 remote.rehydrate(JSON.parse(remoteText));
                 resolve(remote);
             }
@@ -250,7 +250,7 @@ function ensureRemote(nodeId, path, roomId) {
         var remoteKey = createRemoteKey(roomId, path, nodeId);
         existsKey(remoteKey)
             .then(function (exists) {
-            asserts_1.mustBeTruthy(isBoolean_1.default(exists), "exists must be a boolean");
+            asserts_1.mustBeTruthy(isBoolean_1.isBoolean(exists), "exists must be a boolean");
             if (exists) {
                 getRemote(roomId, path, nodeId)
                     .then(function (remote) {
@@ -261,7 +261,7 @@ function ensureRemote(nodeId, path, roomId) {
                 });
             }
             else {
-                var remote = new MwRemote_1.default();
+                var remote = new MwRemote_1.MwRemote();
                 setRemote(roomId, path, nodeId, remote, function (err) {
                     if (!err) {
                         getRemote(roomId, path, nodeId)

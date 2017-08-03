@@ -46,7 +46,7 @@ function submit(request, response) {
         IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
         Logins: params.credentials
     });
-    putDoodleRef_1.default(params, function (err) {
+    putDoodleRef_1.putDoodleRef(params, function (err) {
         if (!err) {
             var body = {};
             response.status(200).send(body);

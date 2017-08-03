@@ -1,19 +1,19 @@
 import { IWindowService } from 'angular';
 import { AbstractPageController } from './AbstractPageController';
-import copyDoodleToDoodle from '../mappings/copyDoodleToDoodle';
+import { copyDoodleToDoodle } from '../mappings/copyDoodleToDoodle';
 import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
 import { DoodleScope } from '../scopes/DoodleScope';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
-import initNewProjectDefaults from '../mappings/initNewProjectDefaults';
+import { initNewProjectDefaults } from '../mappings/initNewProjectDefaults';
 import { ITemplate } from '../services/templates/template';
 import { ModalDialog } from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
-import NewProjectDialog from '../modules/project/NewProjectDialog';
-import OpenProjectDialog from '../modules/project/OpenProjectDialog';
-import CopyProjectDialog from '../modules/project/CopyProjectDialog';
-import CopyProjectSettings from '../modules/project/CopyProjectSettings';
+import { NewProjectDialog } from '../modules/project/NewProjectDialog';
+import { OpenProjectDialog } from '../modules/project/OpenProjectDialog';
+import { CopyProjectDialog } from '../modules/project/CopyProjectDialog';
+import { CopyProjectSettings } from '../modules/project/CopyProjectSettings';
 
 /**
  * This class could probably be merged with the WorkspaceController?

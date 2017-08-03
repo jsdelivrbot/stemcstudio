@@ -20,7 +20,7 @@ import { LanguageServiceProxy } from '../../editor/workspace/LanguageServiceProx
 import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import { IWorkspaceModel } from './IWorkspaceModel';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
-import KeywordCompleter from '../../editor/autocomplete/KeywordCompleter';
+import { KeywordCompleter } from '../../editor/autocomplete/KeywordCompleter';
 import { Position } from 'editor-document';
 import { modeFromName } from '../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../languages/modes';
@@ -40,7 +40,7 @@ import { PackageJsonMonitor } from './monitors/PackageJsonMonitor';
 import { Range } from '../../editor/Range';
 import { RenamedFileMessage, renamedFileTopic } from './IWorkspaceModel';
 import { ChangedLintingMessage, changedLinting } from './IWorkspaceModel';
-import RoomAgent from '../rooms/RoomAgent';
+import { RoomAgent } from '../rooms/RoomAgent';
 import { RoomListener } from '../rooms/RoomListener';
 import { StringShareableMap } from '../../collections/StringShareableMap';
 import { TextChange } from '../../editor/workspace/TextChange';

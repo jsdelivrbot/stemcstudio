@@ -1,4 +1,4 @@
-import TranslateScope from '../scopes/TranslateScope';
+import { TranslateScope } from '../scopes/TranslateScope';
 import { ITranslateService } from '../api';
 import { TRANSLATE_SERVICE_UUID } from '../api';
 
@@ -6,7 +6,7 @@ import { TRANSLATE_SERVICE_UUID } from '../api';
  * A controller that talks to the translation service, allowing the
  * language to be changed.
  */
-export default class TranslateController {
+export class TranslateController {
     public static $inject: string[] = ['$scope', TRANSLATE_SERVICE_UUID];
 
     /**

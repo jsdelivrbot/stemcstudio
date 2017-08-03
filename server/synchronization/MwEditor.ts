@@ -1,11 +1,11 @@
-import Patch from './Patch';
+import { Patch } from './Patch';
 
 /**
  * The adapter on the user's editor.
  * It may be more appropriate to think of this as the interface to a document.
  * The access is asynchronous because the data is typically stored in a remote database.
  */
-interface MwEditor {
+export interface MwEditor {
     /**
      * 
      */
@@ -27,5 +27,3 @@ interface MwEditor {
      */
     release(): number;
 }
-
-export default MwEditor;

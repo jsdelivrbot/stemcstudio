@@ -1,5 +1,5 @@
-import addLeadingPadding from './dmp/addLeadingPadding';
-import addTrailingPadding from './dmp/addTrailingPadding';
+import { addLeadingPadding } from './dmp/addLeadingPadding';
+import { addTrailingPadding } from './dmp/addTrailingPadding';
 
 /**
  * Diff Match and Patch
@@ -31,12 +31,12 @@ import addTrailingPadding from './dmp/addTrailingPadding';
  * [[DIFF_DELETE, 'Hello'], [DIFF_INSERT, 'Goodbye'], [DIFF_EQUAL, ' world.']]
  * which means: delete 'Hello', add 'Goodbye' and keep ' world.'
  */
-import Diff from './Diff';
-import LinesToCharsResult from './LinesToCharsResult';
-import Patch from './Patch';
-import DIFF_DELETE from './DIFF_DELETE';
-import DIFF_INSERT from './DIFF_INSERT';
-import DIFF_EQUAL from './DIFF_EQUAL';
+import { Diff } from './Diff';
+import { LinesToCharsResult } from './LinesToCharsResult';
+import { Patch } from './Patch';
+import { DIFF_DELETE } from './DIFF_DELETE';
+import { DIFF_INSERT } from './DIFF_INSERT';
+import { DIFF_EQUAL } from './DIFF_EQUAL';
 
 // Define some regex patterns for matching boundaries.
 const nonAlphaNumericRegex_ = /[^a-zA-Z0-9]/;
@@ -48,7 +48,7 @@ const blanklineStartRegex_ = /^\r?\n\r?\n/;
 /**
  * Class containing the diff, match and patch methods.
  */
-export default class DMP {
+export class DMP {
     Diff_Timeout: number;
     Diff_EditCost: number;
     Diff_DualThreshold: number;

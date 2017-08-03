@@ -11,5 +11,3 @@ export interface CopyProjectSettings {
      */
     version: string;
 }
-
-export default CopyProjectSettings;

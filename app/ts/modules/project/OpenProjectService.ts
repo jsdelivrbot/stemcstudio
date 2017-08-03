@@ -1,8 +1,8 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import OpenProjectDialog from './OpenProjectDialog';
-import OpenProjectSettings from './OpenProjectSettings';
-import OpenProjectController from './OpenProjectController';
+import { OpenProjectDialog } from './OpenProjectDialog';
+import { OpenProjectSettings } from './OpenProjectSettings';
+import { OpenProjectController } from './OpenProjectController';
 
 /**
  * The implementation that is registered with the application module.

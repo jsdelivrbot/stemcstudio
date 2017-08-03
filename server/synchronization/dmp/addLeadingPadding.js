@@ -4,8 +4,8 @@ var DIFF_EQUAL_1 = require("../DIFF_EQUAL");
 function addLeadingPadding(patches, paddingLength, nullPadding) {
     var patch = patches[0];
     var diffs = patch.diffs;
-    if (diffs.length === 0 || diffs[0][0] !== DIFF_EQUAL_1.default) {
-        diffs.unshift([DIFF_EQUAL_1.default, nullPadding]);
+    if (diffs.length === 0 || diffs[0][0] !== DIFF_EQUAL_1.DIFF_EQUAL) {
+        diffs.unshift([DIFF_EQUAL_1.DIFF_EQUAL, nullPadding]);
         patch.start1 -= paddingLength;
         patch.start2 -= paddingLength;
         patch.length1 += paddingLength;
@@ -20,5 +20,5 @@ function addLeadingPadding(patches, paddingLength, nullPadding) {
         patch.length2 += extraLength;
     }
 }
-exports.default = addLeadingPadding;
+exports.addLeadingPadding = addLeadingPadding;
 //# sourceMappingURL=addLeadingPadding.js.map

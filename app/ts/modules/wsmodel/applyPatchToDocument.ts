@@ -1,7 +1,7 @@
 import { Patch } from '../../synchronization/Patch';
-import DIFF_DELETE from '../../synchronization/DIFF_DELETE';
-import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
-import DIFF_INSERT from '../../synchronization/DIFF_INSERT';
+import { DIFF_DELETE } from '../../synchronization/DIFF_DELETE';
+import { DIFF_EQUAL } from '../../synchronization/DIFF_EQUAL';
+import { DIFF_INSERT } from '../../synchronization/DIFF_INSERT';
 import { Range } from '../../editor/Range';
 //
 // Editor AbstractionLayer

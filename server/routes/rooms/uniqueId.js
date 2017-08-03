@@ -12,5 +12,5 @@ function uniqueId() {
     }
     return id;
 }
-exports.default = uniqueId;
+exports.uniqueId = uniqueId;
 //# sourceMappingURL=uniqueId.js.map

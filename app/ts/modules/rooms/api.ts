@@ -1,4 +1,4 @@
-import RoomAgent from './RoomAgent';
+import { RoomAgent } from './RoomAgent';
 
 export interface RoomParams {
 

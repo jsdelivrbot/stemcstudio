@@ -37,7 +37,7 @@ import { mixin } from './oop';
 /*
  * Helper functions and hashes for key handling.
  */
-const Keys = {
+export const Keys = {
     MODIFIER_KEYS: {
         16: 'Shift', 17: 'Ctrl', 18: 'Alt', 224: 'Meta'
     },
@@ -163,5 +163,3 @@ export function keyCodeToString(keyCode: number): string {
     }
     return keyString.toLowerCase();
 }
-
-export default Keys;

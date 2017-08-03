@@ -12,5 +12,3 @@ export interface INavigationService {
 }
 
 export const NAVIGATION_SERVICE_UUID = 'navigationService';
-
-export default INavigationService;

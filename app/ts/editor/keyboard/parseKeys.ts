@@ -1,5 +1,5 @@
 import { FUNCTION_KEYS, KEY_MODS } from "../lib/keys";
-import keyCodes from "../lib/keys";
+import { Keys as keyCodes } from "../lib/keys";
 import { KeyHash } from './KeyHash';
 /**
  * Accepts key combinations in the form ctrl+Enter or ctrl-Enter.

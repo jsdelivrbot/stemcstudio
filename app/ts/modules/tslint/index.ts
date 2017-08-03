@@ -1,6 +1,6 @@
 import { module } from 'angular';
 import { TSLINT_SETTINGS_SERVICE, TSLINT_MODULE } from './constants';
-import TsLintSettingsJsonFileService from './services/TsLintSettingsJsonFileService';
+import { TsLintSettingsJsonFileService } from './services/TsLintSettingsJsonFileService';
 
 //
 // How we name this module is not so important because we will

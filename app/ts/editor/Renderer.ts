@@ -1,10 +1,10 @@
 import { addCssClass, createElement, createHTMLDivElement, removeCssClass, setCssClass } from "./lib/dom";
 import { isIE } from './lib/useragent';
-import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
-import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
+import { appendHTMLLinkElement } from './dom/appendHTMLLinkElement';
+import { removeHTMLLinkElement } from './dom/removeHTMLLinkElement';
 import { Disposable } from '../base/Disposable';
-import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
-import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
+import { ensureHTMLStyleElement } from './dom/ensureHTMLStyleElement';
+import { hasHTMLLinkElement } from './dom/hasHTMLLinkElement';
 import { Annotation } from './Annotation';
 
 import { CursorLayer } from "./layer/CursorLayer";
@@ -18,16 +18,16 @@ import { TextLayer } from "./layer/TextLayer";
 import { VScrollBar } from "./VScrollBar";
 import { HScrollBar } from "./HScrollBar";
 
-import RenderLoop from "./RenderLoop";
+import { RenderLoop } from "./RenderLoop";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { EditSession } from './EditSession';
 import { EventBus } from './EventBus';
-import OptionsProvider from "./OptionsProvider";
+import { OptionsProvider } from "./OptionsProvider";
 import { PixelPosition } from './PixelPosition';
 import { Position } from 'editor-document';
-import ScreenCoordinates from './ScreenCoordinates';
+import { ScreenCoordinates } from './ScreenCoordinates';
 import { ScrollBarEvent } from './events/ScrollBarEvent';
-import EditorRenderer from './EditorRenderer';
+import { EditorRenderer } from './EditorRenderer';
 import { refChange } from '../utils/refChange';
 
 // FIXME: The editor.css is crucial to the operation of the renderer.

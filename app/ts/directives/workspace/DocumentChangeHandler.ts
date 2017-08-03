@@ -4,8 +4,6 @@ import { Document } from '../../editor/Document';
 /**
  *
  */
-interface DocumentChangeHandler {
+export interface DocumentChangeHandler {
     (delta: Delta, source: Document): any;
 }
-
-export default DocumentChangeHandler;

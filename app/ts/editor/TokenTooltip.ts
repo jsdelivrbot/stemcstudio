@@ -32,7 +32,7 @@ interface RendererEx extends Renderer {
  *     }
  * });
  */
-export default class TokenTooltip extends Tooltip {
+export class TokenTooltip extends Tooltip {
     private editor: Editor;
     private x: number;
     private y: number;

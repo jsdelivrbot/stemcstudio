@@ -31,7 +31,7 @@ export const ACTION_NULLIFY_LOWERCASE = 'n';
 /**
  * 
  */
-interface MwAction {
+export interface MwAction {
     c: 'R' | 'r' | 'D' | 'd' | 'N' | 'n';
 
     /**
@@ -44,5 +44,3 @@ interface MwAction {
      */
     x: string | string[];
 }
-
-export default MwAction;

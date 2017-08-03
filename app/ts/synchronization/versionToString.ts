@@ -1,4 +1,4 @@
-export default function versionToString(version: number): string {
+export function versionToString(version: number): string {
     const kind = typeof version;
     if (kind === 'number') {
         return `${version}`;

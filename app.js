@@ -29,19 +29,19 @@ var isProductionMode = function () {
             return true;
     }
 };
-var app = express();
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-app.use(logger('dev'));
-app.use(body_parser_1.json());
-app.use(body_parser_1.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(methodOverride());
-app.use(require('prerender-node').set('prerenderToken', 'sS0E4UAJN4GidsdVwMD9'));
+exports.app = express();
+exports.app.set('views', path.join(__dirname, 'views'));
+exports.app.set('view engine', 'pug');
+exports.app.use(logger('dev'));
+exports.app.use(body_parser_1.json());
+exports.app.use(body_parser_1.urlencoded({ extended: true }));
+exports.app.use(cookieParser());
+exports.app.use(methodOverride());
+exports.app.use(require('prerender-node').set('prerenderToken', 'sS0E4UAJN4GidsdVwMD9'));
 var folder = "" + (isProductionMode() ? 'dist' : 'generated');
-app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
-app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));
-app.all('*', function (req, res, next) {
+exports.app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
+exports.app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));
+exports.app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -70,7 +70,7 @@ var authenticate = function (code, cb) {
     req.end();
     req.on('error', function (e) { cb(e.message); });
 };
-app.get("/*", function (req, res, next) {
+exports.app.get("/*", function (req, res, next) {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect("https://www.stemcstudio.com" + req.url, 301);
     }
@@ -78,7 +78,7 @@ app.get("/*", function (req, res, next) {
         next();
     }
 });
-app.get('/authenticate/:code', function (req, res) {
+exports.app.get('/authenticate/:code', function (req, res) {
     authenticate(req.params.code, function (err, token) {
         if (err) {
             return res.json(err);
@@ -88,19 +88,19 @@ app.get('/authenticate/:code', function (req, res) {
         }
     });
 });
-app.get("/github_callback", function (req, res, next) {
+exports.app.get("/github_callback", function (req, res, next) {
     res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("github_callback", {
         npm: npm
     });
 });
-app.post('/rooms', index_1.createRoom);
-app.get('/rooms/:id', index_1.getRoom);
-app.delete('/rooms/:id', index_1.destroyRoom);
-app.post('/search', index_2.search);
-app.post('/submissions', index_2.submit);
-app.get('/translations/:input', index_3.getTranslation);
-app.get("/*", function (req, res, next) {
+exports.app.post('/rooms', index_1.createRoom);
+exports.app.get('/rooms/:id', index_1.getRoom);
+exports.app.delete('/rooms/:id', index_1.destroyRoom);
+exports.app.post('/search', index_2.search);
+exports.app.post('/submissions', index_2.submit);
+exports.app.get('/translations/:input', index_3.getTranslation);
+exports.app.get("/*", function (req, res, next) {
     res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
     res.render("index", {
         css: "/css/app.css?version=" + npm.version,
@@ -114,6 +114,5 @@ app.get("/*", function (req, res, next) {
         version: npm.version
     });
 });
-app.use(errorHandler());
-exports.default = app;
+exports.app.use(errorHandler());
 //# sourceMappingURL=app.js.map

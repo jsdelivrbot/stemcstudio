@@ -1,10 +1,10 @@
-interface Link<T> {
+export interface Link<T> {
     data: T;
     next: Link<T>;
     prev: Link<T>;
 }
 
-export default class LinkedList<T> {
+export class LinkedList<T> {
     head: Link<T>;
     tail: Link<T>;
     length: number;

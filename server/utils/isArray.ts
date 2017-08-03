@@ -1,3 +1,3 @@
-export default function(arg: any[]): boolean {
+export function isArray(arg: any[]): boolean {
     return Array.isArray(arg);
 }

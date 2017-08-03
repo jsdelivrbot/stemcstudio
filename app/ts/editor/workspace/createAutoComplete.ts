@@ -1,12 +1,12 @@
-import Command from '../commands/Command';
-import CompletionEntry from './CompletionEntry';
-import CompletionService from './CompletionService';
-import AutoCompleteView from './AutoCompleteView';
-import { Delta } from '../Delta';
-import Editor from '../Editor';
-import EventEmitterClass from '../lib/EventEmitterClass';
-import KeyboardHandler from '../keyboard/KeyboardHandler';
-import { Position } from '../Position';
+import { Command } from '../commands/Command';
+import { CompletionEntry } from './CompletionEntry';
+import { CompletionService } from './CompletionService';
+import { AutoCompleteView } from './AutoCompleteView';
+import { Delta } from 'editor-document';
+import { Editor } from '../Editor';
+import { EventEmitterClass } from '../lib/EventEmitterClass';
+import { KeyboardHandler } from '../keyboard/KeyboardHandler';
+import { Position } from 'editor-document';
 import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 
 /**
@@ -38,7 +38,7 @@ function makeCompareFn(text: string) {
  *
  * Accordingly, the function is camelCase and is not called using the 'new' operator.
  */
-export default function createAutoComplete(editor: Editor, fileNameProvider: () => string, completionService: CompletionService) {
+export function createAutoComplete(editor: Editor, fileNameProvider: () => string, completionService: CompletionService) {
     /**
      * Declare the return object now because the AutoCompleteView needs a reference.
      * The any type declartion avoids the noImplicitAny error.

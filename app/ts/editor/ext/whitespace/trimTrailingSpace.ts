@@ -1,7 +1,7 @@
-import Document from '../../Document';
-import EditSession from '../../EditSession';
+import { Document } from 'editor-document';
+import { EditSession } from '../../EditSession';
 
-export default function trimTrailingSpace(session: EditSession, trimEmpty: boolean): void {
+export function trimTrailingSpace(session: EditSession, trimEmpty: boolean): void {
     const doc: Document = session.getDocument();
     const lines: string[] = doc.getAllLines();
 

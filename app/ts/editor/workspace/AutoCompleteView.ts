@@ -61,7 +61,7 @@ function position(el: HTMLElement): PixelPosition {
 /**
  *
  */
-export default class AutoCompleteView {
+export class AutoCompleteView {
     private editor: Editor;
     public wrap: HTMLDivElement;
     public listElement: HTMLUListElement;

@@ -1,8 +1,8 @@
 import { IPromise } from 'angular';
 import { IModalService, IModalSettings } from 'angular-bootstrap';
-import CopyProjectDialog from './CopyProjectDialog';
-import CopyProjectSettings from './CopyProjectSettings';
-import CopyProjectController from './CopyProjectController';
+import { CopyProjectDialog } from './CopyProjectDialog';
+import { CopyProjectSettings } from './CopyProjectSettings';
+import { CopyProjectController } from './CopyProjectController';
 
 /**
  * The implementation that is registered with the application module.

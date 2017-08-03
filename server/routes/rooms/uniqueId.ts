@@ -3,9 +3,8 @@
  * Given that we use only 26 lowercase letters, 10 numeric digits, '-', '_', ':', and '.', that gives
  * 26*(26+10+4)^7 = 4,259,840,000,000 combinations.
  * What's the probability of a collision? :)
- * @returns Random id.
  */
-export default function uniqueId(): string {
+export function uniqueId(): string {
     // IE is case insensitive (in violation of the W3 spec).
     let soup = 'abcdefghijklmnopqrstuvwxyz';
     // First character must be a letter.

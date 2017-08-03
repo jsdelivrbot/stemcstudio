@@ -1,11 +1,11 @@
 import { IHttpService, IQService } from 'angular';
 import { ITranslateGatewayProvider, ITranslateGateway, ITranslationTable } from '../api';
-import TranslateGateway from './TranslateGateway';
+import { TranslateGateway } from './TranslateGateway';
 
 /**
  * Using a provider allows us to externally configure a service.
  */
-export default class TranslateGatewayProvider implements ITranslateGatewayProvider {
+export class TranslateGatewayProvider implements ITranslateGatewayProvider {
     public $inject: string[] = [];
     /**
      * The REST path on the server for GET requests.

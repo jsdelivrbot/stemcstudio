@@ -32,21 +32,11 @@ const SYSTEM_CONFIG_JSON = 'system.config.json';
 /**
  * Synthesize the argument object to System.config for libraries that should be loaded as modules.
  * Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
- *
- * @param closureOpts 
- * @param vendorFolderMarker 
  */
 function systemConfigArg(closureOpts: IOption[], vendorFolderMarker: string): SystemJsConfigArg {
     // Build the System.config for libraries that should be loaded as modules.
     // Before upgrading to SystemJS 0.20.x, run 0.19.x and fix warnings.
     const config: SystemJsConfigArg = {
-        /*
-        packages: {
-            './': {
-                defaultExtension: 'js'
-            }
-        },
-        */
         warnings: false
     };
     const importModules = closureOpts.filter(isModularOrUMDLibrary);
@@ -98,22 +88,22 @@ export function rebuildPreview(
     LIBS_MARKER: string,
     STYLES_MARKER: string,
     VENDOR_FOLDER_MARKER: string
-) {
+): void {
     // Synchronize the JavaScript model (transpile status) with the workspace (source) model.
     jsModel.watchFiles(wsModel.getFileSessionPaths().filter(isLanguageServiceScript));
     // If any Language Service source files have changed but not yet transpiled, initiate a refresh of the output files.
     const dirtyFiles = jsModel.dirtyFiles();
     if (dirtyFiles.length > 0) {
+        // We could put up a spinner here instead of presenting a dirty file.
+        // Experiment with returning to see if it improves apparent performance.
+        console.log(`Changed files detected ${JSON.stringify(dirtyFiles)}.`);
         for (const dirtyFile of dirtyFiles) {
             wsModel.outputFilesForPath(dirtyFile);
         }
-        // We could put up a spinner here instead of presenting a dirty file.
-        // Experiment with returning to see if it improves apparent performance.
-        console.warn(`dirtyFiles detected, ${JSON.stringify(dirtyFiles)} abandoning rebuildPreview.`);
         return;
     }
     else {
-        console.log("All files transpiled, continuing rebuildPreview.");
+        console.log("All files transpiled.");
     }
 
     /**
