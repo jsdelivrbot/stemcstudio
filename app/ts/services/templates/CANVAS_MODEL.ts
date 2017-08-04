@@ -3,13 +3,13 @@ const NEWLINE = '\n';
 export function CANVAS_MODEL(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
-    lines.push("import { Vector } from './vector'");
+    lines.push("import { vec, Vector } from './vector'");
     lines.push("");
     lines.push("/**");
     lines.push(" *");
     lines.push(" */");
     lines.push("export class Body {");
-    lines.push(_ + "readonly position = new Vector(0, 0)");
+    lines.push(_ + "position: Vector = vec(0, 0)");
     lines.push(_ + "width: number");
     lines.push(_ + "height: number");
     lines.push(_ + "constructor(width: number, height: number) {");

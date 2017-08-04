@@ -3,7 +3,7 @@ const NEWLINE = '\n';
 export function VECTOR_3D_SPEC(tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
-    lines.push("import { Vector } from './vector'");
+    lines.push("import { vec } from './vector'");
     lines.push("// Run these specifications by selecting 'tests.html' from the 'Choose Program' toolbar menu.");
     lines.push('// For a complete list of examples, please see the Jasmine DOCS.');
     lines.push('export function vectorSpec() {');
@@ -11,7 +11,7 @@ export function VECTOR_3D_SPEC(tabString: string): string {
     lines.push(_ + _ + 'const x = Math.random()');
     lines.push(_ + _ + 'const y = Math.random()');
     lines.push(_ + _ + 'const z = Math.random()');
-    lines.push(_ + _ + 'const v = new Vector(x, y, z)');
+    lines.push(_ + _ + 'const v = vec(x, y, z)');
     lines.push(_ + _ + 'it("should preserve x coordinate", function() {');
     lines.push(_ + _ + _ + 'expect(v.x).toBe(x)');
     lines.push(_ + _ + '})');
@@ -23,9 +23,9 @@ export function VECTOR_3D_SPEC(tabString: string): string {
     lines.push(_ + _ + '})');
     lines.push(_ + '})');
     lines.push(_ + 'describe("add", function() {');
-    lines.push(_ + _ + 'const a = new Vector(1, 2, 3)');
-    lines.push(_ + _ + 'const b = new Vector(4, 5, 6)');
-    lines.push(_ + _ + 'const c = a.add(b)');
+    lines.push(_ + _ + 'const a = vec(1, 2, 3)');
+    lines.push(_ + _ + 'const b = vec(4, 5, 6)');
+    lines.push(_ + _ + 'const c = a + b');
     lines.push(_ + _ + 'it("should compute the x coordinate", function() {');
     lines.push(_ + _ + _ + 'expect(c.x).toBe(5)');
     lines.push(_ + _ + '})');
@@ -35,10 +35,13 @@ export function VECTOR_3D_SPEC(tabString: string): string {
     lines.push(_ + _ + 'it("should compute the z coordinate", function() {');
     lines.push(_ + _ + _ + 'expect(c.z).toBe(9)');
     lines.push(_ + _ + '})');
-    lines.push(_ + _ + 'it("should return this", function() {');
-    lines.push(_ + _ + _ + 'expect(c === a).toBe(true)');
+    lines.push(_ + _ + 'it("should not return this", function() {');
+    lines.push(_ + _ + _ + 'expect(c !== a).toBe(true)');
     lines.push(_ + _ + '})');
-    lines.push(_ + _ + 'it("should leave rhs unchanged", function() {');
+    lines.push(_ + _ + 'it("should leave a and b unchanged", function() {');
+    lines.push(_ + _ + _ + 'expect(a.x).toBe(1)');
+    lines.push(_ + _ + _ + 'expect(a.y).toBe(2)');
+    lines.push(_ + _ + _ + 'expect(a.z).toBe(3)');
     lines.push(_ + _ + _ + 'expect(b.x).toBe(4)');
     lines.push(_ + _ + _ + 'expect(b.y).toBe(5)');
     lines.push(_ + _ + _ + 'expect(b.z).toBe(6)');
