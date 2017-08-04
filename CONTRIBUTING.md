@@ -71,7 +71,7 @@ karma start
 
 ## Upgrading
 
-Update versions in
+Update application versions in
 
 1. package.json
 2. bower.json
