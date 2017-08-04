@@ -10,11 +10,7 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push(" */");
     lines.push("export class Body {");
     lines.push(_ + "position: Vector = vec(0, 0)");
-    lines.push(_ + "width: number");
-    lines.push(_ + "height: number");
-    lines.push(_ + "constructor(width: number, height: number) {");
-    lines.push(_ + _ + "this.width = width");
-    lines.push(_ + _ + "this.height = height");
+    lines.push(_ + "constructor() {");
     lines.push(_ + "}");
     lines.push("}");
     lines.push("");
@@ -22,7 +18,7 @@ export function CANVAS_MODEL(tabString: string): string {
     lines.push(" *");
     lines.push(" */");
     lines.push("export class Model {");
-    lines.push(_ + "readonly body = new Body(20, 20)");
+    lines.push(_ + "readonly body = new Body()");
     lines.push(_ + "constructor() {");
     lines.push(_ + "}");
     lines.push("}");

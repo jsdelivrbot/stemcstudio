@@ -14,7 +14,7 @@ export function EIGHT_MAIN(tabString: string): string {
     lines.push("");
     lines.push("const model = new Model()");
     lines.push("");
-    lines.push("const view = new View(model, 'canvas3D')");
+    lines.push("const view = new View(model, document.getElementById('container') as HTMLElement)");
     lines.push("");
     lines.push("const update = function(Δt: number) {");
     lines.push("");

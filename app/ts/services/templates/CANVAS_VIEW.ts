@@ -52,7 +52,7 @@ export function CANVAS_VIEW(tabString: string): string {
     lines.push(_ + _ + "const body = this.model.body");
     lines.push(_ + _ + "const context = this.context");
     lines.push(_ + _ + "context.fillStyle = 'red'");
-    lines.push(_ + _ + "context.fillRect(body.position.x, body.position.y, body.width, body.height)");
+    lines.push(_ + _ + "context.fillRect(body.position.x, body.position.y, 20, 20)");
     lines.push(_ + "}");
     lines.push("}");
     return lines.join(NEWLINE).concat(NEWLINE);

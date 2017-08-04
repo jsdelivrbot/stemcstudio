@@ -17,6 +17,7 @@ export function EIGHT_VIEW(tabString: string): string {
     lines.push(" *");
     lines.push(" */");
     lines.push("export class View {");
+    lines.push(_ + "private canvas: HTMLCanvasElement");
     lines.push(_ + "private engine: Engine");
     lines.push(_ + "private camera: PerspectiveCamera");
     lines.push(_ + "private trackball: TrackballControls");
@@ -26,9 +27,15 @@ export function EIGHT_VIEW(tabString: string): string {
     lines.push(_ + "/**");
     lines.push(_ + " *");
     lines.push(_ + " */");
-    lines.push(_ + "constructor(private model: Model, canvas: string | HTMLCanvasElement) {");
-    lines.push(_ + _ + "this.engine = new Engine(canvas)");
-    lines.push(_ + _ + _ + ".size(500, 500)");
+    lines.push(_ + "constructor(private model: Model, container: HTMLElement, width = 500, height = 500) {");
+    lines.push("");
+    lines.push(_ + _ + "this.canvas = document.createElement('canvas')");
+    lines.push(_ + _ + "this.canvas.width = width");
+    lines.push(_ + _ + "this.canvas.height = height");
+    lines.push(_ + _ + "container.appendChild(this.canvas)");
+    lines.push("");
+    lines.push(_ + _ + "this.engine = new Engine(this.canvas)");
+    lines.push(_ + _ + _ + ".size(width, height)");
     lines.push(_ + _ + _ + ".clearColor(0.1, 0.1, 0.1, 1.0)");
     lines.push(_ + _ + _ + ".enable(Capability.DEPTH_TEST)");
     lines.push("");

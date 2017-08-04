@@ -136,7 +136,7 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        EIGHT.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { canvasId: 'canvas3D' }), language: LANGUAGE_HTML };
+        EIGHT.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
         EIGHT.files['keyboard.ts'] = { content: KEYBOARD(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['main.ts'] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
