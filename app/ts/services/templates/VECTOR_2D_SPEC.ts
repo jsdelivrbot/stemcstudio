@@ -18,7 +18,7 @@ export function VECTOR_2D_SPEC(tabString: string): string {
     lines.push(_ + _ + _ + 'expect(v.y).toBe(y)');
     lines.push(_ + _ + '})');
     lines.push(_ + '})');
-    lines.push(_ + 'describe("add", function() {');
+    lines.push(_ + 'describe("addition, +", function() {');
     lines.push(_ + _ + 'const a = vec(1, 2)');
     lines.push(_ + _ + 'const b = vec(3, 4)');
     lines.push(_ + _ + 'const c = a + b');

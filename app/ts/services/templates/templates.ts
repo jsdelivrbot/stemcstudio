@@ -2,15 +2,15 @@ import { app } from '../../app';
 import { ITemplate } from './template';
 import { CANVAS_MAIN } from './CANVAS_MAIN';
 import { CANVAS_MODEL } from './CANVAS_MODEL';
-import { CANVAS_README } from './CANVAS_README';
 import { CANVAS_VIEW } from './CANVAS_VIEW';
 import { EIGHT_MAIN } from './EIGHT_MAIN';
 import { EIGHT_MODEL } from './EIGHT_MODEL';
-import { EIGHT_README } from './EIGHT_README';
 import { EIGHT_VIEW } from './EIGHT_VIEW';
 import { HTML } from './COMMON_HTML';
 import { KEYBOARD } from './KEYBOARD';
-import { MINIMAL_BOOTSTRAP } from './MINIMAL_BOOTSTRAP';
+import { MINIMAL_MAIN } from './MINIMAL_MAIN';
+import { MINIMAL_MODEL } from './MINIMAL_MODEL';
+import { MINIMAL_VIEW } from './MINIMAL_VIEW';
 import { MINIMAL_CSS } from './MINIMAL_CSS';
 import { STANDARD_README } from './STANDARD_README';
 import { MINIMAL_SPEC_RUNNER } from './MINIMAL_SPEC_RUNNER';
@@ -91,7 +91,7 @@ app.factory('templates', [
 
         const BASIC: ITemplate = {
             name: "BASIC",
-            description: "Minimal Program",
+            description: "Minimal Model View Program",
             files: {},
             dependencies: dependenciesMap(['DomReady']),
             hideConfigFiles: true,
@@ -99,10 +99,12 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        BASIC.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
-        BASIC.files['main.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
+        BASIC.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
+        BASIC.files['main.ts'] = { content: MINIMAL_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
+        BASIC.files['model.ts'] = { content: MINIMAL_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         BASIC.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         BASIC.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
+        BASIC.files['view.ts'] = { content: MINIMAL_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const CANVAS: ITemplate = {
             name: "Model View 2D",
@@ -118,7 +120,7 @@ app.factory('templates', [
         CANVAS.files['keyboard.ts'] = { content: KEYBOARD(tab), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['main.ts'] = { content: CANVAS_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['model.ts'] = { content: CANVAS_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
-        CANVAS.files['README.md'] = { content: CANVAS_README(options), language: LANGUAGE_MARKDOWN };
+        CANVAS.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         CANVAS.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: true }), language: LANGUAGE_CSS };
         CANVAS.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         CANVAS.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
@@ -140,7 +142,7 @@ app.factory('templates', [
         EIGHT.files['keyboard.ts'] = { content: KEYBOARD(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['main.ts'] = { content: EIGHT_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
-        EIGHT.files['README.md'] = { content: EIGHT_README(options), language: LANGUAGE_MARKDOWN };
+        EIGHT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
         EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
@@ -176,13 +178,15 @@ app.factory('templates', [
             noLoopCheck: false,
             operatorOverloading: true
         };
-        JASMINE.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl), language: LANGUAGE_HTML };
+        JASMINE.files['index.html'] = { content: HTML(tab, `./${MAIN_DOT_JS}`, systemJsUrl, { containerId: 'container' }), language: LANGUAGE_HTML };
         JASMINE.files['example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
-        JASMINE.files['main.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['main.ts'] = { content: MINIMAL_MAIN(tab), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['model.ts'] = { content: MINIMAL_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         JASMINE.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
         JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['view.ts'] = { content: MINIMAL_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         return [BASIC, CANVAS, EIGHT, REACT, JASMINE];
     }]);

@@ -1,3 +1,4 @@
+import { stripExtension } from './stripExtension';
 import { TemplateOptions } from './template';
 
 const NEWLINE = '\n';
@@ -52,7 +53,8 @@ export function STANDARD_README(options: TemplateOptions): string {
     lines.push(`Importing your top-level module, e.g. ${options.mainJs} using`);
     lines.push("");
     lines.push("```javascript");
-    lines.push(`System.import('./${options.mainJs}').catch((e) => {console.error(e)})`);
+    lines.push(`System.defaultJSExtensions = true`);
+    lines.push(`System.import('./${stripExtension(options.mainJs)}').catch((e) => {console.error(e)})`);
     lines.push("```");
     lines.push("");
     lines.push("will begin the execution of your program.");

@@ -619,12 +619,6 @@
   },
   "npm:reflect-metadata@0.1.10": {},
   "github:es-shims/es6-shim@0.35.3": {},
-  "npm:core-js@2.4.1": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "path": "github:jspm/nodelibs-path@^0.1.0"
-  },
   "npm:hmac-drbg@1.0.1": {
     "hash.js": "npm:hash.js@^1.0.3",
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
@@ -633,10 +627,6 @@
   },
   "github:jspm/nodelibs-buffer@0.1.1": {
     "buffer": "npm:buffer@^5.0.6"
-  },
-  "npm:buffer@5.0.6": {
-    "base64-js": "npm:base64-js@^1.0.2",
-    "ieee754": "npm:ieee754@^1.1.4"
   },
   "npm:process@0.11.10": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
@@ -805,12 +795,6 @@
   },
   "npm:pseudomap@1.0.2": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:showdown@1.7.1": {
-    "yargs": "npm:yargs@^8.0.1",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
   "npm:generic-rbtree@1.1.1": {
     "tslib": "npm:tslib@^1.7.1",
@@ -1078,5 +1062,21 @@
     "tslib": "npm:tslib@^1.7.1",
     "@angular/core": "npm:@angular/core@4.3.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:buffer@5.0.7": {
+    "base64-js": "npm:base64-js@^1.0.2",
+    "ieee754": "npm:ieee754@^1.1.4"
+  },
+  "npm:showdown@1.7.2": {
+    "yargs": "npm:yargs@^8.0.1",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:core-js@2.5.0": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
   }
 }

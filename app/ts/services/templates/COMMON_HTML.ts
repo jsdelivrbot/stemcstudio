@@ -1,13 +1,10 @@
+import { stripExtension } from './stripExtension';
+
 const NEWLINE = '\n';
 
 export interface HtmlOptions {
     canvasId?: string;
     containerId?: string;
-}
-
-function stripExtension(path: string): string {
-    const pos = path.lastIndexOf('.');
-    return path.substring(0, pos);
 }
 
 /**

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.39.9",
+  "version": "2.39.10",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -36,7 +36,7 @@
     "aws-sdk": "2.6.15",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
-    "core-js": "^2.4.1",
+    "core-js": "^2.5.0",
     "debug": "^2.6.8",
     "editor-document": "^0.0.5",
     "errorhandler": "^1.5.0",
@@ -56,7 +56,7 @@
     "reflect-metadata": "^0.1.10",
     "rxjs": "^5.4.2",
     "serve-favicon": "^2.4.3",
-    "showdown": "^1.7.1",
+    "showdown": "^1.7.2",
     "socket.io": "^1.7.4",
     "stemcstudio-json": "^1.0.1",
     "stemcstudio-worker-ts": "^1.0.0",

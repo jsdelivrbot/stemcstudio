@@ -22,7 +22,7 @@ export function VECTOR_3D_SPEC(tabString: string): string {
     lines.push(_ + _ + _ + 'expect(v.z).toBe(z)');
     lines.push(_ + _ + '})');
     lines.push(_ + '})');
-    lines.push(_ + 'describe("add", function() {');
+    lines.push(_ + 'describe("addition, +", function() {');
     lines.push(_ + _ + 'const a = vec(1, 2, 3)');
     lines.push(_ + _ + 'const b = vec(4, 5, 6)');
     lines.push(_ + _ + 'const c = a + b');
