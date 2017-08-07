@@ -1,28 +1,22 @@
-
 .ace-stemcstudio-dark {
-  background-color: rgb(28, 28, 28);
-  color: rgb(204, 204, 204)
+  background-color: rgb(30, 30, 30);
+  color: rgb(226, 226, 226)
 }
 
 /**
  * Bring variables back to the ambient color for now.
  */
 .ace-stemcstudio-dark .ace_storage.ace_variable.ace_ts {
-  color: rgb(204, 204, 204)
-/* A Bold Blue */
-/*  color: rgb(102, 153, 255) */
+  color: rgb(226, 226, 226)
 }
 
 /* comments set the general tone */
 .ace-stemcstudio-dark .ace_comment {
   font-style: italic;
-/*  color: rgb(153, 153, 153) */
   color: rgb(96, 96, 96)
 }
 
 .ace-stemcstudio-dark .ace_paren {
-/*  color: rgb(255, 255, 255) */
-/*  color: rgb(102, 153, 255) */
   color: rgb(153, 153, 153)
 }
 
@@ -35,7 +29,6 @@
  */
 .ace-stemcstudio-dark .ace_keyword {
   color: rgb(158, 158, 250)
-/*  color: rgb(153, 153, 255) */
 }
 
 /**
@@ -43,12 +36,10 @@
  */
 .ace-stemcstudio-dark .ace_keyword.ace_operator {
   color: rgb(158, 158, 250)
-/*  color: rgb(204, 204, 204) */
 }
 
 .ace-stemcstudio-dark .ace_punctuation.ace_operator {
-/*  color: rgb(255, 255, 255) */
-  color: rgb(204, 204, 204)
+  color: rgb(226, 226, 226)
 }
 
 /**
@@ -89,8 +80,8 @@
 }
 
 .ace-stemcstudio-dark .ace_gutter {
-  background: #232323;
-  color: #E2E2E2
+  background-color: rgb(30, 30, 30);
+  color: #5A5A5A
 }
 
 .ace-stemcstudio-dark .ace_print-margin {

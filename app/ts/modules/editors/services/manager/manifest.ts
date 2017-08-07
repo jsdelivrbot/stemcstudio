@@ -2,6 +2,7 @@ import { Theme } from '../../Theme';
 
 const STEMCSTUDIO_DARK = "STEMCstudio Dark";
 // const STEMCSTUDIO_LIGHT = "STEMCstudio Light";
+const VSCODE_DARK = "Visual Studio Code Dark";
 export const DEFAULT_THEME_NAME = STEMCSTUDIO_DARK;
 
 export const themes: Theme[] = [
@@ -78,6 +79,12 @@ export const themes: Theme[] = [
         isDark: false,
         cssClass: 'ace-vs',
         fileName: 'visualstudio.css'
+    },
+    {
+        name: VSCODE_DARK,
+        isDark: true,
+        cssClass: 'ace-vscode-dark',
+        fileName: 'vscode_dark.css'
     },
     {
         name: "Xcode",

@@ -1,7 +1,9 @@
 .ace_editor {
     position: relative;
     overflow: hidden;
-    font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font-family: "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+    font-weight: normal;
+    font-size: 12px;
     direction: ltr;
 }
 
