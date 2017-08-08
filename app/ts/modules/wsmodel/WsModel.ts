@@ -1503,6 +1503,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * TODO: The returned promise is not very useful unless the dianostics can be mapped to each path.
      */
     public refreshDiagnostics(): Promise<Diagnostic[][]> {
+        // console.lg("WsModel.refreshDiagnostics() called.");
         const paths = this.getFileSessionPaths().filter(isLanguageServiceScript);
         const diagnosticPromises: Promise<Diagnostic[]>[] = [];
         for (const path of paths) {

@@ -259,6 +259,7 @@ export function updateWorkspaceTypes(
     VENDOR_FOLDER_MARKER: string,
     callback: (err?: any) => void
 ) {
+    // console.lg("updateWorkspaceTypes(...)");
     const doneAmbients = updateAmbients(wsModel, FILENAME_TYPESCRIPT_CURRENT_LIB_DTS, FILENAME_TYPESCRIPT_ES2015_CORE_DTS, FILENAME_TYPESCRIPT_PROMISE_LIB_DTS, $http, $location, VENDOR_FOLDER_MARKER);
     const doneModules = updateModules(wsModel, $http, $location, VENDOR_FOLDER_MARKER);
     Promise.all([doneAmbients, doneModules])

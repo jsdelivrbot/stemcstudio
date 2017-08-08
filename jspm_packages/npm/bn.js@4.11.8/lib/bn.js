@@ -38,7 +38,7 @@
     BN.wordSize = 26;
     var Buffer;
     try {
-      Buffer = require('buf' + 'fer').Buffer;
+      Buffer = require('@empty').Buffer;
     } catch (e) {}
     BN.isBN = function isBN(num) {
       if (num instanceof BN) {
@@ -2706,4 +2706,4 @@
       return res._forceRed(this);
     };
   })(typeof module === 'undefined' || module, this);
-})(require('buffer').Buffer);
+})(require('@empty').Buffer);

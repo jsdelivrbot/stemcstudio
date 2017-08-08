@@ -9,6 +9,9 @@ import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '..
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import { Doodle } from '../../services/doodles/Doodle';
+import { EMBEDDING_PARAM_FILE } from '../../constants';
+import { EMBEDDING_PARAM_HIDE_CODE } from '../../constants';
+import { EMBEDDING_PARAM_HIDE_README } from '../../constants';
 import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../../services/github/IGitHubGistService';
 import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../../services/github/IGitHubRepoService';
 import { GOOGLE_ANALYTICS_UUID } from '../../fugly/ga/ga';
@@ -111,6 +114,11 @@ function endsWith(str: string, suffix: string): boolean {
  */
 function fileExtensionIs(path: string, extension: string): boolean {
     return path.length > extension.length && endsWith(path, extension);
+}
+
+function optionalBooleanParam(name: string, strval: string): boolean {
+    console.log(`${name} => ${strval}: ${typeof strval}`);
+    return strval === '1' ? true : false;
 }
 
 /**
@@ -500,6 +508,14 @@ export class WorkspaceController implements WorkspaceEditorHost {
         const gistId: string = this.$stateParams['gistId'];
         const roomId: string = this.$stateParams['roomId'];
 
+        const embed = optionalBooleanParam('embed', this.$stateParams['embed']);
+
+        const file: string = this.$stateParams[EMBEDDING_PARAM_FILE];
+        console.log(`file => ${file}: ${typeof file}`);
+
+        const hideCode = optionalBooleanParam(EMBEDDING_PARAM_HIDE_CODE, this.$stateParams[EMBEDDING_PARAM_HIDE_CODE]);
+        const hideREADME = optionalBooleanParam(EMBEDDING_PARAM_HIDE_README, this.$stateParams[EMBEDDING_PARAM_HIDE_README]);
+
         // This flag prevents the editors from being being...?
         this.$scope.doodleLoaded = false;
 
@@ -524,7 +540,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                             const defaultLibURL = '/typings/lib.es6.d.ts';
                             this.wsModel.setDefaultLibrary(defaultLibURL)
                                 .then(() => {
-                                    this.afterWorkspaceLoaded();
+                                    this.afterWorkspaceLoaded({ embed, file, hideCode, hideREADME });
                                 })
                                 .catch((err) => {
                                     this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
@@ -700,7 +716,9 @@ export class WorkspaceController implements WorkspaceEditorHost {
     /**
      * 
      */
-    private afterWorkspaceLoaded(): void {
+    private afterWorkspaceLoaded(options: { embed?: boolean; file?: string; hideCode?: boolean; hideREADME?: boolean; } = {}): void {
+
+        // console.lg("WorkspaceController.afterWorkspaceLoaded()");
 
         this.resizeListener = (unused: UIEvent) => {
             this.resize();
@@ -729,20 +747,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         });
 
         this.resize();
-
-        // Following a browser refresh, show the code so that it refreshes correctly (bug).
-        // This also side-steps the issue of the time it takes to restart the preview.
-        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-        this.wsModel.isCodeVisible = true;
-
-        // Bit of a smell here. Should we be updating the scope?
-        this.$scope.isEditMode = this.wsModel.isCodeVisible;
-        // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
-        this.$scope.isViewVisible = false;
-        // Don't display comments initially to keep things clean.
-        this.$scope.isCommentsVisible = false;
-        // No such issue with the README.md
-        this.$scope.isMarkdownVisible = true;
 
         this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal: boolean, unused: IScope) => {
             if (this.wsModel.isZombie()) {
@@ -774,6 +778,34 @@ export class WorkspaceController implements WorkspaceEditorHost {
             }
         }));
 
+        if (typeof options.file === 'string') {
+            this.wsModel.closeOthers(options.file);
+        }
+
+        // Following a browser refresh, show the code so that it refreshes correctly (bug).
+        // This also side-steps the issue of the time it takes to restart the preview.
+        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
+        if (typeof options.hideCode === 'boolean') {
+            this.wsModel.isCodeVisible = !options.hideCode;
+        }
+        else {
+            this.wsModel.isCodeVisible = true;
+        }
+
+        // Bit of a smell here. Should we be updating the scope?
+        this.$scope.isEditMode = this.wsModel.isCodeVisible;
+        // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
+        this.$scope.isViewVisible = false;
+        // Don't display comments initially to keep things clean.
+        this.$scope.isCommentsVisible = false;
+        // No such issue with the README.md
+        if (typeof options.hideREADME === 'boolean') {
+            this.$scope.isMarkdownVisible = !options.hideREADME;
+        }
+        else {
+            this.$scope.isMarkdownVisible = true;
+        }
+
         updateWorkspaceTypes(
             this.wsModel,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
@@ -781,26 +813,31 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,
             this.$http,
             this.$location,
-            this.VENDOR_FOLDER_MARKER, () => {
-                const promises: Promise<any>[] = [];
-                promises.push(this.wsModel.synchOperatorOverloading());
-                const tsconfig = this.wsModel.tsconfigSettings;
-                if (tsconfig) {
-                    promises.push(this.wsModel.synchTsConfig(tsconfig));
+            this.VENDOR_FOLDER_MARKER, (updateWorkspaceTypesError) => {
+                if (!updateWorkspaceTypesError) {
+                    const promises: Promise<any>[] = [];
+                    promises.push(this.wsModel.synchOperatorOverloading());
+                    const tsconfig = this.wsModel.tsconfigSettings;
+                    if (tsconfig) {
+                        promises.push(this.wsModel.synchTsConfig(tsconfig));
+                    }
+                    else {
+                        console.warn("tsconfig will not be used");
+                    }
+                    Promise.all(promises)
+                        .then(() => {
+                            this.compile();
+                            this.$scope.workspaceLoaded = true;
+                            // The following line may be redundant because we handle the files elsewhere.
+                            this.$scope.updatePreview(WAIT_NO_MORE);
+                        })
+                        .catch((reason) => {
+                            console.warn(`Synchronization failed. Cause: ${reason}`);
+                        });
                 }
                 else {
-                    console.warn("tsconfig will not be used");
+                    console.warn(`updateWorkspaceTypes failed. Cause: ${updateWorkspaceTypesError}`);
                 }
-                Promise.all(promises)
-                    .then(() => {
-                        this.compile();
-                        this.$scope.workspaceLoaded = true;
-                        // The following line may be redundant because we handle the files elsewhere.
-                        this.$scope.updatePreview(WAIT_NO_MORE);
-                    })
-                    .catch((reason) => {
-                        console.warn(`Synchronization failed. Cause: ${reason}`);
-                    });
             });
     }
 
@@ -819,6 +856,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      * 6. When the 'operatorOverloading' property changes (package.json).
      */
     private compile(): void {
+        // console.lg("WorkspaceController.compile() called.");
         this.wsModel.refreshDiagnostics()
             .then(() => {
                 this.$scope.$applyAsync();
@@ -1033,7 +1071,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
         return handler;
     }
 
-    private updateMarkdownView(delay: number) {
+    private updateMarkdownView(delay: number): void {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
         this.readmePromise = this.$timeout(() => {

@@ -23,7 +23,23 @@ block content
         return address + System.cacheBust;
       });
     };
-    System.cacheBust = '?version=2.39.11';
+    System.cacheBust = '?version=2.39.12';
     System.defaultJSExtensions = true;
     System.import('js/main');
-  div(ui-view) Please standby while we download version #{version}
+  div(ui-view)
+    <div style='background-color: rgb(30, 30, 30); height: 100%; width: 100%; padding-top: 60px'>
+    <center>
+    <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <rect fill="#999" height="256" width="512" y="0" x="0"/>
+        <rect fill="#ff9900" height="256" width="512" y="256" x="0"/>
+        <rect fill="#fff" height="256" width="128" y="128" x="256"/>
+        <rect fill="#555" height="256" width="128" y="128" x="128"/>
+        <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="30" y="256" x="138" stroke-width="0" stroke="#999" fill="#999">STEM</text>
+        <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="30" y="256" x="225" stroke-width="0" stroke="#fff" fill="#fff">C</text>
+        <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" y="256" x="260" stroke-width="0" stroke="#ff9900" fill="#ff9900">studio</text>
+        <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" y="256" x="326" stroke-width="0" stroke="#555" fill="#555">.com</text>
+      </g>
+    </svg>
+    </center>
+    </div>

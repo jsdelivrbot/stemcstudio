@@ -5,6 +5,9 @@ import { downgradeComponent } from '@angular/upgrade/static';
 import { downgradeInjectable } from '@angular/upgrade/static';
 
 import { APP_VERSION } from './constants';
+import { EMBEDDING_PARAM_FILE } from './constants';
+import { EMBEDDING_PARAM_HIDE_CODE } from './constants';
+import { EMBEDDING_PARAM_HIDE_README } from './constants';
 import { GITHUB_TOKEN_COOKIE_NAME } from './constants';
 
 //
@@ -347,6 +350,14 @@ app.config([
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean
     ) {
+        const embeddingParams = [
+            'embed',
+            EMBEDDING_PARAM_FILE,
+            EMBEDDING_PARAM_HIDE_CODE,
+            'hideExplorer',
+            EMBEDDING_PARAM_HIDE_README
+        ];
+        const optionalEmbeddingParams = `?${embeddingParams.join('&')}`;
         $stateProvider
             .state(STATE_HOME, {
                 url: '/',
@@ -354,7 +365,7 @@ app.config([
                 controller: HOME_CONTROLLER_NAME
             })
             .state(STATE_WORKSPACE, {
-                url: '/workspace',
+                url: `/workspace${optionalEmbeddingParams}`,
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
@@ -383,8 +394,7 @@ app.config([
 
         if (FEATURE_GIST_ENABLED) {
             $stateProvider.state(STATE_GIST, {
-                // TODO: Is the output parameter being used? If so, document it.
-                url: '/gists/{gistId}?output',
+                url: `/gists/{gistId}${optionalEmbeddingParams}`,
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             });

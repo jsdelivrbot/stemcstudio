@@ -96,14 +96,10 @@ export function rebuildPreview(
     if (dirtyFiles.length > 0) {
         // We could put up a spinner here instead of presenting a dirty file.
         // Experiment with returning to see if it improves apparent performance.
-        console.log(`Changed files detected ${JSON.stringify(dirtyFiles)}.`);
         for (const dirtyFile of dirtyFiles) {
             wsModel.outputFilesForPath(dirtyFile);
         }
         return;
-    }
-    else {
-        console.log("All files transpiled.");
     }
 
     /**
