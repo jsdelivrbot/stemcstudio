@@ -11,18 +11,18 @@ export function VECTOR(tabString: string, dims: number): string {
     // External vector signature.
     //
     lines.push("/**");
-    lines.push(" * An element of a Euclidean vector space.");
+    lines.push(" * An element of a Euclidean vector (linear) space.");
     lines.push(" */");
     lines.push("export interface Vector {");
     for (const coord of coords) {
         lines.push(_ + `readonly ${coord}: number`);
     }
     lines.push(_ + "/**");
-    lines.push(_ + " * The unit vector with the same direction as this vector.");
+    lines.push(_ + " * The unit vector with the same direction as the target vector.");
     lines.push(_ + " */");
     lines.push(_ + "direction(): Vector");
     lines.push(_ + "/**");
-    lines.push(_ + " * The scalar magnitude of this vector.");
+    lines.push(_ + " * The scalar magnitude of the target vector.");
     lines.push(_ + " */");
     lines.push(_ + "magnitude(): number");
     lines.push("}");
@@ -33,7 +33,8 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push("");
     lines.push("/**");
     lines.push(" * Internal representation of vector.");
-    lines.push(" * Includes operator overloading and readonly coordinates.");
+    lines.push(" * Includes operator overloading methods and readonly coordinates.");
+    lines.push(" * See STEMCstudio User Guide for more information on operator overloading.");
     lines.push(" */");
     lines.push("interface CartesianVector extends Vector {");
     for (const coord of coords) {
@@ -47,6 +48,8 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push(_ + "__rmul__(lhs: any): Vector | undefined");
     lines.push(_ + "__div__(rhs: any): Vector | undefined");
     lines.push(_ + "__rdiv__(lhs: any): Vector | undefined");
+    lines.push(_ + "__pos__(): Vector");
+    lines.push(_ + "__neg__(): Vector");
     lines.push("}");
 
     //
@@ -57,7 +60,7 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push(" * Internal test for cartesian vector signature.");
     lines.push(" */");
     lines.push("function isCartesianVector(arg: any): arg is CartesianVector {");
-    lines.push(_ + "return arg.hasOwnProperty('x') && arg.hasOwnProperty('y')");
+    lines.push(_ + `return ${coords.map((coord) => `arg.hasOwnProperty('${coord}')`).join(' && ')}`);
     lines.push("}");
 
     //
@@ -146,6 +149,12 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push(_ + _ + _ + _ + "return void 0");
     lines.push(_ + _ + _ + "}");
     lines.push(_ + _ + "},");
+    lines.push(_ + _ + "__pos__(): Vector {");
+    lines.push(_ + _ + _ + `return that`);
+    lines.push(_ + _ + "},");
+    lines.push(_ + _ + "__neg__(): Vector {");
+    lines.push(_ + _ + _ + `return cvec(${coords.map((coord) => `-${coord}`).join(', ')})`);
+    lines.push(_ + _ + "},");
     lines.push(_ + _ + "direction(): Vector {");
     lines.push(_ + _ + _ + "const norm = that.magnitude()");
     lines.push(_ + _ + _ + `return cvec(${coords.map((coord) => `${coord} / norm`).join(', ')})`);
@@ -154,7 +163,7 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push(_ + _ + _ + `return Math.sqrt(${coords.map((coord) => `${coord} * ${coord}`).join(' + ')})`);
     lines.push(_ + _ + "}");
     lines.push(_ + "}");
-    lines.push(_ + "return that");
+    lines.push(_ + "return Object.freeze(that) as CartesianVector");
     lines.push("}");
 
     //
@@ -162,6 +171,9 @@ export function VECTOR(tabString: string, dims: number): string {
     //
     lines.push("");
     for (let i = 0; i < coords.length; i++) {
+        lines.push("/**");
+        lines.push(` * The standard basis vector corresponding to the ${coords[i]} coordinate.`);
+        lines.push(" */");
         lines.push(`export const e${i + 1} = vec(${coords.map((coord, index) => (index === i) ? '1' : '0').join(', ')})`);
     }
     lines.push("/**");
@@ -175,6 +187,8 @@ export function VECTOR(tabString: string, dims: number): string {
     lines.push("");
     lines.push("/**");
     lines.push(" * Constructs a vector from Cartesian coordinates.");
+    lines.push(" *");
+    lines.push(` * v = vec(${args}) means v = ${coords.map((coord, index) => `${coord} * e${index + 1}`).join(' + ')}.`);
     lines.push(" */");
     lines.push(`export function vec(${params}): Vector {`);
     lines.push(_ + `return cvec(${args})`);
