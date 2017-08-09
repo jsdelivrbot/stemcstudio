@@ -3,7 +3,7 @@
  * This file is used to load the application and the workers.
  * DON'T FORGET TO CHANGE THE VERSION IN index.pug !!!
  */
-export const APP_VERSION = '2.39.12';
+export const APP_VERSION = '2.39.14';
 
 /**
  * Web Worker supporting TypeScript Mode.
@@ -38,6 +38,8 @@ export const TYPESCRIPT_SERVICES_PATH = `/js/typescript@${TYPESCRIPT_SERVICES_VE
 
 export const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
+export const EMBEDDING_PARAM_EMBED = 'embed';
 export const EMBEDDING_PARAM_FILE = 'file';
 export const EMBEDDING_PARAM_HIDE_CODE = 'hideCode';
+export const EMBEDDING_PARAM_HIDE_EXPLORER = 'hideExplorer';
 export const EMBEDDING_PARAM_HIDE_README = 'hideREADME';

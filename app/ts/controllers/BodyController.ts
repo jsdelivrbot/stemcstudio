@@ -13,14 +13,17 @@ export class BodyController {
     public static $inject: string[] = ['$scope', GITHUB_GIST_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
     constructor($scope: BodyScope, githubGistService: IGitHubGistService, navigation: INavigationService, translateService: ITranslateService) {
 
+        $scope.isGoHomeEnabled = true;
         $scope.goHome = () => {
-            navigation.gotoHome()
-                .then(function () {
-                    // console.lg(`gotoHome() completed.`);
-                })
-                .catch(function (reason: any) {
-                    console.warn(`gotoHome() failed: ${JSON.stringify(reason, null, 2)}`);
-                });
+            if ($scope.isGoHomeEnabled) {
+                navigation.gotoHome()
+                    .then(function () {
+                        // console.lg(`gotoHome() completed.`);
+                    })
+                    .catch(function (reason: any) {
+                        console.warn(`gotoHome() failed: ${JSON.stringify(reason, null, 2)}`);
+                    });
+            }
         };
 
         $scope.clickDownload = function () {

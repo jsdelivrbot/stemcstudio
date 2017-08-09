@@ -14,8 +14,4 @@ export interface ExamplesScope extends BodyScope {
      * The levels will be inferred from those actually used in the examples.
      */
     levels: Level[];
-    /**
-     * 
-     */
-    goHome: () => void;
 }

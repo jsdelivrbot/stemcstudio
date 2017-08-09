@@ -3,6 +3,10 @@ import { WsModel } from '../modules/wsmodel/WsModel';
 import { WsFile } from '../modules/wsmodel/WsFile';
 
 export interface WorkspaceScope extends DoodleScope {
+    /**
+     * Reflects the URL parameter indicating whether we are running in embedded mode. 
+     */
+    embed: boolean;
 
     /**
      * 
@@ -20,12 +24,6 @@ export interface WorkspaceScope extends DoodleScope {
     doodleLoaded: boolean;
 
     /**
-     * Determines whether we can, for example, click the brand icon to go home.
-     * When application is embedded, we prevent such navigation.
-     */
-    isGoHomeEnabled: boolean;
-
-    /**
      * HTML files determine the applications that can be viewed.
      */
     htmlFileCount(): number;
@@ -40,8 +38,7 @@ export interface WorkspaceScope extends DoodleScope {
      */
     workspaceLoaded: boolean;
 
-    isEditMode: boolean;
-    toggleMode: () => void;
+    isCodeVisible: boolean;
 
     isViewVisible: boolean;
     toggleView: () => void;

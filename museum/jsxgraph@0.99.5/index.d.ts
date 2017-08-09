@@ -633,6 +633,7 @@ declare module JXG {
      * 
      */
     export interface CurveAttributes extends GeometryElementAttributes {
+        curveType?: 'none' | 'plot' | 'parameter' | 'functiongraph' | 'polar' | 'implicit';
     }
 
     /**
@@ -869,6 +870,16 @@ declare module JXG {
      * 
      */
     export interface IntegralAttributes extends CurveAttributes {
+
+    }
+    export interface Normal extends Line {
+
+    }
+
+    /**
+     * 
+     */
+    export interface NormalAttributes extends LineAttributes {
 
     }
 
@@ -1610,6 +1621,10 @@ declare module JXG {
          *
          */
         create(elementType: "line", parents: [PointSpecification, PointSpecification], attributes?: LineAttributes): Line;
+        /**
+         * Creates an instance of Normal using a glider on a line, circle, or curve.
+         */
+        create(elementType: "normal", parents?: [Glider], attributes?: NormalAttributes): Normal;
         /**
          *
          */

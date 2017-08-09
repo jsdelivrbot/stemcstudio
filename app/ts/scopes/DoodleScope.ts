@@ -1,9 +1,9 @@
 import { BodyScope } from './BodyScope';
-import { ExplorerMixin } from './ExplorerMixin';
+import { CodeVisibleMixin } from './CodeVisibleMixin';
 import { ITemplate } from '../services/templates/template';
 import { ProblemsMixin } from './ProblemsMixin';
 
-export interface DoodleScope extends BodyScope, ExplorerMixin, ProblemsMixin {
+export interface DoodleScope extends BodyScope, CodeVisibleMixin, ProblemsMixin {
 
     /**
      * New Project

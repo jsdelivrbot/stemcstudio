@@ -46,10 +46,11 @@ export class DoodleController extends AbstractPageController {
 
         super($window, authManager, modalDialog, 'hidden');
 
-        // ExplorerMixin implementation.
+        // CodeVisibleMixin implementation.
+        $scope.isCodeVisible = true;
         $scope.isExplorerVisible = true;
-        $scope.toggleExplorer = function () {
-            $scope.isExplorerVisible = !$scope.isExplorerVisible;
+        $scope.toggleCodeVisible = function () {
+            $scope.isCodeVisible = !$scope.isCodeVisible;
         };
 
         // ProblemsMixin implementation.

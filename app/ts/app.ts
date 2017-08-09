@@ -5,8 +5,10 @@ import { downgradeComponent } from '@angular/upgrade/static';
 import { downgradeInjectable } from '@angular/upgrade/static';
 
 import { APP_VERSION } from './constants';
+import { EMBEDDING_PARAM_EMBED } from './constants';
 import { EMBEDDING_PARAM_FILE } from './constants';
 import { EMBEDDING_PARAM_HIDE_CODE } from './constants';
+import { EMBEDDING_PARAM_HIDE_EXPLORER } from './constants';
 import { EMBEDDING_PARAM_HIDE_README } from './constants';
 import { GITHUB_TOKEN_COOKIE_NAME } from './constants';
 
@@ -351,10 +353,10 @@ app.config([
         FEATURE_REPO_ENABLED: boolean
     ) {
         const embeddingParams = [
-            'embed',
+            EMBEDDING_PARAM_EMBED,
             EMBEDDING_PARAM_FILE,
             EMBEDDING_PARAM_HIDE_CODE,
-            'hideExplorer',
+            EMBEDDING_PARAM_HIDE_EXPLORER,
             EMBEDDING_PARAM_HIDE_README
         ];
         const optionalEmbeddingParams = `?${embeddingParams.join('&')}`;

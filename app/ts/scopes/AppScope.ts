@@ -77,4 +77,9 @@ export interface AppScope extends IRootScopeService {
      * Navigate to the Home page.
      */
     goHome(): void;
+    /**
+     * Determines whether we can, for example, click the brand icon to go home.
+     * When application is embedded, we prevent such navigation.
+     */
+    isGoHomeEnabled: boolean;
 }

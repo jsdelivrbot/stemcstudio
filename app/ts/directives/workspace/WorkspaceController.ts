@@ -9,8 +9,10 @@ import { ChangedLintingHandler, ChangedLintingMessage, changedLinting } from '..
 import { ChangedOperatorOverloadingHandler, ChangedOperatorOverloadingMessage, changedOperatorOverloading } from '../../modules/wsmodel/IWorkspaceModel';
 import { CLOUD_SERVICE_UUID, ICloudService } from '../../services/cloud/ICloudService';
 import { Doodle } from '../../services/doodles/Doodle';
+import { EMBEDDING_PARAM_EMBED } from '../../constants';
 import { EMBEDDING_PARAM_FILE } from '../../constants';
 import { EMBEDDING_PARAM_HIDE_CODE } from '../../constants';
+import { EMBEDDING_PARAM_HIDE_EXPLORER } from '../../constants';
 import { EMBEDDING_PARAM_HIDE_README } from '../../constants';
 import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../../services/github/IGitHubGistService';
 import { GITHUB_REPO_SERVICE_UUID, IGitHubRepoService } from '../../services/github/IGitHubRepoService';
@@ -116,9 +118,22 @@ function fileExtensionIs(path: string, extension: string): boolean {
     return path.length > extension.length && endsWith(path, extension);
 }
 
-function optionalBooleanParam(name: string, strval: string): boolean {
-    console.log(`${name} => ${strval}: ${typeof strval}`);
-    return strval === '1' ? true : false;
+function optionalBooleanParam(strval: string): boolean | undefined {
+    if (strval === '1') {
+        return true;
+    }
+    else if (strval === 'true') {
+        return true;
+    }
+    else if (strval === '0') {
+        return false;
+    }
+    else if (strval === 'false') {
+        return false;
+    }
+    else {
+        return void 0;
+    }
 }
 
 /**
@@ -276,25 +291,33 @@ export class WorkspaceController implements WorkspaceEditorHost {
 
         let rebuildPromise: IPromise<void> | undefined;
         $scope.updatePreview = (delay: number) => {
-            if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
-            rebuildPromise = $timeout(() => {
-                rebuildPreview(
-                    this.wsModel,
-                    this.jsModel,
-                    this.optionManager,
-                    this.$scope,
-                    this.$location,
-                    this.$window,
-                    this.FILENAME_CODE,
-                    this.FILENAME_LESS,
-                    this.FILENAME_LIBS,
-                    this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
-                    this.LIBS_MARKER,
-                    this.STYLES_MARKER,
-                    this.VENDOR_FOLDER_MARKER);
-                rebuildPromise = undefined;
-            }, delay);
+            if (rebuildPromise) {
+                $timeout.cancel(rebuildPromise);
+                rebuildPromise = void 0;
+            }
+            if ($scope.isViewVisible) {
+                rebuildPromise = $timeout(() => {
+                    rebuildPreview(
+                        this.wsModel,
+                        this.jsModel,
+                        this.optionManager,
+                        this.$scope,
+                        this.$location,
+                        this.$window,
+                        this.FILENAME_CODE,
+                        this.FILENAME_LESS,
+                        this.FILENAME_LIBS,
+                        this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
+                        this.LIBS_MARKER,
+                        this.STYLES_MARKER,
+                        this.VENDOR_FOLDER_MARKER);
+                    rebuildPromise = void 0;
+                }, delay);
+            }
         };
+
+        // Assume we are not running in embedded mode until the URL parameter is checked.
+        $scope.embed = false;
 
         $scope.workspace = wsModel;
 
@@ -363,26 +386,12 @@ export class WorkspaceController implements WorkspaceEditorHost {
             }
         };
 
-        $scope.toggleMode = function (label?: string, value?: number) {
-            // Is this dead code?
-            ga('send', 'event', CATEGORY_WORKSPACE, 'toggleMode', label, value);
-            $scope.isEditMode = !$scope.isEditMode;
-            // Ensure the preview is running when going away from editing.
-            if (!$scope.isEditMode) {
-                $scope.isViewVisible = true;
-                $scope.updatePreview(WAIT_NO_MORE);
-            }
-            else {
-                if ($scope.isViewVisible) {
-                    $scope.updatePreview(WAIT_NO_MORE);
-                }
-            }
-        };
-
         $scope.toggleView = function (label?: string, value?: number) {
             ga('send', 'event', CATEGORY_WORKSPACE, 'toggleView', label, value);
             $scope.isViewVisible = !$scope.isViewVisible;
-            $scope.updatePreview(WAIT_NO_MORE);
+            if ($scope.isViewVisible) {
+                $scope.updatePreview(WAIT_NO_MORE);
+            }
         };
 
         $scope.comments = [];
@@ -508,14 +517,13 @@ export class WorkspaceController implements WorkspaceEditorHost {
         const gistId: string = this.$stateParams['gistId'];
         const roomId: string = this.$stateParams['roomId'];
 
-        const embed = optionalBooleanParam('embed', this.$stateParams['embed']);
-
+        const embed = optionalBooleanParam(this.$stateParams[EMBEDDING_PARAM_EMBED]);
         const file: string = this.$stateParams[EMBEDDING_PARAM_FILE];
-        console.log(`file => ${file}: ${typeof file}`);
+        const hideCode = optionalBooleanParam(this.$stateParams[EMBEDDING_PARAM_HIDE_CODE]);
+        const hideExplorer = optionalBooleanParam(this.$stateParams[EMBEDDING_PARAM_HIDE_EXPLORER]);
+        const hideREADME = optionalBooleanParam(this.$stateParams[EMBEDDING_PARAM_HIDE_README]);
 
-        const hideCode = optionalBooleanParam(EMBEDDING_PARAM_HIDE_CODE, this.$stateParams[EMBEDDING_PARAM_HIDE_CODE]);
-        const hideREADME = optionalBooleanParam(EMBEDDING_PARAM_HIDE_README, this.$stateParams[EMBEDDING_PARAM_HIDE_README]);
-
+        this.$scope.isGoHomeEnabled = !embed;
         // This flag prevents the editors from being being...?
         this.$scope.doodleLoaded = false;
 
@@ -540,7 +548,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
                             const defaultLibURL = '/typings/lib.es6.d.ts';
                             this.wsModel.setDefaultLibrary(defaultLibURL)
                                 .then(() => {
-                                    this.afterWorkspaceLoaded({ embed, file, hideCode, hideREADME });
+                                    this.afterWorkspaceLoaded({ embed, file, hideCode, hideExplorer, hideREADME });
                                 })
                                 .catch((err) => {
                                     this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
@@ -716,7 +724,13 @@ export class WorkspaceController implements WorkspaceEditorHost {
     /**
      * 
      */
-    private afterWorkspaceLoaded(options: { embed?: boolean; file?: string; hideCode?: boolean; hideREADME?: boolean; } = {}): void {
+    private afterWorkspaceLoaded(options: {
+        embed?: boolean;
+        file?: string;
+        hideCode?: boolean;
+        hideExplorer?: boolean;
+        hideREADME?: boolean;
+    } = {}): void {
 
         // console.lg("WorkspaceController.afterWorkspaceLoaded()");
 
@@ -755,11 +769,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.wsModel.isViewVisible = this.$scope.isViewVisible;
         }));
 
-        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal: boolean, unused: IScope) => {
+        this.watches.push(this.$scope.$watch('isCodeVisible', (newVal: boolean, oldVal: boolean, unused: IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
-            this.wsModel.isCodeVisible = this.$scope.isEditMode;
+            this.wsModel.isCodeVisible = this.$scope.isCodeVisible;
         }));
 
         this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal: boolean, unused: IScope) => {
@@ -782,18 +796,20 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.wsModel.closeOthers(options.file);
         }
 
-        // Following a browser refresh, show the code so that it refreshes correctly (bug).
-        // This also side-steps the issue of the time it takes to restart the preview.
-        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-        if (typeof options.hideCode === 'boolean') {
-            this.wsModel.isCodeVisible = !options.hideCode;
+        if (typeof options.hideExplorer === 'boolean') {
+            this.$scope.isExplorerVisible = !options.hideExplorer;
         }
         else {
-            this.wsModel.isCodeVisible = true;
+            this.$scope.isExplorerVisible = true;
         }
 
-        // Bit of a smell here. Should we be updating the scope?
-        this.$scope.isEditMode = this.wsModel.isCodeVisible;
+        if (typeof options.hideCode === 'boolean') {
+            this.$scope.isCodeVisible = !options.hideCode;
+        }
+        else {
+            this.$scope.isCodeVisible = this.wsModel.isCodeVisible;
+        }
+
         // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
         this.$scope.isViewVisible = false;
         // Don't display comments initially to keep things clean.

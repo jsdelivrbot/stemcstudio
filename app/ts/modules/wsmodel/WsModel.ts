@@ -464,7 +464,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     lastKnownJsMap: { [path: string]: string } = {};
 
     /**
-     * 
+     * Exists to persist the visibility state of the code editors.
      */
     isCodeVisible = true;
 

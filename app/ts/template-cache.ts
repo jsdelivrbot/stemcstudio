@@ -112,17 +112,19 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "    <workspace>\n" +
     "        <nav id='toolbar' class='navbar navbar-inverse'>\n" +
     "            <div class='navbar-header'>\n" +
-    "                <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                <a role='button' class='navbar-brand' ng-if='isGoHomeEnabled' ng-click='goHome()'>\n" +
     "                    <brand />\n" +
     "                </a>\n" +
+    "                <div class='navbar-brand' ng-if='!isGoHomeEnabled'>\n" +
+    "                    <brand />\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "            <div class='ignore-collapse ignore-navbar-collapse'>\n" +
     "                <ul class='nav navbar-nav'>\n" +
     "                    <li>\n" +
-    "                        <a role='button' ng-click='toggleExplorer()'>\n" +
-    "                            <ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\"\n" +
-    "                                size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\"\n" +
-    "                                tooltip-placement='bottom'>\n" +
+    "                        <a role='button' ng-click='toggleCodeVisible()'>\n" +
+    "                            <ng-md-icon icon=\"{{isCodeVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isCodeVisible ? '#ffffff' : '#ffffff'}}\"\n" +
+    "                                size='24' aria-hidden='true' uib-tooltip=\"{{isCodeVisible ? 'Hide Code' : 'Show Code'}}\" tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
@@ -258,10 +260,10 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "            </div>\n" +
     "        </nav>\n" +
     "        <div id='doodle-container'>\n" +
-    "            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
-    "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>\n" +
+    "            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible && isCodeVisible'></explorer>\n" +
+    "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded' ng-show='isCodeVisible'>\n" +
     "                <!-- We only need the EditSession here. Would passing in the full WsFile be better? -->\n" +
-    "                <div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
+    "                <div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isCodeVisible &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +
     "            <div id='readme' ng-if='isMarkdownVisible'></div>\n" +
