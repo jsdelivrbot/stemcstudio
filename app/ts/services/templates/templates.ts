@@ -74,9 +74,10 @@ app.factory('templates', [
         const tab = tabString(editorPreferences);
         /**
          * System polyfill.
+         * TODO: This is not consistent with the template substitution.
          */
-        const systemJsUrl = 'https://www.stemcstudio.com/jspm_packages/system.js';
-        // const systemJsUrl = 'https://jspm.io/system@0.19.34.js';
+        // const systemJsUrl = 'https://www.stemcstudio.com/jspm_packages/system.js';
+        const systemJsUrl = 'https://jspm.io/system@0.19.34.js';
         // const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
 
         // TODO: The problem here is that the template file content maps to strings,
@@ -91,7 +92,7 @@ app.factory('templates', [
 
         const BASIC: ITemplate = {
             name: "BASIC",
-            description: "Minimal Model View Program",
+            description: "Minimal Web Program",
             files: {},
             dependencies: dependenciesMap(['DomReady']),
             hideConfigFiles: true,
@@ -108,7 +109,7 @@ app.factory('templates', [
 
         const CANVAS: ITemplate = {
             name: "Model View 2D",
-            description: "Model View Canvas (2D Graphics)",
+            description: "MVC Canvas (2D Graphics)",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine']),
             hideConfigFiles: true,
@@ -130,7 +131,7 @@ app.factory('templates', [
 
         const EIGHT: ITemplate = {
             name: "Model View 3D",
-            description: "Model View WebGL (3D Graphics)",
+            description: "MVC WebGL (3D Graphics)",
             files: {},
             dependencies: dependenciesMap(['DomReady', 'jasmine', 'davinci-eight']),
             hideConfigFiles: true,

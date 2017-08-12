@@ -3,7 +3,7 @@
  * This file is used to load the application and the workers.
  * DON'T FORGET TO CHANGE THE VERSION IN index.pug !!!
  */
-export const APP_VERSION = '2.39.15';
+export const APP_VERSION = '2.39.16';
 
 /**
  * Web Worker supporting TypeScript Mode.
@@ -37,6 +37,23 @@ export const TYPESCRIPT_SERVICES_MODULE_NAME = 'typescriptServices.js';
 export const TYPESCRIPT_SERVICES_PATH = `/js/typescript@${TYPESCRIPT_SERVICES_VERSION}/${TYPESCRIPT_SERVICES_MODULE_NAME}`;
 
 export const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+
+// Special files in a typical project.
+export const PACKAGE_DOT_JSON = 'package.json';
+export const SYSTEM_DOT_CONFIG_DOT_JS = 'system.config.js';
+export const TYPES_DOT_CONFIG_DOT_JSON = 'types.config.json';
+
+/**
+ * The current (closed) list of configuration files.
+ */
+export const configFiles = [
+    'package.json',
+    'tsconfig.json',
+    SYSTEM_DOT_CONFIG_DOT_JS,
+    'system.config.json',
+    'tslint.json',
+    TYPES_DOT_CONFIG_DOT_JSON
+];
 
 export const EMBEDDING_PARAM_EMBED = 'embed';
 export const EMBEDDING_PARAM_FILE = 'file';

@@ -4,7 +4,7 @@ import { closure } from './closure';
 import { csvTypeFromContent } from './csvTypeFromContent';
 import { fileContent } from './fileContent';
 import { fileExists } from './fileExists';
-import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
+import { isConfigFile, isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
@@ -18,6 +18,7 @@ import { replaceMarker } from './replaceMarker';
 import { scriptURL } from './scriptURL';
 import { schemeTypeFromContent } from './schemeTypeFromContent';
 import { shaderTypeFromContent } from './shaderTypeFromContent';
+import { SYSTEM_DOT_CONFIG_DOT_JS } from '../../constants';
 import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { JsModel } from '../../modules/jsmodel/JsModel';
 import { WsModel } from '../../modules/wsmodel/WsModel';
@@ -26,7 +27,6 @@ import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_
 
 const NEWLINE = '\n';
 
-const SYSTEM_CONFIG_JS = 'system.config.js';
 const SYSTEM_CONFIG_JSON = 'system.config.json';
 
 /**
@@ -190,10 +190,6 @@ export function rebuildPreview(
                             const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
                             html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
                         }
-                        // The following line may be omitted when System is natively supported in browsers.
-                        else {
-                            console.warn(`Unable to find '${SYSTEM_SHIM_MARKER}' in ${bestFile} file.`);
-                        }
 
                         html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
                         html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
@@ -231,21 +227,28 @@ export function rebuildPreview(
                             const modulesJs: string[] = [];
                             const paths: string[] = Object.keys(wsModel.lastKnownJs);
                             for (const path of paths) {
-                                const moduleJs = wsModel.lastKnownJs[path];
-                                try {
-                                    const options: mathscript.TranspileOptions = {
-                                        timeout: 1000,
-                                        noLoopCheck: wsModel.noLoopCheck,
-                                        operatorOverloading: wsModel.isOperatorOverloadingEnabled()
-                                    };
-                                    /**
-                                     * The JavaScript code with operators replaced by function calls and infinite loop detection.
-                                     */
-                                    const moduleMs = mathscript.transpile(moduleJs, options);
-                                    modulesJs.push(moduleMs);
+                                if (!isConfigFile(path)) {
+                                    const moduleJs = wsModel.lastKnownJs[path];
+                                    try {
+                                        const options: mathscript.TranspileOptions = {
+                                            timeout: 1000,
+                                            noLoopCheck: wsModel.noLoopCheck,
+                                            operatorOverloading: wsModel.isOperatorOverloadingEnabled()
+                                        };
+                                        /**
+                                         * The JavaScript code with operators replaced by function calls and infinite loop detection.
+                                         */
+                                        const moduleMs = mathscript.transpile(moduleJs, options);
+                                        modulesJs.push(moduleMs);
+                                    }
+                                    catch (e) {
+                                        console.warn(`Error applying operator overloading: ${e}`);
+                                    }
                                 }
-                                catch (e) {
-                                    console.warn(`Error applying operator overloading: ${e}`);
+                                else {
+                                    // Cleanup in case this has happened in the past.
+                                    // e.g. The system.config.js 
+                                    delete wsModel.lastKnownJs[path];
                                 }
                             }
 
@@ -255,8 +258,8 @@ export function rebuildPreview(
                              * In time we will deprecate the sythesis approach in favor of explicit specification
                              * through the jspm.config.js file as this opens up the use of external modules.
                              */
-                            const systemJsConfig = fileExists(SYSTEM_CONFIG_JS, wsModel) ?
-                                fileContent(SYSTEM_CONFIG_JS, wsModel) as string :
+                            const systemJsConfig = fileExists(SYSTEM_DOT_CONFIG_DOT_JS, wsModel) ?
+                                fileContent(SYSTEM_DOT_CONFIG_DOT_JS, wsModel) as string :
                                 fileExists(SYSTEM_CONFIG_JSON, wsModel) ?
                                     `System.config(${fileContent(SYSTEM_CONFIG_JSON, wsModel) as string});${NEWLINE}` :
                                     `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;

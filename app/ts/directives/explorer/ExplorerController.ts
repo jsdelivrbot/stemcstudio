@@ -1,12 +1,8 @@
+import { configFiles } from '../../constants';
 import { IExplorer } from './IExplorer';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { WORKSPACE_MODEL_UUID } from '../../modules/wsmodel/IWorkspaceModel';
-
-/**
- * The current (closed) list of configuration files.
- */
-const configFiles = ['package.json', 'tsconfig.json', 'system.config.json', 'tslint.json', 'types.config.json'];
 
 function isConfigFile(path: string): boolean {
     return configFiles.indexOf(path) >= 0;

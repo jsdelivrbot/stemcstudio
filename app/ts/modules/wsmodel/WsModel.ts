@@ -21,6 +21,7 @@ import { DoodleManager } from '../../services/doodles/doodleManager.service';
 import { IWorkspaceModel } from './IWorkspaceModel';
 import { JspmConfigJsonMonitor } from './monitors/JspmConfigJsonMonitor';
 import { KeywordCompleter } from '../../editor/autocomplete/KeywordCompleter';
+import { PACKAGE_DOT_JSON } from '../../constants';
 import { Position } from 'editor-document';
 import { modeFromName } from '../../utils/modeFromName';
 import { LANGUAGE_HTML } from '../../languages/modes';
@@ -49,6 +50,7 @@ import { TsConfigJsonMonitor } from './monitors/TsConfigJsonMonitor';
 import { TsLintSettings, RuleArgumentType } from '../tslint/TsLintSettings';
 import { TsLintJsonMonitor } from './monitors/TsLintJsonMonitor';
 import { TypesConfigJsonMonitor } from './monitors/TypesConfigJsonMonitor';
+import { TYPES_DOT_CONFIG_DOT_JSON } from '../../constants';
 import { LanguageServiceScriptMonitor } from './monitors/LanguageServiceScriptMonitor';
 import { WsFile } from './WsFile';
 import { setOptionalBooleanProperty } from '../../services/doodles/setOptionalBooleanProperty';
@@ -81,8 +83,6 @@ const NEWLINE = '\n';
  * Set it to zero for production.
  */
 const SLOW_MOTION_DELAY_MILLIS = 0;
-
-const TYPES_DOT_CONFIG_DOT_JSON = 'types.config.json';
 
 /**
  * A mapping from module name to URL.
@@ -194,8 +194,6 @@ export interface JspmSettings {
     paths?: { [prefix: string]: string };
     map?: ModuleResolutions;
 }
-
-const PACKAGE_DOT_JSON = 'package.json';
 
 /**
  * This is the schema for the package.json file.
@@ -2066,7 +2064,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     newFileUnmonitored(path: string, isExternal: boolean): WsFile {
         if (this.traceFileOperations) {
-            this.logLifecycle(`newFile(path = "${path}", isExternal = ${JSON.stringify(isExternal)})`);
+            this.logLifecycle(`newFileUnmonitored(path = "${path}", isExternal = ${JSON.stringify(isExternal)})`);
         }
         const file = this.createFileOrRestoreFromTrash(path, isExternal);
         if (this.room) {
