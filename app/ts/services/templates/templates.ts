@@ -17,12 +17,16 @@ import { MINIMAL_SPEC_RUNNER } from './MINIMAL_SPEC_RUNNER';
 import { MINIMAL_EXAMPLE_SPEC } from './MINIMAL_EXAMPLE_SPEC';
 import { REACT_BOOTSTRAP } from './REACT_BOOTSTRAP';
 import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_JSON } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import { EDITOR_PREFERENCES_STORAGE } from '../../modules/preferences/constants';
 import { EditorPreferencesStorage } from '../../modules/preferences/EditorPreferencesStorage';
+import { SYSTEM_CONFIG } from './SYSTEM_CONFIG';
 import { TemplateOptions } from './template';
+import { TYPES_CONFIG } from './TYPES_CONFIG';
 import { VECTOR_2D_SPEC } from './VECTOR_2D_SPEC';
 import { VECTOR_3D_SPEC } from './VECTOR_3D_SPEC';
 import { VECTOR } from './VECTOR';
@@ -105,6 +109,8 @@ app.factory('templates', [
         BASIC.files['model.ts'] = { content: MINIMAL_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         BASIC.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         BASIC.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
+        BASIC.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, {}), language: LANGUAGE_JAVA_SCRIPT };
+        BASIC.files['types.config.json'] = { content: TYPES_CONFIG(tab, {}), language: LANGUAGE_JSON };
         BASIC.files['view.ts'] = { content: MINIMAL_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         const CANVAS: ITemplate = {
@@ -123,6 +129,8 @@ app.factory('templates', [
         CANVAS.files['model.ts'] = { content: CANVAS_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         CANVAS.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: true }), language: LANGUAGE_CSS };
+        CANVAS.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, {}), language: LANGUAGE_JAVA_SCRIPT };
+        CANVAS.files['types.config.json'] = { content: TYPES_CONFIG(tab, {}), language: LANGUAGE_JSON };
         CANVAS.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         CANVAS.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
         CANVAS.files['vector.spec.ts'] = { content: VECTOR_2D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
@@ -145,8 +153,10 @@ app.factory('templates', [
         EIGHT.files['model.ts'] = { content: EIGHT_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         EIGHT.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
+        EIGHT.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, { 'davinci-eight': 'https://unpkg.com/davinci-eight@7.0.3/build/browser/index.js' }), language: LANGUAGE_JAVA_SCRIPT };
         EIGHT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Vector', 'vectorSpec', './vector.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['types.config.json'] = { content: TYPES_CONFIG(tab, { 'davinci-eight': 'https://unpkg.com/davinci-eight@7.0.3/build/browser/index.d.ts' }), language: LANGUAGE_JSON };
         EIGHT.files['vector.spec.ts'] = { content: VECTOR_3D_SPEC(tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['vector.ts'] = { content: VECTOR(tab, 3), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['view.ts'] = { content: EIGHT_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
@@ -166,8 +176,10 @@ app.factory('templates', [
         REACT.files['main.tsx'] = { content: REACT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         REACT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         REACT.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
+        REACT.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, {}), language: LANGUAGE_JAVA_SCRIPT };
         REACT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         REACT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        REACT.files['types.config.json'] = { content: TYPES_CONFIG(tab, {}), language: LANGUAGE_JSON };
 
         const JASMINE: ITemplate = {
             name: "JASMINE",
@@ -185,8 +197,10 @@ app.factory('templates', [
         JASMINE.files['model.ts'] = { content: MINIMAL_MODEL(tab), language: LANGUAGE_TYPE_SCRIPT };
         JASMINE.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         JASMINE.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
+        JASMINE.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, {}), language: LANGUAGE_JAVA_SCRIPT };
         JASMINE.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         JASMINE.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
+        JASMINE.files['types.config.json'] = { content: TYPES_CONFIG(tab, {}), language: LANGUAGE_JSON };
         JASMINE.files['view.ts'] = { content: MINIMAL_VIEW(tab), language: LANGUAGE_TYPE_SCRIPT };
 
         return [BASIC, CANVAS, EIGHT, REACT, JASMINE];
