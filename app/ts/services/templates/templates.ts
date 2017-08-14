@@ -176,10 +176,20 @@ app.factory('templates', [
         REACT.files['main.tsx'] = { content: REACT_BOOTSTRAP(tab), language: LANGUAGE_TYPE_SCRIPT };
         REACT.files['README.md'] = { content: STANDARD_README(options), language: LANGUAGE_MARKDOWN };
         REACT.files['style.css'] = { content: MINIMAL_CSS(tab, { hideOverflow: false }), language: LANGUAGE_CSS };
-        REACT.files['system.config.js'] = { content: SYSTEM_CONFIG(tab, {}), language: LANGUAGE_JAVA_SCRIPT };
+        REACT.files['system.config.js'] = {
+            content: SYSTEM_CONFIG(tab, {
+                'react': 'https://www.stemcstudio.com/vendor/react@15.4.2/react.js',
+                'react-dom': 'https://www.stemcstudio.com/vendor/react-dom@15.4.2/react-dom.js'
+            }), language: LANGUAGE_JAVA_SCRIPT
+        };
         REACT.files['tests.html'] = { content: HTML(tab, './tests.js', systemJsUrl), language: LANGUAGE_HTML };
         REACT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(tab, 'Example', 'exampleSpec', './example.spec'), language: LANGUAGE_TYPE_SCRIPT };
-        REACT.files['types.config.json'] = { content: TYPES_CONFIG(tab, {}), language: LANGUAGE_JSON };
+        REACT.files['types.config.json'] = {
+            content: TYPES_CONFIG(tab, {
+                'react': 'https://www.stemcstudio.com/vendor/react@15.4.2/index.d.ts',
+                'react-dom': 'https://www.stemcstudio.com/vendor/react-dom@15.4.2/index.d.ts'
+            }), language: LANGUAGE_JSON
+        };
 
         const JASMINE: ITemplate = {
             name: "JASMINE",
