@@ -5,8 +5,13 @@ export function TYPES_CONFIG(tabString: string, moduleMap: { [moduleName: string
     const lines: string[] = [];
     lines.push('{');
     lines.push(_ + '"map": {');
-    for (const moduleName of Object.keys(moduleMap)) {
-        lines.push(_ + _ + `"${moduleName}": "${moduleMap[moduleName]}"`);
+    const moduleNames = Object.keys(moduleMap);
+    const L = moduleNames.length;
+    const uBound = L - 1;
+    for (let i = 0; i < L; i++) {
+        const moduleName = moduleNames[i];
+        const maybeComma = (i < uBound) ? ',' : '';
+        lines.push(_ + _ + `"${moduleName}": "${moduleMap[moduleName]}"${maybeComma}`);
     }
     lines.push(_ + '}');
     lines.push('}');

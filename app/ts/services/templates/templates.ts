@@ -165,7 +165,7 @@ app.factory('templates', [
             name: "React",
             description: "React UI Component Framework",
             files: {},
-            dependencies: dependenciesMap(['DomReady', 'jasmine', 'react', 'react-dom']),
+            dependencies: dependenciesMap(['DomReady', 'jasmine'/*, 'react', 'react-dom'*/]),
             hideConfigFiles: true,
             linting: true,
             noLoopCheck: false,
