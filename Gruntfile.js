@@ -227,6 +227,10 @@ function copies(target) {
     /**
      * 
      */
+    const VERSION_MATTERJS = '0.13.0';
+    /**
+     * 
+     */
     const VERSION_PLOTLY = '1.28.2';
     /**
      * 
@@ -557,6 +561,12 @@ function copies(target) {
         {
             src: "museum/jsxgraph@0.99.5/index.d.ts",
             dest: prepend(target, 'vendor/jsxgraph@0.99.5/index.d.ts')
+        },
+        {
+            expand: true,
+            cwd: `museum/matter-js@${VERSION_MATTERJS}`,
+            src: ["**"],
+            dest: prepend(target, `vendor/matter-js@${VERSION_MATTERJS}`)
         },
         {
             src: `museum/plotly@${VERSION_PLOTLY}/index.d.ts`,

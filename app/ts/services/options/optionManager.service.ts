@@ -65,6 +65,7 @@ const VERSION_IMMUTABLE = '3.8.1';
 const VERSION_JASMINE = '2.5.2';
 const VERSION_JQUERY = '2.1.4';
 const VERSION_JSXGRAPH = '0.99.5';
+const VERSION_MATTERJS = '0.13.0';
 const VERSION_NEWTON = '0.0.43';
 const VERSION_PLOTLY = '1.28.2';
 const VERSION_REACT = '15.4.2';
@@ -192,6 +193,9 @@ function jquery(fileName: string): string {
 }
 function jsxgraph(fileName: string): string {
     return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
+}
+function matterJs(fileName: string): string {
+    return vendorFolder('matter-js', VERSION_MATTERJS, void 0, fileName);
 }
 function plotly(fileName: string): string {
     return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
@@ -638,6 +642,21 @@ export class OptionManager implements IOptionManager {
                 // CDNJS does not deploy the correct version?
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
+                dependencies: {}
+            },
+            {
+                packageName: ensurePackageName('matter-js'),
+                moduleName: 'matter-js',
+                libraryKind: LibraryKind.Global,
+                globalName: 'Matter',
+                description: "Matter.js is a 2D physics engine for the web.",
+                homepage: 'brm.io/matter-js/',
+                version: VERSION_MATTERJS,
+                visible: true,
+                css: [],
+                dts: matterJs(INDEX_DTS),
+                js: [`https://unpkg.com/matter-js@^${VERSION_MATTERJS}/build/matter.js`],
+                minJs: [`https://unpkg.com/matter-js@${VERSION_MATTERJS}/build/matter.min.js`],
                 dependencies: {}
             },
             {
