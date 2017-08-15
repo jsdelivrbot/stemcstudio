@@ -135,6 +135,10 @@ export function rebuildPreview(
                     $scope.previewIFrame.style.border = '0';
                     $scope.previewIFrame.style.backgroundColor = '#ffffff';
 
+                    // Play safely in sandboxed IFrames
+                    // https://www.html5rocks.com/en/tutorials/security/sandboxed-iframes
+                    $scope.previewIFrame.sandbox.add('allow-modals', 'allow-same-origin', 'allow-scripts');
+
                     preview.appendChild($scope.previewIFrame);
 
                     const content: Document = $scope.previewIFrame.contentDocument || $scope.previewIFrame.contentWindow.document;
