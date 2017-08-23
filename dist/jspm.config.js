@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@4.3.5",
-    "@angular/compiler": "npm:@angular/compiler@4.3.5",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/forms": "npm:@angular/forms@4.3.5",
-    "@angular/http": "npm:@angular/http@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.5",
-    "@angular/router": "npm:@angular/router@4.3.5",
-    "@angular/upgrade": "npm:@angular/upgrade@4.3.5",
-    "@angular/upgrade/static": "npm:@angular/upgrade@4.3.5/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@4.3.6",
+    "@angular/compiler": "npm:@angular/compiler@4.3.6",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/forms": "npm:@angular/forms@4.3.6",
+    "@angular/http": "npm:@angular/http@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.6",
+    "@angular/router": "npm:@angular/router@4.3.6",
+    "@angular/upgrade": "npm:@angular/upgrade@4.3.6",
+    "@angular/upgrade/static": "npm:@angular/upgrade@4.3.6/bundles/upgrade-static.umd.js",
     "angular": "npm:angular@1.6.6",
     "angular-animate": "npm:angular-animate@1.6.6",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -53,7 +53,7 @@ System.config({
     "typhon-typescript": "npm:typhon-typescript@0.3.0",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
-    "zone.js": "npm:zone.js@0.8.16",
+    "zone.js": "npm:zone.js@0.8.17",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
@@ -141,61 +141,61 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@4.3.5": {
-      "@angular/core": "npm:@angular/core@4.3.5",
+    "npm:@angular/common@4.3.6": {
+      "@angular/core": "npm:@angular/core@4.3.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/compiler@4.3.5": {
-      "@angular/core": "npm:@angular/core@4.3.5",
+    "npm:@angular/compiler@4.3.6": {
+      "@angular/core": "npm:@angular/core@4.3.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/core@4.3.5": {
+    "npm:@angular/core@4.3.6": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.3",
       "tslib": "npm:tslib@1.7.1",
-      "zone.js": "npm:zone.js@0.8.16"
+      "zone.js": "npm:zone.js@0.8.17"
     },
-    "npm:@angular/forms@4.3.5": {
-      "@angular/common": "npm:@angular/common@4.3.5",
-      "@angular/core": "npm:@angular/core@4.3.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
+    "npm:@angular/forms@4.3.6": {
+      "@angular/common": "npm:@angular/common@4.3.6",
+      "@angular/core": "npm:@angular/core@4.3.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/http@4.3.5": {
-      "@angular/core": "npm:@angular/core@4.3.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
+    "npm:@angular/http@4.3.6": {
+      "@angular/core": "npm:@angular/core@4.3.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
       "rxjs": "npm:rxjs@5.4.3",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser-dynamic@4.3.5": {
-      "@angular/common": "npm:@angular/common@4.3.5",
-      "@angular/compiler": "npm:@angular/compiler@4.3.5",
-      "@angular/core": "npm:@angular/core@4.3.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
+    "npm:@angular/platform-browser-dynamic@4.3.6": {
+      "@angular/common": "npm:@angular/common@4.3.6",
+      "@angular/compiler": "npm:@angular/compiler@4.3.6",
+      "@angular/core": "npm:@angular/core@4.3.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/platform-browser@4.3.5": {
-      "@angular/common": "npm:@angular/common@4.3.5",
-      "@angular/core": "npm:@angular/core@4.3.5",
+    "npm:@angular/platform-browser@4.3.6": {
+      "@angular/common": "npm:@angular/common@4.3.6",
+      "@angular/core": "npm:@angular/core@4.3.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/router@4.3.5": {
-      "@angular/common": "npm:@angular/common@4.3.5",
-      "@angular/core": "npm:@angular/core@4.3.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
+    "npm:@angular/router@4.3.6": {
+      "@angular/common": "npm:@angular/common@4.3.6",
+      "@angular/core": "npm:@angular/core@4.3.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.4.3",
       "tslib": "npm:tslib@1.7.1"
     },
-    "npm:@angular/upgrade@4.3.5": {
-      "@angular/compiler": "npm:@angular/compiler@4.3.5",
-      "@angular/core": "npm:@angular/core@4.3.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.5",
+    "npm:@angular/upgrade@4.3.6": {
+      "@angular/compiler": "npm:@angular/compiler@4.3.6",
+      "@angular/core": "npm:@angular/core@4.3.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.6",
       "tslib": "npm:tslib@1.7.1"
     },
     "npm:accepts@1.3.1": {
@@ -558,7 +558,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash-base@3.0.4": {
@@ -1061,7 +1061,7 @@ System.config({
       "y18n": "npm:y18n@3.2.1",
       "yargs-parser": "npm:yargs-parser@7.0.0"
     },
-    "npm:zone.js@0.8.16": {
+    "npm:zone.js@0.8.17": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

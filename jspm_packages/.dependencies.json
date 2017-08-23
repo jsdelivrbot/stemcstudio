@@ -967,13 +967,6 @@
   "github:geometryzen/stemcstudio-worker-ts@1.0.0": {
     "editor-document": "npm:editor-document@^0.0.5"
   },
-  "npm:zone.js@0.8.16": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:which@1.3.0": {
     "isexe": "npm:isexe@^2.0.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
@@ -1011,63 +1004,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/platform-browser-dynamic@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/common": "npm:@angular/common@4.3.5",
-    "@angular/compiler": "npm:@angular/compiler@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5"
-  },
-  "npm:@angular/http@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "rxjs": "npm:rxjs@^5.0.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5"
-  },
-  "npm:@angular/upgrade@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/compiler": "npm:@angular/compiler@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.5"
-  },
-  "npm:@angular/forms@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/common": "npm:@angular/common@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:@angular/router@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/common": "npm:@angular/common@4.3.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
-    "rxjs": "npm:rxjs@^5.0.1",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:@angular/platform-browser@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "@angular/common": "npm:@angular/common@4.3.5",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:@angular/common@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:@angular/core@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "rxjs": "npm:rxjs@^5.0.1",
-    "zone.js": "npm:zone.js@^0.8.4",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:@angular/compiler@4.3.5": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.5",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:tiny-emitter@2.0.2": {},
   "npm:angular-sanitize@1.6.6": {},
   "npm:angular-animate@1.6.6": {},
@@ -1087,5 +1023,69 @@
     "safe-buffer": "npm:safe-buffer@^5.0.1",
     "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:@angular/platform-browser-dynamic@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/common": "npm:@angular/common@4.3.6",
+    "@angular/compiler": "npm:@angular/compiler@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6"
+  },
+  "npm:@angular/http@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "rxjs": "npm:rxjs@^5.0.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6"
+  },
+  "npm:@angular/upgrade@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/compiler": "npm:@angular/compiler@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.6"
+  },
+  "npm:@angular/forms@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/common": "npm:@angular/common@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:zone.js@0.8.17": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:@angular/router@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/common": "npm:@angular/common@4.3.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.6",
+    "rxjs": "npm:rxjs@^5.0.1",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:@angular/platform-browser@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "@angular/common": "npm:@angular/common@4.3.6",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:@angular/common@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:@angular/core@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "rxjs": "npm:rxjs@^5.0.1",
+    "zone.js": "npm:zone.js@^0.8.4",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:@angular/compiler@4.3.6": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.6",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
