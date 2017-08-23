@@ -208,11 +208,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
   "npm:negotiator@0.6.0": {},
-  "npm:evp_bytestokey@1.0.0": {
-    "create-hash": "npm:create-hash@^1.1.1",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
   "npm:browserify-des@1.0.0": {
     "cipher-base": "npm:cipher-base@^1.0.1",
     "des.js": "npm:des.js@^1.0.0",
@@ -884,14 +879,10 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:angular-sanitize@1.6.5": {},
-  "npm:angular-animate@1.6.5": {},
-  "npm:angular@1.6.5": {},
   "npm:hash.js@1.1.3": {
     "inherits": "npm:inherits@^2.0.3",
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
   },
-  "npm:tiny-emitter@2.0.1": {},
   "npm:cipher-base@1.0.4": {
     "inherits": "npm:inherits@^2.0.1",
     "safe-buffer": "npm:safe-buffer@^5.0.1",
@@ -1015,66 +1006,86 @@
     "path": "github:jspm/nodelibs-path@^0.1.0"
   },
   "npm:bn.js@4.11.8": {},
-  "npm:@angular/platform-browser-dynamic@4.3.4": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/common": "npm:@angular/common@4.3.4",
-    "@angular/compiler": "npm:@angular/compiler@4.3.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.4"
+  "npm:rxjs@5.4.3": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/http@4.3.4": {
+  "npm:@angular/platform-browser-dynamic@4.3.5": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/common": "npm:@angular/common@4.3.5",
+    "@angular/compiler": "npm:@angular/compiler@4.3.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5"
+  },
+  "npm:@angular/http@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
     "rxjs": "npm:rxjs@^5.0.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.4"
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5"
   },
-  "npm:@angular/forms@4.3.4": {
+  "npm:@angular/upgrade@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/common": "npm:@angular/common@4.3.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.4",
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/compiler": "npm:@angular/compiler@4.3.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.5"
+  },
+  "npm:@angular/forms@4.3.5": {
+    "tslib": "npm:tslib@^1.7.1",
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/common": "npm:@angular/common@4.3.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/upgrade@4.3.4": {
+  "npm:@angular/router@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/compiler": "npm:@angular/compiler@4.3.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.4",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.3.4"
-  },
-  "npm:@angular/router@4.3.4": {
-    "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/common": "npm:@angular/common@4.3.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.4",
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/common": "npm:@angular/common@4.3.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@4.3.5",
     "rxjs": "npm:rxjs@^5.0.1",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/platform-browser@4.3.4": {
+  "npm:@angular/platform-browser@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
-    "@angular/common": "npm:@angular/common@4.3.4",
+    "@angular/core": "npm:@angular/core@4.3.5",
+    "@angular/common": "npm:@angular/common@4.3.5",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/common@4.3.4": {
+  "npm:@angular/common@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
+    "@angular/core": "npm:@angular/core@4.3.5",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/core@4.3.4": {
+  "npm:@angular/core@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
     "rxjs": "npm:rxjs@^5.0.1",
     "zone.js": "npm:zone.js@^0.8.4",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:@angular/compiler@4.3.4": {
+  "npm:@angular/compiler@4.3.5": {
     "tslib": "npm:tslib@^1.7.1",
-    "@angular/core": "npm:@angular/core@4.3.4",
+    "@angular/core": "npm:@angular/core@4.3.5",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:rxjs@5.4.3": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
+  "npm:tiny-emitter@2.0.2": {},
+  "npm:angular-sanitize@1.6.6": {},
+  "npm:angular-animate@1.6.6": {},
+  "npm:angular@1.6.6": {},
+  "npm:evp_bytestokey@1.0.2": {
+    "md5.js": "npm:md5.js@^1.3.4",
+    "safe-buffer": "npm:safe-buffer@^5.1.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:md5.js@1.3.4": {
+    "hash-base": "npm:hash-base@^3.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:hash-base@3.0.4": {
+    "inherits": "npm:inherits@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.0.1",
+    "stream": "github:jspm/nodelibs-stream@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   }
 }

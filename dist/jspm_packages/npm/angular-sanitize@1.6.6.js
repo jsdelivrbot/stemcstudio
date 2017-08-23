@@ -1,0 +1,1 @@
+module.exports = require("npm:angular-sanitize@1.6.6/index.js");

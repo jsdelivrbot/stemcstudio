@@ -11,7 +11,6 @@ import { ModalDialog } from '../services/modalService/ModalDialog';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
 import { NewProjectDialog } from '../modules/project/NewProjectDialog';
 import { StemcArXiv } from '../modules/stemcArXiv/StemcArXiv';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
  * Manages the Home Page.
@@ -28,7 +27,6 @@ export class HomeController extends AbstractPageController {
         NAVIGATION_SERVICE_UUID,
         'newProject',
         'stemcArXiv',
-        TRANSLATE_SERVICE_UUID,
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED'
@@ -47,7 +45,6 @@ export class HomeController extends AbstractPageController {
         navigation: INavigationService,
         newProjectDialog: NewProjectDialog,
         stemcArXiv: StemcArXiv,
-        translateService: ITranslateService,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean

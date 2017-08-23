@@ -4,7 +4,6 @@ import { isString } from '../../utils/isString';
 import { ITemplate } from '../../services/templates/template';
 import { NewProjectScope } from './NewProjectScope';
 import { NewProjectSettings } from './NewProjectSettings';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 
 function defaultTemplate(template: ITemplate, templates: ITemplate[]): ITemplate {
     if (template) {
@@ -27,14 +26,12 @@ export class NewProjectController {
         '$scope',
         '$uibModalInstance',
         'templates',
-        TRANSLATE_SERVICE_UUID,
         'pkgInfo'];
 
     constructor(
         $scope: NewProjectScope,
         $uibModalInstance: IModalServiceInstance,
         templates: ITemplate[],
-        translateService: ITranslateService,
         pkgInfo: NewProjectSettings) {
 
         $scope.project = {

@@ -1,7 +1,6 @@
 import { IModalServiceInstance } from 'angular-bootstrap';
 import { OpenProjectScope } from './OpenProjectScope';
 import { OpenProjectSettings } from './OpenProjectSettings';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 import { Doodle } from '../../services/doodles/Doodle';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../../services/doodles/IDoodleManager';
 
@@ -14,14 +13,12 @@ export class OpenProjectController {
         '$scope',
         '$uibModalInstance',
         DOODLE_MANAGER_SERVICE_UUID,
-        TRANSLATE_SERVICE_UUID,
         'pkgInfo'];
 
     constructor(
         $scope: OpenProjectScope,
         $uibModalInstance: IModalServiceInstance,
         doodleManager: IDoodleManager,
-        translateService: ITranslateService,
         pkgInfo: OpenProjectSettings) {
 
         $scope.doodles = function () {

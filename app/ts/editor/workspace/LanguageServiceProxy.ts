@@ -357,7 +357,7 @@ export class LanguageServiceProxy {
         if (typeof callbackId === 'number') {
             const entry = this.callbacks[callbackId];
             delete this.callbacks[callbackId];
-            // console.log(`${entry.description} took ${Date.now() - entry.time} ms`);
+            // console.lg(`${entry.description} took ${Date.now() - entry.time} ms`);
             return entry.callback;
         }
         else {
@@ -369,6 +369,7 @@ export class LanguageServiceProxy {
      * Applies a Delta to the specified file.
      */
     applyDelta(fileName: string, delta: Delta, callback: (err: any, version: number) => void): void {
+        // console.lg(`applyDelta(fileName = ${fileName})`);
         const callbackId = this.captureCallback(`applyDelta(${fileName}, ${delta.action}, ${delta.lines.join('\n')})`, callback);
         const message = { data: { fileName, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
@@ -380,6 +381,7 @@ export class LanguageServiceProxy {
      * This may be a fileName but normally will be undefined.
      */
     ensureModuleMapping(moduleName: string, fileName: string): Promise<string | undefined> {
+        // console.lg(`ensureModuleMapping(moduleName = ${moduleName}, fileName = ${fileName})`);
         return new Promise<string | undefined>((resolve, reject) => {
             const callback = function (err: any, previousFileName: string | undefined) {
                 if (!err) {
@@ -437,6 +439,7 @@ export class LanguageServiceProxy {
      * The return boolean promise indicates whether there was an addition (true) or update (false).
      */
     setScriptContent(fileName: string, content: string): Promise<boolean> {
+        // console.lg(`setScriptContent(fileName = ${fileName})`);
         return new Promise<boolean>((resolve, reject) => {
             function callback(err: any, added?: boolean) {
                 if (!err) {
@@ -477,6 +480,7 @@ export class LanguageServiceProxy {
      * The previous value is returned in the Promise.
      */
     public setOperatorOverloading(operatorOverloading: boolean): Promise<boolean> {
+        // console.lg(`setOperatorOverloading(operatorOverloading = ${operatorOverloading})`);
         return new Promise<boolean>((resolve, reject) => {
             function callback(err: any, oldValue: boolean) {
                 if (!err) {
@@ -519,6 +523,7 @@ export class LanguageServiceProxy {
     }
 
     public setTsConfig(settings: TsConfigSettings): Promise<TsConfigSettings> {
+        // console.lg(`setTsConfig(settings = ${JSON.stringify(settings)})`);
         return new Promise<TsConfigSettings>((resolve, reject) => {
             function callback(err: any, settings: TsConfigSettings) {
                 if (!err) {
@@ -541,12 +546,14 @@ export class LanguageServiceProxy {
     }
 
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+        // console.lg(`getSyntaxErrors(fileName = ${fileName})`);
         const callbackId = this.captureCallback(`getSyntaxErrors(${fileName})`, callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SYNTAX_ERRORS, message);
     }
 
     public getSemanticErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+        // console.lg(`getSemanticErrors(fileName = ${fileName})`);
         const callbackId = this.captureCallback(`getSemanticErrors(${fileName})`, callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SEMANTIC_ERRORS, message);
@@ -600,6 +607,7 @@ export class LanguageServiceProxy {
     }
 
     getOutputFiles(fileName: string, callback: (err: any, data: GetOutputFilesResponse) => any): void {
+        // console.lg(`getOutputFiles(fileName = ${fileName})`);
         const callbackId = this.captureCallback(`getOutputFiles(${fileName})`, callback);
         const message: RequestMessage<GetOutputFilesRequest> = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_OUTPUT_FILES, message);

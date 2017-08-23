@@ -1,1 +1,0 @@
-module.exports = require("npm:angular-animate@1.6.5/index.js");

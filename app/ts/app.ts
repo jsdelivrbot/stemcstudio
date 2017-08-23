@@ -103,14 +103,6 @@ import { editorStorageModule } from './modules/preferences/index';
 import { tslintModule } from './modules/tslint/index';
 import { stemcArXivModule } from './modules/stemcArXiv/index';
 import { editorDialogModule } from './modules/editors/index';
-//
-// Registering the module for translation makes the service and directives available.
-// We also configure the service so that it knows the source language.
-//
-import { translateModule } from './modules/translate/index';
-import { ITranslateGatewayProvider, TRANSLATE_GATEWAY_PROVIDER_UUID } from './modules/translate/api';
-import { ITranslateServiceProvider, TRANSLATE_SERVICE_PROVIDER_UUID } from './modules/translate/api';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from './modules/translate/api';
 
 //
 //
@@ -190,8 +182,7 @@ export const app = module('app', [
     editorStorageModule.name,
     stemcArXivModule.name,
     tslintModule.name,
-    editorDialogModule.name,
-    translateModule.name
+    editorDialogModule.name
 ]);
 
 /**
@@ -334,8 +325,6 @@ app.factory(WORKSPACE_MODEL_UUID, downgradeInjectable(WsModel));
 app.config([
     '$locationProvider',
     '$stateProvider',
-    TRANSLATE_SERVICE_PROVIDER_UUID,
-    TRANSLATE_GATEWAY_PROVIDER_UUID,
     '$urlRouterProvider',
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
@@ -344,8 +333,6 @@ app.config([
     function (
         $locationProvider: ILocationProvider,
         $stateProvider: IStateProvider,
-        translateServiceProvider: ITranslateServiceProvider,
-        translateGatewayProvider: ITranslateGatewayProvider,
         $urlRouterProvider: IUrlRouterProvider,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
@@ -423,10 +410,6 @@ app.config([
 
         $locationProvider.hashPrefix("");
         $locationProvider.html5Mode(true);
-
-        translateGatewayProvider.path = 'translations';
-        // The source language must be English, because that is how the application was developed.
-        translateServiceProvider.sourceLanguage = 'en';
     }]);
 
 
@@ -437,7 +420,6 @@ app.run([
     '$rootScope',
     '$state',
     '$stateParams',
-    TRANSLATE_SERVICE_UUID,
     CREDENTIALS_SERVICE_UUID,
     COOKIE_SERVICE_UUID,
     'version',
@@ -447,7 +429,6 @@ app.run([
         $rootScope: AppScope,
         $state: IStateService,
         $stateParams: IStateParamsService,
-        translateService: ITranslateService,
         credentials: ICredentialsService,
         cookieService: ICookieService,
         version: string,

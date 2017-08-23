@@ -5,7 +5,6 @@ import { Category, Level, Example } from '../models/Example';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
 import { ModalDialog } from '../services/modalService/ModalDialog';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 //
 // The following example shows how to use the ISCEService.
@@ -48,7 +47,6 @@ export class ExamplesController extends AbstractPageController {
         '$scope',
         '$window',
         GITHUB_AUTH_MANAGER_UUID,
-        TRANSLATE_SERVICE_UUID,
         GOOGLE_ANALYTICS_UUID,
         'modalDialog'
     ];
@@ -57,7 +55,6 @@ export class ExamplesController extends AbstractPageController {
         $scope: ExamplesScope,
         $window: IWindowService,
         authManager: IGitHubAuthManager,
-        translateService: ITranslateService,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog) {
         super($window, authManager, modalDialog, 'auto');

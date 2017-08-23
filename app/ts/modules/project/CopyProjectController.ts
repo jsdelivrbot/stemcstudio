@@ -3,7 +3,6 @@ import { IModalServiceInstance } from 'angular-bootstrap';
 import { isString } from '../../utils/isString';
 import { CopyProjectScope } from './CopyProjectScope';
 import { CopyProjectSettings } from './CopyProjectSettings';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../translate/api';
 
 function copySettingsToScope(settings: CopyProjectSettings, $scope: CopyProjectScope): void {
     const oldDescription = isString(settings.description) ? settings.description : "";
@@ -24,13 +23,11 @@ export class CopyProjectController {
     public static $inject: string[] = [
         '$scope',
         '$uibModalInstance',
-        TRANSLATE_SERVICE_UUID,
         'pkgInfo'];
 
     constructor(
         $scope: CopyProjectScope,
         $uibModalInstance: IModalServiceInstance,
-        translateService: ITranslateService,
         settings: CopyProjectSettings) {
 
         copySettingsToScope(settings, $scope);

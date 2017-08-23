@@ -43,7 +43,6 @@ import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { WorkspaceEditorHost } from '../editor/WorkspaceEditorHost';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { TextChange } from '../../editor/workspace/TextChange';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../../modules/translate/api';
 import { WsFile } from '../../modules/wsmodel/WsFile';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import { LANGUAGE_ASCIIDOC } from '../../languages/modes';
@@ -221,7 +220,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         GITHUB_AUTH_MANAGER_UUID,
         CLOUD_SERVICE_UUID,
         'templates',
-        TRANSLATE_SERVICE_UUID,
         'flow',
         GOOGLE_ANALYTICS_UUID,
         'labelDialog',
@@ -265,7 +263,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         authManager: IGitHubAuthManager,
         private cloudService: ICloudService,
         templates: Doodle[],
-        translateService: ITranslateService,
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,

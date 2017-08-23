@@ -1080,6 +1080,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * of the editor worker to refresh the diagnostics.
      */
     private attachSession(path: string, session: EditSession | undefined): void {
+        // console.lg(`attachSession(path = ${path})`);
         if (this.traceFileOperations) {
             this.logLifecycle(`attachSession(path = "${path}")`);
         }
@@ -1498,10 +1499,10 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * 2. The workspace controller does a compile.
      * 3. When a TypeScript editor's worker has completed.
      * 
-     * TODO: The returned promise is not very useful unless the dianostics can be mapped to each path.
+     * TODO: The returned promise is not very useful unless the diagnostics can be mapped to each path.
      */
     public refreshDiagnostics(): Promise<Diagnostic[][]> {
-        // console.lg("WsModel.refreshDiagnostics() called.");
+        // console.lg("refreshDiagnostics()");
         const paths = this.getFileSessionPaths().filter(isLanguageServiceScript);
         const diagnosticPromises: Promise<Diagnostic[]>[] = [];
         for (const path of paths) {
@@ -1526,7 +1527,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     /**
-     * Transfers the diagnostic information to the appropriate edit session.
+     * Transfers the diagnostic information to the appropriate edit session annotations.
      */
     private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
         if (this.traceFileOperations) {
@@ -1573,6 +1574,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The results are used to update the appropriate edit session.
      */
     private diagnosticsForSession(path: string, session: EditSession): Promise<Diagnostic[]> {
+        // console.lg(`diagnosticsForSession(path = ${path})`);
         if (this.traceFileOperations) {
             this.logLifecycle(`diagnosticsForSession(path = "${path}")`);
         }
@@ -1649,6 +1651,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The responses are published on the outputFilesTopic.
      */
     public outputFiles(): void {
+        // console.lg(`outputFiles()`);
         const paths = this.getFileSessionPaths();
         for (const path of paths) {
             if (isLanguageServiceScript(path)) {
@@ -1662,6 +1665,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      * The response is published on the outputFilesTopic.
      */
     public outputFilesForPath(path: string): void {
+        // console.lg(`outputFilesForPath(path = ${path})`);
         if (this.traceFileOperations) {
             this.logLifecycle(`outputFilesForPath(path = "${path}")`);
         }

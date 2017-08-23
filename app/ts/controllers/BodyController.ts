@@ -3,15 +3,14 @@ import BootstrapDialog from 'bootstrap-dialog';
 import { GITHUB_GIST_SERVICE_UUID, IGitHubGistService } from '../services/github/IGitHubGistService';
 // import linkToMap from '../utils/linkToMap';
 import { NAVIGATION_SERVICE_UUID, INavigationService } from '../modules/navigation/INavigationService';
-import { ITranslateService, TRANSLATE_SERVICE_UUID } from '../modules/translate/api';
 
 /**
  * The controller for the <body> tag.
  * The controller is referred to as 'body-controller' in layout.jade.
  */
 export class BodyController {
-    public static $inject: string[] = ['$scope', GITHUB_GIST_SERVICE_UUID, NAVIGATION_SERVICE_UUID, TRANSLATE_SERVICE_UUID];
-    constructor($scope: BodyScope, githubGistService: IGitHubGistService, navigation: INavigationService, translateService: ITranslateService) {
+    public static $inject: string[] = ['$scope', GITHUB_GIST_SERVICE_UUID, NAVIGATION_SERVICE_UUID];
+    constructor($scope: BodyScope, githubGistService: IGitHubGistService, navigation: INavigationService) {
 
         $scope.isGoHomeEnabled = true;
         $scope.goHome = () => {
