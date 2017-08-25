@@ -231,6 +231,10 @@ function copies(target) {
     /**
      * 
      */
+    const VERSION_MONACO = '0.10.0';
+    /**
+     * 
+     */
     const VERSION_PLOTLY = '1.28.2';
     /**
      * 
@@ -258,6 +262,12 @@ function copies(target) {
         { src: 'app/sitemap.xml', dest: prepend(target, 'sitemap.xml') },
         { src: 'app/sw.js', dest: prepend(target, 'sw.js') },
         { src: 'app/stemcstudio-overview-2017-03-24.pdf', dest: prepend(target, 'stemcstudio-overview-2017-03-24.pdf') },
+        {
+            expand: true,
+            cwd: `manual/monaco-editor@${VERSION_MONACO}`,
+            src: ["**"],
+            dest: prepend(target, `js/monaco-editor@${VERSION_MONACO}`)
+        },
         {
             src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`,
             dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js`)

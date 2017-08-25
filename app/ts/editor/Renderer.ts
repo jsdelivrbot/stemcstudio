@@ -287,15 +287,17 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
 
         addCssClass(this.container, "ace_editor");
 
-        this.$gutter = <HTMLDivElement>createElement("div");
+        this.$gutter = createElement("div") as HTMLDivElement;
         this.$gutter.className = "ace_gutter";
         this.container.appendChild(this.$gutter);
+        // Hide gutter from screen-readers. 
+        this.$gutter.setAttribute("aria-hidden", "true");
 
-        this.scroller = <HTMLDivElement>createElement("div");
+        this.scroller = createElement("div") as HTMLDivElement;
         this.scroller.className = "ace_scroller";
         this.container.appendChild(this.scroller);
 
-        this.content = <HTMLDivElement>createElement("div");
+        this.content = createElement("div") as HTMLDivElement;
         this.content.className = "ace_content";
         this.scroller.appendChild(this.content);
 
@@ -506,7 +508,13 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
             this.$markerFront.setSession(session);
             this.$gutterLayer.setSession(session);
             this.textLayer.setSession(session);
+            if (!session) {
+                return;
+            }
+
             this.$loop.schedule(CHANGE_FULL);
+            // this.session.$setFontMetrics(this.fontMetrics);
+            // this.scrollBarH.scrollLeft = this.scrollBarV.scrollTop = null;
 
             this.onChangeNewLineMode();
             if (session.doc) {

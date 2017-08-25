@@ -13,6 +13,7 @@ import { GitHubGistService } from './services/github/github.gist.service';
 import { GitHubRepoService } from './services/github/github.repo.service';
 import { GitHubUserService } from './services/github/github.user.service';
 import { JsModel } from './modules/jsmodel/JsModel';
+// import { MonacoEditorService } from './services/editor/monaco-editor.service';
 import { NativeEditorService } from './services/editor/native-editor.service';
 import { OptionManager } from './services/options/optionManager.service';
 import { RoomsService } from './modules/rooms/services/rooms.service';
@@ -45,6 +46,7 @@ import { BrandComponent } from './directives/brand/brand.component';
         GitHubRepoService,
         GitHubUserService,
         JsModel,
+        //      MonacoEditorService,
         NativeEditorService,
         OptionManager,
         RoomsService,

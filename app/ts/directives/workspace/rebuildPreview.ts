@@ -99,7 +99,8 @@ export function rebuildPreview(
         for (const dirtyFile of dirtyFiles) {
             wsModel.outputFilesForPath(dirtyFile);
         }
-        return;
+        // Does a race condition sometimes prevent rendering if we bail out here?
+        // return;
     }
 
     /**

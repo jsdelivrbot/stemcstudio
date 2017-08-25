@@ -55,6 +55,7 @@
         "app/ts/utils/validateNpmPackageName.spec.ts",
         "app/ts/template-cache.ts",
         "typings-manual/browser.d.ts",
+        "manual/monaco-editor@0.10.0/monaco.d.ts",
         "node_modules/typescript/lib/lib.dom.d.ts",
         "node_modules/typescript/lib/lib.es2016.d.ts"
     ]
