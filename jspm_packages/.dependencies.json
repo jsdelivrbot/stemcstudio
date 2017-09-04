@@ -986,12 +986,6 @@
     "base64-js": "npm:base64-js@^1.0.2",
     "ieee754": "npm:ieee754@^1.1.4"
   },
-  "npm:core-js@2.5.0": {
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "path": "github:jspm/nodelibs-path@^0.1.0"
-  },
   "npm:bn.js@4.11.8": {},
   "npm:rxjs@5.4.3": {
     "symbol-observable": "npm:symbol-observable@^1.0.1",
@@ -1087,5 +1081,11 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:core-js@2.5.1": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
   }
 }

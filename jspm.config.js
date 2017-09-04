@@ -30,7 +30,7 @@ System.config({
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.7.1",
-    "core-js": "npm:core-js@2.5.0",
+    "core-js": "npm:core-js@2.5.1",
     "davinci-csv": "npm:davinci-csv@0.9.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "editor-document": "npm:editor-document@0.0.5",
@@ -216,7 +216,7 @@ System.config({
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -343,7 +343,7 @@ System.config({
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:core-js@2.5.0": {
+    "npm:core-js@2.5.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -415,7 +415,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
