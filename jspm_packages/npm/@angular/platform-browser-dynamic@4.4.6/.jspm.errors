@@ -1,0 +1,91 @@
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:1:13: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:1:21: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:1:26: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:7:53: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:8:100: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:9:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:10:54: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:112: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:115: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:180: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.es5.js:165:183: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:6:53: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:7:100: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:8:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:9:54: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:112: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:115: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:180: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic.js:165:183: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:1:13: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:1:21: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:1:26: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:7:44: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:8:69: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:9:39: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:10:62: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:11:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:11:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:11:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:12:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:12:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:12:35: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:98:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:98:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:98:95: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.es5.js:98:98: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:6:44: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:7:69: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:8:39: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:9:62: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:10:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:11:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:11:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:11:35: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:96:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:96:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:96:95: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser-dynamic@4.4.6/@angular/platform-browser-dynamic/testing.js:96:98: Semi-colon expected

@@ -1,0 +1,1 @@
+module.exports = require("npm:@angular/platform-browser@4.4.6/bundles/platform-browser.umd.js");

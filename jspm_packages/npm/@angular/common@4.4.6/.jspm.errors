@@ -1,0 +1,181 @@
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:1:21: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:1:33: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:1:41: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:1:46: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:7:377: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:65: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:68: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:488: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:491: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:532: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:535: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:579: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:582: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:629: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:632: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:888: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:891: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:908: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.es5.js:3999:911: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:6:377: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:65: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:68: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:488: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:491: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:532: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:535: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:579: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:582: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:629: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:632: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:888: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:891: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:908: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common.js:3877:911: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:1:21: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:1:33: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:1:41: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:1:46: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:7:85: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:8:20: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:9:27: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:10:24: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:11:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:11:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:11:21: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:12:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:12:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:12:45: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:13:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:13:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:13:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:201: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:204: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:427: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:430: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:455: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:458: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:483: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:486: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:501: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:504: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:532: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:535: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:559: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:562: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:583: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:586: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:607: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.es5.js:2151:610: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:6:85: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:7:20: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:8:27: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:9:24: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:10:21: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:11:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:11:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:11:45: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:12:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:12:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:12:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:201: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:204: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:427: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:430: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:455: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:458: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:483: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:486: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:501: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:504: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:532: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:535: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:559: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:562: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:583: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:586: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:607: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http.js:2084:610: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:6:108: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:7:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:8:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:556:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:556:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:556:96: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.es5.js:556:99: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:6:108: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:7:38: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:8:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:545:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:545:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:545:96: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/http/testing.js:545:99: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:1:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:1:13: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:1:21: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:1:26: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:7:42: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:8:34: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:215:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.es5.js:215:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:6:42: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:7:34: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:207:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/common@4.4.6/@angular/common/testing.js:207:8: Semi-colon expected
