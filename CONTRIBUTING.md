@@ -160,6 +160,8 @@ Email: geometryzen@gmail.com, R...
 git remote add heroku git@heroku.com:stemcstudio.git
 ```
 
+Use the heroku-cli to update an SSH public key on Heroku.
+
 ### Push
 ```
 git push -f heroku master
