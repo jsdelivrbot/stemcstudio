@@ -106,7 +106,7 @@ export class WsFile implements MwDocument, Shareable {
     /**
      * A weak reference to the workspace that owns this file.
      */
-    private workspace: WsModel | undefined;
+    public workspace: WsModel | undefined;
 
     /**
      * @param workspace

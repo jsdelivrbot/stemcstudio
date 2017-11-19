@@ -35,7 +35,7 @@ class SearchBox {
     private element: HTMLDivElement;
     private searchForm: HTMLDivElement;
     private replaceForm: HTMLDivElement;
-    private searchOptions: Element;
+    public searchOptions: Element;
     private regExpOption: HTMLInputElement;
     private caseSensitiveOption: HTMLInputElement;
     private wholeWordOption: HTMLInputElement;
@@ -47,7 +47,7 @@ class SearchBox {
     private activeInput: HTMLInputElement;
     private $closeSearchBarKb: KeyboardHandler<Editor>;
     private $searchBarKb: KeyboardHandler<Editor>;
-    private isReplace: boolean;
+    public isReplace: boolean;
     private $onChange: DelayedCall;
     /**
      * 

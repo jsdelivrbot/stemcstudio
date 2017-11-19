@@ -12,9 +12,9 @@ export class EditorComponent {
     @Output() textChange = new EventEmitter();
     @Input() style: any = {};
     /**
-     * 
+     * TODO: 'editor' is declared but its value is never read.
      */
-    private editor: Editor;
+    public editor: Editor;
     /**
      *
      */

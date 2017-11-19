@@ -25,7 +25,7 @@ export type TextLayerEventName = 'changeCharacterSize';
  */
 export class TextLayer extends AbstractLayer implements Disposable, EventBus<TextLayerEventName, any, TextLayer> {
     public allowBoldFonts = false;
-    private $padding = 0;
+    public $padding = 0;
     private EOL_CHAR: string;
 
     private fontMetrics: FontMetrics | undefined;

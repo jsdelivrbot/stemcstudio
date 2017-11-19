@@ -669,6 +669,11 @@ export class WorkspaceController implements WorkspaceEditorHost {
             this.renamedFileWatchRemover = void 0;
         }
 
+        if (this.changedLintingRemover) {
+            this.changedLintingRemover();
+            this.changedLintingRemover = void 0;
+        }
+
         if (this.changedCompilerSettingsSubscription) {
             this.changedCompilerSettingsSubscription.unsubscribe();
             this.changedCompilerSettingsSubscription = void 0;

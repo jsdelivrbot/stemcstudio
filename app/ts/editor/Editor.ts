@@ -247,7 +247,7 @@ export class Editor {
     /**
      * FIXME: Dead code?
      */
-    private $keybindingId: any;
+    // private $keybindingId: any;
     /**
      *
      */
@@ -293,10 +293,10 @@ export class Editor {
     /**
      * FIXME: Dead code?
      */
-    private previousCommand: Command<Editor> | null;
+    // private previousCommand: Command<Editor> | null;
     private $mergeableCommands: string[];
     private mergeNextCommand: boolean;
-    private $mergeNextCommand: boolean;
+    // private $mergeNextCommand: boolean;
     private sequenceStartTime: number;
     // TODO: Remove these by using "fat-arrow" methods.
     private $onDocumentChange: (event: any, session: EditSession) => void;
@@ -1280,7 +1280,7 @@ export class Editor {
             this.prevOp = this.curOp;
         }
         if (!commandEvent) {
-            this.previousCommand = null;
+            // this.previousCommand = null;
             commandEvent = {};
         }
 
@@ -1403,7 +1403,7 @@ export class Editor {
             this.keyBinding.setKeyboardHandler(null);
         }
         else {
-            this.$keybindingId = null;
+            // this.$keybindingId = null;
             this.keyBinding.setKeyboardHandler(keyboardHandler);
         }
     }
@@ -2326,7 +2326,7 @@ export class Editor {
             if (transform) {
                 if (text !== transform.text) {
                     session.mergeUndoDeltas = false;
-                    this.$mergeNextCommand = false;
+                    this.mergeNextCommand = false;
                 }
                 text = transform.text;
             }
@@ -4638,10 +4638,10 @@ class MouseHandler implements IGestureHandler {
      * The function to call to release a captured mouse.
      */
     private releaseMouse: ((event: MouseEvent | undefined) => void) | null;
-    private mouseEvent: EditorMouseEvent;
+    // private mouseEvent: EditorMouseEvent;
     public mousedownEvent: EditorMouseEvent;
-    private $mouseMoved: boolean;
-    private $onCaptureMouseMove: ((event: MouseEvent) => void) | null;
+    // private $mouseMoved: boolean;
+    // private $onCaptureMouseMove: ((event: MouseEvent) => void) | null;
     public $clickSelection: OrientedRange | null = null;
     public $lastScrollTime: number;
     public selectByLines: () => void;
@@ -4794,8 +4794,8 @@ class MouseHandler implements IGestureHandler {
                 if (mouseMoveHandler) {
                     mouseMoveHandler(mouseEvent);
                 }
-                mouseHandler.mouseEvent = new EditorMouseEvent(mouseEvent, editor);
-                mouseHandler.$mouseMoved = true;
+                // mouseHandler.mouseEvent = new EditorMouseEvent(mouseEvent, editor);
+                // mouseHandler.$mouseMoved = true;
             };
         })(this.editor, this);
 
@@ -4806,7 +4806,7 @@ class MouseHandler implements IGestureHandler {
                 if (mouseHandler[mouseHandler.state]) {
                     mouseHandler[mouseHandler.state]();
                 }
-                mouseHandler.$mouseMoved = false;
+                // mouseHandler.$mouseMoved = false;
             };
         })(this);
 
@@ -4823,14 +4823,15 @@ class MouseHandler implements IGestureHandler {
                     renderer.$moveTextAreaToCursor();
                 }
                 mouseHandler.isMousePressed = false;
-                mouseHandler.$onCaptureMouseMove = mouseHandler.releaseMouse = null;
+                // mouseHandler.$onCaptureMouseMove = null;
+                mouseHandler.releaseMouse = null;
                 if (e) {
                     mouseHandler.onMouseEvent("mouseup", e);
                 }
             };
         })(this);
 
-        this.$onCaptureMouseMove = onMouseMove;
+        // this.$onCaptureMouseMove = onMouseMove;
         this.releaseMouse = capture(this.editor.container, onMouseMove, onCaptureEnd);
         timerId = window.setInterval(onCaptureInterval, 20);
     }

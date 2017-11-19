@@ -187,7 +187,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
      * This is the element that is created by the text layer.
      * I don't think it is being used, and it's private.
      */
-    private canvas: HTMLDivElement;
+    // private canvas: HTMLDivElement;
 
     private $horizScroll: boolean;
     private $vScroll: boolean;
@@ -225,7 +225,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
     private removeChangeCharacterSizeHandler: (() => void) | undefined;
 
     private $allowBoldFonts: boolean;
-    private cursorPos: Position;
+    // private cursorPos: Position;
 
     /**
      * A cache of various sizes TBA.
@@ -307,7 +307,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
         this.$markerBack = new MarkerLayer(this.content);
 
         this.textLayer = new TextLayer(this.content);
-        this.canvas = this.textLayer.element;
+        // this.canvas = this.textLayer.element;
 
         this.$markerFront = new MarkerLayer(this.content);
 
@@ -330,11 +330,6 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
                 this.session.setScrollLeft(event.data - this.scrollMargin.left);
             }
         });
-
-        this.cursorPos = {
-            row: 0,
-            column: 0
-        };
 
         this.fontMetrics = new FontMetrics(this.container, 500);
 

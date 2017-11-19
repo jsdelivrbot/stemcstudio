@@ -29,8 +29,8 @@ export class EditorMouseEvent {
      */
     private $pos: Position | null;
     private $inSelection: boolean | null;
-    private propagationStopped = false;
-    private defaultPrevented = false;
+    // private propagationStopped = false;
+    // private defaultPrevented = false;
     public time: number;
     // wheelY, wheelY and speed are for 'mousewheel' events.
     public wheelX: number;
@@ -54,12 +54,12 @@ export class EditorMouseEvent {
 
     stopPropagation(): void {
         stopPropagation(this.domEvent);
-        this.propagationStopped = true;
+        // this.propagationStopped = true;
     }
 
     preventDefault() {
         preventDefault(this.domEvent);
-        this.defaultPrevented = true;
+        // this.defaultPrevented = true;
     }
 
     stop() {

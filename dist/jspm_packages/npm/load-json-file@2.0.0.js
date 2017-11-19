@@ -1,1 +1,0 @@
-module.exports = require("npm:load-json-file@2.0.0/index");

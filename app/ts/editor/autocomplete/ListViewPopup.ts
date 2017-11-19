@@ -51,12 +51,9 @@ export class ListViewPopup implements ListView {
     private hoverMarker = new Range(-1, 0, -1, Infinity);
     private hoverMarkerId: number | null;
     private selectionMarker = new Range(-1, 0, -1, Infinity);
-    private selectionMarkerId: number;
     public isOpen = false;
-    private isTopdown = false;
     // FIXME: Type needs to be more than just MouseEvent.
     private lastMouseEvent: any;
-    private lastMouseEventScrollTop: number;
 
     /**
      *
@@ -119,7 +116,7 @@ export class ListViewPopup implements ListView {
             e.stop();
         });
 
-        this.selectionMarkerId = this.editor.sessionOrThrow().addMarker(this.selectionMarker, "ace_active-line", "fullLine");
+        this.editor.sessionOrThrow().addMarker(this.selectionMarker, "ace_active-line", "fullLine");
 
         this.setSelectOnHover(false);
 
@@ -132,7 +129,6 @@ export class ListViewPopup implements ListView {
                 return;
             }
             this.lastMouseEvent = e;
-            this.lastMouseEventScrollTop = this.editor.renderer.scrollTop;
             const row = this.lastMouseEvent.getDocumentPosition().row;
             if (this.hoverMarker.start.row !== row) {
                 if (!this.hoverMarkerId) {
@@ -247,13 +243,11 @@ export class ListViewPopup implements ListView {
         if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
             el.style.top = "";
             el.style.bottom = screenHeight - top + "px";
-            this.isTopdown = false;
         }
         else {
             top += lineHeight;
             el.style.top = top + "px";
             el.style.bottom = "";
-            this.isTopdown = true;
         }
 
         el.style.display = "";

@@ -1,7 +1,7 @@
 let statistics: { [uuid: string]: { refCount: number; name: string; zombie: boolean } } = {};
 let running = 0;
-let trace = false;
-let traceName: string | undefined = void 0;
+// let trace = false;
+// let traceName: string | undefined = void 0;
 
 const LOGGING_NAME_REF_CHANGE = 'refChange';
 
@@ -169,18 +169,18 @@ export function refChange(uuid: string, name?: string, change = 0): number | und
             }
             else if (uuid === 'start') {
                 if (running === 0) {
-                    trace = false;
+                    // trace = false;
                 }
                 running++;
             }
             else if (uuid === 'reset') {
                 statistics = {};
-                trace = false;
-                traceName = void 0;
+                // trace = false;
+                // traceName = void 0;
             }
             else if (uuid === 'trace') {
-                trace = true;
-                traceName = name;
+                // trace = true;
+                // traceName = name;
             }
             else {
                 throw new Error(prefix(`Unexpected command uuid => ${uuid}, name => ${name}`));

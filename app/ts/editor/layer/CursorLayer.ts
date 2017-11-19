@@ -24,7 +24,7 @@ export class CursorLayer extends AbstractLayer implements Disposable {
     private readonly blinker = new Interval();
     private timeoutId: number;
     private cursors: HTMLDivElement[] = [];
-    private cursor: HTMLDivElement;
+    public cursor: HTMLDivElement;
     private $padding = 0;
     private overwrite: boolean;
     private $updateCursors: (opacity: boolean) => void;

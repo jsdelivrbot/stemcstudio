@@ -275,7 +275,8 @@ export class EditSession {
     private $overwrite = false;
     public $searchHighlight: SearchHighlight;
     private $annotations: Annotation[];
-    private $autoNewLine: string;
+    // TODO: '$autoNewLine' is declared but its value is never read.
+    // private $autoNewLine: string;
 
     /**
      *
@@ -1141,10 +1142,10 @@ export class EditSession {
     public $detectNewLine(text: string): void {
         const match = text.match(/^.*?(\r?\n)/m);
         if (match) {
-            this.$autoNewLine = match[1];
+            // this.$autoNewLine = match[1];
         }
         else {
-            this.$autoNewLine = "\n";
+            // this.$autoNewLine = "\n";
         }
     }
 
@@ -1802,13 +1803,14 @@ export class EditSession {
         let delta = deltas[0];
         let range: Range;
         let point: Position;
-        let lastDeltaIsInsert = false;
+        // TODO: 'lastDeltaIsInsert' is declared but its value is never used.
+        // let lastDeltaIsInsert = false;
         if (isInsert(delta)) {
             range = Range.fromPoints(delta.start, delta.end);
-            lastDeltaIsInsert = true;
+            // lastDeltaIsInsert = true;
         } else {
             range = Range.fromPoints(delta.start, delta.start);
-            lastDeltaIsInsert = false;
+            // lastDeltaIsInsert = false;
         }
 
         for (let i = 1; i < deltas.length; i++) {
@@ -1822,14 +1824,14 @@ export class EditSession {
                 if (range.compare(point.row, point.column) === 1) {
                     setEnd(range, point.row, point.column);
                 }
-                lastDeltaIsInsert = true;
+                // lastDeltaIsInsert = true;
             }
             else {
                 point = delta.start;
                 if (range.compare(point.row, point.column) === -1) {
                     range = Range.fromPoints(delta.start, delta.start);
                 }
-                lastDeltaIsInsert = false;
+                // lastDeltaIsInsert = false;
             }
         }
 

@@ -24,7 +24,7 @@ export class FontMetrics implements EventBus<FontMetricsEventName, any, FontMetr
     private $measureNode: HTMLDivElement;
     public $characterSize = { width: 0, height: 0 };
     private charSizes: { [ch: string]: number };
-    private allowBoldFonts: boolean;
+    public allowBoldFonts: boolean;
     private $pollSizeChangesTimer: number;
     private eventBus: EventEmitterClass<FontMetricsEventName, any, FontMetrics>;
     private refCount = 1;
