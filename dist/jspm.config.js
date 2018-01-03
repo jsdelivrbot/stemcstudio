@@ -19,18 +19,18 @@ System.config({
     "@angular/router": "npm:@angular/router@4.4.6",
     "@angular/upgrade": "npm:@angular/upgrade@4.4.6",
     "@angular/upgrade/static": "npm:@angular/upgrade@4.4.6/bundles/upgrade-static.umd.js",
-    "angular": "npm:angular@1.6.6",
-    "angular-animate": "npm:angular-animate@1.6.6",
+    "angular": "npm:angular@1.6.8",
+    "angular-animate": "npm:angular-animate@1.6.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "npm:angular-sanitize@1.6.6",
-    "angular-translate": "npm:angular-translate@2.16.0",
+    "angular-sanitize": "npm:angular-sanitize@1.6.8",
+    "angular-translate": "npm:angular-translate@2.17.0",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.7.1",
-    "core-js": "npm:core-js@2.5.1",
+    "core-js": "npm:core-js@2.5.3",
     "davinci-csv": "npm:davinci-csv@0.9.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "editor-document": "npm:editor-document@0.0.5",
@@ -44,8 +44,8 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.10",
-    "rxjs": "npm:rxjs@5.5.2",
-    "showdown": "npm:showdown@1.8.2",
+    "rxjs": "npm:rxjs@5.5.6",
+    "showdown": "npm:showdown@1.8.6",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
     "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
@@ -53,7 +53,7 @@ System.config({
     "typhon-typescript": "npm:typhon-typescript@0.3.0",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
-    "zone.js": "npm:zone.js@0.8.18",
+    "zone.js": "npm:zone.js@0.8.19",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
@@ -144,73 +144,73 @@ System.config({
     "npm:@angular/common@4.4.6": {
       "@angular/core": "npm:@angular/core@4.4.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/compiler@4.4.6": {
       "@angular/core": "npm:@angular/core@4.4.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/core@4.4.6": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.5.2",
-      "tslib": "npm:tslib@1.8.0",
-      "zone.js": "npm:zone.js@0.8.18"
+      "rxjs": "npm:rxjs@5.5.6",
+      "tslib": "npm:tslib@1.8.1",
+      "zone.js": "npm:zone.js@0.8.19"
     },
     "npm:@angular/forms@4.4.6": {
       "@angular/common": "npm:@angular/common@4.4.6",
       "@angular/core": "npm:@angular/core@4.4.6",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.4.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/http@4.4.6": {
       "@angular/core": "npm:@angular/core@4.4.6",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.4.6",
-      "rxjs": "npm:rxjs@5.5.2",
-      "tslib": "npm:tslib@1.8.0"
+      "rxjs": "npm:rxjs@5.5.6",
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/platform-browser-dynamic@4.4.6": {
       "@angular/common": "npm:@angular/common@4.4.6",
       "@angular/compiler": "npm:@angular/compiler@4.4.6",
       "@angular/core": "npm:@angular/core@4.4.6",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.4.6",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/platform-browser@4.4.6": {
       "@angular/common": "npm:@angular/common@4.4.6",
       "@angular/core": "npm:@angular/core@4.4.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/router@4.4.6": {
       "@angular/common": "npm:@angular/common@4.4.6",
       "@angular/core": "npm:@angular/core@4.4.6",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.4.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "rxjs": "npm:rxjs@5.5.2",
-      "tslib": "npm:tslib@1.8.0"
+      "rxjs": "npm:rxjs@5.5.6",
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:@angular/upgrade@4.4.6": {
       "@angular/compiler": "npm:@angular/compiler@4.4.6",
       "@angular/core": "npm:@angular/core@4.4.6",
       "@angular/platform-browser": "npm:@angular/platform-browser@4.4.6",
       "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@4.4.6",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:accepts@1.3.1": {
       "mime-types": "npm:mime-types@2.1.11",
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.6.6"
+      "angular": "npm:angular@1.6.8"
     },
-    "npm:angular-translate@2.16.0": {
-      "angular": "npm:angular@1.6.6",
+    "npm:angular-translate@2.17.0": {
+      "angular": "npm:angular@1.6.8",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-ui-router@0.4.2": {
-      "angular": "npm:angular@1.6.6",
+      "angular": "npm:angular@1.6.8",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.9.2": {
@@ -339,7 +339,7 @@ System.config({
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:core-js@2.5.1": {
+    "npm:core-js@2.5.3": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -398,7 +398,7 @@ System.config({
     "npm:davinci-csv@0.9.12": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:debug@0.7.4": {
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -451,7 +451,7 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.8.4": {
+    "npm:engine.io-client@1.8.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "component-emitter": "npm:component-emitter@1.2.1",
       "component-inherit": "npm:component-inherit@0.0.3",
@@ -522,14 +522,14 @@ System.config({
     },
     "npm:generic-rbtree@1.1.1": {
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:get-stream@3.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:good-listener@1.2.2": {
-      "delegate": "npm:delegate@3.1.3"
+      "delegate": "npm:delegate@3.2.0"
     },
     "npm:has-binary@0.1.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
@@ -736,7 +736,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -766,11 +766,11 @@ System.config({
       "hash-base": "npm:hash-base@2.0.2",
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:rxjs@5.5.2": {
+    "npm:rxjs@5.5.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "symbol-observable": "npm:symbol-observable@1.0.4"
+      "symbol-observable": "npm:symbol-observable@1.0.1"
     },
     "npm:safe-buffer@5.1.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
@@ -788,7 +788,7 @@ System.config({
     "npm:shebang-command@1.2.0": {
       "shebang-regex": "npm:shebang-regex@1.0.0"
     },
-    "npm:showdown@1.8.2": {
+    "npm:showdown@1.8.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -825,7 +825,7 @@ System.config({
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.1",
       "debug": "npm:debug@2.3.3",
-      "engine.io-client": "npm:engine.io-client@1.8.4",
+      "engine.io-client": "npm:engine.io-client@1.8.5",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
@@ -871,7 +871,7 @@ System.config({
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
     "npm:stemcstudio-json@1.0.1": {
-      "tslib": "npm:tslib@1.8.0"
+      "tslib": "npm:tslib@1.8.1"
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
@@ -969,7 +969,7 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:yargs-parser@8.0.0": {
+    "npm:yargs-parser@8.1.0": {
       "camelcase": "npm:camelcase@4.1.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -991,9 +991,9 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0",
       "which-module": "npm:which-module@2.0.0",
       "y18n": "npm:y18n@3.2.1",
-      "yargs-parser": "npm:yargs-parser@8.0.0"
+      "yargs-parser": "npm:yargs-parser@8.1.0"
     },
-    "npm:zone.js@0.8.18": {
+    "npm:zone.js@0.8.19": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

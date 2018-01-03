@@ -40,8 +40,9 @@
                         <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
                             <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".html") &gt; 0'>
                                 <a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;
-<ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>
-</a>
+                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.htmlChoice'>
+                                        <ng-md-icon>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -60,8 +61,9 @@
                         <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
                             <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".md") &gt; 0'>
                                 <a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;
-<ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>
-</a>
+                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.markdownChoice'>
+                                        <ng-md-icon>
+                                </a>
                             </li>
                         </ul>
                     </li>

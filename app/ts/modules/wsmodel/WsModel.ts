@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { APP_VERSION } from '../../constants';
+import { STEMCSTUDIO_WORKSPACE_MODULE_NAME } from '../../constants';
 import { STEMCSTUDIO_WORKSPACE_PATH } from '../../constants';
 import { TYPESCRIPT_SERVICES_PATH } from '../../constants';
 import { Annotation, AnnotationType } from '../../editor/Annotation';
@@ -736,7 +737,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
             // Just as dispose calls release, a successful recycle calls addRef.
             this.addRef();
             if (this.languageServiceProxy) {
-                this.languageServiceProxy.initialize(scriptImports, (err: any) => {
+                this.languageServiceProxy.initialize(scriptImports, STEMCSTUDIO_WORKSPACE_MODULE_NAME, 'LanguageServiceWorker', (err: any) => {
                     if (!err) {
                         if (this.languageServiceProxy) {
                             this.languageServiceProxy.setTrace(this.traceLanguageService)

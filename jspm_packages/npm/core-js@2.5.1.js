@@ -1,1 +1,0 @@
-module.exports = require("npm:core-js@2.5.1/index.js");

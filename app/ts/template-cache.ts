@@ -148,8 +148,9 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
     "                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(\".html\") &gt; 0'>\n" +
     "                                <a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;\n" +
-    "<ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>\n" +
-    "</a>\n" +
+    "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.htmlChoice'>\n" +
+    "                                        <ng-md-icon>\n" +
+    "                                </a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
@@ -168,8 +169,9 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
     "                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(\".md\") &gt; 0'>\n" +
     "                                <a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;\n" +
-    "<ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>\n" +
-    "</a>\n" +
+    "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.markdownChoice'>\n" +
+    "                                        <ng-md-icon>\n" +
+    "                                </a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
@@ -377,7 +379,8 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'>\n" +
+    "                                    <img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +

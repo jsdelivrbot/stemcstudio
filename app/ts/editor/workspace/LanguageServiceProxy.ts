@@ -1,4 +1,3 @@
-import { STEMCSTUDIO_WORKSPACE_MODULE_NAME } from '../../constants';
 import { CompletionEntry } from './CompletionEntry';
 import { DefinitionInfo } from './DefinitionInfo';
 import { Delta } from 'editor-document';
@@ -8,7 +7,7 @@ import { TextChange } from './TextChange';
 import { RuleFailure } from './RuleFailure';
 import { QuickInfo } from './QuickInfo';
 import { WorkerClient } from '../worker/WorkerClient';
-import { TsLintSettings } from '../../modules/tslint/TsLintSettings';
+import { TsLintSettings } from './TsLintSettings';
 import { EVENT_APPLY_DELTA } from './LanguageServiceEvents';
 import { EVENT_DEFAULT_LIB_CONTENT } from './LanguageServiceEvents';
 import { EVENT_ENSURE_MODULE_MAPPING } from './LanguageServiceEvents';
@@ -305,8 +304,15 @@ export class LanguageServiceProxy {
         });
     }
 
-    initialize(scriptImports: string[], callback: (err: any) => any): void {
-        this.worker.init(scriptImports, STEMCSTUDIO_WORKSPACE_MODULE_NAME, 'LanguageServiceWorker', function (err: any) {
+    /**
+     * 
+     * @param scriptImports 
+     * @param moduleName The name of the JavaScript module. e.g. 'stemcstudio-workspace.js'.
+     * @param className The name of the worker class. e.g. 'LanguageServiceWorker'. 
+     * @param callback 
+     */
+    initialize(scriptImports: string[], moduleName: string, className: string, callback: (err: any) => any): void {
+        this.worker.init(scriptImports, moduleName, className, function (err: any) {
             if (err) {
                 console.warn(`worker.init() failed ${err}`);
             }

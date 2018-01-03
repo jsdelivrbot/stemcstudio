@@ -48,7 +48,7 @@ declare module AngularUiBootstrap {
 ```
 
 7. `grunt`
-8. Open another terminal
+8. Open another terminal, start a Redis server.
 9. `cd STEMCstudio`
 10. `npm start`
 11. Open your web browser to localhost:8080
