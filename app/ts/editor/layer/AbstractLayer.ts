@@ -1,6 +1,6 @@
 import { createElement, setCssClass } from "../lib/dom";
-import { Disposable } from '../../base/Disposable';
-import { refChange } from '../../utils/refChange';
+import { Disposable } from '../Disposable';
+import { refChange } from '../refChange';
 
 /**
  * 

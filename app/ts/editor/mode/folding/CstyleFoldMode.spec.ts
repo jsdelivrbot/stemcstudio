@@ -1,5 +1,6 @@
 import { Document } from 'editor-document';
 import { EditSession } from '../../EditSession';
+import { setLanguage } from '../../../directives/editor/setLanguage';
 
 describe("CstyleFoldMode", function () {
     describe("fold comments", function () {
@@ -14,7 +15,7 @@ describe("CstyleFoldMode", function () {
         session.setFoldStyle("markbeginend");
 
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidget(0)).toBe("start");
@@ -44,7 +45,7 @@ describe("CstyleFoldMode", function () {
         session.setFoldStyle("markbeginend");
 
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidget(0)).toBe("start");
@@ -81,7 +82,7 @@ describe("CstyleFoldMode", function () {
         const session = new EditSession(doc);
         session.setFoldStyle("markbegin");
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidgetRange(0, true).start.row).toBe(0);

@@ -1,6 +1,6 @@
 import { addListener, removeListener } from "./lib/event";
 import { ScrollBar } from './ScrollBar';
-import { refChange } from '../utils/refChange';
+import { refChange } from './refChange';
 import { Renderer } from "./Renderer";
 import { toPixelString } from './dom/toPixelString';
 

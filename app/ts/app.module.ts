@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { EditorModule } from './editor/editor.module';
 import { HttpModule } from '@angular/http';
 import { UpgradeModule } from '@angular/upgrade/static';
 
@@ -32,7 +31,6 @@ import { BrandComponent } from './directives/brand/brand.component';
     imports: [
         BrowserModule,
         HttpModule,
-        EditorModule,
         UpgradeModule
     ],
     // creators of services.

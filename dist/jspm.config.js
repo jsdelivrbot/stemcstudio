@@ -328,9 +328,10 @@ System.config({
       "select": "npm:select@1.1.2",
       "tiny-emitter": "npm:tiny-emitter@2.0.2"
     },
-    "npm:cliui@3.2.0": {
-      "string-width": "npm:string-width@1.0.2",
-      "strip-ansi": "npm:strip-ansi@3.0.1",
+    "npm:cliui@4.0.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "string-width": "npm:string-width@2.1.1",
+      "strip-ansi": "npm:strip-ansi@4.0.0",
       "wrap-ansi": "npm:wrap-ansi@2.1.0"
     },
     "npm:code-writer@0.1.2": {
@@ -736,7 +737,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -792,7 +793,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
-      "yargs": "npm:yargs@10.0.3"
+      "yargs": "npm:yargs@10.1.0"
     },
     "npm:signal-exit@3.0.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -975,8 +976,8 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:yargs@10.0.3": {
-      "cliui": "npm:cliui@3.2.0",
+    "npm:yargs@10.1.0": {
+      "cliui": "npm:cliui@4.0.0",
       "decamelize": "npm:decamelize@1.2.0",
       "find-up": "npm:find-up@2.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

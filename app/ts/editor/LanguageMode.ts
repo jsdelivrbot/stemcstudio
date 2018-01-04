@@ -15,7 +15,7 @@ export interface Disposable {
 /**
  * 
  */
-export type LanguageModeId = 'AsciiDoc' | 'C' | 'C++' | 'Clojure' | 'CSS' | 'CSV' | 'GLSL' | 'Haskell' | 'HTML' | 'JavaScript' | 'JSX' | 'JSON' | 'LaTeX' | 'LESS' | 'Markdown' | 'MATLAB' | 'PureScript' | 'Python' | 'Scheme' | 'Text' | 'TypeScript' | 'TSX' | 'XML' | 'YAML';
+export type LanguageModeId = 'AsciiDoc' | 'C' | 'C++' | 'Clojure' | 'CSS' | 'CSV' | 'GLSL' | 'Haskell' | 'HTML' | 'JavaScript' | 'JSX' | 'JSON' | 'LaTeX' | 'LESS' | 'LISP' | 'Markdown' | 'MATLAB' | 'PureScript' | 'Python' | 'Scheme' | 'Text' | 'TypeScript' | 'TSX' | 'XML' | 'YAML';
 
 /**
  *

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.39.30",
+  "version": "2.39.31",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -78,8 +78,8 @@
     "@types/angular-route": "^1.3.4",
     "@types/angular-sanitize": "^1.3.7",
     "@types/jasmine": "^2.8.3",
-    "@types/node": "^8.5.2",
-    "@types/react": "^16.0.31",
+    "@types/node": "^8.5.5",
+    "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.2",
     "@types/snapsvg": "^0.4.29",
     "baconjs": "^0.7.95",

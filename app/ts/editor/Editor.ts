@@ -41,7 +41,7 @@ import { COMMAND_NAME_PASTE } from './editor_protocol';
 import { Renderer } from './Renderer';
 import { Completer } from "./Completer";
 import { CompletionManager } from "./autocomplete/CompletionManager";
-import { refChange } from '../utils/refChange';
+import { refChange } from './refChange';
 import { SearchOptions } from './SearchOptions';
 import { Selection } from './Selection';
 import { stringTrimLeft, stringTrimRight } from "./lib/lang";

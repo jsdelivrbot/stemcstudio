@@ -65,7 +65,7 @@ export function createAutoComplete(editor: Editor, fileNameProvider: () => strin
     /**
      *
      */
-    const _handler: KeyboardHandler = new KeyboardHandler();
+    const _handler: KeyboardHandler<Editor> = new KeyboardHandler<Editor>();
 
     /**
      *
@@ -101,11 +101,11 @@ export function createAutoComplete(editor: Editor, fileNameProvider: () => strin
             return null;
         }
 
-        const command: Command = _handler.findKeyCommand(hashId, key);
+        const command: Command<Editor> = _handler.findKeyCommand(hashId, key);
 
         if (!command) {
 
-            const defaultCommand: Command = editor.commands.findKeyCommand(hashId, key);
+            const defaultCommand: Command<Editor> = editor.commands.findKeyCommand(hashId, key);
             if (defaultCommand) {
                 if (defaultCommand.name === COMMAND_NAME_BACKSPACE) {
                     return null;

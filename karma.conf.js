@@ -44,6 +44,8 @@ module.exports = function (config) {
       // Load tested files as needed to keep resource requirements down.
       { pattern: 'generated/js/constants.js', included: false, watched: true },
       { pattern: 'generated/js/constants.js.map', included: false, watched: true },
+      { pattern: 'generated/js/directives/editor/setLanguage.js', included: false, watched: true },
+      { pattern: 'generated/js/directives/editor/setLanguage.js.map', included: false, watched: true },
       { pattern: 'generated/js/editor/**/*.js', included: false, watched: true },
       { pattern: 'generated/js/editor/**/*.js.map', included: false, watched: true },
       { pattern: 'generated/js/languages/**/*.js', included: false, watched: true },

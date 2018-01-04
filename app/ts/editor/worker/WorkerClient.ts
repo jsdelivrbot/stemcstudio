@@ -3,7 +3,7 @@ import { Delta } from "editor-document";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from '../lib/EventEmitterClass';
 import { CallbackManager } from './CallbackManager';
-import { Disposable } from '../../base/Disposable';
+import { Disposable } from '../../editor/Disposable';
 import { EditSession } from "../../editor/EditSession";
 
 /**

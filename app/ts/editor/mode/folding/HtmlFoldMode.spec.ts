@@ -1,5 +1,6 @@
 import { Document } from 'editor-document';
 import { EditSession } from '../../EditSession';
+import { setLanguage } from '../../../directives/editor/setLanguage';
 
 describe("HtmlFoldMode", function () {
 
@@ -15,7 +16,7 @@ describe("HtmlFoldMode", function () {
         const session = new EditSession(doc);
 
         session.setUseWorker(false);
-        session.setLanguage('HTML');
+        setLanguage(session, 'HTML');
 
         session.setFoldStyle("markbeginend");
 
@@ -64,7 +65,7 @@ describe("HtmlFoldMode", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('HTML');
+        setLanguage(session, 'HTML');
         session.setFoldStyle("markbeginend");
 
         // FIXME: See issue #49
@@ -110,7 +111,7 @@ describe("HtmlFoldMode", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('HTML');
+        setLanguage(session, 'HTML');
 
         session.setFoldStyle("markbeginend");
 
@@ -143,7 +144,7 @@ describe("HtmlFoldMode", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('HTML');
+        setLanguage(session, 'HTML');
 
         session.setFoldStyle("markbeginend");
 
@@ -180,7 +181,7 @@ describe("HtmlFoldMode", function () {
         const session = new EditSession(doc);
         session.traceTokenizer = true;
         session.setUseWorker(false);
-        session.setLanguage('HTML');
+        setLanguage(session, 'HTML');
 
         session.setFoldStyle("markbeginend");
 

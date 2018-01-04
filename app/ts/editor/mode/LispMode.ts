@@ -6,6 +6,6 @@ export class LispMode extends TextMode {
         super(workerUrl, scriptImports);
         this.HighlightRules = LispHighlightRules;
         this.lineCommentStart = ";";
-        this.$id = "ace/mode/lisp";
+        this.$id = 'LISP';
     }
 }

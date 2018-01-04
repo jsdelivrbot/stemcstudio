@@ -12,7 +12,7 @@ import { GutterConfig } from "./GutterConfig";
 import { Padding } from './Padding';
 import { GutterRenderer } from './GutterRenderer';
 import { GutterCell } from './GutterCell';
-import { refChange } from '../../utils/refChange';
+import { refChange } from '../refChange';
 
 export const changeGutterWidth = 'changeGutterWidth';
 export type GutterLayerEventName = 'changeGutterWidth';

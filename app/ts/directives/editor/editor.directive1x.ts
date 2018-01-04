@@ -8,7 +8,7 @@ import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
 import { showFindReplace } from '../../editor/ext/showFindReplace';
-import { showGreekKeyboard } from '../../editor/ext/showGreekKeyboard';
+import { showGreekKeyboard } from '../../extensions/showGreekKeyboard';
 import { showKeyboardShortcuts } from '../../editor/ext/showKeyboardShortcuts';
 import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import { EditorPreferencesService } from '../../modules/editors/EditorPreferencesService';
@@ -16,7 +16,7 @@ import { EditorPreferencesEvent } from '../../modules/editors/EditorPreferencesE
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WorkspaceEditorHost } from '../../directives/editor/WorkspaceEditorHost';
 import { WsFile } from '../../modules/wsmodel/WsFile';
-import { refChange } from '../../utils/refChange';
+// import { refChange } from '../../utils/refChange';
 import { computeContextMenu } from './computeContextMenu';
 import { renderContextMenu } from '../contextMenu/renderContextMenu';
 //
@@ -30,6 +30,7 @@ import { EditorService } from '../../editor/EditorService';
 import { EditSession } from '../../editor/EditSession';
 import { LanguageModeId } from '../../editor/LanguageMode';
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
+import { setLanguage } from './setLanguage';
 
 const BOGUS_WIDTH = 600;
 const BOGUS_HEIGHT = 800;
@@ -83,7 +84,7 @@ export function createEditorDirective(
         const wsController: WorkspaceEditorHost = controllers[1];
 
         const container: HTMLElement = element[0];
-        refChange('start');
+        // refChange('start');
         //
         // We create the Editor UI component first then inject the EditSession later through the HTML property.
         //
@@ -176,7 +177,7 @@ export function createEditorDirective(
                         const mode = file.mode;
                         const path = $scope.path;
                         if (mode) {
-                            session.setLanguage(mode as LanguageModeId)
+                            setLanguage(session, mode as LanguageModeId)
                                 .then(function () {
                                     // TODO: Some modes need further editor configuration.
                                     // See the setLanguage method for comments.
@@ -320,8 +321,8 @@ export function createEditorDirective(
             // What about stopping the worker?
             if (editor) {
                 editor.dispose();
-                refChange('stop');
-                refChange('dump');
+                // refChange('stop');
+                // refChange('dump');
             }
         }
 

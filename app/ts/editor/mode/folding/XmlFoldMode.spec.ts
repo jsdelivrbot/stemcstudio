@@ -1,5 +1,6 @@
 import { Document } from 'editor-document';
 import { EditSession } from '../../EditSession';
+import { setLanguage } from '../../../directives/editor/setLanguage';
 
 describe("XmlFoldMode", function () {
     describe("fold multi line self closing element", function () {
@@ -14,7 +15,7 @@ describe("XmlFoldMode", function () {
         session.setFoldStyle("markbeginend");
 
         session.setUseWorker(false);
-        session.setLanguage('XML');
+        setLanguage(session, 'XML');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidget(0)).toBe("start");
@@ -48,7 +49,7 @@ describe("XmlFoldMode", function () {
         session.setFoldStyle("markbeginend");
 
         session.setUseWorker(false);
-        session.setLanguage('XML');
+        setLanguage(session, 'XML');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidget(0)).toBe("start");
@@ -81,7 +82,7 @@ describe("XmlFoldMode", function () {
         const session = new EditSession(doc);
         session.setFoldStyle("markbeginend");
         session.setUseWorker(false);
-        session.setLanguage('XML');
+        setLanguage(session, 'XML');
 
         it("should have fold widgets", function () {
             expect(session.getFoldWidget(0)).toBe("start");

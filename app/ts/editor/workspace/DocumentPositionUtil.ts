@@ -1,5 +1,5 @@
-import Document from '../Document';
-import { Position } from '../Position';
+import { Document } from 'editor-document';
+import { Position } from 'editor-document';
 
 export function getLinesChars(lines: string[]): number {
     let count = 0;

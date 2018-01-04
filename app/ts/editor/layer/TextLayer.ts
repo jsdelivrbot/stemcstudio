@@ -8,7 +8,7 @@ import { EventEmitterClass } from "../lib/EventEmitterClass";
 import { FoldLine } from "../FoldLine";
 import { FontMetrics } from "../layer/FontMetrics";
 import { changeCharacterSize } from '../layer/FontMetrics';
-import { refChange } from '../../utils/refChange';
+import { refChange } from '../refChange';
 import { TextConfig } from './TextConfig';
 import { Token } from "../Token";
 

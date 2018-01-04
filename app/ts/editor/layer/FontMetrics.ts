@@ -3,7 +3,7 @@ import { stringRepeat } from "../lib/lang";
 import { isIE } from "../lib/useragent";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
-import { refChange } from '../../utils/refChange';
+import { refChange } from '../refChange';
 import { Shareable } from '../base/Shareable';
 
 let CHAR_COUNT = 0;

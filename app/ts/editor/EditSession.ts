@@ -8,7 +8,7 @@ import { Annotation } from './Annotation';
 import { Delta } from "editor-document";
 import { DeltaIgnorable } from "./DeltaIgnorable";
 import { DeltaGroup } from './DeltaGroup';
-import { Disposable } from '../base/Disposable';
+import { Disposable } from './Disposable';
 import { EditorMouseEvent } from './EditorMouseEvent';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { FirstAndLast } from "./FirstAndLast";
@@ -37,58 +37,13 @@ import { LineWidgetManager } from './LineWidgetManager';
 import { Position } from 'editor-document';
 import { HighlighterToken } from './mode/Highlighter';
 
-// Built-In Languages.
-import { APP_VERSION } from '../constants';
-import { STEMCSTUDIO_WORKER_TS_PATH } from '../constants';
-import { STEMCSTUDIO_WORKERS_PATH } from '../constants';
-import { AsciiDocMode } from './mode/AsciiDocMode';
-import { ClojureMode } from './mode/ClojureMode';
-import { CssMode } from './mode/CssMode';
-import { CsvMode } from './mode/CsvMode';
-import { GlslMode } from './mode/GlslMode';
-import { HaskellMode } from './mode/HaskellMode';
-import { HtmlMode } from './mode/HtmlMode';
-import { JavaScriptMode } from './mode/JavaScriptMode';
-import { JsxMode } from './mode/JsxMode';
-import { JsonMode } from './mode/JsonMode';
-import { LatexMode } from './mode/LatexMode';
-import { MarkdownMode } from './mode/MarkdownMode';
-import { MatlabMode } from './mode/MatlabMode';
-import { PureScriptMode } from './mode/PureScriptMode';
-import { PythonMode } from './mode/PythonMode';
-import { TextMode } from './mode/TextMode';
-import { TypeScriptMode } from './mode/TypeScriptMode';
-import { TsxMode } from './mode/TsxMode';
-import { XmlMode } from './mode/XmlMode';
-import { YamlMode } from './mode/YamlMode';
-import { LANGUAGE_ASCIIDOC } from '../languages/modes';
-import { LANGUAGE_CSS } from '../languages/modes';
-import { LANGUAGE_CSV } from '../languages/modes';
-import { LANGUAGE_GLSL } from '../languages/modes';
-import { LANGUAGE_HASKELL } from '../languages/modes';
-import { LANGUAGE_HTML } from '../languages/modes';
-import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
-import { LANGUAGE_JSX } from '../languages/modes';
-import { LANGUAGE_JSON } from '../languages/modes';
-import { LANGUAGE_LATEX } from '../languages/modes';
-import { LANGUAGE_LESS } from '../languages/modes';
-import { LANGUAGE_MARKDOWN } from '../languages/modes';
-import { LANGUAGE_MATLAB } from '../languages/modes';
-import { LANGUAGE_PURE_SCRIPT } from '../languages/modes';
-import { LANGUAGE_PYTHON } from '../languages/modes';
-import { LANGUAGE_SCHEME } from '../languages/modes';
-import { LANGUAGE_TEXT } from '../languages/modes';
-import { LANGUAGE_TSX } from '../languages/modes';
-import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
-import { LANGUAGE_XML } from '../languages/modes';
-import { LANGUAGE_YAML } from '../languages/modes';
-import { FoldMode } from '../editor/mode/folding/FoldMode';
-import { LanguageModeId } from '../editor/LanguageMode';
 import { LanguageMode } from '../editor/LanguageMode';
 import { RangeWithCollapseChildren } from '../editor/RangeBasic';
 import { OrientedRange } from '../editor/RangeBasic';
 import { RangeSelectionMarker } from '../editor/RangeBasic';
 import { TokenWithIndex } from '../editor/Token';
+import { FoldMode } from './mode/folding/FoldMode';
+import { TextMode } from './mode/TextMode';
 
 
 // "Tokens"
@@ -1264,138 +1219,14 @@ export class EditSession {
     }
 
     /**
-     * 
-     */
-    public setLanguage(mode: LanguageModeId): Promise<void> {
-        const systemImports: string[] = ['/jspm_packages/system.js', `/jspm.config.js?version=${APP_VERSION}`];
-        const workerImports: string[] = systemImports.concat([STEMCSTUDIO_WORKERS_PATH]);
-
-        return new Promise<void>((resolve, reject) => {
-            function onSetLanguageMode(err: any) {
-                if (!err) {
-                    resolve();
-                }
-                else {
-                    reject(err);
-                }
-            }
-            switch (mode) {
-                case LANGUAGE_ASCIIDOC: {
-                    this.setUseWrapMode(true);
-                    // editor.setWrapBehavioursEnabled(true);
-                    this.setLanguageMode(new AsciiDocMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_HASKELL: {
-                    this.setUseWorker(false);
-                    this.setLanguageMode(new HaskellMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_PYTHON: {
-                    this.setUseWorker(true);
-                    this.setLanguageMode(new PythonMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_SCHEME: {
-                    // If we don't use the worker then we don't get a confirmation.
-                    // this.setUseWorker(false);
-                    this.setLanguageMode(new ClojureMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_JAVA_SCRIPT: {
-                    this.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_JSX: {
-                    this.setLanguageMode(new JsxMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_PURE_SCRIPT: {
-                    this.setUseWorker(false);
-                    this.setLanguageMode(new PureScriptMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_TYPE_SCRIPT: {
-                    const tsMode = new TypeScriptMode('/js/worker.js', systemImports.concat([STEMCSTUDIO_WORKER_TS_PATH]));
-                    tsMode.getTokenizer().trace = this.traceTokenizer;
-                    this.setLanguageMode(tsMode, onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_TSX: {
-                    this.setLanguageMode(new TsxMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_HTML: {
-                    this.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_JSON: {
-                    this.setLanguageMode(new JsonMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_GLSL: {
-                    // If we don't use the worker then we don't get a confirmation.
-                    this.setLanguageMode(new GlslMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_CSS:
-                case LANGUAGE_LESS: {
-                    // If we don't use the worker then we don't get a confirmation.
-                    this.setUseWorker(false);
-                    this.setLanguageMode(new CssMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_LATEX: {
-                    this.setUseWrapMode(true);
-                    // editor.setWrapBehavioursEnabled(true);
-                    this.setLanguageMode(new LatexMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_MARKDOWN: {
-                    this.setUseWrapMode(true);
-                    // editor.setWrapBehavioursEnabled(true);
-                    this.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_MATLAB: {
-                    this.setUseWorker(false);
-                    this.setLanguageMode(new MatlabMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_CSV: {
-                    this.setLanguageMode(new CsvMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_TEXT: {
-                    this.setLanguageMode(new TextMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_XML: {
-                    this.setLanguageMode(new XmlMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                case LANGUAGE_YAML: {
-                    this.setLanguageMode(new YamlMode('/js/worker.js', workerImports), onSetLanguageMode);
-                    break;
-                }
-                default: {
-                    reject(new Error(`Unrecognized mode '${mode}'.`));
-                }
-            }
-        });
-    }
-
-    /**
      * Sets a new langauge mode for the `EditSession`.
      * This method also emits the `'changeMode'` event.
      * If a background tokenizer is set, the `'tokenizerUpdate'` event is also emitted.
      *
      * @param mode Set a new language mode instance or module name.
      * @param callback
-     * 
-     * TODO: This should become a private helper.
      */
-    private setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
+    public setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
 
         if (this.$mode === mode) {
             setTimeout(callback, 0);

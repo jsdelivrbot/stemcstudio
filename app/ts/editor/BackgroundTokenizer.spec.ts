@@ -1,5 +1,6 @@
 import { Document } from 'editor-document';
 import { EditSession } from './EditSession';
+import { setLanguage } from '../directives/editor/setLanguage';
 
 describe("JavaScript", function () {
 
@@ -10,7 +11,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -39,7 +40,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -68,7 +69,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -97,7 +98,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -130,7 +131,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -159,7 +160,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -195,7 +196,7 @@ describe("JavaScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('JavaScript');
+        setLanguage(session, 'JavaScript');
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -234,7 +235,7 @@ describe("TypeScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('TypeScript');
+        setLanguage(session, 'TypeScript');
 
         describe("tokens", function () {
             describe("(row = 0)", function () {
@@ -449,7 +450,7 @@ describe("TypeScript", function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage('TypeScript');
+        setLanguage(session, 'TypeScript');
 
         describe("tokens", function () {
             describe("(row = 0)", function () {

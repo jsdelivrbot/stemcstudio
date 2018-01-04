@@ -9,6 +9,7 @@ import { EditorPreferencesService } from '../../modules/editors/EditorPreference
 import { EditorPreferencesEvent } from '../../modules/editors/EditorPreferencesEvent';
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import { WsModel } from '../../modules/wsmodel/WsModel';
+import { setLanguage } from '../../directives/editor/setLanguage';
 
 const noop = function () { /* Do nothing. */ };
 
@@ -82,7 +83,7 @@ export function problems($timeout: ITimeoutService, editorPreferencesService: Ed
                 const editSession = new EditSession(doc);
                 const editor: Editor = new Editor(renderer, editSession);
 
-                editSession.setLanguage('Text')
+                setLanguage(editSession, 'Text')
                     .catch(function (err) {
                         console.warn(`setLanguageMode('Text') failed. ${err}`);
                     });

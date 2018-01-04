@@ -1,0 +1,1 @@
+module.exports = require("npm:cliui@4.0.0/index.js");

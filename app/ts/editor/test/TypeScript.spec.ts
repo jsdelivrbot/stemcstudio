@@ -1,6 +1,7 @@
 import { Document } from 'editor-document';
 import { EditSession } from '../EditSession';
 import { HighlighterToken } from '../mode/Highlighter';
+import { setLanguage } from '../../directives/editor/setLanguage';
 
 const LANGUAGE_TS = "TypeScript";
 
@@ -13,7 +14,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -42,7 +43,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -71,7 +72,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -100,7 +101,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -133,7 +134,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -162,7 +163,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
 
         describe("tokens", function () {
             describe("(0)", function () {
@@ -258,7 +259,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
         const aTokens = session.getTokens(0);
 
         // console.lg(`\n${JSON.stringify(aTokens, null, 2)}\n`);
@@ -346,7 +347,7 @@ describe(LANGUAGE_TS, function () {
         const session = new EditSession(doc);
         // session.traceTokenizer = true;
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
         const aTokens = session.getTokens(0);
 
         // console.lg(`\n${JSON.stringify(aTokens, null, 2)}\n`);
@@ -462,7 +463,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
         const aTokens = session.getTokens(0);
 
         // console.lg(`\n${JSON.stringify(aTokens, null, 2)}\n`);
@@ -570,7 +571,7 @@ describe(LANGUAGE_TS, function () {
 
         const session = new EditSession(doc);
         session.setUseWorker(false);
-        session.setLanguage(LANGUAGE_TS);
+        setLanguage(session, LANGUAGE_TS);
         const aTokens = session.getTokens(0);
 
         // console.lg(`\n${JSON.stringify(aTokens, null, 2)}\n`);

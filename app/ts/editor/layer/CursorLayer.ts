@@ -5,8 +5,8 @@ import { Disposable } from '../base/Disposable';
 import { EditSession } from '../EditSession';
 import { PixelPosition } from '../PixelPosition';
 import { Position } from 'editor-document';
-import { Interval } from '../../utils/Interval';
-import { refChange } from '../../utils/refChange';
+import { Interval } from '../Interval';
+import { refChange } from '../refChange';
 
 let isIE8: boolean;
 

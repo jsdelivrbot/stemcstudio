@@ -1,7 +1,7 @@
 // import { Range } from "../Range";
 import { Command } from './Command';
-import { EditorMaximal as Editor } from '../../virtual/EditorMaximal';
-import { Direction } from '../../virtual/editor';
+import { Editor } from '../Editor';
+import { Direction } from '../Direction';
 // import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
 // import {COMMAND_NAME_DEL} from '../editor_protocol';
 // import {COMMAND_NAME_INSERT_STRING} from "../editor_protocol";

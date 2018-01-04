@@ -1,9 +1,9 @@
 import { createElement } from "./lib/dom";
 import { addListener, preventDefault, removeListener } from "./lib/event";
-import { Disposable } from '../base/Disposable';
+import { Disposable } from './Disposable';
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { EventBus } from "./EventBus";
-import { refChange } from '../utils/refChange';
+import { refChange } from './refChange';
 import { ScrollBarEvent } from './events/ScrollBarEvent';
 
 /**

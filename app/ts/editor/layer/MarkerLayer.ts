@@ -4,7 +4,7 @@ import { MarkerConfig } from "./MarkerConfig";
 import { Range } from "../Range";
 import { RangeBasic } from "../RangeBasic";
 import { clipRows, isEmpty, isMultiLine } from "../RangeHelpers";
-import { refChange } from '../../utils/refChange';
+import { refChange } from '../refChange';
 import { EditSession } from '../EditSession';
 import { Marker } from '../Marker';
 

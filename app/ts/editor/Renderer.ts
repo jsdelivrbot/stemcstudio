@@ -2,7 +2,7 @@ import { addCssClass, createElement, createHTMLDivElement, removeCssClass, setCs
 import { isIE } from './lib/useragent';
 import { appendHTMLLinkElement } from './dom/appendHTMLLinkElement';
 import { removeHTMLLinkElement } from './dom/removeHTMLLinkElement';
-import { Disposable } from '../base/Disposable';
+import { Disposable } from './Disposable';
 import { ensureHTMLStyleElement } from './dom/ensureHTMLStyleElement';
 import { hasHTMLLinkElement } from './dom/hasHTMLLinkElement';
 import { Annotation } from './Annotation';
@@ -12,7 +12,6 @@ import { FontMetrics } from "./layer/FontMetrics";
 import { changeCharacterSize } from './layer/FontMetrics';
 import { GutterLayer } from "./layer/GutterLayer";
 import { MarkerLayer } from "./layer/MarkerLayer";
-// import PrintMarginLayer from "./layer/PrintMarginLayer";
 import { TextLayer } from "./layer/TextLayer";
 
 import { VScrollBar } from "./VScrollBar";
@@ -28,7 +27,7 @@ import { Position } from 'editor-document';
 import { ScreenCoordinates } from './ScreenCoordinates';
 import { ScrollBarEvent } from './events/ScrollBarEvent';
 import { EditorRenderer } from './EditorRenderer';
-import { refChange } from '../utils/refChange';
+import { refChange } from './refChange';
 
 // FIXME: The editor.css is crucial to the operation of the renderer.
 // import editorCss = require("./requirejs/text!./css/editor.css");
