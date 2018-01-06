@@ -2,7 +2,10 @@ import { isUndefined } from 'angular';
 import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IQService, ITimeoutService, ITranscludeFunction } from 'angular';
 import { applyTextChanges } from './applyTextChanges';
 import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
+import { COMMAND_NAME_BACKSPACE } from '../../editor/editor_protocol';
+import { COMMAND_NAME_DEL } from '../../editor/editor_protocol';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
+import { COMMAND_NAME_INSERT_STRING } from '../../editor/editor_protocol';
 import { UndoManager } from '../../editor/UndoManager';
 import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
@@ -31,18 +34,235 @@ import { EditSession } from '../../editor/EditSession';
 import { LanguageModeId } from '../../editor/LanguageMode';
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
 import { setLanguage } from './setLanguage';
+import { Command } from '../../editor/commands/Command';
 
 const BOGUS_WIDTH = 600;
 const BOGUS_HEIGHT = 800;
 const BOGUS_HACK = false;
 
-const FIND_REPLACE_COMMAND = {
+function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
+    return { win, mac };
+}
+
+const BACKSPACE_COMMAND: Command<Editor> = {
+    name: COMMAND_NAME_BACKSPACE,
+    bindKey: bindKey(
+        "Shift-Backspace|Backspace",
+        "Ctrl-Backspace|Shift-Backspace|Backspace|Ctrl-H"
+    ),
+    exec: function (editor: Editor) {
+        if (!editor.readOnly) {
+            editor.remove("left");
+        }
+    },
+    isAvailable(editor): boolean {
+        return !editor.readOnly;
+    },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor"
+};
+
+const DELETE_COMMAND: Command<Editor> = {
+    name: COMMAND_NAME_DEL,
+    bindKey: bindKey("Delete", "Delete|Ctrl-D|Shift-Delete"),
+    exec: function (editor: Editor) {
+        if (!editor.readOnly) {
+            editor.remove("right");
+        }
+    },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor"
+
+};
+
+const FIND_REPLACE_COMMAND: Command<Editor> = {
     name: COMMAND_NAME_FIND,
     bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
     exec: function (editor: Editor) {
         showFindReplace(editor, false);
     },
     readOnly: true // false if this command should not apply in readOnly mode
+};
+
+const GOTO_LINE_COMMAND: Command<Editor> = {
+    name: "goto Line",
+    bindKey: bindKey("Ctrl-L", "Command-L"),
+    exec: function (editor: Editor) {
+        const response = prompt("Enter line number:");
+        if (typeof response === 'string') {
+            const line = parseInt(response, 10);
+            if (!isNaN(line)) {
+                editor.gotoLine(line);
+            }
+        }
+    },
+    readOnly: true
+};
+
+const UNDO_COMMAND: Command<Editor> = {
+    name: "undo",
+    bindKey: bindKey("Ctrl-Z", "Command-Z"),
+    exec: function (editor: Editor) { editor.undo(); }
+};
+
+const REDO_COMMAND: Command<Editor> = {
+    name: "redo",
+    bindKey: bindKey("Ctrl-Shift-Z|Ctrl-Y", "Command-Shift-Z|Command-Y"),
+    exec: function (editor: Editor) { editor.redo(); }
+};
+
+const NAVIGATE_UP_COMMAND: Command<Editor> = {
+    name: "goto Line Up",
+    bindKey: bindKey("Up", "Up|Ctrl-P"),
+    exec: function (editor: Editor, args: { times: number }) { editor.navigateUp(args.times); },
+    multiSelectAction: "forEach",
+    readOnly: true
+};
+
+const NAVIGATE_DOWN_COMMAND: Command<Editor> = {
+    name: "goto Line Down",
+    bindKey: bindKey("Down", "Down|Ctrl-N"),
+    exec: function (editor: Editor, args: { times: number }) { editor.navigateDown(args.times); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const NAVIGATE_LEFT_COMMAND: Command<Editor> = {
+    name: "goto Left",
+    bindKey: bindKey("Left", "Left|Ctrl-B"),
+    exec: function (editor: Editor, args: { times: number }) { editor.navigateLeft(args.times); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const NAVIGATE_RIGHT_COMMAND: Command<Editor> = {
+    name: "goto Right",
+    bindKey: bindKey("Right", "Right|Ctrl-F"),
+    exec: function (editor: Editor, args: { times: number }) { editor.navigateRight(args.times); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+/**
+ * Provides support for inserting the text typed by the user.
+ * Inserts text into wherever the cursor is pointing.
+ */
+const TEXT_INSERT_COMMAND: Command<Editor> = {
+    name: COMMAND_NAME_INSERT_STRING,
+    exec: function (editor: Editor, text: string) { editor.insert(text); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor"
+};
+
+const GOTO_LINE_START: Command<Editor> = {
+    name: "goto Line Start",
+    bindKey: bindKey("Alt-Left|Home", "Command-Left|Home|Ctrl-A"),
+    exec: function (editor: Editor) { editor.navigateLineStart(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const GOTO_FILE_START: Command<Editor> = {
+    name: "goto File Start",
+    bindKey: bindKey("Ctrl-Home", "Command-Home|Command-Up"),
+    exec: function (editor: Editor) { editor.navigateFileStart(); },
+    multiSelectAction: "forEach",
+    readOnly: true,
+    scrollIntoView: "animate",
+    group: "fileJump"
+};
+
+const GOTO_LINE_END: Command<Editor> = {
+    name: "goto Line End",
+    bindKey: bindKey("Alt-Right|End", "Command-Right|End|Ctrl-E"),
+    exec: function (editor: Editor) { editor.navigateLineEnd(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const GOTO_FILE_END: Command<Editor> = {
+    name: "goto File End",
+    bindKey: bindKey("Ctrl-End", "Command-End|Command-Down"),
+    exec: function (editor: Editor) { editor.navigateFileEnd(); },
+    multiSelectAction: "forEach",
+    readOnly: true,
+    scrollIntoView: "animate",
+    group: "fileJump"
+};
+
+const OVERWRITE: Command<Editor> = {
+    name: "toggle Overwrite",
+    bindKey: bindKey("Insert", "Insert"),
+    exec: function (editor: Editor) { editor.toggleOverwrite(); },
+    readOnly: true
+};
+
+const GOTO_PAGE_DOWN: Command<Editor> = {
+    name: "goto Page Down",
+    bindKey: bindKey("PageDown", "PageDown|Ctrl-V"),
+    exec: function (editor: Editor) { editor.gotoPageDown(); },
+    readOnly: true
+};
+
+const GOTO_PAGE_UP: Command<Editor> = {
+    name: "goto Page Up",
+    bindKey: "PageUp",
+    exec: function (editor: Editor) { editor.gotoPageUp(); },
+    readOnly: true
+};
+
+const SELECT_PAGE_DOWN: Command<Editor> = {
+    name: "select Page Down",
+    bindKey: "Shift-PageDown",
+    exec: function (editor: Editor) { editor.selectPageDown(); },
+    readOnly: true
+};
+
+const SELECT_PAGE_UP: Command<Editor> = {
+    name: "select Page Up",
+    bindKey: "Shift-PageUp",
+    exec: function (editor: Editor) { editor.selectPageUp(); },
+    readOnly: true
+};
+
+const SELECT_DOWN: Command<Editor> = {
+    name: "select Down",
+    bindKey: bindKey("Shift-Down", "Shift-Down|Ctrl-Shift-N"),
+    exec: function (editor: Editor) { editor.selectDown(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const SELECT_UP: Command<Editor> = {
+    name: "select Up",
+    bindKey: bindKey("Shift-Up", "Shift-Up|Ctrl-Shift-P"),
+    exec: function (editor: Editor) { editor.selectUp(); },
+    multiSelectAction: "forEach",
+    readOnly: true
+};
+
+const SELECT_LEFT: Command<Editor> = {
+    name: "select Left",
+    bindKey: bindKey("Shift-Left", "Shift-Left|Ctrl-Shift-B"),
+    exec: function (editor: Editor) { editor.selectLeft(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const SELECT_RIGHT: Command<Editor> = {
+    name: "select Right",
+    bindKey: bindKey("Shift-Right", "Shift-Right"),
+    exec: function (editor: Editor) { editor.selectRight(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
 };
 
 interface EditorDetacher {
@@ -362,9 +582,44 @@ export function createEditorDirective(
  * TODO: The directive should not be able to add commands that the editor cannot fulfil.
  */
 function addCommands(path: string, editor: Editor, session: EditSession, wsController: WorkspaceEditorHost, editorPreferencesService: EditorPreferencesService): void {
+
+    editor.addCommand(TEXT_INSERT_COMMAND);
+
+    editor.addCommand(BACKSPACE_COMMAND);
+    editor.addCommand(DELETE_COMMAND);
+
     editor.addCommand(FIND_REPLACE_COMMAND);
+    editor.addCommand(GOTO_LINE_COMMAND);
+
+    editor.addCommand(UNDO_COMMAND);
+    editor.addCommand(REDO_COMMAND);
+
+    editor.addCommand(NAVIGATE_DOWN_COMMAND);
+    editor.addCommand(NAVIGATE_UP_COMMAND);
+    editor.addCommand(NAVIGATE_LEFT_COMMAND);
+    editor.addCommand(NAVIGATE_RIGHT_COMMAND);
+
+    editor.addCommand(GOTO_LINE_START);
+    editor.addCommand(GOTO_FILE_START);
+
+    editor.addCommand(GOTO_LINE_END);
+    editor.addCommand(GOTO_FILE_END);
+
+    editor.addCommand(GOTO_PAGE_DOWN);
+    editor.addCommand(GOTO_PAGE_UP);
+
+    editor.addCommand(SELECT_PAGE_DOWN);
+    editor.addCommand(SELECT_PAGE_UP);
+
+    editor.addCommand(SELECT_DOWN);
+    editor.addCommand(SELECT_UP);
+    editor.addCommand(SELECT_LEFT);
+    editor.addCommand(SELECT_RIGHT);
+
+    editor.addCommand(OVERWRITE);
+
     editor.addCommand({
-        name: 'Replace',
+        name: 'replace',
         bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
         exec: function () {
             showFindReplace(editor, true);
@@ -372,7 +627,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         readOnly: true // false if this command should not apply in readOnly mode
     });
     editor.addCommand({
-        name: 'goToNextError',
+        name: 'goto Next Error',
         bindKey: { win: 'Alt-E', mac: 'F4' },
         exec: function () {
             showErrorMarker(editor, +1);
@@ -381,7 +636,7 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         readOnly: true
     });
     editor.addCommand({
-        name: 'goToPreviousError',
+        name: 'goto Previous Error',
         bindKey: { win: 'Alt-Shift-E', mac: 'Shift-F4' },
         exec: function () {
             showErrorMarker(editor, -1);
@@ -390,14 +645,14 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         readOnly: true
     });
     editor.addCommand({
-        name: "showGreekKeyboard",
+        name: "show Greek Keyboard",
         bindKey: { win: "Ctrl-Alt-G", mac: "Command-Alt-G" },
         exec: function () {
             showGreekKeyboard(editor);
         }
     });
     editor.addCommand({
-        name: "showKeyboardShortcuts",
+        name: "show Keyboard Shortcuts",
         bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
         exec: function () {
             showKeyboardShortcuts(editor);

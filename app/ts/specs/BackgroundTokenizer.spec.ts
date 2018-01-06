@@ -1,5 +1,5 @@
 import { Document } from 'editor-document';
-import { EditSession } from './EditSession';
+import { EditSession } from '../editor/EditSession';
 import { setLanguage } from '../directives/editor/setLanguage';
 
 describe("JavaScript", function () {

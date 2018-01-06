@@ -1,7 +1,7 @@
 import { Document } from 'editor-document';
-import { EditSession } from '../EditSession';
-import { HighlighterToken } from '../mode/Highlighter';
-import { setLanguage } from '../../directives/editor/setLanguage';
+import { EditSession } from '../editor/EditSession';
+import { HighlighterToken } from '../editor/mode/Highlighter';
+import { setLanguage } from '../directives/editor/setLanguage';
 
 const LANGUAGE_TS = "TypeScript";
 

@@ -1,7 +1,7 @@
 import { createElement } from "../lib/dom";
 import { stringRepeat } from "../lib/lang";
 import { AbstractLayer } from './AbstractLayer';
-import { Disposable } from '../base/Disposable';
+import { Disposable } from '../Disposable';
 import { EditSession } from "../EditSession";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from "../lib/EventEmitterClass";

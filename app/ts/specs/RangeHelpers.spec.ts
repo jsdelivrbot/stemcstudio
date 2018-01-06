@@ -1,5 +1,5 @@
-import { Range } from './Range';
-import { clipRows } from './RangeHelpers';
+import { Range } from '../editor/Range';
+import { clipRows } from '../editor/RangeHelpers';
 
 describe("RangeHelpers", function () {
     describe("clipRows", function () {

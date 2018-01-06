@@ -1,7 +1,7 @@
 import { addCssClass, createElement, removeCssClass, setCssClass } from "../lib/dom";
 import { AbstractLayer } from './AbstractLayer';
 import { CursorConfig } from './CursorConfig';
-import { Disposable } from '../base/Disposable';
+import { Disposable } from '../Disposable';
 import { EditSession } from '../EditSession';
 import { PixelPosition } from '../PixelPosition';
 import { Position } from 'editor-document';

@@ -4,7 +4,7 @@ import { isIE } from "../lib/useragent";
 import { EventBus } from "../EventBus";
 import { EventEmitterClass } from "../lib/EventEmitterClass";
 import { refChange } from '../refChange';
-import { Shareable } from '../base/Shareable';
+import { Shareable } from '../Shareable';
 
 let CHAR_COUNT = 0;
 

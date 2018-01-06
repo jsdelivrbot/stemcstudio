@@ -29,7 +29,6 @@ import { TextAndSelection } from "./TextAndSelection";
 import { EventEmitterClass } from "./lib/EventEmitterClass";
 import { Command } from "./commands/Command";
 import { CommandManager } from "./commands/CommandManager";
-import { commands as defaultCommands } from "./commands/default_commands";
 import { TokenIterator } from "./TokenIterator";
 import { COMMAND_NAME_AUTO_COMPLETE } from './editor_protocol';
 import { COMMAND_NAME_BACKSPACE } from './editor_protocol';
@@ -203,8 +202,9 @@ export class Editor {
 
     /**
      * The command manager.
+     * It is initially devoid of commands.
      */
-    public readonly commands = new CommandManager<Editor>(isMac ? "mac" : "win", defaultCommands);
+    public readonly commands = new CommandManager<Editor>(isMac ? "mac" : "win", []);
 
     /**
      *

@@ -1,6 +1,6 @@
 import { Delta } from 'editor-document';
 import { Document } from 'editor-document';
-import { Range } from './Range';
+import { Range } from '../editor/Range';
 
 describe("Document", function () {
     describe("insert text in line", function () {

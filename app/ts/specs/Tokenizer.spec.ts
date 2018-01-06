@@ -1,6 +1,6 @@
-import { Tokenizer } from './Tokenizer';
-import { createSplitterRegexp } from './Tokenizer';
-import { removeCapturingGroups } from './Tokenizer';
+import { Tokenizer } from '../editor/Tokenizer';
+import { createSplitterRegexp } from '../editor/Tokenizer';
+import { removeCapturingGroups } from '../editor/Tokenizer';
 
 describe("Tokenizer", function () {
     it("constructor", function () {

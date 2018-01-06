@@ -1,6 +1,6 @@
-import {Behaviour} from '../Behaviour';
-import {CstyleBehaviour} from './CstyleBehaviour';
-import {XmlBehaviour} from "../behaviour/XmlBehaviour";
+import { Behaviour } from '../Behaviour';
+import { CstyleBehaviour } from './CstyleBehaviour';
+import { XmlBehaviour } from "../behaviour/XmlBehaviour";
 import { TokenIterator } from "../../TokenIterator";
 import { Editor } from "../../Editor";
 import { EditSession } from "../../EditSession";
@@ -45,7 +45,8 @@ export class XQueryBehaviour extends Behaviour {
                 }
                 let tag = token.value.substring(1);
                 if (atCursor) {
-                    tag = tag.substring(0, position.column - token.start);
+                    // TODO: Some work to do here on the type-safety of tokens.
+                    tag = tag.substring(0, position.column - token['start']);
                 }
 
                 return {

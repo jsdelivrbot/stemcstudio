@@ -1,6 +1,6 @@
 import { Document } from 'editor-document';
-import { EditSession } from '../../EditSession';
-import { setLanguage } from '../../../directives/editor/setLanguage';
+import { EditSession } from '../editor/EditSession';
+import { setLanguage } from '../directives/editor/setLanguage';
 
 describe("HtmlFoldMode", function () {
 

@@ -12,6 +12,7 @@ import { HighlighterToken, HighlighterStack, HighlighterStackElement } from './m
 export interface Disposable {
     dispose(): void;
 }
+
 /**
  * 
  */
@@ -106,5 +107,5 @@ export interface LanguageMode {
     /**
      *
      */
-    transformAction(state: string, action: string, editor: Editor, session: EditSession, data: string | RangeBasic): TextAndSelection | Range | undefined;
+    transformAction(state: string, action: 'insertion' | 'deletion', editor: Editor, session: EditSession, data: string | RangeBasic): TextAndSelection | Range | undefined;
 }

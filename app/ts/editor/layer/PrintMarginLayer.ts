@@ -1,5 +1,5 @@
 import { AbstractLayer } from './AbstractLayer';
-import { refChange } from '../../utils/refChange';
+import { refChange } from '../refChange';
 
 export class PrintMarginLayer extends AbstractLayer {
 

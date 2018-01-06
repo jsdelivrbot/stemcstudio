@@ -1,15 +1,15 @@
-import { stringRepeat } from "../lib/lang";
-import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
-import { COMMAND_NAME_DEL } from '../editor_protocol';
-import { COMMAND_NAME_INDENT } from "../editor_protocol";
-import { COMMAND_NAME_OUTDENT } from "../editor_protocol";
-import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
-import { createGotoDefinitionCommand } from '../../workbench/commands/gotoDefinition';
-import { createCutCommand } from '../../workbench/commands/cut';
-import { createCopyCommand } from '../../workbench/commands/copy';
-import { createPasteCommand } from '../../workbench/commands/paste';
-import { Editor } from '../../editor/Editor';
-import { Command } from './Command';
+import { stringRepeat } from "../editor/lib/lang";
+import { COMMAND_NAME_BACKSPACE } from '../editor/editor_protocol';
+import { COMMAND_NAME_DEL } from '../editor/editor_protocol';
+import { COMMAND_NAME_INDENT } from "../editor/editor_protocol";
+import { COMMAND_NAME_OUTDENT } from "../editor/editor_protocol";
+import { COMMAND_NAME_INSERT_STRING } from "../editor/editor_protocol";
+import { createGotoDefinitionCommand } from '../workbench/commands/gotoDefinition';
+import { createCutCommand } from '../workbench/commands/cut';
+import { createCopyCommand } from '../workbench/commands/copy';
+import { createPasteCommand } from '../workbench/commands/paste';
+import { Editor } from '../editor/Editor';
+import { Command } from '../editor/commands/Command';
 
 function bindKey(win: string | null, mac: string | null): { win: string | null; mac: string | null } {
     return { win, mac };

@@ -1,7 +1,7 @@
 /**
- * 'autoComplete'
+ * 'auto Complete'
  */
-export const COMMAND_NAME_AUTO_COMPLETE = 'autoComplete';
+export const COMMAND_NAME_AUTO_COMPLETE = 'auto Complete';
 /**
  * 'find'
  */
@@ -9,11 +9,11 @@ export const COMMAND_NAME_FIND = 'find';
 /**
  * 'paste'
  */
-export const COMMAND_NAME_FORMAT_DOCUMENT = 'formatDocument';
+export const COMMAND_NAME_FORMAT_DOCUMENT = 'format Document';
 /**
- * 'gotoDefinition'
+ * 'goto Definition'
  */
-export const COMMAND_NAME_GOTO_DEFINITION = 'gotoDefinition';
+export const COMMAND_NAME_GOTO_DEFINITION = 'goto Definition';
 /**
  * 'indent'
  */

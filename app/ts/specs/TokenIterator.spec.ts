@@ -1,8 +1,8 @@
 import { Document } from 'editor-document';
-import { EditSession } from './EditSession';
-import { HighlighterToken } from './mode/Highlighter';
-import { JavaScriptMode } from './mode/JavaScriptMode';
-import { TokenIterator } from './TokenIterator';
+import { EditSession } from '../editor/EditSession';
+import { HighlighterToken } from '../editor/mode/Highlighter';
+import { JavaScriptMode } from '../editor/mode/JavaScriptMode';
+import { TokenIterator } from '../editor/TokenIterator';
 
 function expectNotNull<T>(x: T | null): T {
     if (x) {
