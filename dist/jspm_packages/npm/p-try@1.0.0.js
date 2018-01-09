@@ -1,0 +1,1 @@
+module.exports = require("npm:p-try@1.0.0/index");

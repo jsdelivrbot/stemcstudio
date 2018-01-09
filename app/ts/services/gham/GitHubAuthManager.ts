@@ -103,7 +103,7 @@ export class GitHubAuthManager implements IGitHubAuthManager {
                             }
                         }
                         else {
-                            done(new Error("Unable to retrieve your authentication token."));
+                            done(new Error("Unable to exchange your authentication code for a token. :("));
                         }
                     })
                     .catch((reason) => {

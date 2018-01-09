@@ -143,3 +143,26 @@ CNAME    www.stemcstudio.com stemcstudio.herokuapp.com
 Once an SSL certificate has been installed on Heroku and the application has an SSL Endpoint,
 the dnsimple DNS records should be updated.
 
+### web.go
+
+This server is an experimental replacement of the NodeJS server.
+
+Build the web.go source into a binary in the root folder.
+
+```bash
+go build
+```
+
+Set the required environment variables.
+
+```bash
+export GITHUB_APPLICATION_CLIENT_ID=b146ae9c79fa94161b98
+export GITHUB_APPLICATION_CLIENT_SECRET=...
+```
+
+Run the server. 
+
+```bash
+./stemcstudio
+```
+

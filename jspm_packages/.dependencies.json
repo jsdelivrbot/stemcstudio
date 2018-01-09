@@ -662,7 +662,6 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1"
   },
-  "npm:p-limit@1.1.0": {},
   "npm:yallist@2.1.2": {},
   "npm:isexe@2.0.0": {
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
@@ -1018,5 +1017,9 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:p-limit@1.2.0": {
+    "p-try": "npm:p-try@^1.0.0"
+  },
+  "npm:p-try@1.0.0": {}
 }

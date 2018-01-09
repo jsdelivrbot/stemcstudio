@@ -20,6 +20,7 @@ import errorHandler = require('errorhandler');
 import { createRoom, getRoom, destroyRoom } from './server/routes/rooms/index';
 import { search, submit } from './server/routes/stemcArXiv/index';
 import { getTranslation } from './server/routes/translations/index';
+import { IncomingMessage } from 'http';
 
 const npm = require('./package.json');
 require('./configure');
@@ -94,7 +95,7 @@ const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
     };
 
     let body = "";
-    const req = https.request(options, (res) => {
+    const req = https.request(options, (res: IncomingMessage) => {
         res.setEncoding('utf8');
         res.on('data', (chunk: string) => { body += chunk; });
         res.on('end', () => { cb(null, qs.parse(body).access_token); });
@@ -117,6 +118,7 @@ app.get("/*", (req: Request, res: Response, next: Function) => {
 });
 
 // Exchange the session code for an access token.
+// Perhaps auhenticate is not such a good name because that has already happened.
 app.get('/authenticate/:code', (req: Request, res: Response) => {
     authenticate(req.params.code, (err, token) => {
         if (err) {
@@ -128,9 +130,14 @@ app.get('/authenticate/:code', (req: Request, res: Response) => {
     });
 });
 
+// GitHub has been instructed to callback here after authentication.
 app.get("/github_callback", (req: Request, res: Response, next: Function) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
     res.cookie(STEMCSTUDIO_GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME, clientId);
+    // Render github_callback.pug template which runs a JavaScript script on the
+    // client that scrapes the code and state parameters from the URL. The client
+    // then request the home page again, causing it to request an exchange of
+    // the temporary code for a token (above).
     res.render("github_callback", {
         npm: npm
     });

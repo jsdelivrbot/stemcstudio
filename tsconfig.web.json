@@ -10,6 +10,7 @@
         "noLib": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
+        "strictFunctionTypes": false,
         "strictNullChecks": false,
         "suppressImplicitAnyIndexErrors": true,
         "typeRoots": [

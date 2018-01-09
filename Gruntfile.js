@@ -257,6 +257,7 @@ function copies(target) {
     const VERSION_TYPESCRIPT_SERVICES = '2.3.4';
 
     return [
+        { src: 'app/index.html', dest: prepend(target, 'index.html') },
         { src: 'app/favicon.ico', dest: prepend(target, 'favicon.ico') },
         { src: 'app/manifest.json', dest: prepend(target, 'manifest.json') },
         { src: 'app/sitemap.xml', dest: prepend(target, 'sitemap.xml') },
