@@ -1,5 +1,5 @@
 import { isUndefined } from 'angular';
-import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IQService, ITimeoutService, ITranscludeFunction } from 'angular';
+import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IQService, IScope, ITimeoutService, ITranscludeFunction } from 'angular';
 import { applyTextChanges } from './applyTextChanges';
 import { ContextMenuItem } from '../contextMenu/ContextMenuItem';
 import { COMMAND_NAME_BACKSPACE } from '../../editor/editor_protocol';
@@ -7,7 +7,8 @@ import { COMMAND_NAME_DEL } from '../../editor/editor_protocol';
 import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from '../../editor/editor_protocol';
 import { UndoManager } from '../../editor/UndoManager';
-import { EditorScope } from './EditorScope';
+// I'd like to use this rather than IScope.
+// import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
 import { showFindReplace } from '../../editor/ext/showFindReplace';
@@ -97,6 +98,38 @@ const GOTO_LINE_COMMAND: Command<Editor> = {
         }
     },
     readOnly: true
+};
+
+const CUT_COMMAND: Command<Editor> = {
+    name: "cut",
+    // Providing the bindKey will disable the default action.
+    // bindKey: bindKey("Ctrl-X", "Command-X"),
+    exec: function (editor: Editor) {
+        editor.cut();
+    },
+    scrollIntoView: "cursor",
+    multiSelectAction: "forEach"
+
+};
+
+const COPY_COMMAND: Command<Editor> = {
+    name: "copy",
+    // Providing the bindKey will disable the default action.
+    // bindKey: bindKey("Ctrl-C", "Command-C"),
+    exec: function (editor: Editor) {
+        editor.copy();
+    },
+    readOnly: true
+};
+
+const PASTE_COMMAND: Command<Editor> = {
+    name: "paste",
+    // Providing the bindKey will disable the default action.
+    // bindKey: bindKey("Ctrl-V", "Command-V"),
+    exec: function (editor: Editor, args: { text: string }) {
+        editor.paste(args);
+    },
+    scrollIntoView: 'cursor'
 };
 
 const UNDO_COMMAND: Command<Editor> = {
@@ -295,7 +328,7 @@ export function createEditorDirective(
      * controllers
      * transclude This parameter will only be set if we set the transclude option to true.
      */
-    function link($scope: EditorScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction): void {
+    function link($scope: IScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction): void {
 
         const ngModel: INgModelController = controllers[0];
         /**
@@ -590,6 +623,10 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
 
     editor.addCommand(FIND_REPLACE_COMMAND);
     editor.addCommand(GOTO_LINE_COMMAND);
+
+    editor.addCommand(CUT_COMMAND);
+    editor.addCommand(COPY_COMMAND);
+    editor.addCommand(PASTE_COMMAND);
 
     editor.addCommand(UNDO_COMMAND);
     editor.addCommand(REDO_COMMAND);
