@@ -53,7 +53,7 @@ System.config({
     "typhon-typescript": "npm:typhon-typescript@0.3.0",
     "ui-select": "npm:ui-select@0.19.8",
     "underscore": "npm:underscore@1.8.3",
-    "zone.js": "npm:zone.js@0.8.19",
+    "zone.js": "npm:zone.js@0.8.20",
     "github:frankwallis/plugin-typescript@2.6.0": {
       "typescript": "npm:typescript@1.7.5"
     },
@@ -155,7 +155,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.8.1",
-      "zone.js": "npm:zone.js@0.8.19"
+      "zone.js": "npm:zone.js@0.8.20"
     },
     "npm:@angular/forms@4.4.6": {
       "@angular/common": "npm:@angular/common@4.4.6",
@@ -278,7 +278,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "constants": "github:jspm/nodelibs-constants@0.1.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "randombytes": "npm:randombytes@2.0.5"
+      "randombytes": "npm:randombytes@2.0.6"
     },
     "npm:browserify-sign@4.0.4": {
       "bn.js": "npm:bn.js@4.11.8",
@@ -393,7 +393,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "pbkdf2": "npm:pbkdf2@3.0.14",
       "public-encrypt": "npm:public-encrypt@4.0.0",
-      "randombytes": "npm:randombytes@2.0.5",
+      "randombytes": "npm:randombytes@2.0.6",
       "randomfill": "npm:randomfill@1.0.3"
     },
     "npm:davinci-csv@0.9.12": {
@@ -421,7 +421,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "miller-rabin": "npm:miller-rabin@4.0.1",
-      "randombytes": "npm:randombytes@2.0.5",
+      "randombytes": "npm:randombytes@2.0.6",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:editor-document@0.0.5": {
@@ -597,7 +597,7 @@ System.config({
     "npm:md5.js@1.3.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "hash-base": "npm:hash-base@3.0.4",
-      "inherits": "npm:inherits@2.0.3"
+      "inherits": "npm:inherits@2.0.1"
     },
     "npm:mem@1.1.0": {
       "mimic-fn": "npm:mimic-fn@1.1.0"
@@ -718,12 +718,12 @@ System.config({
       "create-hash": "npm:create-hash@1.1.3",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "parse-asn1": "npm:parse-asn1@5.1.0",
-      "randombytes": "npm:randombytes@2.0.5"
+      "randombytes": "npm:randombytes@2.0.6"
     },
     "npm:punycode@1.3.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:randombytes@2.0.5": {
+    "npm:randombytes@2.0.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -733,14 +733,14 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "randombytes": "npm:randombytes@2.0.5",
+      "randombytes": "npm:randombytes@2.0.6",
       "safe-buffer": "npm:safe-buffer@5.1.1"
     },
     "npm:readable-stream@1.1.14": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -796,7 +796,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
-      "yargs": "npm:yargs@10.1.0"
+      "yargs": "npm:yargs@10.1.1"
     },
     "npm:signal-exit@3.0.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -879,7 +879,7 @@ System.config({
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string-width@1.0.2": {
@@ -979,7 +979,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:yargs@10.1.0": {
+    "npm:yargs@10.1.1": {
       "cliui": "npm:cliui@4.0.0",
       "decamelize": "npm:decamelize@1.2.0",
       "find-up": "npm:find-up@2.1.0",
@@ -997,7 +997,7 @@ System.config({
       "y18n": "npm:y18n@3.2.1",
       "yargs-parser": "npm:yargs-parser@8.1.0"
     },
-    "npm:zone.js@0.8.19": {
+    "npm:zone.js@0.8.20": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",

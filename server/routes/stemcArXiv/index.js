@@ -16,7 +16,7 @@ function search(request, response) {
     var csd = new AWS.CloudSearchDomain({
         endpoint: 'search-doodle-ref-xieragrgc2gcnrcog3r6bme75u.us-east-1.cloudsearch.amazonaws.com'
     });
-    csd.search({ query: params.query }, function (err, data) {
+    csd.search({ query: params.query, size: 30 }, function (err, data) {
         if (!err) {
             var found = data.hits.found;
             var start = data.hits.start;
@@ -33,8 +33,7 @@ function search(request, response) {
             response.status(200).send(body);
         }
         else {
-            var reason = err;
-            response.status(200).send(reason);
+            response.status(200).send(err);
         }
     });
 }

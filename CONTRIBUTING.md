@@ -183,3 +183,94 @@ Until then https://www.debuggex.com provides a nice visualization.
 Another approach would be a literate API for building RegExp, but that would impact performance.
 
 e.g. https://github.com/VerbalExpressions/JSVerbalExpressions
+
+## AWS
+
+A DynamoDB table called DoodleRef stores references to doodles (projects). A trigger called doodleRefToCloudSearch is used to update CloudSearch. The Domain is called doodle-ref. The region is us-east-1. Sign in using stemcstudio@gmail.com username.
+
+
+```javascript
+'use strict';
+console.log('Loading function');
+
+exports.handler = (event, context, callback) => {
+    //console.log('Received event:', JSON.stringify(event, null, 2));
+    event.Records.forEach((record) => {
+        console.log(record.eventID);
+        console.log(record.eventName);
+        console.log('DynamoDB Record: %j', record.dynamodb);
+    });
+    callback(null, `Successfully processed ${event.Records.length} records.`);
+};
+
+var AWS = require('aws-sdk');
+
+'use strict';
+
+function idString(OwnerKey, ResourceKey, Type) {
+    if (Type === 'Gist') {
+        return "/gists/" + ResourceKey;
+    }
+    else {
+        throw new Error("Type =>" + Type);
+    }
+}
+
+exports.handler = function(event, context, callback) {
+    // console.log('Received event:', JSON.stringify(event, null, 2));
+
+    
+    var documents = event.Records.map(function(record) {
+
+        var keys = record.dynamodb.Keys;
+        var OwnerKey = keys.OwnerKey.S;
+        var ResourceKey = keys.ResourceKey.S;
+        
+        var data = {id : keys.OwnerKey.S};
+        var image;
+        if (record.eventName === 'REMOVE') {
+            data.id = idString(OwnerKey, ResourceKey, record.dynamodb.OldImage.Type.S);
+            data.type = 'delete';
+        }
+        else {
+            image = record.dynamodb.NewImage;
+            
+            data.id = idString(OwnerKey, ResourceKey, image.Type.S);
+            data.type = 'add';
+            data.fields = {};
+            if (typeof OwnerKey === 'string') {
+                data.fields.ownerkey = OwnerKey;
+            }
+            if (typeof ResourceKey === 'string') {
+                data.fields.resourcekey = ResourceKey;
+            }
+            if (image.Title && typeof image.Title.S === 'string') {
+                data.fields.title = image.Title.S;
+            }
+            if (image.Author && typeof image.Author.S === 'string') {
+                data.fields.author = image.Author.S;
+            }
+            if (image.Keywords && typeof image.Keywords.SS === 'object') {
+                data.fields.keywords = image.Keywords.SS;
+            }
+        }
+        
+        return data;
+    });
+    
+    console.log(JSON.stringify(documents, null, 2));
+   
+    var params = {contentType: 'application/json', documents : JSON.stringify(documents) };
+
+    var cloudsearchdomain = new AWS.CloudSearchDomain({endpoint: 'doc-doodle-ref-xieragrgc2gcnrcog3r6bme75u.us-east-1.cloudsearch.amazonaws.com'});
+
+    cloudsearchdomain.uploadDocuments(params, function(err, data) {
+        if(err) {
+            console.log('Error uploading documents to cloudsearch', err, err.stack);
+            context.fail(err);
+        } else {
+            context.succeed("Successfully processed " + event.Records.length + " records.");  
+        }
+    });
+};
+```

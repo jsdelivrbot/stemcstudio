@@ -674,12 +674,6 @@
     "tslib": "npm:tslib@^1.7.1",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:randombytes@2.0.5": {
-    "safe-buffer": "npm:safe-buffer@^5.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:code-writer@0.1.2": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
@@ -969,13 +963,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:angular@1.6.8": {},
-  "npm:zone.js@0.8.19": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:showdown@1.8.6": {
     "yargs": "npm:yargs@^10.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -1000,7 +987,11 @@
     "wrap-ansi": "npm:wrap-ansi@^2.0.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:yargs@10.1.0": {
+  "npm:p-limit@1.2.0": {
+    "p-try": "npm:p-try@^1.0.0"
+  },
+  "npm:p-try@1.0.0": {},
+  "npm:yargs@10.1.1": {
     "cliui": "npm:cliui@^4.0.0",
     "decamelize": "npm:decamelize@^1.1.1",
     "find-up": "npm:find-up@^2.1.0",
@@ -1015,11 +1006,20 @@
     "yargs-parser": "npm:yargs-parser@^8.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:p-limit@1.2.0": {
-    "p-try": "npm:p-try@^1.0.0"
+  "npm:zone.js@0.8.20": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:p-try@1.0.0": {}
+  "npm:randombytes@2.0.6": {
+    "safe-buffer": "npm:safe-buffer@^5.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  }
 }

@@ -10,7 +10,7 @@ import { isArray } from '../../../../utils/isArray';
 import { isString } from '../../../../utils/isString';
 
 /**
- * 
+ * Writes a record (Doodle reference) to the AWS DynamoDB table called DoodleRef.
  */
 export function putDoodleRef(doodle: { owner: string, gistId: string, title: string, author: string, keywords: string[] }, next: (err: AWS.Reason, data: any) => any) {
     const db = new AWS.DynamoDB();
