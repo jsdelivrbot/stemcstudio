@@ -298,6 +298,22 @@ const SELECT_RIGHT: Command<Editor> = {
     readOnly: true
 };
 
+const INDENT_COMMAND: Command<Editor> = {
+    name: "indent",
+    bindKey: bindKey("Tab", "Tab"),
+    exec: function (editor: Editor) { editor.indent(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "selectionPart"
+};
+
+const OUTDENT_COMMAND: Command<Editor> = {
+    name: "outdent",
+    bindKey: bindKey("Shift-Tab", "Shift-Tab"),
+    exec: function (editor: Editor) { editor.blockOutdent(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "selectionPart"
+};
+
 interface EditorDetacher {
     (): void;
 }
@@ -652,6 +668,9 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand(SELECT_UP);
     editor.addCommand(SELECT_LEFT);
     editor.addCommand(SELECT_RIGHT);
+
+    editor.addCommand(INDENT_COMMAND);
+    editor.addCommand(OUTDENT_COMMAND);
 
     editor.addCommand(OVERWRITE);
 
