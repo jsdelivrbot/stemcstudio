@@ -246,7 +246,7 @@ function copies(target) {
      * This constant is only used to copy the d.ts file.
      * It must be kept synchronized with the three.js option.
      */
-    const VERSION_THREE = '0.86.0';
+    const VERSION_THREE = '0.89.0';
     /**
      *
      */

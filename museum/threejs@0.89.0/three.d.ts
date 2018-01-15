@@ -4,27 +4,24 @@ declare module THREE {
     export var REVISION: string;
 
     // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.button
-    export enum MOUSE { }
-    export var LEFT: MOUSE;
-    export var MIDDLE: MOUSE;
-    export var RIGHT: MOUSE;
+    export enum MOUSE { LEFT, MIDDLE, RIGHT }
 
     // GL STATE CONSTANTS
     export enum CullFace { }
-    export var CullFaceNone: CullFace;
-    export var CullFaceBack: CullFace;
-    export var CullFaceFront: CullFace;
-    export var CullFaceFrontBack: CullFace;
+    export const CullFaceNone: CullFace;
+    export const CullFaceBack: CullFace;
+    export const CullFaceFront: CullFace;
+    export const CullFaceFrontBack: CullFace;
 
     export enum FrontFaceDirection { }
-    export var FrontFaceDirectionCW: FrontFaceDirection;
-    export var FrontFaceDirectionCCW: FrontFaceDirection;
+    export const FrontFaceDirectionCW: FrontFaceDirection;
+    export const FrontFaceDirectionCCW: FrontFaceDirection;
 
     // Shadowing Type
     export enum ShadowMapType { }
-    export var BasicShadowMap: ShadowMapType;
-    export var PCFShadowMap: ShadowMapType;
-    export var PCFSoftShadowMap: ShadowMapType;
+    export const BasicShadowMap: ShadowMapType;
+    export const PCFShadowMap: ShadowMapType;
+    export const PCFSoftShadowMap: ShadowMapType;
 
     // MATERIAL CONSTANTS
 
@@ -32,40 +29,40 @@ declare module THREE {
      * FrontSide | BackSide | DoubleSide
      */
     export enum Side { }
-    export var FrontSide: Side;
-    export var BackSide: Side;
-    export var DoubleSide: Side;
+    export const FrontSide: Side;
+    export const BackSide: Side;
+    export const DoubleSide: Side;
 
     // shading
     export enum Shading { }
-    export var NoShading: Shading;
-    export var FlatShading: Shading;
-    export var SmoothShading: Shading;
+    export const NoShading: Shading;
+    export const FlatShading: Shading;
+    export const SmoothShading: Shading;
 
     // colors
     export enum Colors { }
-    export var NoColors: Colors;
-    export var FaceColors: Colors;
-    export var VertexColors: Colors;
+    export const NoColors: Colors;
+    export const FaceColors: Colors;
+    export const VertexColors: Colors;
 
     // blending modes
     export enum Blending { }
-    export var NoBlending: Blending;
-    export var NormalBlending: Blending;
-    export var AdditiveBlending: Blending;
-    export var SubtractiveBlending: Blending;
-    export var MultiplyBlending: Blending;
-    export var CustomBlending: Blending;
+    export const NoBlending: Blending;
+    export const NormalBlending: Blending;
+    export const AdditiveBlending: Blending;
+    export const SubtractiveBlending: Blending;
+    export const MultiplyBlending: Blending;
+    export const CustomBlending: Blending;
 
     // custom blending equations
     // (numbers start from 100 not to clash with other
     //  mappings to OpenGL constants defined in Texture.js)
     export enum BlendingEquation { }
-    export var AddEquation: BlendingEquation;
-    export var SubtractEquation: BlendingEquation;
-    export var ReverseSubtractEquation: BlendingEquation;
-    export var MinEquation: BlendingEquation;
-    export var MaxEquation: BlendingEquation;
+    export const AddEquation: BlendingEquation;
+    export const SubtractEquation: BlendingEquation;
+    export const ReverseSubtractEquation: BlendingEquation;
+    export const MinEquation: BlendingEquation;
+    export const MaxEquation: BlendingEquation;
 
     // custom blending destination factors
     export enum BlendingDstFactor { }
@@ -80,16 +77,16 @@ declare module THREE {
 
     // custom blending src factors
     export enum BlendingSrcFactor { }
-    export var DstColorFactor: BlendingSrcFactor;
-    export var OneMinusDstColorFactor: BlendingSrcFactor;
-    export var SrcAlphaSaturateFactor: BlendingSrcFactor;
+    export const DstColorFactor: BlendingSrcFactor;
+    export const OneMinusDstColorFactor: BlendingSrcFactor;
+    export const SrcAlphaSaturateFactor: BlendingSrcFactor;
 
     // TEXTURE CONSTANTS
     // Operations
     export enum Combine { }
-    export var MultiplyOperation: Combine;
-    export var MixOperation: Combine;
-    export var AddOperation: Combine;
+    export const MultiplyOperation: Combine;
+    export const MixOperation: Combine;
+    export const AddOperation: Combine;
 
     // Mapping modes
     export enum Mapping { }
@@ -193,6 +190,7 @@ declare module THREE {
 
         updateCubeMap(renderer: Renderer, scene: Scene): void;
 
+        update(renderer: Renderer, scene: Scene): void;
     }
 
     /**
@@ -349,6 +347,17 @@ declare module THREE {
         clone(): PerspectiveCamera;
     }
 
+    export class StereoCamera extends Camera {
+        constructor();
+
+        aspect: number;
+        eyeSep: number;
+        cameraL: PerspectiveCamera;
+        cameraR: PerspectiveCamera;
+
+        update(camera: PerspectiveCamera): void;
+    }
+
     // Core ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * This class stores data for an attribute associated with a BufferGeometry.
@@ -362,32 +371,57 @@ declare module THREE {
          * itemSize gives the number of values of the array that should be associated with a particular vertex.
          * normalized indicates how the underlying data in the buffer maps to the values in the GLSL shader code.
          */
-        constructor(array: Int8Array | Uint8Array | Int16Array | Uint16Array | Float32Array, itemSize: number, normalized?: boolean);
+        constructor(array: ArrayLike<number>, itemSize: number, normalized?: boolean);
+
+        uuid: string;
         /**
          * Stores the data associated with this attribute. This element should have
          * itemSize * numVertices
          * elements, where numVertices is the number of vertices in the associated geometry.
          * array can be an instance of UInt8Array, Int8Array, UInt16Array, Int16Array, or Float32Array.
          */
-        array: number[];
+        array: ArrayLike<number>;
         /**
          * Records how many items of the array are associated with a particular vertex.
          * For instance, if this attribute is storing a 3-component vector (such as a position, normal, or color),
          * then itemSize should be 3.
          */
         itemSize: number;
+        dynamic: boolean;
+        updateRange: { offset: number, count: number };
+        version: number;
+        normalized: boolean;
         needsUpdate: boolean;
-        length: number;
+        count: number;
+        onUpload: Function;
 
-        copyAt(index1: number, attribute: BufferAttribute, index2: number): void;
-        set(value: number): BufferAttribute;
+        setArray(array?: ArrayBufferView): void;
+        setDynamic(dynamic: boolean): BufferAttribute;
+        clone(): this;
+        copy(source: this): this;
+        copyAt(index1: number, attribute: BufferAttribute, index2: number): BufferAttribute;
+        copyArray(array: ArrayLike<number>): BufferAttribute;
+        copyColorsArray(colors: { r: number, g: number, b: number }[]): BufferAttribute;
+        copyIndicesArray(indices: { a: number, b: number, c: number }[]): BufferAttribute;
+        copyVector2sArray(vectors: { x: number, y: number }[]): BufferAttribute;
+        copyVector3sArray(vectors: { x: number, y: number, z: number }[]): BufferAttribute;
+        copyVector4sArray(vectors: { x: number, y: number, z: number, w: number }[]): BufferAttribute;
+        set(value: ArrayLike<number> | ArrayBufferView, offset?: number): BufferAttribute;
+        getX(index: number): number;
         setX(index: number, x: number): BufferAttribute;
+        getY(index: number): number;
         setY(index: number, y: number): BufferAttribute;
+        getZ(index: number): number;
         setZ(index: number, z: number): BufferAttribute;
+        getW(index: number): number;
+        setW(index: number, z: number): BufferAttribute;
         setXY(index: number, x: number, y: number): BufferAttribute;
         setXYZ(index: number, x: number, y: number, z: number): BufferAttribute;
         setXYZW(index: number, x: number, y: number, z: number, w: number): BufferAttribute;
-        clone(): BufferAttribute;
+        /**
+         * @deprecated Use count instead.
+         */
+        length: number;
     }
 
     // deprecated
@@ -442,7 +476,7 @@ declare module THREE {
      *
      * @see <a href="https://github.com/mrdoob/three.js/blob/master/src/core/BufferGeometry.js">src/core/BufferGeometry.js</a>
      */
-    export class BufferGeometry {
+    export class BufferGeometry extends EventDispatcher {
         /**
          * This creates a new BufferGeometry. It also sets several properties to an default value.
          */
@@ -627,6 +661,46 @@ declare module THREE {
     }
 
     /**
+     * @see <a href="https://github.com/mrdoob/three.js/blob/master/src/core/DirectGeometry.js">src/core/DirectGeometry.js</a>
+     */
+    export class DirectGeometry extends EventDispatcher {
+        constructor();
+
+        id: number;
+        uuid: string;
+        name: string;
+        type: string;
+        indices: number[];
+        vertices: Vector3[];
+        normals: Vector3[];
+        colors: Color[];
+        uvs: Vector2[];
+        uvs2: Vector2[];
+        groups: { start: number, materialIndex: number }[];
+        morphTargets: MorphTarget[];
+        skinWeights: number[];
+        skinIndices: number[];
+        boundingBox: Box3;
+        boundingSphere: Sphere;
+        verticesNeedUpdate: boolean;
+        normalsNeedUpdate: boolean;
+        colorsNeedUpdate: boolean;
+        uvsNeedUpdate: boolean;
+        groupsNeedUpdate: boolean;
+
+        computeBoundingBox(): void;
+        computeBoundingSphere(): void;
+        computeGroups(geometry: Geometry): void;
+        fromGeometry(geometry: Geometry): DirectGeometry;
+        dispose(): void;
+
+        // EventDispatcher mixins
+        addEventListener(type: string, listener: (event: Event) => void): void;
+        hasEventListener(type: string, listener: (event: Event) => void): void;
+        removeEventListener(type: string, listener: (event: Event) => void): void;
+        dispatchEvent(event: { type: string;[attachment: string]: any; }): void;
+    }
+    /**
      * JavaScript events for custom objects
      *
      * # Example
@@ -662,27 +736,32 @@ declare module THREE {
          * @param type The type of the listener that gets removed.
          * @param listener The listener function that gets removed.
          */
-        addEventListener(type: string, listener: (event: any) => void): void;
+        addEventListener(type: string, listener: (event: Event) => void): void;
 
         /**
          * Adds a listener to an event type.
          * @param type The type of the listener that gets removed.
          * @param listener The listener function that gets removed.
          */
-        hasEventListener(type: string, listener: (event: any) => void): void;
+        hasEventListener(type: string, listener: (event: Event) => void): void;
 
         /**
          * Removes a listener from an event type.
          * @param type The type of the listener that gets removed.
          * @param listener The listener function that gets removed.
          */
-        removeEventListener(type: string, listener: (event: any) => void): void;
+        removeEventListener(type: string, listener: (event: Event) => void): void;
 
         /**
          * Fire an event type.
          * @param type The type of event that gets fired.
          */
         dispatchEvent(event: { type: string; target: any; }): void;
+    }
+
+    export interface Event {
+        type: string;
+        target: any;
     }
 
     /**
@@ -4305,19 +4384,12 @@ declare module THREE {
     }
 
     export class Line extends Object3D {
-        constructor(geometry?: Geometry, material?: LineDashedMaterial, mode?: number);
-        constructor(geometry?: Geometry, material?: LineBasicMaterial, mode?: number);
-        constructor(geometry?: Geometry, material?: ShaderMaterial, mode?: number);
-        constructor(geometry?: BufferGeometry, material?: LineDashedMaterial, mode?: number);
-        constructor(geometry?: BufferGeometry, material?: LineBasicMaterial, mode?: number);
-        constructor(geometry?: BufferGeometry, material?: ShaderMaterial, mode?: number);
+        constructor(geometry?: Geometry | BufferGeometry, material?: LineDashedMaterial | LineBasicMaterial | ShaderMaterial, mode?: number);
 
         geometry: Geometry | BufferGeometry;
         material: LineDashedMaterial | LineBasicMaterial | ShaderMaterial;
-        mode: LineMode;
 
         raycast(raycaster: Raycaster, intersects: any): void;
-        clone(object?: Line): Line;
     }
 
     /**

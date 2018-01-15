@@ -83,13 +83,15 @@ const VERSION_SNAPSVG = '0.5.0';
 const VERSION_SOCKETIO_CLIENT = '1.5.1';
 const VERSION_STATSJS = '0.16.0';
 // const VERSION_SYSTEMJS = '0.19.37';
-const VERSION_THREEJS = '0.86.0';
+
 /**
  * Caution: The progression on cdnjs is...
- * r80, r81, r82, r83, 86
+ * r80, r81, r82, r83, 84, 85, 86, 87, 88, 89
  * Notice that r84 and r85 are missing and that the `r` has been dropped!
  */
-const RELEASE_THREEJS = '86';
+const RELEASE_THREEJS = '89';
+const VERSION_THREEJS = '0.89.0';
+
 const VERSION_TWO = '0.6.0.1';
 const VERSION_UNITS = '1.5.5';
 // const VERSION_UNDERSCORE = '1.8.3';
