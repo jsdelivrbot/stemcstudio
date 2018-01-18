@@ -20,7 +20,7 @@ export class MwUnit {
     private doc: MwDocument | undefined;
 
     /**
-     * The server will have multiple remotes corresponsing to each client
+     * The server will have multiple remotes corresponding to each client
      * whereas a client will have one remote corresponding to the server.
      */
     private remotes: { [nodeId: string]: MwRemote } = {};
@@ -151,11 +151,13 @@ export class MwUnit {
      * Handles 'edits' sent from the remote server.
      */
     public setChange(roomId: string, path: string, change: MwChange): void {
+        // console.lg(`setChange(roomId=${roomId}, path=${path})`);
         const remote = this.ensureRemote(roomId);
         const action = change.a;
         if (action) {
             switch (action.c) {
                 case ACTION_RAW_OVERWRITE: {
+                    // console.lg("ACTION_RAW_OVERWRITE");
                     const doc = this.ensureDocument(path, roomId, change);
                     const text = decodeURI(action.x as string);
                     doc.setText(text);
@@ -166,6 +168,7 @@ export class MwUnit {
                     break;
                 }
                 case ACTION_RAW_SYNCHONLY: {
+                    // console.lg("ACTION_RAW_SYNCHONLY");
                     const text = decodeURI(action.x as string);
                     const shadow = remote.shadow as MwShadow;
                     // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
@@ -176,6 +179,7 @@ export class MwUnit {
                 }
                 case ACTION_DELTA_OVERWRITE:
                 case ACTION_DELTA_MERGE: {
+                    // console.lg("ACTION_DELTA");
                     const doc = this.doc as MwDocument;
                     const shadow = remote.shadow as MwShadow;
                     const backup = remote.backup as MwShadow;
@@ -190,6 +194,7 @@ export class MwUnit {
                 }
                 case ACTION_NULLIFY_UPPERCASE:
                 case ACTION_NULLIFY_LOWERCASE: {
+                    // console.lg("ACTION_NULLIFY");
                     // We are deleting the file in response to a master delete elsewhere.
                     // Thus we are acting in the slave role.
                     this.workspace.deleteFile(path, false);

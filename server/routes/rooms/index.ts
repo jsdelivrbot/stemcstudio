@@ -790,6 +790,9 @@ function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: s
  */
 export function setEdits(fromId: string, roomId: string, fileId: string, edits: MwEdits, callback: (err: Error, data?: { roomId: string; path: string; broadcast: MwBroadcast }) => void): void {
 
+    // console.log("SET EDITS");
+    // console.log(JSON.stringify(edits));
+
     Promise.all([ensureNodeIdInRoom(fromId, roomId), ensureFileIdInRoom(fileId, roomId)])
         .then(function () {
             ensureRemote(fromId, fileId, roomId)
@@ -843,6 +846,8 @@ export function getEdits(nodeId: string, roomId: string, callback: (err: any, da
                                 files[pathEdit.path] = pathEdit.edits;
                             }
                             // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
+                            // console.log("GET EDITS");
+                            // console.log(JSON.stringify(files));
                             callback(void 0, { fromId: roomId, roomId: nodeId, files });
                         })
                         .catch(function (err) {

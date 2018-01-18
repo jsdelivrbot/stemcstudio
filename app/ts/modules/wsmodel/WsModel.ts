@@ -648,8 +648,8 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         this.editorService = editorService;
     }
 
-    private logLifecycle(message: string): void {
-        console.log(`WsModel.${message}`);
+    private logLifecycle(method: string, message?: string): void {
+        console.log(`WsModel.${method} ${message}`);
     }
 
     private languageServiceOrThrow(): LanguageServiceProxy {
@@ -684,7 +684,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     recycle(): Promise<void> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`recycle()`);
+            this.logLifecycle(`recycle()`, "Entering");
         }
         return new Promise<void>((resolve, reject) => {
             function callback(reason: Error | null | undefined): void {
@@ -705,7 +705,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private recycleInternal(callback: (err: Error | null | undefined) => void): void {
         if (this.waitUntilZeroRefCount) {
             if (this.traceLifecycle) {
-                this.logLifecycle(`WsModel @waitUntilZeroRefCount`);
+                this.logLifecycle(`recycleInternal()`, "waitUntilZeroRefCount");
             }
             this.waitUntilZeroRefCount
                 .then(() => {
@@ -718,7 +718,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
         else if (this.waitUntilMonitoringEnded) {
             if (this.traceLifecycle) {
-                this.logLifecycle(`WsModel @waitUntilMonitoringEnded`);
+                this.logLifecycle(`recycleInternal`, "waitUntilMonitoringEnded");
             }
             this.waitUntilMonitoringEnded
                 .then(() => {
@@ -784,7 +784,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private addRef(): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`addRef() @refCount = ${this.refCount}`);
+            this.logLifecycle(`addRef() with refCount = ${this.refCount}`);
         }
         if (this.refCount === 0) {
             if (this.files || this.trash) {
@@ -813,7 +813,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private release(): void {
         if (this.traceLifecycle) {
-            this.logLifecycle(`release() @refCount = ${this.refCount}`);
+            this.logLifecycle(`release() with refCount = ${this.refCount}`);
         }
         this.refCount--;
         if (this.refCount === 0) {
@@ -1156,9 +1156,23 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         }
     }
 
+    beginDocumentMonitoringPromise(path: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.beginDocumentMonitoring(path, function (err) {
+                if (!err) {
+                    resolve();
+                }
+                else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
     /**
      * Begins monitoring the Document at the specified path for changes.
      * TypeScript and JavaScript files are monitored and added to the Language Service.
+     * All files are monitored so that changes in the Editor are applied to the workspace (Language Service).
      * All files are monitored so that changes trigger an update to local storage.
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
@@ -1288,7 +1302,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private endMonitoring(): Promise<void> {
         if (this.traceLifecycle) {
-            this.logLifecycle("WsModel.endMonitoring()");
+            this.logLifecycle("endMonitoring()", "Entering");
         }
         return new Promise<void>((resolve, reject) => {
             const paths = Object.keys(this.langDocumentChangeListenerRemovers);
@@ -1315,6 +1329,12 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         });
     }
 
+    /**
+     * Adds an ambient dependency.
+     * @param globalName 
+     * @param path 
+     * @param content 
+     */
     addAmbient(globalName: string, path: string, content: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             this.addScript(path, content)
@@ -1327,9 +1347,13 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         });
     }
 
+    /**
+     * Removes an ambient dependency.
+     * @param globalName 
+     */
     removeAmbient(globalName: string): Promise<boolean> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`removeAmbient(globalName = "${globalName}")`);
+            this.logLifecycle(`removeAmbient(globalName = "${globalName}")`, "Entering");
         }
         return new Promise<boolean>((resolve, reject) => {
             const path = this.ambients.pathForName(globalName);
@@ -1350,11 +1374,11 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     }
 
     /**
-     * 
+     * Adds a module dependency.
      */
     addModule(moduleName: string, path: string, content: string): Promise<{ previous: string | undefined; added: boolean }> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`addModule('${moduleName}', '${path}')`);
+            this.logLifecycle(`addModule('${moduleName}', '${path}')`, "Entering");
         }
         return new Promise<{ previous: string | undefined; added: boolean }>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1393,7 +1417,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     removeModule(moduleName: string): Promise<{ previous: string | undefined; removed: boolean }> {
         if (this.traceLifecycle) {
-            this.logLifecycle(`removeModule('${moduleName}')`);
+            this.logLifecycle(`removeModule('${moduleName}')`, "Entering");
         }
         return new Promise<{ previous: string | undefined; removed: boolean }>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1430,7 +1454,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     addScript(path: string, content: string): Promise<boolean> {
         if (this.traceFileOperations) {
-            this.logLifecycle(`addScript(path = "${path}")`);
+            this.logLifecycle(`addScript(path = "${path}")`, "Entering");
         }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1468,7 +1492,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     removeScript(path: string): Promise<boolean> {
         if (this.traceFileOperations) {
-            this.logLifecycle(`removeScript(path = "${path}")`);
+            this.logLifecycle(`removeScript(path = "${path}")`, "Entering");
         }
         return new Promise<boolean>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1532,7 +1556,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
      */
     private updateSession(path: string, diagnostics: Diagnostic[], session: EditSession, origin: DiagnosticOrigin): void {
         if (this.traceFileOperations) {
-            this.logLifecycle(`updateSession(path = "${path}")`);
+            this.logLifecycle(`updateSession(path = "${path}")`, "Entering");
         }
         // We have the path and diagnostics, so we should be able to provide hyperlinks to errors.
         if (!session) {
@@ -1577,7 +1601,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     private diagnosticsForSession(path: string, session: EditSession): Promise<Diagnostic[]> {
         // console.lg(`diagnosticsForSession(path = ${path})`);
         if (this.traceFileOperations) {
-            this.logLifecycle(`diagnosticsForSession(path = "${path}")`);
+            this.logLifecycle(`diagnosticsForSession(path = "${path}")`, "Entering");
         }
         return new Promise<Diagnostic[]>((resolve, reject) => {
             if (this.languageServiceProxy) {
@@ -1668,7 +1692,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     public outputFilesForPath(path: string): void {
         // console.lg(`outputFilesForPath(path = ${path})`);
         if (this.traceFileOperations) {
-            this.logLifecycle(`outputFilesForPath(path = "${path}")`);
+            this.logLifecycle(`outputFilesForPath(path = "${path}")`, "Entering");
         }
         if (this.deletePending[path]) {
             // This is a race condition.

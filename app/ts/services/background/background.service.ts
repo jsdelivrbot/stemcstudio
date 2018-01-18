@@ -97,50 +97,61 @@ export class BackgroundService implements IBackgroundService {
                     .then((room: RoomAgent) => {
                         room.download((err, edits: { [path: string]: MwEdits }) => {
                             if (!err) {
-                                try {
-                                    const paths = Object.keys(edits);
-                                    // We'll first mirror the structure of the workspace in the room.
-                                    // We are expecting Raw edits on every file so every edit is a create.
-                                    for (const path of paths) {
-                                        if (!this.wsModel.existsFile(path)) {
-                                            const newFile = this.wsModel.newFileUnmonitored(path, false);
-                                            this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
-                                                if (!monitoringError) {
-                                                    // Nothing to do.
-                                                }
-                                                else {
-                                                    console.warn(`Unable to begin monitoring the file ${path} in the workspace`);
-                                                }
-                                            });
-                                            newFile.release();
-                                        }
-                                        else {
-                                            console.warn(`Unexpected file. ${path} is aleady in the workspace`);
-                                        }
+
+                                // console.lg("DOWNLOAD");
+                                // console.lg(JSON.stringify(edits));
+
+                                const paths = Object.keys(edits);
+                                // We'll first mirror the structure of the workspace in the room.
+                                // We are expecting Raw edits on every file so every edit is a create.
+                                const promises: Promise<void>[] = [];
+                                for (const path of paths) {
+                                    if (!this.wsModel.existsFile(path)) {
+                                        const newFile = this.wsModel.newFileUnmonitored(path, false);
+                                        promises.push(this.wsModel.beginDocumentMonitoringPromise(path));
+                                        newFile.release();
                                     }
-                                    this.wsModel.connectToRoom(room, false);
-                                    // Take the edits that have been downloaded and set them onto the synchronization units.
-                                    for (const path of paths) {
-                                        const file = this.wsModel.findFileByPath(path);
-                                        if (file) {
-                                            file.unit.setEdits(roomId, path, edits[path]);
-                                        }
+                                    else {
+                                        // The workspace should be clear of any files before the contents of the room are downloaded.
+                                        console.warn(`Unexpected file. ${path} is aleady in the workspace`);
                                     }
-                                    // Because we are already connected, setting the edits should trigger the acknowledgement.
-                                    // this.wsModel.uploadToRoom(room);
-                                    const doodle = this.doodleManager.createDoodle();
-                                    // Tag the Doodle with the roomId so that we can serialize to it without making it the
-                                    // current doodle. Add it to the tail of the list and maybe remove it later?
-                                    doodle.roomId = roomId;
-                                    this.doodleManager.addTail(doodle);
-                                    this.wsModel.updateStorage();
-                                    callback(void 0);
                                 }
-                                finally {
-                                    room.release();
-                                }
+                                // Notice that the promise gives us two pathways and yet we must release the room in both.
+                                // Once we have connected to the room, it is safe to release it.
+                                Promise.all(promises)
+                                    .then(() => {
+                                        try {
+                                            this.wsModel.connectToRoom(room, false);
+                                            // Take the edits that have been downloaded and set them onto the synchronization units.
+                                            for (const path of paths) {
+                                                const file = this.wsModel.findFileByPath(path);
+                                                if (file) {
+                                                    file.unit.setEdits(roomId, path, edits[path]);
+                                                }
+                                            }
+                                            // Because we are already connected, setting the edits should trigger the acknowledgement.
+                                            // this.wsModel.uploadToRoom(room);
+                                            const doodle = this.doodleManager.createDoodle();
+                                            // Tag the Doodle with the roomId so that we can serialize to it without making it the
+                                            // current doodle. Add it to the tail of the list and maybe remove it later?
+                                            doodle.roomId = roomId;
+                                            this.doodleManager.addTail(doodle);
+                                            this.wsModel.updateStorage();
+                                            callback(void 0);
+                                        }
+                                        finally {
+                                            room.release();
+                                        }
+                                    })
+                                    .catch((reason) => {
+                                        const msg = `Unable to begin monitoring on all files in the workspace: ${reason}`;
+                                        console.warn(msg);
+                                        room.release();
+                                        callback(new Error(msg));
+                                    });
                             }
                             else {
+                                // It's OK to release the room here because we don't do anything with it.
                                 room.release();
                                 callback(new Error(`Unable to download workspace from room: ${err}`));
                             }

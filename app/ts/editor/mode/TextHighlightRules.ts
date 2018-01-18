@@ -39,9 +39,9 @@ const popState = function (this: HighlighterRule, currentState: string, stack: H
     // Why is shift called twice? Probably because we push twice in pushState!
     // console.warn(`(TextHighlightRules) popState(currentState = ${currentState}, stack = ${JSON.stringify(stack)})`);
     /*const shiftedOne =*/ stack.shift();
-    // console.log(`shiftedOne = ${shiftedOne}, stack = ${JSON.stringify(stack)}`);
+    // console.lg(`shiftedOne = ${shiftedOne}, stack = ${JSON.stringify(stack)}`);
     const shiftedTwo = stack.shift();
-    // console.log(`shiftedTwo = ${shiftedTwo}, stack = ${JSON.stringify(stack)}`);
+    // console.lg(`shiftedTwo = ${shiftedTwo}, stack = ${JSON.stringify(stack)}`);
     return shiftedTwo || STATE_START;
 };
 

@@ -31,22 +31,22 @@ export function computeContextMenu(path: string, editor: Editor, indentSize: num
         /*
         menuItems.push({
             label: "Peek Definition", action: () => {
-                console.log(`Peek Definition`);
+                console.lg(`Peek Definition`);
             }
         });
         menuItems.push({
             label: "Go to Implementation", action: () => {
-                console.log(`Go to Implementation`);
+                console.lg(`Go to Implementation`);
             }
         });
         menuItems.push({
             label: "Go to Type Definition", action: () => {
-                console.log(`Go to Type Definition`);
+                console.lg(`Go to Type Definition`);
             }
         });
         menuItems.push({
             label: "Find All References", action: () => {
-                console.log(`Find All References`);
+                console.lg(`Find All References`);
             }
         });
         */
@@ -59,7 +59,7 @@ export function computeContextMenu(path: string, editor: Editor, indentSize: num
         /*
         menuItems.push({
             label: "Rename Symbol", action: () => {
-                console.log(`Rename Symbol`);
+                console.lg(`Rename Symbol`);
             }
         });
         */
@@ -67,7 +67,7 @@ export function computeContextMenu(path: string, editor: Editor, indentSize: num
         /*
         menuItems.push({
             label: "Change All Occurrences", action: () => {
-                console.log(`Change All Occurrences`);
+                console.lg(`Change All Occurrences`);
             }
         });
         */

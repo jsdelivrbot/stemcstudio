@@ -68,6 +68,7 @@ export class RoomAgent implements Shareable {
      * roomId is the identifier of the room (on the server side).
      */
     constructor(roomId: string, owner: string) {
+        // console.lg(`RoomAgent(roomId=${roomId}, owner=${owner})`);
         this.roomId = roomId;
         this.owner = owner;
 
@@ -102,6 +103,7 @@ export class RoomAgent implements Shareable {
      * 
      */
     addRef(): number {
+        // console.lg(`RoomAgent.addRef(roomId=${this.roomId}, owner=${this.owner})`);
         if (this.refCount <= 0) {
             throw new Error(`RoomAgent.addRef when refCount is ${this.refCount}`);
         }
@@ -113,6 +115,7 @@ export class RoomAgent implements Shareable {
      * 
      */
     release(): number {
+        // console.lg(`RoomAgent.release(roomId=${this.roomId}, owner=${this.owner})`);
         if (this.refCount <= 0) {
             throw new Error(`RoomAgent.release when refCount is ${this.refCount}`);
         }

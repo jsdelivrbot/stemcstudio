@@ -8,7 +8,7 @@ import { COMMAND_NAME_FIND } from '../../editor/editor_protocol';
 import { COMMAND_NAME_INSERT_STRING } from '../../editor/editor_protocol';
 import { UndoManager } from '../../editor/UndoManager';
 // I'd like to use this rather than IScope.
-// import { EditorScope } from './EditorScope';
+import { EditorScope } from './EditorScope';
 import { FormatCodeSettings } from '../../editor/workspace/FormatCodeSettings';
 import { showErrorMarker } from '../../editor/ext/showErrorMarker';
 import { showFindReplace } from '../../editor/ext/showFindReplace';
@@ -346,6 +346,8 @@ export function createEditorDirective(
      */
     function link($scope: IScope, element: IAugmentedJQuery, attrs: IAttributes, controllers: {}, transclude: ITranscludeFunction): void {
 
+        const scope: EditorScope = $scope as EditorScope;
+
         const ngModel: INgModelController = controllers[0];
         /**
          * The controller that is a proxy for the workspace.
@@ -440,11 +442,11 @@ export function createEditorDirective(
                         editor.setSession(session);
                         const undoManager = new UndoManager();
                         editor.setUndoManager(undoManager);
-                        addCommands($scope.path, editor, session, wsController, editorPreferencesService);
+                        addCommands(scope.path, editor, session, wsController, editorPreferencesService);
 
                         // We must wait for the $render function to be called so that we have a session.
                         const mode = file.mode;
-                        const path = $scope.path;
+                        const path = scope.path;
                         if (mode) {
                             setLanguage(session, mode as LanguageModeId)
                                 .then(function () {
@@ -519,10 +521,10 @@ export function createEditorDirective(
             const indentSize = editorPreferencesService.getTabSize();
             const file: WsFile = ngModel.$viewValue;
             const session = file.getSession();
-            const menu: (ContextMenuItem | null)[] = computeContextMenu($scope.path, editor, indentSize, {
+            const menu: (ContextMenuItem | null)[] = computeContextMenu(scope.path, editor, indentSize, {
                 getFormattingEditsForDocument() {
                     const settings = formatCodeSettings(indentSize);
-                    return wsController.getFormattingEditsForDocument($scope.path, settings);
+                    return wsController.getFormattingEditsForDocument(scope.path, settings);
                 },
                 applyTextChanges(edits: TextChange<number>[], session: EditSession) {
                     applyTextChanges(edits, session);

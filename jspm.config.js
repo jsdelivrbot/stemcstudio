@@ -43,7 +43,7 @@ System.config({
     "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@1.0.0",
     "jquery": "npm:jquery@2.2.4",
     "monaco-editor": "npm:monaco-editor@0.8.3",
-    "reflect-metadata": "npm:reflect-metadata@0.1.10",
+    "reflect-metadata": "npm:reflect-metadata@0.1.12",
     "rxjs": "npm:rxjs@5.5.6",
     "showdown": "npm:showdown@1.8.6",
     "socket.io": "npm:socket.io@1.4.6",
@@ -216,7 +216,7 @@ System.config({
     "npm:asn1.js@4.9.2": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -413,7 +413,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -544,7 +544,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash-base@3.0.4": {
@@ -597,7 +597,7 @@ System.config({
     "npm:md5.js@1.3.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "hash-base": "npm:hash-base@3.0.4",
-      "inherits": "npm:inherits@2.0.3"
+      "inherits": "npm:inherits@2.0.1"
     },
     "npm:mem@1.1.0": {
       "mimic-fn": "npm:mimic-fn@1.1.0"
@@ -796,7 +796,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
-      "yargs": "npm:yargs@10.1.1"
+      "yargs": "npm:yargs@10.1.2"
     },
     "npm:signal-exit@3.0.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -979,7 +979,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:yargs@10.1.1": {
+    "npm:yargs@10.1.2": {
       "cliui": "npm:cliui@4.0.0",
       "decamelize": "npm:decamelize@1.2.0",
       "find-up": "npm:find-up@2.1.0",

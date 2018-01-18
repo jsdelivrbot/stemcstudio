@@ -40,7 +40,7 @@ export interface IRoomsService {
     existsRoom(roomId: string): Promise<void>;
 
     /**
-     * 
+     * Gets a room (agent).
      */
     getRoom(roomId: string): Promise<RoomAgent>;
 

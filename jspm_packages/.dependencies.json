@@ -537,7 +537,6 @@
     "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:reflect-metadata@0.1.10": {},
   "github:es-shims/es6-shim@0.35.3": {},
   "npm:hmac-drbg@1.0.1": {
     "hash.js": "npm:hash.js@^1.0.3",
@@ -991,7 +990,21 @@
     "p-try": "npm:p-try@^1.0.0"
   },
   "npm:p-try@1.0.0": {},
-  "npm:yargs@10.1.1": {
+  "npm:zone.js@0.8.20": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:randombytes@2.0.6": {
+    "safe-buffer": "npm:safe-buffer@^5.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:reflect-metadata@0.1.12": {},
+  "npm:yargs@10.1.2": {
     "cliui": "npm:cliui@^4.0.0",
     "decamelize": "npm:decamelize@^1.1.1",
     "find-up": "npm:find-up@^2.1.0",
@@ -1008,18 +1021,5 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
-  },
-  "npm:zone.js@0.8.20": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
-  "npm:randombytes@2.0.6": {
-    "safe-buffer": "npm:safe-buffer@^5.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

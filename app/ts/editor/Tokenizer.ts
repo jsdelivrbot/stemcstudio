@@ -43,7 +43,7 @@ function pushIfValidToken(token: { type: string | null; value: string }, tokens:
     if (isToken(token)) {
         if (trace) {
             // Because the push happens after the change of state, this is confusing.
-            // console.log(`token = ${JSON.stringify(token)})`);
+            // console.lg(`token = ${JSON.stringify(token)})`);
         }
         tokens.push(token);
     }
