@@ -1,0 +1,1 @@
+module.exports = require("npm:tslib@1.9.0/tslib.js");
