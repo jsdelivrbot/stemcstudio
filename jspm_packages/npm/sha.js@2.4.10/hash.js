@@ -43,7 +43,7 @@
     if (bits <= 0xffffffff) {
       this._block.writeUInt32BE(bits, this._blockSize - 4);
     } else {
-      var lowBits = bits & 0xffffffff;
+      var lowBits = (bits & 0xffffffff) >>> 0;
       var highBits = (bits - lowBits) / 0x100000000;
       this._block.writeUInt32BE(highBits, this._blockSize - 8);
       this._block.writeUInt32BE(lowBits, this._blockSize - 4);

@@ -4,7 +4,7 @@ import { IOptionManager } from './IOptionManager';
 import { validate } from '../../utils/validateNpmPackageName';
 
 /**
- * It's a passthru if the package name is valid.
+ * It's a passthru if the package name is a valid NPM package name.
  * Otherwise, it blows up in your face. Nice!
  */
 const ensurePackageName = function (packageName: string): string {
@@ -48,9 +48,15 @@ const VERSION_ANGULAR_ROUTER = VERSION_ANGULAR;
  */
 const VERSION_ANGULAR_IN_MEMORY_WEB_API = '0.3.2';
 /**
+ * The version of AngularJS on the Google Hosted Libraries CDN.
+ * Notice that this may be behind the latest NPM version.
+ */
+const VERSION_ANGULARJS_CDN = '1.6.7';
+/**
  * 
  */
-const VERSION_ANGULARJS = '1.5.3';
+const VERSION_ANGULARJS_TYPES = '1.5.3';
+
 const VERSION_BACONJS = '0.7.89';
 const VERSION_BIWASCHEME = '0.6.6';
 const VERSION_CSV = '0.9.8';
@@ -128,7 +134,7 @@ function vendorFolder(packageFolder: string, version: string | undefined, subFol
  * AngularJS (1.x). Everything goes in the vendor folder.
  */
 function angularJS(fileName: string): string {
-    return vendorFolder('angularJS', VERSION_ANGULARJS, void 0, fileName);
+    return vendorFolder('angular', VERSION_ANGULARJS_TYPES, void 0, fileName);
 }
 /**
  * Angular (n.x where n > 1). Everything goes in the vendor folder.
@@ -388,17 +394,17 @@ export class OptionManager implements IOptionManager {
             },
             {
                 packageName: ensurePackageName('angular'),
-                moduleName: 'ng',
+                moduleName: undefined,
                 libraryKind: LibraryKind.Global,
-                globalName: 'ng',
+                globalName: 'angular',
                 description: "AngularJS: HTML enhanced for web apps!",
                 homepage: 'https://angularjs.org',
-                version: VERSION_ANGULARJS,
+                version: VERSION_ANGULARJS_CDN,
                 visible: true,
-                css: [],
-                dts: angularJS('angular.d.ts'),
-                js: [angularJS('angular.js')],
-                minJs: [angularJS('angular.min.js')],
+                css: [`https://ajax.googleapis.com/ajax/libs/angularjs/${VERSION_ANGULARJS_CDN}/angular-csp.css`],
+                dts: angularJS(INDEX_DTS),
+                js: [`https://ajax.googleapis.com/ajax/libs/angularjs/${VERSION_ANGULARJS_CDN}/angular.js`],
+                minJs: [`https://ajax.googleapis.com/ajax/libs/angularjs/${VERSION_ANGULARJS_CDN}/angular.min.js`],
                 dependencies: {}
             },
             {
@@ -848,15 +854,15 @@ export class OptionManager implements IOptionManager {
             */
             {
                 packageName: 'three.js',
-                moduleName: 'three.js',
-                libraryKind: LibraryKind.Global,
-                globalName: 'THREE',
+                moduleName: 'three',
+                libraryKind: LibraryKind.Modular,
+                globalName: undefined,
                 description: "JavaScript 3D library.",
                 homepage: 'http://threejs.org/',
                 version: VERSION_THREEJS,
                 visible: true,
                 css: [],
-                dts: threejs('three.d.ts'),
+                dts: threejs(INDEX_DTS),
                 js: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.js`],
                 minJs: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.min.js`],
                 dependencies: {}

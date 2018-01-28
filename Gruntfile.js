@@ -217,9 +217,10 @@ function copies(target) {
      */
     const VERSION_ANGULAR = '4.2.5';
     /**
-     * AngularJS
+     * AngularJS index.d.ts version.
+     * Keep this value in synch with the option manager.
      */
-    const VERSION_ANGULARJS = '1.6.17';
+    const VERSION_ANGULARJS_TYPES = '1.5.3';
     /**
      * 
      */
@@ -459,15 +460,16 @@ function copies(target) {
             dest: prepend(target, `vendor/angular-in-memory-web-api@0.3.2/index.d.ts`)
         },
         {
-            // This is currently copying a 1.5.9 version of AngularJS to a location.
             // This file is needed for the application itself, which is a hybrid AngularJS/Angular application.
             // TODO: Probably should be using the minified version.
             src: "node_modules/angular/angular.js",
             dest: prepend(target, 'js/angular.js')
         },
         {
-            src: "node_modules/@types/angular/index.d.ts",
-            dest: prepend(target, `vendor/angular@${VERSION_ANGULARJS}/index.d.ts`)
+            // Notice that the index.d.ts file for AngularJS is not sourced from the same location as the other files.
+            // This creates a discrepancy in the version numbering.
+            src: `museum/angular@${VERSION_ANGULARJS_TYPES}/index.d.ts`,
+            dest: prepend(target, `vendor/angular@${VERSION_ANGULARJS_TYPES}/index.d.ts`)
         },
         {
             expand: true,
