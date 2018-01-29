@@ -7,6 +7,7 @@ import { ClojureMode } from '../../editor/mode/ClojureMode';
 import { CssMode } from '../../editor/mode/CssMode';
 import { CsvMode } from '../../editor/mode/CsvMode';
 import { GlslMode } from '../../editor/mode/GlslMode';
+import { GoLangMode } from '../../editor/mode/GoLangMode';
 import { HaskellMode } from '../../editor/mode/HaskellMode';
 import { HtmlMode } from '../../editor/mode/HtmlMode';
 import { JavaScriptMode } from '../../editor/mode/JavaScriptMode';
@@ -26,6 +27,7 @@ import { LANGUAGE_ASCIIDOC } from '../../languages/modes';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
+import { LANGUAGE_GO } from '../../languages/modes';
 import { LANGUAGE_HASKELL } from '../../languages/modes';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
@@ -119,6 +121,11 @@ export function setLanguage(editSession: EditSession, mode: LanguageModeId): Pro
             case LANGUAGE_GLSL: {
                 // If we don't use the worker then we don't get a confirmation.
                 editSession.setLanguageMode(new GlslMode('/js/worker.js', workerImports), onSetLanguageMode);
+                break;
+            }
+            case LANGUAGE_GO: {
+                editSession.setUseWorker(false);
+                editSession.setLanguageMode(new GoLangMode('/js/worker.js', workerImports), onSetLanguageMode);
                 break;
             }
             case LANGUAGE_CSS:

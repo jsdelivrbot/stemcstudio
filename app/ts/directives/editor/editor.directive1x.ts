@@ -117,7 +117,8 @@ const COPY_COMMAND: Command<Editor> = {
     // Providing the bindKey will disable the default action.
     // bindKey: bindKey("Ctrl-C", "Command-C"),
     exec: function (editor: Editor) {
-        editor.copy();
+        // It's no actually implemented in the editor.
+        // editor.copy();
     },
     readOnly: true
 };
@@ -459,7 +460,7 @@ export function createEditorDirective(
                                 });
                         }
                         else {
-                            console.warn(`Unable to call session.setLanguage for path '${path}'. The mode property is ${typeof mode}`);
+                            console.warn(`Unable to call session.setLanguage for path '${path}'. The mode property is ${typeof mode}.`);
                         }
 
                         // Almost ready to go. Resize the editor and put the cursor at the beginning.

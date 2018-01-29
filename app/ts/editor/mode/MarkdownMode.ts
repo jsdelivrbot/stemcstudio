@@ -2,6 +2,7 @@ import { TextMode } from "./TextMode";
 import { JavaScriptMode } from "./JavaScriptMode";
 import { TypeScriptMode } from "./TypeScriptMode";
 import { XmlMode } from "./XmlMode";
+import { GoLangMode } from './GoLangMode';
 import { HtmlMode } from './HtmlMode';
 import { MarkdownHighlightRules } from './MarkdownHighlightRules';
 import { MarkdownFoldMode } from './folding/MarkdownFoldMode';
@@ -23,6 +24,7 @@ export class MarkdownMode extends TextMode {
         this.blockComment = { start: "<!--", end: "-->" };
 
         this.createModeDelegates({
+            "go-": GoLangMode,
             "ts-": TypeScriptMode,
             "js-": JavaScriptMode,
             "xml-": XmlMode,

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.43.0",
+  "version": "2.44.0",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -71,7 +71,7 @@
   "devDependencies": {
     "@reactivex/rxjs": "^5.5.6",
     "@types/angular": "^1.6.41",
-    "@types/angular-animate": "^1.5.8",
+    "@types/angular-animate": "^1.5.9",
     "@types/angular-cookies": "^1.4.5",
     "@types/angular-mocks": "1.5.11",
     "@types/angular-resource": "^1.5.14",
@@ -80,7 +80,7 @@
     "@types/jasmine": "^2.8.6",
     "@types/node": "^8.5.9",
     "@types/react": "^16.0.35",
-    "@types/react-dom": "^16.0.2",
+    "@types/react-dom": "^16.0.3",
     "@types/snapsvg": "^0.4.30",
     "baconjs": "^0.7.95",
     "biwascheme": "^0.6.8",
@@ -96,7 +96,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^1.4.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-ts": "^6.0.0-beta.16",
+    "grunt-ts": "^6.0.0-beta.17",
     "grunt-tslint": "^5.0.1",
     "immutable": "^3.8.2",
     "jasmine-core": "^2.9.1",
@@ -110,7 +110,7 @@
     "karma-jspm": "^2.2.3",
     "karma-phantomjs-launcher": "^1.0.4",
     "lite-server": "^2.3.0",
-    "matter-js": "^0.13.0",
+    "matter-js": "^0.14.1",
     "monaco-editor": "^0.10.1",
     "plotly.js": "^1.33.1",
     "protractor": "^5.3.0",

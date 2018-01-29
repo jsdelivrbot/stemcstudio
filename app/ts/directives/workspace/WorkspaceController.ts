@@ -49,6 +49,7 @@ import { LANGUAGE_ASCIIDOC } from '../../languages/modes';
 import { LANGUAGE_CSS } from '../../languages/modes';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
+import { LANGUAGE_GO } from '../../languages/modes';
 import { LANGUAGE_HASKELL } from '../../languages/modes';
 import { LANGUAGE_HTML } from '../../languages/modes';
 import { LANGUAGE_JSON } from '../../languages/modes';
@@ -928,6 +929,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
         });
 
         switch (mode) {
+            case LANGUAGE_GO:
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:
@@ -1186,6 +1188,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
      */
     private removeLiveCodeChangeHandler(path: string, mode: string, editor: Editor): void {
         switch (mode) {
+            case LANGUAGE_GO:
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_JSX:

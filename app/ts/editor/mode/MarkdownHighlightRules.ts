@@ -4,12 +4,16 @@ import { TypeScriptHighlightRules } from './TypeScriptHighlightRules';
 import { XmlHighlightRules } from './XmlHighlightRules';
 import { HtmlHighlightRules } from './HtmlHighlightRules';
 import { CssHighlightRules } from './CssHighlightRules';
+import { GoLangHighlightRules } from './GoLangHighlightRules';
 import { POP_STATE } from './TextHighlightRules';
 
 const escaped = function (ch: string) {
     return "(?:[^" + escapeRegExp(ch) + "\\\\]|\\\\.)*";
 };
 
+/**
+ * GitHub style block i.e. using three backticks.
+ */
 function github_embed(tag: string, prefix: string) {
     return { // Github style block
         token: "support.function",
@@ -47,6 +51,7 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
                 regex: /^#{1,6}(?=\s*[^ #]|\s+#.)/,
                 next: "header"
             },
+            github_embed("(?:golang|go)", "gocode-"),
             github_embed("(?:typescript|ts)", "tscode-"),
             github_embed("(?:javascript|js)", "jscode-"),
             github_embed("xml", "xmlcode-"),
@@ -93,11 +98,11 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
                 { // link by url
                     token: ["text", "string", "text", "markup.underline", "string", "text"],
                     regex: "(\\[)(" +                                        // [
-                    escaped("]") +                                    // link text
-                    ")(\\]\\()" +                                      // ](
-                    '((?:[^\\)\\s\\\\]|\\\\.|\\s(?=[^"]))*)' +        // href
-                    '(\\s*"' + escaped('"') + '"\\s*)?' +            // "title"
-                    "(\\))"                                           // )
+                        escaped("]") +                                    // link text
+                        ")(\\]\\()" +                                      // ](
+                        '((?:[^\\)\\s\\\\]|\\\\.|\\s(?=[^"]))*)' +        // href
+                        '(\\s*"' + escaped('"') + '"\\s*)?' +            // "title"
+                        "(\\))"                                           // )
                 },
                 { // strong ** __
                     token: "string.strong",
@@ -110,10 +115,10 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
                 { //
                     token: ["text", "url", "text"],
                     regex: "(<)(" +
-                    "(?:https?|ftp|dict):[^'\">\\s]+" +
-                    "|" +
-                    "(?:mailto:)?[-.\\w]+\\@[-a-z0-9]+(?:\\.[-a-z0-9]+)*\\.[a-z]+" +
-                    ")(>)"
+                        "(?:https?|ftp|dict):[^'\">\\s]+" +
+                        "|" +
+                        "(?:mailto:)?[-.\\w]+\\@[-a-z0-9]+(?:\\.[-a-z0-9]+)*\\.[a-z]+" +
+                        ")(>)"
                 }
             ],
             // code block
@@ -216,6 +221,12 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
         }]);
 
         this.embedRules(XmlHighlightRules, "xmlcode-", [{
+            token: "support.function",
+            regex: "^\\s*```",
+            next: POP_STATE
+        }]);
+
+        this.embedRules(GoLangHighlightRules, "gocode-", [{
             token: "support.function",
             regex: "^\\s*```",
             next: POP_STATE
