@@ -6,6 +6,7 @@ import { HtmlHighlightRules } from './HtmlHighlightRules';
 import { CssHighlightRules } from './CssHighlightRules';
 import { GoLangHighlightRules } from './GoLangHighlightRules';
 import { POP_STATE } from './TextHighlightRules';
+import { HighlighterRule } from './Highlighter';
 
 const escaped = function (ch: string) {
     return "(?:[^" + escapeRegExp(ch) + "\\\\]|\\\\.)*";
@@ -14,8 +15,8 @@ const escaped = function (ch: string) {
 /**
  * GitHub style block i.e. using three backticks.
  */
-function github_embed(tag: string, prefix: string) {
-    return { // Github style block
+function github_embed(tag: string, prefix: string): HighlighterRule {
+    return {
         token: "support.function",
         regex: "^\\s*```" + tag + "\\s*$",
         push: prefix + "start"
@@ -97,11 +98,11 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
                 },
                 { // link by url
                     token: ["text", "string", "text", "markup.underline", "string", "text"],
-                    regex: "(\\[)(" +                                        // [
+                    regex: "(\\[)(" +                                     // [
                         escaped("]") +                                    // link text
-                        ")(\\]\\()" +                                      // ](
+                        ")(\\]\\()" +                                     // ](
                         '((?:[^\\)\\s\\\\]|\\\\.|\\s(?=[^"]))*)' +        // href
-                        '(\\s*"' + escaped('"') + '"\\s*)?' +            // "title"
+                        '(\\s*"' + escaped('"') + '"\\s*)?' +             // "title"
                         "(\\))"                                           // )
                 },
                 { // strong ** __
@@ -133,7 +134,8 @@ export class MarkdownHighlightRules extends HtmlHighlightRules {
                 },
                 {
                     include: "basic"
-                }, {
+                },
+                {
                     defaultToken: "heading"
                 }
             ],

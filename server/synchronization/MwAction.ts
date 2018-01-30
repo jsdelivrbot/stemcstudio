@@ -28,11 +28,13 @@ export const ACTION_DELTA_MERGE = 'd';
 export const ACTION_NULLIFY_UPPERCASE = 'N';
 export const ACTION_NULLIFY_LOWERCASE = 'n';
 
+export type MwActionType = 'R' | 'r' | 'D' | 'd' | 'N' | 'n';
+
 /**
  * 
  */
 export interface MwAction {
-    c: 'R' | 'r' | 'D' | 'd' | 'N' | 'n';
+    c: MwActionType;
 
     /**
      * The local version number that the diff was made from.

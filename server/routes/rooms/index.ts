@@ -14,6 +14,8 @@ import { Patch } from '../../synchronization/Patch';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from '../../synchronization/MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from '../../synchronization/MwAction';
 import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from '../../synchronization/MwAction';
+// import { MwAction } from '../../synchronization/MwAction';
+import { MwActionType } from '../../synchronization/MwAction';
 import { MwBroadcast } from '../../synchronization/MwBroadcast';
 import { MwEditor } from '../../synchronization/MwEditor';
 import { MwEdits } from '../../synchronization/MwEdits';
@@ -27,9 +29,12 @@ import { MwShadow } from '../../synchronization/MwShadow';
 const EXPIRE_DURATION_IN_SECONDS = 3600;
 
 /**
- * A room has a 'paths' property which has type string[].
+ * A room has a 'nodes' property which has type string[].
  */
 const ROOM_NODES_PROPERTY_NAME = 'nodes';
+/**
+ * A room has a 'paths' property which has type string[].
+ */
 const ROOM_PATHS_PROPERTY_NAME = 'paths';
 const ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
 // const ROOM_PATH_REMOTES_PROPERTY_NAME = 'remotes';
@@ -87,10 +92,16 @@ client.on('end', function end(err: any) {
     console.log("Established Redis server connection has been closed.");
 });
 
+/**
+ * room : roomId
+ */
 function createRoomKey(roomId: string): string {
     return `room:${roomId}`;
 }
 
+/**
+ * room : roomId @ name
+ */
 function createRoomPropertyKey(roomId: string, name: string): string {
     return `${createRoomKey(roomId)}@${name}`;
 }
@@ -110,7 +121,7 @@ function createRemoteKey(roomId: string, path: string, nodeId: string): string {
 /**
  * Wrapper function around RedisClient exists method returning a Promise.
  */
-function existsKey(key: string): Promise<boolean> {
+function existsKeyInStorage(key: string): Promise<boolean> {
     return new Promise<boolean>(function (resolve, reject) {
         client.exists(key, function (reason: Error, value: number) {
             if (!reason) {
@@ -226,7 +237,7 @@ export function getRoom(request: Request, response: Response): void {
 }
 
 /**
- * Ensures that the specified nodeId is part of this room (workspace).
+ * Ensures that the specified nodeId is part of this room (collaboration).
  * This guarantees that the node will receive broadcasts for any file change.
  */
 function ensureNodeIdInRoom(nodeId: string, roomId: string): Promise<void> {
@@ -412,7 +423,7 @@ function getRemote(roomId: string, path: string, nodeId: string): Promise<MwRemo
 /**
  * Serializes the remote using the key consisting of roomId, path, and nodeId.
  */
-function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error) => any) {
+function setRemoteInStorage(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error) => any) {
     const remoteKey = createRemoteKey(roomId, path, nodeId);
     const dehydrated = remote.dehydrate();
     const remoteText = JSON.stringify(dehydrated);
@@ -429,7 +440,7 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
 function ensureRemote(nodeId: string, path: string, roomId: string): Promise<MwRemote> {
     return new Promise<MwRemote>(function (resolve, reject) {
         const remoteKey = createRemoteKey(roomId, path, nodeId);
-        existsKey(remoteKey)
+        existsKeyInStorage(remoteKey)
             .then(function (exists) {
                 mustBeTruthy(isBoolean(exists), `exists must be a boolean`);
                 if (exists) {
@@ -443,7 +454,7 @@ function ensureRemote(nodeId: string, path: string, roomId: string): Promise<MwR
                 }
                 else {
                     const remote = new MwRemote();
-                    setRemote(roomId, path, nodeId, remote, function (err: Error) {
+                    setRemoteInStorage(roomId, path, nodeId, remote, function (err: Error) {
                         if (!err) {
                             getRemote(roomId, path, nodeId)
                                 .then(function (remote) {
@@ -508,7 +519,7 @@ class RedisEditor implements MwEditor {
     }
 }
 
-function createDocument(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
+function createDocumentInStorage(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.set(contentKey, text, (err, reply) => {
         client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
@@ -519,7 +530,7 @@ function createDocument(roomId: string, path: string, text: string, callback: (e
     });
 }
 
-function getDocument(roomId: string, path: string, callback: (err: void | Error, editor: MwEditor) => any) {
+function getDocumentFromStorage(roomId: string, path: string, callback: (err: void | Error, editor: MwEditor) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.get(contentKey, function (err, reply) {
         const editor = new RedisEditor(roomId, path);
@@ -528,15 +539,32 @@ function getDocument(roomId: string, path: string, callback: (err: void | Error,
     });
 }
 
-function deleteDocument(roomId: string, path: string, callback: (err: Error) => any) {
+function deleteDocumentFromStorage(roomId: string, path: string, callback: (err: Error) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.del(contentKey, function (err: Error, reply: any) {
         callback(err);
     });
 }
 
+function deleteDocument(fromId: string, roomId: string, path: string, change: MwChange, remote: MwRemote): Promise<MwActionType> {
+    return new Promise<MwActionType>(function (resolve, reject) {
+        deleteDocumentFromStorage(roomId, path, function (err: Error) {
+            if (!err) {
+                if (typeof change.m === 'number') {
+                    remote.discardActionsLe(fromId, change.m);
+                }
+                remote.discardChanges(fromId);
+                resolve(change.a.c);
+            }
+            else {
+                reject(err);
+            }
+        });
+    });
+}
+
 /**
- * Returns the file paths for this room (the files that are in the workspace).
+ * Returns the nodes for this room (the nodes that are in the collaboration).
  */
 function getNodes(roomId: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
@@ -584,7 +612,7 @@ function getRemoteNodeIds(roomId: string, path: string, callback: (err: Error, n
 function captureFile(roomId: string, path: string, nodeId: string, remote: MwRemote): Promise<MwChange> {
     return new Promise<MwChange>(function (resolve, reject) {
         const shadow: MwShadow = remote.shadow;
-        getDocument(roomId, path, function (err: Error, editor: MwEditor) {
+        getDocumentFromStorage(roomId, path, function (err: Error, editor: MwEditor) {
             if (editor) {
                 editor.getText(function (err: Error, text: string) {
                     if (!err) {
@@ -631,7 +659,7 @@ function captureFileEditsForNode(nodeId: string, path: string, roomId: string): 
                     .then(function (change) {
                         remote.addChange(nodeId, change);
                         const edits = remote.getEdits(nodeId);
-                        setRemote(roomId, path, nodeId, remote, function (err: Error) {
+                        setRemoteInStorage(roomId, path, nodeId, remote, function (err: Error) {
                             if (!err) {
                                 resolve({ nodeId, path, edits });
                             }
@@ -685,17 +713,21 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error | null
         });
 }
 
-function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: string, remote: MwRemote, roomId: string): Promise<string[]> {
+/**
+ * The type of the promise is not really important but we make it something definite for consistency.
+ * More appropriate might be to return the MwChange.
+ */
+function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: string, remote: MwRemote, roomId: string): Promise<MwActionType[]> {
     // Changes must be applied using promises because the remotes are in storage.
-    const outstanding: Promise<string>[] = [];
+    const outstanding: Promise<MwActionType>[] = [];
     for (const change of edits.x) {
         const action = change.a;
         if (action) {
             switch (action.c) {
                 case ACTION_RAW_OVERWRITE: {
-                    outstanding.push(new Promise<string>(function (resolve, reject) {
+                    outstanding.push(new Promise<MwActionType>(function (resolve, reject) {
                         const text = decodeURI(action.x as string);
-                        createDocument(roomId, path, text, function (err: Error, unused: MwEditor) {
+                        createDocumentInStorage(roomId, path, text, function (err: Error, unused: MwEditor) {
                             if (!err) {
                                 const shadow = remote.ensureShadow();
                                 // The action local version becomes our remote version.
@@ -712,6 +744,8 @@ function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: s
                     break;
                 }
                 case ACTION_RAW_SYNCHONLY: {
+                    // It's interesting that this action has no asynchronous behaviour.
+                    // Persistence of the remote occurs after this method.
                     const text = decodeURI(action.x as string);
                     const shadow = remote.shadow;
                     // const shadow = link.ensureShadow(change.f, this.useBackupShadow);
@@ -722,8 +756,8 @@ function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: s
                 }
                 case ACTION_DELTA_OVERWRITE:
                 case ACTION_DELTA_MERGE: {
-                    outstanding.push(new Promise<any>(function (resolve, reject) {
-                        getDocument(roomId, path, function (err: Error, doc: MwEditor) {
+                    outstanding.push(new Promise<MwActionType>(function (resolve, reject) {
+                        getDocumentFromStorage(roomId, path, function (err: Error, doc: MwEditor) {
                             if (!err) {
                                 const shadow = remote.shadow;
                                 const backup = remote.backup;
@@ -751,23 +785,12 @@ function applyEditsFromNodeForFileToRoom(edits: MwEdits, fromId: string, path: s
                 }
                 case ACTION_NULLIFY_UPPERCASE:
                 case ACTION_NULLIFY_LOWERCASE: {
-                    outstanding.push(new Promise<any>(function (resolve, reject) {
-                        deleteDocument(roomId, path, function (err: Error) {
-                            if (!err) {
-                                if (typeof change.m === 'number') {
-                                    remote.discardActionsLe(fromId, change.m);
-                                }
-                                remote.discardChanges(fromId);
-                                resolve(action.c);
-                            }
-                            else {
-                                reject(err);
-                            }
-                        });
-                    }));
+                    outstanding.push(deleteDocument(fromId, roomId, path, change, remote));
                     break;
                 }
                 default: {
+                    // This should never happen. Indeed, action.c has the never type.
+                    // A comprehensive solution would be to return a Promise that resolves to an error.
                     console.warn(`action.c => ${action.c}`);
                 }
             }
@@ -798,8 +821,8 @@ export function setEdits(fromId: string, roomId: string, fileId: string, edits: 
             ensureRemote(fromId, fileId, roomId)
                 .then(function (remote) {
                     applyEditsFromNodeForFileToRoom(edits, fromId, fileId, remote, roomId)
-                        .then(function () {
-                            setRemote(roomId, fileId, fromId, remote, function (err: Error) {
+                        .then(function (changes) {
+                            setRemoteInStorage(roomId, fileId, fromId, remote, function (err: Error) {
                                 if (!err) {
                                     getBroadcast(roomId, fileId, function (err: Error, broadcast: MwBroadcast) {
                                         if (!err) {
@@ -867,6 +890,9 @@ export function getEdits(nodeId: string, roomId: string, callback: (err: any, da
  * Destroy the room by removing the (roomKey, value) pair from Redis.
  * This is exposed in order to support HTTP/REST using Express.
  * TODO: Refactor into a destroyRoom(room) function.
+ * We currently don't bother cleaning up Redis and simply let the key-value pairs expire.
+ * Maybe it would be nice to attempt to free memory?
+ * It might also be nice to broadcast to all nodes that the room has been destroyed.
  */
 export function destroyRoom(request: Request, response: Response): void {
     const room = request.params as Room;

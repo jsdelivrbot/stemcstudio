@@ -76,7 +76,7 @@ function createRoomPathPropertyKey(roomId, path, name) {
 function createRemoteKey(roomId, path, nodeId) {
     return createRoomPathKey(roomId, path) + ", node:" + nodeId;
 }
-function existsKey(key) {
+function existsKeyInStorage(key) {
     return new Promise(function (resolve, reject) {
         client.exists(key, function (reason, value) {
             if (!reason) {
@@ -235,7 +235,7 @@ function getRemote(roomId, path, nodeId) {
         });
     });
 }
-function setRemote(roomId, path, nodeId, remote, callback) {
+function setRemoteInStorage(roomId, path, nodeId, remote, callback) {
     var remoteKey = createRemoteKey(roomId, path, nodeId);
     var dehydrated = remote.dehydrate();
     var remoteText = JSON.stringify(dehydrated);
@@ -248,7 +248,7 @@ function setRemote(roomId, path, nodeId, remote, callback) {
 function ensureRemote(nodeId, path, roomId) {
     return new Promise(function (resolve, reject) {
         var remoteKey = createRemoteKey(roomId, path, nodeId);
-        existsKey(remoteKey)
+        existsKeyInStorage(remoteKey)
             .then(function (exists) {
             asserts_1.mustBeTruthy(isBoolean_1.isBoolean(exists), "exists must be a boolean");
             if (exists) {
@@ -262,7 +262,7 @@ function ensureRemote(nodeId, path, roomId) {
             }
             else {
                 var remote = new MwRemote_1.MwRemote();
-                setRemote(roomId, path, nodeId, remote, function (err) {
+                setRemoteInStorage(roomId, path, nodeId, remote, function (err) {
                     if (!err) {
                         getRemote(roomId, path, nodeId)
                             .then(function (remote) {
@@ -325,7 +325,7 @@ var RedisEditor = (function () {
     };
     return RedisEditor;
 }());
-function createDocument(roomId, path, text, callback) {
+function createDocumentInStorage(roomId, path, text, callback) {
     var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.set(contentKey, text, function (err, reply) {
         client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
@@ -335,7 +335,7 @@ function createDocument(roomId, path, text, callback) {
         });
     });
 }
-function getDocument(roomId, path, callback) {
+function getDocumentFromStorage(roomId, path, callback) {
     var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.get(contentKey, function (err, reply) {
         var editor = new RedisEditor(roomId, path);
@@ -343,10 +343,26 @@ function getDocument(roomId, path, callback) {
         editor.release();
     });
 }
-function deleteDocument(roomId, path, callback) {
+function deleteDocumentFromStorage(roomId, path, callback) {
     var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.del(contentKey, function (err, reply) {
         callback(err);
+    });
+}
+function deleteDocument(fromId, roomId, path, change, remote) {
+    return new Promise(function (resolve, reject) {
+        deleteDocumentFromStorage(roomId, path, function (err) {
+            if (!err) {
+                if (typeof change.m === 'number') {
+                    remote.discardActionsLe(fromId, change.m);
+                }
+                remote.discardChanges(fromId);
+                resolve(change.a.c);
+            }
+            else {
+                reject(err);
+            }
+        });
     });
 }
 function getNodes(roomId) {
@@ -378,7 +394,7 @@ function getPaths(roomId) {
 function captureFile(roomId, path, nodeId, remote) {
     return new Promise(function (resolve, reject) {
         var shadow = remote.shadow;
-        getDocument(roomId, path, function (err, editor) {
+        getDocumentFromStorage(roomId, path, function (err, editor) {
             if (editor) {
                 editor.getText(function (err, text) {
                     if (!err) {
@@ -419,7 +435,7 @@ function captureFileEditsForNode(nodeId, path, roomId) {
                 .then(function (change) {
                 remote.addChange(nodeId, change);
                 var edits = remote.getEdits(nodeId);
-                setRemote(roomId, path, nodeId, remote, function (err) {
+                setRemoteInStorage(roomId, path, nodeId, remote, function (err) {
                     if (!err) {
                         resolve({ nodeId: nodeId, path: path, edits: edits });
                     }
@@ -474,7 +490,7 @@ function applyEditsFromNodeForFileToRoom(edits, fromId, path, remote, roomId) {
                 case MwAction_1.ACTION_RAW_OVERWRITE: {
                     outstanding.push(new Promise(function (resolve, reject) {
                         var text = decodeURI(action.x);
-                        createDocument(roomId, path, text, function (err, unused) {
+                        createDocumentInStorage(roomId, path, text, function (err, unused) {
                             if (!err) {
                                 var shadow = remote.ensureShadow();
                                 shadow.updateRaw(text, action.n);
@@ -498,7 +514,7 @@ function applyEditsFromNodeForFileToRoom(edits, fromId, path, remote, roomId) {
                 case MwAction_2.ACTION_DELTA_OVERWRITE:
                 case MwAction_2.ACTION_DELTA_MERGE: {
                     outstanding.push(new Promise(function (resolve, reject) {
-                        getDocument(roomId, path, function (err, doc) {
+                        getDocumentFromStorage(roomId, path, function (err, doc) {
                             if (!err) {
                                 var shadow_2 = remote.shadow;
                                 var backup_1 = remote.backup;
@@ -524,20 +540,7 @@ function applyEditsFromNodeForFileToRoom(edits, fromId, path, remote, roomId) {
                 }
                 case MwAction_3.ACTION_NULLIFY_UPPERCASE:
                 case MwAction_3.ACTION_NULLIFY_LOWERCASE: {
-                    outstanding.push(new Promise(function (resolve, reject) {
-                        deleteDocument(roomId, path, function (err) {
-                            if (!err) {
-                                if (typeof change.m === 'number') {
-                                    remote.discardActionsLe(fromId, change.m);
-                                }
-                                remote.discardChanges(fromId);
-                                resolve(action.c);
-                            }
-                            else {
-                                reject(err);
-                            }
-                        });
-                    }));
+                    outstanding.push(deleteDocument(fromId, roomId, path, change, remote));
                     break;
                 }
                 default: {
@@ -563,8 +566,8 @@ function setEdits(fromId, roomId, fileId, edits, callback) {
         ensureRemote(fromId, fileId, roomId)
             .then(function (remote) {
             applyEditsFromNodeForFileToRoom(edits, fromId, fileId, remote, roomId)
-                .then(function () {
-                setRemote(roomId, fileId, fromId, remote, function (err) {
+                .then(function (changes) {
+                setRemoteInStorage(roomId, fileId, fromId, remote, function (err) {
                     if (!err) {
                         getBroadcast(roomId, fileId, function (err, broadcast) {
                             if (!err) {
