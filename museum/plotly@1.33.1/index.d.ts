@@ -1,7 +1,7 @@
 //
-// TypeScript definitions for plotly.js 1.28.2
+// TypeScript definitions for plotly.js 1.33.1
 // Project: https://github.com/plotly/plotly.js
-// Copyright (c) 2016-2017 David Geo Holmes
+// Copyright (c) 2016-2018 David Geo Holmes
 // Definitions by: David Geo Holmes <https://github.com/geometryzen>
 //
 
@@ -24,6 +24,7 @@ export interface Annotation {
     xref?: string;
     y?: number;
     yref?: string;
+    font?: Font;
 }
 
 /**
@@ -38,6 +39,7 @@ export interface Axis {
     rangemode?: 'nonnegative' | 'tozero' | 'normal';
     tick0?: number;
     tickangle?: number;
+    tickcolor?: string;
     tickfont?: Font;
     ticklen?: number;
     tickwidth?: number;
@@ -89,19 +91,23 @@ export interface Data {
     reversescale?: boolean;
     showlegend?: boolean;
     showscale?: boolean;
-    type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter';
+    type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter' | 'scatterternary';
     uid?: string;
-    x?: number[];
+    x?: number[] | number[][] | string[];
+    y?: number[] | number[][] | string[];
+    z?: number[] | number[][] | string[];
     error_x?: Error;
     xaxis?: string;
-    y?: number[];
     error_y?: Error;
     yaxis?: string;
-    z?: number[] | number[][];
     r?: number[];
     t?: number[];
     zmin?: number;
     zmax?: number;
+    a?: number[];
+    b?: number[];
+    c?: number[];
+    text?: string[];
 }
 
 /**
@@ -136,6 +142,13 @@ export interface Layout {
         font?: Font;
     };
     showlegend?: boolean;
+    ternary?: {
+        sum: number;
+        aaxis: Axis;
+        baxis: Axis;
+        caxis: Axis;
+        bgcolor: string;
+    }
     title?: string;
     traceorder?: 'normal';
     margin?: Margin;
@@ -248,7 +261,7 @@ export interface Marker {
      * Adding 300 is equivalent to appending "-open-dot" or "dot-open" to a symbol name.
      * default: 'circle'
      */
-    symbol?: string;
+    symbol?: number | string;
 }
 
 /**

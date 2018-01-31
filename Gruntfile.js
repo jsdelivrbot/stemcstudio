@@ -236,7 +236,7 @@ function copies(target) {
     /**
      * 
      */
-    const VERSION_PLOTLY = '1.28.2';
+    const VERSION_PLOTLY = '1.33.1';
     /**
      * 
      */

@@ -1,9 +1,9 @@
 /**
  * The application version is used for cache busting the jspm.config.js file.
  * This file is used to load the application and the workers.
- * DON'T FORGET TO CHANGE THE VERSION IN index.pug !!!
+ * DON'T FORGET TO CHANGE THE VERSION IN views/index.pug !!!
  */
-export const APP_VERSION = '2.44.1';
+export const APP_VERSION = '2.44.2';
 
 /**
  * Web Worker supporting TypeScript Mode.
