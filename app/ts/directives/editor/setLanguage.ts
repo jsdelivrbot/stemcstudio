@@ -53,6 +53,9 @@ import { EditSession } from '../../editor/EditSession';
  */
 export function setLanguage(editSession: EditSession, mode: LanguageModeId): Promise<void> {
     const systemImports: string[] = ['/jspm_packages/system.js', `/jspm.config.js?version=${APP_VERSION}`];
+    /**
+     * workerImports adds to systemImports.
+     */
     const workerImports: string[] = systemImports.concat([STEMCSTUDIO_WORKERS_PATH]);
 
     return new Promise<void>((resolve, reject) => {
@@ -107,7 +110,9 @@ export function setLanguage(editSession: EditSession, mode: LanguageModeId): Pro
                 break;
             }
             case LANGUAGE_TSX: {
-                editSession.setLanguageMode(new TsxMode('/js/worker.js', workerImports), onSetLanguageMode);
+                const tsxMode = new TsxMode('/js/worker.js', systemImports.concat([STEMCSTUDIO_WORKER_TS_PATH]));
+                tsxMode.getTokenizer().trace = editSession.traceTokenizer;
+                editSession.setLanguageMode(tsxMode, onSetLanguageMode);
                 break;
             }
             case LANGUAGE_HTML: {

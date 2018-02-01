@@ -3,6 +3,9 @@ import { isPython } from './isPython';
 import { isTypeScript } from './isTypeScript';
 import { SYSTEM_DOT_CONFIG_DOT_JS } from '../constants';
 
+/**
+ * system.config.js
+ */
 export function isConfigFile(fileName: string): boolean {
     if (fileName === SYSTEM_DOT_CONFIG_DOT_JS) {
         return true;
@@ -14,8 +17,8 @@ export function isConfigFile(fileName: string): boolean {
 
 /**
  * Determines, based upon the fileName, whether the file is processed as a script by the language service.
- * The files currently processed are JavaScript, Python, and TypeScript.
- * We also include special configuration files. 
+ * The files currently processed are JavaScript (js and jsx), Python (py and pyx), and TypeScript (ts and tsx).
+ * We also include special configuration files (excluding system.config.js). 
  */
 export function isLanguageServiceScript(fileName: string): boolean {
     if (isConfigFile(fileName)) {

@@ -50,7 +50,8 @@ export const isIE =
     : parseFloat((ua.match(/(?:Trident\/[0-9]+[\.0-9]+;.*rv:)([0-9]+[\.0-9]+)/) || [])[1]); // for ie
 
 // Is this Firefox or related?
-export const isGecko = (('Controllers' in window) || ('controllers' in window)) && window.navigator.product === "Gecko";
+// The cast to any is required to stop the TypeScript compiler from being too smart, concluding that the last window reference has the never type.
+export const isGecko = (('Controllers' in window) || ('controllers' in window as any)) && window.navigator.product === "Gecko";
 /**
  * Mozilla
  */

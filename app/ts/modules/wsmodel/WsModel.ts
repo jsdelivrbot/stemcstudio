@@ -433,7 +433,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
     owner?: string;
 
     /**
-     * 
+     * The gist identifier property.
      */
     gistId?: string;
 
@@ -628,7 +628,7 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
 
     /**
      * Used to control logging of file operations.
-     * Use this whenever the method specifies a file `path`.
+     * Use this whenever the method specifies a file path.
      */
     private traceFileOperations = false;
 

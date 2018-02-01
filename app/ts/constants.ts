@@ -3,7 +3,7 @@
  * This file is used to load the application and the workers.
  * DON'T FORGET TO CHANGE THE VERSION IN views/index.pug !!!
  */
-export const APP_VERSION = '2.44.2';
+export const APP_VERSION = '2.44.3';
 
 /**
  * Web Worker supporting TypeScript Mode.
@@ -21,6 +21,9 @@ export const STEMCSTUDIO_WORKER_TS_PATH = `/js/stemcstudio-worker-ts@${STEMCSTUD
  */
 const STEMCSTUDIO_WORKERS_VERSION = '2.15.4';
 const STEMCSTUDIO_WORKERS_MODULE_NAME = 'stemcstudio-workers.js';
+/**
+ *  
+ */
 export const STEMCSTUDIO_WORKERS_PATH = `/js/stemcstudio-workers@${STEMCSTUDIO_WORKERS_VERSION}/${STEMCSTUDIO_WORKERS_MODULE_NAME}`;
 
 /**

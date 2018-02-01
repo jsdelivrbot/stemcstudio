@@ -1,0 +1,1 @@
+module.exports = require("npm:@angular/core@5.2.3/bundles/core.umd.js");

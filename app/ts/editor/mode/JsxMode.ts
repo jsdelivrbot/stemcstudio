@@ -5,6 +5,9 @@ import { CstyleFoldMode } from "./folding/CstyleFoldMode";
 import { MatchingBraceOutdent } from "./MatchingBraceOutdent";
 import { EditSession } from '../EditSession';
 
+/**
+ * TODO: Interesting that jsx mode does not extend the JavaScript mode (similar to the TypeScript approach).
+ */
 export class JsxMode extends TextMode {
     private readonly $outdent = new MatchingBraceOutdent();
 

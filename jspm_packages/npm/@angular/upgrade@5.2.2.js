@@ -1,1 +1,0 @@
-module.exports = require("npm:@angular/upgrade@5.2.2/bundles/upgrade.umd.js");
