@@ -12,6 +12,11 @@ import { WsModel } from '../../modules/wsmodel/WsModel';
 export interface ICloudService {
 
     /**
+     * 
+     */
+    downloadDoodleFromGist(gistId: string): Promise<Doodle>;
+
+    /**
      *
      */
     downloadGist(gistId: string, callback: (reason: any, doodle: Doodle) => void): void;
@@ -39,6 +44,9 @@ export interface ICloudService {
      * TODO: Why is there no specification of the branch (commit).
      */
     downloadRepo(owner: string, repo: string): Promise<Doodle>;
+    /**
+     *
+     */
     downloadTree(owner: string, repo: string, ref: string): Promise<Doodle>;
 
     /**

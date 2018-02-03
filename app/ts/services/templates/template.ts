@@ -21,27 +21,16 @@ export interface ITemplateFileBuilder {
 }
 
 export interface ITemplate {
+    /**
+     * The identifier for the template.
+     */
     name: string;
+    /**
+     * The text presented to the user.
+     */
     description: string;
-    files: { [path: string]: ITemplateFile };
     /**
-     * A map from package name to semantic version.
+     * The GitHub Gist identifier that provides the template.
      */
-    dependencies: { [packageName: string]: string };
-    /**
-     * Determines whether configuration files will be hidden by default.
-     */
-    hideConfigFiles: boolean;
-    /**
-     * Determines whether Linting will be enabled by default.
-     */
-    linting: boolean;
-    /**
-     * 
-     */
-    noLoopCheck: boolean;
-    /**
-     * 
-     */
-    operatorOverloading: boolean;
+    gistId: string;
 }

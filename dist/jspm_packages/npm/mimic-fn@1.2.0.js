@@ -1,0 +1,1 @@
+module.exports = require("npm:mimic-fn@1.2.0/index");

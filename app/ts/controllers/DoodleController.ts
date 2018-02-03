@@ -1,8 +1,8 @@
 import { IWindowService } from 'angular';
 import { AbstractPageController } from './AbstractPageController';
 import { copyDoodleToDoodle } from '../mappings/copyDoodleToDoodle';
-import { copyNewProjectSettingsToDoodle } from '../mappings/copyNewProjectSettingsToDoodle';
 import { DoodleScope } from '../scopes/DoodleScope';
+import { CLOUD_SERVICE_UUID, ICloudService } from '../services/cloud/ICloudService';
 import { DOODLE_MANAGER_SERVICE_UUID, IDoodleManager } from '../services/doodles/IDoodleManager';
 import { GITHUB_AUTH_MANAGER_UUID, IGitHubAuthManager } from '../services/gham/IGitHubAuthManager';
 import { GOOGLE_ANALYTICS_UUID } from '../fugly/ga/ga';
@@ -14,6 +14,8 @@ import { NewProjectDialog } from '../modules/project/NewProjectDialog';
 import { OpenProjectDialog } from '../modules/project/OpenProjectDialog';
 import { CopyProjectDialog } from '../modules/project/CopyProjectDialog';
 import { CopyProjectSettings } from '../modules/project/CopyProjectSettings';
+import { NewProjectSettings } from '../modules/project/NewProjectSettings';
+import { hyphenate } from '../utils/hyphenate';
 
 /**
  * This class could probably be merged with the WorkspaceController?
@@ -22,6 +24,7 @@ export class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
+        CLOUD_SERVICE_UUID,
         DOODLE_MANAGER_SERVICE_UUID,
         GITHUB_AUTH_MANAGER_UUID,
         'templates',
@@ -34,6 +37,7 @@ export class DoodleController extends AbstractPageController {
     constructor(
         $scope: DoodleScope,
         $window: IWindowService,
+        cloudService: ICloudService,
         doodleManager: IDoodleManager,
         authManager: IGitHubAuthManager,
         templates: ITemplate[],
@@ -63,12 +67,25 @@ export class DoodleController extends AbstractPageController {
 
         $scope.doNew = () => {
             newProjectDialog.open(initNewProjectDefaults(doodleManager.suggestName()))
-                .then(function (settings) {
-                    const doodle = doodleManager.createDoodle();
-                    copyNewProjectSettingsToDoodle(settings, doodle);
-                    doodleManager.addHead(doodle);
-                    doodleManager.updateStorage();
-                    navigation.gotoWork();
+                .then(function (settings: NewProjectSettings) {
+                    cloudService.downloadDoodleFromGist(settings.template.gistId)
+                        .then((doodle) => {
+                            doodle.author = undefined;
+                            doodle.description = settings.description;
+                            doodle.gistId = undefined;
+                            doodle.keywords = [];
+                            doodle.name = hyphenate(settings.description);
+                            doodle.owner = undefined;
+                            doodle.repo = undefined;
+                            doodle.version = "1.0.0";
+                            doodleManager.addHead(doodle);
+                            doodleManager.updateStorage();
+                            navigation.gotoWork();
+                        })
+                        .catch((reason) => {
+                            modalDialog.alert({ title: 'New Project', message: "I'm sorry, we seem to be experiencing technical difficulties! Please try again later." });
+                            console.warn(JSON.stringify(reason, null, 2));
+                        });
                 })
                 .catch(function (reason) {
                     // The user cancelled from the dialog.

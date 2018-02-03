@@ -632,7 +632,6 @@
   "npm:mem@1.1.0": {
     "mimic-fn": "npm:mimic-fn@^1.0.0"
   },
-  "npm:mimic-fn@1.1.0": {},
   "npm:strip-eof@1.0.0": {},
   "npm:p-finally@1.0.0": {},
   "npm:is-stream@1.1.0": {},
@@ -868,8 +867,6 @@
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:angular-sanitize@1.6.8": {},
-  "npm:angular-animate@1.6.8": {},
   "npm:yargs-parser@8.1.0": {
     "camelcase": "npm:camelcase@^4.1.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
@@ -896,7 +893,6 @@
     "angular": "npm:angular@~1.6.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:angular@1.6.8": {},
   "npm:showdown@1.8.6": {
     "yargs": "npm:yargs@^10.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -1022,5 +1018,9 @@
     "rxjs": "npm:rxjs@^5.5.0",
     "@angular/core": "npm:@angular/core@5.2.3",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:angular-sanitize@1.6.9": {},
+  "npm:angular-animate@1.6.9": {},
+  "npm:mimic-fn@1.2.0": {},
+  "npm:angular@1.6.9": {}
 }

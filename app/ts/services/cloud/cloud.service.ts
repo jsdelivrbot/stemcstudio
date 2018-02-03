@@ -56,6 +56,19 @@ export class CloudService implements ICloudService {
         // Do nothing.
     }
 
+    downloadDoodleFromGist(gistId: string): Promise<Doodle> {
+        return new Promise<Doodle>((resolve, reject) => {
+            this.downloadGist(gistId, function (reason, doodle) {
+                if (reason) {
+                    reject(reason);
+                }
+                else {
+                    resolve(doodle);
+                }
+            });
+        });
+    }
+
     downloadGist(gistId: string, callback: (reason: any, doodle?: Doodle) => void) {
         this.githubGistService.getGist(gistId)
             .then((gist) => {

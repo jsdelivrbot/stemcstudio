@@ -19,11 +19,11 @@ System.config({
     "@angular/router": "npm:@angular/router@5.2.3",
     "@angular/upgrade": "npm:@angular/upgrade@5.2.3",
     "@angular/upgrade/static": "npm:@angular/upgrade@5.2.3/bundles/upgrade-static.umd.js",
-    "angular": "npm:angular@1.6.8",
-    "angular-animate": "npm:angular-animate@1.6.8",
+    "angular": "npm:angular@1.6.9",
+    "angular-animate": "npm:angular-animate@1.6.9",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "npm:angular-sanitize@1.6.8",
+    "angular-sanitize": "npm:angular-sanitize@1.6.9",
     "angular-translate": "npm:angular-translate@2.17.0",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
@@ -204,20 +204,20 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.6.8"
+      "angular": "npm:angular@1.6.9"
     },
     "npm:angular-translate@2.17.0": {
-      "angular": "npm:angular@1.6.8",
+      "angular": "npm:angular@1.6.9",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-ui-router@0.4.2": {
-      "angular": "npm:angular@1.6.8",
+      "angular": "npm:angular@1.6.9",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.9.2": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -414,7 +414,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -545,7 +545,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash-base@3.0.4": {
@@ -601,7 +601,7 @@ System.config({
       "inherits": "npm:inherits@2.0.3"
     },
     "npm:mem@1.1.0": {
-      "mimic-fn": "npm:mimic-fn@1.1.0"
+      "mimic-fn": "npm:mimic-fn@1.2.0"
     },
     "npm:miller-rabin@4.0.1": {
       "bn.js": "npm:bn.js@4.11.8",
