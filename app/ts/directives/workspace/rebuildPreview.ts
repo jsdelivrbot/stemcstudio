@@ -8,8 +8,6 @@ import { isConfigFile, isLanguageServiceScript } from '../../utils/isLanguageSer
 import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
 import { IOptionManager } from '../../services/options/IOptionManager';
-import { currentJavaScript } from './currentJavaScript';
-import { detect1x } from './detect1x';
 import { detectMarker } from './detectMarker';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
@@ -23,7 +21,7 @@ import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { JsModel } from '../../modules/jsmodel/JsModel';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
-import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER, SYSTEM_SHIM_MARKER } from '../../features/preview/index';
+import { CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER, SYSTEM_SHIM_MARKER } from '../../features/preview/index';
 
 const NEWLINE = '\n';
 
@@ -219,16 +217,7 @@ export function rebuildPreview(
                             }
                         }
 
-                        if (detect1x(wsModel)) {
-                            // code is for backwards compatibility only, now that we support ES6 modules.
-                            console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.");
-                            html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS, wsModel));
-                            html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE, wsModel));
-                            // For backwards compatibility (less than 1.x) ...
-                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, wsModel), '</style>'].join(""));
-                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, wsModel));
-                        }
-                        else if (detectMarker(CODE_MARKER, wsModel, bestFile)) {
+                        if (detectMarker('<body>', wsModel, bestFile)) {
                             const modulesJs: string[] = [];
                             const paths: string[] = Object.keys(wsModel.lastKnownJs);
                             for (const path of paths) {
@@ -269,10 +258,12 @@ export function rebuildPreview(
                                     `System.config(${fileContent(SYSTEM_CONFIG_JSON, wsModel) as string});${NEWLINE}` :
                                     `System.config(${JSON.stringify(systemConfigArg(closureOpts, VENDOR_FOLDER_MARKER), null, 2)});${NEWLINE}`;
 
-                            html = html.replace(CODE_MARKER, modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig));
+                            const code = modulesJs.join(NEWLINE).concat(NEWLINE).concat(systemJsConfig);
+
+                            html = html.replace('<body>', ['<body>', '<script>', code, '</script>'].join(NEWLINE));
                         }
                         else {
-                            console.warn(`Unable to find '${CODE_MARKER}' in index.html file.`);
+                            console.warn(`Unable to find '<body>' in index.html file.`);
                         }
 
                         content.open();

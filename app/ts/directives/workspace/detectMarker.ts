@@ -3,7 +3,7 @@ import { WsModel } from '../../modules/wsmodel/WsModel';
 import { fileExists } from './fileExists';
 
 /**
- * Detects that the program is using a CODE-MARKER.
+ * Detects that the program contains the specified marker string.
  */
 export function detectMarker(marker: string, workspace: WsModel, path: string): boolean {
     if (fileExists(path, workspace)) {
