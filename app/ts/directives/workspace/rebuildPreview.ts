@@ -4,6 +4,7 @@ import { closure } from './closure';
 import { csvTypeFromContent } from './csvTypeFromContent';
 import { fileContent } from './fileContent';
 import { fileExists } from './fileExists';
+import { isCSS } from '../../utils/isCSS';
 import { isConfigFile, isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { isString } from '../../utils/isString';
 import { IOption, isGlobalOrUMDLibrary, isModularOrUMDLibrary } from '../../services/options/IOption';
@@ -12,6 +13,7 @@ import { detectMarker } from './detectMarker';
 import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
+import { replaceLink } from './replaceLink';
 import { replaceMarker } from './replaceMarker';
 import { scriptURL } from './scriptURL';
 import { schemeTypeFromContent } from './schemeTypeFromContent';
@@ -21,7 +23,7 @@ import { WorkspaceScope } from '../../scopes/WorkspaceScope';
 import { JsModel } from '../../modules/jsmodel/JsModel';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 import mathscript from 'davinci-mathscript';
-import { CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER, SYSTEM_SHIM_MARKER } from '../../features/preview/index';
+import { SYSTEM_SHIM_MARKER } from '../../features/preview/index';
 
 const NEWLINE = '\n';
 
@@ -79,9 +81,6 @@ export function rebuildPreview(
     $scope: WorkspaceScope,
     $location: ILocationService,
     $window: IWindowService,
-    FILENAME_CODE: string,
-    FILENAME_LESS: string,
-    FILENAME_LIBS: string,
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
     LIBS_MARKER: string,
     STYLES_MARKER: string,
@@ -181,39 +180,21 @@ export function rebuildPreview(
                             return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>${NEWLINE}`;
                         });
 
-                        if (detectMarker(SCRIPTS_MARKER, wsModel, bestFile)) {
-                            html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
-                        }
-                        else {
-                            if (scriptTags.length > 0) {
-                                console.warn(`Unable to find '${SCRIPTS_MARKER}' in ${bestFile} file.`);
-                            }
-                        }
+                        html = html.replace('</head>', `${scriptTags.join("")}</head>`);
+
                         if (detectMarker(SYSTEM_SHIM_MARKER, wsModel, bestFile)) {
                             const systemJsUrl = 'https://unpkg.com/systemjs@0.19.34/dist/system.src.js';
                             html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
                         }
 
-                        html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
-                        html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
-                        html = replaceMarker(SCHEMES_MARKER, LANGUAGE_SCHEME, schemeTypeFromContent, html, wsModel, bestFile);
+                        html = replaceMarker(LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
+                        html = replaceMarker(LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
+                        html = replaceMarker(LANGUAGE_SCHEME, schemeTypeFromContent, html, wsModel, bestFile);
 
-                        // TODO: It would be nice to have a more flexible way to define stylesheet imports.
-                        // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
-                        if (fileExists('style.css', wsModel)) {
-                            if (detectMarker(STYLE_MARKER, wsModel, bestFile)) {
-                                html = html.replace(STYLE_MARKER, [fileContent('style.css', wsModel)].join(""));
-                            }
-                            else {
-                                console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
-                            }
-                        }
-                        else if (fileExists(FILENAME_LESS, wsModel)) {
-                            if (detectMarker(STYLE_MARKER, wsModel, bestFile)) {
-                                html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, wsModel)].join(""));
-                            }
-                            else {
-                                console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
+                        // Replace stylesheet link tags with inline css if the corresponding file exists in the project.
+                        for (const path of wsModel.getFilePaths()) {
+                            if (isCSS(path)) {
+                                html = replaceLink(html, path, fileContent(path, wsModel));
                             }
                         }
 

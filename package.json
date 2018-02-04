@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.45.0",
+  "version": "2.46.0",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {

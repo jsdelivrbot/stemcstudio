@@ -235,11 +235,6 @@ app.constant('FILENAME_META', 'package.json');
 app.constant('FILENAME_HTML', 'index.html');
 app.constant('FILENAME_README', 'README.md');
 
-// The following 3 files have diminishing significance.
-app.constant('FILENAME_CODE', 'script.ts');
-app.constant('FILENAME_LIBS', 'extras.ts');
-app.constant('FILENAME_LESS', 'style.less');
-
 // Special marker to indicate that JavaScript or TypeScript file is
 // stored locally in the DOMAIN/vendor folder.
 // This enables us to handle locally stored files in both development and production.

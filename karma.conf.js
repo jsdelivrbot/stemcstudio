@@ -72,7 +72,6 @@ module.exports = function (config) {
       { pattern: 'generated/jspm_packages/npm/process@0.11.10.js', included: false, watched: false },
       { pattern: 'generated/jspm_packages/npm/process@0.11.10/browser.js', included: false, watched: false },
 
-      { pattern: 'generated/jspm_packages/npm/editor-document@0.0.5.js', included: false, watched: false },
       { pattern: 'generated/jspm_packages/npm/editor-document@0.0.5/build/browser/index.js', included: false, watched: false },
       
       { pattern: 'generated/jspm_packages/npm/rxjs@5.5.6.js', included: false, watched: false },

@@ -1,4 +1,3 @@
-import { detectMarker } from './detectMarker';
 import { fileContent } from './fileContent';
 import { modeFromName } from '../../utils/modeFromName';
 import { prefixFromPath } from '../../utils/prefixFromPath';
@@ -6,15 +5,14 @@ import { prefixFromPath } from '../../utils/prefixFromPath';
 import { WsModel } from '../../modules/wsmodel/WsModel';
 
 /**
- * @param marker e.g. SHADERS_MARKER
  * @param language e.g. LANGUAGE_GLSL
  * @param workspace The workspace that provides the files.
  */
-export function replaceMarker(marker: string, language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
+export function replaceMarker(language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
     const filePaths: string[] = workspace.getFileSessionPaths().filter(function (filePath: string) {
         return language === modeFromName(filePath);
     });
-    const fileTags = filePaths.map((path: string) => {
+    const scriptTags = filePaths.map((path: string) => {
         const content = fileContent(path, workspace);
         if (typeof content === 'string') {
             const type = scriptType(content);
@@ -25,13 +23,5 @@ export function replaceMarker(marker: string, language: string, scriptType: (con
         }
     });
 
-    if (detectMarker(marker, workspace, inFilePath)) {
-        html = html.replace(marker, fileTags.join(""));
-    }
-    else {
-        if (fileTags.length > 0) {
-            console.warn(`Unable to find marker '${marker}' in '${inFilePath}' file.`);
-        }
-    }
-    return html;
+    return html.replace('</head>', `${scriptTags.join("")}</head>`);
 }

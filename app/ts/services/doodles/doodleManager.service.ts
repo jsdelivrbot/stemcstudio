@@ -18,15 +18,6 @@ function deserializeDoodles(doodles: IDoodleDS[]): Doodle[] {
     const FILENAME_HTML = 'index.html';
     const PROPERTY_HTML = 'html';
 
-    const FILENAME_CODE = 'script.ts';
-    const PROPERTY_CODE = 'code';
-
-    const FILENAME_LIBS = 'extras.ts';
-    const PROPERTY_LIBS = 'libs';
-
-    const FILENAME_LESS = 'style.less';
-    const PROPERTY_LESS = 'less';
-
     const ds: Doodle[] = [];
     const iLen = doodles.length;
     for (let i = 0; i < iLen; i++) {
@@ -42,18 +33,6 @@ function deserializeDoodles(doodles: IDoodleDS[]): Doodle[] {
             d.files[FILENAME_HTML] = new DoodleFile();
             d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
             d.files[FILENAME_HTML].language = <LanguageModeId>modeFromName(FILENAME_HTML);
-
-            d.files[FILENAME_CODE] = new DoodleFile();
-            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
-            d.files[FILENAME_CODE].language = <LanguageModeId>modeFromName(FILENAME_CODE);
-
-            d.files[FILENAME_LIBS] = new DoodleFile();
-            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
-            d.files[FILENAME_LIBS].language = <LanguageModeId>modeFromName(FILENAME_LIBS);
-
-            d.files[FILENAME_LESS] = new DoodleFile();
-            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
-            d.files[FILENAME_LESS].language = <LanguageModeId>modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
         d.gistId = inDoodle.gistId;

@@ -903,6 +903,16 @@ export class WsModel implements IWorkspaceModel, MwWorkspace, QuickInfoTooltipHo
         return this.refCount === 0;
     }
 
+    getFilePaths(): string[] {
+        const files = this.files;
+        if (files) {
+            return files.keys;
+        }
+        else {
+            return [];
+        }
+    }
+
     /**
      * Returns a map of paths to file.
      * The map is a copy but the files are by reference.
