@@ -3,12 +3,13 @@ import { modeFromName } from '../../utils/modeFromName';
 import { prefixFromPath } from '../../utils/prefixFromPath';
 
 import { WsModel } from '../../modules/wsmodel/WsModel';
+import { LanguageModeId } from '../../editor/LanguageMode';
 
 /**
  * @param language e.g. LANGUAGE_GLSL
  * @param workspace The workspace that provides the files.
  */
-export function replaceMarker(language: string, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
+export function insertBeforeClosingHeadTag(language: LanguageModeId, scriptType: (content: string) => string, html: string, workspace: WsModel, inFilePath: string): string {
     const filePaths: string[] = workspace.getFileSessionPaths().filter(function (filePath: string) {
         return language === modeFromName(filePath);
     });

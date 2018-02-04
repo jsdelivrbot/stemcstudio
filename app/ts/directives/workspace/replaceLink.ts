@@ -8,6 +8,9 @@ export function replaceLink(text: string, fileName: string, css: string): string
         // p3 is ">
         return ['<style>', css, '</style>'].join('\n');
     }
-    const searchValue = new RegExp(`(<link.*href=["'])(${fileName})(["'].[^>]*>)`, 'gi');
+    // Periods are replaced so that they are not treated as any character by the RegExp.
+    const escapedFileName = fileName.replace('.', '\.');
+    // Notice that after the second delimiters (apos or quot), we enter non greedy mode using ? to prevent consuming following tags.
+    const searchValue = new RegExp(`(<link.*href=["'])(${escapedFileName})(["'].*?>)`, 'gi');
     return text.replace(searchValue, replacer);
 }

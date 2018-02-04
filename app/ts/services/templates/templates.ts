@@ -23,7 +23,7 @@ app.factory('templates', [
         const THREE: ITemplate = {
             name: "three",
             description: "three - 3D Library",
-            gistId: '06bbae19d42575f2b81ffda2d696e77f'
+            gistId: 'bc000661a0c371bea96c947527c80ef2'
         };
 
         const PLOTLY: ITemplate = {

@@ -14,7 +14,7 @@ import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { replaceLink } from './replaceLink';
-import { replaceMarker } from './replaceMarker';
+import { insertBeforeClosingHeadTag } from './insertBeforeClosingHeadTag';
 import { scriptURL } from './scriptURL';
 import { schemeTypeFromContent } from './schemeTypeFromContent';
 import { shaderTypeFromContent } from './shaderTypeFromContent';
@@ -187,9 +187,9 @@ export function rebuildPreview(
                             html = html.replace(SYSTEM_SHIM_MARKER, `<script src='${systemJsUrl}'></script>`);
                         }
 
-                        html = replaceMarker(LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
-                        html = replaceMarker(LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
-                        html = replaceMarker(LANGUAGE_SCHEME, schemeTypeFromContent, html, wsModel, bestFile);
+                        html = insertBeforeClosingHeadTag(LANGUAGE_CSV, csvTypeFromContent, html, wsModel, bestFile);
+                        html = insertBeforeClosingHeadTag(LANGUAGE_GLSL, shaderTypeFromContent, html, wsModel, bestFile);
+                        html = insertBeforeClosingHeadTag(LANGUAGE_SCHEME, schemeTypeFromContent, html, wsModel, bestFile);
 
                         // Replace stylesheet link tags with inline css if the corresponding file exists in the project.
                         for (const path of wsModel.getFilePaths()) {
