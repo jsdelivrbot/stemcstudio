@@ -41,7 +41,7 @@ app.factory('templates', [
         const JASMINE: ITemplate = {
             name: "jasmine",
             description: "Jasmine Testing Framework",
-            gistId: '2b4f8e50b6487d79934e95cccd9a8d54'
+            gistId: '4e8f60648db35d3b0de46ca7e407b86d'
         };
 
         const JSXGRAPH: ITemplate = {

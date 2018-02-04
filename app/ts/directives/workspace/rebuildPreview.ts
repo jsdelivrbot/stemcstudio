@@ -82,8 +82,6 @@ export function rebuildPreview(
     $location: ILocationService,
     $window: IWindowService,
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
-    LIBS_MARKER: string,
-    STYLES_MARKER: string,
     VENDOR_FOLDER_MARKER: string
 ): void {
     // Synchronize the JavaScript model (transpile status) with the workspace (source) model.
@@ -158,13 +156,8 @@ export function rebuildPreview(
                             return `<link rel='stylesheet' href='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></link>${NEWLINE}`;
                         });
 
-                        if (detectMarker(STYLES_MARKER, wsModel, bestFile)) {
-                            html = html.replace(STYLES_MARKER, stylesTags.join(""));
-                        }
-                        else {
-                            if (stylesTags.length > 0) {
-                                console.warn(`Unable to find '${STYLES_MARKER}' in ${bestFile} file.`);
-                            }
+                        if (detectMarker('<head>', wsModel, bestFile)) {
+                            html = html.replace('<head>', '<head>\n' + stylesTags.join(""));
                         }
 
                         /**

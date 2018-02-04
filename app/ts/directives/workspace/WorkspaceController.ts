@@ -236,8 +236,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
         'FILENAME_TYPESCRIPT_ES2015_CORE_DTS',
         'FILENAME_TYPESCRIPT_PROMISE_LIB_DTS',
-        'STYLES_MARKER',
-        'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
         WORKSPACE_MODEL_UUID
     ];
@@ -276,8 +274,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
         private FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
-        private STYLES_MARKER: string,
-        private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
         private wsModel: WsModel) {
 
@@ -297,8 +293,6 @@ export class WorkspaceController implements WorkspaceEditorHost {
                         this.$location,
                         this.$window,
                         this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
-                        this.LIBS_MARKER,
-                        this.STYLES_MARKER,
                         this.VENDOR_FOLDER_MARKER);
                     rebuildPromise = void 0;
                 }, delay);

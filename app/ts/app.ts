@@ -243,10 +243,6 @@ app.constant('FILENAME_README', 'README.md');
 // Ultimately we would like to be able to access modules through only a manifest.
 app.constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 
-// For backwards compatibility, don't change the values of these constants.
-app.constant('STYLES_MARKER', '<!-- STYLES-MARKER -->');
-app.constant('LIBS_MARKER', '// LIBS-MARKER');
-
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 // app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 
