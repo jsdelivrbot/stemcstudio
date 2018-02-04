@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.46.1",
+  "version": "2.47.0",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -45,6 +45,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "generic-rbtree": "^1.1.1",
+    "js-beautify": "^1.7.5",
     "lactate": "0.13.12",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
@@ -163,6 +164,7 @@
       "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@^2.15.4",
       "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@^1.0.0",
       "jquery": "npm:jquery@^2.2.4",
+      "js-beautify": "npm:js-beautify@^1.7.5",
       "reflect-metadata": "npm:reflect-metadata@^0.1.12",
       "rxjs": "npm:rxjs@^5.5.6",
       "showdown": "npm:showdown@^1.8.6",

@@ -1022,5 +1022,79 @@
   "npm:angular-sanitize@1.6.9": {},
   "npm:angular-animate@1.6.9": {},
   "npm:mimic-fn@1.2.0": {},
-  "npm:angular@1.6.9": {}
+  "npm:angular@1.6.9": {},
+  "npm:abbrev@1.1.1": {},
+  "npm:proto-list@1.2.4": {},
+  "npm:ini@1.3.5": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:sigmund@1.0.1": {
+    "http": "github:jspm/nodelibs-http@^1.7.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:editorconfig@0.13.3": {
+    "bluebird": "npm:bluebird@^3.0.5",
+    "commander": "npm:commander@^2.9.0",
+    "lru-cache": "npm:lru-cache@^3.2.0",
+    "semver": "npm:semver@^5.1.0",
+    "sigmund": "npm:sigmund@^1.0.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "os": "github:jspm/nodelibs-os@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:nopt@3.0.6": {
+    "abbrev": "npm:abbrev@^1.0.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "stream": "github:jspm/nodelibs-stream@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "url": "github:jspm/nodelibs-url@^0.1.0"
+  },
+  "npm:commander@2.13.0": {
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "child_process": "github:jspm/nodelibs-child_process@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:semver@5.5.0": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:config-chain@1.1.11": {
+    "proto-list": "npm:proto-list@~1.2.1",
+    "ini": "npm:ini@^1.3.4",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "url": "github:jspm/nodelibs-url@^0.1.0",
+    "http": "github:jspm/nodelibs-http@^1.7.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:lru-cache@3.2.0": {
+    "pseudomap": "npm:pseudomap@^1.0.1"
+  },
+  "npm:minimist@0.0.8": {},
+  "npm:mkdirp@0.5.1": {
+    "minimist": "npm:minimist@0.0.8",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
+  },
+  "npm:bluebird@3.5.1": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:js-beautify@1.7.5": {
+    "config-chain": "npm:config-chain@~1.1.5",
+    "editorconfig": "npm:editorconfig@^0.13.2",
+    "mkdirp": "npm:mkdirp@~0.5.0",
+    "nopt": "npm:nopt@~3.0.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  }
 }

@@ -8,6 +8,7 @@
 /// <reference path="browser/ambient/davinci-mathscript/index.d.ts" />
 /// <reference path="browser/ambient/ga/index.d.ts" />
 /// <reference path="browser/ambient/gapi/index.d.ts" />
+/// <reference path="browser/ambient/js-beautify/index.d.ts" />
 /// <reference path="browser/ambient/showdown/index.d.ts" />
 /// <reference path="browser/ambient/socket.io-client/index.d.ts" />
 /// <reference path="browser/ambient/twitter/index.d.ts" />

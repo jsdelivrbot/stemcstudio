@@ -1,0 +1,1 @@
+module.exports = require("npm:js-beautify@1.7.5/js/index.js");
