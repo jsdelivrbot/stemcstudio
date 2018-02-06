@@ -21,8 +21,10 @@ export interface Annotation {
     showarrow?: boolean;
     text?: string;
     x?: number;
+    xanchor?: 'left' | 'center' | 'right';
     xref?: string;
     y?: number;
+    yanchor?: 'bottom' | 'middle' | 'top';
     yref?: string;
     font?: Font;
 }
@@ -35,6 +37,9 @@ export interface Axis {
     autotick?: boolean;
     dtick?: number;
     domain?: number[];
+    gridwidth?: number;
+    linecolor?: string;
+    linewidth?: number;
     range?: [number, number];
     rangemode?: 'nonnegative' | 'tozero' | 'normal';
     tick0?: number;
@@ -42,6 +47,7 @@ export interface Axis {
     tickcolor?: string;
     tickfont?: Font;
     ticklen?: number;
+    ticks?: 'outside';
     tickwidth?: number;
     title?: string;
     /**
@@ -53,7 +59,6 @@ export interface Axis {
     showline?: boolean;
     showticklabels?: boolean;
     mirror?: string;
-    ticks?: string;
     zeroline?: boolean;
 }
 
@@ -82,8 +87,16 @@ export interface Data {
     autocolorscale?: boolean;
     colorbar?: ColorBar;
     colorscale?: string | (number | string)[][];
+    connectgaps?: boolean;
     contours?: Contours;
     fill?: 'tonexty' | 'tozeroy';
+    hoverinfo?: 'none';
+    line?: {
+        color?: string;
+        dash?: 'dashdot' | 'dot' | 'solid';
+        shape?: 'hv' | 'hvh' | 'linear' | 'spline' | 'vhv';
+        width?: number;
+    }
     marker?: Marker;
     mode?: 'lines' | 'markers' | 'none' | 'lines+markers';
     name?: string;
@@ -107,7 +120,9 @@ export interface Data {
     a?: number[];
     b?: number[];
     c?: number[];
-    text?: string[];
+    text?: string[] | number[];
+    textposition?: 'auto';
+    width?: number | number[];
 }
 
 /**
@@ -135,11 +150,12 @@ export interface Layout {
         bgcolor?: string;
         bordercolor?: string;
         borderwidth?: number;
+        font?: Font;
+        orientation?: 'h' | 'v';
+        traceorder?: 'normal' | 'reversed';
         x?: number;
         y?: number;
-        orientation?: 'h' | 'v';
-        traceorder?: 'normal';
-        font?: Font;
+        yref?: 'paper'
     };
     showlegend?: boolean;
     ternary?: {
@@ -187,6 +203,7 @@ export interface Line {
  *
  */
 export interface Margin {
+    autoexpand?: boolean;
     l?: number;
     b?: number;
     t?: number;
@@ -202,7 +219,7 @@ export interface Marker {
     /**
      * Sets the marker color.
      */
-    color?: string;
+    color?: string | string[];
 
     /**
      * 
