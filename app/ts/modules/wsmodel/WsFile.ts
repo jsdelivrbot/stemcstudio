@@ -244,10 +244,7 @@ export class WsFile implements MwDocument, Shareable {
         const session = this.session;
         if (session) {
             for (const patch of patches) {
-                const { start, length, applied } = applyPatchToDocument(patch, session);
-                // The results of aplying the patch as a collection of diffs.
-                // TODO: Used the applied or return everything?
-                console.log(`applyPatchToDocument(${patch}) => start=${start}, length=${length}, applied=${applied}`);
+                /* const { start, length, applied } = */ applyPatchToDocument(patch, session);
             }
         }
         else {

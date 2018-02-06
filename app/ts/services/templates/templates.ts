@@ -22,13 +22,13 @@ app.factory('templates', [
 
         const THREE: ITemplate = {
             name: "three",
-            description: "three - 3D Library",
+            description: "three.js - 3D Library",
             gistId: 'bc000661a0c371bea96c947527c80ef2'
         };
 
         const PLOTLY: ITemplate = {
             name: "plotly",
-            description: "Plot.ly",
+            description: "plotly - Modern Visualization for the Data Era",
             gistId: '8191c1070bc5d68cd223a33f01ce4d53'
         };
 
@@ -52,7 +52,7 @@ app.factory('templates', [
 
         const TWO: ITemplate = {
             name: "two",
-            description: "Two.js",
+            description: "Two.js - 2D drawing api",
             gistId: '7c37b7df818e517aed382323d161756f'
         };
 

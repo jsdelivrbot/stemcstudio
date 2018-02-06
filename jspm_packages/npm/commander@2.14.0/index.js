@@ -6,6 +6,7 @@
   var dirname = path.dirname;
   var basename = path.basename;
   var fs = require('fs');
+  require('util').inherits(Command, EventEmitter);
   exports = module.exports = new Command();
   exports.Command = Command;
   exports.Option = Option;
@@ -27,7 +28,7 @@
     return camelcase(this.name());
   };
   Option.prototype.is = function(arg) {
-    return arg == this.short || arg == this.long;
+    return this.short === arg || this.long === arg;
   };
   function Command(name) {
     this.commands = [];
@@ -37,7 +38,6 @@
     this._args = [];
     this._name = name || '';
   }
-  Command.prototype.__proto__ = EventEmitter.prototype;
   Command.prototype.command = function(name, desc, opts) {
     if (typeof desc === 'object' && desc !== null) {
       opts = desc;
@@ -109,7 +109,7 @@
       if (parsed.args.length)
         args = parsed.args.concat(args);
       self._args.forEach(function(arg, i) {
-        if (arg.required && null == args[i]) {
+        if (arg.required && args[i] == null) {
           self.missingArgument(arg.name);
         } else if (arg.variadic) {
           if (i !== self._args.length - 1) {
@@ -137,7 +137,7 @@
         option = new Option(flags, description),
         oname = option.name(),
         name = option.attributeName();
-    if (typeof fn != 'function') {
+    if (typeof fn !== 'function') {
       if (fn instanceof RegExp) {
         var regex = fn;
         fn = function(val, def) {
@@ -149,25 +149,26 @@
         fn = null;
       }
     }
-    if (false == option.bool || option.optional || option.required) {
-      if (false == option.bool)
+    if (!option.bool || option.optional || option.required) {
+      if (!option.bool)
         defaultValue = true;
-      if (undefined !== defaultValue) {
+      if (defaultValue !== undefined) {
         self[name] = defaultValue;
         option.defaultValue = defaultValue;
       }
     }
     this.options.push(option);
     this.on('option:' + oname, function(val) {
-      if (null !== val && fn)
-        val = fn(val, undefined === self[name] ? defaultValue : self[name]);
-      if ('boolean' == typeof self[name] || 'undefined' == typeof self[name]) {
-        if (null == val) {
+      if (val !== null && fn) {
+        val = fn(val, self[name] === undefined ? defaultValue : self[name]);
+      }
+      if (typeof self[name] === 'boolean' || typeof self[name] === 'undefined') {
+        if (val == null) {
           self[name] = option.bool ? defaultValue || true : false;
         } else {
           self[name] = val;
         }
-      } else if (null !== val) {
+      } else if (val !== null) {
         self[name] = val;
       }
     });
@@ -195,7 +196,7 @@
         return command.alias() === name;
       })[0];
     }
-    if (this._execs[name] && typeof this._execs[name] != "function") {
+    if (this._execs[name] && typeof this._execs[name] !== 'function') {
       return this.executeSubCommand(argv, args, parsed.unknown);
     } else if (aliasCommand) {
       args[0] = aliasCommand._name;
@@ -210,9 +211,9 @@
     args = args.concat(unknown);
     if (!args.length)
       this.help();
-    if ('help' == args[0] && 1 == args.length)
+    if (args[0] === 'help' && args.length === 1)
       this.help();
-    if ('help' == args[0]) {
+    if (args[0] === 'help') {
       args[0] = args[1];
       args[1] = '--help';
     }
@@ -255,16 +256,16 @@
     var signals = ['SIGUSR1', 'SIGUSR2', 'SIGTERM', 'SIGINT', 'SIGHUP'];
     signals.forEach(function(signal) {
       process.on(signal, function() {
-        if ((proc.killed === false) && (proc.exitCode === null)) {
+        if (proc.killed === false && proc.exitCode === null) {
           proc.kill(signal);
         }
       });
     });
     proc.on('close', process.exit.bind(process));
     proc.on('error', function(err) {
-      if (err.code == "ENOENT") {
+      if (err.code === 'ENOENT') {
         console.error('\n  %s(1) does not exist, try --help\n', bin);
-      } else if (err.code == "EACCES") {
+      } else if (err.code === 'EACCES') {
         console.error('\n  %s(1) not executable. try chmod or run with root\n', bin);
       }
       process.exit(1);
@@ -287,7 +288,7 @@
         break;
       } else if (lastOpt && lastOpt.required) {
         ret.push(arg);
-      } else if (arg.length > 1 && '-' == arg[0] && '-' != arg[1]) {
+      } else if (arg.length > 1 && arg[0] === '-' && arg[1] !== '-') {
         arg.slice(1).split('').forEach(function(c) {
           ret.push('-' + c);
         });
@@ -337,7 +338,7 @@
         args.push(arg);
         continue;
       }
-      if ('--' == arg) {
+      if (arg === '--') {
         literal = true;
         continue;
       }
@@ -345,12 +346,12 @@
       if (option) {
         if (option.required) {
           arg = argv[++i];
-          if (null == arg)
+          if (arg == null)
             return this.optionMissingArgument(option);
           this.emit('option:' + option.name(), arg);
         } else if (option.optional) {
           arg = argv[i + 1];
-          if (null == arg || ('-' == arg[0] && '-' != arg)) {
+          if (arg == null || (arg[0] === '-' && arg !== '-')) {
             arg = null;
           } else {
             ++i;
@@ -361,9 +362,9 @@
         }
         continue;
       }
-      if (arg.length > 1 && '-' == arg[0]) {
+      if (arg.length > 1 && arg[0] === '-') {
         unknownOptions.push(arg);
-        if (argv[i + 1] && '-' != argv[i + 1][0]) {
+        if ((i + 1) < argv.length && argv[i + 1][0] !== '-') {
           unknownOptions.push(argv[++i]);
         }
         continue;
@@ -380,7 +381,7 @@
         len = this.options.length;
     for (var i = 0; i < len; i++) {
       var key = this.options[i].attributeName();
-      result[key] = key === 'version' ? this._version : this[key];
+      result[key] = key === this._versionOptionName ? this._version : this[key];
     }
     return result;
   };
@@ -415,19 +416,21 @@
     process.exit(1);
   };
   Command.prototype.version = function(str, flags) {
-    if (0 == arguments.length)
+    if (arguments.length === 0)
       return this._version;
     this._version = str;
     flags = flags || '-V, --version';
-    this.option(flags, 'output the version number');
-    this.on('option:version', function() {
+    var versionOption = new Option(flags, 'output the version number');
+    this._versionOptionName = versionOption.long.substr(2) || 'version';
+    this.options.push(versionOption);
+    this.on('option:' + this._versionOptionName, function() {
       process.stdout.write(str + '\n');
       process.exit(0);
     });
     return this;
   };
   Command.prototype.description = function(str) {
-    if (0 === arguments.length)
+    if (arguments.length === 0)
       return this._description;
     this._description = str;
     return this;
@@ -449,13 +452,13 @@
       return humanReadableArgName(arg);
     });
     var usage = '[options]' + (this.commands.length ? ' [command]' : '') + (this._args.length ? ' ' + args.join(' ') : '');
-    if (0 == arguments.length)
+    if (arguments.length === 0)
       return this._usage || usage;
     this._usage = str;
     return this;
   };
   Command.prototype.name = function(str) {
-    if (0 === arguments.length)
+    if (arguments.length === 0)
       return this._name;
     this._name = str;
     return this;
@@ -468,7 +471,7 @@
   Command.prototype.optionHelp = function() {
     var width = this.largestOptionLength();
     return this.options.map(function(option) {
-      return pad(option.flags, width) + '  ' + option.description + ((option.bool != false && option.defaultValue !== undefined) ? ' (default: ' + option.defaultValue + ')' : '');
+      return pad(option.flags, width) + '  ' + option.description + ((option.bool && option.defaultValue !== undefined) ? ' (default: ' + option.defaultValue + ')' : '');
     }).concat([pad('-h, --help', width) + '  ' + 'output usage information']).join('\n');
   };
   Command.prototype.commandHelp = function() {
@@ -532,7 +535,7 @@
   function outputHelpIfNecessary(cmd, options) {
     options = options || [];
     for (var i = 0; i < options.length; i++) {
-      if (options[i] == '--help' || options[i] == '-h') {
+      if (options[i] === '--help' || options[i] === '-h') {
         cmd.outputHelp();
         process.exit(0);
       }

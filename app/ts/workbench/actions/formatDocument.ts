@@ -7,6 +7,8 @@ import { isHtmlFilePath } from '../../utils/isHtmlFilePath';
 import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { css } from 'js-beautify';
 import { html } from 'js-beautify';
+import { DMP } from '../../synchronization/DMP';
+import { applyPatchToDocument } from '../../modules/wsmodel/applyPatchToDocument';
 
 export interface FormatDocumentController {
     getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]>;
@@ -53,23 +55,45 @@ export function formatDocument(path: string, indentSize: number, controller: For
     }
     else if (isHtmlFilePath(path)) {
         const settings = formatCodeSettings(indentSize);
-        session.setValue(html(session.getValue(), {
+        const oldCode = session.getValue();
+        const newCode = html(oldCode, {
             eol: settings.newLineCharacter,
             end_with_newline: true,
             indent_char: " ",
             indent_size: indentSize,
             indent_inner_html: false
-        }));
+        });
+        const dmp = new DMP();
+        const diffs = dmp.diff_main(oldCode, newCode);
+        if (diffs.length > 2) {
+            dmp.diff_cleanupSemantic(diffs);
+            dmp.diff_cleanupEfficiency(diffs);
+        }
+        const patches = dmp.computePatches(oldCode, diffs);
+        for (const patch of patches) {
+            /* const { start, length, applied } = */ applyPatchToDocument(patch, session);
+        }
     }
     else if (isCSS(path)) {
         const settings = formatCodeSettings(indentSize);
-        session.setValue(css(session.getValue(), {
+        const oldCode = session.getValue();
+        const newCode = css(session.getValue(), {
             eol: settings.newLineCharacter,
             end_with_newline: true,
             indent_char: " ",
             indent_size: indentSize,
             newline_between_rules: true,
-        }));
+        });
+        const dmp = new DMP();
+        const diffs = dmp.diff_main(oldCode, newCode);
+        if (diffs.length > 2) {
+            dmp.diff_cleanupSemantic(diffs);
+            dmp.diff_cleanupEfficiency(diffs);
+        }
+        const patches = dmp.computePatches(oldCode, diffs);
+        for (const patch of patches) {
+            /* const { start, length, applied } = */ applyPatchToDocument(patch, session);
+        }
     }
     else {
         console.warn(`Ignoring format document because '${path}' is not a TypeScript file.`);

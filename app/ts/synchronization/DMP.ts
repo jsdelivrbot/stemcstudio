@@ -1590,13 +1590,20 @@ export class DMP {
         return levenshtein;
     }
 
+    /**
+     * Converts the diffs into an array of strings.
+     * Each diff results in a string element in the return value at the same array index as the diffs input.
+     * EQUAL diffs result in '=' followed by the number of bytes of the string that are equal.
+     * DELETE diffs result in '-' followed by the number of bytes to delete.
+     * INSERT diffs result in '+' followed by the URI-encoded string.
+     */
     diffsToDeltaArray(diffs: Diff[]): string[] {
         const texts: string[] = [];
         const xLen = diffs.length;
         for (let x = 0; x < xLen; x++) {
             const diff = diffs[x];
-            const kind = <number>diff[0];
-            const text = <string>diff[1];
+            const kind = diff[0];
+            const text = diff[1];
             switch (kind) {
                 case DIFF_INSERT:
                     texts[x] = '+' + encodeURI(text);

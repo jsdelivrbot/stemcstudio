@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.9.2": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -342,12 +342,13 @@ System.config({
     "npm:code-writer@0.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:commander@2.13.0": {
+    "npm:commander@2.14.0": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:config-chain@1.1.11": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
@@ -454,7 +455,7 @@ System.config({
     },
     "npm:editorconfig@0.13.3": {
       "bluebird": "npm:bluebird@3.5.1",
-      "commander": "npm:commander@2.13.0",
+      "commander": "npm:commander@2.14.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "lru-cache": "npm:lru-cache@3.2.0",
       "os": "github:jspm/nodelibs-os@0.1.0",
