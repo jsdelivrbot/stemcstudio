@@ -3,7 +3,7 @@
  * This file is used to load the application and the workers.
  * DON'T FORGET TO CHANGE THE VERSION IN views/index.pug !!!
  */
-export const APP_VERSION = '2.47.2';
+export const APP_VERSION = '2.47.3';
 
 /**
  * Web Worker supporting TypeScript Mode.
