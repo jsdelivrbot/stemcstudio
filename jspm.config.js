@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@5.2.3",
-    "@angular/compiler": "npm:@angular/compiler@5.2.3",
-    "@angular/core": "npm:@angular/core@5.2.3",
-    "@angular/forms": "npm:@angular/forms@5.2.3",
-    "@angular/http": "npm:@angular/http@5.2.3",
-    "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.3",
-    "@angular/router": "npm:@angular/router@5.2.3",
-    "@angular/upgrade": "npm:@angular/upgrade@5.2.3",
-    "@angular/upgrade/static": "npm:@angular/upgrade@5.2.3/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@5.2.4",
+    "@angular/compiler": "npm:@angular/compiler@5.2.4",
+    "@angular/core": "npm:@angular/core@5.2.4",
+    "@angular/forms": "npm:@angular/forms@5.2.4",
+    "@angular/http": "npm:@angular/http@5.2.4",
+    "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.4",
+    "@angular/router": "npm:@angular/router@5.2.4",
+    "@angular/upgrade": "npm:@angular/upgrade@5.2.4",
+    "@angular/upgrade/static": "npm:@angular/upgrade@5.2.4/bundles/upgrade-static.umd.js",
     "angular": "npm:angular@1.6.9",
     "angular-animate": "npm:angular-animate@1.6.9",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -142,62 +142,62 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@5.2.3": {
-      "@angular/core": "npm:@angular/core@5.2.3",
+    "npm:@angular/common@5.2.4": {
+      "@angular/core": "npm:@angular/core@5.2.4",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/compiler@5.2.3": {
+    "npm:@angular/compiler@5.2.4": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/core@5.2.3": {
+    "npm:@angular/core@5.2.4": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0",
       "zone.js": "npm:zone.js@0.8.20"
     },
-    "npm:@angular/forms@5.2.3": {
-      "@angular/common": "npm:@angular/common@5.2.3",
-      "@angular/core": "npm:@angular/core@5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
+    "npm:@angular/forms@5.2.4": {
+      "@angular/common": "npm:@angular/common@5.2.4",
+      "@angular/core": "npm:@angular/core@5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/http@5.2.3": {
-      "@angular/core": "npm:@angular/core@5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
+    "npm:@angular/http@5.2.4": {
+      "@angular/core": "npm:@angular/core@5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/platform-browser-dynamic@5.2.3": {
-      "@angular/common": "npm:@angular/common@5.2.3",
-      "@angular/compiler": "npm:@angular/compiler@5.2.3",
-      "@angular/core": "npm:@angular/core@5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
+    "npm:@angular/platform-browser-dynamic@5.2.4": {
+      "@angular/common": "npm:@angular/common@5.2.4",
+      "@angular/compiler": "npm:@angular/compiler@5.2.4",
+      "@angular/core": "npm:@angular/core@5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/platform-browser@5.2.3": {
-      "@angular/common": "npm:@angular/common@5.2.3",
-      "@angular/core": "npm:@angular/core@5.2.3",
+    "npm:@angular/platform-browser@5.2.4": {
+      "@angular/common": "npm:@angular/common@5.2.4",
+      "@angular/core": "npm:@angular/core@5.2.4",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/router@5.2.3": {
-      "@angular/common": "npm:@angular/common@5.2.3",
-      "@angular/core": "npm:@angular/core@5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
+    "npm:@angular/router@5.2.4": {
+      "@angular/common": "npm:@angular/common@5.2.4",
+      "@angular/core": "npm:@angular/core@5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/upgrade@5.2.3": {
-      "@angular/compiler": "npm:@angular/compiler@5.2.3",
-      "@angular/core": "npm:@angular/core@5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.3",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.3",
+    "npm:@angular/upgrade@5.2.4": {
+      "@angular/compiler": "npm:@angular/compiler@5.2.4",
+      "@angular/core": "npm:@angular/core@5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.4",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.4",
       "tslib": "npm:tslib@1.9.0"
     },
     "npm:accepts@1.3.1": {
@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.9.2": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -342,7 +342,7 @@ System.config({
     "npm:code-writer@0.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:commander@2.14.0": {
+    "npm:commander@2.14.1": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -455,7 +455,7 @@ System.config({
     },
     "npm:editorconfig@0.13.3": {
       "bluebird": "npm:bluebird@3.5.1",
-      "commander": "npm:commander@2.14.0",
+      "commander": "npm:commander@2.14.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "lru-cache": "npm:lru-cache@3.2.0",
       "os": "github:jspm/nodelibs-os@0.1.0",
@@ -581,7 +581,7 @@ System.config({
     },
     "npm:hash-base@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:hash-base@3.0.4": {

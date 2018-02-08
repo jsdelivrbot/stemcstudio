@@ -36,6 +36,7 @@ import { LanguageModeId } from '../../editor/LanguageMode';
 import { NATIVE_EDITOR_SERVICE_UUID as EDITOR_SERVICE_UUID } from '../../services/editor/native-editor.service';
 import { setLanguage } from './setLanguage';
 import { Command } from '../../editor/commands/Command';
+import { modeFromName } from '../../utils/modeFromName';
 
 const BOGUS_WIDTH = 600;
 const BOGUS_HEIGHT = 800;
@@ -446,7 +447,7 @@ export function createEditorDirective(
                         addCommands(scope.path, editor, session, wsController, editorPreferencesService);
 
                         // We must wait for the $render function to be called so that we have a session.
-                        const mode = file.mode;
+                        const mode = file.mode ? file.mode : modeFromName(scope.path);
                         const path = scope.path;
                         if (mode) {
                             setLanguage(session, mode as LanguageModeId)

@@ -62,6 +62,7 @@ import { LANGUAGE_MATLAB } from '../../languages/modes';
 import { LANGUAGE_PURE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
+import { LANGUAGE_SVG } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
@@ -935,6 +936,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
+            case LANGUAGE_SVG:
             case LANGUAGE_TEXT: {
                 // This listener will be removed in the detachEditor method.
                 editor.sessionOrThrow().on('change', this.createLiveCodeChangeHandler(path));
@@ -1194,6 +1196,7 @@ export class WorkspaceController implements WorkspaceEditorHost {
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_SCHEME:
+            case LANGUAGE_SVG:
             case LANGUAGE_TEXT: {
                 // TODO: It would be better to refactor this into a single method
                 // that accesses the cache, removes the listener and clears the cache entry.

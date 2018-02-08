@@ -17,6 +17,7 @@ import { LANGUAGE_MATLAB } from '../languages/modes';
 import { LANGUAGE_PURE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_PYTHON } from '../languages/modes';
 import { LANGUAGE_SCHEME } from '../languages/modes';
+import { LANGUAGE_SVG } from '../languages/modes';
 import { LANGUAGE_TEXT } from '../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
 import { LANGUAGE_TSX } from '../languages/modes';
@@ -48,6 +49,7 @@ extensionToMode['purs'] = LANGUAGE_PURE_SCRIPT;
 extensionToMode['py'] = LANGUAGE_PYTHON;
 extensionToMode['scm'] = LANGUAGE_SCHEME;
 // extensionToMode['sass'] = 'SASS'
+extensionToMode['svg'] = LANGUAGE_SVG;
 extensionToMode['tex'] = LANGUAGE_LATEX;
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT;
 extensionToMode['tsx'] = LANGUAGE_TSX;

@@ -18,6 +18,7 @@ import { MarkdownMode } from '../../editor/mode/MarkdownMode';
 import { MatlabMode } from '../../editor/mode/MatlabMode';
 import { PureScriptMode } from '../../editor/mode/PureScriptMode';
 import { PythonMode } from '../../editor/mode/PythonMode';
+import { SvgMode } from '../../editor/mode/SvgMode';
 import { TextMode } from '../../editor/mode/TextMode';
 import { TypeScriptMode } from '../../editor/mode/TypeScriptMode';
 import { TsxMode } from '../../editor/mode/TsxMode';
@@ -40,6 +41,7 @@ import { LANGUAGE_MATLAB } from '../../languages/modes';
 import { LANGUAGE_PURE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_PYTHON } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
+import { LANGUAGE_SVG } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
 import { LANGUAGE_TSX } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
@@ -159,6 +161,10 @@ export function setLanguage(editSession: EditSession, mode: LanguageModeId): Pro
             }
             case LANGUAGE_CSV: {
                 editSession.setLanguageMode(new CsvMode('/js/worker.js', workerImports), onSetLanguageMode);
+                break;
+            }
+            case LANGUAGE_SVG: {
+                editSession.setLanguageMode(new SvgMode('/js/worker.js', workerImports), onSetLanguageMode);
                 break;
             }
             case LANGUAGE_TEXT: {

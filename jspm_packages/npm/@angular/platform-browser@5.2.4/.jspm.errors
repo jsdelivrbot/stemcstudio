@@ -1,0 +1,247 @@
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:6:91: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:7:63: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:8:62: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:9:177: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:81: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:84: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:134: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:137: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:181: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:184: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:229: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:232: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:281: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:284: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:317: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:320: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:358: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:361: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:391: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:394: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:432: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:435: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:466: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:469: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:509: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/animations.js:706:512: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:6:110: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:7:86: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:208:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:208:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:208:69: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/testing.js:208:72: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:6:99: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:7:447: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:164: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:167: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:312: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:315: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:384: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:387: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:440: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:443: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:478: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:481: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:525: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:528: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:568: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:571: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:609: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:612: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:647: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:650: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:687: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:690: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:727: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:730: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:750: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:753: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:780: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:783: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:823: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:826: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:863: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:866: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:897: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:900: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:937: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:940: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:981: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:984: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1020: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1023: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1062: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1065: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1104: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1107: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1145: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1148: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1187: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1190: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1219: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1222: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1239: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1242: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1271: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1274: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1306: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1309: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1335: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1338: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1360: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1363: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1382: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1385: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1408: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1411: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1432: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm2015/platform-browser.js:4034:1435: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:6:91: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:7:63: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:8:27: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:9:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:9:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:9:62: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:10:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:10:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:10:177: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:81: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:84: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:134: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:137: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:181: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:184: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:229: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:232: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:281: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:284: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:317: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:320: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:358: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:361: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:391: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:394: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:432: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:435: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:466: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:469: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:509: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/animations.js:908:512: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:6:110: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:7:86: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:264:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:264:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:264:69: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/testing.js:264:72: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:6:99: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:7:447: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:8:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:8:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:8:37: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:164: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:167: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:312: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:315: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:384: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:387: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:440: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:443: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:478: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:481: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:525: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:528: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:568: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:571: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:609: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:612: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:647: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:650: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:687: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:690: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:727: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:730: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:750: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:753: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:780: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:783: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:823: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:826: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:863: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:866: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:897: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:900: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:937: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:940: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:981: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:984: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1020: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1023: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1062: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1065: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1104: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1107: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1145: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1148: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1187: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1190: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1219: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1222: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1239: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1242: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1271: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1274: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1306: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1309: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1335: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1338: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1360: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1363: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1382: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1385: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1408: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1411: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1432: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/platform-browser@5.2.4/esm5/platform-browser.js:5235:1435: Semi-colon expected

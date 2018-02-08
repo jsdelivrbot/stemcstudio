@@ -1,0 +1,1 @@
+module.exports = require("npm:@angular/compiler@5.2.4/bundles/compiler.umd.js");
