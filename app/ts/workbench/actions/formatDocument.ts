@@ -6,9 +6,10 @@ import { isCSS } from '../../utils/isCSS';
 import { isHtmlFilePath } from '../../utils/isHtmlFilePath';
 import { isLanguageServiceScript } from '../../utils/isLanguageServiceScript';
 import { css } from 'js-beautify';
-import { html } from 'js-beautify';
+// import { html } from'js-beautify';
 import { DMP } from '../../synchronization/DMP';
 import { applyPatchToDocument } from '../../modules/wsmodel/applyPatchToDocument';
+import { style_html } from '../../beautify/html/index';
 
 export interface FormatDocumentController {
     getFormattingEditsForDocument(path: string, settings: FormatCodeSettings): Promise<TextChange<number>[]>;
@@ -56,11 +57,13 @@ export function formatDocument(path: string, indentSize: number, controller: For
     else if (isHtmlFilePath(path)) {
         const settings = formatCodeSettings(indentSize);
         const oldCode = session.getValue();
-        const newCode = html(oldCode, {
+        const newCode = style_html(oldCode, {
             eol: settings.newLineCharacter,
             end_with_newline: true,
+            format_svg: true,
             indent_char: " ",
             indent_size: indentSize,
+            // It's trendy these days to put head and body at the same level as html.
             indent_inner_html: false
         });
         const dmp = new DMP();
@@ -71,7 +74,14 @@ export function formatDocument(path: string, indentSize: number, controller: For
         }
         const patches = dmp.computePatches(oldCode, diffs);
         for (const patch of patches) {
-            /* const { start, length, applied } = */ applyPatchToDocument(patch, session);
+            const { start, length, applied } = applyPatchToDocument(patch, session);
+            /**
+             * ok is true if all the boolean values in the applied array are true, otherwise false. 
+             */
+            const ok = applied.reduce((previousValue, currentValue) => { return previousValue && currentValue; }, true);
+            if (!ok) {
+                console.warn(`start: ${start}, length=${length}, applied=${applied}`);
+            }
         }
     }
     else if (isCSS(path)) {
@@ -92,7 +102,14 @@ export function formatDocument(path: string, indentSize: number, controller: For
         }
         const patches = dmp.computePatches(oldCode, diffs);
         for (const patch of patches) {
-            /* const { start, length, applied } = */ applyPatchToDocument(patch, session);
+            const { start, length, applied } = applyPatchToDocument(patch, session);
+            /**
+             * ok is true if all the boolean values in the applied array are true, otherwise false. 
+             */
+            const ok = applied.reduce((previousValue, currentValue) => { return previousValue && currentValue; }, true);
+            if (!ok) {
+                console.warn(`start: ${start}, length=${length}, applied=${applied}`);
+            }
         }
     }
     else {
