@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.0",
+  "version": "2.49.1",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -136,15 +136,15 @@
   "jspm": {
     "configFile": "jspm.config.js",
     "dependencies": {
-      "@angular/common": "npm:@angular/common@^5.2.3",
-      "@angular/compiler": "npm:@angular/compiler@^5.2.3",
-      "@angular/core": "npm:@angular/core@^5.2.3",
-      "@angular/forms": "npm:@angular/forms@^5.2.3",
-      "@angular/http": "npm:@angular/http@^5.2.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@^5.2.3",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^5.2.3",
-      "@angular/router": "npm:@angular/router@^5.2.3",
-      "@angular/upgrade": "npm:@angular/upgrade@^5.2.3",
+      "@angular/common": "npm:@angular/common@^5.2.4",
+      "@angular/compiler": "npm:@angular/compiler@^5.2.4",
+      "@angular/core": "npm:@angular/core@^5.2.4",
+      "@angular/forms": "npm:@angular/forms@^5.2.4",
+      "@angular/http": "npm:@angular/http@^5.2.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@^5.2.4",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^5.2.4",
+      "@angular/router": "npm:@angular/router@^5.2.4",
+      "@angular/upgrade": "npm:@angular/upgrade@^5.2.4",
       "angular": "npm:angular@^1.6.9",
       "angular-animate": "npm:angular-animate@^1.6.9",
       "angular-material-icons": "npm:angular-material-icons@^0.7.1",
