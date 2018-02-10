@@ -10,6 +10,9 @@ import { toPixelString } from './dom/toPixelString';
 export class HScrollBar extends ScrollBar {
 
     private scrollLeft_ = 0;
+    /**
+     * The height of the scrollbar in pixels.
+     */
     private height_: number;
 
     constructor(parent: HTMLElement, renderer: Renderer) {
@@ -41,7 +44,7 @@ export class HScrollBar extends ScrollBar {
     }
 
     /**
-     * Returns the height of the scroll bar.
+     * Returns the height of the scroll bar in pixels.
      */
     get height(): number {
         return this.isVisible ? this.height_ : 0;

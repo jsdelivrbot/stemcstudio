@@ -4252,8 +4252,8 @@ export class Editor {
         return this.renderer.updateBackMarkers();
     }
 
-    updateFull(): void {
-        return this.renderer.updateFull();
+    updateFull(force?: boolean): void {
+        return this.renderer.updateFull(force);
     }
 
     /**

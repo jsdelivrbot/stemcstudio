@@ -17,7 +17,7 @@ export class VScrollBar extends ScrollBar {
     private scrollHeight_ = 0;
 
     /**
-     * 
+     * The width of the ScrollBar in pixels.
      */
     private width_: number;
 
@@ -56,7 +56,7 @@ export class VScrollBar extends ScrollBar {
     }
 
     /**
-     * Returns the width of the scroll bar.
+     * Returns the width of the scroll bar in pixels.
      */
     get width(): number {
         return this.isVisible ? this.width_ : 0;

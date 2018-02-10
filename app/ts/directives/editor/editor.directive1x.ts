@@ -727,5 +727,5 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
         applyTextChanges(textChanges: TextChange<number>[]) {
             applyTextChanges(textChanges, session);
         }
-    }, session));
+    }, editor));
 }

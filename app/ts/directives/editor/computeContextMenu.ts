@@ -71,7 +71,7 @@ export function computeContextMenu(path: string, editor: Editor, indentSize: num
             }
         });
         */
-        menuItems.push(menuItemFromCommand(createFormatDocumentCommand(path, indentSize, controller, session)));
+        menuItems.push(menuItemFromCommand(createFormatDocumentCommand(path, indentSize, controller, editor)));
     }
     //
     // Disabling the Cut, Copy, Paste menu items (and the separator) temporarily.

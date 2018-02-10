@@ -199,7 +199,9 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
      *
      */
     public $scrollAnimation: { from: number; to: number; steps: number[] } | null;
-
+    /**
+     * ScrollBar width in pixels.
+     */
     public $scrollbarWidth: number;
     private session: EditSession | undefined;
     private eventBus: EventEmitterClass<RendererEventName, any, Renderer>;
@@ -233,6 +235,9 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
 
     private $loop: RenderLoop;
     private $changedLines: { firstRow: number; lastRow: number; } | null;
+    /**
+     * 
+     */
     private $changes = 0;
     private resizing: number;
     private $gutterLineHighlight: HTMLDivElement;
@@ -666,7 +671,10 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
         return void 0;
     }
 
-    private $updateCachedSize(force: boolean | undefined, gutterWidth: number | undefined, width: number, height: number): number {
+    /**
+     * 
+     */
+    private $updateCachedSize(force: boolean | undefined, gutterWidthPixels: number | undefined, width: number, height: number): number {
         height -= (this.$extraHeight || 0);
         let changes = 0;
         const size = this.$size;
@@ -685,7 +693,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
                 size.scrollerHeight -= this.scrollBarH.height;
             }
 
-            this.scrollBarV.element.style.bottom = this.scrollBarH.height + "px";
+            this.scrollBarV.element.style.bottom = pixelStyle(this.scrollBarH.height);
 
             changes = changes | CHANGE_SCROLL;
         }
@@ -694,22 +702,21 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
             changes |= CHANGE_SIZE;
             size.width = width;
 
-            if (typeof gutterWidth !== 'number') {
-                gutterWidth = this.$showGutter ? this.$gutter.offsetWidth : 0;
+            if (typeof gutterWidthPixels !== 'number') {
+                gutterWidthPixels = this.$showGutter ? this.$gutter.offsetWidth : 0;
             }
 
-            this.gutterWidth = gutterWidth;
+            this.gutterWidth = gutterWidthPixels;
 
-            this.scrollBarH.element.style.left =
-                this.scroller.style.left = gutterWidth + "px";
-            size.scrollerWidth = Math.max(0, width - gutterWidth - this.scrollBarV.width);
+            this.scrollBarH.element.style.left = this.scroller.style.left = pixelStyle(gutterWidthPixels);
+            size.scrollerWidth = Math.max(0, width - gutterWidthPixels - this.scrollBarV.width);
 
-            this.scrollBarH.element.style.right =
-                this.scroller.style.right = this.scrollBarV.width + "px";
-            this.scroller.style.bottom = this.scrollBarH.height + "px";
+            this.scrollBarH.element.style.right = this.scroller.style.right = pixelStyle(this.scrollBarV.width);
+            this.scroller.style.bottom = pixelStyle(this.scrollBarH.height);
 
-            if (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit() || force)
+            if (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit() || force) {
                 changes |= CHANGE_FULL;
+            }
         }
 
         size.$dirty = !width || !height;
@@ -726,8 +733,9 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
 
     private onGutterResize() {
         const gutterWidth = this.$showGutter ? this.$gutter.offsetWidth : 0;
-        if (gutterWidth !== this.gutterWidth)
+        if (gutterWidth !== this.gutterWidth) {
             this.$changes |= this.$updateCachedSize(true, gutterWidth, this.$size.width, this.$size.height);
+        }
 
         if (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit()) {
             this.$loop.schedule(CHANGE_FULL);
@@ -949,8 +957,8 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
                 height *= session.getRowLength(cursor.row);
             }
         }
-        this.$gutterLineHighlight.style.top = pos.top - this.layerConfig.offset + "px";
-        this.$gutterLineHighlight.style.height = height + "px";
+        this.$gutterLineHighlight.style.top = pixelStyle(pos.top - this.layerConfig.offset);
+        this.$gutterLineHighlight.style.height = pixelStyle(height);
     }
 
     $updatePrintMargin() {
@@ -967,7 +975,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
         }
 
         const style = this.$printMarginEl.style;
-        style.left = ((this.characterWidth * this.$printMarginColumn) + this.$padding) + "px";
+        style.left = pixelStyle((this.characterWidth * this.$printMarginColumn) + this.$padding);
         style.visibility = this.$showPrintMargin ? "visible" : "hidden";
 
         // FIXME: Should this be $useWrapMode?
@@ -1037,10 +1045,10 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
 
         posLeft -= this.scrollBarV.width;
 
-        this.textarea.style.height = h + "px";
-        this.textarea.style.width = w + "px";
-        this.textarea.style.right = Math.max(0, this.$size.scrollerWidth - posLeft - w) + "px";
-        this.textarea.style.bottom = Math.max(0, this.$size.height - posTop - h) + "px";
+        this.textarea.style.height = pixelStyle(h);
+        this.textarea.style.width = pixelStyle(w);
+        this.textarea.style.right = pixelStyle(Math.max(0, this.$size.scrollerWidth - posLeft - w));
+        this.textarea.style.bottom = pixelStyle(Math.max(0, this.$size.height - posTop - h));
     }
 
     /**
@@ -1193,13 +1201,13 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
     /**
      *
      */
-    private $renderChanges(changes: number, force: boolean): number | undefined {
+    private $renderChanges(changes: number, forceChanges: boolean): number | undefined {
 
         if (this.$changes) {
             changes |= this.$changes;
             this.$changes = 0;
         }
-        if ((!this.session || !this.container.offsetWidth || this.$frozen) || (!changes && !force)) {
+        if ((!this.session || !this.container.offsetWidth || this.$frozen) || (!changes && !forceChanges)) {
             this.$changes |= changes;
             return void 0;
         }
@@ -1241,15 +1249,15 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
             if (changes & CHANGE_H_SCROLL) {
                 this.$updateScrollBarH();
             }
-            this.$gutterLayer.element.style.marginTop = (-config.offset) + "px";
-            this.content.style.marginTop = (-config.offset) + "px";
-            this.content.style.width = config.width + 2 * this.$padding + "px";
-            this.content.style.height = config.minHeight + "px";
+            this.$gutterLayer.element.style.marginTop = pixelStyle(-config.offset);
+            this.content.style.marginTop = pixelStyle(-config.offset);
+            this.content.style.width = pixelStyle(config.width + 2 * this.$padding);
+            this.content.style.height = pixelStyle(config.minHeight);
         }
 
         // horizontal scrolling
         if (changes & CHANGE_H_SCROLL) {
-            this.content.style.marginLeft = -this.scrollLeft + "px";
+            this.content.style.marginLeft = pixelStyle(-this.scrollLeft);
             this.scroller.className = this.scrollLeft <= 0 ? "ace_scroller" : "ace_scroller ace_scroll-left";
         }
 
@@ -1354,7 +1362,7 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
             }
 
             const w = this.container.clientWidth;
-            this.container.style.height = desiredHeight + "px";
+            this.container.style.height = pixelStyle(desiredHeight);
             this.$updateCachedSize(true, this.$gutterWidth, w, desiredHeight);
             // this.$loop.changes = 0;
             this.desiredHeight = desiredHeight;
@@ -2029,4 +2037,13 @@ export class Renderer implements Disposable, EventBus<RendererEventName, any, Re
     setMouseCursor(cursorStyle: string): void {
         this.content.style.cursor = cursorStyle;
     }
+}
+
+/**
+ * Returns pixels + "px"
+ * TODO: This duplicates a function called toPixelString.
+ * @param pixels The value in pixels.
+ */
+function pixelStyle(pixels: number): string {
+    return `${pixels}px`;
 }

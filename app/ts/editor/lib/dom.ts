@@ -177,18 +177,18 @@ export function scrollbarWidth(document: Document): number {
     const body = document.documentElement;
     body.appendChild(outer);
 
-    const noScrollbar = inner.offsetWidth;
+    const noScrollbarWidth = inner.offsetWidth;
 
     style.overflow = "scroll";
-    let withScrollbar = inner.offsetWidth;
+    let withScrollbarWidth = inner.offsetWidth;
 
-    if (noScrollbar === withScrollbar) {
-        withScrollbar = outer.clientWidth;
+    if (noScrollbarWidth === withScrollbarWidth) {
+        withScrollbarWidth = outer.clientWidth;
     }
 
     body.removeChild(outer);
 
-    return noScrollbar - withScrollbar;
+    return noScrollbarWidth - withScrollbarWidth;
 }
 
 /*
