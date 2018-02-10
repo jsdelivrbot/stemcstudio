@@ -224,6 +224,10 @@ function copies(target) {
     /**
      * 
      */
+    const VERSION_MATHJAX = '2.7.3';
+    /**
+     * 
+     */
     const VERSION_MATHSCRIPT = '1.3.1';
     /**
      * 
@@ -574,6 +578,12 @@ function copies(target) {
         {
             src: "museum/jsxgraph@0.99.5/index.d.ts",
             dest: prepend(target, 'vendor/jsxgraph@0.99.5/index.d.ts')
+        },
+        {
+            expand: true,
+            cwd: `museum/mathjax@${VERSION_MATHJAX}`,
+            src: ["**"],
+            dest: prepend(target, `vendor/mathjax@${VERSION_MATHJAX}`)
         },
         {
             expand: true,

@@ -1,9 +1,9 @@
 const NEWLINE = '\n';
 
 /**
- * The version of highlight.js on cdnjs.
+ * The version of MathJax on cdnjs.
  */
-const MATHJAX_CDNJS_VERSION = '2.7.1';
+const MATHJAX_CDNJS_VERSION = '2.7.3';
 /**
  * The version of highlight.js on cdnjs.
  */

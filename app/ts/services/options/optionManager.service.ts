@@ -71,6 +71,7 @@ const VERSION_IMMUTABLE = '3.8.1';
 const VERSION_JASMINE = '2.5.2';
 const VERSION_JQUERY = '2.1.4';
 const VERSION_JSXGRAPH = '0.99.5';
+const VERSION_MATHJAX = '2.7.3';
 const VERSION_MATTERJS = '0.13.0';
 const VERSION_NEWTON = '0.0.43';
 const VERSION_PLOTLY = '1.33.1';
@@ -201,6 +202,9 @@ function jquery(fileName: string): string {
 }
 function jsxgraph(fileName: string): string {
     return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
+}
+function mathJax(fileName: string): string {
+    return vendorFolder('mathjax', VERSION_MATHJAX, void 0, fileName);
 }
 function matterJs(fileName: string): string {
     return vendorFolder('matter-js', VERSION_MATTERJS, void 0, fileName);
@@ -653,6 +657,21 @@ export class OptionManager implements IOptionManager {
                 dependencies: {}
             },
             {
+                packageName: ensurePackageName('mathjax'),
+                moduleName: 'mathjax',
+                libraryKind: LibraryKind.Global,
+                globalName: 'MathJax',
+                description: "Beautiful math in all browsers",
+                homepage: 'https://www.mathjax.org',
+                version: VERSION_MATHJAX,
+                visible: true,
+                css: [],
+                dts: mathJax(INDEX_DTS),
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/mathjax/${VERSION_MATHJAX}/MathJax.js?config=TeX-MML-AM_CHTML`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/mathjax/${VERSION_MATHJAX}/MathJax.js?config=TeX-MML-AM_CHTML`],
+                dependencies: {}
+            },
+            {
                 packageName: ensurePackageName('matter-js'),
                 moduleName: 'matter-js',
                 libraryKind: LibraryKind.Global,
@@ -663,7 +682,7 @@ export class OptionManager implements IOptionManager {
                 visible: true,
                 css: [],
                 dts: matterJs(INDEX_DTS),
-                js: [`https://unpkg.com/matter-js@^${VERSION_MATTERJS}/build/matter.js`],
+                js: [`https://unpkg.com/matter-js@${VERSION_MATTERJS}/build/matter.js`],
                 minJs: [`https://unpkg.com/matter-js@${VERSION_MATTERJS}/build/matter.min.js`],
                 dependencies: {}
             },
