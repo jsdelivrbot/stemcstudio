@@ -47,7 +47,7 @@ export interface Axis {
     tickcolor?: string;
     tickfont?: Font;
     ticklen?: number;
-    ticks?: 'outside';
+    ticks?: 'outside' | '';
     tickwidth?: number;
     title?: string;
     /**
