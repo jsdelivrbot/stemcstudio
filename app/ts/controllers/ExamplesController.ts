@@ -106,6 +106,15 @@ export class ExamplesController extends AbstractPageController {
                 level: 'Intermediate'
             },
             {
+                gistId: '2761d71e9950ebe26d8a9671b9134d34',
+                title: "Explore the Midpoint Quadrilateral of a Quadrilateral",
+                description: "JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.",
+                imageSrc: '/img/examples/jsxgraph-midpoint-quadrilateral.png',
+                imageAlt: '',
+                category: 'Mathematics',
+                level: 'Beginner'
+            },
+            {
                 gistId: '20040a2f087e7c66fe72d87e0017b509',
                 title: "Differentiation",
                 description: "Demonstrates the approximation of the derivative.",
