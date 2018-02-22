@@ -1,0 +1,27 @@
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/testing.js:6:89: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/testing.js:461:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/testing.js:461:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:6:27: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:7:89: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:631:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/testing.js:631:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:6:37: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:35254:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:35254:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:35254:2879: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm5/compiler.js:35254:2882: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/compiler.js:28921:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/compiler.js:28921:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/compiler.js:28921:2879: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/compiler@5.2.6/esm2015/compiler.js:28921:2882: Semi-colon expected

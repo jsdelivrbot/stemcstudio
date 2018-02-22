@@ -168,7 +168,7 @@ export function rebuildPreview(
                         // TODO: We will later want to make operator overloading configurable for speed.
 
                         const scriptFileNames: string[] = wsModel.isOperatorOverloadingEnabled() ? globalJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : globalJsFileNames;
-                        // TOOD: Don't fix the location of the JavaScript here.
+                        // TODO: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
                             return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>${NEWLINE}`;
                         });

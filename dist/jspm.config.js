@@ -9,16 +9,16 @@ System.config({
   warnings: false,
 
   map: {
-    "@angular/common": "npm:@angular/common@5.2.5",
-    "@angular/compiler": "npm:@angular/compiler@5.2.5",
-    "@angular/core": "npm:@angular/core@5.2.5",
-    "@angular/forms": "npm:@angular/forms@5.2.5",
-    "@angular/http": "npm:@angular/http@5.2.5",
-    "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.5",
-    "@angular/router": "npm:@angular/router@5.2.5",
-    "@angular/upgrade": "npm:@angular/upgrade@5.2.5",
-    "@angular/upgrade/static": "npm:@angular/upgrade@5.2.5/bundles/upgrade-static.umd.js",
+    "@angular/common": "npm:@angular/common@5.2.6",
+    "@angular/compiler": "npm:@angular/compiler@5.2.6",
+    "@angular/core": "npm:@angular/core@5.2.6",
+    "@angular/forms": "npm:@angular/forms@5.2.6",
+    "@angular/http": "npm:@angular/http@5.2.6",
+    "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.6",
+    "@angular/router": "npm:@angular/router@5.2.6",
+    "@angular/upgrade": "npm:@angular/upgrade@5.2.6",
+    "@angular/upgrade/static": "npm:@angular/upgrade@5.2.6/bundles/upgrade-static.umd.js",
     "angular": "npm:angular@1.6.9",
     "angular-animate": "npm:angular-animate@1.6.9",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -142,62 +142,62 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@5.2.5": {
-      "@angular/core": "npm:@angular/core@5.2.5",
+    "npm:@angular/common@5.2.6": {
+      "@angular/core": "npm:@angular/core@5.2.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/compiler@5.2.5": {
+    "npm:@angular/compiler@5.2.6": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/core@5.2.5": {
+    "npm:@angular/core@5.2.6": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0",
       "zone.js": "npm:zone.js@0.8.20"
     },
-    "npm:@angular/forms@5.2.5": {
-      "@angular/common": "npm:@angular/common@5.2.5",
-      "@angular/core": "npm:@angular/core@5.2.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
+    "npm:@angular/forms@5.2.6": {
+      "@angular/common": "npm:@angular/common@5.2.6",
+      "@angular/core": "npm:@angular/core@5.2.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/http@5.2.5": {
-      "@angular/core": "npm:@angular/core@5.2.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
+    "npm:@angular/http@5.2.6": {
+      "@angular/core": "npm:@angular/core@5.2.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/platform-browser-dynamic@5.2.5": {
-      "@angular/common": "npm:@angular/common@5.2.5",
-      "@angular/compiler": "npm:@angular/compiler@5.2.5",
-      "@angular/core": "npm:@angular/core@5.2.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
+    "npm:@angular/platform-browser-dynamic@5.2.6": {
+      "@angular/common": "npm:@angular/common@5.2.6",
+      "@angular/compiler": "npm:@angular/compiler@5.2.6",
+      "@angular/core": "npm:@angular/core@5.2.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/platform-browser@5.2.5": {
-      "@angular/common": "npm:@angular/common@5.2.5",
-      "@angular/core": "npm:@angular/core@5.2.5",
+    "npm:@angular/platform-browser@5.2.6": {
+      "@angular/common": "npm:@angular/common@5.2.6",
+      "@angular/core": "npm:@angular/core@5.2.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/router@5.2.5": {
-      "@angular/common": "npm:@angular/common@5.2.5",
-      "@angular/core": "npm:@angular/core@5.2.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
+    "npm:@angular/router@5.2.6": {
+      "@angular/common": "npm:@angular/common@5.2.6",
+      "@angular/core": "npm:@angular/core@5.2.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.5.6",
       "tslib": "npm:tslib@1.9.0"
     },
-    "npm:@angular/upgrade@5.2.5": {
-      "@angular/compiler": "npm:@angular/compiler@5.2.5",
-      "@angular/core": "npm:@angular/core@5.2.5",
-      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.5",
-      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.5",
+    "npm:@angular/upgrade@5.2.6": {
+      "@angular/compiler": "npm:@angular/compiler@5.2.6",
+      "@angular/core": "npm:@angular/core@5.2.6",
+      "@angular/platform-browser": "npm:@angular/platform-browser@5.2.6",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.6",
       "tslib": "npm:tslib@1.9.0"
     },
     "npm:accepts@1.3.1": {
@@ -437,7 +437,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
     },
     "npm:diffie-hellman@5.0.2": {
@@ -650,7 +650,7 @@ System.config({
     "npm:md5.js@1.3.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "hash-base": "npm:hash-base@3.0.4",
-      "inherits": "npm:inherits@2.0.1"
+      "inherits": "npm:inherits@2.0.3"
     },
     "npm:mem@1.1.0": {
       "mimic-fn": "npm:mimic-fn@1.2.0"
