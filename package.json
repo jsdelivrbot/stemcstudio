@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.6",
+  "version": "2.49.7",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -88,7 +88,7 @@
     "bootstrap": "^3.3.7",
     "concurrently": "^3.5.1",
     "davinci-csv": "^0.9.12",
-    "davinci-eight": "^7.3.0",
+    "davinci-eight": "^7.3.1",
     "davinci-mathscript": "^1.3.1",
     "davinci-newton": "^0.0.43",
     "grunt": "^1.0.2",
