@@ -1,1 +1,0 @@
-module.exports = require("npm:@angular/platform-browser-dynamic@5.2.6/bundles/platform-browser-dynamic.umd.js");
