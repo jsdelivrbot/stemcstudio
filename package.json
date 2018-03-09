@@ -1,11 +1,11 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.9",
+  "version": "2.49.10",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
-    "node": "8.9.3",
-    "npm": "5.5.1"
+    "node": "9.8.0",
+    "npm": "5.7.1"
   },
   "scripts": {
     "start": "NODE_ENV=development node web.js",
