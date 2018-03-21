@@ -13,6 +13,7 @@ require('express-session');
 var body_parser_1 = require("body-parser");
 require('multer');
 var errorHandler = require("errorhandler");
+var forceDomain = require("forcedomain");
 var index_1 = require("./server/routes/rooms/index");
 var index_2 = require("./server/routes/stemcArXiv/index");
 var index_3 = require("./server/routes/translations/index");
@@ -41,6 +42,11 @@ exports.app.use(require('prerender-node').set('prerenderToken', 'sS0E4UAJN4Gidsd
 var folder = "" + (isProductionMode() ? 'dist' : 'generated');
 exports.app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
 exports.app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));
+exports.app.use(forceDomain({
+    hostname: 'www.stemcstudio.com',
+    port: 443,
+    protocol: 'https'
+}));
 exports.app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -70,7 +76,7 @@ var authenticate = function (code, cb) {
     req.end();
     req.on('error', function (e) { cb(e.message); });
 };
-exports.app.get("/*", function (req, res, next) {
+exports.app.get('/*', function (req, res, next) {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect("https://www.stemcstudio.com" + req.url, 301);
     }

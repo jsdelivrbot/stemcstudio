@@ -5,6 +5,7 @@
 /// <reference path="main/ambient/errorhandler/index.d.ts" />
 /// <reference path="main/ambient/express/index.d.ts" />
 /// <reference path="main/ambient/express-session/index.d.ts" />
+/// <reference path="main/ambient/forcedomain/index.d.ts" />
 /// <reference path="main/ambient/ga/index.d.ts" />
 /// <reference path="main/ambient/jade/index.d.ts" />
 /// <reference path="main/ambient/jasmine/index.d.ts" />

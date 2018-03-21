@@ -15,6 +15,7 @@ require('express-session');
 import { json, urlencoded } from 'body-parser';
 require('multer');
 import errorHandler = require('errorhandler');
+import forceDomain = require('forcedomain');
 
 // Temporary disable rooms to prevent Redis from loading.
 import { createRoom, getRoom, destroyRoom } from './server/routes/rooms/index';
@@ -63,6 +64,14 @@ const folder = `${isProductionMode() ? 'dist' : 'generated'}`;
 app.use("/font", lactate.static(`${__dirname}/${folder}/img`, { "max age": "one week" }));
 app.use(lactate.static(`${__dirname}/${folder}`, { "max age": "one week" }));
 
+// Attempt to force redirect from non-www version of domain to www
+// as this adversely affects the ability to login using GitHub.
+app.use(forceDomain({
+    hostname: 'www.stemcstudio.com',
+    port: 443,
+    protocol: 'https'
+}));
+
 // Something rotten about the following line.
 // app.use multer()
 
@@ -108,7 +117,7 @@ const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
-app.get("/*", (req: Request, res: Response, next: Function) => {
+app.get('/*', (req: Request, res: Response, next: Function) => {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }
