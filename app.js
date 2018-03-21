@@ -74,6 +74,9 @@ exports.app.get('/*', function (req, res, next) {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect("https://www.stemcstudio.com" + req.url, 301);
     }
+    if (req.headers['host'].match(/^https:\/\/stemcstudio.com/)) {
+        res.redirect("https://www.stemcstudio.com" + req.url, 301);
+    }
     else {
         next();
     }
