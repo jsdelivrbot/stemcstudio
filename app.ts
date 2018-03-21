@@ -117,6 +117,7 @@ const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
+/*
 app.get('/*', (req: Request, res: Response, next: Function) => {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
@@ -125,6 +126,7 @@ app.get('/*', (req: Request, res: Response, next: Function) => {
         next();
     }
 });
+*/
 
 // Exchange the session code for an access token.
 // Perhaps auhenticate is not such a good name because that has already happened.

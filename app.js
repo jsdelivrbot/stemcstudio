@@ -76,14 +76,6 @@ var authenticate = function (code, cb) {
     req.end();
     req.on('error', function (e) { cb(e.message); });
 };
-exports.app.get('/*', function (req, res, next) {
-    if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
-        res.redirect("https://www.stemcstudio.com" + req.url, 301);
-    }
-    else {
-        next();
-    }
-});
 exports.app.get('/authenticate/:code', function (req, res) {
     authenticate(req.params.code, function (err, token) {
         if (err) {
