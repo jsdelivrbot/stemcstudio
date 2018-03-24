@@ -1026,7 +1026,6 @@
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:ieee754@1.1.10": {},
   "npm:sha.js@2.4.11": {
     "inherits": "npm:inherits@^2.0.1",
     "safe-buffer": "npm:safe-buffer@^5.0.1",
@@ -1097,5 +1096,6 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  }
+  },
+  "npm:ieee754@1.1.11": {}
 }
