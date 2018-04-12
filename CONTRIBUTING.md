@@ -162,6 +162,10 @@ git remote add heroku git@heroku.com:stemcstudio.git
 
 Use the heroku-cli to update an SSH public key on Heroku.
 
+```
+heroku keys:add
+```
+
 ### Push
 ```
 git push -f heroku master

@@ -1130,6 +1130,16 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptI
                         return true;
                     }
                 };
+                DefaultLanguageServiceHost.prototype.setScriptContentAndVersionNumber = function (fileName, content, version) {
+                    var script = this.scripts[fileName];
+                    if (script) {
+                        script.updateContentAndVersionNumber(content, version);
+                        return false;
+                    } else {
+                        this.addScript(fileName, content, version);
+                        return true;
+                    }
+                };
                 DefaultLanguageServiceHost.prototype.setCompilationSettings = function (compilerOptions) {
                     this.compilerOptions = compilerOptions;
                 };
@@ -9867,16 +9877,8 @@ System.register("src/mode/tslint/rules/arrayTypeRule.js", ["../language/rule/abs
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, OPTION_ARRAY, OPTION_GENERIC, OPTION_ARRAY_SIMPLE, Rule, ArrayTypeWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, OPTION_ARRAY, OPTION_GENERIC, OPTION_ARRAY_SIMPLE, Rule, ArrayTypeWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -9902,7 +9904,7 @@ System.register("src/mode/tslint/rules/arrayTypeRule.js", ["../language/rule/abs
                     ruleName: "array-type",
                     description: "Requires using either 'T[]' or 'Array<T>' for arrays.",
                     hasFix: true,
-                    optionsDescription: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            One of the following arguments must be provided:\n\n            * `\"", "\"` enforces use of `T[]` for all types T.\n            * `\"", "\"` enforces use of `Array<T>` for all types T.\n            * `\"", "\"` enforces use of `T[]` if `T` is a simple type (primitive or type reference)."], ["\n            One of the following arguments must be provided:\n\n            * \\`\"", "\"\\` enforces use of \\`T[]\\` for all types T.\n            * \\`\"", "\"\\` enforces use of \\`Array<T>\\` for all types T.\n            * \\`\"", "\"\\` enforces use of \\`T[]\\` if \\`T\\` is a simple type (primitive or type reference)."])), OPTION_ARRAY, OPTION_GENERIC, OPTION_ARRAY_SIMPLE),
+                    optionsDescription: (_a = ["\n            One of the following arguments must be provided:\n\n            * `\"", "\"` enforces use of `T[]` for all types T.\n            * `\"", "\"` enforces use of `Array<T>` for all types T.\n            * `\"", "\"` enforces use of `T[]` if `T` is a simple type (primitive or type reference)."], _a.raw = ["\n            One of the following arguments must be provided:\n\n            * \\`\"", "\"\\` enforces use of \\`T[]\\` for all types T.\n            * \\`\"", "\"\\` enforces use of \\`Array<T>\\` for all types T.\n            * \\`\"", "\"\\` enforces use of \\`T[]\\` if \\`T\\` is a simple type (primitive or type reference)."], utils_1.dedent(_a, OPTION_ARRAY, OPTION_GENERIC, OPTION_ARRAY_SIMPLE)),
                     options: {
                         type: "string",
                         enum: [OPTION_ARRAY, OPTION_GENERIC, OPTION_ARRAY_SIMPLE]
@@ -10081,14 +10083,6 @@ System.register("src/mode/tslint/rules/commentFormatRule.js", ["../language/rule
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function startsWith(commentText, changeCase) {
         if (commentText.length <= 2) {
@@ -10130,7 +10124,7 @@ System.register("src/mode/tslint/rules/commentFormatRule.js", ["../language/rule
         return (/^(\/\*|\/\/)\s*tslint:(enable|disable)/.test(commentText)
         );
     }
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, utils_3, OPTION_SPACE, OPTION_LOWERCASE, OPTION_UPPERCASE, Rule, CommentWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, utils_3, OPTION_SPACE, OPTION_LOWERCASE, OPTION_UPPERCASE, Rule, CommentWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10158,7 +10152,7 @@ System.register("src/mode/tslint/rules/commentFormatRule.js", ["../language/rule
                     ruleName: "comment-format",
                     description: "Enforces formatting rules for single-line comments.",
                     rationale: "Helps maintain a consistent, readable style in your codebase.",
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Three arguments may be optionally provided:\n\n            * `\"check-space\"` requires that all single-line comments must begin with a space, as in `// comment`\n                * note that comments starting with `///` are also allowed, for things such as `///<reference>`\n            * `\"check-lowercase\"` requires that the first non-whitespace character of a comment must be lowercase, if applicable.\n            * `\"check-uppercase\"` requires that the first non-whitespace character of a comment must be uppercase, if applicable.\n            \n            Exceptions to `\"check-lowercase\"` or `\"check-uppercase\"` can be managed with object that may be passed as last argument.\n            \n            One of two options can be provided in this object:\n                \n                * `\"ignore-words\"`  - array of strings - words that will be ignored at the beginning of the comment.\n                * `\"ignore-pattern\"` - string - RegExp pattern that will be ignored at the beginning of the comment.\n            "], ["\n            Three arguments may be optionally provided:\n\n            * \\`\"check-space\"\\` requires that all single-line comments must begin with a space, as in \\`// comment\\`\n                * note that comments starting with \\`///\\` are also allowed, for things such as \\`///<reference>\\`\n            * \\`\"check-lowercase\"\\` requires that the first non-whitespace character of a comment must be lowercase, if applicable.\n            * \\`\"check-uppercase\"\\` requires that the first non-whitespace character of a comment must be uppercase, if applicable.\n            \n            Exceptions to \\`\"check-lowercase\"\\` or \\`\"check-uppercase\"\\` can be managed with object that may be passed as last argument.\n            \n            One of two options can be provided in this object:\n                \n                * \\`\"ignore-words\"\\`  - array of strings - words that will be ignored at the beginning of the comment.\n                * \\`\"ignore-pattern\"\\` - string - RegExp pattern that will be ignored at the beginning of the comment.\n            "]))),
+                    optionsDescription: (_a = ["\n            Three arguments may be optionally provided:\n\n            * `\"check-space\"` requires that all single-line comments must begin with a space, as in `// comment`\n                * note that comments starting with `///` are also allowed, for things such as `///<reference>`\n            * `\"check-lowercase\"` requires that the first non-whitespace character of a comment must be lowercase, if applicable.\n            * `\"check-uppercase\"` requires that the first non-whitespace character of a comment must be uppercase, if applicable.\n            \n            Exceptions to `\"check-lowercase\"` or `\"check-uppercase\"` can be managed with object that may be passed as last argument.\n            \n            One of two options can be provided in this object:\n                \n                * `\"ignore-words\"`  - array of strings - words that will be ignored at the beginning of the comment.\n                * `\"ignore-pattern\"` - string - RegExp pattern that will be ignored at the beginning of the comment.\n            "], _a.raw = ["\n            Three arguments may be optionally provided:\n\n            * \\`\"check-space\"\\` requires that all single-line comments must begin with a space, as in \\`// comment\\`\n                * note that comments starting with \\`///\\` are also allowed, for things such as \\`///<reference>\\`\n            * \\`\"check-lowercase\"\\` requires that the first non-whitespace character of a comment must be lowercase, if applicable.\n            * \\`\"check-uppercase\"\\` requires that the first non-whitespace character of a comment must be uppercase, if applicable.\n            \n            Exceptions to \\`\"check-lowercase\"\\` or \\`\"check-uppercase\"\\` can be managed with object that may be passed as last argument.\n            \n            One of two options can be provided in this object:\n                \n                * \\`\"ignore-words\"\\`  - array of strings - words that will be ignored at the beginning of the comment.\n                * \\`\"ignore-pattern\"\\` - string - RegExp pattern that will be ignored at the beginning of the comment.\n            "], utils_2.dedent(_a)),
                     options: {
                         type: "array",
                         items: {
@@ -10283,19 +10277,11 @@ System.register("src/mode/tslint/rules/curlyRule.js", ["../language/rule/abstrac
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function isStatementBraced(node) {
         return node.kind === ts.SyntaxKind.Block;
     }
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, CurlyWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, CurlyWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10318,7 +10304,7 @@ System.register("src/mode/tslint/rules/curlyRule.js", ["../language/rule/abstrac
                 Rule.metadata = {
                     ruleName: "curly",
                     description: "Enforces braces for `if`/`for`/`do`/`while` statements.",
-                    rationale: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            ```ts\n            if (foo === bar)\n                foo++;\n                bar++;\n            ```\n\n            In the code above, the author almost certainly meant for both `foo++` and `bar++`\n            to be executed only if `foo === bar`. However, he forgot braces and `bar++` will be executed\n            no matter what. This rule could prevent such a mistake."], ["\n            \\`\\`\\`ts\n            if (foo === bar)\n                foo++;\n                bar++;\n            \\`\\`\\`\n\n            In the code above, the author almost certainly meant for both \\`foo++\\` and \\`bar++\\`\n            to be executed only if \\`foo === bar\\`. However, he forgot braces and \\`bar++\\` will be executed\n            no matter what. This rule could prevent such a mistake."]))),
+                    rationale: (_a = ["\n            ```ts\n            if (foo === bar)\n                foo++;\n                bar++;\n            ```\n\n            In the code above, the author almost certainly meant for both `foo++` and `bar++`\n            to be executed only if `foo === bar`. However, he forgot braces and `bar++` will be executed\n            no matter what. This rule could prevent such a mistake."], _a.raw = ["\n            \\`\\`\\`ts\n            if (foo === bar)\n                foo++;\n                bar++;\n            \\`\\`\\`\n\n            In the code above, the author almost certainly meant for both \\`foo++\\` and \\`bar++\\`\n            to be executed only if \\`foo === bar\\`. However, he forgot braces and \\`bar++\\` will be executed\n            no matter what. This rule could prevent such a mistake."], utils_2.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -10455,14 +10441,6 @@ System.register("src/mode/tslint/rules/forinRule.js", ["../language/rule/abstrac
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function nodeIsContinue(node) {
         var kind = node.kind;
@@ -10477,7 +10455,7 @@ System.register("src/mode/tslint/rules/forinRule.js", ["../language/rule/abstrac
         }
         return false;
     }
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, ForInWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, ForInWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10498,7 +10476,7 @@ System.register("src/mode/tslint/rules/forinRule.js", ["../language/rule/abstrac
                 Rule.metadata = {
                     ruleName: "forin",
                     description: "Requires a `for ... in` statement to be filtered with an `if` statement.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            ```ts\n            for (let key in someObject) {\n                if (someObject.hasOwnProperty(key)) {\n                    // code here\n                }\n            }\n            ```\n            Prevents accidental iteration over properties inherited from an object's prototype.\n            See [MDN's `for...in`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)\n            documentation for more information about `for...in` loops."], ["\n            \\`\\`\\`ts\n            for (let key in someObject) {\n                if (someObject.hasOwnProperty(key)) {\n                    // code here\n                }\n            }\n            \\`\\`\\`\n            Prevents accidental iteration over properties inherited from an object's prototype.\n            See [MDN's \\`for...in\\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)\n            documentation for more information about \\`for...in\\` loops."]))),
+                    rationale: (_a = ["\n            ```ts\n            for (let key in someObject) {\n                if (someObject.hasOwnProperty(key)) {\n                    // code here\n                }\n            }\n            ```\n            Prevents accidental iteration over properties inherited from an object's prototype.\n            See [MDN's `for...in`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)\n            documentation for more information about `for...in` loops."], _a.raw = ["\n            \\`\\`\\`ts\n            for (let key in someObject) {\n                if (someObject.hasOwnProperty(key)) {\n                    // code here\n                }\n            }\n            \\`\\`\\`\n            Prevents accidental iteration over properties inherited from an object's prototype.\n            See [MDN's \\`for...in\\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)\n            documentation for more information about \\`for...in\\` loops."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -10564,16 +10542,8 @@ System.register("src/mode/tslint/rules/indentRule.js", ["../language/rule/abstra
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, OPTION_USE_TABS, OPTION_USE_SPACES, Rule, IndentWalker, templateObject_1, templateObject_2;
+    var abstractRule_1, utils_1, ruleWalker_1, OPTION_USE_TABS, OPTION_USE_SPACES, Rule, IndentWalker, _a, _b;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10596,8 +10566,8 @@ System.register("src/mode/tslint/rules/indentRule.js", ["../language/rule/abstra
                 Rule.metadata = {
                     ruleName: "indent",
                     description: "Enforces indentation with tabs or spaces.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Using only one of tabs or spaces for indentation leads to more consistent editor behavior,\n            cleaner diffs in version control, and easier programmatic manipulation."], ["\n            Using only one of tabs or spaces for indentation leads to more consistent editor behavior,\n            cleaner diffs in version control, and easier programmatic manipulation."]))),
-                    optionsDescription: utils_1.dedent(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            One of the following arguments must be provided:\n\n            * `\"spaces\"` enforces consistent spaces.\n            * `\"tabs\"` enforces consistent tabs."], ["\n            One of the following arguments must be provided:\n\n            * \\`\"spaces\"\\` enforces consistent spaces.\n            * \\`\"tabs\"\\` enforces consistent tabs."]))),
+                    rationale: (_a = ["\n            Using only one of tabs or spaces for indentation leads to more consistent editor behavior,\n            cleaner diffs in version control, and easier programmatic manipulation."], _a.raw = ["\n            Using only one of tabs or spaces for indentation leads to more consistent editor behavior,\n            cleaner diffs in version control, and easier programmatic manipulation."], utils_1.dedent(_a)),
+                    optionsDescription: (_b = ["\n            One of the following arguments must be provided:\n\n            * `\"spaces\"` enforces consistent spaces.\n            * `\"tabs\"` enforces consistent tabs."], _b.raw = ["\n            One of the following arguments must be provided:\n\n            * \\`\"spaces\"\\` enforces consistent spaces.\n            * \\`\"tabs\"\\` enforces consistent tabs."], utils_1.dedent(_b)),
                     options: {
                         type: "string",
                         enum: ["tabs", "spaces"]
@@ -10699,16 +10669,8 @@ System.register("src/mode/tslint/rules/interfaceNameRule.js", ["../language/rule
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, OPTION_ALWAYS, OPTION_NEVER, Rule, NameWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, OPTION_ALWAYS, OPTION_NEVER, Rule, NameWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10732,7 +10694,7 @@ System.register("src/mode/tslint/rules/interfaceNameRule.js", ["../language/rule
                     ruleName: "interface-name",
                     description: "Requires interface names to begin with a capital 'I'",
                     rationale: "Makes it easy to differentiate interfaces from regular classes at a glance.",
-                    optionsDescription: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            One of the following two options must be provided:\n\n            * `\"", "\"` requires interface names to start with an \"I\"\n            * `\"", "\"` requires interface names to not have an \"I\" prefix"], ["\n            One of the following two options must be provided:\n\n            * \\`\"", "\"\\` requires interface names to start with an \"I\"\n            * \\`\"", "\"\\` requires interface names to not have an \"I\" prefix"])), OPTION_ALWAYS, OPTION_NEVER),
+                    optionsDescription: (_a = ["\n            One of the following two options must be provided:\n\n            * `\"", "\"` requires interface names to start with an \"I\"\n            * `\"", "\"` requires interface names to not have an \"I\" prefix"], _a.raw = ["\n            One of the following two options must be provided:\n\n            * \\`\"", "\"\\` requires interface names to start with an \"I\"\n            * \\`\"", "\"\\` requires interface names to not have an \"I\" prefix"], utils_1.dedent(_a, OPTION_ALWAYS, OPTION_NEVER)),
                     options: {
                         type: "string",
                         enum: [OPTION_ALWAYS, OPTION_NEVER]
@@ -10813,16 +10775,8 @@ System.register("src/mode/tslint/rules/jsdocFormatRule.js", ["../language/rule/a
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, JsdocWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, JsdocWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10845,7 +10799,7 @@ System.register("src/mode/tslint/rules/jsdocFormatRule.js", ["../language/rule/a
                 Rule.metadata = {
                     ruleName: "jsdoc-format",
                     description: "Enforces basic format rules for JSDoc comments.",
-                    descriptionDetails: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            The following rules are enforced for JSDoc comments (comments starting with `/**`):\n\n            * each line contains an asterisk and asterisks must be aligned\n            * each asterisk must be followed by either a space or a newline (except for the first and the last)\n            * the only characters before the asterisk on each line must be whitespace characters\n            * one line comments must start with `/** ` and end with `*/`"], ["\n            The following rules are enforced for JSDoc comments (comments starting with \\`/**\\`):\n\n            * each line contains an asterisk and asterisks must be aligned\n            * each asterisk must be followed by either a space or a newline (except for the first and the last)\n            * the only characters before the asterisk on each line must be whitespace characters\n            * one line comments must start with \\`/** \\` and end with \\`*/\\`"]))),
+                    descriptionDetails: (_a = ["\n            The following rules are enforced for JSDoc comments (comments starting with `/**`):\n\n            * each line contains an asterisk and asterisks must be aligned\n            * each asterisk must be followed by either a space or a newline (except for the first and the last)\n            * the only characters before the asterisk on each line must be whitespace characters\n            * one line comments must start with `/** ` and end with `*/`"], _a.raw = ["\n            The following rules are enforced for JSDoc comments (comments starting with \\`/**\\`):\n\n            * each line contains an asterisk and asterisks must be aligned\n            * each asterisk must be followed by either a space or a newline (except for the first and the last)\n            * the only characters before the asterisk on each line must be whitespace characters\n            * one line comments must start with \\`/** \\` and end with \\`*/\\`"], utils_2.dedent(_a)),
                     rationale: "Helps maintain a consistent, readable style for JSDoc comments.",
                     optionsDescription: "Not configurable.",
                     options: null,
@@ -10933,16 +10887,8 @@ System.register("src/mode/tslint/rules/labelPositionRule.js", ["../language/rule
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, LabelPositionWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, LabelPositionWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -10964,7 +10910,7 @@ System.register("src/mode/tslint/rules/labelPositionRule.js", ["../language/rule
                     ruleName: "label-position",
                     description: "Only allows labels in sensible locations.",
                     descriptionDetails: "This rule only allows labels to be on `do/for/while/switch` statements.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Labels in JavaScript only can be used in conjunction with `break` or `continue`,\n            constructs meant to be used for loop flow control. While you can theoretically use\n            labels on any block statement in JS, it is considered poor code structure to do so."], ["\n            Labels in JavaScript only can be used in conjunction with \\`break\\` or \\`continue\\`,\n            constructs meant to be used for loop flow control. While you can theoretically use\n            labels on any block statement in JS, it is considered poor code structure to do so."]))),
+                    rationale: (_a = ["\n            Labels in JavaScript only can be used in conjunction with `break` or `continue`,\n            constructs meant to be used for loop flow control. While you can theoretically use\n            labels on any block statement in JS, it is considered poor code structure to do so."], _a.raw = ["\n            Labels in JavaScript only can be used in conjunction with \\`break\\` or \\`continue\\`,\n            constructs meant to be used for loop flow control. While you can theoretically use\n            labels on any block statement in JS, it is considered poor code structure to do so."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -11009,16 +10955,8 @@ System.register("src/mode/tslint/rules/maxLineLengthRule.js", ["../language/rule
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, rule_1, utils_1, utils_2, Rule, templateObject_1;
+    var abstractRule_1, rule_1, utils_1, utils_2, Rule, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11068,7 +11006,7 @@ System.register("src/mode/tslint/rules/maxLineLengthRule.js", ["../language/rule
                 Rule.metadata = {
                     ruleName: "max-line-length",
                     description: "Requires lines to be under a certain max length.",
-                    rationale: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Limiting the length of a line of code improves code readability.\n            It also makes comparing code side-by-side easier and improves compatibility with\n            various editors, IDEs, and diff viewers."], ["\n            Limiting the length of a line of code improves code readability.\n            It also makes comparing code side-by-side easier and improves compatibility with\n            various editors, IDEs, and diff viewers."]))),
+                    rationale: (_a = ["\n            Limiting the length of a line of code improves code readability.\n            It also makes comparing code side-by-side easier and improves compatibility with\n            various editors, IDEs, and diff viewers."], _a.raw = ["\n            Limiting the length of a line of code improves code readability.\n            It also makes comparing code side-by-side easier and improves compatibility with\n            various editors, IDEs, and diff viewers."], utils_2.dedent(_a)),
                     optionsDescription: "An integer indicating the max length of lines.",
                     options: {
                         type: "number",
@@ -11104,16 +11042,8 @@ System.register("src/mode/tslint/rules/memberAccessRule.js", ["../language/rule/
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, MemberAccessWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, MemberAccessWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11137,7 +11067,7 @@ System.register("src/mode/tslint/rules/memberAccessRule.js", ["../language/rule/
                     ruleName: "member-access",
                     description: "Requires explicit visibility declarations for class members.",
                     rationale: "Explicit visibility declarations can make code more readable and accessible for those new to TS.",
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Two arguments may be optionally provided:\n\n            * `\"check-accessor\"` enforces explicit visibility on get/set accessors (can only be public)\n            * `\"check-constructor\"`  enforces explicit visibility on constructors (can only be public)"], ["\n            Two arguments may be optionally provided:\n\n            * \\`\"check-accessor\"\\` enforces explicit visibility on get/set accessors (can only be public)\n            * \\`\"check-constructor\"\\`  enforces explicit visibility on constructors (can only be public)"]))),
+                    optionsDescription: (_a = ["\n            Two arguments may be optionally provided:\n\n            * `\"check-accessor\"` enforces explicit visibility on get/set accessors (can only be public)\n            * `\"check-constructor\"`  enforces explicit visibility on constructors (can only be public)"], _a.raw = ["\n            Two arguments may be optionally provided:\n\n            * \\`\"check-accessor\"\\` enforces explicit visibility on get/set accessors (can only be public)\n            * \\`\"check-constructor\"\\`  enforces explicit visibility on constructors (can only be public)"], utils_2.dedent(_a)),
                     options: {
                         type: "array",
                         items: {
@@ -11380,16 +11310,8 @@ System.register("src/mode/tslint/rules/noArgRule.js", ["../language/rule/abstrac
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoArgWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoArgWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11410,7 +11332,7 @@ System.register("src/mode/tslint/rules/noArgRule.js", ["../language/rule/abstrac
                 Rule.metadata = {
                     ruleName: "no-arg",
                     description: "Disallows use of `arguments.callee`.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Using `arguments.callee` makes various performance optimizations impossible.\n            See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)\n            for more details on why to avoid `arguments.callee`."], ["\n            Using \\`arguments.callee\\` makes various performance optimizations impossible.\n            See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)\n            for more details on why to avoid \\`arguments.callee\\`."]))),
+                    rationale: (_a = ["\n            Using `arguments.callee` makes various performance optimizations impossible.\n            See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)\n            for more details on why to avoid `arguments.callee`."], _a.raw = ["\n            Using \\`arguments.callee\\` makes various performance optimizations impossible.\n            See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)\n            for more details on why to avoid \\`arguments.callee\\`."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -11459,16 +11381,8 @@ System.register("src/mode/tslint/rules/noBitwiseRule.js", ["../language/rule/abs
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoBitwiseWalker, templateObject_1, templateObject_2;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoBitwiseWalker, _a, _b;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11489,8 +11403,8 @@ System.register("src/mode/tslint/rules/noBitwiseRule.js", ["../language/rule/abs
                 Rule.metadata = {
                     ruleName: "no-bitwise",
                     description: "Disallows bitwise operators.",
-                    descriptionDetails: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Specifically, the following bitwise operators are banned:\n            `&`, `&=`, `|`, `|=`,\n            `^`, `^=`, `<<`, `<<=`,\n            `>>`, `>>=`, `>>>`, `>>>=`, and `~`.\n            This rule does not ban the use of `&` and `|` for intersection and union types."], ["\n            Specifically, the following bitwise operators are banned:\n            \\`&\\`, \\`&=\\`, \\`|\\`, \\`|=\\`,\n            \\`^\\`, \\`^=\\`, \\`<<\\`, \\`<<=\\`,\n            \\`>>\\`, \\`>>=\\`, \\`>>>\\`, \\`>>>=\\`, and \\`~\\`.\n            This rule does not ban the use of \\`&\\` and \\`|\\` for intersection and union types."]))),
-                    rationale: utils_1.dedent(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            Bitwise operators are often typos - for example `bool1 & bool2` instead of `bool1 && bool2`.\n            They also can be an indicator of overly clever code which decreases maintainability."], ["\n            Bitwise operators are often typos - for example \\`bool1 & bool2\\` instead of \\`bool1 && bool2\\`.\n            They also can be an indicator of overly clever code which decreases maintainability."]))),
+                    descriptionDetails: (_a = ["\n            Specifically, the following bitwise operators are banned:\n            `&`, `&=`, `|`, `|=`,\n            `^`, `^=`, `<<`, `<<=`,\n            `>>`, `>>=`, `>>>`, `>>>=`, and `~`.\n            This rule does not ban the use of `&` and `|` for intersection and union types."], _a.raw = ["\n            Specifically, the following bitwise operators are banned:\n            \\`&\\`, \\`&=\\`, \\`|\\`, \\`|=\\`,\n            \\`^\\`, \\`^=\\`, \\`<<\\`, \\`<<=\\`,\n            \\`>>\\`, \\`>>=\\`, \\`>>>\\`, \\`>>>=\\`, and \\`~\\`.\n            This rule does not ban the use of \\`&\\` and \\`|\\` for intersection and union types."], utils_1.dedent(_a)),
+                    rationale: (_b = ["\n            Bitwise operators are often typos - for example `bool1 & bool2` instead of `bool1 && bool2`.\n            They also can be an indicator of overly clever code which decreases maintainability."], _b.raw = ["\n            Bitwise operators are often typos - for example \\`bool1 & bool2\\` instead of \\`bool1 && bool2\\`.\n            They also can be an indicator of overly clever code which decreases maintainability."], utils_1.dedent(_b)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -11555,19 +11469,11 @@ System.register("src/mode/tslint/rules/noConditionalAssignmentRule.js", ["../lan
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function isAssignmentToken(token) {
         return token.kind >= ts.SyntaxKind.FirstAssignment && token.kind <= ts.SyntaxKind.LastAssignment;
     }
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConditionalAssignmentWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConditionalAssignmentWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11590,7 +11496,7 @@ System.register("src/mode/tslint/rules/noConditionalAssignmentRule.js", ["../lan
                     ruleName: "no-conditional-assignment",
                     description: "Disallows any type of assignment in conditionals.",
                     descriptionDetails: "This applies to `do-while`, `for`, `if`, and `while` statements.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Assignments in conditionals are often typos:\n            for example `if (var1 = var2)` instead of `if (var1 == var2)`.\n            They also can be an indicator of overly clever code which decreases maintainability."], ["\n            Assignments in conditionals are often typos:\n            for example \\`if (var1 = var2)\\` instead of \\`if (var1 == var2)\\`.\n            They also can be an indicator of overly clever code which decreases maintainability."]))),
+                    rationale: (_a = ["\n            Assignments in conditionals are often typos:\n            for example `if (var1 = var2)` instead of `if (var1 == var2)`.\n            They also can be an indicator of overly clever code which decreases maintainability."], _a.raw = ["\n            Assignments in conditionals are often typos:\n            for example \\`if (var1 = var2)\\` instead of \\`if (var1 == var2)\\`.\n            They also can be an indicator of overly clever code which decreases maintainability."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -11667,16 +11573,8 @@ System.register("src/mode/tslint/rules/noConsecutiveBlankLinesRule.js", ["../lan
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConsecutiveBlankLinesWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConsecutiveBlankLinesWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11711,7 +11609,7 @@ System.register("src/mode/tslint/rules/noConsecutiveBlankLinesRule.js", ["../lan
                     ruleName: "no-consecutive-blank-lines",
                     description: "Disallows one or more blank lines in a row.",
                     rationale: "Helps maintain a readable style in your codebase.",
-                    optionsDescription: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            An optional number of maximum allowed sequential blanks can be specified. If no value\n            is provided, a default of $(Rule.DEFAULT_ALLOWED_BLANKS) will be used."], ["\n            An optional number of maximum allowed sequential blanks can be specified. If no value\n            is provided, a default of $(Rule.DEFAULT_ALLOWED_BLANKS) will be used."]))),
+                    optionsDescription: (_a = ["\n            An optional number of maximum allowed sequential blanks can be specified. If no value\n            is provided, a default of $(Rule.DEFAULT_ALLOWED_BLANKS) will be used."], _a.raw = ["\n            An optional number of maximum allowed sequential blanks can be specified. If no value\n            is provided, a default of $(Rule.DEFAULT_ALLOWED_BLANKS) will be used."], utils_1.dedent(_a)),
                     options: {
                         type: "number",
                         minimum: "$(Rule.MINIMUM_ALLOWED_BLANKS)"
@@ -11805,16 +11703,8 @@ System.register("src/mode/tslint/rules/banRule.js", ["../language/rule/abstractR
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, BanFunctionWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, BanFunctionWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -11843,7 +11733,7 @@ System.register("src/mode/tslint/rules/banRule.js", ["../language/rule/abstractR
                 Rule.metadata = {
                     ruleName: "ban",
                     description: "Bans the use of specific functions or global methods.",
-                    optionsDescription: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            A list of `['object', 'method', 'optional explanation here']` or `['globalMethod']` which ban `object.method()`\n            or respectively `globalMethod()`."], ["\n            A list of \\`['object', 'method', 'optional explanation here']\\` or \\`['globalMethod']\\` which ban \\`object.method()\\`\n            or respectively \\`globalMethod()\\`."]))),
+                    optionsDescription: (_a = ["\n            A list of `['object', 'method', 'optional explanation here']` or `['globalMethod']` which ban `object.method()`\n            or respectively `globalMethod()`."], _a.raw = ["\n            A list of \\`['object', 'method', 'optional explanation here']\\` or \\`['globalMethod']\\` which ban \\`object.method()\\`\n            or respectively \\`globalMethod()\\`."], utils_1.dedent(_a)),
                     options: {
                         type: "list",
                         listType: {
@@ -11996,16 +11886,8 @@ System.register("src/mode/tslint/rules/noConstructRule.js", ["../language/rule/a
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConstructWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoConstructWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -12027,7 +11909,7 @@ System.register("src/mode/tslint/rules/noConstructRule.js", ["../language/rule/a
                     ruleName: "no-construct",
                     description: "Disallows access to the constructors of `String`, `Number`, and `Boolean`.",
                     descriptionDetails: "Disallows constructor use such as `new Number(foo)` but does not disallow `Number(foo)`.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            There is little reason to use `String`, `Number`, or `Boolean` as constructors.\n            In almost all cases, the regular function-call version is more appropriate.\n            [More details](http://stackoverflow.com/q/4719320/3124288) are available on StackOverflow."], ["\n            There is little reason to use \\`String\\`, \\`Number\\`, or \\`Boolean\\` as constructors.\n            In almost all cases, the regular function-call version is more appropriate.\n            [More details](http://stackoverflow.com/q/4719320/3124288) are available on StackOverflow."]))),
+                    rationale: (_a = ["\n            There is little reason to use `String`, `Number`, or `Boolean` as constructors.\n            In almost all cases, the regular function-call version is more appropriate.\n            [More details](http://stackoverflow.com/q/4719320/3124288) are available on StackOverflow."], _a.raw = ["\n            There is little reason to use \\`String\\`, \\`Number\\`, or \\`Boolean\\` as constructors.\n            In almost all cases, the regular function-call version is more appropriate.\n            [More details](http://stackoverflow.com/q/4719320/3124288) are available on StackOverflow."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -12076,16 +11958,8 @@ System.register("src/mode/tslint/rules/noEvalRule.js", ["../language/rule/abstra
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoEvalWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, NoEvalWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -12106,7 +11980,7 @@ System.register("src/mode/tslint/rules/noEvalRule.js", ["../language/rule/abstra
                 Rule.metadata = {
                     ruleName: "no-eval",
                     description: "Disallows `eval` function invocations.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            `eval()` is dangerous as it allows arbitrary code execution with full privileges. There are\n            [alternatives](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)\n            for most of the use cases for `eval()`."], ["\n            \\`eval()\\` is dangerous as it allows arbitrary code execution with full privileges. There are\n            [alternatives](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)\n            for most of the use cases for \\`eval()\\`."]))),
+                    rationale: (_a = ["\n            `eval()` is dangerous as it allows arbitrary code execution with full privileges. There are\n            [alternatives](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)\n            for most of the use cases for `eval()`."], _a.raw = ["\n            \\`eval()\\` is dangerous as it allows arbitrary code execution with full privileges. There are\n            [alternatives](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)\n            for most of the use cases for \\`eval()\\`."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -12198,16 +12072,8 @@ System.register("src/mode/tslint/rules/noForInArrayRule.js", ["../language/rule/
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var typedRule_1, utils_1, programAwareRuleWalker_1, Rule, NoForInArrayWalker, templateObject_1;
+    var typedRule_1, utils_1, programAwareRuleWalker_1, Rule, NoForInArrayWalker, _a;
     return {
         setters: [function (typedRule_1_1) {
             typedRule_1 = typedRule_1_1;
@@ -12229,7 +12095,7 @@ System.register("src/mode/tslint/rules/noForInArrayRule.js", ["../language/rule/
                 Rule.metadata = {
                     ruleName: "no-for-in-array",
                     description: "Disallows iterating over an array with a for-in loop.",
-                    descriptionDetails: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            A for-in loop (`for (var k in o)`) iterates over the properties of an Object.\n\n            While it is legal to use for-in loops with array types, it is not common.\n            for-in will iterate over the indices of the array as strings, omitting any \"holes\" in\n            the array.\n\n            More common is to use for-of, which iterates over the values of an array.\n            If you want to iterate over the indices, alternatives include:\n\n            array.forEach((value, index) => { ... });\n            for (const [index, value] of array.entries()) { ... }\n            for (let i = 0; i < array.length; i++) { ... }\n            "], ["\n            A for-in loop (\\`for (var k in o)\\`) iterates over the properties of an Object.\n\n            While it is legal to use for-in loops with array types, it is not common.\n            for-in will iterate over the indices of the array as strings, omitting any \"holes\" in\n            the array.\n\n            More common is to use for-of, which iterates over the values of an array.\n            If you want to iterate over the indices, alternatives include:\n\n            array.forEach((value, index) => { ... });\n            for (const [index, value] of array.entries()) { ... }\n            for (let i = 0; i < array.length; i++) { ... }\n            "]))),
+                    descriptionDetails: (_a = ["\n            A for-in loop (`for (var k in o)`) iterates over the properties of an Object.\n\n            While it is legal to use for-in loops with array types, it is not common.\n            for-in will iterate over the indices of the array as strings, omitting any \"holes\" in\n            the array.\n\n            More common is to use for-of, which iterates over the values of an array.\n            If you want to iterate over the indices, alternatives include:\n\n            array.forEach((value, index) => { ... });\n            for (const [index, value] of array.entries()) { ... }\n            for (let i = 0; i < array.length; i++) { ... }\n            "], _a.raw = ["\n            A for-in loop (\\`for (var k in o)\\`) iterates over the properties of an Object.\n\n            While it is legal to use for-in loops with array types, it is not common.\n            for-in will iterate over the indices of the array as strings, omitting any \"holes\" in\n            the array.\n\n            More common is to use for-of, which iterates over the values of an array.\n            If you want to iterate over the indices, alternatives include:\n\n            array.forEach((value, index) => { ... });\n            for (const [index, value] of array.entries()) { ... }\n            for (let i = 0; i < array.length; i++) { ... }\n            "], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -12279,16 +12145,8 @@ System.register("src/mode/tslint/rules/noInferrableTypesRule.js", ["../language/
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, rule_1, utils_1, walker_1, OPTION_IGNORE_PARMS, OPTION_IGNORE_PROPERTIES, Rule, NoInferrableTypesWalker, templateObject_1;
+    var abstractRule_1, rule_1, utils_1, walker_1, OPTION_IGNORE_PARMS, OPTION_IGNORE_PROPERTIES, Rule, NoInferrableTypesWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -12317,7 +12175,7 @@ System.register("src/mode/tslint/rules/noInferrableTypesRule.js", ["../language/
                     ruleName: "no-inferrable-types",
                     description: "Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.",
                     rationale: "Explicit types where they can be easily inferred by the compiler make code more verbose.",
-                    optionsDescription: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Two arguments may be optionally provided:\n\n            * `", "` allows specifying an inferrable type annotation for function params.\n            This can be useful when combining with the `typedef` rule.\n            * `", "` allows specifying an inferrable type annotation for class properties."], ["\n            Two arguments may be optionally provided:\n\n            * \\`", "\\` allows specifying an inferrable type annotation for function params.\n            This can be useful when combining with the \\`typedef\\` rule.\n            * \\`", "\\` allows specifying an inferrable type annotation for class properties."])), OPTION_IGNORE_PARMS, OPTION_IGNORE_PROPERTIES),
+                    optionsDescription: (_a = ["\n            Two arguments may be optionally provided:\n\n            * `", "` allows specifying an inferrable type annotation for function params.\n            This can be useful when combining with the `typedef` rule.\n            * `", "` allows specifying an inferrable type annotation for class properties."], _a.raw = ["\n            Two arguments may be optionally provided:\n\n            * \\`", "\\` allows specifying an inferrable type annotation for function params.\n            This can be useful when combining with the \\`typedef\\` rule.\n            * \\`", "\\` allows specifying an inferrable type annotation for class properties."], utils_1.dedent(_a, OPTION_IGNORE_PARMS, OPTION_IGNORE_PROPERTIES)),
                     options: {
                         type: "array",
                         items: {
@@ -12419,16 +12277,8 @@ System.register("src/mode/tslint/rules/noMagicNumbersRule.js", ["../language/rul
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, walker_1, Rule, NoMagicNumbersWalker, templateObject_1, templateObject_2;
+    var abstractRule_1, utils_1, walker_1, Rule, NoMagicNumbersWalker, _a, _b;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -12449,8 +12299,8 @@ System.register("src/mode/tslint/rules/noMagicNumbersRule.js", ["../language/rul
                 };
                 Rule.metadata = {
                     ruleName: "no-magic-numbers",
-                    description: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Disallows the use constant number values outside of variable assignments.\n            When no list of allowed values is specified, -1, 0 and 1 are allowed by default."], ["\n            Disallows the use constant number values outside of variable assignments.\n            When no list of allowed values is specified, -1, 0 and 1 are allowed by default."]))),
-                    rationale: utils_1.dedent(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            Magic numbers should be avoided as they often lack documentation, forcing\n            them to be stored in variables gives them implicit documentation."], ["\n            Magic numbers should be avoided as they often lack documentation, forcing\n            them to be stored in variables gives them implicit documentation."]))),
+                    description: (_a = ["\n            Disallows the use constant number values outside of variable assignments.\n            When no list of allowed values is specified, -1, 0 and 1 are allowed by default."], _a.raw = ["\n            Disallows the use constant number values outside of variable assignments.\n            When no list of allowed values is specified, -1, 0 and 1 are allowed by default."], utils_1.dedent(_a)),
+                    rationale: (_b = ["\n            Magic numbers should be avoided as they often lack documentation, forcing\n            them to be stored in variables gives them implicit documentation."], _b.raw = ["\n            Magic numbers should be avoided as they often lack documentation, forcing\n            them to be stored in variables gives them implicit documentation."], utils_1.dedent(_b)),
                     optionsDescription: "A list of allowed numbers.",
                     options: {
                         type: "array",
@@ -12724,14 +12574,6 @@ System.register("src/mode/tslint/rules/noTrailingWhitespaceRule.js", ["../langua
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function walk(ctx) {
         var lastSeenWasWhitespace = false;
@@ -12778,7 +12620,7 @@ System.register("src/mode/tslint/rules/noTrailingWhitespaceRule.js", ["../langua
     function reportFailure(ctx, start, end) {
         ctx.addFailure(start, end, Rule.FAILURE_STRING, ctx.createFix(rule_1.Replacement.deleteFromTo(start, end)));
     }
-    var abstractRule_1, rule_1, utils_1, utils_2, OPTION_IGNORE_COMMENTS, OPTION_IGNORE_JSDOC, Rule, templateObject_1;
+    var abstractRule_1, rule_1, utils_1, utils_2, OPTION_IGNORE_COMMENTS, OPTION_IGNORE_JSDOC, Rule, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -12810,7 +12652,7 @@ System.register("src/mode/tslint/rules/noTrailingWhitespaceRule.js", ["../langua
                     ruleName: "no-trailing-whitespace",
                     description: "Disallows trailing whitespace at the end of a line.",
                     rationale: "Keeps version control diffs clean as it prevents accidental whitespace from being committed.",
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Possible settings are:\n\n            * `\"", "\"`: Allows trailing whitespace in comments.\n            * `\"", "\"`: Allows trailing whitespace only in JSDoc comments."], ["\n            Possible settings are:\n\n            * \\`\"", "\"\\`: Allows trailing whitespace in comments.\n            * \\`\"", "\"\\`: Allows trailing whitespace only in JSDoc comments."])), OPTION_IGNORE_COMMENTS, OPTION_IGNORE_JSDOC),
+                    optionsDescription: (_a = ["\n            Possible settings are:\n\n            * `\"", "\"`: Allows trailing whitespace in comments.\n            * `\"", "\"`: Allows trailing whitespace only in JSDoc comments."], _a.raw = ["\n            Possible settings are:\n\n            * \\`\"", "\"\\`: Allows trailing whitespace in comments.\n            * \\`\"", "\"\\`: Allows trailing whitespace only in JSDoc comments."], utils_2.dedent(_a, OPTION_IGNORE_COMMENTS, OPTION_IGNORE_JSDOC)),
                     hasFix: true,
                     options: {
                         type: "array",
@@ -12976,16 +12818,8 @@ System.register("src/mode/tslint/formatters/jsonFormatter.js", ["../language/for
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractFormatter_1, Utils, Formatter, templateObject_1;
+    var abstractFormatter_1, Utils, Formatter, _a;
     return {
         setters: [function (abstractFormatter_1_1) {
             abstractFormatter_1 = abstractFormatter_1_1;
@@ -13007,7 +12841,7 @@ System.register("src/mode/tslint/formatters/jsonFormatter.js", ["../language/for
                 Formatter.metadata = {
                     formatterName: "json",
                     description: "Formats errors as simple JSON.",
-                    sample: Utils.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        [\n            {\n                \"endPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                },\n                \"failure\": \"Missing semicolon\",\n                \"fix\": {\n                    \"innerRuleName\": \"semicolon\",\n                    \"innerReplacements\": [\n                        {\n                            \"innerStart\": 13,\n                            \"innerLength\": 0,\n                            \"innerText\": \";\"\n                        }\n                    ]\n                },\n                \"name\": \"myFile.ts\",\n                \"ruleName\": \"semicolon\",\n                \"startPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                }\n            }\n        ]"], ["\n        [\n            {\n                \"endPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                },\n                \"failure\": \"Missing semicolon\",\n                \"fix\": {\n                    \"innerRuleName\": \"semicolon\",\n                    \"innerReplacements\": [\n                        {\n                            \"innerStart\": 13,\n                            \"innerLength\": 0,\n                            \"innerText\": \";\"\n                        }\n                    ]\n                },\n                \"name\": \"myFile.ts\",\n                \"ruleName\": \"semicolon\",\n                \"startPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                }\n            }\n        ]"]))),
+                    sample: (_a = ["\n        [\n            {\n                \"endPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                },\n                \"failure\": \"Missing semicolon\",\n                \"fix\": {\n                    \"innerRuleName\": \"semicolon\",\n                    \"innerReplacements\": [\n                        {\n                            \"innerStart\": 13,\n                            \"innerLength\": 0,\n                            \"innerText\": \";\"\n                        }\n                    ]\n                },\n                \"name\": \"myFile.ts\",\n                \"ruleName\": \"semicolon\",\n                \"startPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                }\n            }\n        ]"], _a.raw = ["\n        [\n            {\n                \"endPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                },\n                \"failure\": \"Missing semicolon\",\n                \"fix\": {\n                    \"innerRuleName\": \"semicolon\",\n                    \"innerReplacements\": [\n                        {\n                            \"innerStart\": 13,\n                            \"innerLength\": 0,\n                            \"innerText\": \";\"\n                        }\n                    ]\n                },\n                \"name\": \"myFile.ts\",\n                \"ruleName\": \"semicolon\",\n                \"startPosition\": {\n                    \"character\": 13,\n                    \"line\": 0,\n                    \"position\": 13\n                }\n            }\n        ]"], Utils.dedent(_a)),
                     consumer: "machine"
                 };
                 return Formatter;
@@ -13033,16 +12867,8 @@ System.register("src/mode/tslint/formatters/pmdFormatter.js", ["../language/form
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractFormatter_1, Utils, Formatter, templateObject_1;
+    var abstractFormatter_1, Utils, Formatter, _a;
     return {
         setters: [function (abstractFormatter_1_1) {
             abstractFormatter_1 = abstractFormatter_1_1;
@@ -13074,7 +12900,7 @@ System.register("src/mode/tslint/formatters/pmdFormatter.js", ["../language/form
                     formatterName: "pmd",
                     description: "Formats errors as through they were PMD output.",
                     descriptionDetails: "Imitates the XML output from PMD. All errors have a priority of 1.",
-                    sample: Utils.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        <pmd version=\"tslint\">\n            <file name=\"myFile.ts\">\n                <violation begincolumn=\"14\" beginline=\"1\" priority=\"1\" rule=\"Missing semicolon\"></violation>\n            </file>\n        </pmd>"], ["\n        <pmd version=\"tslint\">\n            <file name=\"myFile.ts\">\n                <violation begincolumn=\"14\" beginline=\"1\" priority=\"1\" rule=\"Missing semicolon\"></violation>\n            </file>\n        </pmd>"]))),
+                    sample: (_a = ["\n        <pmd version=\"tslint\">\n            <file name=\"myFile.ts\">\n                <violation begincolumn=\"14\" beginline=\"1\" priority=\"1\" rule=\"Missing semicolon\"></violation>\n            </file>\n        </pmd>"], _a.raw = ["\n        <pmd version=\"tslint\">\n            <file name=\"myFile.ts\">\n                <violation begincolumn=\"14\" beginline=\"1\" priority=\"1\" rule=\"Missing semicolon\"></violation>\n            </file>\n        </pmd>"], Utils.dedent(_a)),
                     consumer: "machine"
                 };
                 return Formatter;
@@ -13700,16 +13526,8 @@ System.register("src/mode/tslint/rules/oneVariablePerDeclarationRule.js", ["../l
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, ruleWalker_1, Lint, OPTION_IGNORE_FOR_LOOP, Rule, OneVariablePerDeclarationWalker, templateObject_1;
+    var abstractRule_1, ruleWalker_1, Lint, OPTION_IGNORE_FOR_LOOP, Rule, OneVariablePerDeclarationWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -13732,7 +13550,7 @@ System.register("src/mode/tslint/rules/oneVariablePerDeclarationRule.js", ["../l
                 Rule.metadata = {
                     ruleName: "one-variable-per-declaration",
                     description: "Disallows multiple variable definitions in the same declaration statement.",
-                    optionsDescription: Lint.Utils.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            One argument may be optionally provided:\n\n            * `", "` allows multiple variable definitions in a for loop declaration."], ["\n            One argument may be optionally provided:\n\n            * \\`", "\\` allows multiple variable definitions in a for loop declaration."])), OPTION_IGNORE_FOR_LOOP),
+                    optionsDescription: (_a = ["\n            One argument may be optionally provided:\n\n            * `", "` allows multiple variable definitions in a for loop declaration."], _a.raw = ["\n            One argument may be optionally provided:\n\n            * \\`", "\\` allows multiple variable definitions in a for loop declaration."], Lint.Utils.dedent(_a, OPTION_IGNORE_FOR_LOOP)),
                     options: {
                         type: "array",
                         items: {
@@ -13792,16 +13610,8 @@ System.register("src/mode/tslint/rules/preferConstRule.js", ["../language/rule/a
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, blockScopeAwareRuleWalker_1, utils_1, utils_2, utils_3, Rule, PreferConstWalker, ScopeInfo, templateObject_1;
+    var abstractRule_1, blockScopeAwareRuleWalker_1, utils_1, utils_2, utils_3, Rule, PreferConstWalker, ScopeInfo, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -13826,7 +13636,7 @@ System.register("src/mode/tslint/rules/preferConstRule.js", ["../language/rule/a
                 Rule.metadata = {
                     ruleName: "prefer-const",
                     description: "Requires that variable declarations use `const` instead of `let` if possible.",
-                    descriptionDetails: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            If a variable is only assigned to once when it is declared, it should be declared using 'const'"], ["\n            If a variable is only assigned to once when it is declared, it should be declared using 'const'"]))),
+                    descriptionDetails: (_a = ["\n            If a variable is only assigned to once when it is declared, it should be declared using 'const'"], _a.raw = ["\n            If a variable is only assigned to once when it is declared, it should be declared using 'const'"], utils_2.dedent(_a)),
                     hasFix: true,
                     optionsDescription: "Not configurable.",
                     options: null,
@@ -14369,14 +14179,6 @@ System.register("src/mode/tslint/rules/preferFunctionOverMethodRule.js", ["../la
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
     function isRecursiveCall(thisOrSuper, cur) {
         var parent = thisOrSuper.parent;
@@ -14391,7 +14193,7 @@ System.register("src/mode/tslint/rules/preferFunctionOverMethodRule.js", ["../la
             return 0;
         }
     }
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALLOW_PUBLIC, OPTION_ALLOW_PROTECTED, Rule, PreferFunctionOverMethodWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALLOW_PUBLIC, OPTION_ALLOW_PROTECTED, Rule, PreferFunctionOverMethodWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -14416,7 +14218,7 @@ System.register("src/mode/tslint/rules/preferFunctionOverMethodRule.js", ["../la
                 Rule.metadata = {
                     ruleName: "prefer-function-over-method",
                     description: "Warns for class methods that do not use 'this'.",
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            \"", "\" excludes checking of public methods.\n            \"", "\" excludes checking of protected methods."], ["\n            \"", "\" excludes checking of public methods.\n            \"", "\" excludes checking of protected methods."])), OPTION_ALLOW_PUBLIC, OPTION_ALLOW_PROTECTED),
+                    optionsDescription: (_a = ["\n            \"", "\" excludes checking of public methods.\n            \"", "\" excludes checking of protected methods."], _a.raw = ["\n            \"", "\" excludes checking of public methods.\n            \"", "\" excludes checking of protected methods."], utils_2.dedent(_a, OPTION_ALLOW_PUBLIC, OPTION_ALLOW_PROTECTED)),
                     options: {
                         type: "string",
                         enum: [OPTION_ALLOW_PUBLIC, OPTION_ALLOW_PROTECTED]
@@ -14580,16 +14382,8 @@ System.register("src/mode/tslint/rules/radixRule.js", ["../language/rule/abstrac
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, RadixWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, RadixWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -14611,7 +14405,7 @@ System.register("src/mode/tslint/rules/radixRule.js", ["../language/rule/abstrac
                 Rule.metadata = {
                     ruleName: "radix",
                     description: "Requires the radix parameter to be specified when calling `parseInt`.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            From [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt):\n            > Always specify this parameter to eliminate reader confusion and to guarantee predictable behavior.\n            > Different implementations produce different results when a radix is not specified, usually defaulting the value to 10."], ["\n            From [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt):\n            > Always specify this parameter to eliminate reader confusion and to guarantee predictable behavior.\n            > Different implementations produce different results when a radix is not specified, usually defaulting the value to 10."]))),
+                    rationale: (_a = ["\n            From [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt):\n            > Always specify this parameter to eliminate reader confusion and to guarantee predictable behavior.\n            > Different implementations produce different results when a radix is not specified, usually defaulting the value to 10."], _a.raw = ["\n            From [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt):\n            > Always specify this parameter to eliminate reader confusion and to guarantee predictable behavior.\n            > Different implementations produce different results when a radix is not specified, usually defaulting the value to 10."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -14656,16 +14450,8 @@ System.register("src/mode/tslint/rules/semicolonRule.js", ["../language/rule/abs
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALWAYS, OPTION_NEVER, OPTION_IGNORE_BOUND_CLASS_METHODS, OPTION_IGNORE_INTERFACES, Rule, SemicolonWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALWAYS, OPTION_NEVER, OPTION_IGNORE_BOUND_CLASS_METHODS, OPTION_IGNORE_INTERFACES, Rule, SemicolonWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -14693,7 +14479,7 @@ System.register("src/mode/tslint/rules/semicolonRule.js", ["../language/rule/abs
                     ruleName: "semicolon",
                     description: "Enforces consistent semicolon usage at the end of every statement.",
                     hasFix: true,
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            One of the following arguments must be provided:\n\n            * `\"", "\"` enforces semicolons at the end of every statement.\n            * `\"", "\"` disallows semicolons at the end of every statement except for when they are necessary.\n\n            The following arguments may be optionally provided:\n\n            * `\"", "\"` skips checking semicolons at the end of interface members.\n            * `\"", "\"` skips checking semicolons at the end of bound class methods."], ["\n            One of the following arguments must be provided:\n\n            * \\`\"", "\"\\` enforces semicolons at the end of every statement.\n            * \\`\"", "\"\\` disallows semicolons at the end of every statement except for when they are necessary.\n\n            The following arguments may be optionally provided:\n\n            * \\`\"", "\"\\` skips checking semicolons at the end of interface members.\n            * \\`\"", "\"\\` skips checking semicolons at the end of bound class methods."])), OPTION_ALWAYS, OPTION_NEVER, OPTION_IGNORE_INTERFACES, OPTION_IGNORE_BOUND_CLASS_METHODS),
+                    optionsDescription: (_a = ["\n            One of the following arguments must be provided:\n\n            * `\"", "\"` enforces semicolons at the end of every statement.\n            * `\"", "\"` disallows semicolons at the end of every statement except for when they are necessary.\n\n            The following arguments may be optionally provided:\n\n            * `\"", "\"` skips checking semicolons at the end of interface members.\n            * `\"", "\"` skips checking semicolons at the end of bound class methods."], _a.raw = ["\n            One of the following arguments must be provided:\n\n            * \\`\"", "\"\\` enforces semicolons at the end of every statement.\n            * \\`\"", "\"\\` disallows semicolons at the end of every statement except for when they are necessary.\n\n            The following arguments may be optionally provided:\n\n            * \\`\"", "\"\\` skips checking semicolons at the end of interface members.\n            * \\`\"", "\"\\` skips checking semicolons at the end of bound class methods."], utils_2.dedent(_a, OPTION_ALWAYS, OPTION_NEVER, OPTION_IGNORE_INTERFACES, OPTION_IGNORE_BOUND_CLASS_METHODS)),
                     options: {
                         type: "array",
                         items: [{
@@ -14850,16 +14636,8 @@ System.register("src/mode/tslint/rules/trailingCommaRule.js", ["../language/rule
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, TrailingCommaWalker, templateObject_1, templateObject_2;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, Rule, TrailingCommaWalker, _a, _b;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -14881,9 +14659,9 @@ System.register("src/mode/tslint/rules/trailingCommaRule.js", ["../language/rule
                 };
                 Rule.metadata = {
                     ruleName: "trailing-comma",
-                    description: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Requires or disallows trailing commas in array and object literals, destructuring assignments, function and tuple typings,\n            named imports and function parameters."], ["\n            Requires or disallows trailing commas in array and object literals, destructuring assignments, function and tuple typings,\n            named imports and function parameters."]))),
+                    description: (_a = ["\n            Requires or disallows trailing commas in array and object literals, destructuring assignments, function and tuple typings,\n            named imports and function parameters."], _a.raw = ["\n            Requires or disallows trailing commas in array and object literals, destructuring assignments, function and tuple typings,\n            named imports and function parameters."], utils_2.dedent(_a)),
                     hasFix: true,
-                    optionsDescription: utils_2.dedent(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            One argument which is an object with the keys `multiline` and `singleline`.\n            Both should be set to either `\"always\"` or `\"never\"`.\n\n            * `\"multiline\"` checks multi-line object literals.\n            * `\"singleline\"` checks single-line object literals.\n\n            A array is considered \"multiline\" if its closing bracket is on a line\n            after the last array element. The same general logic is followed for\n            object literals, function and tuple typings, named import statements\n            and function parameters."], ["\n            One argument which is an object with the keys \\`multiline\\` and \\`singleline\\`.\n            Both should be set to either \\`\"always\"\\` or \\`\"never\"\\`.\n\n            * \\`\"multiline\"\\` checks multi-line object literals.\n            * \\`\"singleline\"\\` checks single-line object literals.\n\n            A array is considered \"multiline\" if its closing bracket is on a line\n            after the last array element. The same general logic is followed for\n            object literals, function and tuple typings, named import statements\n            and function parameters."]))),
+                    optionsDescription: (_b = ["\n            One argument which is an object with the keys `multiline` and `singleline`.\n            Both should be set to either `\"always\"` or `\"never\"`.\n\n            * `\"multiline\"` checks multi-line object literals.\n            * `\"singleline\"` checks single-line object literals.\n\n            A array is considered \"multiline\" if its closing bracket is on a line\n            after the last array element. The same general logic is followed for\n            object literals, function and tuple typings, named import statements\n            and function parameters."], _b.raw = ["\n            One argument which is an object with the keys \\`multiline\\` and \\`singleline\\`.\n            Both should be set to either \\`\"always\"\\` or \\`\"never\"\\`.\n\n            * \\`\"multiline\"\\` checks multi-line object literals.\n            * \\`\"singleline\"\\` checks single-line object literals.\n\n            A array is considered \"multiline\" if its closing bracket is on a line\n            after the last array element. The same general logic is followed for\n            object literals, function and tuple typings, named import statements\n            and function parameters."], utils_2.dedent(_b)),
                     options: {
                         type: "object",
                         properties: {
@@ -15091,16 +14869,8 @@ System.register("src/mode/tslint/rules/tripleEqualsRule.js", ["../language/rule/
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALLOW_NULL_CHECK, OPTION_ALLOW_UNDEFINED_CHECK, Rule, ComparisonWalker, templateObject_1;
+    var abstractRule_1, utils_1, utils_2, ruleWalker_1, OPTION_ALLOW_NULL_CHECK, OPTION_ALLOW_UNDEFINED_CHECK, Rule, ComparisonWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -15126,7 +14896,7 @@ System.register("src/mode/tslint/rules/tripleEqualsRule.js", ["../language/rule/
                 Rule.metadata = {
                     ruleName: "triple-equals",
                     description: "Requires `===` and `!==` in place of `==` and `!=`.",
-                    optionsDescription: utils_2.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Two arguments may be optionally provided:\n\n            * `\"allow-null-check\"` allows `==` and `!=` when comparing to `null`.\n            * `\"allow-undefined-check\"` allows `==` and `!=` when comparing to `undefined`."], ["\n            Two arguments may be optionally provided:\n\n            * \\`\"allow-null-check\"\\` allows \\`==\\` and \\`!=\\` when comparing to \\`null\\`.\n            * \\`\"allow-undefined-check\"\\` allows \\`==\\` and \\`!=\\` when comparing to \\`undefined\\`."]))),
+                    optionsDescription: (_a = ["\n            Two arguments may be optionally provided:\n\n            * `\"allow-null-check\"` allows `==` and `!=` when comparing to `null`.\n            * `\"allow-undefined-check\"` allows `==` and `!=` when comparing to `undefined`."], _a.raw = ["\n            Two arguments may be optionally provided:\n\n            * \\`\"allow-null-check\"\\` allows \\`==\\` and \\`!=\\` when comparing to \\`null\\`.\n            * \\`\"allow-undefined-check\"\\` allows \\`==\\` and \\`!=\\` when comparing to \\`undefined\\`."], utils_2.dedent(_a)),
                     options: {
                         type: "array",
                         items: {
@@ -16390,16 +16160,8 @@ System.register("src/mode/tslint/rules/useIsnanRule.js", ["../language/rule/abst
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
         };
     }();
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var abstractRule_1, utils_1, ruleWalker_1, Rule, UseIsnanRuleWalker, templateObject_1;
+    var abstractRule_1, utils_1, ruleWalker_1, Rule, UseIsnanRuleWalker, _a;
     return {
         setters: [function (abstractRule_1_1) {
             abstractRule_1 = abstractRule_1_1;
@@ -16420,7 +16182,7 @@ System.register("src/mode/tslint/rules/useIsnanRule.js", ["../language/rule/abst
                 Rule.metadata = {
                     ruleName: "use-isnan",
                     description: "Enforces use of the `isNaN()` function to check for NaN references instead of a comparison to the `NaN` constant.",
-                    rationale: utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n            Since `NaN !== NaN`, comparisons with regular operators will produce unexpected results.\n            So, instead of `if (myVar === NaN)`, do `if (isNaN(myVar))`."], ["\n            Since \\`NaN !== NaN\\`, comparisons with regular operators will produce unexpected results.\n            So, instead of \\`if (myVar === NaN)\\`, do \\`if (isNaN(myVar))\\`."]))),
+                    rationale: (_a = ["\n            Since `NaN !== NaN`, comparisons with regular operators will produce unexpected results.\n            So, instead of `if (myVar === NaN)`, do `if (isNaN(myVar))`."], _a.raw = ["\n            Since \\`NaN !== NaN\\`, comparisons with regular operators will produce unexpected results.\n            So, instead of \\`if (myVar === NaN)\\`, do \\`if (isNaN(myVar))\\`."], utils_1.dedent(_a)),
                     optionsDescription: "Not configurable.",
                     options: null,
                     optionExamples: ["true"],
@@ -16782,16 +16544,8 @@ System.register("src/mode/tslint/utils.js", [], function (exports_1, context_1) 
 System.register("src/mode/tslint/linter.js", ["./enableDisableRules", "./error", "./language/rule/typedRule", "./ruleLoader", "./utils"], function (exports_1, context_1) {
     "use strict";
 
-    var __makeTemplateObject = this && this.__makeTemplateObject || function (cooked, raw) {
-        if (Object.defineProperty) {
-            Object.defineProperty(cooked, "raw", { value: raw });
-        } else {
-            cooked.raw = raw;
-        }
-        return cooked;
-    };
     var __moduleName = context_1 && context_1.id;
-    var enableDisableRules_1, error_1, typedRule_1, ruleLoader_1, utils_1, Linter, templateObject_1;
+    var enableDisableRules_1, error_1, typedRule_1, ruleLoader_1, utils_1, Linter;
     return {
         setters: [function (enableDisableRules_1_1) {
             enableDisableRules_1 = enableDisableRules_1_1;
@@ -16881,10 +16635,11 @@ System.register("src/mode/tslint/linter.js", ["./enableDisableRules", "./error",
                         throw new Error("Program must be type checked before linting");
                     }
                     if (sourceFile === undefined) {
-                        var INVALID_SOURCE_ERROR = utils_1.dedent(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n                Invalid source file: ", ". Ensure that the files supplied to lint have a .ts, .tsx, .js or .jsx extension.\n            "], ["\n                Invalid source file: ", ". Ensure that the files supplied to lint have a .ts, .tsx, .js or .jsx extension.\n            "])), fileName);
+                        var INVALID_SOURCE_ERROR = (_a = ["\n                Invalid source file: ", ". Ensure that the files supplied to lint have a .ts, .tsx, .js or .jsx extension.\n            "], _a.raw = ["\n                Invalid source file: ", ". Ensure that the files supplied to lint have a .ts, .tsx, .js or .jsx extension.\n            "], utils_1.dedent(_a, fileName));
                         throw new Error(INVALID_SOURCE_ERROR);
                     }
                     return sourceFile;
+                    var _a;
                 };
                 Linter.prototype.containsRule = function (rules, rule) {
                     return rules.some(function (r) {
@@ -17915,7 +17670,6 @@ System.register("src/workers/LanguageServiceWorker.js", ["../mode/typescript/Def
                         try {
                             if (_this.trace) {
                                 console.log(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT + "(" + fileName + ")");
-                                console.log(content);
                             }
                             var added = _this.dispatcher.setScriptContent(fileName, content);
                             _this.resolve(LanguageServiceEvents_19.EVENT_SET_SCRIPT_CONTENT, added, callbackId);

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.17",
+  "version": "2.49.18",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -36,7 +36,7 @@
     "aws-sdk": "2.179.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
-    "core-js": "^2.5.3",
+    "core-js": "^2.5.5",
     "debug": "^2.6.8",
     "editor-document": "^0.0.5",
     "errorhandler": "^1.5.0",
@@ -56,8 +56,8 @@
     "pug": "^2.0.3",
     "redis": "^2.8.0",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.7",
-    "serve-favicon": "^2.4.5",
+    "rxjs": "^5.5.9",
+    "serve-favicon": "^2.5.0",
     "showdown": "^1.8.6",
     "socket.io": "^1.7.4",
     "stemcstudio-json": "^1.0.1",
@@ -68,10 +68,10 @@
     "typhon-lang": "^0.12.9",
     "typhon-typescript": "^0.3.0",
     "ui-select": "^0.19.8",
-    "zone.js": "^0.8.20"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@reactivex/rxjs": "^5.5.7",
+    "@reactivex/rxjs": "^5.5.9",
     "@types/angular": "^1.6.43",
     "@types/angular-animate": "^1.5.9",
     "@types/angular-cookies": "^1.4.5",
@@ -80,9 +80,9 @@
     "@types/angular-route": "^1.3.5",
     "@types/angular-sanitize": "^1.3.7",
     "@types/jasmine": "^2.8.6",
-    "@types/node": "^8.10.0",
-    "@types/react": "^16.0.40",
-    "@types/react-dom": "^16.0.4",
+    "@types/node": "^8.10.7",
+    "@types/react": "^16.3.9",
+    "@types/react-dom": "^16.0.5",
     "@types/snapsvg": "^0.4.31",
     "baconjs": "^0.7.95",
     "biwascheme": "^0.6.8",
@@ -115,9 +115,9 @@
     "matter-js": "^0.14.1",
     "monaco-editor": "^0.10.1",
     "plotly.js": "^1.35.2",
-    "protractor": "^5.3.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "protractor": "^5.3.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "redux": "^3.7.2",
     "snapsvg": "^0.5.1",
     "svg.js": "^2.6.4",
@@ -126,7 +126,7 @@
     "tslint": "^5.9.1",
     "two.js": "^0.6.0",
     "typedoc": "^0.10.0",
-    "typescript": "^2.7.2",
+    "typescript": "^2.8.1",
     "typings": "^2.1.1",
     "webgl-core": "^1.0.0"
   },
@@ -155,7 +155,7 @@
       "angular-ui-router": "npm:angular-ui-router@0.4.2",
       "bootstrap-dialog": "npm:bootstrap-dialog@^1.34.6",
       "clipboard": "npm:clipboard@^1.7.1",
-      "core-js": "npm:core-js@^2.5.3",
+      "core-js": "npm:core-js@^2.5.5",
       "davinci-csv": "npm:davinci-csv@^0.9.12",
       "editor-document": "npm:editor-document@^0.0.5",
       "es6-shim": "github:es-shims/es6-shim@^0.35.3",
@@ -167,7 +167,7 @@
       "jquery": "npm:jquery@^2.2.4",
       "js-beautify": "npm:js-beautify@^1.7.5",
       "reflect-metadata": "npm:reflect-metadata@^0.1.12",
-      "rxjs": "npm:rxjs@^5.5.7",
+      "rxjs": "npm:rxjs@^5.5.9",
       "showdown": "npm:showdown@^1.8.6",
       "socket.io-client": "npm:socket.io-client@^1.7.4",
       "stemcstudio-json": "npm:stemcstudio-json@^1.0.1",
@@ -175,7 +175,7 @@
       "typhon-typescript": "npm:typhon-typescript@^0.3.0",
       "ui-select": "npm:ui-select@^0.19.8",
       "underscore": "npm:underscore@^1.8.3",
-      "zone.js": "npm:zone.js@^0.8.20"
+      "zone.js": "npm:zone.js@^0.8.26"
     },
     "devDependencies": {}
   }
