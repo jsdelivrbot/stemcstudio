@@ -1093,7 +1093,7 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "path": "github:jspm/nodelibs-path@^0.1.0"
   },
-  "npm:rxjs@5.5.9": {
+  "npm:rxjs@5.5.10": {
     "symbol-observable": "npm:symbol-observable@1.0.1",
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
