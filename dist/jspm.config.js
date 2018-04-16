@@ -24,7 +24,7 @@ System.config({
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "npm:angular-sanitize@1.6.9",
-    "angular-translate": "npm:angular-translate@2.17.0",
+    "angular-translate": "npm:angular-translate@2.17.1",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -207,7 +207,7 @@ System.config({
     "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.6.9"
     },
-    "npm:angular-translate@2.17.0": {
+    "npm:angular-translate@2.17.1": {
       "angular": "npm:angular@1.6.9",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -587,7 +587,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
@@ -808,7 +808,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -836,7 +836,7 @@ System.config({
     "npm:ripemd160@2.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "hash-base": "npm:hash-base@2.0.2",
-      "inherits": "npm:inherits@2.0.1"
+      "inherits": "npm:inherits@2.0.3"
     },
     "npm:rxjs@5.5.10": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
@@ -856,7 +856,7 @@ System.config({
     "npm:sha.js@2.4.11": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "safe-buffer": "npm:safe-buffer@5.1.1"
     },

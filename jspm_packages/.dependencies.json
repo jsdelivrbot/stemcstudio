@@ -788,10 +788,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:angular-translate@2.17.0": {
-    "angular": "npm:angular@~1.6.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:showdown@1.8.6": {
     "yargs": "npm:yargs@^10.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0",
@@ -1098,5 +1094,9 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:angular-translate@2.17.1": {
+    "angular": "npm:angular@~1.6.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
