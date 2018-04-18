@@ -1,0 +1,55 @@
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:6:233: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:7:33: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:31: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:50: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:53: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:73: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:76: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:93: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:96: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:117: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/static.js:1556:120: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:6:217: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:7:40: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:2192:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/upgrade.js:2192:8: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:6:233: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:7:33: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:28: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:31: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:50: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:53: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:73: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:76: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:93: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:96: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:117: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm2015/static.js:1482:120: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:6:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:6:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:6:217: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:7:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:7:8: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:7:40: Semi-colon expected
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:2918:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/@angular/upgrade@5.2.10/esm5/upgrade.js:2918:8: Semi-colon expected
