@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.23",
+  "version": "2.49.24",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -68,6 +68,7 @@
     "typhon-lang": "^0.12.9",
     "typhon-typescript": "^0.3.0",
     "ui-select": "^0.19.8",
+    "ycssmin": "^1.0.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
