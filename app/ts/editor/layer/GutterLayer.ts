@@ -1,4 +1,4 @@
-import { addCssClass, createElement, removeCssClass } from "../lib/dom";
+import { addCssClass, createElement, removeCssClass, setStyle } from "../lib/dom";
 
 import { AbstractLayer } from './AbstractLayer';
 import { escapeHTML } from "../lib/escapeHTML";
@@ -13,10 +13,26 @@ import { Padding } from './Padding';
 import { GutterRenderer } from './GutterRenderer';
 import { GutterCell } from './GutterCell';
 import { refChange } from '../refChange';
+import { Cell, Lines } from './Lines';
+import { FoldLine } from "../FoldLine";
+import { toPixelString } from "../dom/toPixelString";
 
 export const changeGutterWidth = 'changeGutterWidth';
 export type GutterLayerEventName = 'changeGutterWidth';
 
+function isGutterRenderer(x: GutterRenderer | boolean | string): x is GutterRenderer {
+    return x && typeof x !== 'boolean' && typeof x !== 'string';
+}
+
+function onCreateCell(element: HTMLDivElement) {
+    const textNode = document.createTextNode('');
+    element.appendChild(textNode);
+
+    const foldWidget = createElement("span") as HTMLSpanElement;
+    element.appendChild(foldWidget);
+
+    return element;
+}
 /**
  *
  */
@@ -26,6 +42,7 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
      *
      */
     public gutterWidth = 0;
+    private oldLastRow: number;
 
     /**
      * GutterLayer annotations are different from the Annotation type.
@@ -38,14 +55,19 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
     public $cells: GutterCell[] = [];
     private $fixedWidth = false;
     private $showLineNumbers = true;
+    private $showFoldWidgets = true;
+    private $highlightGutterLine = true;
+    private $cursorRow: number;
+    private $cursorCell: Cell;
+    private config: GutterConfig;
     /**
      * 
      */
-    private $renderer: GutterRenderer | boolean;
+    private $renderer: GutterRenderer | boolean | string = "";
     private session: EditSession;
-    private $showFoldWidgets: boolean;
     public $padding: Padding | null;
     private readonly eventBus = new EventEmitterClass<GutterLayerEventName, any, GutterLayer>(this);
+    private readonly $lines: Lines;
 
     /**
      *
@@ -54,6 +76,8 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
         super(parent, "ace_layer ace_gutter-layer");
         refChange(this.uuid, 'GutterLayer', +1);
         this.setShowFoldWidgets(true);
+        this.$lines = new Lines(this.element);
+        this.$lines.$offsetCoefficient = 1;
     }
 
     dispose(): void {
@@ -83,11 +107,11 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
      */
     setSession(session: EditSession): void {
         if (this.session) {
-            this.session.off("change", this.sessionChangeHandler);
+            this.session.off("change", this.$updateAnnotations);
         }
         this.session = session;
         if (session) {
-            session.on("change", this.sessionChangeHandler);
+            session.on("change", this.$updateAnnotations);
         }
     }
 
@@ -125,9 +149,10 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
     }
 
     /**
-     * The fat-arrow definition allows us to use the in a 
+     * The fat-arrow definition allows us to use the in an event handler.
+     * This is called $updateAnnotations 
      */
-    private sessionChangeHandler = (delta: Delta): void => {
+    private $updateAnnotations = (delta: Delta): void => {
         if (!this.$annotations.length) {
             return;
         }
@@ -241,7 +266,7 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
             }
 
             lastLineNumber = row + firstLineNumber;
-            const text: string = (gutterRenderer && typeof gutterRenderer !== 'boolean')
+            const text: string = isGutterRenderer(gutterRenderer)
                 ? gutterRenderer.getText(session, row)
                 : lastLineNumber.toString();
             if (text !== cell.textNode.data) {
@@ -256,7 +281,7 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
         if (this.$fixedWidth || session.$useWrapMode)
             lastLineNumber = session.getLength() + firstLineNumber;
 
-        let gutterWidth = (gutterRenderer && typeof gutterRenderer !== 'boolean')
+        let gutterWidth = isGutterRenderer(gutterRenderer)
             ? gutterRenderer.getWidth(session, lastLineNumber, config)
             : lastLineNumber.toString().length * config.characterWidth;
 
@@ -267,6 +292,223 @@ export class GutterLayer extends AbstractLayer implements EventBus<GutterLayerEv
             this.element.style.width = Math.ceil(this.gutterWidth) + "px";
             this.eventBus._emit(changeGutterWidth, gutterWidth);
         }
+    }
+
+    private $updateGutterWidth(config: GutterConfig) {
+        const session = this.session;
+
+        const gutterRenderer = session.gutterRenderer || this.$renderer;
+
+        const firstLineNumber = session.getFirstLineNumber();
+        let lastLineNumber = 0;
+        const lastLineText = this.$lines.last() ? this.$lines.last().text : "";
+
+        if (this.$fixedWidth || session.$useWrapMode) {
+            lastLineNumber = session.getLength() + firstLineNumber;
+        }
+
+        let gutterWidth = isGutterRenderer(gutterRenderer)
+            ? gutterRenderer.getWidth(session, lastLineNumber, config)
+            : lastLineText.toString().length * config.characterWidth;
+
+        const padding = this.$padding || this.$computePadding();
+        gutterWidth += padding.left + padding.right;
+        if (gutterWidth !== this.gutterWidth && !isNaN(gutterWidth)) {
+            this.gutterWidth = gutterWidth;
+            (this.element.parentNode as HTMLElement).style.width = this.element.style.width = Math.ceil(this.gutterWidth) + "px";
+            this.eventBus._emit(changeGutterWidth, gutterWidth);
+        }
+    }
+
+    private $updateCursorRow() {
+        if (!this.$highlightGutterLine)
+            return;
+
+        const position = this.session.selection.getCursor();
+        if (this.$cursorRow === position.row)
+            return;
+
+        this.$cursorRow = position.row;
+    }
+
+    updateLineHighlight() {
+        if (!this.$highlightGutterLine) {
+            return;
+        }
+        const row = this.session.selection.getCursor().row;
+        this.$cursorRow = row;
+
+        if (this.$cursorCell && this.$cursorCell.row === row) {
+            return;
+        }
+        if (this.$cursorCell) {
+            this.$cursorCell.element.className = this.$cursorCell.element.className.replace("ace_gutter-active-line ", "");
+        }
+        const cells = this.$lines.cells;
+        this.$cursorCell = null;
+        for (let i = 0; i < cells.length; i++) {
+            let cell = cells[i];
+            if (cell.row >= this.$cursorRow) {
+                if (cell.row > this.$cursorRow) {
+                    const fold = this.session.getFoldLine(this.$cursorRow);
+                    if (i > 0 && fold && fold.start.row === cells[i - 1].row)
+                        cell = cells[i - 1];
+                    else
+                        break;
+                }
+                cell.element.className = "ace_gutter-active-line " + cell.element.className;
+                this.$cursorCell = cell;
+                break;
+            }
+        }
+    }
+
+    scrollLines(config: GutterConfig) {
+        const oldConfig = this.config;
+        this.config = config;
+
+        this.$updateCursorRow();
+        if (this.$lines.pageChanged(oldConfig, config))
+            return this.update(config);
+
+        this.$lines.moveContainer(config);
+
+        const lastRow = Math.min(config.lastRow + config.gutterOffset, this.session.getLength() - 1);
+        const oldLastRow = this.oldLastRow;
+        this.oldLastRow = lastRow;
+
+        if (!oldConfig || oldLastRow < config.firstRow)
+            return this.update(config);
+
+        if (lastRow < oldConfig.firstRow)
+            return this.update(config);
+
+        if (oldConfig.firstRow < config.firstRow)
+            for (let row = this.session.getFoldedRowCount(oldConfig.firstRow, config.firstRow - 1); row > 0; row--)
+                this.$lines.shift();
+
+        if (oldLastRow > lastRow)
+            for (let row = this.session.getFoldedRowCount(lastRow + 1, oldLastRow); row > 0; row--)
+                this.$lines.pop();
+
+        if (config.firstRow < oldConfig.firstRow) {
+            this.$lines.unshift(this.$renderLines(config, config.firstRow, oldConfig.firstRow - 1));
+        }
+
+        if (lastRow > oldLastRow) {
+            this.$lines.push(this.$renderLines(config, oldLastRow + 1, lastRow));
+        }
+
+        this.updateLineHighlight();
+
+        this.$updateGutterWidth(config);
+    }
+
+    private $renderLines(config: GutterConfig, firstRow: number, lastRow: number) {
+        const fragment: Cell[] = [];
+        let row = firstRow;
+        let foldLine = this.session.getNextFoldLine(row);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
+
+        while (true) {
+            if (row > foldStart) {
+                row = foldLine.end.row + 1;
+                foldLine = this.session.getNextFoldLine(row, foldLine);
+                foldStart = foldLine ? foldLine.start.row : Infinity;
+            }
+            if (row > lastRow)
+                break;
+
+            const cell = this.$lines.createCell(row, config, this.session, onCreateCell);
+            this.$renderCell(cell, config, foldLine, row);
+            fragment.push(cell);
+
+            row++;
+        }
+        return fragment;
+    }
+
+    private $renderCell(cell: Cell, config: GutterConfig, fold: FoldLine, row: number) {
+        const element = cell.element;
+
+        const textNode = element.childNodes[0] as Text;
+        const foldWidget = element.childNodes[1] as HTMLDivElement;
+
+        const session = this.session;
+
+        const firstLineNumber = session.getFirstLineNumber();
+
+        const breakpoints = session.$breakpoints;
+        const decorations = session.$decorations;
+        const gutterRenderer = session.gutterRenderer || this.$renderer;
+        const foldWidgets = this.$showFoldWidgets && session.foldWidgets;
+        const foldStart = fold ? fold.start.row : Number.MAX_VALUE;
+
+        let className = "ace_gutter-cell ";
+        if (this.$highlightGutterLine) {
+            if (row === this.$cursorRow || (fold && row < this.$cursorRow && row >= foldStart && this.$cursorRow <= fold.end.row)) {
+                className += "ace_gutter-active-line ";
+                if (this.$cursorCell !== cell) {
+                    if (this.$cursorCell)
+                        this.$cursorCell.element.className = this.$cursorCell.element.className.replace("ace_gutter-active-line ", "");
+                    this.$cursorCell = cell;
+                }
+            }
+        }
+
+        if (breakpoints[row])
+            className += breakpoints[row];
+        if (decorations[row])
+            className += decorations[row];
+        if (this.$annotations[row])
+            className += this.$annotations[row].className;
+        if (element.className !== className)
+            element.className = className;
+
+        let c: FoldWidget;
+        if (foldWidgets) {
+            c = foldWidgets[row];
+            // check if cached value is invalidated and we need to recompute
+            if (c == null) {
+                c = foldWidgets[row] = session.getFoldWidget(row);
+            }
+        }
+
+        if (c) {
+            let className = "ace_fold-widget ace_" + c;
+            if (c === "start" && row === foldStart && row < fold.end.row)
+                className += " ace_closed";
+            else
+                className += " ace_open";
+            if (foldWidget.className !== className)
+                foldWidget.className = className;
+
+            const foldHeight = toPixelString(config.lineHeight);
+            setStyle(foldWidget.style, "height", foldHeight);
+            setStyle(foldWidget.style, "display", "inline-block");
+        } else {
+            if (foldWidget) {
+                setStyle(foldWidget.style, "display", "none");
+            }
+        }
+
+        const text = (isGutterRenderer(gutterRenderer)
+            ? gutterRenderer.getText(session, row)
+            : row + firstLineNumber).toString();
+
+        if (text !== textNode.data) {
+            textNode.data = text;
+        }
+
+        setStyle(cell.element.style, "height", this.$lines.computeLineHeight(row, config, session) + "px");
+        setStyle(cell.element.style, "top", this.$lines.computeLineTop(row, config, session) + "px");
+
+        cell.text = text;
+        return cell;
+    }
+
+    setHighlightGutterLine(highlightGutterLine: boolean) {
+        this.$highlightGutterLine = highlightGutterLine;
     }
 
     /**

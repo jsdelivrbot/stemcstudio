@@ -15,7 +15,7 @@ import { Token } from "../Token";
 const EOF_CHAR = "\xB6";
 const EOL_CHAR_LF = "\xAC";
 const EOL_CHAR_CRLF = "\xa4";
-const TAB_CHAR = "\u2192"; // "\u21E5";
+const TAB_CHAR = "\u2192";
 const SPACE_CHAR = "\xB7";
 
 export type TextLayerEventName = 'changeCharacterSize';

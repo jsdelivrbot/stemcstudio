@@ -13,15 +13,18 @@ export class AbstractLayer implements Disposable {
     public element: HTMLDivElement;
 
     /**
-     * 
+     * A random string for identifying an instance of this class.
      */
     protected readonly uuid = `${Math.random()}`;
 
+    /**
+     * Creates an underlying element, sets the className property, and appends to the parent.
+     */
     constructor(private readonly parent: HTMLElement, className: string) {
         refChange(this.uuid, 'AbstractLayer', +1);
         // TODO: createHTMLDivElement would be nice convenience to avoid casting?
         // We should probably pay more attention to the owner document too.
-        this.element = <HTMLDivElement>createElement('div');
+        this.element = createElement('div') as HTMLDivElement;
         this.element.className = className;
         parent.appendChild(this.element);
     }

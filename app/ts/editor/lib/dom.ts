@@ -154,6 +154,13 @@ else
         return element.currentStyle;
     };
 */
+
+export function setStyle(styles: CSSStyleDeclaration, property: string, value: string) {
+    if (styles[property] !== value) {
+        styles[property] = value;
+    }
+}
+
 export function scrollbarWidth(document: Document): number {
     const inner: HTMLElement = <HTMLElement>createElement("ace_inner");
     inner.style.width = "100%";
