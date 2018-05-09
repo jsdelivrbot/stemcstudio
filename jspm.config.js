@@ -30,7 +30,7 @@ System.config({
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.7.1",
-    "core-js": "npm:core-js@2.5.5",
+    "core-js": "npm:core-js@2.5.6",
     "davinci-csv": "npm:davinci-csv@0.9.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "editor-document": "npm:editor-document@0.0.5",
@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -364,7 +364,7 @@ System.config({
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:core-js@2.5.5": {
+    "npm:core-js@2.5.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -373,7 +373,7 @@ System.config({
     "npm:core-util-is@1.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
     },
-    "npm:create-ecdh@4.0.1": {
+    "npm:create-ecdh@4.0.3": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
@@ -402,7 +402,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "lru-cache": "npm:lru-cache@4.1.2",
+      "lru-cache": "npm:lru-cache@4.1.3",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "shebang-command": "npm:shebang-command@1.2.0",
@@ -411,7 +411,7 @@ System.config({
     "npm:crypto-browserify@3.12.0": {
       "browserify-cipher": "npm:browserify-cipher@1.0.1",
       "browserify-sign": "npm:browserify-sign@4.0.4",
-      "create-ecdh": "npm:create-ecdh@4.0.1",
+      "create-ecdh": "npm:create-ecdh@4.0.3",
       "create-hash": "npm:create-hash@1.2.0",
       "create-hmac": "npm:create-hmac@1.1.7",
       "diffie-hellman": "npm:diffie-hellman@5.0.3",
@@ -438,7 +438,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:diffie-hellman@5.0.3": {
@@ -582,7 +582,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
@@ -638,7 +638,7 @@ System.config({
     "npm:lru-cache@3.2.0": {
       "pseudomap": "npm:pseudomap@1.0.2"
     },
-    "npm:lru-cache@4.1.2": {
+    "npm:lru-cache@4.1.3": {
       "pseudomap": "npm:pseudomap@1.0.2",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "yallist": "npm:yallist@2.1.2"
