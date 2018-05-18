@@ -1,1 +1,0 @@
-module.exports = require("npm:@angular/forms@5.2.10/bundles/forms.umd.js");
