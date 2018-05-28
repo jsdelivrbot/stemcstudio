@@ -1,5 +1,12 @@
 .tscache
 config.development.json
+STAR_stemcstudio_com.key
+STAR_stemcstudio_com.pem
+STAR_stemcstudio_com.zip
+AddTrustExternalCARoot.crt
+COMODORSAAddTrustCA.crt
+COMODORSADomainValidationSecureServerCA.crt
+STAR_stemcstudio_com.crt
 coverage/
 generated/
 typings/

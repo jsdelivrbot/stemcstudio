@@ -1,0 +1,1 @@
+module.exports = require("npm:angular-translate@2.18.1/dist/angular-translate.js");
