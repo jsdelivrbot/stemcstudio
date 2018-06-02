@@ -1,0 +1,1 @@
+module.exports = require("npm:underscore@1.9.1/underscore.js");
