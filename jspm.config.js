@@ -19,11 +19,11 @@ System.config({
     "@angular/router": "npm:@angular/router@5.2.11",
     "@angular/upgrade": "npm:@angular/upgrade@5.2.11",
     "@angular/upgrade/static": "npm:@angular/upgrade@5.2.11/bundles/upgrade-static.umd.js",
-    "angular": "npm:angular@1.7.0",
-    "angular-animate": "npm:angular-animate@1.7.0",
+    "angular": "npm:angular@1.7.1",
+    "angular-animate": "npm:angular-animate@1.7.1",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "npm:angular-sanitize@1.7.0",
+    "angular-sanitize": "npm:angular-sanitize@1.7.1",
     "angular-translate": "npm:angular-translate@2.18.1",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
@@ -205,14 +205,14 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.7.0"
+      "angular": "npm:angular@1.7.1"
     },
     "npm:angular-translate@2.18.1": {
-      "angular": "npm:angular@1.7.0",
+      "angular": "npm:angular@1.7.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-ui-router@0.4.2": {
-      "angular": "npm:angular@1.7.0",
+      "angular": "npm:angular@1.7.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.10.1": {
@@ -315,7 +315,7 @@ System.config({
     },
     "npm:buffer@5.1.0": {
       "base64-js": "npm:base64-js@1.3.0",
-      "ieee754": "npm:ieee754@1.1.11"
+      "ieee754": "npm:ieee754@1.1.12"
     },
     "npm:bufferutil@1.2.1": {
       "bindings": "npm:bindings@1.2.1",
@@ -707,11 +707,11 @@ System.config({
       "mem": "npm:mem@1.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:p-limit@1.2.0": {
+    "npm:p-limit@1.3.0": {
       "p-try": "npm:p-try@1.0.0"
     },
     "npm:p-locate@2.0.0": {
-      "p-limit": "npm:p-limit@1.2.0"
+      "p-limit": "npm:p-limit@1.3.0"
     },
     "npm:pako@0.2.8": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
