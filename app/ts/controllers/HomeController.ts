@@ -162,7 +162,11 @@ export class HomeController extends AbstractPageController {
             }
         };
 
-        $scope.doDelete = function (doodle: Doodle) {
+        //
+        // Deleting a doodle seems to require a fat-arrow function.
+        // Not sure why this started to fail with angular 1.7.2
+        //
+        $scope.doDelete = (doodle: Doodle) => {
             // TODO: DRY. This code also exists in the OpenController.
             modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function () {
                 doodleManager.deleteDoodle(doodle);

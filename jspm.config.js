@@ -19,11 +19,11 @@ System.config({
     "@angular/router": "npm:@angular/router@5.2.11",
     "@angular/upgrade": "npm:@angular/upgrade@5.2.11",
     "@angular/upgrade/static": "npm:@angular/upgrade@5.2.11/bundles/upgrade-static.umd.js",
-    "angular": "npm:angular@1.7.1",
-    "angular-animate": "npm:angular-animate@1.7.1",
+    "angular": "npm:angular@1.7.2",
+    "angular-animate": "npm:angular-animate@1.7.2",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "npm:angular-sanitize@1.7.1",
+    "angular-sanitize": "npm:angular-sanitize@1.7.2",
     "angular-translate": "npm:angular-translate@2.18.1",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
@@ -205,14 +205,14 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.7.1"
+      "angular": "npm:angular@1.7.2"
     },
     "npm:angular-translate@2.18.1": {
-      "angular": "npm:angular@1.7.1",
+      "angular": "npm:angular@1.7.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-ui-router@0.4.2": {
-      "angular": "npm:angular@1.7.1",
+      "angular": "npm:angular@1.7.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.10.1": {
@@ -323,7 +323,7 @@ System.config({
     },
     "npm:cipher-base@1.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
@@ -438,7 +438,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:diffie-hellman@5.0.3": {
@@ -470,7 +470,7 @@ System.config({
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.8",
       "brorand": "npm:brorand@1.1.0",
-      "hash.js": "npm:hash.js@1.1.3",
+      "hash.js": "npm:hash.js@1.1.4",
       "hmac-drbg": "npm:hmac-drbg@1.0.1",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
@@ -582,16 +582,16 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:hash.js@1.1.3": {
+    "npm:hash.js@1.1.4": {
       "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:hmac-drbg@1.0.1": {
-      "hash.js": "npm:hash.js@1.1.3",
+      "hash.js": "npm:hash.js@1.1.4",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"

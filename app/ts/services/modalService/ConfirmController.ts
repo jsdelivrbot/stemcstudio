@@ -3,7 +3,9 @@ import { ConfirmScope } from './ConfirmScope';
 import { ConfirmOptions } from './ConfirmOptions';
 
 export class ConfirmController {
+
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
+
     constructor($scope: ConfirmScope, $uibModalInstance: IModalServiceInstance, options: ConfirmOptions) {
 
         $scope.options = options;
