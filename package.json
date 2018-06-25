@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.49.34",
+  "version": "2.49.35",
   "private": true,
   "description": "Live TypeScript Coding in a Gist",
   "engines": {
@@ -104,7 +104,7 @@
     "immutable": "^3.8.2",
     "jasmine-core": "^2.99.1",
     "jspm": "^0.16.53",
-    "karma": "^2.0.3",
+    "karma": "^2.0.4",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
     "karma-coverage": "^1.1.2",

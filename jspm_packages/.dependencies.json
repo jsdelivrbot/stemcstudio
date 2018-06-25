@@ -1081,7 +1081,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:tslib@1.9.2": {},
   "npm:underscore@1.9.1": {},
   "npm:ieee754@1.1.12": {},
   "npm:p-limit@1.3.0": {
@@ -1093,5 +1092,6 @@
   "npm:hash.js@1.1.4": {
     "inherits": "npm:inherits@^2.0.3",
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
-  }
+  },
+  "npm:tslib@1.9.3": {}
 }
