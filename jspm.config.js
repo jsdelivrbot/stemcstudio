@@ -266,17 +266,18 @@ System.config({
     },
     "npm:browserify-cipher@1.0.1": {
       "browserify-aes": "npm:browserify-aes@1.2.0",
-      "browserify-des": "npm:browserify-des@1.0.1",
+      "browserify-des": "npm:browserify-des@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "evp_bytestokey": "npm:evp_bytestokey@1.0.3"
     },
-    "npm:browserify-des@1.0.1": {
+    "npm:browserify-des@1.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "cipher-base": "npm:cipher-base@1.0.4",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "des.js": "npm:des.js@1.0.0",
-      "inherits": "npm:inherits@2.0.1"
+      "inherits": "npm:inherits@2.0.1",
+      "safe-buffer": "npm:safe-buffer@5.1.2"
     },
     "npm:browserify-rsa@4.0.1": {
       "bn.js": "npm:bn.js@4.11.8",
@@ -470,7 +471,7 @@ System.config({
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.8",
       "brorand": "npm:brorand@1.1.0",
-      "hash.js": "npm:hash.js@1.1.4",
+      "hash.js": "npm:hash.js@1.1.5",
       "hmac-drbg": "npm:hmac-drbg@1.0.1",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
@@ -586,12 +587,12 @@ System.config({
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:hash.js@1.1.4": {
+    "npm:hash.js@1.1.5": {
       "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:hmac-drbg@1.0.1": {
-      "hash.js": "npm:hash.js@1.1.4",
+      "hash.js": "npm:hash.js@1.1.5",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -1054,7 +1055,7 @@ System.config({
       "decamelize": "npm:decamelize@1.2.0",
       "find-up": "npm:find-up@2.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "get-caller-file": "npm:get-caller-file@1.0.2",
+      "get-caller-file": "npm:get-caller-file@1.0.3",
       "os-locale": "npm:os-locale@2.1.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",

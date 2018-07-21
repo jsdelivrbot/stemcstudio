@@ -443,7 +443,6 @@
     "wtf-8": "npm:wtf-8@1.0.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:get-caller-file@1.0.2": {},
   "npm:set-blocking@2.0.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
@@ -921,13 +920,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:browserify-des@1.0.1": {
-    "cipher-base": "npm:cipher-base@^1.0.1",
-    "des.js": "npm:des.js@^1.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
   "npm:minimalistic-assert@1.0.1": {},
   "npm:browserify-aes@1.2.0": {
     "buffer-xor": "npm:buffer-xor@^1.0.3",
@@ -1081,10 +1073,6 @@
   "npm:angular-sanitize@1.7.2": {},
   "npm:angular-animate@1.7.2": {},
   "npm:angular@1.7.2": {},
-  "npm:hash.js@1.1.4": {
-    "inherits": "npm:inherits@^2.0.3",
-    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0"
-  },
   "npm:tslib@1.9.3": {},
   "npm:commander@2.16.0": {
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -1093,5 +1081,18 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:get-caller-file@1.0.3": {},
+  "npm:browserify-des@1.0.2": {
+    "cipher-base": "npm:cipher-base@^1.0.1",
+    "des.js": "npm:des.js@^1.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.1.2",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:hash.js@1.1.5": {
+    "inherits": "npm:inherits@^2.0.3",
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.1"
   }
 }

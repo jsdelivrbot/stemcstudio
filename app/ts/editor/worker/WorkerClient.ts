@@ -135,8 +135,8 @@ export class WorkerClient implements EventBus<string, MessageEvent, WorkerClient
         const msg = event.data;
         switch (msg.type) {
             case "info":
-                if (window.console && console.info) {
-                    console.info.apply(console, msg.data);
+                if (window.console && console.log) {
+                    console.log.apply(console, msg.data);
                 }
                 break;
             case "log":
