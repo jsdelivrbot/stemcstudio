@@ -137,12 +137,14 @@ const PASTE_COMMAND: Command<Editor> = {
 const UNDO_COMMAND: Command<Editor> = {
     name: "undo",
     bindKey: bindKey("Ctrl-Z", "Command-Z"),
+    // bindKey: bindKey("Ctrl-Z|Ctrl-Shift-Y", "Command-Z|Command-Shift-Y"),
     exec: function (editor: Editor) { editor.undo(); }
 };
 
 const REDO_COMMAND: Command<Editor> = {
     name: "redo",
-    bindKey: bindKey("Ctrl-Shift-Z|Ctrl-Y", "Command-Shift-Z|Command-Y"),
+    bindKey: bindKey("Ctrl-Y", "Command-Y"),
+    // bindKey: bindKey("Ctrl-Y|Ctrl-Shift-Z", "Command-Y|Command-Shift-Z"),
     exec: function (editor: Editor) { editor.redo(); }
 };
 
@@ -251,6 +253,24 @@ const GOTO_PAGE_UP: Command<Editor> = {
     readOnly: true
 };
 
+const NAVIGATE_WORD_LEFT: Command<Editor> = {
+    name: "goto Word Left",
+    bindKey: bindKey("Ctrl-Left", "Option-Left"),
+    exec: function (editor: Editor) { editor.navigateWordLeft(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const NAVIGATE_WORD_RIGHT: Command<Editor> = {
+    name: "goto Word Right",
+    bindKey: bindKey("Ctrl-Right", "Option-Right"),
+    exec: function (editor: Editor) { editor.navigateWordRight(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
 const SELECT_PAGE_DOWN: Command<Editor> = {
     name: "select Page Down",
     bindKey: "Shift-PageDown",
@@ -298,6 +318,54 @@ const SELECT_RIGHT: Command<Editor> = {
     multiSelectAction: "forEach",
     scrollIntoView: "cursor",
     readOnly: true
+};
+
+const SELECT_WORD_LEFT: Command<Editor> = {
+    name: "select Word Left",
+    bindKey: bindKey("Ctrl-Shift-Left", "Option-Shift-Left"),
+    exec: function (editor: Editor) { editor.selectWordLeft(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const SELECT_WORD_RIGHT: Command<Editor> = {
+    name: "select Word Right",
+    bindKey: bindKey("Ctrl-Shift-Right", "Option-Shift-Right"),
+    exec: function (editor: Editor) { editor.selectWordRight(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor",
+    readOnly: true
+};
+
+const SELECT_WORD_OR_FIND_NEXT: Command<Editor> = {
+    name: "select Word or Find Next",
+    bindKey: bindKey("Alt-K", "Ctrl-G"),
+    exec: function (editor: Editor) { editor.selectWordOrFindNext(); },
+    readOnly: true
+};
+
+const SELECT_WORD_OR_FIND_PREVIOUS: Command<Editor> = {
+    name: "select Word or Find Previous",
+    bindKey: bindKey("Alt-Shift-K", "Ctrl-Shift-G"),
+    exec: function (editor: Editor) { editor.selectWordOrFindPrevious(); },
+    readOnly: true
+};
+
+const REMOVE_WORD_LEFT: Command<Editor> = {
+    name: "remove Word Left",
+    bindKey: bindKey("Ctrl-Backspace", "Alt-Backspace|Ctrl-Alt-Backspace"),
+    exec: function (editor: Editor) { editor.removeWordLeft(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor"
+};
+
+const REMOVE_WORD_RIGHT: Command<Editor> = {
+    name: "remove Word Right",
+    bindKey: bindKey("Ctrl-Delete", "Alt-Delete"),
+    exec: function (editor: Editor) { editor.removeWordRight(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "cursor"
 };
 
 const INDENT_COMMAND: Command<Editor> = {
@@ -665,6 +733,9 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand(GOTO_PAGE_DOWN);
     editor.addCommand(GOTO_PAGE_UP);
 
+    editor.addCommand(NAVIGATE_WORD_LEFT);
+    editor.addCommand(NAVIGATE_WORD_RIGHT);
+
     editor.addCommand(SELECT_PAGE_DOWN);
     editor.addCommand(SELECT_PAGE_UP);
 
@@ -672,6 +743,15 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand(SELECT_UP);
     editor.addCommand(SELECT_LEFT);
     editor.addCommand(SELECT_RIGHT);
+
+    editor.addCommand(SELECT_WORD_LEFT);
+    editor.addCommand(SELECT_WORD_RIGHT);
+
+    editor.addCommand(SELECT_WORD_OR_FIND_NEXT);
+    editor.addCommand(SELECT_WORD_OR_FIND_PREVIOUS);
+
+    editor.addCommand(REMOVE_WORD_LEFT);
+    editor.addCommand(REMOVE_WORD_RIGHT);
 
     editor.addCommand(INDENT_COMMAND);
     editor.addCommand(OUTDENT_COMMAND);

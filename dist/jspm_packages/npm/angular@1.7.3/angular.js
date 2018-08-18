@@ -1,3 +1,6 @@
+/* */ 
+"format global";
+"exports angular";
 /**
  * @license AngularJS v1.7.3
  * (c) 2010-2018 Google, Inc. http://angularjs.org
