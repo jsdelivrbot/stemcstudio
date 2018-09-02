@@ -257,9 +257,9 @@ function copies(target) {
      */
     const VERSION_TWO = '0.6.0.1';
     /**
-     * 
+     * The TypeScript files are expected to be in manual/typescript@3.0.3
      */
-    const VERSION_TYPESCRIPT_SERVICES = '2.3.4';
+    const VERSION_TYPESCRIPT_SERVICES = '3.0.3';
 
     return [
         { src: 'app/index.html', dest: prepend(target, 'index.html') },
@@ -283,6 +283,14 @@ function copies(target) {
             dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.js.map`)
         },
         {
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.out.js`,
+            dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.out.js`)
+        },
+        {
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.out.js.map`,
+            dest: prepend(target, `js/typescript@${VERSION_TYPESCRIPT_SERVICES}/typescriptServices.out.js.map`)
+        },
+        {
             src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es6.d.ts`,
             // FIXME: Should be cache busting.
             dest: prepend(target, `typings/lib.es6.d.ts`)
@@ -290,6 +298,14 @@ function copies(target) {
         {
             src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.d.ts`,
             dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.d.ts`)
+        },
+        {
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es5.d.ts`,
+            dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es5.d.ts`)
+        },
+        {
+            src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.dom.d.ts`,
+            dest: prepend(target, `vendor/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.dom.d.ts`)
         },
         {
             src: `manual/typescript@${VERSION_TYPESCRIPT_SERVICES}/lib.es2015.core.d.ts`,

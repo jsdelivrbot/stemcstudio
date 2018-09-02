@@ -2,8 +2,9 @@
  * The application version is used for cache busting the jspm.config.js file.
  * This file is used to load the application and the workers.
  * DON'T FORGET TO CHANGE THE VERSION IN views/index.pug !!!
+ * Keep synchronized with package.json and bower.json.
  */
-export const APP_VERSION = '2.50.0';
+export const APP_VERSION = '2.51.0';
 
 /**
  * Web Worker supporting TypeScript Mode.
@@ -35,7 +36,7 @@ const STEMCSTUDIO_WORKSPACE_VERSION = '1.0.0';
 export const STEMCSTUDIO_WORKSPACE_MODULE_NAME = 'stemcstudio-workspace.js';
 export const STEMCSTUDIO_WORKSPACE_PATH = `/js/stemcstudio-workspace@${STEMCSTUDIO_WORKSPACE_VERSION}/${STEMCSTUDIO_WORKSPACE_MODULE_NAME}`;
 
-export const TYPESCRIPT_SERVICES_VERSION = '2.3.4';
+export const TYPESCRIPT_SERVICES_VERSION = '3.0.3';
 export const TYPESCRIPT_SERVICES_MODULE_NAME = 'typescriptServices.js';
 export const TYPESCRIPT_SERVICES_PATH = `/js/typescript@${TYPESCRIPT_SERVICES_VERSION}/${TYPESCRIPT_SERVICES_MODULE_NAME}`;
 

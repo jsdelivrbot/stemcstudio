@@ -1109,7 +1109,7 @@ export class Beautifier {
                             Child_options.prototype = options;
                             var child_options = new Child_options();
                             */
-                            text = _beautifier(text.replace(/^\s*/, indentation), child_options);
+                            text = _beautifier(text.replace(/^\s*/, indentation)/*, child_options*/);
                         } else {
                             // simply indent the string otherwise
                             var white = text.match(/^\s*/)[0];

@@ -16,6 +16,8 @@ export class PropertiesFlow {
     constructor(
         private optionManager: IOptionManager,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
+        private FILENAME_TYPESCRIPT_CURRENT_LIB_DOM_DTS: string,
+        private FILENAME_TYPESCRIPT_CURRENT_LIB_ES5_DTS: string,
         private FILENAME_TYPESCRIPT_ES2015_CORE_DTS: string,
         private FILENAME_TYPESCRIPT_PROMISE_LIB_DTS: string,
         private $http: IHttpService,
@@ -81,6 +83,8 @@ export class PropertiesFlow {
                 updateWorkspaceTypes(
                     this.wsModel,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
+                    this.FILENAME_TYPESCRIPT_CURRENT_LIB_DOM_DTS,
+                    this.FILENAME_TYPESCRIPT_CURRENT_LIB_ES5_DTS,
                     this.FILENAME_TYPESCRIPT_ES2015_CORE_DTS,
                     this.FILENAME_TYPESCRIPT_PROMISE_LIB_DTS,
                     this.$http,

@@ -384,6 +384,66 @@ const OUTDENT_COMMAND: Command<Editor> = {
     scrollIntoView: "selectionPart"
 };
 
+const FOLD_COMMAND: Command<Editor> = {
+    name: "fold",
+    bindKey: bindKey("Alt-L|Ctrl-F1", "Command-Alt-L|Command-F1"),
+    exec: function (editor: Editor) { editor.toggleFold(false); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "center",
+    readOnly: true
+};
+
+const UNFOLD_COMMAND: Command<Editor> = {
+    name: "unfold",
+    bindKey: bindKey("Alt-Shift-L|Ctrl-Shift-F1", "Command-Alt-Shift-L|Command-Shift-F1"),
+    exec: function (editor: Editor) { editor.toggleFold(true); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "center",
+    readOnly: true
+};
+
+const FOLD_ALL_COMMAND: Command<Editor> = {
+    name: "fold All",
+    // TODO: Should this be bindKey(null, ...?
+    bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
+    exec: function (editor: Editor) { editor.foldAll(); },
+    scrollIntoView: "center",
+    readOnly: true
+};
+
+const UNFOLD_ALL_COMMAND: Command<Editor> = {
+    name: "unfold All",
+    bindKey: bindKey("Alt-Shift-0", "Command-Option-Shift-0"),
+    exec: function (editor: Editor) { editor.unfold(); },
+    scrollIntoView: "center",
+    readOnly: true
+};
+
+const TOGGLE_FOLD_WIDGET_COMMAND: Command<Editor> = {
+    name: "toggle Fold Widget",
+    bindKey: bindKey("F2", "F2"),
+    exec: function (editor: Editor) { editor.toggleFoldWidget(false); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "center",
+    readOnly: true
+};
+
+const TOGGLE_COMMENT_LINES_COMMAND: Command<Editor> = {
+    name: "toggle Comment Lines",
+    bindKey: bindKey("Ctrl-/", "Command-/"),
+    exec: function (editor: Editor) { editor.toggleCommentLines(); },
+    multiSelectAction: "forEachLine",
+    scrollIntoView: "selectionPart"
+};
+
+const TOGGLE_BLOCK_COMMENT_COMMAND: Command<Editor> = {
+    name: "toggle Block Comment",
+    bindKey: bindKey("Ctrl-Shift-/", "Command-Shift-/"),
+    exec: function (editor: Editor) { editor.toggleBlockComment(); },
+    multiSelectAction: "forEach",
+    scrollIntoView: "selectionPart"
+};
+
 interface EditorDetacher {
     (): void;
 }
@@ -757,6 +817,17 @@ function addCommands(path: string, editor: Editor, session: EditSession, wsContr
     editor.addCommand(OUTDENT_COMMAND);
 
     editor.addCommand(OVERWRITE);
+
+    editor.addCommand(FOLD_COMMAND);
+    editor.addCommand(UNFOLD_COMMAND);
+
+    editor.addCommand(FOLD_ALL_COMMAND);
+    editor.addCommand(UNFOLD_ALL_COMMAND);
+
+    editor.addCommand(TOGGLE_FOLD_WIDGET_COMMAND);
+
+    editor.addCommand(TOGGLE_COMMENT_LINES_COMMAND);
+    editor.addCommand(TOGGLE_BLOCK_COMMENT_COMMAND);
 
     editor.addCommand({
         name: 'replace',

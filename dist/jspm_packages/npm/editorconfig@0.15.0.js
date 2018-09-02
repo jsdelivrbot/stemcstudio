@@ -1,0 +1,1 @@
+module.exports = require("npm:editorconfig@0.15.0/index.js");
