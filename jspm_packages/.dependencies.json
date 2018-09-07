@@ -1084,16 +1084,6 @@
     "base64-js": "npm:base64-js@^1.0.2",
     "ieee754": "npm:ieee754@^1.1.4"
   },
-  "npm:js-beautify@1.8.1": {
-    "config-chain": "npm:config-chain@~1.1.5",
-    "editorconfig": "npm:editorconfig@^0.15.0",
-    "mkdirp": "npm:mkdirp@~0.5.0",
-    "nopt": "npm:nopt@~4.0.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "path": "github:jspm/nodelibs-path@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:os-homedir@1.0.2": {
     "os": "github:jspm/nodelibs-os@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
@@ -1106,5 +1096,15 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:js-beautify@1.8.4": {
+    "config-chain": "npm:config-chain@~1.1.5",
+    "editorconfig": "npm:editorconfig@^0.15.0",
+    "mkdirp": "npm:mkdirp@~0.5.0",
+    "nopt": "npm:nopt@~4.0.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
