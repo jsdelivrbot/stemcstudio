@@ -19,11 +19,11 @@ System.config({
     "@angular/router": "npm:@angular/router@5.2.11",
     "@angular/upgrade": "npm:@angular/upgrade@5.2.11",
     "@angular/upgrade/static": "npm:@angular/upgrade@5.2.11/bundles/upgrade-static.umd.js",
-    "angular": "npm:angular@1.7.3",
-    "angular-animate": "npm:angular-animate@1.7.3",
+    "angular": "npm:angular@1.7.4",
+    "angular-animate": "npm:angular-animate@1.7.4",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "npm:angular-sanitize@1.7.3",
+    "angular-sanitize": "npm:angular-sanitize@1.7.4",
     "angular-translate": "npm:angular-translate@2.18.1",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.5.6",
     "angular-ui-router": "npm:angular-ui-router@0.4.2",
@@ -201,27 +201,27 @@ System.config({
       "tslib": "npm:tslib@1.9.3"
     },
     "npm:@types/commander@2.12.0": {
-      "commander": "npm:commander@2.17.1"
+      "commander": "npm:commander@2.18.0"
     },
     "npm:accepts@1.3.1": {
       "mime-types": "npm:mime-types@2.1.11",
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.7.3"
+      "angular": "npm:angular@1.7.4"
     },
     "npm:angular-translate@2.18.1": {
-      "angular": "npm:angular@1.7.3",
+      "angular": "npm:angular@1.7.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-ui-router@0.4.2": {
-      "angular": "npm:angular@1.7.3",
+      "angular": "npm:angular@1.7.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -343,7 +343,7 @@ System.config({
     "npm:code-writer@0.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:commander@2.17.1": {
+    "npm:commander@2.18.0": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -394,7 +394,7 @@ System.config({
       "cipher-base": "npm:cipher-base@1.0.4",
       "create-hash": "npm:create-hash@1.2.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "ripemd160": "npm:ripemd160@2.0.2",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "sha.js": "npm:sha.js@2.4.11"
@@ -458,7 +458,7 @@ System.config({
     "npm:editorconfig@0.15.0": {
       "@types/commander": "npm:@types/commander@2.12.0",
       "@types/semver": "npm:@types/semver@5.5.0",
-      "commander": "npm:commander@2.17.1",
+      "commander": "npm:commander@2.18.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "lru-cache": "npm:lru-cache@4.1.3",
       "path": "github:jspm/nodelibs-path@0.1.0",
@@ -582,7 +582,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
