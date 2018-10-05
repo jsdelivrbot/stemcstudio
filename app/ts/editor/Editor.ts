@@ -831,7 +831,7 @@ export class Editor {
         if (selection) {
             const rangeList: RangeList<OrientedRange> = selection.rangeList;
             const ranges = (keepOrder ? selection.ranges : rangeList.ranges);
-            let result;
+            let result: any;
 
             if (!ranges.length) {
                 return action(this, args || {});

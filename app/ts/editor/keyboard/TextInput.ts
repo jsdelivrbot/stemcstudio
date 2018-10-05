@@ -296,7 +296,8 @@ export class TextInput {
             const mime = USE_IE_MIME_TYPE ? "Text" : "text/plain";
             if (data) {
                 // Safari 5 has clipboardData object, but does not handle setData()
-                return clipboardData.setData(mime, data) !== false;
+                clipboardData.setData(mime, data);
+                return true;
             }
             else {
                 return clipboardData.getData(mime);

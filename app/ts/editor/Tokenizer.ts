@@ -512,7 +512,7 @@ export class Tokenizer<T extends Token, E, S extends Array<string | E>> {
                     else if (typeof rule.next === 'function') {
                         // TODO: May be better to simplify back to a stack being a (number | string)[].
                         // An example of why we end up here is a POP_STATE.
-                        const nextState = rule.next(currentState, stack as S);
+                        const nextState = (rule.next as any)(currentState, stack as S);
                         if (typeof nextState === 'string') {
                             currentState = changeCurrentState(currentState, nextState, stack, this.trace);
                         }

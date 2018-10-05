@@ -122,16 +122,7 @@ export class CompletionManager {
             "Esc": (editor: Editor) => { this.detach(); },
             "Return": (editor: Editor) => { return this.insertMatch(); },
             "Shift-Return": (editor: Editor) => { this.insertMatch(null, { deleteSuffix: true }); },
-            "Tab": (editor: Editor) => {
-                const result = this.insertMatch();
-                if (!result) {
-                    this.goTo("down");
-                }
-                else {
-                    return result;
-                }
-            },
-
+            "Tab": (editor: Editor) => { this.insertMatch(); this.goTo('down'); },
             "PageUp": (editor: Editor) => { this.goTo('pageUp'); },
             "PageDown": (editor: Editor) => { this.goTo('pageDown'); }
         };

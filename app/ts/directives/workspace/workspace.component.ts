@@ -20,4 +20,4 @@ export function workspace() {
     return directive;
 }
 
-workspace.$inject = [];
+workspace.$inject = [] as string[];

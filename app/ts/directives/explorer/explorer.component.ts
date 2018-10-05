@@ -83,4 +83,4 @@ export function createExplorerDirective(): IDirective {
     return directive;
 }
 
-createExplorerDirective.$inject = [];
+createExplorerDirective.$inject = [] as string[];

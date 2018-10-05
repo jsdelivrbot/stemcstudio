@@ -38,4 +38,4 @@ export function propsFilter<T>() {
     };
 }
 
-propsFilter.$inject = [];
+propsFilter.$inject = [] as string[];

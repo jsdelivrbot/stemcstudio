@@ -688,11 +688,6 @@
   },
   "npm:bn.js@4.11.8": {},
   "npm:tiny-emitter@2.0.2": {},
-  "npm:md5.js@1.3.4": {
-    "hash-base": "npm:hash-base@^3.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
   "npm:hash-base@3.0.4": {
     "inherits": "npm:inherits@^2.0.1",
     "safe-buffer": "npm:safe-buffer@^5.0.1",
@@ -867,15 +862,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:public-encrypt@4.0.2": {
-    "bn.js": "npm:bn.js@^4.1.0",
-    "browserify-rsa": "npm:browserify-rsa@^4.0.0",
-    "create-hash": "npm:create-hash@^1.1.0",
-    "parse-asn1": "npm:parse-asn1@^5.0.0",
-    "randombytes": "npm:randombytes@^2.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:parse-asn1@5.1.1": {
     "asn1.js": "npm:asn1.js@^4.0.0",
     "browserify-aes": "npm:browserify-aes@^1.0.0",
@@ -890,16 +876,6 @@
     "hash-base": "npm:hash-base@^3.0.0",
     "inherits": "npm:inherits@^2.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
-  "npm:pbkdf2@3.0.16": {
-    "create-hash": "npm:create-hash@^1.1.2",
-    "create-hmac": "npm:create-hmac@^1.1.4",
-    "ripemd160": "npm:ripemd160@^2.0.1",
-    "safe-buffer": "npm:safe-buffer@^5.0.1",
-    "sha.js": "npm:sha.js@^2.4.8",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
   "npm:cliui@4.1.0": {
     "string-width": "npm:string-width@^2.1.1",
@@ -1075,8 +1051,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:angular-sanitize@1.7.4": {},
-  "npm:angular-animate@1.7.4": {},
   "npm:commander@2.18.0": {
     "events": "github:jspm/nodelibs-events@^0.1.1",
     "child_process": "github:jspm/nodelibs-child_process@^0.1.0",
@@ -1085,7 +1059,6 @@
     "util": "github:jspm/nodelibs-util@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:angular@1.7.4": {},
   "npm:config-chain@1.1.12": {
     "proto-list": "npm:proto-list@~1.2.1",
     "ini": "npm:ini@^1.3.4",
@@ -1106,5 +1079,34 @@
     "path": "github:jspm/nodelibs-path@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:pbkdf2@3.0.17": {
+    "create-hash": "npm:create-hash@^1.1.2",
+    "create-hmac": "npm:create-hmac@^1.1.4",
+    "ripemd160": "npm:ripemd160@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.0.1",
+    "sha.js": "npm:sha.js@^2.4.8",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:public-encrypt@4.0.3": {
+    "bn.js": "npm:bn.js@^4.1.0",
+    "browserify-rsa": "npm:browserify-rsa@^4.0.0",
+    "create-hash": "npm:create-hash@^1.1.0",
+    "parse-asn1": "npm:parse-asn1@^5.0.0",
+    "randombytes": "npm:randombytes@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  },
+  "npm:md5.js@1.3.5": {
+    "hash-base": "npm:hash-base@^3.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "safe-buffer": "npm:safe-buffer@^5.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:angular-sanitize@1.7.5": {},
+  "npm:angular-animate@1.7.5": {},
+  "npm:angular@1.7.5": {}
 }

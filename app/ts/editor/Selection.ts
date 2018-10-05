@@ -45,8 +45,6 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
      */
     public anchor: Anchor;
 
-    private selectionLead: Anchor;
-    private selectionAnchor: Anchor;
     private $isEmpty: boolean;
     private $keepDesiredColumnOnChange: boolean;
 
@@ -99,8 +97,8 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
 
         this.clearSelection();
         if (this.doc) {
-            this.lead = this.selectionLead = new Anchor(this.doc, 0, 0);
-            this.anchor = this.selectionAnchor = new Anchor(this.doc, 0, 0);
+            this.lead = new Anchor(this.doc, 0, 0);
+            this.anchor = new Anchor(this.doc, 0, 0);
         }
 
         // FIXME: This isn't removed.
@@ -121,7 +119,7 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
         });
 
         // FIXME: This isn't removed.
-        this.selectionAnchor.on("change", (event: AnchorChangeEvent, source: Anchor) => {
+        this.anchor.on("change", (event: AnchorChangeEvent, source: Anchor) => {
             if (!this.$isEmpty) {
                 /**
                  * @event changeSelection
@@ -747,7 +745,6 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
             const line = this.doc.getLine(row);
             let rightOfCursor = line.substring(column);
 
-            let match: RegExpExecArray | null;
             session.nonTokenRe.lastIndex = 0;
             session.tokenRe.lastIndex = 0;
 
@@ -759,7 +756,7 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
             }
 
             // first skip space
-            if (match = session.nonTokenRe.exec(rightOfCursor)) {
+            if (session.nonTokenRe.exec(rightOfCursor)) {
                 column += session.nonTokenRe.lastIndex;
                 session.nonTokenRe.lastIndex = 0;
                 rightOfCursor = line.substring(column);
@@ -776,7 +773,7 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
             }
 
             // advance to the end of the next token
-            if (match = session.tokenRe.exec(rightOfCursor)) {
+            if (session.tokenRe.exec(rightOfCursor)) {
                 column += session.tokenRe.lastIndex;
                 session.tokenRe.lastIndex = 0;
             }
@@ -808,12 +805,11 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
             }
 
             let leftOfCursor = stringReverse(str);
-            let match: RegExpMatchArray | null;
             session.nonTokenRe.lastIndex = 0;
             session.tokenRe.lastIndex = 0;
 
             // skip whitespace
-            if (match = session.nonTokenRe.exec(leftOfCursor)) {
+            if (session.nonTokenRe.exec(leftOfCursor)) {
                 column -= session.nonTokenRe.lastIndex;
                 leftOfCursor = leftOfCursor.slice(session.nonTokenRe.lastIndex);
                 session.nonTokenRe.lastIndex = 0;
@@ -829,7 +825,7 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
             }
 
             // move to the begin of the word
-            if (match = session.tokenRe.exec(leftOfCursor)) {
+            if (session.tokenRe.exec(leftOfCursor)) {
                 column -= session.tokenRe.lastIndex;
                 session.tokenRe.lastIndex = 0;
             }
@@ -843,14 +839,13 @@ export class Selection implements EventBus<SelectionEventName, any, Selection> {
      */
     private $shortWordEndIndex(rightOfCursor: string): number {
         const session = this.sessionOrThrow();
-        let match: RegExpMatchArray | null;
         let index = 0;
         let ch: string;
         const whitespaceRe = /\s/;
         const tokenRe = session.tokenRe;
 
         tokenRe.lastIndex = 0;
-        if (match = session.tokenRe.exec(rightOfCursor)) {
+        if (session.tokenRe.exec(rightOfCursor)) {
             index = session.tokenRe.lastIndex;
         }
         else {

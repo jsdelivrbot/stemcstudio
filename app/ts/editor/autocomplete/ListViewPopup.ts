@@ -60,8 +60,6 @@ export class ListViewPopup implements ListView {
      */
     private data: Completion[] = [];
 
-    private screenWidth: number;
-
     /**
      * @param container
      */
@@ -214,7 +212,7 @@ export class ListViewPopup implements ListView {
         bgTokenizer.start = noop;
 
         session.$computeWidth = () => {
-            return this.screenWidth = 0;
+            return 0;
         };
 
         this.editor.on("changeSelection", () => {
