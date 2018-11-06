@@ -208,7 +208,6 @@ function vendorPath(packageFolder: string, fileName: string): string {
 app.constant('version', APP_VERSION);
 
 // Feature flags (boolean)
-app.constant('FEATURE_AWS_ENABLED', false);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 // Disable the context menu on the editor until the keyboard implementation has been worked out.

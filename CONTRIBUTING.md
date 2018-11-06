@@ -190,6 +190,8 @@ e.g. https://github.com/VerbalExpressions/JSVerbalExpressions
 
 ## AWS
 
+This has been decomissioned.
+
 A DynamoDB table called DoodleRef stores references to doodles (projects). A trigger called doodleRefToCloudSearch is used to update CloudSearch. The Domain is called doodle-ref. The region is us-east-1. Sign in using stemcstudio@gmail.com username.
 
 

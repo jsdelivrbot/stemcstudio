@@ -1,16 +1,9 @@
 import { Request, Response } from 'express';
-import * as redis from 'redis';
-import * as url from 'url';
 import { mustBeTruthy } from '../../synchronization/asserts';
 import { isBoolean } from '../../utils/isBoolean';
 import { isNumber } from '../../utils/isNumber';
 import { isString } from '../../utils/isString';
 import { RoomParams } from './RoomParams';
-import { Room } from './Room';
-import { uniqueId } from './uniqueId';
-import { RoomValue } from './RoomValue';
-import { DMP } from '../../synchronization/DMP';
-import { Patch } from '../../synchronization/Patch';
 import { ACTION_RAW_OVERWRITE, ACTION_RAW_SYNCHONLY } from '../../synchronization/MwAction';
 import { ACTION_DELTA_OVERWRITE, ACTION_DELTA_MERGE } from '../../synchronization/MwAction';
 import { ACTION_NULLIFY_UPPERCASE, ACTION_NULLIFY_LOWERCASE } from '../../synchronization/MwAction';
@@ -31,16 +24,18 @@ const EXPIRE_DURATION_IN_SECONDS = 3600;
 /**
  * A room has a 'nodes' property which has type string[].
  */
-const ROOM_NODES_PROPERTY_NAME = 'nodes';
+// const ROOM_NODES_PROPERTY_NAME = 'nodes';
 /**
  * A room has a 'paths' property which has type string[].
  */
-const ROOM_PATHS_PROPERTY_NAME = 'paths';
-const ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
+// const ROOM_PATHS_PROPERTY_NAME = 'paths';
+// const ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
 // const ROOM_PATH_REMOTES_PROPERTY_NAME = 'remotes';
 
-const dmp = new DMP();
+// const dmp = new DMP();
 
+
+/*
 let client: redis.RedisClient;
 if (process.env.REDISTOGO_URL) {
     const rtg = url.parse(process.env.REDISTOGO_URL);
@@ -91,6 +86,7 @@ client.on('warning', function warning(err: any) {
 client.on('end', function end(err: any) {
     console.log("Established Redis server connection has been closed.");
 });
+*/
 
 /**
  * room : roomId
@@ -102,17 +98,21 @@ function createRoomKey(roomId: string): string {
 /**
  * room : roomId @ name
  */
+/*
 function createRoomPropertyKey(roomId: string, name: string): string {
     return `${createRoomKey(roomId)}@${name}`;
 }
+*/
 
 function createRoomPathKey(roomId: string, path: string): string {
     return `${createRoomKey(roomId)}, path:${path}`;
 }
 
+/*
 function createRoomPathPropertyKey(roomId: string, path: string, name: string): string {
     return `${createRoomPathKey(roomId, path)}@${name}`;
 }
+*/
 
 function createRemoteKey(roomId: string, path: string, nodeId: string): string {
     return `${createRoomPathKey(roomId, path)}, node:${nodeId}`;
@@ -123,6 +123,7 @@ function createRemoteKey(roomId: string, path: string, nodeId: string): string {
  */
 function existsKeyInStorage(key: string): Promise<boolean> {
     return new Promise<boolean>(function (resolve, reject) {
+        /*
         client.exists(key, function (reason: Error, value: number) {
             if (!reason) {
                 if (value === 1) {
@@ -139,6 +140,7 @@ function existsKeyInStorage(key: string): Promise<boolean> {
                 reject(reason);
             }
         });
+        */
     });
 }
 
@@ -158,8 +160,8 @@ export function createRoom(request: Request, response: Response): void {
     /**
      * The room identifier defaults to 8 digits long.
      */
-    const roomId = uniqueId();
-    const roomKey = createRoomKey(roomId);
+    // const roomId = uniqueId();
+    // const roomKey = createRoomKey(roomId);
 
     //
     // Create a node and then persist it to redis.
@@ -171,13 +173,15 @@ export function createRoom(request: Request, response: Response): void {
     // TODO: It might be cheaper, CPU-wise, to operate directly on the FzNode using functional
     // programming rather than creating mutable objects. It might also be worth considering
     // computations that can be suspended until the next tick.
+    /*
     const value: RoomValue = {
         owner: params.owner,
         description: params.description,
         public: params.public,
         units: {}
     };
-
+    */
+    /*
     client.set(roomKey, JSON.stringify(value), function (err: Error, reply: any) {
         if (!err) {
             client.expire(roomKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
@@ -199,15 +203,17 @@ export function createRoom(request: Request, response: Response): void {
             response.status(201).send(err);
         }
     });
+    */
 }
 
 /**
  * TODO: Refactor to split redis from Express.
  */
 export function getRoom(request: Request, response: Response): void {
-    const roomParam = request.params as Room;
-    const roomId = roomParam.id;
-    const roomKey = createRoomKey(roomId);
+    // const roomParam = request.params as Room;
+    // const roomId = roomParam.id;
+    // const roomKey = createRoomKey(roomId);
+    /*
     client.get(roomKey, function (err: Error, reply: string) {
         if (!err) {
             redis.print(err, reply);
@@ -234,6 +240,7 @@ export function getRoom(request: Request, response: Response): void {
             response.status(404).send(err);
         }
     });
+    */
 }
 
 /**
@@ -242,7 +249,8 @@ export function getRoom(request: Request, response: Response): void {
  */
 function ensureNodeIdInRoom(nodeId: string, roomId: string): Promise<void> {
     return new Promise<void>(function (resolve, reject) {
-        const roomNodesKey = createRoomPropertyKey(roomId, ROOM_NODES_PROPERTY_NAME);
+        // const roomNodesKey = createRoomPropertyKey(roomId, ROOM_NODES_PROPERTY_NAME);
+        /*
         client.sismember([roomNodesKey, nodeId], function (reason: Error, exists: number) {
             if (!reason) {
                 mustBeTruthy(isNumber(exists), `exists must be a number`);
@@ -266,6 +274,7 @@ function ensureNodeIdInRoom(nodeId: string, roomId: string): Promise<void> {
                 reject(new Error(`Unable to determine whether node ${nodeId} exists: ${reason}`));
             }
         });
+        */
     });
 }
 
@@ -274,7 +283,8 @@ function ensureNodeIdInRoom(nodeId: string, roomId: string): Promise<void> {
  */
 function ensureFileIdInRoom(fileId: string, roomId: string): Promise<void> {
     return new Promise<void>(function (resolve, reject) {
-        const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        // const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        /*
         client.sismember([roomPathsKey, fileId], function (reason: Error, exists: number) {
             if (!reason) {
                 mustBeTruthy(isNumber(exists), `exists must be a number`);
@@ -303,6 +313,7 @@ function ensureFileIdInRoom(fileId: string, roomId: string): Promise<void> {
                 reject(new Error(`Unable to determine whether file ${fileId} exists. Cause: ${reason}`));
             }
         });
+        */
     });
 }
 /*
@@ -406,7 +417,8 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
  */
 function getRemote(roomId: string, path: string, nodeId: string): Promise<MwRemote> {
     return new Promise<MwRemote>(function (resolve, reject) {
-        const remoteKey = createRemoteKey(roomId, path, nodeId);
+        // const remoteKey = createRemoteKey(roomId, path, nodeId);
+        /*
         client.get(remoteKey, function (err: Error, remoteText: string) {
             if (!err) {
                 const remote = new MwRemote();
@@ -417,6 +429,7 @@ function getRemote(roomId: string, path: string, nodeId: string): Promise<MwRemo
                 reject(new Error(`Unable to getRemote(roomId = ${roomId}, path = ${path}, nodeId = ${nodeId})`));
             }
         });
+        */
     });
 }
 
@@ -424,14 +437,16 @@ function getRemote(roomId: string, path: string, nodeId: string): Promise<MwRemo
  * Serializes the remote using the key consisting of roomId, path, and nodeId.
  */
 function setRemoteInStorage(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error) => any) {
-    const remoteKey = createRemoteKey(roomId, path, nodeId);
-    const dehydrated = remote.dehydrate();
-    const remoteText = JSON.stringify(dehydrated);
+    // const remoteKey = createRemoteKey(roomId, path, nodeId);
+    // const dehydrated = remote.dehydrate();
+    // const remoteText = JSON.stringify(dehydrated);
+    /*
     client.set(remoteKey, remoteText, function (err: Error, reply: any) {
         client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function expire(err: Error, reply: any) {
             callback(err);
         });
     });
+    */
 }
 
 /**
@@ -476,6 +491,7 @@ function ensureRemote(nodeId: string, path: string, roomId: string): Promise<MwR
     });
 }
 
+/*
 class RedisEditor implements MwEditor {
     private refCount = 1;
     private contentKey: string;
@@ -518,9 +534,11 @@ class RedisEditor implements MwEditor {
         return this.refCount;
     }
 }
+*/
 
 function createDocumentInStorage(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
-    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    // const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    /*
     client.set(contentKey, text, (err, reply) => {
         client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
             const editor = new RedisEditor(roomId, path);
@@ -528,22 +546,27 @@ function createDocumentInStorage(roomId: string, path: string, text: string, cal
             editor.release();
         });
     });
+    */
 }
 
 function getDocumentFromStorage(roomId: string, path: string, callback: (err: void | Error, editor: MwEditor) => any) {
-    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    // const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    /*
     client.get(contentKey, function (err, reply) {
         const editor = new RedisEditor(roomId, path);
         callback(err, editor);
         editor.release();
     });
+    */
 }
 
 function deleteDocumentFromStorage(roomId: string, path: string, callback: (err: Error) => any) {
-    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    // const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    /*
     client.del(contentKey, function (err: Error, reply: any) {
         callback(err);
     });
+    */
 }
 
 function deleteDocument(fromId: string, roomId: string, path: string, change: MwChange, remote: MwRemote): Promise<MwActionType> {
@@ -568,7 +591,8 @@ function deleteDocument(fromId: string, roomId: string, path: string, change: Mw
  */
 function getNodes(roomId: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
-        const roomNodesKey = createRoomPropertyKey(roomId, ROOM_NODES_PROPERTY_NAME);
+        // const roomNodesKey = createRoomPropertyKey(roomId, ROOM_NODES_PROPERTY_NAME);
+        /*
         client.smembers(roomNodesKey, function (err: Error, nodeIds: string[]) {
             if (!err) {
                 resolve(nodeIds);
@@ -577,6 +601,7 @@ function getNodes(roomId: string): Promise<string[]> {
                 reject(err);
             }
         });
+        */
     });
 }
 
@@ -585,7 +610,8 @@ function getNodes(roomId: string): Promise<string[]> {
  */
 function getPaths(roomId: string): Promise<string[]> {
     return new Promise<string[]>(function (resolve, reject) {
-        const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        // const roomPathsKey = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
+        /*
         client.smembers(roomPathsKey, function (err: Error, paths: string[]) {
             if (!err) {
                 resolve(paths);
@@ -594,6 +620,7 @@ function getPaths(roomId: string): Promise<string[]> {
                 reject(err);
             }
         });
+        */
     });
 }
 
@@ -895,9 +922,10 @@ export function getEdits(nodeId: string, roomId: string, callback: (err: any, da
  * It might also be nice to broadcast to all nodes that the room has been destroyed.
  */
 export function destroyRoom(request: Request, response: Response): void {
-    const room = request.params as Room;
-    const roomId = room.id;
-    const roomKey = createRoomKey(roomId);
+    // const room = request.params as Room;
+    // const roomId = room.id;
+    // const roomKey = createRoomKey(roomId);
+    /*
     client.del(roomKey, function (err: any, reply: any) {
         if (!err) {
             response.status(200).send({});
@@ -906,4 +934,5 @@ export function destroyRoom(request: Request, response: Response): void {
             response.status(404).send({});
         }
     });
+    */
 }

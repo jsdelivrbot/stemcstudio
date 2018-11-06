@@ -4,7 +4,7 @@
  * DON'T FORGET TO CHANGE THE VERSION IN views/index.pug !!!
  * Keep synchronized with package.json and bower.json.
  */
-export const APP_VERSION = '2.51.6';
+export const APP_VERSION = '2.51.7';
 
 /**
  * Web Worker supporting TypeScript Mode.

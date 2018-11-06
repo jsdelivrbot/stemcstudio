@@ -219,6 +219,8 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
+    "                    <!-- Collaboration deprecated to reduce costs of running Redis on Heroku -->\n" +
+    "                    <!--\n" +
     "                    <li uib-dropdown ng-controller='rooms-controller as rooms'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Collaboration Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='group' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
@@ -239,6 +241,7 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
+    "                    -->\n" +
     "                    <li uib-dropdown>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"More Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='menu' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +

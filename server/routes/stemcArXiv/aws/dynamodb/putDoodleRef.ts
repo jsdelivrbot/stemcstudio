@@ -1,18 +1,8 @@
-import * as AWS from 'aws-sdk';
-import { TableName } from './DoodleRefTable';
-import { OWNER_KEY } from './DoodleRefTable';
-import { RESOURCE_KEY } from './DoodleRefTable';
-import { TYPE } from './DoodleRefTable';
-import { TITLE } from './DoodleRefTable';
-import { AUTHOR } from './DoodleRefTable';
-import { KEYWORDS } from './DoodleRefTable';
-import { isArray } from '../../../../utils/isArray';
-import { isString } from '../../../../utils/isString';
-
 /**
  * Writes a record (Doodle reference) to the AWS DynamoDB table called DoodleRef.
  */
-export function putDoodleRef(doodle: { owner: string, gistId: string, title: string, author: string, keywords: string[] }, next: (err: AWS.Reason, data: any) => any) {
+export function putDoodleRef(doodle: { owner: string, gistId: string, title: string, author: string, keywords: string[] }, next: (err: any, data: any) => any) {
+    /*
     const db = new AWS.DynamoDB();
     // Define an Item object so that we can make use of the symbolic attribute names.
     const Item: { [name: string]: AWS.AttributeValue } = {};
@@ -43,4 +33,5 @@ export function putDoodleRef(doodle: { owner: string, gistId: string, title: str
             next(err, void 0);
         }
     });
+    */
 }

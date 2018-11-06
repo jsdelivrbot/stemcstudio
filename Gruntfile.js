@@ -346,10 +346,6 @@ function copies(target) {
             dest: prepend(target, `js/stemcstudio-workspace@${VERSION_STEMCSTUDIO_WORKSPACE}/stemcstudio-workspace.js`)
         },
         {
-            src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
-            dest: prepend(target, 'js/aws-sdk-2.3.12.min.js')
-        },
-        {
             // Maintain the same relative path with jspm.config.js.
             expand: true,
             cwd: "jspm_packages",

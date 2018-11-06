@@ -1,14 +1,9 @@
 import { Request, Response } from 'express';
-import * as AWS from 'aws-sdk';
-import { SearchParams as ISearchParams } from './SearchParams';
-import { SearchResponse as ISearchResponse } from './SearchResponse';
-import { SubmitParams as ISubmitParams } from './SubmitParams';
-import { SubmitResponse as ISubmitResponse } from './SubmitResponse';
-import { putDoodleRef } from './aws/dynamodb/putDoodleRef';
 
-AWS.config.region = 'us-east-1';
+// AWS.config.region = 'us-east-1';
 // AWS.config.update({ region: 'us-east-1' });
 
+/*
 function mapToString(fields: string[]): string {
     if (typeof fields === 'object') {
         return fields[0];
@@ -17,6 +12,7 @@ function mapToString(fields: string[]): string {
         return void 0;
     }
 }
+*/
 
 /**
  * Searches the AWS CloudSearch
@@ -24,6 +20,7 @@ function mapToString(fields: string[]): string {
  * @param response Generic Express Response.
  */
 export function search(request: Request, response: Response): void {
+    /*
     const params: ISearchParams = request.body;
     // The endpoint is the same as that used in the trigger that updates the search index.
     const csd = new AWS.CloudSearchDomain({
@@ -49,6 +46,7 @@ export function search(request: Request, response: Response): void {
             response.status(200).send(err);
         }
     });
+    */
 }
 
 /**
@@ -66,6 +64,7 @@ export function search(request: Request, response: Response): void {
  * @param response Generic Express Response.
  */
 export function submit(request: Request, response: Response): void {
+    /*
     const params: ISubmitParams = request.body;
     // console.lg(`submit POST ${JSON.stringify(params, null, 2)}`);
 
@@ -88,4 +87,5 @@ export function submit(request: Request, response: Response): void {
             response.status(err.statusCode).send(err);
         }
     });
+    */
 }

@@ -1,4 +1,3 @@
-/// <reference path="main/ambient/aws-sdk/index.d.ts" />
 /// <reference path="main/ambient/body-parser/index.d.ts" />
 /// <reference path="main/ambient/cookie-parser/index.d.ts" />
 /// <reference path="main/ambient/debug/index.d.ts" />
