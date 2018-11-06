@@ -203,9 +203,11 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                            <li>\n" +
     "                                <a ng-click='doUpload()' role='button'>Upload to GitHub</a>\n" +
     "                            </li>\n" +
+    "                            <!-- Search is disabled pending finding a less expensive approach than Amazon Web Services.\n" +
     "                            <li>\n" +
     "                                <a ng-click='doPublish()' role='button'>Publish to arXiv</a>\n" +
     "                            </li>\n" +
+    "                            -->\n" +
     "                            <li>\n" +
     "                                <a ng-click='clickDownload()' role='button'>Download from GitHub</a>\n" +
     "                            </li>\n" +
@@ -462,9 +464,11 @@ export function templateCache($templateCache: ITemplateCacheService) {
     "                <!-- a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>\n" +
+    "                <!-- Search is disabled pending finding a less expensive approach than Amazon Web Services\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
     "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search arXiv\">\n" +
     "                </form>\n" +
+    "                -->\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'\n" +

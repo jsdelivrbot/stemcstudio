@@ -436,7 +436,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:diffie-hellman@5.0.3": {
@@ -579,7 +579,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },

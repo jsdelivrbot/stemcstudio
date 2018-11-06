@@ -17,9 +17,11 @@
                 <!-- a role="button" class="btn btn-secondary navbar-btn" ng-href='/stemcstudio-overview-2017-03-24.pdf' download='STEMCstudio.pdf'>Download PDF</a -->
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Feedback</a>
+                <!-- Search is disabled pending finding a less expensive approach than Amazon Web Services
                 <form class="navbar-search pull-right" ng-submit='doSearch()'>
                     <input type="text" ng-model='params.query' class="search-query" placeholder="Search arXiv">
                 </form>
+                -->
             </div>
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
                 <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'
