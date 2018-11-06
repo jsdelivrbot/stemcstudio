@@ -34,7 +34,7 @@ System.config({
     "davinci-csv": "npm:davinci-csv@0.9.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "editor-document": "npm:editor-document@0.0.5",
-    "es6-shim": "github:es-shims/es6-shim@0.35.3",
+    "es6-shim": "github:es-shims/es6-shim@0.35.4",
     "generic-rbtree": "npm:generic-rbtree@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.3.1",
     "geometryzen/editor-document": "github:geometryzen/editor-document@0.0.3",
@@ -42,11 +42,11 @@ System.config({
     "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.4",
     "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@1.0.0",
     "jquery": "npm:jquery@2.2.4",
-    "js-beautify": "npm:js-beautify@1.8.6",
+    "js-beautify": "npm:js-beautify@1.8.8",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.12",
     "rxjs": "npm:rxjs@5.5.12",
-    "showdown": "npm:showdown@1.8.6",
+    "showdown": "npm:showdown@1.8.7",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
     "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
@@ -200,9 +200,6 @@ System.config({
       "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@5.2.11",
       "tslib": "npm:tslib@1.9.3"
     },
-    "npm:@types/commander@2.12.0": {
-      "commander": "npm:commander@2.18.0"
-    },
     "npm:accepts@1.3.1": {
       "mime-types": "npm:mime-types@2.1.11",
       "negotiator": "npm:negotiator@0.6.0"
@@ -221,7 +218,7 @@ System.config({
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -343,7 +340,7 @@ System.config({
     "npm:code-writer@0.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:commander@2.18.0": {
+    "npm:commander@2.19.0": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -439,7 +436,7 @@ System.config({
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1"
     },
     "npm:diffie-hellman@5.0.3": {
@@ -455,15 +452,15 @@ System.config({
       "generic-rbtree": "npm:generic-rbtree@1.1.1",
       "typhon-lang": "npm:typhon-lang@0.12.9"
     },
-    "npm:editorconfig@0.15.0": {
-      "@types/commander": "npm:@types/commander@2.12.0",
+    "npm:editorconfig@0.15.2": {
+      "@types/node": "npm:@types/node@10.12.2",
       "@types/semver": "npm:@types/semver@5.5.0",
-      "commander": "npm:commander@2.18.0",
+      "commander": "npm:commander@2.19.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "lru-cache": "npm:lru-cache@4.1.3",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "semver": "npm:semver@5.5.1",
+      "semver": "npm:semver@5.6.0",
       "sigmund": "npm:sigmund@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
@@ -615,9 +612,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:js-beautify@1.8.6": {
+    "npm:js-beautify@1.8.8": {
       "config-chain": "npm:config-chain@1.1.12",
-      "editorconfig": "npm:editorconfig@0.15.0",
+      "editorconfig": "npm:editorconfig@0.15.2",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "mkdirp": "npm:mkdirp@0.5.1",
       "nopt": "npm:nopt@4.0.1",
@@ -856,7 +853,7 @@ System.config({
     "npm:safe-buffer@5.1.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
     },
-    "npm:semver@5.5.1": {
+    "npm:semver@5.6.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:set-blocking@2.0.0": {
@@ -872,7 +869,7 @@ System.config({
     "npm:shebang-command@1.2.0": {
       "shebang-regex": "npm:shebang-regex@1.0.0"
     },
-    "npm:showdown@1.8.6": {
+    "npm:showdown@1.8.7": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
