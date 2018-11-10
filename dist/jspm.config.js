@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -453,7 +453,7 @@ System.config({
       "typhon-lang": "npm:typhon-lang@0.12.9"
     },
     "npm:editorconfig@0.15.2": {
-      "@types/node": "npm:@types/node@10.12.2",
+      "@types/node": "npm:@types/node@10.12.5",
       "@types/semver": "npm:@types/semver@5.5.0",
       "commander": "npm:commander@2.19.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
