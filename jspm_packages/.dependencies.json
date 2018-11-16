@@ -1100,11 +1100,11 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "github:es-shims/es6-shim@0.35.4": {},
-  "npm:showdown@1.8.7": {
+  "npm:@types/node@10.12.9": {},
+  "npm:showdown@1.9.0": {
     "yargs": "npm:yargs@^10.0.3",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  },
-  "npm:@types/node@10.12.5": {}
+  }
 }

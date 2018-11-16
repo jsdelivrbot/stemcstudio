@@ -46,7 +46,7 @@ System.config({
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.12",
     "rxjs": "npm:rxjs@5.5.12",
-    "showdown": "npm:showdown@1.8.7",
+    "showdown": "npm:showdown@1.9.0",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.4",
     "stemcstudio-json": "npm:stemcstudio-json@1.0.1",
@@ -453,7 +453,7 @@ System.config({
       "typhon-lang": "npm:typhon-lang@0.12.9"
     },
     "npm:editorconfig@0.15.2": {
-      "@types/node": "npm:@types/node@10.12.5",
+      "@types/node": "npm:@types/node@10.12.9",
       "@types/semver": "npm:@types/semver@5.5.0",
       "commander": "npm:commander@2.19.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -869,7 +869,7 @@ System.config({
     "npm:shebang-command@1.2.0": {
       "shebang-regex": "npm:shebang-regex@1.0.0"
     },
-    "npm:showdown@1.8.7": {
+    "npm:showdown@1.9.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",

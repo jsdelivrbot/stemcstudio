@@ -1,1 +1,0 @@
-module.exports = require("npm:showdown@1.8.7/dist/showdown.js");
