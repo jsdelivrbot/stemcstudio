@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -400,7 +400,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "lru-cache": "npm:lru-cache@4.1.3",
+      "lru-cache": "npm:lru-cache@4.1.4",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "shebang-command": "npm:shebang-command@1.2.0",
@@ -453,11 +453,11 @@ System.config({
       "typhon-lang": "npm:typhon-lang@0.12.9"
     },
     "npm:editorconfig@0.15.2": {
-      "@types/node": "npm:@types/node@10.12.9",
+      "@types/node": "npm:@types/node@10.12.10",
       "@types/semver": "npm:@types/semver@5.5.0",
       "commander": "npm:commander@2.19.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "lru-cache": "npm:lru-cache@4.1.3",
+      "lru-cache": "npm:lru-cache@4.1.4",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "semver": "npm:semver@5.6.0",
@@ -579,7 +579,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
@@ -632,10 +632,11 @@ System.config({
       "path-exists": "npm:path-exists@3.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lru-cache@4.1.3": {
+    "npm:lru-cache@4.1.4": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "pseudomap": "npm:pseudomap@1.0.2",
       "util": "github:jspm/nodelibs-util@0.1.0",
-      "yallist": "npm:yallist@2.1.2"
+      "yallist": "npm:yallist@3.0.3"
     },
     "npm:md5.js@1.3.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
