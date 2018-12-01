@@ -82,7 +82,7 @@ declare namespace angular {
          *
          * If jQuery is available, angular.element is an alias for the jQuery function. If jQuery is not available, angular.element delegates to Angular's built-in subset of jQuery, called "jQuery lite" or "jqLite."
          */
-        element: IAugmentedJQueryStatic;
+        element: JQueryStatic;
         equals(value1: any, value2: any): boolean;
         extend(destination: any, ...sources: any[]): any;
 
@@ -321,7 +321,7 @@ declare namespace angular {
          * because you have to use attrs['foo'] instead of attrs.foo but I don't know of a better way
          * this should really be limited to return string but it creates this problem: http://stackoverflow.com/q/17201854/165656
          */
-        [name: string]: any;
+        // [name: string]: any;
 
         /**
          * Converts an attribute name (e.g. dash/colon/underscore-delimited string, optionally prefixed with x- or data-) to its normalized, camelCase form.
@@ -381,15 +381,15 @@ declare namespace angular {
         /**
          * Indexer which should return ng.INgModelController for most properties but cannot because of "All named properties must be assignable to string indexer type" constraint - see https://github.com/Microsoft/TypeScript/issues/272
          */
-        [name: string]: any;
+        // [name: string]: any;
 
         $pristine: boolean;
         $dirty: boolean;
         $valid: boolean;
         $invalid: boolean;
         $submitted: boolean;
-        $error: any;
-        $pending: any;
+        $error: { [validationErrorKey: string]: (IFormController | INgModelController)[]; };
+        $pending?: { [validationErrorKey: string]: (IFormController | INgModelController)[]; };
         $addControl(control: INgModelController): void;
         $removeControl(control: INgModelController): void;
         $setValidity(validationErrorKey: string, isValid: boolean, control: INgModelController): void;
@@ -427,8 +427,8 @@ declare namespace angular {
         $parsers: IModelParser[];
         $formatters: IModelFormatter[];
         $viewChangeListeners: IModelViewChangeListener[];
-        $error: any;
-        $name: string;
+        $error: { [validationErrorKey: string]: boolean; };
+        $name?: string;
 
         $touched: boolean;
         $untouched: boolean;
@@ -436,7 +436,7 @@ declare namespace angular {
         $validators: IModelValidators;
         $asyncValidators: IAsyncModelValidators;
 
-        $pending: any;
+        $pending?: { [validationErrorKey: string]: boolean; };
         $pristine: boolean;
         $dirty: boolean;
         $valid: boolean;
@@ -447,7 +447,7 @@ declare namespace angular {
     //https://docs.angularjs.org/api/ng/directive/ngModelOptions
     interface INgModelOptions {
         updateOn?: string;
-        debounce?: any;
+        debounce?: number | { [key: string]: number; };
         allowInvalid?: boolean;
         getterSetter?: boolean;
         timezone?: string;
@@ -457,11 +457,11 @@ declare namespace angular {
         /**
          * viewValue is any because it can be an object that is called in the view like $viewValue.name:$viewValue.subName
          */
-        [index: string]: (modelValue: any, viewValue: any) => boolean;
+        // [index: string]: (modelValue: any, viewValue: any) => boolean;
     }
 
     interface IAsyncModelValidators {
-        [index: string]: (modelValue: any, viewValue: any) => IPromise<any>;
+        // [index: string]: (modelValue: any, viewValue: any) => IPromise<any>;
     }
 
     interface IModelParser {
@@ -613,11 +613,11 @@ declare namespace angular {
         /**
          * calling stopPropagation function will cancel further event propagation (available only for events that were $emit-ed).
          */
-        stopPropagation?: Function;
+        stopPropagation?: () => void;
         /**
          * calling preventDefault sets defaultPrevented flag to true.
          */
-        preventDefault: Function;
+        preventDefault: () => void;
         /**
          * true if preventDefault was called.
          */
@@ -629,7 +629,7 @@ declare namespace angular {
     // see http://docs.angularjs.org/api/ng.$window
     ///////////////////////////////////////////////////////////////////////////
     interface IWindowService extends Window {
-        [key: string]: any;
+        // [key: string]: any;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -682,7 +682,7 @@ declare namespace angular {
     }
 
     interface IFilterFilterPatternObject {
-        [name: string]: any;
+        // [name: string]: any;
     }
 
     interface IFilterFilterPredicateFunc<T> {
@@ -1402,6 +1402,7 @@ declare namespace angular {
         (data: T, status: number, headers: IHttpHeadersGetter, config: IRequestConfig): void;
     }
 
+    /*
     interface IHttpPromiseCallbackArg<T> {
         data?: T;
         status?: number;
@@ -1409,21 +1410,14 @@ declare namespace angular {
         config?: IRequestConfig;
         statusText?: string;
     }
+    */
 
+    /*
     interface IHttpPromise<T> extends IPromise<IHttpPromiseCallbackArg<T>> {
-        /**
-         * The $http legacy promise methods success and error have been deprecated. Use the standard then method instead.
-         * If $httpProvider.useLegacyPromiseExtensions is set to false then these methods will throw $http/legacy error.
-         * @deprecated
-         */
         success?(callback: IHttpPromiseCallback<T>): IHttpPromise<T>;
-        /**
-         * The $http legacy promise methods success and error have been deprecated. Use the standard then method instead.
-         * If $httpProvider.useLegacyPromiseExtensions is set to false then these methods will throw $http/legacy error.
-         * @deprecated
-         */
         error?(callback: IHttpPromiseCallback<any>): IHttpPromise<T>;
     }
+    */
 
     // See the jsdoc for transformData() at https://github.com/angular/angular.js/blob/master/src/ng/http.js#L228
     interface IHttpRequestTransformer {
@@ -1435,10 +1429,10 @@ declare namespace angular {
         (data: any, headersGetter: IHttpHeadersGetter, status: number): any;
     }
 
-    type HttpHeaderType = { [requestType: string]: string | ((config: IRequestConfig) => string) };
+    // type HttpHeaderType = { [requestType: string]: string | ((config: IRequestConfig) => string) };
 
     interface IHttpRequestConfigHeaders {
-        [requestType: string]: any;
+        // [requestType: string]: any;
         common?: any;
         get?: any;
         post?: any;
@@ -1502,9 +1496,9 @@ declare namespace angular {
 
     interface IHttpInterceptor {
         request?: (config: IRequestConfig) => IRequestConfig | IPromise<IRequestConfig>;
-        requestError?: (rejection: any) => any;
+        requestError?: (rejection: any) => IRequestConfig | IPromise<IRequestConfig>;
         response?: <T>(response: IHttpPromiseCallbackArg<T>) => IPromise<IHttpPromiseCallbackArg<T>> | IHttpPromiseCallbackArg<T>;
-        responseError?: (rejection: any) => any;
+        responseError?: <T>(rejection: any) => IHttpResponse<T> | IPromise<IHttpResponse<T>>;
     }
 
     interface IHttpInterceptorFactory {
@@ -1710,7 +1704,7 @@ declare namespace angular {
          * controller if passed as a string. Empty function by default.
          * Use the array form to define dependencies (necessary if strictDi is enabled and you require dependency injection)
          */
-        controller?: string | Function | (string | Function)[];
+        controller?: string | (new (...args: any[]) => IController) | ((...args: any[]) => void | IController) | (string | (new (...args: any[]) => IController) | ((...args: any[]) => void | IController))[];
         /**
          * An identifier name for a reference to the controller. If present, the controller will be published to scope under
          * the controllerAs name. If not present, this will default to be the same as the component name.
@@ -1725,7 +1719,7 @@ declare namespace angular {
          * $attrs - Current attributes object for the element
          * Use the array form to define dependencies (necessary if strictDi is enabled and you require dependency injection)
          */
-        template?: string | Function | (string | Function)[];
+        template?: string | ((...args: any[]) => string) | (string | ((...args: any[]) => string))[];
         /**
          * path or function that returns a path to an html template that should be used as the contents of this component.
          * If templateUrl is a function, then it is injected with the following locals:
@@ -1733,7 +1727,7 @@ declare namespace angular {
          * $attrs - Current attributes object for the element
          * Use the array form to define dependencies (necessary if strictDi is enabled and you require dependency injection)
          */
-        templateUrl?: string | Function | (string | Function)[];
+        templateUrl?: string | ((...args: any[]) => string) | (string | ((...args: any[]) => string))[];
         /**
          * Define DOM attribute binding to component properties. Component properties are always bound to the component
          * controller and not to the scope.
@@ -1742,8 +1736,8 @@ declare namespace angular {
         /**
          * Whether transclusion is enabled. Enabled by default.
          */
-        transclude?: boolean | string | { [slot: string]: string };
-        require?: string | string[] | { [controller: string]: string };
+        transclude?: boolean | { [slot: string]: string; };
+        require?: { [controller: string]: string; };
     }
 
     interface IComponentTemplateFn {
@@ -1770,9 +1764,13 @@ declare namespace angular {
         ): void;
     }
 
-    interface IDirectivePrePost {
-        pre?: IDirectiveLinkFn;
-        post?: IDirectiveLinkFn;
+    interface TScope extends IScope {
+
+    }
+
+    interface IDirectivePrePost<TScope extends IScope = IScope> {
+        pre?: IDirectiveLinkFn<TScope>;
+        post?: IDirectiveLinkFn<TScope>;
     }
 
     interface IDirectiveCompileFn {
@@ -1789,9 +1787,9 @@ declare namespace angular {
         ): IDirectivePrePost;
     }
 
-    interface IDirective {
-        compile?: IDirectiveCompileFn;
-        controller?: any;
+    interface IDirective<TScope extends IScope = IScope> {
+        compile?: IDirectiveCompileFn<TScope>;
+        controller?: string | (new (...args: any[]) => IController) | ((...args: any[]) => void | IController) | (string | (new (...args: any[]) => IController) | ((...args: any[]) => void | IController))[];
         controllerAs?: string;
         /**
          * @deprecated
@@ -1799,8 +1797,8 @@ declare namespace angular {
          * the controller constructor is called, this use is now deprecated. Please place initialization code that
          * relies upon bindings inside a $onInit method on the controller, instead.
          */
-        bindToController?: boolean | Object;
-        link?: IDirectiveLinkFn | IDirectivePrePost;
+        bindToController?: boolean | { [boundProperty: string]: string; };
+        link?: IDirectiveLinkFn<TScope> | IDirectivePrePost<TScope>;
         multiElement?: boolean;
         name?: string;
         priority?: number;
@@ -1810,12 +1808,12 @@ declare namespace angular {
         replace?: boolean;
         require?: string | string[] | { [controller: string]: string };
         restrict?: string;
-        scope?: boolean | Object;
-        template?: string | Function;
+        scope?: boolean | { [boundProperty: string]: string; };
+        template?: string | ((tElement: JQLite, tAttrs: IAttributes) => string);
         templateNamespace?: string;
-        templateUrl?: string | Function;
+        templateUrl?: string | ((tElement: JQLite, tAttrs: IAttributes) => string);
         terminal?: boolean;
-        transclude?: boolean | string | { [slot: string]: string };
+        transclude?: boolean | "element" | { [slot: string]: string; };
     }
 
     /**

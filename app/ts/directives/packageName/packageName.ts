@@ -1,4 +1,4 @@
-import { IAttributes, IAugmentedJQuery, IDirective, INgModelController } from 'angular';
+import { IAttributes, IAugmentedJQuery, IDirective, INgModelController, IScope } from 'angular';
 import { validate } from '../../utils/validateNpmPackageName';
 
 /**
@@ -12,7 +12,7 @@ export function packageName(): IDirective {
         restrict: 'A',
         // Element must have an ng-model attribute.
         require: 'ngModel',
-        link: function (scope, element: IAugmentedJQuery, attr: IAttributes, ctrl: INgModelController) {
+        link: function (scope: IScope, element: IAugmentedJQuery, attr: IAttributes, ctrl: INgModelController) {
 
             // We have two ways of doing this, $parsers or $validators.
             ctrl.$parsers.unshift(function (value: string) {

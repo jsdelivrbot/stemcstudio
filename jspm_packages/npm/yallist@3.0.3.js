@@ -1,1 +1,0 @@
-module.exports = require("npm:yallist@3.0.3/yallist.js");

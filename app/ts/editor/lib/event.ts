@@ -144,13 +144,13 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
     if ("onmousewheel" in element) {
         addListener(element, "mousewheel", function (e: DOMWheelEvent) {
             const factor = 8;
-            if (e.wheelDeltaX !== undefined) {
-                e.wheelX = -e.wheelDeltaX / factor;
-                e.wheelY = -e.wheelDeltaY / factor;
+            if (e['wheelDeltaX'] !== undefined) {
+                e.wheelX = -e['wheelDeltaX'] / factor;
+                e.wheelY = -e['wheelDeltaY'] / factor;
             }
             else {
                 e.wheelX = 0;
-                e.wheelY = -e.wheelDelta / factor;
+                e.wheelY = -e['wheelDelta'] / factor;
             }
             callback(e);
         });
