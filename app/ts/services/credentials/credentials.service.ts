@@ -25,7 +25,7 @@ export class CredentialsService implements ICredentialsService {
      */
     public initialize(): void {
         // Amazon Cognito, unauthenticated credentials
-        this.updateCredentials();
+        // this.updateCredentials();
 
         // Google API must be initialized.
         // Once we have done so, we can listen for comings and goings.
@@ -78,6 +78,7 @@ export class CredentialsService implements ICredentialsService {
     /**
      * 
      */
+    /*
     private updateCredentials(): void {
         // console.lg(`updateCredentials() with providers ${JSON.stringify(Object.keys(this.Logins), null, 2)}`);
         if (window['AWS']) {
@@ -94,6 +95,7 @@ export class CredentialsService implements ICredentialsService {
             console.warn("Amazon Web Services is not available.");
         }
     }
+    */
 
     /**
      * Google Sign-In.
@@ -107,7 +109,7 @@ export class CredentialsService implements ICredentialsService {
                 delete this._Logins[PROVIDER_NAME_GOOGLE_PLUS];
             }
         }
-        this.updateCredentials();
+        // this.updateCredentials();
     }
 
     get credentials(): { [identityProviderName: string]: string } {

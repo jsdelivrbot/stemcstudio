@@ -42,7 +42,7 @@ System.config({
     "geometryzen/stemcstudio-workers": "github:geometryzen/stemcstudio-workers@2.15.4",
     "geometryzen/stemcstudio-workspace": "github:geometryzen/stemcstudio-workspace@1.0.0",
     "jquery": "npm:jquery@2.2.4",
-    "js-beautify": "npm:js-beautify@1.8.8",
+    "js-beautify": "npm:js-beautify@1.8.9",
     "monaco-editor": "npm:monaco-editor@0.8.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.12",
     "rxjs": "npm:rxjs@5.5.12",
@@ -218,7 +218,7 @@ System.config({
     "npm:asn1.js@4.10.1": {
       "bn.js": "npm:bn.js@4.11.8",
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.1",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
@@ -250,6 +250,10 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:brace-expansion@1.1.11": {
+      "balanced-match": "npm:balanced-match@1.0.0",
+      "concat-map": "npm:concat-map@0.0.1"
+    },
     "npm:browserify-aes@1.2.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "buffer-xor": "npm:buffer-xor@1.0.3",
@@ -273,7 +277,7 @@ System.config({
       "cipher-base": "npm:cipher-base@1.0.4",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "des.js": "npm:des.js@1.0.0",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "safe-buffer": "npm:safe-buffer@5.1.2"
     },
     "npm:browserify-rsa@4.0.1": {
@@ -556,6 +560,11 @@ System.config({
       "locate-path": "npm:locate-path@2.0.0",
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
+    "npm:fs.realpath@1.0.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:generic-rbtree@1.1.1": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tslib": "npm:tslib@1.9.3"
@@ -563,6 +572,20 @@ System.config({
     "npm:get-stream@3.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
+    },
+    "npm:glob@7.1.3": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "events": "github:jspm/nodelibs-events@0.1.1",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "fs.realpath": "npm:fs.realpath@1.0.0",
+      "inflight": "npm:inflight@1.0.6",
+      "inherits": "npm:inherits@2.0.1",
+      "minimatch": "npm:minimatch@3.0.4",
+      "once": "npm:once@1.4.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "path-is-absolute": "npm:path-is-absolute@1.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:good-listener@1.2.2": {
       "delegate": "npm:delegate@3.2.0"
@@ -579,7 +602,7 @@ System.config({
     },
     "npm:hash-base@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "safe-buffer": "npm:safe-buffer@5.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
@@ -595,6 +618,11 @@ System.config({
     },
     "npm:https-browserify@0.0.0": {
       "http": "github:jspm/nodelibs-http@1.7.1"
+    },
+    "npm:inflight@1.0.6": {
+      "once": "npm:once@1.4.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "wrappy": "npm:wrappy@1.0.2"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
@@ -612,10 +640,11 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:js-beautify@1.8.8": {
+    "npm:js-beautify@1.8.9": {
       "config-chain": "npm:config-chain@1.1.12",
       "editorconfig": "npm:editorconfig@0.15.2",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "glob": "npm:glob@7.1.3",
       "mkdirp": "npm:mkdirp@0.5.1",
       "nopt": "npm:nopt@4.0.1",
       "path": "github:jspm/nodelibs-path@0.1.0",
@@ -658,6 +687,10 @@ System.config({
       "mime-db": "npm:mime-db@1.23.0",
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
+    "npm:minimatch@3.0.4": {
+      "brace-expansion": "npm:brace-expansion@1.1.11",
+      "path": "github:jspm/nodelibs-path@0.1.0"
+    },
     "npm:mkdirp@0.5.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
@@ -691,6 +724,9 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "path-key": "npm:path-key@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:once@1.4.0": {
+      "wrappy": "npm:wrappy@1.0.2"
     },
     "npm:options@0.0.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2"
@@ -761,6 +797,9 @@ System.config({
     "npm:path-exists@3.0.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2"
     },
+    "npm:path-is-absolute@1.0.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:path-key@2.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -815,7 +854,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -843,7 +882,7 @@ System.config({
     "npm:ripemd160@2.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "hash-base": "npm:hash-base@3.0.4",
-      "inherits": "npm:inherits@2.0.3"
+      "inherits": "npm:inherits@2.0.1"
     },
     "npm:rxjs@5.5.12": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
@@ -961,7 +1000,7 @@ System.config({
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string-width@1.0.2": {
